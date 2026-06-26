@@ -643,7 +643,7 @@
     <value>Ana Sayfa</value>
   </data>
   <data name="HomeSeoTitle" xml:space="preserve">
-    <value>Kanvas Tablo &amp; Poster - Kanvasia</value>
+    <value>{0} - Filistin Ürünleri ve Online Alışveriş</value>
   </data>
   <data name="HomepageSlider" xml:space="preserve">
     <value>Ana Sayfa Slaytı</value>
@@ -2774,6 +2774,7 @@
   <data name="BankTransferFooter" xml:space="preserve"><value>IBAN ile kolay ödeme</value></data>
   <data name="CashOnDeliveryFooter" xml:space="preserve"><value>Teslimatta ödeme seçeneği</value></data>
   <data name="ProductCount" xml:space="preserve"><value>{0} ürün</value></data>
+  <data name="ProductCountListing" xml:space="preserve"><value>{0} ürün listeleniyor</value></data>
   <data name="Admin_Yonetim_Paneli" xml:space="preserve">
     <value>Yönetim Paneli</value>
   </data>
