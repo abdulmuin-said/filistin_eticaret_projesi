@@ -1,0 +1,88 @@
+@model FilistinProje.Core.Varliklar.CarkOdul
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Model.Id > 0 ? Localizer["Admin_CarkOdul_EditTitle"] : Localizer["Admin_CarkOdul_CreateTitle"];
+    var isEdit = Model.Id > 0;
+}
+
+<div class="container-fluid ca-fade-in">
+    <div class="ca-page-header">
+        <h1 class="ca-page-title">@(isEdit ? Localizer["Admin_CarkOdul_EditTitle"] : Localizer["Admin_CarkOdul_CreateTitle"])</h1>
+    </div>
+
+    <form method="post" action="@(isEdit ? $"/Admin/CarkOdul/Duzenle/{Model.Id}" : "/Admin/CarkOdul/Ekle")" class="card ca-card p-4">
+        @Html.AntiForgeryToken()
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <label asp-for="LabelTr" class="form-label fw-semibold">@Localizer["Admin_CarkOdul_LabelTr"]</label>
+                <input asp-for="LabelTr" class="ca-input" required maxlength="50" />
+                <span asp-validation-for="LabelTr" class="text-danger small"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="LabelEn" class="form-label fw-semibold">@Localizer["Admin_CarkOdul_LabelEn"]</label>
+                <input asp-for="LabelEn" class="ca-input" required maxlength="50" />
+                <span asp-validation-for="LabelEn" class="text-danger small"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="LabelAr" class="form-label fw-semibold">@Localizer["Admin_CarkOdul_LabelAr"]</label>
+                <input asp-for="LabelAr" class="ca-input" required maxlength="50" />
+                <span asp-validation-for="LabelAr" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="Tip" class="form-label fw-semibold">@Localizer["Admin_CarkOdul_TypeLabel"]</label>
+                <select asp-for="Tip" class="ca-input">
+                    <option value="discount">@Localizer["Admin_CarkOdul_TypeDiscountOption"]</option>
+                    <option value="freeship">@Localizer["Admin_CarkOdul_TypeFreeshipOption"]</option>
+                    <option value="none">@Localizer["Admin_CarkOdul_TypeNoneOption"]</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label asp-for="Deger" class="form-label fw-semibold">@Localizer["Admin_CarkOdul_Value"]</label>
+                <input asp-for="Deger" class="ca-input" type="number" min="0" max="100" />
+            </div>
+            <div class="col-md-3">
+                <label asp-for="Renk" class="form-label fw-semibold">@Localizer["Admin_CarkOdul_Color"]</label>
+                <div class="d-flex align-items-center gap-2">
+                    <input asp-for="Renk" class="ca-input" style="width:80px" type="color" />
+                    <input asp-for="Renk" class="ca-input" style="flex:1" maxlength="10" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <label asp-for="Sira" class="form-label fw-semibold">@Localizer["Admin_CarkOdul_Order"]</label>
+                <input asp-for="Sira" class="ca-input" type="number" min="0" />
+            </div>
+            <div class="col-md-1 d-flex align-items-end">
+                <label class="ca-switch-tile form-check form-switch">
+                    <input asp-for="AktifMi" class="form-check-input" type="checkbox" />
+                    <span class="form-check-label">@Localizer["Admin_CarkOdul_Active"]</span>
+                </label>
+            </div>
+
+            <div class="col-12"><hr/></div>
+
+            <div class="col-md-4">
+                <label asp-for="MesajTr" class="form-label fw-semibold">@Localizer["Admin_CarkOdul_MesajTr"]</label>
+                <textarea asp-for="MesajTr" class="ca-input" rows="2" maxlength="200"></textarea>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="MesajEn" class="form-label fw-semibold">@Localizer["Admin_CarkOdul_MesajEn"]</label>
+                <textarea asp-for="MesajEn" class="ca-input" rows="2" maxlength="200"></textarea>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="MesajAr" class="form-label fw-semibold">@Localizer["Admin_CarkOdul_MesajAr"]</label>
+                <textarea asp-for="MesajAr" class="ca-input" rows="2" maxlength="200"></textarea>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="ca-btn ca-btn-primary">@Localizer["Admin_CarkOdul_Save"]</button>
+            <a href="/Admin/CarkOdul" class="ca-btn ca-btn-secondary">@Localizer["Admin_CarkOdul_Cancel"]</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

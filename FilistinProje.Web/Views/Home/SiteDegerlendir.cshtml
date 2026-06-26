@@ -1,0 +1,122 @@
+@using FilistinProje.Core.Varliklar
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["SiteReview"];
+    var degerlendirmeler = ViewBag.Degerlendirmeler as List<SiteDegerlendirme> ?? new();
+    var ortalamaPuan = ViewBag.OrtalamaPuan != null ? (double)ViewBag.OrtalamaPuan : 0.0;
+    var toplamDegerlendirme = ViewBag.ToplamDegerlendirme != null ? (int)ViewBag.ToplamDegerlendirme : 0;
+    var tamYildiz = (int)ortalamaPuan;
+    var yarimYildiz = (ortalamaPuan - tamYildiz) >= 0.5;
+}
+
+<div class="bg-[#f1ede7] min-h-screen">
+    <div class="container mx-auto px-4 py-12">
+        @if (TempData["Basari"] != null)
+        {
+            <div class="bg-green-50 border border-green-200 text-green-700 rounded-lg px-4 py-3 mb-8 text-sm">@TempData["Basari"]</div>
+        }
+        @if (TempData["Hata"] != null)
+        {
+            <div class="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 mb-8 text-sm">@TempData["Hata"]</div>
+        }
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div>
+                <h1 class="font-serif text-4xl text-[#313511] mb-4">@Localizer["SiteReviewTitle"]</h1>
+                <p class="text-[#47473d] mb-8 leading-relaxed">@Localizer["SiteReviewDescription"]</p>
+
+                <div class="bg-white border border-[#e5e2dc] rounded-lg p-6 mb-8">
+                    <h2 class="font-serif text-2xl text-[#313511] mb-6">@Localizer["ReviewForm"]</h2>
+                    <form method="post" action="/Home/SiteDegerlendir">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-5">
+                            <label class="block text-xs uppercase tracking-widest text-[#1c1c18] font-medium mb-1.5">@Localizer["FullNameRequired"]</label>
+                            <input type="text" name="AdSoyad" class="w-full border border-[#e5e2dc] rounded px-4 py-2.5 text-sm focus:ring-[#b58735] focus:border-[#b58735]" required maxlength="100" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="block text-xs uppercase tracking-widest text-[#1c1c18] font-medium mb-1.5">@Localizer["EmailOptional"]</label>
+                            <input type="email" name="Eposta" class="w-full border border-[#e5e2dc] rounded px-4 py-2.5 text-sm focus:ring-[#b58735] focus:border-[#b58735]" maxlength="200" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="block text-xs uppercase tracking-widest text-[#1c1c18] font-medium mb-3">@Localizer["YourRatingRequired"]</label>
+                            <div class="flex flex-row-reverse justify-end gap-2">
+                                @for (int p = 5; p >= 1; p--)
+                                {
+                                    <input type="radio" id="sdr-star-@p" name="Puan" value="@p" class="hidden peer/sdr-@p" @(p == 5 ? "checked" : "") />
+                                    <label for="sdr-star-@p" class="text-gray-300 peer-checked/sdr-@p:text-[#b58735] hover:text-[#b58735] cursor-pointer text-3xl transition-colors"><i class="fas fa-star"></i></label>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="block text-xs uppercase tracking-widest text-[#1c1c18] font-medium mb-1.5">@Localizer["ReviewTitleOptional"]</label>
+                            <input type="text" name="Baslik" class="w-full border border-[#e5e2dc] rounded px-4 py-2.5 text-sm focus:ring-[#b58735] focus:border-[#b58735]" maxlength="200" />
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-xs uppercase tracking-widest text-[#1c1c18] font-medium mb-1.5">@Localizer["YourCommentRequired"]</label>
+                            <textarea name="YorumMetni" class="w-full border border-[#e5e2dc] rounded px-4 py-2.5 text-sm focus:ring-[#b58735] focus:border-[#b58735]" rows="5" required maxlength="2000"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-[#313511] text-white text-xs tracking-widest uppercase py-3 rounded hover:bg-[#1c2001] transition-colors font-medium">@Localizer["Submit"]</button>
+                    </form>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="font-serif text-2xl text-[#313511] mb-6">@Localizer["Reviews"]</h2>
+
+                @if (degerlendirmeler.Count > 0)
+                {
+                    <div class="bg-white border border-[#e5e2dc] rounded-lg p-6 text-center mb-8">
+                        <div class="font-serif text-6xl text-[#313511] mb-2">@ortalamaPuan.ToString("0.0")</div>
+                        <div class="text-[#b58735] text-xl mb-2">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= tamYildiz) { <i class="fas fa-star"></i> }
+                                else if (i == tamYildiz + 1 && yarimYildiz) { <i class="fas fa-star-half-alt"></i> }
+                                else { <i class="far fa-star"></i> }
+                            }
+                        </div>
+                        <p class="text-sm text-[#47473d]">@toplamDegerlendirme @Localizer["ReviewCountFormat"]</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        @foreach (var d in degerlendirmeler)
+                        {
+                            <div class="bg-white border border-[#e5e2dc] rounded-lg p-4">
+                                <div class="flex items-start justify-between mb-2">
+                                    <div>
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <h5 class="text-sm font-semibold text-[#1c1c18]">@d.AdSoyad</h5>
+                                            @if (!string.IsNullOrWhiteSpace(d.Baslik))
+                                            {
+                                                <span class="text-xs text-[#47473d]">— @d.Baslik</span>
+                                            }
+                                        </div>
+                                        <div class="text-[#b58735] text-[10px]">
+                                            @for (int i = 0; i < d.Puan; i++) { <i class="fas fa-star"></i> }
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] text-[#47473d] whitespace-nowrap">@d.OlusturulmaTarihi.ToString("dd MMM yyyy")</span>
+                                </div>
+                                <p class="text-sm text-[#47473d]">@d.YorumMetni</p>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-16 bg-white border border-[#e5e2dc] rounded-lg">
+                        <i class="far fa-star fa-3x text-[#e5e2dc] mb-4"></i>
+                        <h5 class="text-[#313511] font-semibold mb-2">@Localizer["NoReviewsYet"]</h5>
+                        <p class="text-sm text-[#47473d]">@Localizer["BeFirstToReview"]</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

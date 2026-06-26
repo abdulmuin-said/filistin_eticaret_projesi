@@ -1,0 +1,66 @@
+@model FilistinProje.Core.Varliklar.Siparis
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["CreateReturnRequestTitle"];
+    var siteSettings = SiteSettingsService.GetSettings();
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
+}
+
+<div class="bg-[#f1ede7] border-b border-[#e5e2dc] py-3">
+    <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-[#47473d]">
+        <a href="/" class="hover:text-[#313511] transition-colors">@Localizer["HomePage"]</a>
+        <span>/</span>
+        <a href="/Profil" class="hover:text-[#313511] transition-colors">@Localizer["MyAccount"]</a>
+        <span>/</span>
+        <a href="/Profil/Siparislerim" class="hover:text-[#313511] transition-colors">@Localizer["MyOrders"]</a>
+        <span>/</span>
+        <span class="text-[#1c1c18] font-medium">@Localizer["ReturnRequest"]</span>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-10 max-w-3xl">
+    <h1 class="font-serif text-3xl text-[#313511] mb-6">@Localizer["CreateReturnRequest"]</h1>
+    
+    <div class="bg-white border border-[#e5e2dc] rounded-lg p-6 mb-8">
+        <h3 class="font-bold text-[#1c1c18] mb-4 border-b border-[#e5e2dc] pb-2">@Localizer["OrderInfo"]</h3>
+        <p class="text-sm text-[#47473d] mb-2"><strong>@Localizer["OrderNoLabel"]</strong> @Model.SiparisNo</p>
+        <p class="text-sm text-[#47473d] mb-2"><strong>@Localizer["DateLabel"]</strong> @Model.OlusturulmaTarihi.ToString("dd.MM.yyyy")</p>
+        <p class="text-sm text-[#47473d]"><strong>@Localizer["AmountLabel"]</strong> @Model.ToplamTutar.ToString("N2") @currencySymbol</p>
+    </div>
+
+    <form asp-action="IadeOlustur" method="post" class="space-y-6">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="SiparisId" value="@Model.Id" />
+        
+        <div>
+            <label class="block text-xs uppercase tracking-widest text-[#1c1c18] font-medium mb-2">@Localizer["ReturnReason"]</label>
+            <select name="Neden" required class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3]">
+                <option value="">@Localizer["SelectOption"]</option>
+                <option value="Hasarlı Ürün">@Localizer["ReasonDamagedProduct"]</option>
+                <option value="Yanlış Ürün">@Localizer["ReasonWrongProduct"]</option>
+                <option value="Beklentimi Karşılamadı">@Localizer["ReasonNotAsExpected"]</option>
+                <option value="Vazgeçtim">@Localizer["ReasonChangedMind"]</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="block text-xs uppercase tracking-widest text-[#1c1c18] font-medium mb-2">@Localizer["DescriptionOptional"]</label>
+            <textarea name="Aciklama" rows="4" class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3] resize-none" placeholder="@Localizer["ReturnDescriptionPlaceholder"]"></textarea>
+        </div>
+
+        <div>
+            <label class="block text-xs uppercase tracking-widest text-[#1c1c18] font-medium mb-2">@Localizer["IBANOptional"]</label>
+            <input name="IBAN" class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3]" placeholder="@Localizer["IBANPlaceholder"]" />
+        </div>
+
+        <div class="flex gap-4">
+            <button type="submit" class="bg-[#313511] text-white px-8 py-3 text-xs tracking-widest uppercase rounded hover:bg-[#1c2001] transition-colors">
+                @Localizer["SubmitRequest"]
+            </button>
+            <a href="/Profil/Siparislerim" class="bg-white border border-[#e5e2dc] text-[#313511] px-8 py-3 text-xs tracking-widest uppercase rounded hover:bg-[#fcf9f3] transition-colors inline-flex items-center">
+                @Localizer["CancelRequest"]
+            </a>
+        </div>
+    </form>
+</div>

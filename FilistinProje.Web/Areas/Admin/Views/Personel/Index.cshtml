@@ -1,0 +1,435 @@
+@model FilistinProje.Core.Models.PersonelIndexViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_StaffManagement"];
+}
+
+@functions {
+    private static string FormatGiris(DateTime? utc)
+    {
+        if (!utc.HasValue) return "-";
+        var local = utc.Value.ToLocalTime();
+        var now = DateTime.Now;
+        if (local.Date == now.Date) return $"Bugün {local:HH:mm}";
+        if (local.Date == now.Date.AddDays(-1)) return $"Dün {local:HH:mm}";
+        return local.ToString("dd.MM.yyyy HH:mm");
+    }
+
+    private static string SonGirisRengi(DateTime? utc)
+    {
+        if (!utc.HasValue) return "ca-text-muted";
+        var fark = (DateTime.UtcNow - utc.Value).TotalHours;
+        if (fark < 1) return "text-success";
+        if (fark < 24) return "text-primary";
+        if (fark < 168) return "ca-text-muted";
+        return "ca-text-muted";
+    }
+
+    private static string RoleBadgeClass(string roleName)
+    {
+        return roleName switch
+        {
+            "SuperAdmin" or "Admin" => "ca-badge-danger",
+            "Yonetici" => "ca-badge-warning",
+            "SiparisYoneticisi" => "ca-badge-primary",
+            "UrunYoneticisi" => "ca-badge-success",
+            "IcerikYoneticisi" => "ca-badge-info",
+            "KargoYoneticisi" => "ca-badge-neutral",
+            "Goruntuleyici" => "ca-badge-dark",
+            _ => "ca-badge-neutral"
+        };
+    }
+}
+
+<style>
+    .ca-staff-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 22px;
+    }
+
+    .ca-staff-stat-card {
+        background: #fff;
+        border: 1px solid var(--ca-border);
+        border-radius: 12px;
+        padding: 18px 22px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .ca-staff-stat-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        font-size: 1.1rem;
+    }
+
+    .ca-staff-stat-icon.is-primary { background: rgba(59,130,246,.1); color: #2563eb; }
+    .ca-staff-stat-icon.is-success { background: rgba(16,185,129,.1); color: #059669; }
+    .ca-staff-stat-icon.is-warning { background: rgba(245,158,11,.1); color: #d97706; }
+    .ca-staff-stat-icon.is-danger  { background: rgba(239,68,68,.1); color: #dc2626; }
+
+    .ca-staff-stat-value {
+        font-size: 1.35rem;
+        font-weight: 800;
+        line-height: 1.2;
+        color: var(--ca-text);
+    }
+
+    .ca-staff-stat-label {
+        font-size: .78rem;
+        color: var(--ca-text-muted);
+    }
+
+    .ca-role-group + .ca-role-group {
+        margin-top: 18px;
+    }
+
+    .ca-role-group-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 10px;
+        padding: 0 4px;
+    }
+
+    .ca-role-group-header h3 {
+        font-weight: 700;
+        font-size: .95rem;
+        margin: 0;
+        color: var(--ca-text);
+    }
+
+    .ca-role-group-header small {
+        color: var(--ca-text-muted);
+        font-size: .8rem;
+    }
+
+    .ca-role-group-badge {
+        font-size: .7rem;
+        padding: 2px 10px;
+        border-radius: 20px;
+        background: var(--ca-bg);
+        color: var(--ca-text-muted);
+        font-weight: 600;
+    }
+
+    .ca-personel-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 12px;
+    }
+
+    .ca-personel-card {
+        background: #fff;
+        border: 1px solid var(--ca-border);
+        border-radius: 10px;
+        padding: 16px 18px;
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        transition: .18s ease;
+    }
+
+    .ca-personel-card:hover {
+        box-shadow: 0 8px 20px rgba(0,0,0,.05);
+        border-color: rgba(var(--ca-primary-rgb), .25);
+    }
+
+    .ca-personel-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #fff;
+        flex: 0 0 auto;
+    }
+
+    .ca-personel-avatar.is-superadmin { background: #dc2626; }
+    .ca-personel-avatar.is-yonetici { background: #d97706; }
+    .ca-personel-avatar.is-siparis { background: #2563eb; }
+    .ca-personel-avatar.is-urun { background: #059669; }
+    .ca-personel-avatar.is-icerik { background: #0891b2; }
+    .ca-personel-avatar.is-kargo { background: #6b7280; }
+    .ca-personel-avatar.is-goruntuleyici { background: #1f2937; }
+
+    .ca-personel-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .ca-personel-info .ca-name {
+        font-weight: 700;
+        font-size: .88rem;
+        color: var(--ca-text);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .ca-personel-info .ca-email {
+        font-size: .78rem;
+        color: var(--ca-text-muted);
+        margin-top: 1px;
+        word-break: break-all;
+    }
+
+    .ca-personel-meta {
+        display: flex;
+        gap: 12px;
+        margin-top: 8px;
+        font-size: .75rem;
+        color: var(--ca-text-muted);
+        flex-wrap: wrap;
+    }
+
+    .ca-personel-meta i {
+        width: 14px;
+        text-align: center;
+        margin-right: 4px;
+    }
+
+    .ca-personel-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 0 0 auto;
+    }
+
+    .ca-personel-action {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        border: 1px solid var(--ca-border);
+        background: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--ca-text-muted);
+        font-size: .78rem;
+        text-decoration: none;
+        transition: .15s ease;
+        cursor: pointer;
+    }
+
+    .ca-personel-action:hover {
+        background: var(--ca-bg);
+        color: var(--ca-primary);
+        border-color: var(--ca-primary);
+    }
+
+    .ca-personel-action.is-danger:hover {
+        color: #dc2626;
+        border-color: #dc2626;
+        background: #fff5f5;
+    }
+
+    .ca-online-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22c55e;
+        margin-right: 5px;
+        animation: ca-pulse 2s infinite;
+    }
+
+    .ca-offline-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #d1d5db;
+        margin-right: 5px;
+    }
+
+    @@keyframes ca-pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: .4; }
+    }
+
+    @@media (max-width: 900px) {
+        .ca-staff-stat-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .ca-staff-stat-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .ca-personel-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="container-fluid ca-fade-in">
+    @if (TempData["Basari"] != null)
+    {
+        <div class="alert alert-success">@TempData["Basari"]</div>
+    }
+    @if (TempData["Hata"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Hata"]</div>
+    }
+
+    <div class="ca-page-header">
+        <div>
+            <h1 class="ca-page-title">@Localizer["Admin_StaffManagement"]</h1>
+            <p class="ca-page-subtitle">@Localizer["Admin_StaffManagement_Subtitle"]</p>
+        </div>
+        <div class="d-flex gap-2 align-items-center flex-wrap justify-content-end">
+            <a href="/Admin/Personel/YetkiMatrisi" class="ca-btn ca-btn-primary">
+                <i class="fas fa-table-cells"></i> @Localizer["Admin_PermissionMatrix"]
+            </a>
+            <a href="/Admin/Kullanici" class="ca-btn ca-btn-outline">
+                <i class="fas fa-users"></i> @Localizer["Admin_AllUsers"]
+            </a>
+        </div>
+    </div>
+
+    <div class="ca-staff-stat-grid">
+        <div class="ca-staff-stat-card">
+            <div class="ca-staff-stat-icon is-primary">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div>
+                <div class="ca-staff-stat-value">@Model.Stats.ToplamPersonel</div>
+                <div class="ca-staff-stat-label">@Localizer["Admin_TotalStaff"]</div>
+            </div>
+        </div>
+        <div class="ca-staff-stat-card">
+            <div class="ca-staff-stat-icon is-success">
+                <i class="fas fa-circle"></i>
+            </div>
+            <div>
+                <div class="ca-staff-stat-value">@Model.Stats.SuanAktif</div>
+                <div class="ca-staff-stat-label">@Localizer["Admin_CurrentlyActive"]</div>
+            </div>
+        </div>
+        <div class="ca-staff-stat-card">
+            <div class="ca-staff-stat-icon is-warning">
+                <i class="fas fa-right-to-bracket"></i>
+            </div>
+            <div>
+                <div class="ca-staff-stat-value">@Model.Stats.Son7GunGiris</div>
+                <div class="ca-staff-stat-label">@Localizer["Admin_Last7DaysLogin"]</div>
+            </div>
+        </div>
+        <div class="ca-staff-stat-card">
+            <div class="ca-staff-stat-icon is-danger">
+                <i class="fas fa-ban"></i>
+            </div>
+            <div>
+                <div class="ca-staff-stat-value">@Model.Stats.BlokeEdilen</div>
+                <div class="ca-staff-stat-label">@Localizer["Admin_BlockedStaff"]</div>
+            </div>
+        </div>
+    </div>
+
+    @foreach (var grup in Model.RolGruplari)
+    {
+        <div class="ca-role-group">
+            <div class="ca-role-group-header">
+                <span class="ca-badge @RoleBadgeClass(grup.RolAdi)">
+                    <i class="fas fa-shield-alt"></i> @grup.RolLabel
+                </span>
+                <small>@grup.RolAciklamasi</small>
+                <span class="ca-role-group-badge">@grup.PersonelSayisi @Localizer["Admin_Staff"]</span>
+            </div>
+            <div class="ca-personel-grid">
+                @foreach (var person in grup.Personeller)
+                {
+                    var avatarClass = person.RolAdi switch
+                    {
+                        "SuperAdmin" or "Admin" => "is-superadmin",
+                        "Yonetici" => "is-yonetici",
+                        "SiparisYoneticisi" => "is-siparis",
+                        "UrunYoneticisi" => "is-urun",
+                        "IcerikYoneticisi" => "is-icerik",
+                        "KargoYoneticisi" => "is-kargo",
+                        "Goruntuleyici" => "is-goruntuleyici",
+                        _ => "is-goruntuleyici"
+                    };
+
+                    var initial = !string.IsNullOrWhiteSpace(person.AdSoyad)
+                        ? person.AdSoyad.Substring(0, 1).ToUpperInvariant()
+                        : "?";
+
+                    var online = !person.EngelliMi &&
+                        person.SonGirisUtc.HasValue &&
+                        (DateTime.UtcNow - person.SonGirisUtc.Value).TotalHours < 1;
+
+                    <div class="ca-personel-card">
+                        <div class="ca-personel-avatar @avatarClass">@initial</div>
+                        <div class="ca-personel-info">
+                            <div class="ca-name">
+                                @person.AdSoyad
+                                @if (online)
+                                {
+                                    <span class="ca-online-dot" title="Çevrimiçi"></span>
+                                }
+                                else
+                                {
+                                    <span class="ca-offline-dot" title="Çevrimdışı"></span>
+                                }
+                                @if (person.KendisiMi)
+                                {
+                                    <span class="ca-badge ca-badge-neutral" style="font-size:.65rem; padding:1px 8px;">@Localizer["Admin_You"]</span>
+                                }
+                                @if (person.EngelliMi)
+                                {
+                                    <span class="ca-badge ca-badge-danger" style="font-size:.65rem; padding:1px 8px;"><i class="fas fa-ban"></i> @Localizer["Admin_Banned"]</span>
+                                }
+                            </div>
+                            <div class="ca-email">@person.Email</div>
+                            <div class="ca-personel-meta">
+                                <span><i class="fas fa-phone"></i>@(!string.IsNullOrWhiteSpace(person.Telefon) ? person.Telefon : "-")</span>
+                                <span><i class="fas fa-clock"></i>@Localizer["Admin_LastLogin"]: @FormatGiris(person.SonGirisUtc)</span>
+                            </div>
+                        </div>
+                        <div class="ca-personel-actions">
+                            <a href="/Admin/Kullanici/Duzenle/@person.Id"
+                               class="ca-personel-action"
+                               title="@Localizer["Admin_Edit"]">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                            <form asp-action="OturumTemizle" asp-route-id="@person.Id" method="post"
+                                  onsubmit="return confirm('@Localizer["Admin_ConfirmClearSession"]'.replace('{0}', '@person.AdSoyad'));">
+                                @Html.AntiForgeryToken()
+                                <button type="submit"
+                                        class="ca-personel-action"
+                                        title="@Localizer["Admin_ClearSession"]">
+                                    <i class="fas fa-right-from-bracket"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    @if (Model.Personel.Count == 0)
+    {
+        <div class="ca-card">
+            <div class="ca-card-body text-center py-5">
+                <i class="fas fa-user-shield" style="font-size:3rem; color:var(--ca-text-muted); opacity:.3;"></i>
+                <h4 class="mt-3 ca-text-muted">@Localizer["Admin_NoStaff"]</h4>
+                <p class="ca-text-muted">@Localizer["Admin_NoStaff_Desc"]</p>
+            </div>
+        </div>
+    }
+</div>

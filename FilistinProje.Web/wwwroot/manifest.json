@@ -1,0 +1,21 @@
+{
+  "name": "7ANRPS48 - Filistin E-Ticaret Mağazası",
+  "short_name": "7ANRPS48",
+  "description": "Filistin'de güvenli online alışveriş, hızlı teslimat ve müşteri odaklı e-ticaret deneyimi.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fcf9f3",
+  "theme_color": "#313511",
+  "icons": [
+    {
+      "src": "/74anrps48logo2.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/74anrps48logo2.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

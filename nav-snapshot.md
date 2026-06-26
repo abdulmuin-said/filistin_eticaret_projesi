@@ -1,0 +1,58 @@
+- navigation [ref=e62]:
+  - list [ref=e63]:
+    - listitem [ref=e64] [cursor=pointer]:
+      - link "Kanvas Tablo " [ref=e65]:
+        - /url: /Urun?k=29
+        - text: Kanvas Tablo
+        - generic [ref=e66]: 
+    - listitem [ref=e67] [cursor=pointer]:
+      - link "Cam Tablo " [ref=e68]:
+        - /url: /Urun?k=30
+        - text: Cam Tablo
+        - generic [ref=e69]: 
+    - listitem [ref=e70] [cursor=pointer]:
+      - link "Duvar Kağıdı " [ref=e71]:
+        - /url: /Urun?k=31
+        - text: Duvar Kağıdı
+        - generic [ref=e72]: 
+    - listitem [ref=e73] [cursor=pointer]:
+      - link "Cam Kesme Tahtası " [ref=e74]:
+        - /url: /Urun?k=32
+        - text: Cam Kesme Tahtası
+        - generic [ref=e75]: 
+    - listitem [ref=e76] [cursor=pointer]:
+      - link "Ayna " [ref=e77]:
+        - /url: /Urun?k=33
+        - text: Ayna
+        - generic [ref=e78]: 
+    - listitem [ref=e79] [cursor=pointer]:
+      - link "Baskılı Halı " [ref=e80]:
+        - /url: /Urun?k=34
+        - text: Baskılı Halı
+        - generic [ref=e81]: 
+    - listitem [ref=e82] [cursor=pointer]:
+      - link "Ahşap Dekorasyon " [ref=e83]:
+        - /url: /Urun?k=35
+        - text: Ahşap Dekorasyon
+        - generic [ref=e84]: 
+    - listitem [ref=e85] [cursor=pointer]:
+      - link "Mobilya Aksesuar " [ref=e86]:
+        - /url: /Urun?k=36
+        - text: Mobilya Aksesuar
+        - generic [ref=e87]: 
+    - listitem [ref=e88] [cursor=pointer]:
+      - link "Lightbox " [ref=e89]:
+        - /url: /Urun?k=37
+        - text: Lightbox
+        - generic [ref=e90]: 
+    - listitem [ref=e91] [cursor=pointer]:
+      - link "Afiş " [ref=e92]:
+        - /url: /Urun?k=38
+        - text: Afiş
+        - generic [ref=e93]: 
+    - listitem [ref=e94] [cursor=pointer]:
+      - link "TÜM ÜRÜNLER" [ref=e95]:
+        - /url: /Urun
+    - listitem [ref=e96] [cursor=pointer]:
+      - link "İLETİŞİM" [ref=e97]:
+        - /url: /Kurumsal/Iletisim

@@ -1,0 +1,357 @@
+@model IEnumerable<FilistinProje.Core.Varliklar.Kategori>
+@using FilistinProje.Core.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_Kategori_Yonetimi"];
+
+    var categoryList = Model.ToList();
+    var categoryLookup = categoryList.ToDictionary(x => x.Id);
+    var arama = ViewBag.Arama as string;
+    var durum = ViewBag.Durum as string;
+    var tip = ViewBag.Tip as string;
+    var toplamKategori = ViewBag.ToplamKategori as int? ?? categoryList.Count;
+    var aktifKategori = ViewBag.AktifKategori as int? ?? categoryList.Count(x => x.AktifMi && !x.SilindiMi);
+    var anaKategori = ViewBag.AnaKategori as int? ?? categoryList.Count(x => !x.ParentKategoriId.HasValue);
+    var altKategori = ViewBag.AltKategori as int? ?? categoryList.Count(x => x.ParentKategoriId.HasValue);
+}
+
+<style>
+    .category-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 18px;
+    }
+
+    .category-summary-card {
+        border: 1px solid var(--ca-border);
+        border-radius: var(--ca-radius);
+        background: #fff;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .category-summary-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--ca-primary);
+        background: rgba(var(--ca-primary-rgb), .08);
+    }
+
+    .category-summary-card span {
+        display: block;
+        color: var(--ca-text-muted);
+        font-size: .78rem;
+    }
+
+    .category-summary-card strong {
+        display: block;
+        color: var(--ca-text);
+        font-size: 1.18rem;
+        line-height: 1.1;
+    }
+
+    .category-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .category-filter-form {
+        display: grid;
+        grid-template-columns: minmax(220px, 1fr) 180px 180px auto;
+        gap: 10px;
+        align-items: end;
+        width: 100%;
+    }
+
+    .category-name-cell {
+        min-width: 260px;
+    }
+
+    .category-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 6px;
+    }
+
+    .category-soft-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        min-height: 24px;
+        padding: 0 8px;
+        border-radius: 999px;
+        border: 1px solid var(--ca-border);
+        color: var(--ca-text-muted);
+        font-size: .72rem;
+        background: #fff;
+    }
+
+    .category-slug {
+        font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+        font-size: .78rem;
+        color: var(--ca-text-muted);
+    }
+
+    @@media (max-width: 1180px) {
+        .category-summary-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .category-filter-form {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @@media (max-width: 640px) {
+        .category-summary-grid,
+        .category-filter-form {
+            grid-template-columns: 1fr;
+        }
+
+        .category-actions {
+            justify-content: stretch;
+        }
+
+        .category-actions .ca-btn {
+            flex: 1;
+            justify-content: center;
+        }
+    }
+</style>
+
+<div class="container-fluid ca-fade-in">
+    @if (TempData["Basari"] != null)
+    {
+        <div class="alert alert-success">@TempData["Basari"]</div>
+    }
+
+    <div class="ca-page-header">
+        <div>
+             <h1 class="ca-page-title">@Localizer["Admin_Kategori_Yonetimi"]</h1>
+             <p class="ca-page-subtitle">@Localizer["Admin_Kategori_YonetimiDesc"]</p>
+
+        </div>
+        <div class="category-actions">
+            <a href="@Url.Action("PdfExport", "Kategori", new { area = "Admin", arama, durum, tip })" class="ca-btn ca-btn-outline">
+                <i class="fas fa-file-pdf"></i> PDF
+            </a>
+            <a href="@Url.Action("ExcelExport", "Kategori", new { area = "Admin", arama, durum, tip })" class="ca-btn ca-btn-outline">
+                <i class="fas fa-file-excel"></i> XLSX
+            </a>
+            <a href="/Admin/Kategori/Ekle" class="ca-btn ca-btn-primary">
+                <i class="fas fa-plus"></i> Yeni Kategori
+            </a>
+        </div>
+    </div>
+
+    <div class="category-summary-grid">
+        <div class="category-summary-card">
+            <div class="category-summary-icon"><i class="fas fa-layer-group"></i></div>
+            <div>
+                 <span>@Localizer["Admin_TotalCategories"]</span>
+
+                <strong>@toplamKategori</strong>
+            </div>
+        </div>
+        <div class="category-summary-card">
+            <div class="category-summary-icon"><i class="fas fa-check-circle"></i></div>
+            <div>
+                 <span>@Localizer["Admin_ActiveCategories"]</span>
+
+                <strong>@aktifKategori</strong>
+            </div>
+        </div>
+        <div class="category-summary-card">
+            <div class="category-summary-icon"><i class="fas fa-folder"></i></div>
+            <div>
+                 <span>@Localizer["Admin_ParentCategories"]</span>
+
+                <strong>@anaKategori</strong>
+            </div>
+        </div>
+        <div class="category-summary-card">
+            <div class="category-summary-icon"><i class="fas fa-folder-tree"></i></div>
+            <div>
+                 <span>@Localizer["Admin_ChildCategories"]</span>
+
+                <strong>@altKategori</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="ca-card">
+        <div class="ca-card-header">
+            <form method="get" class="category-filter-form">
+                <div>
+                    <label class="ca-label">Arama</label>
+                     <input name="arama" value="@arama" class="ca-input" placeholder="@Localizer["Admin_Kategori_Arama"]" />
+
+                </div>
+                <div>
+                    <label class="ca-label">@Localizer["Admin_Durum"]</label>
+                    <select name="durum" class="ca-select">
+                         <option value="">@Localizer["Admin_AllStatuses"]</option>
+
+                        <option value="aktif" selected="@(durum == "aktif")">@Localizer["Admin_Aktif"]</option>
+                        <option value="pasif" selected="@(durum == "pasif")">@Localizer["Admin_Pasif"]</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="ca-label">Kategori Tipi</label>
+                    <select name="tip" class="ca-select">
+                         <option value="">@Localizer["Admin_AllTypes"]</option>
+                         <option value="ana" selected="@(tip == "ana")">@Localizer["Admin_ParentCategories"]</option>
+                         <option value="alt" selected="@(tip == "alt")">@Localizer["Admin_ChildCategories"]</option>
+
+                    </select>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="ca-btn ca-btn-primary">
+                        <i class="fas fa-search"></i> @Localizer["Admin_Filtrele"]
+                    </button>
+                     <a href="/Admin/Kategori" class="ca-btn ca-btn-outline" title="@Localizer["Admin_ClearFilters"]">
+
+                        <i class="fas fa-rotate-left"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <div class="ca-filter-bar">
+             <span class="ca-filter-count">@Localizer["Admin_ListedCategories", categoryList.Count]</span>
+
+        </div>
+
+        <div class="ca-table-wrapper">
+            <table class="ca-table">
+                <thead>
+                    <tr>
+                        <th class="ps-4">@Localizer["Admin_Kategori"]</th>
+                         <th>@Localizer["Admin_ParentCategories"]</th>
+                         <th>@Localizer["Admin_StoreData"]</th>
+                         <th>SEO</th>
+
+                        <th class="text-center">@Localizer["Admin_Sira"]</th>
+                        <th class="text-center">@Localizer["Admin_Durum"]</th>
+                         <th class="text-end pe-4">@Localizer["Admin_Actions"]</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!categoryList.Any())
+                    {
+                        <tr>
+                            <td colspan="7">
+                                <div class="ca-empty">
+                                    <i class="fas fa-folder-open"></i>
+                                     <p>@Localizer["Admin_NoMatchingCategories"]</p>
+
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var item in categoryList)
+                        {
+                            var firstChar = string.IsNullOrWhiteSpace(item.Ad) ? "K" : item.Ad.Substring(0, 1).ToUpperInvariant();
+                            var hierarchyLabel = CategoryPresentationHelper.BuildHierarchyLabel(item, categoryLookup);
+                            var productCount = item.Urunler.Count(x => !x.SilindiMi);
+                            var childCount = item.AltKategoriler.Count(x => !x.SilindiMi);
+                            <tr>
+                                <td class="ps-4 category-name-cell">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="ca-avatar">@firstChar</div>
+                                        <div>
+                                            <div class="ca-fw-bold">@item.Ad</div>
+                                            @if (!string.Equals(hierarchyLabel, item.Ad, StringComparison.Ordinal))
+                                            {
+                                                <small class="d-block ca-text-muted">@hierarchyLabel</small>
+                                            }
+                                            @if (!string.IsNullOrWhiteSpace(item.KisaAciklama))
+                                            {
+                                                <small class="ca-text-muted">@item.KisaAciklama</small>
+                                            }
+                                            <div class="category-meta">
+                                                <span class="category-soft-chip"><i class="fas fa-link"></i> /@(item.Slug ?? "-")</span>
+                                                @if (!string.IsNullOrWhiteSpace(item.KampanyaEtiketi))
+                                                {
+                                                    <span class="category-soft-chip"><i class="fas fa-tag"></i> @item.KampanyaEtiketi</span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                     @(item.ParentKategori?.Ad ?? Localizer["Admin_ParentCategories"].Value)
+
+                                </td>
+                                <td>
+                                    <div class="category-meta">
+                                         <span class="category-soft-chip"><i class="fas fa-box"></i> @Localizer["Admin_ProductCount", productCount]</span>
+                                         <span class="category-soft-chip"><i class="fas fa-folder-tree"></i> @Localizer["Admin_ChildCategoryCount", childCount]</span>
+
+                                    </div>
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(item.SeoTitle) || !string.IsNullOrWhiteSpace(item.SeoDescription))
+                                    {
+                                         <div class="ca-fw-bold small">@Localizer["Admin_Ready"]</div>
+
+                                        <div class="category-slug">@(!string.IsNullOrWhiteSpace(item.SeoTitle) ? item.SeoTitle : item.SeoDescription)</div>
+                                    }
+                                    else
+                                    {
+                                         <span class="ca-text-muted">@Localizer["Admin_Missing"]</span>
+
+                                    }
+                                </td>
+                                <td class="text-center">#@item.Sira</td>
+                                <td class="text-center">
+                                    @if (item.AktifMi && !item.SilindiMi)
+                                    {
+                                        <span class="ca-badge ca-badge-success"><i class="fas fa-check-circle"></i> @Localizer["Admin_Aktif"]</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="ca-badge ca-badge-danger"><i class="fas fa-times-circle"></i> @Localizer["Admin_Pasif"]</span>
+                                    }
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="d-inline-flex gap-1">
+                                         <a href="/Urun?k=@item.Id" target="_blank" class="ca-btn-icon" title="@Localizer["Admin_ViewOnSite"]">
+
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="/Admin/Kategori/Duzenle/@item.Id" class="ca-btn-icon edit" title="@Localizer["Admin_Duzenle"]">
+                                            <i class="fas fa-pen"></i>
+                                        </a>
+                                         <form action="/Admin/Kategori/Sil" method="post" class="d-inline" onsubmit="return confirm('@Localizer["Admin_ArchiveConfirm"]')">
+                                             @Html.AntiForgeryToken()
+                                             <input type="hidden" name="id" value="@item.Id" />
+                                             <button type="submit" class="ca-btn-icon delete" title="@Localizer["Admin_Archive"]">
+
+                                                <i class="fas fa-box-archive"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

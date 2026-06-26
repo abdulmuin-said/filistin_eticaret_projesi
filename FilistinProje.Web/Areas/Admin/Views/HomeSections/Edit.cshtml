@@ -1,0 +1,186 @@
+@model FilistinProje.Core.Varliklar.HomePageSection
+@using FilistinProje.Core.Varliklar
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_EditSection"];
+    var tumUrunler = ViewBag.TumUrunler as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
+    var seciliUrunIdler = Model.SectionProducts?.Select(sp => sp.UrunId).ToHashSet() ?? new HashSet<int>();
+}
+
+<div class="container-fluid ca-fade-in">
+    <div class="ca-page-header d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="ca-page-title">@Localizer["Admin_EditSection"] <span class="badge bg-secondary ms-2 fs-6">#@Model.Id</span></h1>
+            <p class="ca-page-subtitle">@Localizer["Admin_EditSectionSubtitle", Model.SectionType]</p>
+        </div>
+        <a href="@Url.Action("Index", "HomeSections")" class="ca-btn ca-btn-outline">
+            <i class="fas fa-arrow-left"></i> @Localizer["Admin_Back"]
+        </a>
+    </div>
+
+    <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="ca-card">
+                    <div class="ca-card-header">
+                        <span class="ca-card-title"><i class="fas fa-layer-group me-2"></i>@Localizer["Admin_SectionInfo"]</span>
+                    </div>
+                    <div class="ca-card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="SectionType" class="ca-label">@Localizer["Admin_SectionType"]</label>
+                                <select asp-for="SectionType" class="ca-input">
+                                    <option value="@HomePageSectionType.ProductBlock">@Localizer["Admin_ManualProductSelection"]</option>
+                                    <option value="@HomePageSectionType.CategoryShowcase">@Localizer["Admin_CategoryShowcase"]</option>
+                                    <option value="@HomePageSectionType.CustomBanner">@Localizer["Admin_CustomBanner"]</option>
+                                    <option value="@HomePageSectionType.AutoVitrin">@Localizer["Admin_FeaturedAutomatic"]</option>
+                                    <option value="@HomePageSectionType.AutoCokSatanlar">@Localizer["Admin_BestSellersAutomatic"]</option>
+                                    <option value="@HomePageSectionType.AutoFirsatUrunleri">@Localizer["Admin_DealProductsAutomatic"]</option>
+                                    <option value="@HomePageSectionType.AutoBesParcali">@Localizer["Admin_FivePieceSetsAutomatic"]</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label asp-for="SortOrder" class="ca-label">@Localizer["Admin_Sira"]</label>
+                                <input asp-for="SortOrder" class="ca-input" type="number" min="0" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="ca-label">@Localizer["Admin_Aktif"]</label>
+                                <div class="form-check form-switch mt-2">
+                                    <input asp-for="Enabled" class="form-check-input" type="checkbox" />
+                                    <label class="form-check-label" asp-for="Enabled">@Localizer["Admin_Published"]</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Title" class="ca-label">@Localizer["Admin_Baslik"]</label>
+                                <input asp-for="Title" class="ca-input" placeholder='@Localizer["Admin_SectionTitlePlaceholder"]' />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Subtitle" class="ca-label">@Localizer["Admin_Alt_Baslik"]</label>
+                                <input asp-for="Subtitle" class="ca-input" placeholder='@Localizer["Admin_ShortDescriptionPlaceholder"]' />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="ViewAllText" class="ca-label">@Localizer["Admin_ButtonText"]</label>
+                                <input asp-for="ViewAllText" class="ca-input" placeholder='@Localizer["Admin_ViewAll"]' />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="ViewAllUrl" class="ca-label">@Localizer["Admin_ButtonLink"]</label>
+                                <input asp-for="ViewAllUrl" class="ca-input" placeholder="/Urun" />
+                            </div>
+                        </div>
+
+                        @if (Model.SectionType == HomePageSectionType.CustomBanner)
+                        {
+                            <hr class="my-4">
+                            <h6 class="fw-semibold mb-3 text-muted">@Localizer["Admin_BannerFields"]</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label asp-for="ImageUrl" class="ca-label">@Localizer["Admin_ImageUrl"]</label>
+                                    <input asp-for="ImageUrl" class="ca-input" placeholder="/img/banner.jpg" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="ButtonUrl" class="ca-label">@Localizer["Admin_BannerButtonLink"]</label>
+                                    <input asp-for="ButtonUrl" class="ca-input" placeholder="/Urun?k=1" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="ButtonText" class="ca-label">@Localizer["Admin_BannerButtonText"]</label>
+                                    <input asp-for="ButtonText" class="ca-input" placeholder='@Localizer["Admin_ReviewNow"]' />
+                                </div>
+                                <div class="col-12">
+                                    <label asp-for="Description" class="ca-label">@Localizer["Admin_Aciklama"]</label>
+                                    <textarea asp-for="Description" class="ca-input" rows="3"></textarea>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <input type="hidden" asp-for="ImageUrl" />
+                            <input type="hidden" asp-for="ButtonUrl" />
+                            <input type="hidden" asp-for="ButtonText" />
+                            <input type="hidden" asp-for="Description" />
+                        }
+                    </div>
+                </div>
+
+                @if (Model.SectionType == HomePageSectionType.ProductBlock)
+                {
+                    <div class="ca-card mt-4">
+                        <div class="ca-card-header">
+                            <span class="ca-card-title"><i class="fas fa-box-open me-2"></i>@Localizer["Admin_ProductsShownInSection"]</span>
+                        </div>
+                        <div class="ca-card-body">
+                            <p class="text-muted small mb-3">@Localizer["Admin_ProductsShownInSectionHelp"]</p>
+                            <div class="row g-2" style="max-height:400px;overflow-y:auto;">
+                                @foreach (var urun in tumUrunler)
+                                {
+                                    var isSelected = seciliUrunIdler.Contains((int)urun.Id);
+                                    <div class="col-md-6">
+                                        <div class="form-check border rounded p-2 @(isSelected ? "border-success bg-success bg-opacity-10" : "")">
+                                            <input class="form-check-input" type="checkbox"
+                                                   name="selectedProducts"
+                                                   value="@urun.Id"
+                                                   id="urun_@urun.Id"
+                                                   @(isSelected ? "checked" : "") />
+                                            <label class="form-check-label small" for="urun_@urun.Id">
+                                                @urun.Baslik
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="col-lg-4">
+                <div class="ca-card">
+                    <div class="ca-card-header">
+                        <span class="ca-card-title"><i class="fas fa-save me-2"></i>@Localizer["Admin_Kaydet"]</span>
+                    </div>
+                    <div class="ca-card-body">
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="ca-btn ca-btn-primary">
+                                <i class="fas fa-save"></i> @Localizer["Admin_SaveChanges"]
+                            </button>
+                            <a href="@Url.Action("Index", "HomeSections")" class="ca-btn ca-btn-outline">@Localizer["Admin_Iptal"]</a>
+                            <a href="@Url.Action("Delete", "HomeSections", new { id = Model.Id })"
+                               class="ca-btn ca-btn-danger mt-2"
+                               onclick='return confirm("@Localizer["Admin_DeleteSectionConfirm"]");'>
+                                <i class="fas fa-trash"></i> @Localizer["Admin_DeleteSection"]
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ca-card mt-3">
+                    <div class="ca-card-header">
+                        <span class="ca-card-title"><i class="fas fa-circle-info me-2"></i>@Localizer["Admin_CurrentStatus"]</span>
+                    </div>
+                    <div class="ca-card-body">
+                        <ul class="list-unstyled small mb-0">
+                            <li class="mb-2"><b>@Localizer["Admin_Type"]:</b> <span class="badge bg-primary">@Model.SectionType</span></li>
+                            <li class="mb-2"><b>@Localizer["Admin_Status"]:</b>
+                                @if (Model.Enabled)
+                                {
+                                    <span class="badge bg-success">@Localizer["Admin_Aktif"]</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">@Localizer["Admin_Pasif"]</span>
+                                }
+                            </li>
+                            <li><b>@Localizer["Admin_Sira"]:</b> @Model.SortOrder</li>
+                            @if (Model.SectionType == HomePageSectionType.ProductBlock)
+                            {
+                                <li class="mt-2"><b>@Localizer["Admin_SelectedProduct"]:</b> @Localizer["Admin_CountItems", Model.SectionProducts?.Count ?? 0]</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

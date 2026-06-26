@@ -1,0 +1,262 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: 
+      - text: Free shipping on orders over 200 ₪
+    - generic [ref=e6]:
+      - generic [ref=e7]: 
+      - text: Easy payment by IBAN
+    - generic [ref=e8]:
+      - generic [ref=e9]: 
+      - text: Pay on delivery option
+    - generic [ref=e10]:
+      - generic [ref=e11]: 
+      - text: Fast Production
+    - generic [ref=e12]:
+      - generic [ref=e13]: 
+      - text: Careful Packaging
+    - generic [ref=e14]:
+      - generic [ref=e15]: 
+      - text: Delivery Across Palestine
+    - generic [ref=e16]:
+      - generic [ref=e17]: 
+      - text: 14 Days Return
+    - generic [ref=e18]:
+      - generic [ref=e19]: 
+      - text: Manufacturer Guarantee
+    - generic [ref=e20]:
+      - generic [ref=e21]: 
+      - text: WhatsApp Support
+    - generic [ref=e22]:
+      - generic [ref=e23]: 
+      - text: Free shipping on orders over 200 ₪
+    - generic [ref=e24]:
+      - generic [ref=e25]: 
+      - text: Easy payment by IBAN
+    - generic [ref=e26]:
+      - generic [ref=e27]: 
+      - text: Pay on delivery option
+    - generic [ref=e28]:
+      - generic [ref=e29]: 
+      - text: Fast Production
+    - generic [ref=e30]:
+      - generic [ref=e31]: 
+      - text: Careful Packaging
+    - generic [ref=e32]:
+      - generic [ref=e33]: 
+      - text: Delivery Across Palestine
+    - generic [ref=e34]:
+      - generic [ref=e35]: 
+      - text: 14 Days Return
+    - generic [ref=e36]:
+      - generic [ref=e37]: 
+      - text: Manufacturer Guarantee
+    - generic [ref=e38]:
+      - generic [ref=e39]: 
+      - text: WhatsApp Support
+  - banner [ref=e40]:
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e44]: 
+        - link "AR" [ref=e45] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FHesap%2FGirisYap
+        - link "EN" [ref=e46] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FHesap%2FGirisYap
+        - link "TR" [ref=e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=tr&returnUrl=%2FHesap%2FGirisYap
+      - link "7ANRPS48" [ref=e48] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=e49]
+      - generic [ref=e50]:
+        - button "Search" [ref=e51] [cursor=pointer]:
+          - img [ref=e52]
+        - link "My Account" [ref=e54] [cursor=pointer]:
+          - /url: /Profil
+          - img [ref=e55]
+        - link "My Favorites" [ref=e57] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=e58]
+        - link "Cart" [ref=e60] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=e61]
+          - generic [ref=e63]: "2"
+      - navigation [ref=e64]:
+        - list [ref=e65]:
+          - listitem [ref=e66] [cursor=pointer]:
+            - link "Åžehir ve Mimari " [ref=e67]:
+              - /url: /Urun?k=13
+              - text: Åžehir ve Mimari
+              - generic [ref=e68]: 
+          - listitem [ref=e69] [cursor=pointer]:
+            - link "Palestine Inspired " [ref=e70]:
+              - /url: /Urun?k=1
+              - text: Palestine Inspired
+              - generic [ref=e71]: 
+          - listitem [ref=e72] [cursor=pointer]:
+            - link "Home & Decoration " [ref=e73]:
+              - /url: /Urun?k=2
+              - text: Home & Decoration
+              - generic [ref=e74]: 
+          - listitem [ref=e75] [cursor=pointer]:
+            - link "Manzara TemalÄ± " [ref=e76]:
+              - /url: /Urun?k=14
+              - text: Manzara TemalÄ±
+              - generic [ref=e77]: 
+          - listitem [ref=e78] [cursor=pointer]:
+            - link "Ã‡iÃ§ekli ve Dekoratif " [ref=e79]:
+              - /url: /Urun?k=15
+              - text: Ã‡iÃ§ekli ve Dekoratif
+              - generic [ref=e80]: 
+          - listitem [ref=e81] [cursor=pointer]:
+            - link "Gifts & Accessories " [ref=e82]:
+              - /url: /Urun?k=3
+              - text: Gifts & Accessories
+              - generic [ref=e83]: 
+          - listitem [ref=e84] [cursor=pointer]:
+            - link "Hayvanlar Alemi " [ref=e85]:
+              - /url: /Urun?k=16
+              - text: Hayvanlar Alemi
+              - generic [ref=e86]: 
+          - listitem [ref=e87] [cursor=pointer]:
+            - link "Modern & Soyut " [ref=e88]:
+              - /url: /Urun?k=17
+              - text: Modern & Soyut
+              - generic [ref=e89]: 
+          - listitem [ref=e90] [cursor=pointer]:
+            - link "Ã‡ocuk OdasÄ± " [ref=e91]:
+              - /url: /Urun?k=18
+              - text: Ã‡ocuk OdasÄ±
+              - generic [ref=e92]: 
+          - listitem [ref=e93] [cursor=pointer]:
+            - link "FarklÄ± TasarÄ±mlar " [ref=e94]:
+              - /url: /Urun?k=19
+              - text: FarklÄ± TasarÄ±mlar
+              - generic [ref=e95]: 
+          - listitem [ref=e96] [cursor=pointer]:
+            - link "Dini ve Hat SanatÄ± " [ref=e97]:
+              - /url: /Urun?k=20
+              - text: Dini ve Hat SanatÄ±
+              - generic [ref=e98]: 
+          - listitem [ref=e99] [cursor=pointer]:
+            - link "Klasik Eserler " [ref=e100]:
+              - /url: /Urun?k=21
+              - text: Klasik Eserler
+              - generic [ref=e101]: 
+          - listitem [ref=e102] [cursor=pointer]:
+            - link "AtatÃ¼rk ve TÃ¼rkiye " [ref=e103]:
+              - /url: /Urun?k=22
+              - text: AtatÃ¼rk ve TÃ¼rkiye
+              - generic [ref=e104]: 
+          - listitem [ref=e105] [cursor=pointer]:
+            - link "KadÄ±n TemalÄ± " [ref=e106]:
+              - /url: /Urun?k=23
+              - text: KadÄ±n TemalÄ±
+              - generic [ref=e107]: 
+          - listitem [ref=e108] [cursor=pointer]:
+            - link "Yiyecek ve Ä°Ã§ecek " [ref=e109]:
+              - /url: /Urun?k=24
+              - text: Yiyecek ve Ä°Ã§ecek
+              - generic [ref=e110]: 
+          - listitem [ref=e111] [cursor=pointer]:
+            - link "OsmanlÄ± ve TuÄŸra " [ref=e112]:
+              - /url: /Urun?k=25
+              - text: OsmanlÄ± ve TuÄŸra
+              - generic [ref=e113]: 
+          - listitem [ref=e114] [cursor=pointer]:
+            - link "Soyut ve Sanatsal " [ref=e115]:
+              - /url: /Urun?k=26
+              - text: Soyut ve Sanatsal
+              - generic [ref=e116]: 
+          - listitem [ref=e117] [cursor=pointer]:
+            - link "Contact" [ref=e118]:
+              - /url: /Kurumsal/Iletisim
+    - text:      
+  - main [ref=e119]:
+    - generic [ref=e121]:
+      - generic [ref=e122]:
+        - link "7ANRPS48" [ref=e123] [cursor=pointer]:
+          - /url: /
+        - paragraph [ref=e124]: Login to Your Account
+      - generic [ref=e126]:
+        - generic [ref=e127]:
+          - generic [ref=e128]: Email
+          - textbox "Email" [ref=e129]:
+            - /placeholder: example@email.com
+            - text: admin@7anrps48.com
+        - generic [ref=e130]:
+          - generic [ref=e131]: Password
+          - textbox "Password" [ref=e132]:
+            - /placeholder: Your password
+            - text: Admin123!
+        - link "Forgot Password" [ref=e134] [cursor=pointer]:
+          - /url: /Hesap/SifremiUnuttum
+        - button "Login" [ref=e135] [cursor=pointer]
+      - paragraph [ref=e136]:
+        - text: Don't have an account?
+        - link "Register" [ref=e137] [cursor=pointer]:
+          - /url: /Hesap/KayitOl
+  - contentinfo [ref=e138]:
+    - generic [ref=e140]:
+      - generic [ref=e141]:
+        - generic [ref=e143]: 
+        - generic [ref=e144]:
+          - generic [ref=e145]: Across Palestine
+          - generic [ref=e146]: Free Shipping
+      - generic [ref=e147]:
+        - generic [ref=e149]: 
+        - generic [ref=e150]:
+          - generic [ref=e151]: Bank Transfer
+          - generic [ref=e152]: Easy payment by IBAN
+      - generic [ref=e153]:
+        - generic [ref=e155]: 
+        - generic [ref=e156]:
+          - generic [ref=e157]: Cash on Delivery
+          - generic [ref=e158]: Pay on delivery option
+    - generic [ref=e159]:
+      - generic [ref=e160]:
+        - generic [ref=e161]:
+          - heading "Subscribe to newsletter" [level=3] [ref=e162]
+          - paragraph [ref=e163]: Stay informed about campaigns and deals
+          - generic [ref=e164]:
+            - textbox "Email Address" [ref=e165]
+            - button "Subscribe" [ref=e166] [cursor=pointer]
+        - generic [ref=e167]:
+          - heading "Corporate" [level=4] [ref=e168]
+          - list [ref=e169]:
+            - listitem [ref=e170]:
+              - link "About Us" [ref=e171] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=e172]:
+              - link "Contact" [ref=e173] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=e174]:
+              - link "Collections" [ref=e175] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=e176]:
+              - link "Privacy Policy" [ref=e177] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=e178]:
+              - link "Distance Sales Contract" [ref=e179] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=e181] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=e182]: 
+      - generic [ref=e183]:
+        - paragraph [ref=e185]: © 2026 7ANRPS48 All rights reserved.
+        - generic [ref=e186]:
+          - link "Privacy Policy" [ref=e187] [cursor=pointer]:
+            - /url: /Kurumsal/Gizlilik
+          - text: "|"
+          - link "Terms of Use" [ref=e188] [cursor=pointer]:
+            - /url: /Kurumsal/KullaniciSozlesmesi
+          - text: "|"
+          - link "Return and Exchange" [ref=e189] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+  - link "WhatsApp Contact" [ref=e190] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=e191]
+    - generic [ref=e193]: WhatsApp
+  - link "Cart" [ref=e194] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=e195]
+    - generic [ref=e197]: "2"

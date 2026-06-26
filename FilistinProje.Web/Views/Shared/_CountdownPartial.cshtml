@@ -1,0 +1,23 @@
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> Localizer
+@model DateTime?
+
+@{
+    if (Model == null) return;
+    var endDate = Model.Value;
+    var now = DateTime.UtcNow;
+    if (endDate <= now) return;
+}
+<div data-countdown data-end="@endDate.ToString("yyyy-MM-ddTHH:mm:ss")"
+     class="countdown-timer flex items-center justify-center gap-1 text-[10px] font-medium tracking-wider text-white bg-[#b58735]/90 rounded-sm px-2 py-1 mt-1.5 w-full">
+    <span class="text-[9px] opacity-80 shrink-0">⏱</span>
+    <span class="cd-days font-bold">0</span>
+    <span class="cd-hours font-bold">00</span>
+    <span class="cd-sep opacity-50">:</span>
+    <span class="cd-mins font-bold">00</span>
+    <span class="cd-sep opacity-50">:</span>
+    <span class="cd-secs font-bold">00</span>
+    <span class="cd-ended hidden items-center gap-1 text-[10px] font-bold"></span>
+</div>
+
+<script src="~/js/site-countdown.js" asp-append-version="true"></script>

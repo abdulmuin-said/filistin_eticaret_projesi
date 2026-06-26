@@ -1,0 +1,323 @@
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_BulkImport"].Value;
+}
+
+<div class="container-fluid">
+    @Html.AntiForgeryToken()
+    <div class="ca-page-header">
+        <div>
+            <h1 class="ca-page-title">@Localizer["Admin_BulkImport"]</h1>
+            <p class="ca-page-subtitle">@Localizer["Admin_BulkImportSubtitle"]</p>
+        </div>
+    </div>
+
+    <div class="alert alert-info">
+        <strong>@Localizer["Admin_Important"]:</strong> @Localizer["Admin_ImportWarning"]
+    </div>
+
+    <div class="card mb-4 bg-dark text-white">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-chart-bar"></i> @Localizer["Admin_GeneralStats"]</h5>
+        </div>
+        <div class="card-body">
+            <button onclick="istatistikleriGetir()" class="btn btn-outline-light">
+                <i class="fas fa-sync"></i> @Localizer["Admin_ShowStats"]
+            </button>
+            <button onclick="kontrolEt()" class="btn btn-outline-warning ml-2">
+                <i class="fas fa-ruler"></i> @Localizer["Admin_SizeFrameCheck"]
+            </button>
+            <button onclick="duzelt()" class="btn btn-outline-danger ml-2">
+                <i class="fas fa-wrench"></i> @Localizer["Admin_FixFrameType"]
+            </button>
+            <div id="istatistikler" class="mt-3"></div>
+            <div id="kontrolSonuc" class="mt-3"></div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0"><i class="fas fa-check-circle"></i> @Localizer["Admin_ProductCheck"]</h5>
+        </div>
+        <div class="card-body">
+            <button onclick="urunleriKontrolEt()" class="btn btn-success">
+                <i class="fas fa-search"></i> @Localizer["Admin_CheckJsonProducts"]
+            </button>
+            <div id="urunKontrol" class="mt-3"></div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-list"></i> @Localizer["Admin_AllCategories"]</h5>
+        </div>
+        <div class="card-body">
+            <button onclick="kategorileriGoster()" class="btn btn-primary">
+                <i class="fas fa-eye"></i> @Localizer["Admin_FetchCategories"]
+            </button>
+            <div id="kategoriListesi" class="mt-3"></div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+            <h5 class="mb-0"><i class="fas fa-trash"></i> @Localizer["Admin_DeleteExisting"]</h5>
+        </div>
+        <div class="card-body">
+            <p>@Localizer["Admin_SelectCategoryDelete"]</p>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="sil8" value="8">
+                        <label class="form-check-label" for="sil8">Dini ve Hat Sanatı</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="sil10" value="10">
+                        <label class="form-check-label" for="sil10">Atatürk ve Türkiye</label>
+                    </div>
+                </div>
+            </div>
+            <button onclick="silUrunleri()" class="btn btn-danger mt-3">
+                <i class="fas fa-trash"></i> @Localizer["Admin_DeleteSelectedProducts"]
+            </button>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0"><i class="fas fa-rocket"></i> @Localizer["Admin_BulkImportAction"]</h5>
+        </div>
+        <div class="card-body">
+            <button onclick="importAll()" class="btn btn-warning btn-lg">
+                <i class="fas fa-upload"></i> @Localizer["Admin_ImportAll14"]
+            </button>
+            <div id="importSonuc" class="mt-3"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        @{
+            var jsonCategories = new List<string>
+            {
+                "Şehir ve Mimari",
+                "Manzara Temalı",
+                "Çiçekli ve Dekoratif",
+                "Hayvanlar Alemi",
+                "Modern & Soyut",
+                "Çocuk Odası",
+                "Farklı Tasarımlar",
+                "Dini ve Hat Sanatı",
+                "Klasik Eserler",
+                "Atatürk ve Türkiye",
+                "Kadın Temalı",
+                "Yiyecek ve İçecek",
+                "Osmanlı ve Tuğra",
+                "Soyut ve Sanatsal"
+            };
+        }
+
+        @foreach (var categoryName in jsonCategories)
+        {
+            <div class="col-md-6 col-lg-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5>@categoryName</h5>
+                        <button onclick="importJson('@categoryName')" class="btn btn-primary btn-sm">
+                            <i class="fas fa-upload"></i> @Localizer["Admin_Import"]
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+var __lang = {
+    totalProduct: @Json.Serialize(Localizer["Admin_ImportTotalProduct"].Value),
+    totalVariation: @Json.Serialize(Localizer["Admin_ImportTotalVariation"].Value),
+    jsonProducts: @Json.Serialize(Localizer["Admin_ImportJsonProducts"].Value),
+    jsonVariations: @Json.Serialize(Localizer["Admin_ImportJsonVariations"].Value),
+    frameTypes: @Json.Serialize(Localizer["Admin_FrameTypes"].Value),
+    sizes: @Json.Serialize(Localizer["Admin_Sizes"].Value),
+    fixFrameConfirm: @Json.Serialize(Localizer["Admin_FixFrameConfirm"].Value),
+    allJsonDeleted: @Json.Serialize(Localizer["Admin_AllJsonDeleted"].Value),
+    remainingProducts: @Json.Serialize(Localizer["Admin_RemainingProducts"].Value),
+    categoryId: @Json.Serialize(Localizer["Admin_CategoryId"].Value),
+    productCount: @Json.Serialize(Localizer["Admin_ProductCount"].Value),
+    categoryName: @Json.Serialize(Localizer["Admin_CategoryName"].Value),
+    selectOneCategory: @Json.Serialize(Localizer["Admin_SelectOneCategory"].Value),
+    deleteCategoryConfirm: @Json.Serialize(Localizer["Admin_DeleteCategoryConfirm"].Value),
+    importStarted: @Json.Serialize(Localizer["Admin_ImportStarted"].Value),
+    importAllConfirm: @Json.Serialize(Localizer["Admin_ImportAllConfirm"].Value),
+    importCompleted: @Json.Serialize(Localizer["Admin_ImportCompleted"].Value),
+    importingCategory: @Json.Serialize(Localizer["Admin_ImportingCategory"].Value),
+    error: @Json.Serialize(Localizer["Admin_Error"].Value)
+};
+
+function antiForgeryHeaders(extraHeaders) {
+    const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+    return Object.assign({ 'RequestVerificationToken': token }, extraHeaders || {});
+}
+
+async function istatistikleriGetir() {
+    try {
+        const response = await fetch('/Admin/UrunImport/Istatistik');
+        const data = await response.json();
+        document.getElementById('istatistikler').innerHTML = 
+            '<div class="row">' +
+            '<div class="col-md-3"><div class="alert alert-primary"><h4>' + data.toplamUrun + '</h4><small>' + __lang.totalProduct + '</small></div></div>' +
+            '<div class="col-md-3"><div class="alert alert-info"><h4>' + data.toplamVaryasyon + '</h4><small>' + __lang.totalVariation + '</small></div></div>' +
+            '<div class="col-md-3"><div class="alert alert-success"><h4>' + data.jsonUrun + '</h4><small>' + __lang.jsonProducts + '</small></div></div>' +
+            '<div class="col-md-3"><div class="alert alert-warning"><h4>' + data.jsonVaryasyon + '</h4><small>' + __lang.jsonVariations + '</small></div></div>' +
+            '</div>';
+    } catch(e) {
+        alert(__lang.error + ': ' + e.message);
+    }
+}
+
+async function kontrolEt() {
+    try {
+        const response = await fetch('/Admin/UrunImport/Kontrol');
+        const data = await response.json();
+        
+        let html = '<div class="row mt-3"><div class="col-md-6"><h6>' + __lang.frameTypes + '</h6><ul>';
+        data.cerceveTipleri.forEach(c => {
+            html += '<li>' + c + '</li>';
+        });
+        html += '</ul></div><div class="col-md-6"><h6>' + __lang.sizes + ' (' + data.olculer.length + '):</h6><div style="max-height:200px;overflow-y:auto;"><table class="table table-sm table-bordered">';
+        data.olculer.forEach(o => {
+            html += '<tr><td>' + o + '</td></tr>';
+        });
+        html += '</table></div></div></div>';
+        
+        document.getElementById('kontrolSonuc').innerHTML = html;
+    } catch(e) {
+        alert(__lang.error + ': ' + e.message);
+    }
+}
+
+async function duzelt() {
+    if (!confirm(__lang.fixFrameConfirm)) return;
+    
+    try {
+        const response = await fetch('/Admin/UrunImport/Duzelt', {
+            method: 'POST',
+            headers: antiForgeryHeaders()
+        });
+        const data = await response.json();
+        alert(data.message);
+        kontrolEt();
+    } catch(e) {
+        alert(__lang.error + ': ' + e.message);
+    }
+}
+
+async function urunleriKontrolEt() {
+    try {
+        const response = await fetch('/Admin/UrunImport/UrunleriGetir');
+        const data = await response.json();
+        if (data.toplam === 0) {
+            document.getElementById('urunKontrol').innerHTML = '<div class="alert alert-success"><strong>' + __lang.allJsonDeleted + ' ' + data.toplam + '</strong></div>';
+        } else {
+            let html = '<div class="alert alert-warning"><strong>' + __lang.remainingProducts + ' ' + data.toplam + '</strong></div><table class="table table-sm"><thead><tr><th>' + __lang.categoryId + '</th><th>' + __lang.productCount + '</th></tr></thead><tbody>';
+            data.dagilim.forEach(d => {
+                html += '<tr><td>' + d.kategoriId + '</td><td>' + d.urunSayisi + '</td></tr>';
+            });
+            html += '</tbody></table>';
+            document.getElementById('urunKontrol').innerHTML = html;
+        }
+    } catch(e) {
+        alert(__lang.error + ': ' + e.message);
+    }
+}
+
+async function kategorileriGoster() {
+    try {
+        const response = await fetch('/Admin/UrunImport/GetCategories');
+        const data = await response.json();
+        let html = '<table class="table table-sm table-bordered"><thead><tr><th>ID</th><th>' + __lang.categoryName + '</th></tr></thead><tbody>';
+        data.forEach(k => {
+            html += `<tr><td>${k.id}</td><td>${k.ad}</td></tr>`;
+        });
+        html += '</tbody></table>';
+        document.getElementById('kategoriListesi').innerHTML = html;
+    } catch(e) {
+        alert(__lang.error + ': ' + e.message);
+    }
+}
+
+async function silUrunleri() {
+    var selected = [];
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+        selected.push(parseInt(cb.value));
+    });
+    
+    if (selected.length === 0) {
+        alert(__lang.selectOneCategory);
+        return;
+    }
+    
+    if (!confirm(__lang.deleteCategoryConfirm.replace('{0}', selected.length))) return;
+    
+    try {
+        const response = await fetch('/Admin/UrunImport/DeleteAllProducts', {
+            method: 'POST',
+            headers: antiForgeryHeaders({ 'Content-Type': 'application/json' }),
+            body: JSON.stringify({ kategoriIds: selected })
+        });
+        const data = await response.json();
+        alert(data.message);
+    } catch(e) {
+        alert(__lang.error + ': ' + e.message);
+    }
+}
+
+async function importJson(categoryName, callback) {
+    try {
+        document.getElementById('importSonuc').innerHTML += '<div>' + __lang.importingCategory.replace('{0}', categoryName) + '</div>';
+        const response = await fetch('/Admin/UrunImport/ImportJson', {
+            method: 'POST',
+            headers: antiForgeryHeaders({ 'Content-Type': 'application/json' }),
+            body: JSON.stringify({ kategoriId: 0, categoryName: categoryName })
+        });
+        const data = await response.json();
+        document.getElementById('importSonuc').innerHTML += '<div class="text-success">' + categoryName + ': ' + data.message + '</div>';
+        if (callback) callback();
+    } catch(e) {
+        document.getElementById('importSonuc').innerHTML += '<div class="text-danger">' + categoryName + ' ' + __lang.error + ': ' + e.message + '</div>';
+    }
+}
+
+async function importAll() {
+    if (!confirm(__lang.importAllConfirm)) return;
+    
+    document.getElementById('importSonuc').innerHTML = '<div class="alert alert-info">' + __lang.importStarted + '</div>';
+    
+    var categories = [
+        "Şehir ve Mimari",
+        "Manzara Temalı",
+        "Çiçekli ve Dekoratif",
+        "Hayvanlar Alemi",
+        "Modern & Soyut",
+        "Çocuk Odası",
+        "Farklı Tasarımlar",
+        "Dini ve Hat Sanatı",
+        "Klasik Eserler",
+        "Atatürk ve Türkiye",
+        "Kadın Temalı",
+        "Yiyecek ve İçecek",
+        "Osmanlı ve Tuğra",
+        "Soyut ve Sanatsal"
+    ];
+    
+    for (var i = 0; i < categories.length; i++) {
+        await importJson(categories[i]);
+    }
+    
+    document.getElementById('importSonuc').innerHTML += '<div class="alert alert-success"><strong>' + __lang.importCompleted + '</strong></div>';
+    urunleriKontrolEt();
+}
+</script>

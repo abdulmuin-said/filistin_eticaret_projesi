@@ -1,0 +1,35 @@
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["DeleteAccount"];
+}
+
+<div class="bg-[#f1ede7] border-b border-[#e5e2dc] py-3">
+    <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-[#47473d]">
+        <a href="/" class="hover:text-[#313511] transition-colors">@Localizer["HomePage"]</a>
+        <span>/</span>
+        <a href="/Profil" class="hover:text-[#313511] transition-colors">@Localizer["MyAccount"]</a>
+        <span>/</span>
+        <span class="text-[#1c1c18] font-medium">@Localizer["DeleteAccount"]</span>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-16 max-w-2xl text-center">
+    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-100 mb-6">
+        <i class="fas fa-exclamation-triangle text-4xl text-red-600"></i>
+    </div>
+    <h1 class="font-serif text-3xl tracking-widest text-[#313511] uppercase mb-4">@Localizer["DeleteAccountWarning"]</h1>
+    <p class="text-sm text-[#47473d] mb-8 leading-relaxed">
+        @Localizer["DeleteAccountMessage"]
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <form asp-action="HesabiSilOnay" method="post" class="w-full sm:w-auto">
+            <button type="submit" class="w-full sm:w-auto bg-red-600 text-white px-8 py-3 text-xs tracking-widest uppercase rounded hover:bg-red-700 transition-colors flex items-center justify-center gap-2">
+                <i class="fas fa-trash"></i> @Localizer["ConfirmDeleteAccount"]
+            </button>
+        </form>
+        <a href="/Profil" class="w-full sm:w-auto bg-white border border-[#e5e2dc] text-[#313511] px-8 py-3 text-xs tracking-widest uppercase rounded hover:bg-[#fcf9f3] transition-colors inline-block text-center">
+            @Localizer["Cancel"]
+        </a>
+    </div>
+</div>

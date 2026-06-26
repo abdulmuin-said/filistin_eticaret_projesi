@@ -1,0 +1,794 @@
+@using FilistinProje.Core.Varliklar
+@model FilistinProje.Core.Varliklar.Siparis
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_OrderTitle", Model.Id];
+
+    var urunler = ViewBag.UrunBilgileri as List<dynamic> ?? new List<dynamic>();
+    var kargoFirmalari = ViewBag.KargoFirmalari as List<KargoFirmasi> ?? new List<KargoFirmasi>();
+    var seciliKargo = ViewBag.SeciliKargoFirmasi as KargoFirmasi ?? kargoFirmalari.FirstOrDefault();
+    var siteSettings = ViewBag.SiteSettings as FilistinProje.Core.Models.SiteAyarlari;
+    var siparisNo = string.IsNullOrWhiteSpace(Model.SiparisNo) ? $"#{Model.Id}" : Model.SiparisNo;
+    var currentStep = SiparisDurumHelper.GetProgressStep(Model.Durum);
+    var statusText = SiparisDurumHelper.GetLabel(Model.Durum);
+    var toplamAdet = urunler.Sum(x => (int)x.Adet);
+    var logoUrl = siteSettings?.SiteLogoUrl ?? "/74anrps48logo2.svg";
+    var operasyonDurumlari = new[]
+    {
+        SiparisDurumHelper.SiparisAlindi,
+        SiparisDurumHelper.UretimHazirlaniyor,
+        SiparisDurumHelper.Paketleniyor,
+        SiparisDurumHelper.KargoyaVerildi,
+        SiparisDurumHelper.TeslimEdildi
+    };
+    var mevcutAdim = SiparisDurumHelper.GetProgressStep(Model.Durum);
+    var secilebilirDurumlar = operasyonDurumlari
+        .Where(x => x == Model.Durum || (mevcutAdim > 0 && SiparisDurumHelper.GetProgressStep(x) > mevcutAdim))
+        .ToList();
+    if (Model.Durum != SiparisDurumHelper.KargoyaVerildi &&
+        Model.Durum != SiparisDurumHelper.TeslimEdildi &&
+        Model.Durum != SiparisDurumHelper.IptalEdildi)
+    {
+        secilebilirDurumlar.Add(SiparisDurumHelper.IptalEdildi);
+    }
+    if (!secilebilirDurumlar.Contains(Model.Durum))
+    {
+        secilebilirDurumlar.Insert(0, Model.Durum);
+    }
+}
+
+<style>
+    .ca-order-flow {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 8px;
+        padding: 12px;
+    }
+
+    .ca-order-step {
+        min-height: 64px;
+        border: 1px solid var(--ca-border);
+        border-radius: var(--ca-radius);
+        background: var(--ca-bg);
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .ca-order-step-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        color: var(--ca-text-muted);
+        border: 1px solid var(--ca-border);
+        flex: 0 0 auto;
+    }
+
+    .ca-order-step.completed .ca-order-step-icon {
+        background: var(--ca-success);
+        color: #fff;
+        border-color: var(--ca-success);
+    }
+
+    .ca-order-step.active {
+        border-color: rgba(var(--ca-primary-rgb), .25);
+        background: var(--ca-primary-light);
+    }
+
+    .ca-order-step.active .ca-order-step-icon {
+        background: var(--ca-primary);
+        color: #fff;
+        border-color: var(--ca-primary);
+    }
+
+    .ca-order-step-title {
+        font-size: .8rem;
+        font-weight: 800;
+        color: var(--ca-text);
+        line-height: 1.1;
+    }
+
+    .ca-order-step-subtitle {
+        font-size: .7rem;
+        color: var(--ca-text-muted);
+        margin-top: 2px;
+    }
+
+    .ca-shipping-label {
+        display: none;
+        width: 100mm;
+        min-height: 150mm;
+        margin: 0 auto;
+        background: #fff;
+        color: #111;
+        padding: 6mm;
+        border: 1px solid #111;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .label-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border-bottom: 2px solid #111;
+        padding-bottom: 8px;
+    }
+
+    .label-logo {
+        max-width: 120px;
+        max-height: 46px;
+        object-fit: contain;
+    }
+
+    .label-title {
+        margin: 12px 0 4px;
+        font-size: 20px;
+    }
+
+    .label-meta {
+        font-size: 12px;
+    }
+
+    .ca-label-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .ca-label-box {
+        border: 1px solid #111;
+        padding: 8px;
+        min-height: 52px;
+        font-size: 12px;
+        line-height: 1.45;
+    }
+
+    .recipient-name {
+        margin: 6px 0;
+        font-size: 18px;
+    }
+
+    .product-table {
+        width: 100%;
+        margin-top: 6px;
+        font-size: 12px;
+        border-collapse: collapse;
+    }
+
+    .product-table td {
+        border-top: 1px solid #ddd;
+        padding: 4px 0;
+        vertical-align: top;
+    }
+
+    .barcode {
+        margin-top: 16px;
+        text-align: center;
+        border: 1px solid #111;
+        padding: 10px;
+        font-family: "Courier New", monospace;
+        font-size: 26px;
+        letter-spacing: 2px;
+    }
+
+    @@media (max-width: 992px) {
+        .ca-order-flow { grid-template-columns: 1fr; }
+    }
+
+    @@media print {
+        @@page {
+            size: 100mm 150mm;
+            margin: 0;
+        }
+
+        body * { visibility: hidden !important; }
+        #printableLabel, #printableLabel * { visibility: visible !important; }
+        #printableLabel {
+            display: block !important;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100mm !important;
+            min-height: 0 !important;
+            max-height: 150mm !important;
+            height: 150mm !important;
+            overflow: hidden !important;
+            border: none;
+            box-shadow: none;
+            margin: 0 !important;
+            padding: 5mm !important;
+            break-after: avoid;
+            page-break-after: avoid;
+        }
+
+        #printableLabel .product-table {
+            max-height: 28mm;
+            overflow: hidden;
+        }
+
+        #printableLabel .product-table tr:nth-child(n+7) {
+            display: none;
+        }
+    }
+</style>
+
+<div id="printableLabel" class="ca-shipping-label">
+    <div class="label-header">
+        <img src="@logoUrl" alt="7ANRPS48" class="label-logo">
+        @if (!string.IsNullOrWhiteSpace(seciliKargo?.LogoUrl))
+        {
+            <img src="@seciliKargo.LogoUrl" alt="@seciliKargo.Ad" class="label-logo">
+        }
+    </div>
+
+    <h2 class="label-title">@Localizer["Admin_ShippingLabelUpper"]</h2>
+    <div class="label-meta">@Localizer["Admin_OrderNo"]: <strong>@siparisNo</strong> | @Localizer["Admin_Date"]: @Model.OlusturulmaTarihi.ToString("dd.MM.yyyy HH:mm")</div>
+
+    <div class="ca-label-row">
+        <div class="ca-label-box">
+            <strong>@Localizer["Admin_Sender"]</strong><br>
+            @(seciliKargo?.GondericiUnvan ?? siteSettings?.MarkaAdi ?? "7ANRPS48")<br>
+            @(string.IsNullOrWhiteSpace(seciliKargo?.GondericiAdres) ? siteSettings?.Adres : seciliKargo?.GondericiAdres)<br>
+            Tel: @(string.IsNullOrWhiteSpace(seciliKargo?.GondericiTelefon) ? siteSettings?.Telefon : seciliKargo?.GondericiTelefon)
+        </div>
+        <div class="ca-label-box">
+            <strong>@Localizer["Admin_Shipping"]</strong><br>
+            @(seciliKargo?.Ad ?? "Aras Kargo")<br>
+            @Localizer["Admin_TrackingNo"]: @(string.IsNullOrWhiteSpace(Model.KargoTakipNo) ? Localizer["Admin_NotEnteredYet"] : Model.KargoTakipNo)<br>
+            Tel: @(seciliKargo?.Telefon ?? "-")
+        </div>
+    </div>
+
+    <div class="ca-label-box" style="margin-top:10px;">
+        <strong>@Localizer["Admin_Recipient"]</strong>
+        <h3 class="recipient-name">@Model.MusteriAdSoyad</h3>
+        <div>@Model.AcikAdres</div>
+        <strong>@Model.Ilce / @Model.Sehir</strong><br>
+        Tel: @Model.Telefon
+    </div>
+
+    <div class="ca-label-box" style="margin-top:10px;">
+        <strong>@Localizer["Admin_Products"]</strong>
+        <table class="product-table">
+            @foreach (var item in urunler)
+            {
+                <tr>
+                    <td>
+                        @item.Baslik
+                        @if (!string.IsNullOrWhiteSpace(item.Secenek))
+                        {
+                            <br><small>@item.Secenek</small>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(item.MusteriNotu))
+                        {
+                            <br><small style="color:#92400e;"><em>@Localizer["Admin_Note"]: @item.MusteriNotu</em></small>
+                        }
+                    </td>
+                    <td style="text-align:right; width:54px;">@Localizer["Admin_QuantityCount", item.Adet]</td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <div class="barcode">
+        *@Model.Id*
+    </div>
+</div>
+
+<script>
+    function printShippingLabel() {
+        const label = document.getElementById('printableLabel');
+        if (!label) {
+            return;
+        }
+
+        const printWindow = window.open('', '_blank', 'width=520,height=760');
+        if (!printWindow) {
+            return;
+        }
+
+        printWindow.document.open();
+        printWindow.document.write(`<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>@Localizer["Admin_ShippingLabel"]</title>
+    <style>
+        @@page { size: 100mm 150mm; margin: 0; }
+        * { box-sizing: border-box; }
+        html, body {
+            width: 100mm;
+            height: 150mm;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #fff;
+            color: #111;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .ca-shipping-label {
+            display: block !important;
+            width: 100mm !important;
+            height: 150mm !important;
+            max-height: 150mm !important;
+            overflow: hidden !important;
+            margin: 0 !important;
+            padding: 5mm !important;
+            border: 0 !important;
+            background: #fff;
+            color: #111;
+            page-break-after: avoid;
+            break-after: avoid;
+        }
+        .label-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 2px solid #111; padding-bottom: 8px; }
+        .label-logo { max-width: 120px; max-height: 46px; object-fit: contain; }
+        .label-title { margin: 12px 0 4px; font-size: 20px; }
+        .label-meta { font-size: 12px; }
+        .ca-label-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+        .ca-label-box { border: 1px solid #111; padding: 8px; min-height: 52px; font-size: 12px; line-height: 1.45; }
+        .recipient-name { margin: 6px 0; font-size: 18px; }
+        .product-table { width: 100%; margin-top: 6px; font-size: 12px; border-collapse: collapse; }
+        .product-table td { border-top: 1px solid #ddd; padding: 4px 0; vertical-align: top; }
+        .product-table tr:nth-child(n+7) { display: none; }
+        .barcode { margin-top: 16px; text-align: center; border: 1px solid #111; padding: 10px; font-family: "Courier New", monospace; font-size: 26px; letter-spacing: 2px; }
+    </style>
+</head>
+<body>${label.outerHTML}</body>
+</html>`);
+        printWindow.document.close();
+        printWindow.focus();
+        setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+        }, 250);
+    }
+
+    document.querySelectorAll('button[onclick="window.print()"]').forEach((button) => {
+        button.removeAttribute('onclick');
+        button.addEventListener('click', printShippingLabel);
+    });
+</script>
+
+<div class="container-fluid ca-fade-in">
+    @if (TempData["Basarili"] != null || TempData["Hata"] != null)
+    {
+        <div class="alert alert-dismissible fade show mb-4" role="alert" style="@(TempData["Hata"] != null ? "background:#fee2e2; border-color:#fecaca; color:#991b1b;" : "background:#dcfce7; border-color:#bbf7d0; color:#166534;")">
+            <div class="d-flex align-items-center gap-2">
+                <i class="fas @(TempData["Hata"] != null ? "fa-exclamation-circle" : "fa-check-circle")"></i>
+                <span>@(TempData["Hata"] ?? TempData["Basarili"])</span>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="@Localizer["Admin_Close"]"></button>
+        </div>
+    }
+
+    @if (!Model.FaturaYuklendiMi)
+    {
+        <div class="ca-card mb-4" style="border-left:4px solid var(--ca-primary);">
+            <div class="ca-card-header">
+                <span class="ca-card-title"><i class="fas fa-file-invoice me-2"></i>@Localizer["Admin_UploadEInvoice"]</span>
+            </div>
+            <div class="ca-card-body">
+                <form action="/Admin/Siparis/FaturaYukle" method="post" enctype="multipart/form-data" class="d-flex align-items-center gap-3 flex-wrap">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="siparisId" value="@Model.Id" />
+                    <div class="flex-grow-1" style="min-width:200px;">
+                        <input type="file" class="form-control" name="faturaDosyasi" accept=".pdf" required>
+                    </div>
+                    <button type="submit" class="ca-btn ca-btn-primary">
+                        <i class="fas fa-upload me-1"></i> @Localizer["Admin_UploadAndSendCustomer"]
+                    </button>
+                    <small class="text-muted">@Localizer["Admin_OnlyPdfMax5Mb"]</small>
+                </form>
+            </div>
+        </div>
+    }
+
+    <div class="ca-page-header">
+        <div>
+            <h1 class="ca-page-title">@Localizer["Admin_Siparis_Detayi"] <span class="ca-text-muted">@siparisNo</span></h1>
+            <p class="ca-page-subtitle">@Localizer["Admin_OrderCreatedStatus", Model.OlusturulmaTarihi.ToString("dd MMMM yyyy HH:mm"), statusText]</p>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="/Admin/Siparis" class="ca-btn ca-btn-outline"><i class="fas fa-arrow-left"></i> @Localizer["Admin_BackToList"]</a>
+            @if (Model.Durum == SiparisDurumHelper.SiparisAlindi || 
+                 Model.Durum == SiparisDurumHelper.UretimHazirlaniyor || 
+                 Model.Durum == SiparisDurumHelper.Paketleniyor)
+            {
+                <button type="button" onclick="printShippingLabel()" class="ca-btn ca-btn-outline"><i class="fas fa-tag"></i> @Localizer["Admin_PrintShippingLabel"]</button>
+            }
+        </div>
+    </div>
+
+    @if (currentStep > 0)
+    {
+        <div class="ca-card mb-4">
+            <div class="ca-order-flow">
+                <div class="ca-order-step @(currentStep > 1 ? "completed" : "") @(currentStep == 1 ? "active" : "")">
+                    <span class="ca-order-step-icon"><i class="fas fa-file-invoice"></i></span>
+                    <div><div class="ca-order-step-title">@Localizer["Admin_OrderReceived"]</div><div class="ca-order-step-subtitle">@Localizer["Admin_Created"]</div></div>
+                </div>
+                <div class="ca-order-step @(currentStep > 2 ? "completed" : "") @(currentStep == 2 ? "active" : "")">
+                    <span class="ca-order-step-icon"><i class="fas fa-box-open"></i></span>
+                    <div><div class="ca-order-step-title">@Localizer["Admin_Preparing"]</div><div class="ca-order-step-subtitle">@Localizer["Admin_PreparingSubtitle"]</div></div>
+                </div>
+                <div class="ca-order-step @(currentStep > 3 ? "completed" : "") @(currentStep == 3 ? "active" : "")">
+                    <span class="ca-order-step-icon"><i class="fas fa-box"></i></span>
+                    <div><div class="ca-order-step-title">@Localizer["Admin_Packing"]</div><div class="ca-order-step-subtitle">@Localizer["Admin_ProtectedPackage"]</div></div>
+                </div>
+                <div class="ca-order-step @(currentStep > 4 ? "completed" : "") @(currentStep == 4 ? "active" : "")">
+                    <span class="ca-order-step-icon"><i class="fas fa-truck"></i></span>
+                    <div><div class="ca-order-step-title">@Localizer["Admin_Shipped"]</div><div class="ca-order-step-subtitle">@Localizer["Admin_OnTheWay"]</div></div>
+                </div>
+                <div class="ca-order-step @(currentStep >= 5 ? "completed" : "") @(currentStep == 5 ? "active" : "")">
+                    <span class="ca-order-step-icon"><i class="fas fa-check"></i></span>
+                    <div><div class="ca-order-step-title">@Localizer["Admin_Delivered"]</div><div class="ca-order-step-subtitle">@Localizer["Admin_Tamamlandi"]</div></div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="ca-alert ca-alert-warning">
+            <i class="fas fa-triangle-exclamation"></i>
+            <span>@Localizer["Admin_OrderOutsideNormalFlow", statusText]</span>
+        </div>
+    }
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="ca-card mb-4">
+                <div class="ca-card-header">
+                    <span class="ca-card-title"><i class="fas fa-box me-2"></i>@Localizer["Admin_Urunler"]</span>
+                    <span class="ca-badge ca-badge-neutral">@Localizer["Admin_QuantityCount", toplamAdet]</span>
+                </div>
+                <div class="ca-table-wrapper">
+                    <table class="ca-table">
+                        <thead>
+                            <tr>
+                                <th class="ps-4" style="width:50%;">@Localizer["Admin_Urun"]</th>
+                                <th>@Localizer["Admin_Variation"]</th>
+                                <th class="text-center">@Localizer["Admin_Quantity"]</th>
+                                <th class="text-end pe-4">@Localizer["Admin_Total"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in urunler)
+                            {
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <img src="@item.Resim" class="ca-thumb" width="60" height="60" alt="@item.Baslik" loading="lazy" decoding="async">
+                                            <div>
+                                                <div class="ca-fw-bold">@item.Baslik</div>
+                                                <small class="ca-text-muted">@item.Olcu @item.Cerceve</small>
+                                                @if (!string.IsNullOrWhiteSpace(item.CerceveModeli))
+                                                {
+                                                    <div><small class="ca-text-muted">@Localizer["Admin_Frame"]: @item.CerceveModeli</small></div>
+                                                }
+                                                @if (item.HediyePaketi)
+                                                {
+                                                    <div><span class="ca-badge ca-badge-success" style="font-size:10px;"><i class="fas fa-gift mr-1"></i>@Localizer["Admin_GiftPackage"]</span></div>
+                                                }
+                                                @if (!string.IsNullOrWhiteSpace(item.MusteriNotu))
+                                                {
+                                                    <div class="mt-2 p-2 bg-amber-50 border border-amber-200 rounded text-xs" style="color:#92400e;">
+                                                        <i class="fas fa-sticky-note mr-1"></i><strong>@Localizer["Admin_Note"]:</strong> @item.MusteriNotu
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="ca-badge ca-badge-neutral">@item.Secenek</span>
+                                        @if (!string.IsNullOrEmpty(item.SecenekDetay))
+                                        {
+                                            <div class="small text-muted mt-1">@item.SecenekDetay</div>
+                                        }
+                                    </td>
+                                    <td class="text-center ca-fw-bold">@item.Adet</td>
+                                    <td class="text-end pe-4 ca-fw-bold">@item.Toplam.ToString("N2") ₪</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="ca-card">
+                <div class="ca-card-header">
+                    <span class="ca-card-title"><i class="fas fa-wallet me-2"></i>@Localizer["Admin_PaymentAndTotal"]</span>
+                </div>
+                <div class="ca-card-body">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <div class="small text-muted">@Localizer["Admin_SubtotalProducts"]</div>
+                            <div class="ca-fw-bold">@((Model.ToplamTutar + Model.IndirimTutari - Model.KargoUcreti).ToString("N2")) ₪</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="small text-muted">@Localizer["Admin_Discount"]</div>
+                            <div class="ca-fw-bold">@Model.IndirimTutari.ToString("N2") ₪</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="small text-muted">@Localizer["Admin_Kargo_Ucreti"]</div>
+                            <div class="ca-fw-bold">@Model.KargoUcreti.ToString("N2") ₪</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="small text-muted">@Localizer["Admin_GrandTotal"]</div>
+                            <div class="ca-fw-bold ca-text-primary" style="font-size:1.2rem;">@Model.ToplamTutar.ToString("N2") ₪</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="ca-card mb-4" style="border-left:4px solid var(--ca-primary);">
+                <div class="ca-card-header">
+                    <span class="ca-card-title"><i class="fas fa-route me-2"></i>@Localizer["Admin_Operation"]</span>
+                </div>
+                <div class="ca-card-body">
+                    <form action="/Admin/Siparis/DurumGuncelle" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+
+                        <div class="ca-form-group">
+                            <label class="ca-label">@Localizer["Admin_Siparis_Durumu"]</label>
+                            <select name="durum" class="ca-select">
+                                @foreach (var durumSecenegi in secilebilirDurumlar.Distinct())
+                                {
+                                    <option value="@durumSecenegi" selected="@(Model.Durum == durumSecenegi)">@SiparisDurumHelper.GetLabel(durumSecenegi)</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="ca-form-group">
+                            <label class="ca-label">@Localizer["Admin_ShippingCompany"]</label>
+                            <select name="kargoFirmasiId" class="ca-select">
+                                @foreach (var firma in kargoFirmalari)
+                                {
+                                    <option value="@firma.Id" selected="@(seciliKargo?.Id == firma.Id)">@firma.Ad</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="ca-form-group">
+                            <label class="ca-label">@Localizer["Admin_TrackingNo"]</label>
+                            <input type="text" name="kargoNo" class="ca-input" value="@Model.KargoTakipNo" placeholder="@Localizer["Admin_TrackingPlaceholder"]">
+                        </div>
+
+                        <button type="submit" class="ca-btn ca-btn-primary w-100" style="justify-content:center;">
+                            <i class="fas fa-check"></i> @Localizer["Admin_UpdateOperation"]
+                        </button>
+                    </form>
+                    
+                    @if (Model.Durum != SiparisDurumHelper.KargoyaVerildi && Model.Durum != SiparisDurumHelper.TeslimEdildi && Model.Durum != SiparisDurumHelper.IptalEdildi)
+                    {
+                        <form action="/Admin/Siparis/SiparisIptal" method="post" class="mt-3" onsubmit="return confirm('@Localizer["Admin_OrderCancelConfirm"]');">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit" class="ca-btn w-100" style="background:#dc3545; color:white; justify-content:center;">
+                                <i class="fas fa-times-circle"></i> @Localizer["Admin_CancelOrder"]
+                            </button>
+                        </form>
+                    }
+                </div>
+            </div>
+
+            <div class="ca-card mb-4">
+                <div class="ca-card-header">
+                    <span class="ca-card-title"><i class="fas fa-truck-fast me-2"></i>@Localizer["Admin_ShippingSummary"]</span>
+                </div>
+                <div class="ca-card-body">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        @if (!string.IsNullOrWhiteSpace(seciliKargo?.LogoUrl))
+                        {
+                            <img src="@seciliKargo.LogoUrl" alt="@seciliKargo.Ad" width="86" height="38" loading="lazy" decoding="async" style="object-fit:contain;">
+                        }
+                        <div>
+                            <div class="ca-fw-bold">@(seciliKargo?.Ad ?? "Aras Kargo")</div>
+                            <div class="small text-muted">@Localizer["Admin_DefaultShippingCompany"]</div>
+                        </div>
+                    </div>
+                    <div class="small text-muted">@Localizer["Admin_TrackingNo"]</div>
+                    <div class="ca-fw-bold mb-2">@(string.IsNullOrWhiteSpace(Model.KargoTakipNo) ? Localizer["Admin_NotEnteredYet"] : Model.KargoTakipNo)</div>
+                    @if (!string.IsNullOrWhiteSpace(seciliKargo?.TakipUrl))
+                    {
+                        <a href="@seciliKargo.TakipUrl" target="_blank" class="ca-btn ca-btn-outline ca-btn-sm">
+                            <i class="fas fa-arrow-up-right-from-square"></i> @Localizer["Admin_TrackingPage"]
+                        </a>
+                    }
+                </div>
+            </div>
+
+            <div class="ca-card mb-4" style="border-left:4px solid var(--ca-success);">
+                <div class="ca-card-header">
+                    <span class="ca-card-title"><i class="fas fa-file-invoice me-2"></i>@Localizer["Admin_EInvoice"]</span>
+                    @if (Model.FaturaYuklendiMi)
+                    {
+                        <span class="ca-badge" style="background:var(--ca-success); color:#fff;">@Localizer["Admin_Uploaded"]</span>
+                    }
+                    else
+                    {
+                        <span class="ca-badge" style="background:#6c757d; color:#fff;">@Localizer["Admin_NotExists"]</span>
+                    }
+                </div>
+                <div class="ca-card-body">
+                    @if (Model.FaturaYuklendiMi)
+                    {
+                        <div class="mb-3">
+                            <div class="small text-muted">@Localizer["Admin_FileName"]</div>
+                            <div class="ca-fw-bold">@Model.FaturaDosyaAdi</div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="small text-muted">@Localizer["Admin_UploadDate"]</div>
+                            <div class="ca-fw-bold">@Model.FaturaYuklenmeTarihi?.ToString("dd.MM.yyyy HH:mm")</div>
+                        </div>
+                        @if (Model.FaturaMailGonderildiMi)
+                        {
+                            <div class="mb-3">
+                                <div class="small text-muted">@Localizer["Admin_EmailDelivery"]</div>
+                                <div class="ca-fw-bold" style="color:var(--ca-success);">
+                                    <i class="fas fa-check-circle"></i> @Localizer["Admin_Sent"] (@Model.FaturaMailGonderimTarihi?.ToString("dd.MM.yyyy HH:mm"))
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="mb-3">
+                                <div class="small text-muted">@Localizer["Admin_EmailDelivery"]</div>
+                                <div class="ca-fw-bold" style="color:#dc3545;">
+                                    <i class="fas fa-times-circle"></i> @Localizer["Admin_NotSent"]
+                                </div>
+                            </div>
+                        }
+                        <div class="d-flex gap-2">
+                            <a href="/Admin/Siparis/FaturaIndir?id=@Model.Id" class="ca-btn ca-btn-outline" target="_blank">
+                                <i class="fas fa-download"></i> @Localizer["Admin_Download"]
+                            </a>
+                            <a href="/Admin/Siparis/FaturaPdf/@Model.Id" class="ca-btn ca-btn-primary" target="_blank">
+                                <i class="fas fa-file-pdf"></i> @Localizer["Admin_PdfInvoice"]
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex align-items-center gap-2 text-muted">
+                            <i class="fas fa-info-circle"></i>
+                            <span>@Localizer["Admin_UploadInvoiceFromForm"]</span>
+                        </div>
+                        <div class="mt-3">
+                            <a href="/Admin/Siparis/FaturaPdf/@Model.Id" class="ca-btn ca-btn-primary w-100" style="justify-content:center; gap:8px;" target="_blank">
+                                <i class="fas fa-file-pdf"></i> @Localizer["Admin_PdfInvoice"]
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.ReceteDosyaYolu))
+            {
+                var receteDurumu = Model.ReceteOnayDurumu;
+                var receteStatusClass = receteDurumu == 1 ? "var(--ca-success)" : (receteDurumu == 2 ? "#dc3545" : "var(--ca-warning)");
+                var receteStatusText = receteDurumu == 1 ? "Onaylandı" : (receteDurumu == 2 ? "Reddedildi" : "Beklemede");
+                var receteIcon = receteDurumu == 1 ? "fa-check-circle" : (receteDurumu == 2 ? "fa-times-circle" : "fa-clock");
+                var receteDosyaYolu = Model.ReceteDosyaYolu ?? string.Empty;
+                var recetePdfMi = receteDosyaYolu.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase);
+
+                <div class="ca-card mb-4" style="border-left:4px solid @receteStatusClass;">
+                    <div class="ca-card-header d-flex justify-content-between align-items-center">
+                        <span class="ca-card-title"><i class="fas fa-file-prescription me-2"></i>@Localizer["Admin_PrescriptionReview"]</span>
+                        <span class="ca-badge" style="background:@receteStatusClass; color:#fff;">
+                            <i class="fas @receteIcon me-1"></i> @receteStatusText
+                        </span>
+                    </div>
+                    <div class="ca-card-body">
+                        <!-- Reçete Görseli / Dosyası -->
+                        <div class="mb-3">
+                            <a href="@receteDosyaYolu" target="_blank" class="d-block position-relative text-decoration-none">
+                                @if (recetePdfMi)
+                                {
+                                    <div class="rounded" style="height:180px; background:#f8f6f2; border:1px solid var(--ca-border); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px; color:var(--ca-text-muted);">
+                                        <i class="fas fa-file-pdf fa-3x" style="color:#dc3545;"></i>
+                                        <span class="small ca-fw-bold">@Localizer["Admin_ViewPrescriptionFile"]</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <img src="@receteDosyaYolu" alt="Reçete" class="w-100 rounded" style="max-height:260px; object-fit:contain; background:#f8f6f2; border:1px solid var(--ca-border); cursor:pointer;" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                                    <div style="display:none; height:140px; background:#f8f6f2; border-radius:8px; align-items:center; justify-content:center; flex-direction:column; gap:8px; color:var(--ca-text-muted);">
+                                        <i class="fas fa-file-prescription fa-3x"></i>
+                                        <span class="small">@Localizer["Admin_ViewPrescriptionFile"]</span>
+                                    </div>
+                                }
+                            </a>
+                            <div class="mt-2 text-center">
+                                <a href="@receteDosyaYolu" target="_blank" class="small text-primary">
+                                    <i class="fas fa-external-link-alt me-1"></i> @Localizer["Admin_OpenInNewTab"]
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Red Sebebi (varsa) -->
+                        @if (!string.IsNullOrWhiteSpace(Model.ReceteRedSebebi))
+                        {
+                            <div class="mb-3 p-3 rounded" style="background:#fef2f2; border:1px solid #fecaca;">
+                                <div class="small text-muted mb-1">@Localizer["Admin_RejectionReason"]</div>
+                                <div class="fw-bold" style="color:#991b1b;">@Model.ReceteRedSebebi</div>
+                            </div>
+                        }
+
+                        <!-- Onay/Red Butonları (sadece beklemedeyse) -->
+                        @if (receteDurumu == 0)
+                        {
+                            <div class="d-flex gap-2 mt-3">
+                                <form method="post" action="/Admin/Siparis/ReceteOnayla" class="flex-1">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@Model.Id" />
+                                    <button type="submit" class="ca-btn ca-btn-success w-100" style="justify-content:center;">
+                                        <i class="fas fa-check me-1"></i> @Localizer["Admin_ApprovePrescription"]
+                                    </button>
+                                </form>
+                                <button type="button" class="ca-btn w-100" style="background:#dc3545; color:white; justify-content:center;" onclick="receteReddet(@Model.Id)">
+                                    <i class="fas fa-times me-1"></i> @Localizer["Admin_RejectPrescription"]
+                                </button>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div id="receteRedModal" class="modal fade" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">@Localizer["Admin_RejectPrescription"]</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <form method="post" action="/Admin/Siparis/ReceteReddet">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <div class="modal-body">
+                                    <label class="ca-label mb-2">@Localizer["Admin_RejectionReason"]</label>
+                                    <textarea name="redSebebi" class="ca-textarea" rows="3" required placeholder="@Localizer["Admin_RejectionReasonPlaceholder"]"></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="ca-btn ca-btn-secondary" data-bs-dismiss="modal">@Localizer["Admin_Iptal"]</button>
+                                    <button type="submit" class="ca-btn" style="background:#dc3545; color:white;">@Localizer["Admin_RejectPrescription"]</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    function receteReddet(id) {
+                        var modal = new bootstrap.Modal(document.getElementById('receteRedModal'));
+                        modal.show();
+                    }
+                </script>
+            }
+
+            <div class="ca-card">
+                <div class="ca-card-header">
+                    <span class="ca-card-title"><i class="fas fa-user me-2"></i>@Localizer["Admin_Customer"]</span>
+                </div>
+                <div class="ca-card-body">
+                    <h5 class="ca-fw-bold">@Model.MusteriAdSoyad</h5>
+                    <div class="small text-muted mb-1">@Model.Eposta</div>
+                    <div class="small text-muted mb-3">@Model.Telefon</div>
+                    <label class="ca-label mb-1">@Localizer["Admin_DeliveryAddress"]</label>
+                    <p class="mb-0" style="font-size:.9rem;">
+                        @Model.AcikAdres<br>
+                        <strong>@Model.Ilce / @Model.Sehir</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+                    

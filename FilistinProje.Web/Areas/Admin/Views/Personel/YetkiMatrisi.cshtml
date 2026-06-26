@@ -1,0 +1,288 @@
+@model FilistinProje.Core.Models.YetkiMatrisiViewModel
+@using FilistinProje.Web.Security
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_PermissionMatrix"];
+}
+
+<style>
+    .ca-matrix-wrapper {
+        overflow-x: auto;
+        margin: 0 -4px;
+    }
+
+    .ca-matrix-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 3px;
+        font-size: .82rem;
+        min-width: 900px;
+    }
+
+    .ca-matrix-table th {
+        padding: 10px 8px;
+        text-align: center;
+        font-weight: 700;
+        font-size: .75rem;
+        color: var(--ca-text);
+        background: var(--ca-bg);
+        border-radius: 8px;
+        white-space: nowrap;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+
+    .ca-matrix-table th.ca-matrix-corner {
+        text-align: left;
+        background: transparent;
+        width: 180px;
+        min-width: 180px;
+        z-index: 3;
+        left: 0;
+        position: sticky;
+    }
+
+    .ca-matrix-table th.ca-matrix-role {
+        min-width: 110px;
+    }
+
+    .ca-matrix-table td {
+        padding: 6px 4px;
+        text-align: center;
+        vertical-align: middle;
+        border-radius: 6px;
+    }
+
+    .ca-matrix-table td.ca-matrix-controller {
+        text-align: left;
+        background: #fff;
+        font-weight: 600;
+        font-size: .82rem;
+        color: var(--ca-text);
+        white-space: nowrap;
+        position: sticky;
+        left: 0;
+        z-index: 1;
+        border: 1px solid var(--ca-border);
+    }
+
+    .ca-matrix-table td.ca-matrix-controller small {
+        font-weight: 400;
+        color: var(--ca-text-muted);
+        font-size: .7rem;
+        display: block;
+    }
+
+    .ca-matrix-check {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        font-size: .8rem;
+    }
+
+    .ca-matrix-check.is-allowed {
+        background: rgba(16,185,129,.12);
+        color: #059669;
+    }
+
+    .ca-matrix-check.is-denied {
+        background: rgba(239,68,68,.07);
+        color: #dc2626;
+    }
+
+    .ca-matrix-group-label {
+        font-size: .7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        color: var(--ca-text-muted);
+        padding: 14px 6px 6px 6px !important;
+        background: transparent !important;
+        border-bottom: 1px solid var(--ca-border);
+    }
+
+    .ca-matrix-legend {
+        display: flex;
+        gap: 18px;
+        margin-top: 16px;
+        padding: 12px 16px;
+        background: #fff;
+        border: 1px solid var(--ca-border);
+        border-radius: 10px;
+        font-size: .8rem;
+    }
+
+    .ca-matrix-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--ca-text-muted);
+    }
+
+    .ca-matrix-legend .ca-matrix-check {
+        width: 20px;
+        height: 20px;
+        font-size: .65rem;
+    }
+
+    .ca-readonly-note {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        background: rgba(245,158,11,.08);
+        border: 1px solid rgba(245,158,11,.2);
+        border-radius: 10px;
+        margin-bottom: 16px;
+        font-size: .85rem;
+        color: #92400e;
+    }
+
+    .ca-readonly-note i {
+        font-size: 1.1rem;
+        color: #d97706;
+    }
+
+    @@media (max-width: 1100px) {
+        .ca-matrix-table {
+            font-size: .75rem;
+        }
+        .ca-matrix-table th {
+            font-size: .7rem;
+            padding: 8px 4px;
+        }
+        .ca-matrix-table th.ca-matrix-corner {
+            min-width: 140px;
+            width: 140px;
+        }
+    }
+</style>
+
+<div class="container-fluid ca-fade-in">
+    <div class="ca-page-header">
+        <div>
+            <h1 class="ca-page-title">@Localizer["Admin_PermissionMatrix"]</h1>
+            <p class="ca-page-subtitle">@Localizer["Admin_PermissionMatrix_Subtitle"]</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="/Admin/Personel" class="ca-btn ca-btn-outline">
+                <i class="fas fa-arrow-left"></i> @Localizer["Admin_BackToStaff"]
+            </a>
+        </div>
+    </div>
+
+    <div class="ca-readonly-note">
+        <i class="fas fa-circle-info"></i>
+        <span>@Localizer["Admin_PermissionMatrix_Note"]</span>
+    </div>
+
+    <div class="ca-card">
+        <div class="ca-card-body p-3">
+            <div class="ca-matrix-wrapper">
+                <table class="ca-matrix-table">
+                    <thead>
+                        <tr>
+                            <th class="ca-matrix-corner">@Localizer["Admin_Module"]</th>
+                            @foreach (var rol in Model.Roller)
+                            {
+                                <th class="ca-matrix-role">
+                                    <span class="ca-badge ca-badge-@rol.Renk" style="font-size:.7rem; white-space:nowrap;">
+                                        @rol.Label
+                                    </span>
+                                </th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var currentGroup = string.Empty;
+                        }
+                        @foreach (var ctrl in Model.Controllerlar)
+                        {
+                            @if (ctrl.Grup != currentGroup)
+                            {
+                                currentGroup = ctrl.Grup;
+                                <tr>
+                                    <td class="ca-matrix-group-label" colspan="@(Model.Roller.Count + 1)">
+                                        <i class="fas fa-folder-open me-1"></i> @currentGroup
+                                    </td>
+                                </tr>
+                            }
+
+                            <tr>
+                                <td class="ca-matrix-controller">
+                                    <i class="fas @ctrl.Ikon" style="width:18px; color:var(--ca-text-muted);"></i>
+                                    @ctrl.DisplayAdi
+                                    <small>@ctrl.ControllerAdi</small>
+                                </td>
+                                @foreach (var rol in Model.Roller)
+                                {
+                                    var allowed = Model.Matris[rol.RolAdi][ctrl.ControllerAdi];
+                                    <td>
+                                        @if (allowed)
+                                        {
+                                            <span class="ca-matrix-check is-allowed" title="@rol.Label: @Localizer["Admin_HasAccess"]">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="ca-matrix-check is-denied" title="@rol.Label: @Localizer["Admin_NoAccess"]">
+                                                <i class="fas fa-xmark"></i>
+                                            </span>
+                                        }
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="ca-matrix-legend">
+                <div class="ca-matrix-legend-item">
+                    <span class="ca-matrix-check is-allowed"><i class="fas fa-check"></i></span>
+                    <span>@Localizer["Admin_HasAccess"]</span>
+                </div>
+                <div class="ca-matrix-legend-item">
+                    <span class="ca-matrix-check is-denied"><i class="fas fa-xmark"></i></span>
+                    <span>@Localizer["Admin_NoAccess"]</span>
+                </div>
+                <div class="ca-matrix-legend-item">
+                    <i class="fas fa-eye-slash ca-text-muted"></i>
+                    <span>@Localizer["Admin_ReadonlyNote"]</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ca-card mt-3">
+        <div class="ca-card-header">
+            <h2 class="ca-card-title mb-0">@Localizer["Admin_RoleDescriptions"]</h2>
+        </div>
+        <div class="ca-card-body">
+            <div class="row g-3">
+                @foreach (var rol in Model.Roller)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="d-flex gap-3 align-items-start p-3" style="border:1px solid var(--ca-border); border-radius:10px; height:100%;">
+                            <span class="ca-badge ca-badge-@rol.Renk" style="flex:0 0 auto; margin-top:2px;">
+                                @rol.Label
+                            </span>
+                            <div>
+                                <strong style="font-size:.82rem; color:var(--ca-text);">@rol.Label</strong>
+                                <p style="font-size:.78rem; color:var(--ca-text-muted); margin:4px 0 0 0;">
+                                    @AdminSecurityRoles.GetRoleOption(rol.RolAdi).Description
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

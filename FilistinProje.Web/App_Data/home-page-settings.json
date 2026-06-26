@@ -1,0 +1,126 @@
+{
+  "Hero": {
+    "Title": "Yeni sezon koleksiyonlarını keşfedin",
+    "Subtitle": "Filistin'de güvenli online alışveriş, hızlı teslimat ve özenli müşteri deneyimi.",
+    "PrimaryButtonText": "Koleksiyonu Keşfet",
+    "PrimaryButtonUrl": "/Urun",
+    "SecondaryButtonText": "İletişime Geç",
+    "SecondaryButtonUrl": "/Kurumsal/Iletisim",
+    "DesktopSlides": [
+      {
+        "Id": "0190ca9dbc1249ab8095f3ad32326e91",
+        "ImageUrl": "/img/banner/slider-1.webp",
+        "VideoUrl": "/video/slider1.mp4",
+        "Title": "SADE\\nVE DOĞAL",
+        "Subtitle": "7ANRPS48 Koleksiyonu",
+        "Description": "Yaşam alanlarınız için özenle seçilmiş kanvas eserler.",
+        "ButtonText": "Koleksiyonu Keşfet",
+        "ButtonUrl": "/Urun",
+        "SortOrder": 0
+      },
+      {
+        "Id": "8c4cee9a738546d3b016a81fa2fd81d1",
+        "ImageUrl": "/img/banner/slider-2.webp",
+        "VideoUrl": "/video/slider2.mp4",
+        "Title": "MODERN\\nESERLER",
+        "Subtitle": "Yeni Sezon",
+        "Description": "Evinizi sanatın büyüleyici dünyasıyla buluşturun.",
+        "ButtonText": "Tüm Ürünleri İncele",
+        "ButtonUrl": "/Urun",
+        "SortOrder": 1
+      }
+    ],
+    "MobileSlides": [
+      {
+        "Id": "d2b3140657a84332a04174ddc573f26b",
+        "ImageUrl": "/img/banner/mobile-1.webp",
+        "VideoUrl": "/video/slider1.mp4",
+        "Title": "SADE\\nVE DOĞAL",
+        "Subtitle": "7ANRPS48 Koleksiyonu",
+        "Description": "Yaşam alanlarınız için özenle seçilmiş kanvas eserler.",
+        "ButtonText": "Koleksiyonu Keşfet",
+        "ButtonUrl": "/Urun",
+        "SortOrder": 0
+      },
+      {
+        "Id": "8264128d34be4b6d866cf6bd4e93023e",
+        "ImageUrl": "/img/banner/mobile-2.webp",
+        "VideoUrl": "/video/slider2.mp4",
+        "Title": "MODERN\\nESERLER",
+        "Subtitle": "Yeni Sezon",
+        "Description": "Evinizi sanatın büyüleyici dünyasıyla buluşturun.",
+        "ButtonText": "Tüm Ürünleri İncele",
+        "ButtonUrl": "/Urun",
+        "SortOrder": 0
+      }
+    ],
+    "Enabled": true,
+    "SortOrder": 10
+  },
+  "Categories": {
+    "Title": "Tüm Kategoriler",
+    "Subtitle": "Mağazadaki tüm ürün ailelerini kategori bazında keşfedin.",
+    "Enabled": true,
+    "SortOrder": 20
+  },
+  "FeaturedProducts": {
+    "ViewAllText": "Tümünü Gör",
+    "ViewAllUrl": "/Urun",
+    "Title": "Öne Çıkanlar",
+    "Subtitle": "En yeni ve en çok dikkat çeken ürünler",
+    "Enabled": true,
+    "SortOrder": 30
+  },
+  "BestSellers": {
+    "ViewAllText": "Tümünü Gör",
+    "ViewAllUrl": "/Urun?sort=popularity",
+    "Title": "En Çok Satanlar",
+    "Subtitle": "Müşterilerin en çok tercih ettiği ürünler",
+    "Enabled": true,
+    "SortOrder": 40
+  },
+  "Deals": {
+    "ViewAllText": "Tümünü Gör",
+    "ViewAllUrl": "/Urun?sort=price_asc",
+    "Title": "Fırsat Ürünleri",
+    "Subtitle": "Kaçırılmaması gereken kampanyalı ürünler",
+    "Enabled": true,
+    "SortOrder": 50
+  },
+  "Features": {
+    "Items": [
+      {
+        "Icon": "fas fa-truck",
+        "Title": "Hızlı ve Güvenli Kargo",
+        "Description": "Tüm Türkiye'ye ücretsiz kargo. Siparişiniz özel korunaklı ambalajıyla kapınıza gelir."
+      },
+      {
+        "Icon": "fas fa-shield-alt",
+        "Title": "Güvenli Ödeme",
+        "Description": "256-bit SSL şifreleme ile korunan alışveriş. Kart bilgileriniz sunucularımızda saklanmaz."
+      },
+      {
+        "Icon": "fas fa-palette",
+        "Title": "Premium Baskı Kalitesi",
+        "Description": "UV korumalı orijinal mürekkepler ve birinci sınıf kanvas bezi ile yıllar boyu canlı renkler."
+      },
+      {
+        "Icon": "fas fa-headset",
+        "Title": "7/24 Müşteri Desteği",
+        "Description": "Sipariş, kargo veya ürün hakkında her türlü sorunuzda yanınızdayız."
+      }
+    ],
+    "Title": "Neden 7ANRPS48?",
+    "Subtitle": "Premium kalite, güvenli ödeme ve özenli teslimatla fark yaratıyoruz.",
+    "Enabled": true,
+    "SortOrder": 60
+  },
+  "Newsletter": {
+    "PlaceholderText": "E-posta adresinizi yazın",
+    "ButtonText": "Abone Ol",
+    "Title": "Duyuruları ilk siz alın",
+    "Subtitle": "Kampanyalar, yeni ürünler ve özel tekliflerden ilk haberdar olan siz olun.",
+    "Enabled": true,
+    "SortOrder": 70
+  }
+}

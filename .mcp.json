@@ -1,0 +1,47 @@
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "postgres-mcp-readonly"],
+      "env": {
+        "DATABASE_URL": "postgresql://kanvasuser:changeme_in_production@localhost:5434/filistindb"
+      }
+    },
+    "docker": {
+      "command": "npx",
+      "args": ["-y", "@swartdraak/docker-mcp-server"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "E:\\Projeler\\filistin_eticaret_projesi"]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    },
+    "everything": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-everything"]
+    },
+    "shadcn-ui": {
+      "command": "npx",
+      "args": ["-y", "@jpisnice/shadcn-ui-mcp-server"]
+    },
+    "generative-ui": {
+      "command": "npx",
+      "args": ["-y", "generative-ui-mcp"]
+    },
+    "redis": {
+      "command": "npx",
+      "args": ["-y", "mcp-redis"]
+    }
+  }
+}

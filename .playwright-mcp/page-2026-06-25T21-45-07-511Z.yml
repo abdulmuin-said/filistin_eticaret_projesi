@@ -1,0 +1,253 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: 
+      - text: 200 ₪ ve üzeri siparişlerde kargo ücretsiz
+    - generic [ref=e6]:
+      - generic [ref=e7]: 
+      - text: IBAN ile kolay ödeme
+    - generic [ref=e8]:
+      - generic [ref=e9]: 
+      - text: Teslimatta ödeme seçeneği
+    - generic [ref=e10]:
+      - generic [ref=e11]: 
+      - text: Hızlı Üretim
+    - generic [ref=e12]:
+      - generic [ref=e13]: 
+      - text: Özenli Paketleme
+    - generic [ref=e14]:
+      - generic [ref=e15]: 
+      - text: Filistin Geneli Teslimat
+    - generic [ref=e16]:
+      - generic [ref=e17]: 
+      - text: 14 Gün İade
+    - generic [ref=e18]:
+      - generic [ref=e19]: 
+      - text: Üretici Garantisi
+    - generic [ref=e20]:
+      - generic [ref=e21]: 
+      - text: WhatsApp Destek
+    - generic [ref=e22]:
+      - generic [ref=e23]: 
+      - text: 200 ₪ ve üzeri siparişlerde kargo ücretsiz
+    - generic [ref=e24]:
+      - generic [ref=e25]: 
+      - text: IBAN ile kolay ödeme
+    - generic [ref=e26]:
+      - generic [ref=e27]: 
+      - text: Teslimatta ödeme seçeneği
+    - generic [ref=e28]:
+      - generic [ref=e29]: 
+      - text: Hızlı Üretim
+    - generic [ref=e30]:
+      - generic [ref=e31]: 
+      - text: Özenli Paketleme
+    - generic [ref=e32]:
+      - generic [ref=e33]: 
+      - text: Filistin Geneli Teslimat
+    - generic [ref=e34]:
+      - generic [ref=e35]: 
+      - text: 14 Gün İade
+    - generic [ref=e36]:
+      - generic [ref=e37]: 
+      - text: Üretici Garantisi
+    - generic [ref=e38]:
+      - generic [ref=e39]: 
+      - text: WhatsApp Destek
+  - banner [ref=e40]:
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e44]: 
+        - link "AR" [ref=e45] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FHesap%2FEpostaOnayBilgilendirme
+        - link "EN" [ref=e46] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FHesap%2FEpostaOnayBilgilendirme
+        - link "TR" [ref=e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=tr&returnUrl=%2FHesap%2FEpostaOnayBilgilendirme
+      - link "7ANRPS48" [ref=e48] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=e49]
+      - generic [ref=e50]:
+        - button "Ara" [ref=e51] [cursor=pointer]:
+          - img [ref=e52]
+        - link "Hesabım" [ref=e54] [cursor=pointer]:
+          - /url: /Profil
+          - img [ref=e55]
+        - link "Favorilerim" [ref=e57] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=e58]
+        - link "Sepet" [ref=e60] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=e61]
+          - generic [ref=e63]: "2"
+      - navigation [ref=e64]:
+        - list [ref=e65]:
+          - listitem [ref=e66] [cursor=pointer]:
+            - link "Åžehir ve Mimari " [ref=e67]:
+              - /url: /Urun?k=13
+              - text: Åžehir ve Mimari
+              - generic [ref=e68]: 
+          - listitem [ref=e69] [cursor=pointer]:
+            - link "Filistin Temalı " [ref=e70]:
+              - /url: /Urun?k=1
+              - text: Filistin Temalı
+              - generic [ref=e71]: 
+          - listitem [ref=e72] [cursor=pointer]:
+            - link "Ev & Dekorasyon " [ref=e73]:
+              - /url: /Urun?k=2
+              - text: Ev & Dekorasyon
+              - generic [ref=e74]: 
+          - listitem [ref=e75] [cursor=pointer]:
+            - link "Manzara TemalÄ± " [ref=e76]:
+              - /url: /Urun?k=14
+              - text: Manzara TemalÄ±
+              - generic [ref=e77]: 
+          - listitem [ref=e78] [cursor=pointer]:
+            - link "Ã‡iÃ§ekli ve Dekoratif " [ref=e79]:
+              - /url: /Urun?k=15
+              - text: Ã‡iÃ§ekli ve Dekoratif
+              - generic [ref=e80]: 
+          - listitem [ref=e81] [cursor=pointer]:
+            - link "Hediyelik & Aksesuar " [ref=e82]:
+              - /url: /Urun?k=3
+              - text: Hediyelik & Aksesuar
+              - generic [ref=e83]: 
+          - listitem [ref=e84] [cursor=pointer]:
+            - link "Hayvanlar Alemi " [ref=e85]:
+              - /url: /Urun?k=16
+              - text: Hayvanlar Alemi
+              - generic [ref=e86]: 
+          - listitem [ref=e87] [cursor=pointer]:
+            - link "Modern & Soyut " [ref=e88]:
+              - /url: /Urun?k=17
+              - text: Modern & Soyut
+              - generic [ref=e89]: 
+          - listitem [ref=e90] [cursor=pointer]:
+            - link "Ã‡ocuk OdasÄ± " [ref=e91]:
+              - /url: /Urun?k=18
+              - text: Ã‡ocuk OdasÄ±
+              - generic [ref=e92]: 
+          - listitem [ref=e93] [cursor=pointer]:
+            - link "FarklÄ± TasarÄ±mlar " [ref=e94]:
+              - /url: /Urun?k=19
+              - text: FarklÄ± TasarÄ±mlar
+              - generic [ref=e95]: 
+          - listitem [ref=e96] [cursor=pointer]:
+            - link "Dini ve Hat SanatÄ± " [ref=e97]:
+              - /url: /Urun?k=20
+              - text: Dini ve Hat SanatÄ±
+              - generic [ref=e98]: 
+          - listitem [ref=e99] [cursor=pointer]:
+            - link "Klasik Eserler " [ref=e100]:
+              - /url: /Urun?k=21
+              - text: Klasik Eserler
+              - generic [ref=e101]: 
+          - listitem [ref=e102] [cursor=pointer]:
+            - link "AtatÃ¼rk ve TÃ¼rkiye " [ref=e103]:
+              - /url: /Urun?k=22
+              - text: AtatÃ¼rk ve TÃ¼rkiye
+              - generic [ref=e104]: 
+          - listitem [ref=e105] [cursor=pointer]:
+            - link "KadÄ±n TemalÄ± " [ref=e106]:
+              - /url: /Urun?k=23
+              - text: KadÄ±n TemalÄ±
+              - generic [ref=e107]: 
+          - listitem [ref=e108] [cursor=pointer]:
+            - link "Yiyecek ve Ä°Ã§ecek " [ref=e109]:
+              - /url: /Urun?k=24
+              - text: Yiyecek ve Ä°Ã§ecek
+              - generic [ref=e110]: 
+          - listitem [ref=e111] [cursor=pointer]:
+            - link "OsmanlÄ± ve TuÄŸra " [ref=e112]:
+              - /url: /Urun?k=25
+              - text: OsmanlÄ± ve TuÄŸra
+              - generic [ref=e113]: 
+          - listitem [ref=e114] [cursor=pointer]:
+            - link "Soyut ve Sanatsal " [ref=e115]:
+              - /url: /Urun?k=26
+              - text: Soyut ve Sanatsal
+              - generic [ref=e116]: 
+          - listitem [ref=e117] [cursor=pointer]:
+            - link "İletişim" [ref=e118]:
+              - /url: /Kurumsal/Iletisim
+    - text:      
+  - main [ref=e119]:
+    - generic [ref=e121]:
+      - generic [ref=e123]: 
+      - heading "E-posta Doğrulama" [level=1] [ref=e124]
+      - generic [ref=e125]:
+        - generic [ref=e126]: 
+        - text: "Üyeliğiniz oluşturuldu ancak doğrulama e-postası gönderilemedi: Command not implemented. The server response was: 5.7.0 Please authenticate first"
+      - paragraph [ref=e127]: Doğrulama bağlantısı geçersiz veya süresi dolmuş
+      - link "Giriş Sayfasına Dön" [ref=e128] [cursor=pointer]:
+        - /url: /Hesap/GirisYap
+  - contentinfo [ref=e129]:
+    - generic [ref=e131]:
+      - generic [ref=e132]:
+        - generic [ref=e134]: 
+        - generic [ref=e135]:
+          - generic [ref=e136]: Filistin'in Her Bölgesine
+          - generic [ref=e137]: Ücretsiz Kargo
+      - generic [ref=e138]:
+        - generic [ref=e140]: 
+        - generic [ref=e141]:
+          - generic [ref=e142]: Banka Havalesi
+          - generic [ref=e143]: IBAN ile kolay ödeme
+      - generic [ref=e144]:
+        - generic [ref=e146]: 
+        - generic [ref=e147]:
+          - generic [ref=e148]: Kapıda Ödeme
+          - generic [ref=e149]: Teslimatta ödeme seçeneği
+    - generic [ref=e150]:
+      - generic [ref=e151]:
+        - generic [ref=e152]:
+          - heading "E-posta bültenine abone ol" [level=3] [ref=e153]
+          - paragraph [ref=e154]: Kampanya ve fırsatlardan haberdar olun
+          - generic [ref=e155]:
+            - textbox "E-posta Adresi" [ref=e156]
+            - button "Abone Ol" [ref=e157] [cursor=pointer]
+        - generic [ref=e158]:
+          - heading "Kurumsal" [level=4] [ref=e159]
+          - list [ref=e160]:
+            - listitem [ref=e161]:
+              - link "Hakkımızda" [ref=e162] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=e163]:
+              - link "İletişim" [ref=e164] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=e165]:
+              - link "Koleksiyonlar" [ref=e166] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=e167]:
+              - link "Gizlilik Politikası" [ref=e168] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=e169]:
+              - link "Mesafeli Satış Sözleşmesi" [ref=e170] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=e172] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=e173]: 
+      - generic [ref=e174]:
+        - paragraph [ref=e176]: © 2026 7ANRPS48 Tüm hakları saklıdır.
+        - generic [ref=e177]:
+          - link "Gizlilik Politikası" [ref=e178] [cursor=pointer]:
+            - /url: /Kurumsal/Gizlilik
+          - text: "|"
+          - link "Kullanım Koşulları" [ref=e179] [cursor=pointer]:
+            - /url: /Kurumsal/KullaniciSozlesmesi
+          - text: "|"
+          - link "İade ve Değişim" [ref=e180] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+  - generic [ref=e182]:
+    - generic [ref=e183]: 
+    - paragraph [ref=e185]: "Üyeliğiniz oluşturuldu ancak doğrulama e-postası gönderilemedi: Command not implemented. The server response was: 5.7.0 Please authenticate first"
+    - button "" [ref=e186] [cursor=pointer]:
+      - generic [ref=e187]: 
+  - link "WhatsApp İletişim" [ref=e188] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=e189]
+    - generic [ref=e191]: WhatsApp
+  - link "Sepet" [ref=e192] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=e193]
+    - generic [ref=e195]: "2"

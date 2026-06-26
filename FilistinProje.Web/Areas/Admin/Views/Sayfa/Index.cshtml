@@ -1,0 +1,58 @@
+@model IEnumerable<FilistinProje.Core.Varliklar.KurumsalSayfa>
+@{
+    ViewData["Title"] = Localizer["Admin_SayfaYonetimi"];
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid ca-fade-in">
+    <div class="ca-page-header">
+        <div>
+            <h1 class="ca-page-title">@Localizer["Admin_KurumsalSayfalar"]</h1>
+            <p class="ca-page-subtitle">@Localizer["Admin_SayfaSubtitle"]</p>
+        </div>
+        <a href="/Admin/Sayfa/Form" class="ca-btn ca-btn-primary">
+            <i class="fas fa-plus"></i> @Localizer["Admin_YeniSayfaEkle"]
+        </a>
+    </div>
+
+    <div class="ca-card">
+        <div class="ca-table-wrapper">
+            <table class="ca-table">
+                <thead>
+                    <tr>
+                        <th class="ps-4">@Localizer["Admin_SayfaBasligi"]</th>
+                        <th>@Localizer["Admin_SayfaLink"]</th>
+                        <th>@Localizer["Admin_Sira"]</th>
+                        <th class="text-end pe-4">@Localizer["Admin_Islem"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="ps-4 ca-fw-bold">@item.Baslik</td>
+                            <td>
+                                <a href="/Kurumsal/Detay/@item.UrlSlug" target="_blank" class="ca-text-primary" style="font-size:.85rem; text-decoration:none;">
+                                    <i class="fas fa-external-link-alt me-1"></i>/Kurumsal/Detay/@item.UrlSlug
+                                </a>
+                            </td>
+                            <td><span class="ca-badge ca-badge-neutral">@item.Sira</span></td>
+                            <td class="text-end pe-4">
+                                <div class="d-inline-flex gap-1">
+                                    <a href="/Admin/Sayfa/Form/@item.Id" class="ca-btn-icon edit" title="@Localizer["Admin_Duzenle"]"><i class="fas fa-pen"></i></a>
+                                    <form action="/Admin/Sayfa/Sil" method="post" class="d-inline" onsubmit="return confirm('@Localizer["Admin_SayfaSilConfirm"]')">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="ca-btn-icon delete" title="@Localizer["Admin_Sil"]">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

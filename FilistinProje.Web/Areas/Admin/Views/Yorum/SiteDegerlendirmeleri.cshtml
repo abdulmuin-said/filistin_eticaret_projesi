@@ -1,0 +1,97 @@
+@using FilistinProje.Core.Varliklar
+@model List<SiteDegerlendirme>
+@{
+    ViewData["Title"] = Localizer["Admin_Site_Degerlendirmeleri"];
+    var page = ViewBag.Page ?? 1;
+    var totalPages = ViewBag.TotalPages ?? 1;
+    var totalCount = ViewBag.TotalCount ?? 0;
+    var pendingCount = ViewBag.PendingCount ?? 0;
+}
+
+<div class="flex items-center justify-between mb-6">
+    <h1 class="text-xl font-semibold text-[#1c1c18]">@Localizer["Admin_Site_Degerlendirmeleri"]</h1>
+    <div class="flex items-center gap-3">
+        <span class="text-xs bg-[#f1ede7] text-[#47473d] px-3 py-1.5 rounded-full">Toplam: @totalCount</span>
+        @if (pendingCount > 0)
+        {
+            <span class="text-xs bg-amber-50 text-amber-700 px-3 py-1.5 rounded-full">Bekleyen: @pendingCount</span>
+        }
+    </div>
+</div>
+
+@if (TempData["Mesaj"] != null)
+{
+    <div class="bg-green-50 border border-green-200 text-green-700 rounded px-4 py-3 mb-6 text-sm">@TempData["Mesaj"]</div>
+}
+
+<div class="bg-white border border-[#e5e2dc] rounded-lg overflow-hidden">
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="bg-[#f1ede7] text-left">
+                <th class="px-4 py-3 font-semibold text-[#1c1c18]">@Localizer["Admin_Ad_Soyad"]</th>
+                <th class="px-4 py-3 font-semibold text-[#1c1c18]">Puan</th>
+                <th class="px-4 py-3 font-semibold text-[#1c1c18]">Baslik</th>
+                <th class="px-4 py-3 font-semibold text-[#1c1c18]">Yorum</th>
+                <th class="px-4 py-3 font-semibold text-[#1c1c18]">@Localizer["Admin_Durum"]</th>
+                <th class="px-4 py-3 font-semibold text-[#1c1c18]">@Localizer["Admin_Tarih"]</th>
+                <th class="px-4 py-3 font-semibold text-[#1c1c18]">Islem</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count == 0)
+            {
+                <tr><td colspan="7" class="px-4 py-8 text-center text-[#47473d]">Henuz degerlendirme bulunmuyor.</td></tr>
+            }
+            @foreach (var item in Model)
+            {
+                <tr class="border-t border-[#e5e2dc] hover:bg-[#faf9f6]">
+                    <td class="px-4 py-3 font-medium">@item.AdSoyad</td>
+                    <td class="px-4 py-3">
+                        <span class="text-[#b58735]">@item.Puan <i class="fas fa-star text-[10px]"></i></span>
+                    </td>
+                    <td class="px-4 py-3 text-[#47473d]">@(!string.IsNullOrWhiteSpace(item.Baslik) ? item.Baslik : "-")</td>
+                    <td class="px-4 py-3 text-[#47473d] max-w-[300px] truncate">@item.YorumMetni</td>
+                    <td class="px-4 py-3">
+                        @if (item.OnayliMi)
+                        {
+                            <span class="bg-green-50 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-medium">Onayli</span>
+                        }
+                        else
+                        {
+                            <span class="bg-amber-50 text-amber-700 text-[10px] px-2 py-0.5 rounded-full font-medium">Bekliyor</span>
+                        }
+                    </td>
+                    <td class="px-4 py-3 text-xs text-[#47473d]">@item.OlusturulmaTarihi.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td class="px-4 py-3">
+                        <div class="flex items-center gap-2">
+                            @if (!item.OnayliMi)
+                            {
+                                <form method="post" action="/Admin/Yorum/SiteOnayla" style="display:inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="text-xs bg-[#313511] text-white px-3 py-1.5 rounded hover:bg-[#1c2001] transition-colors">Onayla</button>
+                                </form>
+                            }
+                            <form method="post" action="/Admin/Yorum/SiteSil" style="display:inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button type="submit" class="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded hover:bg-red-100 transition-colors" onclick="return confirm('Silmek istediginize emin misiniz?')">@Localizer["Admin_Sil"]</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (totalPages > 1)
+{
+    <div class="flex items-center justify-center gap-2 mt-8">
+        @for (int p = 1; p <= totalPages; p++)
+        {
+            <a href="/Admin/Yorum/SiteDegerlendirmeleri?page=@p"
+               class="w-8 h-8 flex items-center justify-center text-xs rounded border @(p == page ? "bg-[#313511] text-white border-[#313511]" : "border-[#e5e2dc] text-[#47473d] hover:bg-[#f1ede7]")">@p</a>
+        }
+    </div>
+}

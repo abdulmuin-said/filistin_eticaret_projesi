@@ -1,0 +1,126 @@
+- generic [active] [ref=e1]:
+  - heading "An unhandled exception occurred while processing the request." [level=1] [ref=e2]
+  - generic [ref=e3]:
+    - text: "InvalidOperationException: The LINQ expression 'DbSet<Kategori>()"
+    - text: .Where(k => k.AktifMi && !(k.SilindiMi))
+    - text: .OrderBy(k => k.Sira)
+    - text: ".ThenBy(k => k.LocalizedAd)' could not be translated. Additional information: Translation of member 'LocalizedAd' on entity type 'Kategori' failed. This commonly occurs when the specified member is unmapped. Either rewrite the query in a form that can be translated, or switch to client evaluation explicitly by inserting a call to 'AsEnumerable', 'AsAsyncEnumerable', 'ToList', or 'ToListAsync'. See https://go.microsoft.com/fwlink/?linkid=2101038 for more information."
+  - paragraph [ref=e4]: Microsoft.EntityFrameworkCore.Query.QueryableMethodTranslatingExpressionVisitor.Translate(Expression expression)
+  - list [ref=e5]:
+    - listitem [ref=e6] [cursor=pointer]: Stack
+    - listitem [ref=e7] [cursor=pointer]: Query
+    - listitem [ref=e8] [cursor=pointer]: Cookies
+    - listitem [ref=e9] [cursor=pointer]: Headers
+    - listitem [ref=e10] [cursor=pointer]: Routing
+  - list [ref=e12]:
+    - listitem [ref=e13]:
+      - 'heading "InvalidOperationException: The LINQ expression ''DbSet<Kategori>() .Where(k => k.AktifMi && !(k.SilindiMi)) .OrderBy(k => k.Sira) .ThenBy(k => k.LocalizedAd)'' could not be translated. Additional information: Translation of member ''LocalizedAd'' on entity type ''Kategori'' failed. This commonly occurs when the specified member is unmapped. Either rewrite the query in a form that can be translated, or switch to client evaluation explicitly by inserting a call to ''AsEnumerable'', ''AsAsyncEnumerable'', ''ToList'', or ''ToListAsync''. See https://go.microsoft.com/fwlink/?linkid=2101038 for more information." [level=2] [ref=e14]'
+      - list [ref=e15]:
+        - listitem [ref=e16]:
+          - heading "Microsoft.EntityFrameworkCore.Query.QueryableMethodTranslatingExpressionVisitor.Translate(Expression expression)" [level=3] [ref=e17]
+        - listitem [ref=e18]:
+          - heading "Microsoft.EntityFrameworkCore.Query.RelationalQueryableMethodTranslatingExpressionVisitor.Translate(Expression expression)" [level=3] [ref=e19]
+        - listitem [ref=e20]:
+          - heading "Microsoft.EntityFrameworkCore.Query.QueryCompilationContext.CreateQueryExecutor<TResult>(Expression query)" [level=3] [ref=e21]
+        - listitem [ref=e22]:
+          - heading "Microsoft.EntityFrameworkCore.Storage.Database.CompileQuery<TResult>(Expression query, bool async)" [level=3] [ref=e23]
+        - listitem [ref=e24]:
+          - heading "Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.CompileQueryCore<TResult>(IDatabase database, Expression query, IModel model, bool async)" [level=3] [ref=e25]
+        - listitem [ref=e26]:
+          - heading "Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler+<>c__DisplayClass12_0<TResult>.<ExecuteAsync>b__0()" [level=3] [ref=e27]
+        - listitem [ref=e28]:
+          - heading "Microsoft.EntityFrameworkCore.Query.Internal.CompiledQueryCache.GetOrAddQuery<TResult>(object cacheKey, Func<Func<QueryContext, TResult>> compiler)" [level=3] [ref=e29]
+        - listitem [ref=e30]:
+          - heading "Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.ExecuteAsync<TResult>(Expression query, CancellationToken cancellationToken)" [level=3] [ref=e31]
+        - listitem [ref=e32]:
+          - heading "Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryProvider.ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)" [level=3] [ref=e33]
+        - listitem [ref=e34]:
+          - heading "Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryable<TResult>.GetAsyncEnumerator(CancellationToken cancellationToken)" [level=3] [ref=e35]
+        - listitem [ref=e36]:
+          - heading "System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable<T>.GetAsyncEnumerator()" [level=3] [ref=e37]
+        - listitem [ref=e38]:
+          - heading "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync<TSource>(IQueryable<TSource> source, CancellationToken cancellationToken)" [level=3] [ref=e39]
+        - listitem [ref=e40]:
+          - heading "AspNetCoreGeneratedDocument.Views_Shared__Layout.ExecuteAsync() in _Layout.cshtml" [level=3] [ref=e41]:
+            - text: AspNetCoreGeneratedDocument.Views_Shared__Layout.ExecuteAsync() in
+            - code [ref=e42]: _Layout.cshtml
+          - button "+" [ref=e43] [cursor=pointer]
+          - list [ref=e45]:
+            - listitem [ref=e46]: var tumKategoriler = await DbContext.Kategoriler
+        - listitem [ref=e47]:
+          - heading "Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageCoreAsync(IRazorPage page, ViewContext context)" [level=3] [ref=e48]
+        - listitem [ref=e49]:
+          - heading "Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageAsync(IRazorPage page, ViewContext context, bool invokeViewStarts)" [level=3] [ref=e50]
+        - listitem [ref=e51]:
+          - heading "Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderLayoutAsync(ViewContext context, ViewBufferTextWriter bodyWriter)" [level=3] [ref=e52]
+        - listitem [ref=e53]:
+          - heading "Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderAsync(ViewContext context)" [level=3] [ref=e54]
+        - listitem [ref=e55]:
+          - heading "Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, string contentType, Nullable<int> statusCode)" [level=3] [ref=e56]
+        - listitem [ref=e57]:
+          - heading "Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, string contentType, Nullable<int> statusCode)" [level=3] [ref=e58]
+        - listitem [ref=e59]:
+          - heading "Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ActionContext actionContext, IView view, ViewDataDictionary viewData, ITempDataDictionary tempData, string contentType, Nullable<int> statusCode)" [level=3] [ref=e60]
+        - listitem [ref=e61]:
+          - heading "Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor.ExecuteAsync(ActionContext context, ViewResult result)" [level=3] [ref=e62]
+        - listitem [ref=e63]:
+          - heading "Microsoft.AspNetCore.Mvc.ViewResult.ExecuteResultAsync(ActionContext context)" [level=3] [ref=e64]
+        - listitem [ref=e65]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0<TFilter, TFilterAsync>(ResourceInvoker invoker, Task lastTask, State next, Scope scope, object state, bool isCompleted)" [level=3] [ref=e66]
+        - listitem [ref=e67]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)" [level=3] [ref=e68]
+        - listitem [ref=e69]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext<TFilter, TFilterAsync>(ref State next, ref Scope scope, ref object state, ref bool isCompleted)" [level=3] [ref=e70]
+        - listitem [ref=e71]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeResultFilters>g__Awaited|28_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, object state, bool isCompleted)" [level=3] [ref=e72]
+        - listitem [ref=e73]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, object state, bool isCompleted)" [level=3] [ref=e74]
+        - listitem [ref=e75]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)" [level=3] [ref=e76]
+        - listitem [ref=e77]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(ref State next, ref Scope scope, ref object state, ref bool isCompleted)" [level=3] [ref=e78]
+        - listitem [ref=e79]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, object state, bool isCompleted)" [level=3] [ref=e80]
+        - listitem [ref=e81]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)" [level=3] [ref=e82]
+        - listitem [ref=e83]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)" [level=3] [ref=e84]
+        - listitem [ref=e85]:
+          - heading "Program+<>c+<<<Main>$>b__0_13>d.MoveNext() in Program.cs" [level=3] [ref=e86]:
+            - text: Program+<>c+<<<Main>$>b__0_13>d.MoveNext() in
+            - code [ref=e87]: Program.cs
+          - button "+" [ref=e88] [cursor=pointer]
+          - list [ref=e90]:
+            - listitem [ref=e91]: await next();
+        - listitem [ref=e92]:
+          - heading "Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)" [level=3] [ref=e93]
+        - listitem [ref=e94]:
+          - heading "Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)" [level=3] [ref=e95]
+        - listitem [ref=e96]:
+          - heading "Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)" [level=3] [ref=e97]
+        - listitem [ref=e98]:
+          - heading "Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)" [level=3] [ref=e99]
+        - listitem [ref=e100]:
+          - heading "Microsoft.AspNetCore.ResponseCompression.ResponseCompressionMiddleware.InvokeCore(HttpContext context)" [level=3] [ref=e101]
+        - listitem [ref=e102]:
+          - heading "Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)" [level=3] [ref=e103]
+        - listitem [ref=e104]:
+          - heading "Program+<>c+<<<Main>$>b__0_12>d.MoveNext() in Program.cs" [level=3] [ref=e105]:
+            - text: Program+<>c+<<<Main>$>b__0_12>d.MoveNext() in
+            - code [ref=e106]: Program.cs
+          - button "+" [ref=e107] [cursor=pointer]
+          - list [ref=e109]:
+            - listitem [ref=e110]: await next();
+        - listitem [ref=e111]:
+          - heading "Microsoft.AspNetCore.Diagnostics.StatusCodePagesMiddleware.Invoke(HttpContext context)" [level=3] [ref=e112]
+        - listitem [ref=e113]:
+          - heading "Program+<>c+<<<Main>$>b__0_11>d.MoveNext() in Program.cs" [level=3] [ref=e114]:
+            - text: Program+<>c+<<<Main>$>b__0_11>d.MoveNext() in
+            - code [ref=e115]: Program.cs
+          - button "+" [ref=e116] [cursor=pointer]
+          - list [ref=e118]:
+            - listitem [ref=e119]: await next();
+        - listitem [ref=e120]:
+          - heading "Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)" [level=3] [ref=e121]
+    - listitem [ref=e122]:
+      - button "Show raw exception details" [ref=e124] [cursor=pointer]

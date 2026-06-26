@@ -1,0 +1,355 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: 
+      - text: 200 ₪ ve üzeri siparişlerde kargo ücretsiz
+    - generic [ref=e6]:
+      - generic [ref=e7]: 
+      - text: IBAN ile kolay ödeme
+    - generic [ref=e8]:
+      - generic [ref=e9]: 
+      - text: Teslimatta ödeme seçeneği
+    - generic [ref=e10]:
+      - generic [ref=e11]: 
+      - text: Hızlı Üretim
+    - generic [ref=e12]:
+      - generic [ref=e13]: 
+      - text: Özenli Paketleme
+    - generic [ref=e14]:
+      - generic [ref=e15]: 
+      - text: Filistin Geneli Teslimat
+    - generic [ref=e16]:
+      - generic [ref=e17]: 
+      - text: 14 Gün İade
+    - generic [ref=e18]:
+      - generic [ref=e19]: 
+      - text: Üretici Garantisi
+    - generic [ref=e20]:
+      - generic [ref=e21]: 
+      - text: WhatsApp Destek
+    - generic [ref=e22]:
+      - generic [ref=e23]: 
+      - text: 200 ₪ ve üzeri siparişlerde kargo ücretsiz
+    - generic [ref=e24]:
+      - generic [ref=e25]: 
+      - text: IBAN ile kolay ödeme
+    - generic [ref=e26]:
+      - generic [ref=e27]: 
+      - text: Teslimatta ödeme seçeneği
+    - generic [ref=e28]:
+      - generic [ref=e29]: 
+      - text: Hızlı Üretim
+    - generic [ref=e30]:
+      - generic [ref=e31]: 
+      - text: Özenli Paketleme
+    - generic [ref=e32]:
+      - generic [ref=e33]: 
+      - text: Filistin Geneli Teslimat
+    - generic [ref=e34]:
+      - generic [ref=e35]: 
+      - text: 14 Gün İade
+    - generic [ref=e36]:
+      - generic [ref=e37]: 
+      - text: Üretici Garantisi
+    - generic [ref=e38]:
+      - generic [ref=e39]: 
+      - text: WhatsApp Destek
+  - banner [ref=e40]:
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e44]: 
+        - link "AR" [ref=e45] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2F
+        - link "EN" [ref=e46] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2F
+        - link "TR" [ref=e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=tr&returnUrl=%2F
+      - link "7ANRPS48" [ref=e48] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=e49]
+      - generic [ref=e50]:
+        - button "Ara" [ref=e51] [cursor=pointer]:
+          - img [ref=e52]
+        - link "Hesabım" [ref=e54] [cursor=pointer]:
+          - /url: /Profil
+          - img [ref=e55]
+        - link "Favorilerim" [ref=e57] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=e58]
+        - link "Sepet" [ref=e60] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=e61]
+          - generic [ref=e63]: "2"
+      - navigation [ref=e64]:
+        - list [ref=e65]:
+          - listitem [ref=e66] [cursor=pointer]:
+            - link "Filistin Temalı " [ref=e67]:
+              - /url: /Urun?k=1
+              - text: Filistin Temalı
+              - generic [ref=e68]: 
+          - listitem [ref=e69] [cursor=pointer]:
+            - link "Ev & Dekorasyon " [ref=e70]:
+              - /url: /Urun?k=2
+              - text: Ev & Dekorasyon
+              - generic [ref=e71]: 
+          - listitem [ref=e72] [cursor=pointer]:
+            - link "Hediyelik & Aksesuar " [ref=e73]:
+              - /url: /Urun?k=3
+              - text: Hediyelik & Aksesuar
+              - generic [ref=e74]: 
+          - listitem [ref=e75] [cursor=pointer]:
+            - link "İletişim" [ref=e76]:
+              - /url: /Kurumsal/Iletisim
+    - text:      
+  - main [ref=e77]:
+    - generic [ref=e78]:
+      - generic [ref=e79]:
+        - img "منتجات فلسطينية أصيلة" [ref=e81]
+        - img "لمسات منزلية بروح القدس" [ref=e83]
+      - button "Önceki Slayt" [ref=e84] [cursor=pointer]:
+        - img [ref=e85]
+      - button "Sonraki Slayt" [ref=e87] [cursor=pointer]:
+        - img [ref=e88]
+      - generic [ref=e90]:
+        - button "Slayt" [ref=e91] [cursor=pointer]
+        - button "Slayt" [ref=e92] [cursor=pointer]
+    - generic [ref=e95]:
+      - generic [ref=e96]:
+        - separator [ref=e97]
+        - heading "Öne Çıkan Çalışmalar" [level=2] [ref=e98]
+        - separator [ref=e99]
+      - generic [ref=e100]:
+        - generic [ref=e101] [cursor=pointer]:
+          - generic [ref=e102]:
+            - link "Yeni Filistin Motifli Duvar Tablosu" [ref=e103]:
+              - /url: /Urun/Detay/palestinian-pattern-wall-art-1
+              - generic [ref=e104]: Yeni
+              - img "Filistin Motifli Duvar Tablosu" [ref=e105]
+            - button "" [ref=e106]:
+              - generic [ref=e107]: 
+          - heading "Filistin Motifli Duvar Tablosu" [level=3] [ref=e108]:
+            - link "Filistin Motifli Duvar Tablosu" [ref=e109]:
+              - /url: /Urun/Detay/palestinian-pattern-wall-art-1
+          - paragraph [ref=e110]: 76 ₪
+          - generic [ref=e111]:
+            - generic [ref=e112]: ⏱
+            - generic [ref=e113]: "1"
+            - generic [ref=e114]: "04"
+            - generic [ref=e115]: ":"
+            - generic [ref=e116]: "56"
+            - generic [ref=e117]: ":"
+            - generic [ref=e118]: "29"
+        - generic [ref=e119] [cursor=pointer]:
+          - generic [ref=e120]:
+            - link "Yeni Zeytin Dalı Dekoratif Set" [ref=e121]:
+              - /url: /Urun/Detay/olive-branch-decor-set-2
+              - generic [ref=e122]: Yeni
+              - img "Zeytin Dalı Dekoratif Set" [ref=e123]
+            - button "" [ref=e124]:
+              - generic [ref=e125]: 
+          - heading "Zeytin Dalı Dekoratif Set" [level=3] [ref=e126]:
+            - link "Zeytin Dalı Dekoratif Set" [ref=e127]:
+              - /url: /Urun/Detay/olive-branch-decor-set-2
+          - paragraph [ref=e128]: 110 ₪
+        - generic [ref=e129] [cursor=pointer]:
+          - generic [ref=e130]:
+            - link "Yeni Filistin Hatıra Hediye Kutusu" [ref=e131]:
+              - /url: /Urun/Detay/palestine-keepsake-gift-box-3
+              - generic [ref=e132]: Yeni
+              - img "Filistin Hatıra Hediye Kutusu" [ref=e133]
+            - button "" [ref=e134]:
+              - generic [ref=e135]: 
+          - heading "Filistin Hatıra Hediye Kutusu" [level=3] [ref=e136]:
+            - link "Filistin Hatıra Hediye Kutusu" [ref=e137]:
+              - /url: /Urun/Detay/palestine-keepsake-gift-box-3
+          - paragraph [ref=e138]: 75 ₪
+        - generic [ref=e139] [cursor=pointer]:
+          - generic [ref=e140]:
+            - link "Yeni Kudüs Silüet Tablosu" [ref=e141]:
+              - /url: /Urun/Detay/jerusalem-skyline-art-4
+              - generic [ref=e142]: Yeni
+              - img "Kudüs Silüet Tablosu" [ref=e143]
+            - button "" [ref=e144]:
+              - generic [ref=e145]: 
+          - heading "Kudüs Silüet Tablosu" [level=3] [ref=e146]:
+            - link "Kudüs Silüet Tablosu" [ref=e147]:
+              - /url: /Urun/Detay/jerusalem-skyline-art-4
+          - paragraph [ref=e148]: 100 ₪
+        - generic [ref=e149] [cursor=pointer]:
+          - generic [ref=e150]:
+            - link "Yeni Gazze Dayanışma Posteri" [ref=e151]:
+              - /url: /Urun/Detay/gaza-solidarity-poster-5
+              - generic [ref=e152]: Yeni
+              - img "Gazze Dayanışma Posteri" [ref=e153]
+            - button "" [ref=e154]:
+              - generic [ref=e155]: 
+          - heading "Gazze Dayanışma Posteri" [level=3] [ref=e156]:
+            - link "Gazze Dayanışma Posteri" [ref=e157]:
+              - /url: /Urun/Detay/gaza-solidarity-poster-5
+          - paragraph [ref=e158]: 45 ₪
+        - generic [ref=e159] [cursor=pointer]:
+          - generic [ref=e160]:
+            - link "Yeni Filistin Harita & Bayrak Seti" [ref=e161]:
+              - /url: /Urun/Detay/palestine-map-a-flag-set-6
+              - generic [ref=e162]: Yeni
+              - img "Filistin Harita & Bayrak Seti" [ref=e163]
+            - button "" [ref=e164]:
+              - generic [ref=e165]: 
+          - heading "Filistin Harita & Bayrak Seti" [level=3] [ref=e166]:
+            - link "Filistin Harita & Bayrak Seti" [ref=e167]:
+              - /url: /Urun/Detay/palestine-map-a-flag-set-6
+          - paragraph [ref=e168]: 65 ₪
+        - generic [ref=e169] [cursor=pointer]:
+          - generic [ref=e170]:
+            - link "Yeni Salon İçin Kudüs Dekoru" [ref=e171]:
+              - /url: /Urun/Detay/jerusalem-living-room-decor-7
+              - generic [ref=e172]: Yeni
+              - img "Salon İçin Kudüs Dekoru" [ref=e173]
+            - button "" [ref=e174]:
+              - generic [ref=e175]: 
+          - heading "Salon İçin Kudüs Dekoru" [level=3] [ref=e176]:
+            - link "Salon İçin Kudüs Dekoru" [ref=e177]:
+              - /url: /Urun/Detay/jerusalem-living-room-decor-7
+          - paragraph [ref=e178]: 135 ₪
+        - generic [ref=e179] [cursor=pointer]:
+          - generic [ref=e180]:
+            - link "Yeni Altın Çerçeveli Duvar Dekoru" [ref=e181]:
+              - /url: /Urun/Detay/gold-framed-wall-decor-8
+              - generic [ref=e182]: Yeni
+              - img "Altın Çerçeveli Duvar Dekoru" [ref=e183]
+            - button "" [ref=e184]:
+              - generic [ref=e185]: 
+          - heading "Altın Çerçeveli Duvar Dekoru" [level=3] [ref=e186]:
+            - link "Altın Çerçeveli Duvar Dekoru" [ref=e187]:
+              - /url: /Urun/Detay/gold-framed-wall-decor-8
+          - paragraph [ref=e188]: 135 ₪
+        - generic [ref=e189] [cursor=pointer]:
+          - generic [ref=e190]:
+            - link "Yeni Filistin Sofra Sunum Seti" [ref=e191]:
+              - /url: /Urun/Detay/palestine-table-serving-set-9
+              - generic [ref=e192]: Yeni
+              - img "Filistin Sofra Sunum Seti" [ref=e193]
+            - button "" [ref=e194]:
+              - generic [ref=e195]: 
+          - heading "Filistin Sofra Sunum Seti" [level=3] [ref=e196]:
+            - link "Filistin Sofra Sunum Seti" [ref=e197]:
+              - /url: /Urun/Detay/palestine-table-serving-set-9
+          - paragraph [ref=e198]: 88 ₪
+        - generic [ref=e199] [cursor=pointer]:
+          - generic [ref=e200]:
+            - link "Yeni İsme Özel Filistin Hediyesi" [ref=e201]:
+              - /url: /Urun/Detay/personalized-palestine-gift-10
+              - generic [ref=e202]: Yeni
+              - img "İsme Özel Filistin Hediyesi" [ref=e203]
+            - button "" [ref=e204]:
+              - generic [ref=e205]: 
+          - heading "İsme Özel Filistin Hediyesi" [level=3] [ref=e206]:
+            - link "İsme Özel Filistin Hediyesi" [ref=e207]:
+              - /url: /Urun/Detay/personalized-palestine-gift-10
+          - paragraph [ref=e208]: 55 ₪
+      - link "Tümünü Gör" [ref=e210] [cursor=pointer]:
+        - /url: /Urun
+    - generic [ref=e211]:
+      - generic [ref=e212]:
+        - generic [ref=e213]:
+          - paragraph [ref=e214]: Çok Satanlar
+          - heading "En Çok Tercih Edilen" [level=2] [ref=e215]
+        - link "Tümünü Gör " [ref=e216] [cursor=pointer]:
+          - /url: /Urun?sort=popularity
+          - text: Tümünü Gör
+          - generic [ref=e217]: 
+      - generic [ref=e218]:
+        - article [ref=e219]:
+          - link "Çok Satan Kudüs Anahtarlık & Magnet Seti Kudüs Anahtarlık & Magnet Seti 28 ₪" [ref=e220] [cursor=pointer]:
+            - /url: /Urun/Detay/jerusalem-keychain-a-magnet-set-11
+            - generic [ref=e221]:
+              - generic [ref=e222]: Çok Satan
+              - img "Kudüs Anahtarlık & Magnet Seti" [ref=e223]
+            - heading "Kudüs Anahtarlık & Magnet Seti" [level=3] [ref=e224]
+            - paragraph [ref=e225]: 28 ₪
+        - article [ref=e226]:
+          - link "Çok Satan Nakışlı Filistin Bez Çanta Nakışlı Filistin Bez Çanta 70 ₪" [ref=e227] [cursor=pointer]:
+            - /url: /Urun/Detay/embroidered-palestine-tote-bag-12
+            - generic [ref=e228]:
+              - generic [ref=e229]: Çok Satan
+              - img "Nakışlı Filistin Bez Çanta" [ref=e230]
+            - heading "Nakışlı Filistin Bez Çanta" [level=3] [ref=e231]
+            - paragraph [ref=e232]: 70 ₪
+    - generic [ref=e235]:
+      - generic [ref=e236]:
+        - generic [ref=e238]: 
+        - heading "Banka Havalesi" [level=4] [ref=e239]
+        - paragraph [ref=e240]: IBAN bilgileriyle kolay ödeme
+      - generic [ref=e241]:
+        - generic [ref=e243]: 
+        - heading "Hızlı Teslimat" [level=4] [ref=e244]
+        - paragraph [ref=e245]: Siparişleriniz hızlıca elinize ulaşır
+      - generic [ref=e246]:
+        - generic [ref=e248]: 
+        - heading "Müşteri Memnuniyeti" [level=4] [ref=e249]
+        - paragraph [ref=e250]: "%100 müşteri memnuniyeti odaklı hizmet"
+  - contentinfo [ref=e251]:
+    - generic [ref=e253]:
+      - generic [ref=e254]:
+        - generic [ref=e256]: 
+        - generic [ref=e257]:
+          - generic [ref=e258]: Filistin'in Her Bölgesine
+          - generic [ref=e259]: Ücretsiz Kargo
+      - generic [ref=e260]:
+        - generic [ref=e262]: 
+        - generic [ref=e263]:
+          - generic [ref=e264]: Banka Havalesi
+          - generic [ref=e265]: IBAN ile kolay ödeme
+      - generic [ref=e266]:
+        - generic [ref=e268]: 
+        - generic [ref=e269]:
+          - generic [ref=e270]: Kapıda Ödeme
+          - generic [ref=e271]: Teslimatta ödeme seçeneği
+    - generic [ref=e272]:
+      - generic [ref=e273]:
+        - generic [ref=e274]:
+          - heading "E-posta bültenine abone ol" [level=3] [ref=e275]
+          - paragraph [ref=e276]: Kampanya ve fırsatlardan haberdar olun
+          - generic [ref=e277]:
+            - textbox "E-posta Adresi" [ref=e278]
+            - button "Abone Ol" [ref=e279] [cursor=pointer]
+        - generic [ref=e280]:
+          - heading "Kurumsal" [level=4] [ref=e281]
+          - list [ref=e282]:
+            - listitem [ref=e283]:
+              - link "Hakkımızda" [ref=e284] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=e285]:
+              - link "İletişim" [ref=e286] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=e287]:
+              - link "Koleksiyonlar" [ref=e288] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=e289]:
+              - link "Gizlilik Politikası" [ref=e290] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=e291]:
+              - link "Mesafeli Satış Sözleşmesi" [ref=e292] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=e294] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=e295]: 
+      - generic [ref=e296]:
+        - paragraph [ref=e298]: © 2026 7ANRPS48 Tüm hakları saklıdır.
+        - generic [ref=e299]:
+          - link "Gizlilik Politikası" [ref=e300] [cursor=pointer]:
+            - /url: /Kurumsal/Gizlilik
+          - text: "|"
+          - link "Kullanım Koşulları" [ref=e301] [cursor=pointer]:
+            - /url: /Kurumsal/KullaniciSozlesmesi
+          - text: "|"
+          - link "İade ve Değişim" [ref=e302] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+  - link "WhatsApp İletişim" [ref=e303] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=e304]
+    - generic [ref=e306]: WhatsApp
+  - link "Sepet" [ref=e307] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=e308]
+    - generic [ref=e310]: "2"

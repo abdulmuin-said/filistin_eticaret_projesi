@@ -1,0 +1,116 @@
+- generic [ref=e2]:
+  - text:          +               
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "7ANRPS48 Yönetim Paneli" [ref=e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=e6]
+      - generic [ref=e7]: Satıcı Paneli
+    - navigation "Admin ana menü" [ref=e8]:
+      - link " Panel" [ref=e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=e10]: 
+        - text: Panel
+      - generic [ref=e11]:
+        - button " Sipariş Yönetimi" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]: 
+          - text: Sipariş Yönetimi
+        - text:      
+      - generic [ref=e14]:
+        - button " Ürün Yönetimi" [ref=e15] [cursor=pointer]:
+          - generic [ref=e16]: 
+          - text: Ürün Yönetimi
+        - text:  +    
+      - generic [ref=e17]:
+        - button " Mağaza İçeriği" [ref=e18] [cursor=pointer]:
+          - generic [ref=e19]: 
+          - text: Mağaza İçeriği
+        - text:         
+      - link " Üyeler" [ref=e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=e21]: 
+        - text: Üyeler
+      - link " Toptancılar" [ref=e22] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=e23]: 
+        - text: Toptancılar
+      - link " Toptancı Grupları" [ref=e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=e25]: 
+        - text: Toptancı Grupları
+      - generic [ref=e26]:
+        - button " Raporlar" [ref=e27] [cursor=pointer]:
+          - generic [ref=e28]: 
+          - text: Raporlar
+        - text:  
+      - link " Banka Hesapları" [ref=e29] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=e30]: 
+        - text: Banka Hesapları
+      - link " Ayarlar" [ref=e31] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=e32]: 
+        - text: Ayarlar
+    - generic [ref=e33]:
+      - text: 
+      - combobox "Dil" [ref=e35]:
+        - option "AR"
+        - option "EN"
+        - option "TR" [selected]
+      - generic [ref=e36]:
+        - button "7ANRPS48 Admin Admin 7" [ref=e37] [cursor=pointer]:
+          - generic [ref=e38]:
+            - strong [ref=e39]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=e40]: "7"
+        - text:  
+  - generic [ref=e41]:
+    - main [ref=e42]:
+      - generic [ref=e43]:
+        - heading "Çark Ödülünü Düzenle" [level=1] [ref=e45]
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - generic [ref=e48]:
+              - generic [ref=e49]: Etiket (Türkçe)
+              - textbox "Etiket (Türkçe)" [ref=e50]: "%5 İndirim"
+            - generic [ref=e51]:
+              - generic [ref=e52]: Label (English)
+              - textbox "Label (English)" [ref=e53]: 5% Off
+            - generic [ref=e54]:
+              - generic [ref=e55]: التسمية (العربية)
+              - textbox "التسمية (العربية)" [ref=e56]: خصم 5%
+            - generic [ref=e57]:
+              - generic [ref=e58]: Ödül Tipi
+              - combobox "Ödül Tipi" [ref=e59]:
+                - option "İndirim (Yüzde)" [selected]
+                - option "Ücretsiz Kargo"
+                - option "Tekrar Dene"
+            - generic [ref=e60]:
+              - generic [ref=e61]: Değer (%)
+              - spinbutton "Değer (%)" [ref=e62]: "5"
+            - generic [ref=e63]:
+              - generic [ref=e64]: Dilim Rengi
+              - generic [ref=e65]:
+                - textbox "Dilim Rengi" [ref=e66]: "#313511"
+                - textbox [ref=e67]: "#313511"
+            - generic [ref=e68]:
+              - generic [ref=e69]: Sıra
+              - spinbutton "Sıra" [ref=e70]: "1"
+            - generic [ref=e72]:
+              - checkbox "Aktif" [checked] [ref=e73]
+              - text: Aktif
+            - separator [ref=e75]
+            - generic [ref=e76]:
+              - generic [ref=e77]: Kazanma Mesajı (Türkçe)
+              - textbox "Kazanma Mesajı (Türkçe)" [ref=e78]: Harika! Sepetinde %5 indirim kazandın!
+            - generic [ref=e79]:
+              - generic [ref=e80]: Win Message (English)
+              - textbox "Win Message (English)" [ref=e81]
+            - generic [ref=e82]:
+              - generic [ref=e83]: رسالة الفوز (العربية)
+              - textbox "رسالة الفوز (العربية)" [ref=e84]: رائع! لقد ربحت خصم 5%!
+          - generic [ref=e85]:
+            - button "Kaydet" [ref=e86] [cursor=pointer]
+            - link "İptal" [ref=e87] [cursor=pointer]:
+              - /url: /Admin/CarkOdul
+    - contentinfo [ref=e88]: © 2026 7ANRPS48 Yönetim Paneli. Tüm hakları saklıdır.

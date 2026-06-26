@@ -1,0 +1,104 @@
+- generic [active] [ref=e1]:
+  - heading "An unhandled exception occurred while processing the request." [level=1] [ref=e2]
+  - generic [ref=e3]: "FormatException: Index (zero based) must be greater than or equal to zero and less than the size of the argument list."
+  - paragraph [ref=e4]: System.Text.ValueStringBuilder.AppendFormatHelper(IFormatProvider provider, string format, ReadOnlySpan<object> args)
+  - list [ref=e5]:
+    - listitem [ref=e6] [cursor=pointer]: Stack
+    - listitem [ref=e7] [cursor=pointer]: Query
+    - listitem [ref=e8] [cursor=pointer]: Cookies
+    - listitem [ref=e9] [cursor=pointer]: Headers
+    - listitem [ref=e10] [cursor=pointer]: Routing
+  - list [ref=e12]:
+    - listitem [ref=e13]:
+      - 'heading "FormatException: Index (zero based) must be greater than or equal to zero and less than the size of the argument list." [level=2] [ref=e14]'
+      - list [ref=e15]:
+        - listitem [ref=e16]:
+          - heading "System.Text.ValueStringBuilder.AppendFormatHelper(IFormatProvider provider, string format, ReadOnlySpan<object> args)" [level=3] [ref=e17]
+        - listitem [ref=e18]:
+          - heading "string.FormatHelper(IFormatProvider provider, string format, ReadOnlySpan<object> args)" [level=3] [ref=e19]
+        - listitem [ref=e20]:
+          - heading "string.Format(IFormatProvider provider, string format, object[] args)" [level=3] [ref=e21]
+        - listitem [ref=e22]:
+          - heading "Microsoft.Extensions.Localization.ResourceManagerStringLocalizer.get_Item(string name, object[] arguments)" [level=3] [ref=e23]
+        - listitem [ref=e24]:
+          - heading "AspNetCoreGeneratedDocument.Areas_Admin_Views_Siparis_Index.ExecuteAsync() in Index.cshtml" [level=3] [ref=e25]:
+            - text: AspNetCoreGeneratedDocument.Areas_Admin_Views_Siparis_Index.ExecuteAsync() in
+            - code [ref=e26]: Index.cshtml
+          - button "+" [ref=e27] [cursor=pointer]
+          - list [ref=e29]:
+            - listitem [ref=e30]: "@foreach (var item in Model)"
+        - listitem [ref=e31]:
+          - heading "Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageCoreAsync(IRazorPage page, ViewContext context)" [level=3] [ref=e32]
+        - listitem [ref=e33]:
+          - heading "Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageAsync(IRazorPage page, ViewContext context, bool invokeViewStarts)" [level=3] [ref=e34]
+        - listitem [ref=e35]:
+          - heading "Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderAsync(ViewContext context)" [level=3] [ref=e36]
+        - listitem [ref=e37]:
+          - heading "Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, string contentType, Nullable<int> statusCode)" [level=3] [ref=e38]
+        - listitem [ref=e39]:
+          - heading "Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, string contentType, Nullable<int> statusCode)" [level=3] [ref=e40]
+        - listitem [ref=e41]:
+          - heading "Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ActionContext actionContext, IView view, ViewDataDictionary viewData, ITempDataDictionary tempData, string contentType, Nullable<int> statusCode)" [level=3] [ref=e42]
+        - listitem [ref=e43]:
+          - heading "Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor.ExecuteAsync(ActionContext context, ViewResult result)" [level=3] [ref=e44]
+        - listitem [ref=e45]:
+          - heading "Microsoft.AspNetCore.Mvc.ViewResult.ExecuteResultAsync(ActionContext context)" [level=3] [ref=e46]
+        - listitem [ref=e47]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0<TFilter, TFilterAsync>(ResourceInvoker invoker, Task lastTask, State next, Scope scope, object state, bool isCompleted)" [level=3] [ref=e48]
+        - listitem [ref=e49]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)" [level=3] [ref=e50]
+        - listitem [ref=e51]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext<TFilter, TFilterAsync>(ref State next, ref Scope scope, ref object state, ref bool isCompleted)" [level=3] [ref=e52]
+        - listitem [ref=e53]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()" [level=3] [ref=e54]
+        - listitem [ref=e55]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, object state, bool isCompleted)" [level=3] [ref=e56]
+        - listitem [ref=e57]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)" [level=3] [ref=e58]
+        - listitem [ref=e59]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(ref State next, ref Scope scope, ref object state, ref bool isCompleted)" [level=3] [ref=e60]
+        - listitem [ref=e61]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, object state, bool isCompleted)" [level=3] [ref=e62]
+        - listitem [ref=e63]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)" [level=3] [ref=e64]
+        - listitem [ref=e65]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)" [level=3] [ref=e66]
+        - listitem [ref=e67]:
+          - heading "Program+<>c+<<<Main>$>b__0_13>d.MoveNext() in Program.cs" [level=3] [ref=e68]:
+            - text: Program+<>c+<<<Main>$>b__0_13>d.MoveNext() in
+            - code [ref=e69]: Program.cs
+          - button "+" [ref=e70] [cursor=pointer]
+          - list [ref=e72]:
+            - listitem [ref=e73]: await next();
+        - listitem [ref=e74]:
+          - heading "Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)" [level=3] [ref=e75]
+        - listitem [ref=e76]:
+          - heading "Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)" [level=3] [ref=e77]
+        - listitem [ref=e78]:
+          - heading "Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)" [level=3] [ref=e79]
+        - listitem [ref=e80]:
+          - heading "Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)" [level=3] [ref=e81]
+        - listitem [ref=e82]:
+          - heading "Microsoft.AspNetCore.ResponseCompression.ResponseCompressionMiddleware.InvokeCore(HttpContext context)" [level=3] [ref=e83]
+        - listitem [ref=e84]:
+          - heading "Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)" [level=3] [ref=e85]
+        - listitem [ref=e86]:
+          - heading "Program+<>c+<<<Main>$>b__0_12>d.MoveNext() in Program.cs" [level=3] [ref=e87]:
+            - text: Program+<>c+<<<Main>$>b__0_12>d.MoveNext() in
+            - code [ref=e88]: Program.cs
+          - button "+" [ref=e89] [cursor=pointer]
+          - list [ref=e91]:
+            - listitem [ref=e92]: await next();
+        - listitem [ref=e93]:
+          - heading "Microsoft.AspNetCore.Diagnostics.StatusCodePagesMiddleware.Invoke(HttpContext context)" [level=3] [ref=e94]
+        - listitem [ref=e95]:
+          - heading "Program+<>c+<<<Main>$>b__0_11>d.MoveNext() in Program.cs" [level=3] [ref=e96]:
+            - text: Program+<>c+<<<Main>$>b__0_11>d.MoveNext() in
+            - code [ref=e97]: Program.cs
+          - button "+" [ref=e98] [cursor=pointer]
+          - list [ref=e100]:
+            - listitem [ref=e101]: await next();
+        - listitem [ref=e102]:
+          - heading "Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)" [level=3] [ref=e103]
+    - listitem [ref=e104]:
+      - button "Show raw exception details" [ref=e106] [cursor=pointer]

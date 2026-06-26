@@ -1,0 +1,224 @@
+@model List<FilistinProje.Core.Varliklar.Adres>
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["MyAddresses"];
+    var sehirler = new[] {
+        "Beytüllahim",
+        "Cenin (Jenin)",
+        "Deyr el-Balah",
+        "El-Halil (Hebron)",
+        "El-Kudüs (Jerusalem)",
+        "Eriha (Jericho)",
+        "Gazze (Gaza)",
+        "Han Yunus (Khan Yunis)",
+        "Kalkilya (Qalqilya)",
+        "Kuzey Gazze",
+        "Nablus",
+        "Ramallah & El-Bireh",
+        "Refah (Rafah)",
+        "Salfit",
+        "Tubas",
+        "Tulkarim"
+    };
+}
+
+<!-- Breadcrumb -->
+<div class="bg-[#f1ede7] border-b border-[#e5e2dc] py-3">
+    <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-[#47473d]">
+        <a href="/" class="hover:text-[#313511] transition-colors">@Localizer["HomePage"]</a>
+        <span>/</span>
+        <a href="/Profil" class="hover:text-[#313511] transition-colors">@Localizer["MyAccount"]</a>
+        <span>/</span>
+        <span class="text-[#1c1c18] font-medium">@Localizer["MyAddresses"]</span>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-10">
+    <div class="flex flex-col lg:flex-row gap-8">
+
+        <!-- Yan Menü -->
+        <aside class="lg:w-56 flex-shrink-0">
+            <div class="bg-white border border-[#e5e2dc] rounded-lg overflow-hidden">
+                <div class="bg-[#313511] p-4 text-center">
+                    <p class="text-white text-sm font-medium">@Localizer["MyAccount"]</p>
+                </div>
+                <nav class="p-2">
+                    <a href="/Profil" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-[#47473d] hover:bg-[#f1ede7] transition-colors mb-1">
+                        <i class="fas fa-user w-4"></i> @Localizer["Overview"]
+                    </a>
+                    <a href="/Profil/Siparislerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-[#47473d] hover:bg-[#f1ede7] transition-colors mb-1">
+                        <i class="fas fa-box w-4"></i> @Localizer["MyOrders"]
+                    </a>
+                    <a href="/Profil/Adreslerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-[#313511] bg-[#f1ede7] font-semibold mb-1">
+                        <i class="fas fa-location-dot w-4"></i> @Localizer["MyAddresses"]
+                    </a>
+                    <a href="/Favori" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-[#47473d] hover:bg-[#f1ede7] transition-colors mb-1">
+                        <i class="fas fa-heart w-4"></i> @Localizer["MyFavorites"]
+                    </a>
+                    <hr class="border-[#e5e2dc] my-2" />
+                    <form action="/Hesap/CikisYap" method="post" class="m-0">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded text-sm text-red-500 hover:bg-red-50 transition-colors text-left">
+                            <i class="fas fa-right-from-bracket w-4"></i> @Localizer["Logout"]
+                        </button>
+                    </form>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Ana İçerik -->
+        <main class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h1 class="font-serif text-3xl text-[#313511]">@Localizer["MyAddresses"]</h1>
+                    <p class="text-xs text-[#47473d] mt-1">@Localizer["ManageDeliveryAddresses"]</p>
+                </div>
+                <button type="button" id="adresEkleBtn"
+                        class="bg-[#313511] text-white text-xs tracking-widest uppercase px-4 py-2.5 rounded hover:bg-[#1c2001] transition-colors">
+                    <i class="fas fa-plus mr-1"></i> @Localizer["NewAddress"]
+                </button>
+            </div>
+
+            @if (TempData["Mesaj"] != null)
+            {
+                <div class="bg-green-50 border border-green-200 text-green-700 text-sm px-4 py-3 rounded mb-6">
+                    <i class="fas fa-circle-check mr-2"></i>@TempData["Mesaj"]
+                </div>
+            }
+
+            @if (!Model.Any())
+            {
+                <div class="text-center py-24 bg-white border border-[#e5e2dc] rounded-lg">
+                    <i class="fas fa-location-dot fa-4x text-[#e5e2dc] mb-6"></i>
+                    <h3 class="font-serif text-2xl text-[#313511] mb-3">@Localizer["NoAddressesSaved"]</h3>
+                    <p class="text-sm text-[#47473d] mb-6 max-w-sm mx-auto">@Localizer["AddAddressToSpeedUp"]</p>
+                    <button type="button" id="adresEkleBtnEmpty"
+                            class="inline-block bg-[#313511] text-white px-6 py-3 text-xs tracking-widest uppercase rounded-full hover:bg-[#1c2001] transition-colors">
+                        <i class="fas fa-plus mr-1"></i> @Localizer["AddAddress"]
+                    </button>
+                </div>
+            }
+            else
+            {
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @foreach (var item in Model)
+                    {
+                        <div class="bg-white border border-[#e5e2dc] rounded-lg p-5 hover:border-[#c5c0b8] transition-colors">
+                            <div class="flex items-start justify-between mb-3">
+                                <div>
+                                    <span class="text-xs uppercase tracking-widest text-[#b58735] font-medium">@item.Baslik</span>
+                                    <h3 class="font-semibold text-[#1c1c18] mt-0.5">@item.Sehir / @item.Ilce</h3>
+                                </div>
+                                <form action="/Profil/AdresSil" method="post" onsubmit="return confirm('@Localizer["ConfirmDeleteAddress"]')">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors rounded-full hover:bg-red-50" title="@Localizer["DeleteAddress"]">
+                                        <i class="fas fa-trash text-xs"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center gap-2 text-[#47473d]">
+                                    <i class="fas fa-user w-4 text-[#313511] opacity-50 text-xs"></i>
+                                    <span>@item.AdSoyad</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-[#47473d]">
+                                    <i class="fas fa-phone w-4 text-[#313511] opacity-50 text-xs"></i>
+                                    <span>@item.Telefon</span>
+                                </div>
+                                <div class="flex items-start gap-2 text-[#47473d]">
+                                    <i class="fas fa-location-dot w-4 text-[#313511] opacity-50 text-xs mt-0.5"></i>
+                                    <span class="leading-relaxed">@item.AcikAdres</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </main>
+    </div>
+</div>
+
+<!-- Adres Ekleme Modal -->
+<div id="adresModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50 p-4">
+    <div class="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
+        <div class="flex items-center justify-between p-6 border-b border-[#e5e2dc]">
+            <h2 class="font-serif text-xl text-[#313511]">@Localizer["AddNewAddress"]</h2>
+            <button id="modalKapat" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-[#313511] transition-colors rounded-full hover:bg-[#f1ede7]">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form action="/Profil/AdresEkle" method="post" class="p-6">
+            @Html.AntiForgeryToken()
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-medium text-[#1c1c18] tracking-wide uppercase mb-1.5">@Localizer["AddressTitle"]</label>
+                    <input type="text" name="Baslik" required placeholder="@Localizer["AddressTitlePlaceholder"]"
+                           class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3]" />
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-[#1c1c18] tracking-wide uppercase mb-1.5">@Localizer["FullName"]</label>
+                    <input type="text" name="AdSoyad" required placeholder="@Localizer["RecipientPlaceholder"]"
+                           class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3]" />
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-[#1c1c18] tracking-wide uppercase mb-1.5">@Localizer["Phone"]</label>
+                    <input type="text" name="Telefon" required placeholder="0555 123 45 67"
+                           class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3]" />
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-[#1c1c18] tracking-wide uppercase mb-1.5">@Localizer["District"]</label>
+                    <input type="text" name="Ilce" required placeholder="@Localizer["DistrictPlaceholder"]"
+                           class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3]" />
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-[#1c1c18] tracking-wide uppercase mb-1.5">@Localizer["City"]</label>
+                    <select name="Sehir" required
+                            class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3]">
+                        <option value="">@Localizer["SelectCity"]</option>
+                        @foreach (var sehir in sehirler)
+                        {
+                            <option value="@sehir">@sehir</option>
+                        }
+                    </select>
+                </div>
+                <div class="sm:col-span-2">
+                    <label class="block text-xs font-medium text-[#1c1c18] tracking-wide uppercase mb-1.5">@Localizer["FullAddress"]</label>
+                    <textarea name="AcikAdres" required rows="3" placeholder="@Localizer["FullAddressPlaceholder"]"
+                              class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none resize-none bg-[#fcf9f3]"></textarea>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 mt-6">
+                <button type="button" id="modalKapat2"
+                        class="border border-[#e5e2dc] text-[#47473d] text-xs tracking-widest uppercase px-5 py-2.5 rounded hover:bg-[#f1ede7] transition-colors">
+                    @Localizer["Cancel"]
+                </button>
+                <button type="submit"
+                        class="bg-[#313511] text-white text-xs tracking-widest uppercase px-5 py-2.5 rounded hover:bg-[#1c2001] transition-colors">
+                    @Localizer["SaveAddress"]
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById('adresModal');
+    const openBtns = [document.getElementById('adresEkleBtn'), document.getElementById('adresEkleBtnEmpty')];
+    const closeBtns = [document.getElementById('modalKapat'), document.getElementById('modalKapat2')];
+
+    openBtns.forEach(btn => btn && btn.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }));
+    closeBtns.forEach(btn => btn && btn.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }));
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    });
+</script>

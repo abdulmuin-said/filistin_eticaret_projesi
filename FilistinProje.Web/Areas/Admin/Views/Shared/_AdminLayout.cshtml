@@ -1,0 +1,379 @@
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
+@inject IStringLocalizer<SharedResource> Localizer
+@using System.Globalization
+@{
+    var currentCulture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+    var currentDirection = currentCulture == "ar" ? "rtl" : "ltr";
+    var languageReturnUrl = $"{Context.Request.Path}{Context.Request.QueryString}";
+    var siteSettings = SiteSettingsService.GetSettings();
+    var brandName = string.IsNullOrWhiteSpace(siteSettings.MarkaAdi) ? siteSettings.SiteAdi : siteSettings.MarkaAdi;
+    var logoUrl = string.IsNullOrWhiteSpace(siteSettings.SiteLogoUrl) ? "/74anrps48logo2.svg" : siteSettings.SiteLogoUrl;
+    var pageTitle = ViewData["Title"]?.ToString();
+    var layoutTitle = string.IsNullOrWhiteSpace(pageTitle) ? $"{brandName} {Localizer["AdminPanel"]}" : $"{pageTitle} - {brandName} {Localizer["AdminPanel"]}";
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    var canViewDashboard = ViewBag.CanViewDashboard is bool dashboardAccess && dashboardAccess;
+    var canManageOrders = ViewBag.CanManageOrders is bool orderAccess && orderAccess;
+    var canManageProducts = ViewBag.CanManageProducts is bool productAccess && productAccess;
+    var canManageContent = ViewBag.CanManageContent is bool contentAccess && contentAccess;
+    var canManageUsers = ViewBag.CanManageUsers is bool userAccess && userAccess;
+    var canViewReports = ViewBag.CanViewReports is bool reportAccess && reportAccess;
+    var canManageSettings = ViewBag.CanManageSettings is bool settingsAccess && settingsAccess;
+    var canManageWholesale = ViewBag.CanManageWholesale is bool wholesaleAccess && wholesaleAccess;
+    var canManageBankAccounts = ViewBag.CanManageBankAccounts is bool bankAccess && bankAccess;
+    var isReadOnlyAdmin = ViewBag.IsReadOnlyAdmin is bool readOnlyAccess && readOnlyAccess;
+
+    var adminName = ViewBag.AdminName?.ToString();
+    if (string.IsNullOrWhiteSpace(adminName))
+    {
+        adminName = User.Identity?.Name ?? "Admin";
+    }
+
+    var adminRoleLabel = ViewBag.AdminRoleLabel?.ToString() ?? Localizer["AdminRoleDefault"].Value;
+    var lastLoginUtc = ViewBag.AdminLastLogin as DateTime?;
+    var lastLoginText = lastLoginUtc.HasValue
+        ? lastLoginUtc.Value.ToLocalTime().ToString("dd.MM.yyyy HH:mm")
+        : Localizer["FirstActiveAdminSession"];
+    var safeAdminName = string.IsNullOrWhiteSpace(adminName) ? "Admin" : adminName;
+    var adminInitial = (safeAdminName ?? "Admin").Substring(0, 1).ToUpperInvariant();
+    var toastMessage = TempData["Mesaj"]?.ToString()
+        ?? TempData["Basari"]?.ToString()
+        ?? TempData["Hata"]?.ToString();
+    var toastStatus = (TempData["Durum"]?.ToString() ?? (TempData["Hata"] != null ? "danger" : "success")).ToLowerInvariant();
+    var toastType = toastStatus switch
+    {
+        "danger" => "error",
+        "error" => "error",
+        "warning" => "warning",
+        "info" => "info",
+        _ => "success"
+    };
+
+    var productControllers = new[] { "Urun", "Kategori", "UrunOzellik", "SlugTool" };
+    var contentControllers = new[] { "Slayt", "AnaSayfa", "HomeSections", "Kupon", "Yorum", "Bulten", "Iletisim", "CarkOdul", "PushBildirim" };
+    var reportControllers = new[] { "Home", "Rapor", "Ziyaretci", "Search" };
+}
+<!DOCTYPE html>
+<html lang="@currentCulture" dir="@currentDirection">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@layoutTitle</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="~/css/admin.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="ca-admin-shell">
+        <div id="caMobileOverlay" class="ca-mobile-overlay"></div>
+
+        <nav id="caMobileDrawer" class="ca-mobile-drawer" aria-label="@Localizer["AdminMainMenu"]">
+            <div class="ca-mobile-drawer-header">
+                <a href="/Admin/Home" class="ca-partner-logo">
+                    <img src="@logoUrl" asp-append-version="true" alt="@brandName" width="130" height="54" decoding="async" />
+                </a>
+                <button id="caMobileDrawerClose" class="ca-mobile-drawer-close" aria-label="Kapat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="ca-mobile-drawer-body">
+                @if (canViewDashboard)
+                {
+                    <a href="/Admin/Home" class="ca-mobile-nav-link @(currentController == "Home" ? "active" : "")">
+                        <i class="fas fa-chart-line"></i> @Localizer["Dashboard"]
+                    </a>
+                }
+                @if (canManageOrders)
+                {
+                    <div class="ca-mobile-nav-group">
+                        <div class="ca-mobile-nav-group-title"><i class="fas fa-bag-shopping"></i> @Localizer["OrderManagement"]</div>
+                        <a href="/Admin/Siparis" class="ca-mobile-nav-link ca-mobile-nav-sub @(currentController == "Siparis" ? "active" : "")"><i class="fas fa-list-check"></i> @Localizer["Orders"]</a>
+                        <a href="/Admin/Siparis?durum=0" class="ca-mobile-nav-link ca-mobile-nav-sub"><i class="fas fa-clock"></i> @Localizer["NewOrders"]</a>
+                        <a href="/Admin/Kargo" class="ca-mobile-nav-link ca-mobile-nav-sub @(currentController == "Kargo" ? "active" : "")"><i class="fas fa-truck-fast"></i> @Localizer["ShippingCompanies"]</a>
+                        <a href="/Admin/Iade" class="ca-mobile-nav-link ca-mobile-nav-sub @(currentController == "Iade" ? "active" : "")"><i class="fas fa-rotate-left"></i> @Localizer["ReturnRequests"]</a>
+                    </div>
+                }
+                @if (canManageProducts)
+                {
+                    <div class="ca-mobile-nav-group">
+                        <div class="ca-mobile-nav-group-title"><i class="fas fa-cubes"></i> @Localizer["ProductManagement"]</div>
+                        <a href="/Admin/Urun" class="ca-mobile-nav-link ca-mobile-nav-sub @(currentController == "Urun" ? "active" : "")"><i class="fas fa-box-open"></i> @Localizer["Products"]</a>
+                        <a href="/Admin/Urun/Ekle" class="ca-mobile-nav-link ca-mobile-nav-sub"><i class="fas fa-plus"></i> @Localizer["AddNewProduct"]</a>
+                        <a href="/Admin/Kategori" class="ca-mobile-nav-link ca-mobile-nav-sub @(currentController == "Kategori" ? "active" : "")"><i class="fas fa-layer-group"></i> @Localizer["Categories"]</a>
+                        <a href="/Admin/TopluFiyatGuncelle" class="ca-mobile-nav-link ca-mobile-nav-sub @(currentController == "TopluFiyatGuncelle" ? "active" : "")"><i class="fas fa-tags"></i> @Localizer["BulkPriceUpdate"]</a>
+                    </div>
+                }
+                @if (canManageContent)
+                {
+                    <div class="ca-mobile-nav-group">
+                        <div class="ca-mobile-nav-group-title"><i class="fas fa-store"></i> @Localizer["StoreContent"]</div>
+                        <a href="/Admin/Slayt" class="ca-mobile-nav-link ca-mobile-nav-sub @(currentController == "Slayt" ? "active" : "")"><i class="fas fa-images"></i> @Localizer["SliderManagement"]</a>
+                        <a href="/Admin/CarkOdul" class="ca-mobile-nav-link ca-mobile-nav-sub @(currentController == "CarkOdul" ? "active" : "")"><i class="fas fa-spinner"></i> @Localizer["SpinWheelManagement"]</a>
+                        <a href="/Admin/PushBildirim" class="ca-mobile-nav-link ca-mobile-nav-sub @(currentController == "PushBildirim" ? "active" : "")"><i class="fas fa-bell"></i> @Localizer["Admin_PushNotifications"]</a>
+                        <a href="/Admin/Kupon" class="ca-mobile-nav-link ca-mobile-nav-sub @(currentController == "Kupon" ? "active" : "")"><i class="fas fa-tags"></i> @Localizer["Coupons"]</a>
+                        <a href="/Admin/Iletisim" class="ca-mobile-nav-link ca-mobile-nav-sub @(currentController == "Iletisim" ? "active" : "")"><i class="fas fa-inbox"></i> @Localizer["Messages"]</a>
+                        <a href="/Admin/Bulten" class="ca-mobile-nav-link ca-mobile-nav-sub @(currentController == "Bulten" ? "active" : "")"><i class="fas fa-envelope-open-text"></i> @Localizer["NewsletterSubscribers"]</a>
+                    </div>
+                }
+                @if (canManageUsers)
+                {
+                    <a href="/Admin/Kullanici" class="ca-mobile-nav-link @(currentController == "Kullanici" ? "active" : "")">
+                        <i class="fas fa-users"></i> @Localizer["Members"]
+                    </a>
+                    <a href="/Admin/Personel" class="ca-mobile-nav-link @(currentController == "Personel" ? "active" : "")">
+                        <i class="fas fa-user-shield"></i> @Localizer["Admin_Staff"]
+                    </a>
+                }
+                @if (canManageWholesale)
+                {
+                    <a href="/Admin/Toptanci" class="ca-mobile-nav-link @(currentController == "Toptanci" ? "active" : "")">
+                        <i class="fas fa-handshake"></i> @Localizer["Wholesalers"]
+                    </a>
+                }
+                @if (canViewReports)
+                {
+                    <a href="/Admin/Rapor" class="ca-mobile-nav-link @(currentController == "Rapor" ? "active" : "")">
+                        <i class="fas fa-chart-pie"></i> @Localizer["Reports"]
+                    </a>
+                }
+                @if (canManageBankAccounts)
+                {
+                    <a href="/Admin/Bankalar" class="ca-mobile-nav-link @(currentController == "Bankalar" ? "active" : "")">
+                        <i class="fas fa-university"></i> @Localizer["BankAccounts"]
+                    </a>
+                }
+                @if (canManageSettings)
+                {
+                    <a href="/Admin/Ayarlar" class="ca-mobile-nav-link @(currentController == "Ayarlar" ? "active" : "")">
+                        <i class="fas fa-gear"></i> @Localizer["Settings"]
+                    </a>
+                }
+                <div class="ca-mobile-drawer-footer">
+                    <a href="/" target="_blank" class="ca-mobile-nav-link"><i class="fas fa-arrow-up-right-from-square"></i> @Localizer["ViewLiveSite"]</a>
+                    <form action="/Hesap/CikisYap" method="post" class="m-0">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="ca-mobile-nav-link ca-mobile-nav-link-danger w-100 text-start">
+                            <i class="fas fa-right-from-bracket"></i> @Localizer["Logout"]
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+        <header class="ca-partner-header">
+            <div class="ca-partner-brand">
+                <button id="caMobileMenuToggle" class="ca-hamburger d-none" aria-label="Menü">
+                    <span></span><span></span><span></span>
+                </button>
+                <a href="/Admin/Home" class="ca-partner-logo" aria-label="@brandName @Localizer["AdminPanel"]">
+                    <img src="@logoUrl" asp-append-version="true" alt="@brandName" width="160" height="66" decoding="async" />
+                </a>
+                <span class="ca-admin-mode">@Localizer["SellerPanel"]</span>
+            </div>
+
+            <nav class="ca-partner-nav" aria-label="@Localizer["AdminMainMenu"]">
+                @if (canViewDashboard)
+                {
+                    <a href="/Admin/Home" class="ca-partner-nav-link @(currentController == "Home" ? "active" : "")">
+                        <i class="fas fa-chart-line"></i> @Localizer["Dashboard"]
+                    </a>
+                }
+
+                @if (canManageOrders)
+                {
+                    <div class="dropdown">
+                        <button class="ca-partner-nav-link dropdown-toggle @(currentController == "Siparis" || currentController == "Iade" || currentController == "Kargo" ? "active" : "")" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bag-shopping"></i> @Localizer["OrderManagement"]
+                            @if (ViewBag.BekleyenSiparis != null && (int)ViewBag.BekleyenSiparis > 0)
+                            {
+                                <span class="ca-top-badge">@ViewBag.BekleyenSiparis</span>
+                            }
+                        </button>
+                        <ul class="dropdown-menu ca-top-menu">
+                            <li><a class="dropdown-item" href="/Admin/Siparis"><i class="fas fa-list-check"></i> @Localizer["Orders"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/Siparis?durum=0"><i class="fas fa-clock"></i> @Localizer["NewOrders"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/Siparis?durum=8"><i class="fas fa-box"></i> @Localizer["Packing"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/Kargo"><i class="fas fa-truck-fast"></i> @Localizer["ShippingCompanies"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/Kargo#bolgeler"><i class="fas fa-map-location-dot"></i> @Localizer["CargoRegions"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/Iade"><i class="fas fa-rotate-left"></i> @Localizer["ReturnRequests"]</a></li>
+                        </ul>
+                    </div>
+                }
+
+                @if (canManageProducts)
+                {
+                    <div class="dropdown">
+                        <button class="ca-partner-nav-link dropdown-toggle @(productControllers.Contains(currentController) ? "active" : "")" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-cubes"></i> @Localizer["ProductManagement"]
+                        </button>
+                        <ul class="dropdown-menu ca-top-menu">
+                            <li><a class="dropdown-item" href="/Admin/Urun"><i class="fas fa-box-open"></i> @Localizer["Products"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/Urun/Ekle"><i class="fas fa-plus"></i> @Localizer["AddNewProduct"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/Kategori"><i class="fas fa-layer-group"></i> @Localizer["Categories"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/UrunOzellik"><i class="fas fa-sliders"></i> @Localizer["ProductAttributes"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/Urun/Excel"><i class="fas fa-file-excel"></i> @Localizer["ExcelOperations"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/TopluFiyatGuncelle"><i class="fas fa-tags"></i> @Localizer["BulkPriceUpdate"]</a></li>
+                        </ul>
+                    </div>
+                }
+
+                @if (canManageContent)
+                {
+                    <div class="dropdown">
+                        <button class="ca-partner-nav-link dropdown-toggle @(contentControllers.Contains(currentController) ? "active" : "")" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-store"></i> @Localizer["StoreContent"]
+                            @if (ViewBag.OkunmamisIletisim != null && (int)ViewBag.OkunmamisIletisim > 0)
+                            {
+                                <span class="ca-top-badge warning">@ViewBag.OkunmamisIletisim</span>
+                            }
+                        </button>
+                        <ul class="dropdown-menu ca-top-menu">
+                            <li><a class="dropdown-item" href="/Admin/Slayt"><i class="fas fa-images"></i> @Localizer["SliderManagement"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/CarkOdul"><i class="fas fa-spinner"></i> @Localizer["SpinWheelManagement"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/PushBildirim"><i class="fas fa-bell"></i> @Localizer["Admin_PushNotifications"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/AnaSayfa"><i class="fas fa-palette"></i> @Localizer["HomePageContent"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/HomeSections"><i class="fas fa-layer-group"></i> @Localizer["HomePageSections"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/Kupon"><i class="fas fa-tags"></i> @Localizer["Coupons"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/Iletisim"><i class="fas fa-inbox"></i> @Localizer["Messages"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/Yorum"><i class="fas fa-comments"></i> @Localizer["ProductReviews"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/Yorum/SiteDegerlendirmeleri"><i class="fas fa-store"></i> @Localizer["SiteReviews"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/Bulten"><i class="fas fa-envelope-open-text"></i> @Localizer["NewsletterSubscribers"]</a></li>
+                        </ul>
+                    </div>
+                }
+
+                @if (canManageUsers)
+                {
+                    <a href="/Admin/Kullanici" class="ca-partner-nav-link @(currentController == "Kullanici" ? "active" : "")">
+                        <i class="fas fa-users"></i> @Localizer["Members"]
+                    </a>
+                    <a href="/Admin/Personel" class="ca-partner-nav-link @(currentController == "Personel" ? "active" : "")">
+                        <i class="fas fa-user-shield"></i> @Localizer["Admin_Staff"]
+                    </a>
+                }
+
+                @if (canManageWholesale)
+                {
+                    <a href="/Admin/Toptanci" class="ca-partner-nav-link @(currentController == "Toptanci" ? "active" : "")">
+                        <i class="fas fa-handshake"></i> @Localizer["Wholesalers"]
+                    </a>
+                    <a href="/Admin/Toptanci/UrunGruplari" class="ca-partner-nav-link @(currentController == "ToptanciUrunGrubu" ? "active" : "")">
+                        <i class="fas fa-layer-group"></i> @Localizer["WholesaleGroups"]
+                    </a>
+                }
+
+                @if (canViewReports)
+                {
+                    <div class="dropdown">
+                        <button class="ca-partner-nav-link dropdown-toggle @(reportControllers.Contains(currentController) && currentController != "Home" ? "active" : "")" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-chart-pie"></i> @Localizer["Reports"]
+                        </button>
+                        <ul class="dropdown-menu ca-top-menu">
+                            <li><a class="dropdown-item" href="/Admin/Rapor"><i class="fas fa-chart-column"></i> @Localizer["SalesReports"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/Ziyaretci"><i class="fas fa-user-clock"></i> @Localizer["VisitorAnalytics"]</a></li>
+                        </ul>
+                    </div>
+                }
+
+                @if (canManageBankAccounts)
+                {
+                    <a href="/Admin/Bankalar" class="ca-partner-nav-link @(currentController == "Bankalar" ? "active" : "")">
+                        <i class="fas fa-university"></i> @Localizer["BankAccounts"]
+                    </a>
+                }
+
+                @if (canManageSettings)
+                {
+                    <a href="/Admin/Ayarlar" class="ca-partner-nav-link @(currentController == "Ayarlar" ? "active" : "")">
+                        <i class="fas fa-gear"></i> @Localizer["Settings"]
+                    </a>
+                }
+            </nav>
+
+            <div class="ca-partner-actions">
+                @if (canViewDashboard)
+                {
+                    <form action="/Admin/Search" method="get" class="ca-partner-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" name="q" placeholder="@Localizer["SearchPlaceholder"]">
+                    </form>
+                }
+
+                <form action="/Dil/Degistir" method="get" class="me-2">
+                    <input type="hidden" name="returnUrl" value="@languageReturnUrl" />
+                    <select name="culture" onchange="this.form.submit()" title="@Localizer["Language"]" class="form-select form-select-sm d-inline-block" style="width: auto; min-width: 70px;">
+                        <option value="ar" selected="@(currentCulture == "ar")">AR</option>
+                        <option value="en" selected="@(currentCulture == "en")">EN</option>
+                        <option value="tr" selected="@(currentCulture == "tr")">TR</option>
+                    </select>
+                </form>
+
+                @if (isReadOnlyAdmin)
+                {
+                    <span class="ca-readonly-chip">@Localizer["ReadOnly"]</span>
+                }
+
+                <div class="dropdown">
+                    <button class="ca-user-trigger" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="ca-user-meta d-none d-lg-block text-end">
+                            <strong>@adminName</strong>
+                            <small>@adminRoleLabel</small>
+                        </span>
+                        <span class="ca-avatar">@adminInitial</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end ca-dropdown-menu mt-2">
+                        <li class="dropdown-item-text">
+                            <div class="fw-semibold">@adminName</div>
+                            <div class="small text-muted">@adminRoleLabel</div>
+                            <div class="small text-muted">@Localizer["LastLogin"]: @lastLoginText</div>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a href="/" target="_blank" class="dropdown-item">
+                                <i class="fas fa-arrow-up-right-from-square me-2"></i> @Localizer["ViewLiveSite"]
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form action="/Hesap/CikisYap" method="post" class="m-0">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="dropdown-item text-danger">
+                                    <i class="fas fa-right-from-bracket me-2"></i> @Localizer["Logout"]
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <div class="ca-admin-workspace">
+        <main class="ca-content ca-topnav-content">
+            @RenderBody()
+        </main>
+
+        <footer class="ca-footer ca-topnav-footer">
+            &copy; @DateTime.Now.Year @brandName @Localizer["AdminPanel"]. @Localizer["AllRightsReserved"]
+        </footer>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <script src="~/js/admin.js"></script>
+    @if (!string.IsNullOrWhiteSpace(toastMessage))
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                showToast(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(toastMessage)), '@toastType');
+            });
+        </script>
+    }
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

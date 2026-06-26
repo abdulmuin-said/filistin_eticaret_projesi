@@ -1,0 +1,235 @@
+@using FilistinProje.Core.Varliklar
+@model List<ToptanciUrunGrubu>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_WholesaleGroupTitle"];
+    var gruplar = Model;
+}
+
+<div class="container-fluid ca-fade-in">
+    <div class="ca-page-header">
+        <div>
+            <h1 class="ca-page-title">@Localizer["Admin_WholesaleGroupTitle"]</h1>
+            <p class="ca-page-subtitle">@Localizer["Admin_WholesaleGroupSubtitle"]</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <div class="ca-card">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title"><i class="fas fa-plus me-2"></i>@Localizer["Admin_YeniUrunGrubu"]</h3>
+                </div>
+                <div class="ca-card-body">
+                    <form method="post" action="/Admin/Toptanci/GrupKaydet">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" value="0" />
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="ca-label">@Localizer["Admin_GrupAdi"]</label>
+                                <input name="Ad" class="ca-input" placeholder='@Localizer["Admin_GrupAdiPlaceholder"]' required />
+                            </div>
+                            <div class="col-12">
+                                <label class="ca-label">@Localizer["Admin_Aciklama"]</label>
+                                <textarea name="Aciklama" class="ca-input" rows="2" placeholder='@Localizer["Admin_GrupAciklamaPlaceholder"]'></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="ca-label">@Localizer["Admin_Sira"]</label>
+                                <input name="Sira" class="ca-input" type="number" min="0" value="0" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="ca-label">@Localizer["Admin_Durum"]</label>
+                                <select name="AktifMi" class="ca-select">
+                                    <option value="true">@Localizer["Admin_Aktif"]</option>
+                                    <option value="false">@Localizer["Admin_Pasif"]</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="ca-btn ca-btn-primary mt-3" type="submit">
+                            <i class="fas fa-save"></i> @Localizer["Admin_GrubuKaydet"]
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="ca-card mt-4">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title"><i class="fas fa-percent me-2"></i>@Localizer["Admin_IskontoOraniEkle"]</h3>
+                </div>
+                <div class="ca-card-body">
+                    <form method="post" action="/Admin/Toptanci/IskontoKaydet">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" value="0" />
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="ca-label">@Localizer["Admin_UrunGrubu"]</label>
+                                <select name="ToptanciUrunGrubuId" class="ca-select" required>
+                                    <option value="">-- @Localizer["Admin_GrupSecin"] --</option>
+                                    @foreach (var g in gruplar.Where(g => g.AktifMi).OrderBy(g => g.Sira))
+                                    {
+                                        <option value="@g.Id">@g.Ad</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="ca-label">@Localizer["Admin_MinAdet"]</label>
+                                <input name="MinAdet" class="ca-input" type="number" min="1" value="10" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="ca-label">@Localizer["Admin_IskontoYuzdesi"]</label>
+                                <input name="IskontoYuzdesi" class="ca-input" type="number" min="0" max="100" step="0.5" value="5" required />
+                            </div>
+                        </div>
+                        <button class="ca-btn ca-btn-primary mt-3" type="submit">
+                            <i class="fas fa-save"></i> @Localizer["Admin_IskontoKaydet"]
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="ca-card">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title"><i class="fas fa-layer-group me-2"></i>@Localizer["Admin_KayitliGruplar"] (@gruplar.Count)</h3>
+                </div>
+                @if (!gruplar.Any())
+                {
+                    <div class="ca-card-body text-center py-5">
+                        <i class="fas fa-layer-group fa-3x mb-3" style="color:var(--ca-muted);"></i>
+                        <p class="text-muted">@Localizer["Admin_GrupYok"]</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="ca-table-wrapper">
+                        <table class="ca-table">
+                            <thead>
+                                <tr>
+                                    <th class="ps-4">@Localizer["Admin_GrupAdi"]</th>
+                                    <th>@Localizer["Admin_Aciklama"]</th>
+                                    <th>@Localizer["Admin_Durum"]</th>
+                                    <th>@Localizer["Admin_IskontoSayisi"]</th>
+                                    <th class="text-end pe-4">@Localizer["Admin_Islem"]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var grup in gruplar)
+                                {
+                                    <tr>
+                                        <td class="ps-4">
+                                            <div class="ca-fw-bold">@grup.Ad</div>
+                                            <div class="small text-muted">@Localizer["Admin_Sira"]: @grup.Sira · @grup.Urunler.Count @Localizer["Admin_UrunSayisiSuffix"]</div>
+                                        </td>
+                                        <td>
+                                            <span class="small">@(!string.IsNullOrWhiteSpace(grup.Aciklama) ? grup.Aciklama : "-")</span>
+                                        </td>
+                                        <td>
+                                            <span class="ca-badge @(grup.AktifMi ? "ca-badge-success" : "ca-badge-neutral")">@(grup.AktifMi ? Localizer["Admin_Aktif"] : Localizer["Admin_Pasif"])</span>
+                                        </td>
+                                        <td>
+                                            <span class="ca-badge ca-badge-info">@(grup.IskontoOranlari?.Count(i => i.AktifMi) ?? 0) @Localizer["Admin_AktifSuffix"]</span>
+                                        </td>
+                                        <td class="text-end pe-4">
+                                            <div class="dropdown">
+                                                <button class="ca-btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="@Localizer["Admin_Islem"]">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end ca-dropdown-menu">
+                                                    <li>
+                                                        <button class="dropdown-item" type="button" data-bs-toggle="collapse" data-bs-target="#grup-@grup.Id">
+                                                            <i class="fas fa-pen me-2"></i> @Localizer["Admin_Duzenle"]
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" data-bs-toggle="collapse" href="#iskontolar-@grup.Id" role="button">
+                                                            <i class="fas fa-percent me-2"></i> @Localizer["Admin_IskontoGor"]
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <form method="post" action="/Admin/Toptanci/GrupSil/@grup.Id" class="m-0" onsubmit="return confirm('@Localizer["Admin_GrupSilConfirm"]');">
+                                                            @Html.AntiForgeryToken()
+                                                            <button class="dropdown-item text-danger" type="submit">
+                                                                <i class="fas fa-trash me-2"></i> @Localizer["Admin_Sil"]
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="collapse" id="grup-@grup.Id">
+                                        <td colspan="5" class="p-4" style="background:var(--ca-bg);">
+                                            <form method="post" action="/Admin/Toptanci/GrupKaydet">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="Id" value="@grup.Id" />
+                                                <div class="row g-3">
+                                                    <div class="col-md-4"><label class="ca-label">@Localizer["Admin_GrupAdi"]</label><input name="Ad" value="@grup.Ad" class="ca-input" required /></div>
+                                                    <div class="col-md-4"><label class="ca-label">@Localizer["Admin_Sira"]</label><input name="Sira" value="@grup.Sira" class="ca-input" type="number" min="0" /></div>
+                                                    <div class="col-md-4">
+                                                        <label class="ca-label">@Localizer["Admin_Durum"]</label>
+                                                        <select name="AktifMi" class="ca-select">
+                                                            <option value="true" selected="@grup.AktifMi">@Localizer["Admin_Aktif"]</option>
+                                                            <option value="false" selected="@(!grup.AktifMi)">@Localizer["Admin_Pasif"]</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-12"><label class="ca-label">@Localizer["Admin_Aciklama"]</label><textarea name="Aciklama" class="ca-input" rows="2">@grup.Aciklama</textarea></div>
+                                                    <div class="col-12 text-end"><button class="ca-btn ca-btn-primary" type="submit"><i class="fas fa-save"></i> @Localizer["Admin_Guncelle"]</button></div>
+                                                </div>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <tr class="collapse" id="iskontolar-@grup.Id">
+                                        <td colspan="5" class="p-0" style="background:transparent;">
+                                            <div class="p-3" style="background:var(--ca-bg);border-top:1px solid var(--ca-border);">
+                                                <h6 class="mb-3"><i class="fas fa-percent me-2"></i>@grup.Ad - @Localizer["Admin_IskontoOranlari"]</h6>
+                                                @if (grup.IskontoOranlari == null || !grup.IskontoOranlari.Any(i => !i.SilindiMi && i.AktifMi))
+                                                {
+                                                    <p class="text-muted small mb-2">@Localizer["Admin_IskontoYok"]</p>
+                                                }
+                                                else
+                                                {
+                                                    <div class="table-responsive">
+                                                        <table class="table table-sm mb-2">
+                                                            <thead><tr><th>@Localizer["Admin_MinAdet"]</th><th>@Localizer["Admin_IskontoYuzdesi"]</th><th>@Localizer["Admin_Durum"]</th><th class="text-end">@Localizer["Admin_Sil"]</th></tr></thead>
+                                                            <tbody>
+                                                                @foreach (var iskonto in grup.IskontoOranlari.Where(i => !i.SilindiMi).OrderBy(i => i.MinAdet))
+                                                                {
+                                                                    <tr>
+                                                                        <td>@iskonto.MinAdet</td>
+                                                                        <td>@iskonto.IskontoYuzdesi%</td>
+                                                                        <td><span class="ca-badge @(iskonto.AktifMi ? "ca-badge-success" : "ca-badge-neutral")">@(iskonto.AktifMi ? Localizer["Admin_Aktif"] : Localizer["Admin_Pasif"])</span></td>
+                                                                        <td class="text-end">
+                                                                            <form method="post" action="/Admin/Toptanci/IskontoSil/@iskonto.Id" class="m-0" onsubmit="return confirm('@Localizer["Admin_IskontoSilConfirm"]');">
+                                                                                @Html.AntiForgeryToken()
+                                                                                <button class="ca-btn-icon text-danger" type="submit"><i class="fas fa-trash"></i></button>
+                                                                            </form>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                }
+                                                <form method="post" action="/Admin/Toptanci/IskontoKaydet">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="Id" value="0" />
+                                                    <input type="hidden" name="ToptanciUrunGrubuId" value="@grup.Id" />
+                                                    <div class="row g-2">
+                                                        <div class="col"><input name="MinAdet" class="ca-input form-control-sm" type="number" min="1" placeholder='@Localizer["Admin_MinAdet"]' required /></div>
+                                                        <div class="col"><input name="IskontoYuzdesi" class="ca-input form-control-sm" type="number" min="0" max="100" step="0.5" placeholder='@Localizer["Admin_IskontoYuzdesi"]' required /></div>
+                                                        <div class="col-auto"><button class="ca-btn ca-btn-sm ca-btn-primary" type="submit"><i class="fas fa-plus"></i> @Localizer["Admin_Ekle"]</button></div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

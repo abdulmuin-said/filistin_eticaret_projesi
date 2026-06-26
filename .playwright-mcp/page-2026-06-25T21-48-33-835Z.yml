@@ -1,0 +1,452 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: 
+      - text: Free shipping on orders over 200 ₪
+    - generic [ref=e6]:
+      - generic [ref=e7]: 
+      - text: Easy payment by IBAN
+    - generic [ref=e8]:
+      - generic [ref=e9]: 
+      - text: Pay on delivery option
+    - generic [ref=e10]:
+      - generic [ref=e11]: 
+      - text: Fast Production
+    - generic [ref=e12]:
+      - generic [ref=e13]: 
+      - text: Careful Packaging
+    - generic [ref=e14]:
+      - generic [ref=e15]: 
+      - text: Delivery Across Palestine
+    - generic [ref=e16]:
+      - generic [ref=e17]: 
+      - text: 14 Days Return
+    - generic [ref=e18]:
+      - generic [ref=e19]: 
+      - text: Manufacturer Guarantee
+    - generic [ref=e20]:
+      - generic [ref=e21]: 
+      - text: WhatsApp Support
+    - generic [ref=e22]:
+      - generic [ref=e23]: 
+      - text: Free shipping on orders over 200 ₪
+    - generic [ref=e24]:
+      - generic [ref=e25]: 
+      - text: Easy payment by IBAN
+    - generic [ref=e26]:
+      - generic [ref=e27]: 
+      - text: Pay on delivery option
+    - generic [ref=e28]:
+      - generic [ref=e29]: 
+      - text: Fast Production
+    - generic [ref=e30]:
+      - generic [ref=e31]: 
+      - text: Careful Packaging
+    - generic [ref=e32]:
+      - generic [ref=e33]: 
+      - text: Delivery Across Palestine
+    - generic [ref=e34]:
+      - generic [ref=e35]: 
+      - text: 14 Days Return
+    - generic [ref=e36]:
+      - generic [ref=e37]: 
+      - text: Manufacturer Guarantee
+    - generic [ref=e38]:
+      - generic [ref=e39]: 
+      - text: WhatsApp Support
+  - banner [ref=e40]:
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e44]: 
+        - link "AR" [ref=e45] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2F
+        - link "EN" [ref=e46] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2F
+        - link "TR" [ref=e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=tr&returnUrl=%2F
+      - link "7ANRPS48" [ref=e48] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=e49]
+      - generic [ref=e50]:
+        - button "Search" [ref=e51] [cursor=pointer]:
+          - img [ref=e52]
+        - link "My Account" [ref=e54] [cursor=pointer]:
+          - /url: /Profil
+          - img [ref=e55]
+        - link "My Favorites" [ref=e57] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=e58]
+        - link "Cart" [ref=e60] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=e61]
+          - generic [ref=e63]: "2"
+      - navigation [ref=e64]:
+        - list [ref=e65]:
+          - listitem [ref=e66] [cursor=pointer]:
+            - link "Åžehir ve Mimari " [ref=e67]:
+              - /url: /Urun?k=13
+              - text: Åžehir ve Mimari
+              - generic [ref=e68]: 
+          - listitem [ref=e69] [cursor=pointer]:
+            - link "Palestine Inspired " [ref=e70]:
+              - /url: /Urun?k=1
+              - text: Palestine Inspired
+              - generic [ref=e71]: 
+          - listitem [ref=e72] [cursor=pointer]:
+            - link "Home & Decoration " [ref=e73]:
+              - /url: /Urun?k=2
+              - text: Home & Decoration
+              - generic [ref=e74]: 
+          - listitem [ref=e75] [cursor=pointer]:
+            - link "Manzara TemalÄ± " [ref=e76]:
+              - /url: /Urun?k=14
+              - text: Manzara TemalÄ±
+              - generic [ref=e77]: 
+          - listitem [ref=e78] [cursor=pointer]:
+            - link "Ã‡iÃ§ekli ve Dekoratif " [ref=e79]:
+              - /url: /Urun?k=15
+              - text: Ã‡iÃ§ekli ve Dekoratif
+              - generic [ref=e80]: 
+          - listitem [ref=e81] [cursor=pointer]:
+            - link "Gifts & Accessories " [ref=e82]:
+              - /url: /Urun?k=3
+              - text: Gifts & Accessories
+              - generic [ref=e83]: 
+          - listitem [ref=e84] [cursor=pointer]:
+            - link "Hayvanlar Alemi " [ref=e85]:
+              - /url: /Urun?k=16
+              - text: Hayvanlar Alemi
+              - generic [ref=e86]: 
+          - listitem [ref=e87] [cursor=pointer]:
+            - link "Modern & Soyut " [ref=e88]:
+              - /url: /Urun?k=17
+              - text: Modern & Soyut
+              - generic [ref=e89]: 
+          - listitem [ref=e90] [cursor=pointer]:
+            - link "Ã‡ocuk OdasÄ± " [ref=e91]:
+              - /url: /Urun?k=18
+              - text: Ã‡ocuk OdasÄ±
+              - generic [ref=e92]: 
+          - listitem [ref=e93] [cursor=pointer]:
+            - link "FarklÄ± TasarÄ±mlar " [ref=e94]:
+              - /url: /Urun?k=19
+              - text: FarklÄ± TasarÄ±mlar
+              - generic [ref=e95]: 
+          - listitem [ref=e96] [cursor=pointer]:
+            - link "Dini ve Hat SanatÄ± " [ref=e97]:
+              - /url: /Urun?k=20
+              - text: Dini ve Hat SanatÄ±
+              - generic [ref=e98]: 
+          - listitem [ref=e99] [cursor=pointer]:
+            - link "Klasik Eserler " [ref=e100]:
+              - /url: /Urun?k=21
+              - text: Klasik Eserler
+              - generic [ref=e101]: 
+          - listitem [ref=e102] [cursor=pointer]:
+            - link "AtatÃ¼rk ve TÃ¼rkiye " [ref=e103]:
+              - /url: /Urun?k=22
+              - text: AtatÃ¼rk ve TÃ¼rkiye
+              - generic [ref=e104]: 
+          - listitem [ref=e105] [cursor=pointer]:
+            - link "KadÄ±n TemalÄ± " [ref=e106]:
+              - /url: /Urun?k=23
+              - text: KadÄ±n TemalÄ±
+              - generic [ref=e107]: 
+          - listitem [ref=e108] [cursor=pointer]:
+            - link "Yiyecek ve Ä°Ã§ecek " [ref=e109]:
+              - /url: /Urun?k=24
+              - text: Yiyecek ve Ä°Ã§ecek
+              - generic [ref=e110]: 
+          - listitem [ref=e111] [cursor=pointer]:
+            - link "OsmanlÄ± ve TuÄŸra " [ref=e112]:
+              - /url: /Urun?k=25
+              - text: OsmanlÄ± ve TuÄŸra
+              - generic [ref=e113]: 
+          - listitem [ref=e114] [cursor=pointer]:
+            - link "Soyut ve Sanatsal " [ref=e115]:
+              - /url: /Urun?k=26
+              - text: Soyut ve Sanatsal
+              - generic [ref=e116]: 
+          - listitem [ref=e117] [cursor=pointer]:
+            - link "Contact" [ref=e118]:
+              - /url: /Kurumsal/Iletisim
+    - text:      
+  - main [ref=e119]:
+    - generic [ref=e120]:
+      - generic [ref=e121]:
+        - img "Authentic Palestinian Products" [ref=e123]
+        - img "Home Touches with Jerusalem Spirit" [ref=e125]
+      - button "Previous Slide" [ref=e126] [cursor=pointer]:
+        - img [ref=e127]
+      - button "Next Slide" [ref=e129] [cursor=pointer]:
+        - img [ref=e130]
+      - generic [ref=e132]:
+        - button "Slide" [ref=e133] [cursor=pointer]
+        - button "Slide" [ref=e134] [cursor=pointer]
+    - generic [ref=e137]:
+      - generic [ref=e138]:
+        - separator [ref=e139]
+        - heading "Featured Works" [level=2] [ref=e140]
+        - separator [ref=e141]
+      - generic [ref=e142]:
+        - generic [ref=e143] [cursor=pointer]:
+          - generic [ref=e144]:
+            - link "New " [ref=e145]:
+              - /url: /Urun/Detay/modern-soyut-kanvas-tablo-13
+              - generic [ref=e146]: New
+              - generic [ref=e148]: 
+            - button "" [ref=e149]:
+              - generic [ref=e150]: 
+          - heading "Modern Abstract Canvas Painting" [level=3] [ref=e151]:
+            - link "Modern Abstract Canvas Painting" [ref=e152]:
+              - /url: /Urun/Detay/modern-soyut-kanvas-tablo-13
+          - paragraph [ref=e154]: 550 ₪
+        - generic [ref=e155] [cursor=pointer]:
+          - generic [ref=e156]:
+            - link "New Palestinian Pattern Wall Art" [ref=e157]:
+              - /url: /Urun/Detay/palestinian-pattern-wall-art-1
+              - generic [ref=e158]: New
+              - img "Palestinian Pattern Wall Art" [ref=e159]
+            - button "" [ref=e160]:
+              - generic [ref=e161]: 
+          - heading "Palestinian Pattern Wall Art" [level=3] [ref=e162]:
+            - link "Palestinian Pattern Wall Art" [ref=e163]:
+              - /url: /Urun/Detay/palestinian-pattern-wall-art-1
+          - generic [ref=e164]:
+            - paragraph [ref=e165]: 76 ₪
+            - paragraph [ref=e166]: 95 ₪
+            - generic [ref=e167]: "-%20"
+        - generic [ref=e168] [cursor=pointer]:
+          - generic [ref=e169]:
+            - link "New Olive Branch Decor Set" [ref=e170]:
+              - /url: /Urun/Detay/olive-branch-decor-set-2
+              - generic [ref=e171]: New
+              - img "Olive Branch Decor Set" [ref=e172]
+            - button "" [ref=e173]:
+              - generic [ref=e174]: 
+          - heading "Olive Branch Decor Set" [level=3] [ref=e175]:
+            - link "Olive Branch Decor Set" [ref=e176]:
+              - /url: /Urun/Detay/olive-branch-decor-set-2
+          - generic [ref=e177]:
+            - paragraph [ref=e178]: 110 ₪
+            - paragraph [ref=e179]: 120 ₪
+            - generic [ref=e180]: "-%8"
+        - generic [ref=e181] [cursor=pointer]:
+          - generic [ref=e182]:
+            - link "" [ref=e183]:
+              - /url: /Urun/Detay/cicekli-dekoratif-poster-14
+              - generic [ref=e185]: 
+            - button "" [ref=e186]:
+              - generic [ref=e187]: 
+          - heading "Floral Decorative Poster" [level=3] [ref=e188]:
+            - link "Floral Decorative Poster" [ref=e189]:
+              - /url: /Urun/Detay/cicekli-dekoratif-poster-14
+          - paragraph [ref=e191]: 320 ₪
+        - generic [ref=e192] [cursor=pointer]:
+          - generic [ref=e193]:
+            - link "" [ref=e194]:
+              - /url: /Urun/Detay/premium-sehir-silueti-kanvas-15
+              - generic [ref=e196]: 
+            - button "" [ref=e197]:
+              - generic [ref=e198]: 
+          - heading "Premium City Skyline Canvas" [level=3] [ref=e199]:
+            - link "Premium City Skyline Canvas" [ref=e200]:
+              - /url: /Urun/Detay/premium-sehir-silueti-kanvas-15
+          - paragraph [ref=e202]: 950 ₪
+        - generic [ref=e203] [cursor=pointer]:
+          - generic [ref=e204]:
+            - link "New Palestine Keepsake Gift Box" [ref=e205]:
+              - /url: /Urun/Detay/palestine-keepsake-gift-box-3
+              - generic [ref=e206]: New
+              - img "Palestine Keepsake Gift Box" [ref=e207]
+            - button "" [ref=e208]:
+              - generic [ref=e209]: 
+          - heading "Palestine Keepsake Gift Box" [level=3] [ref=e210]:
+            - link "Palestine Keepsake Gift Box" [ref=e211]:
+              - /url: /Urun/Detay/palestine-keepsake-gift-box-3
+          - paragraph [ref=e213]: 75 ₪
+        - generic [ref=e214] [cursor=pointer]:
+          - generic [ref=e215]:
+            - link "New Jerusalem Skyline Art" [ref=e216]:
+              - /url: /Urun/Detay/jerusalem-skyline-art-4
+              - generic [ref=e217]: New
+              - img "Jerusalem Skyline Art" [ref=e218]
+            - button "" [ref=e219]:
+              - generic [ref=e220]: 
+          - heading "Jerusalem Skyline Art" [level=3] [ref=e221]:
+            - link "Jerusalem Skyline Art" [ref=e222]:
+              - /url: /Urun/Detay/jerusalem-skyline-art-4
+          - generic [ref=e223]:
+            - paragraph [ref=e224]: 100 ₪
+            - paragraph [ref=e225]: 110 ₪
+            - generic [ref=e226]: "-%9"
+        - generic [ref=e227] [cursor=pointer]:
+          - generic [ref=e228]:
+            - link "New Gaza Solidarity Poster" [ref=e229]:
+              - /url: /Urun/Detay/gaza-solidarity-poster-5
+              - generic [ref=e230]: New
+              - img "Gaza Solidarity Poster" [ref=e231]
+            - button "" [ref=e232]:
+              - generic [ref=e233]: 
+          - heading "Gaza Solidarity Poster" [level=3] [ref=e234]:
+            - link "Gaza Solidarity Poster" [ref=e235]:
+              - /url: /Urun/Detay/gaza-solidarity-poster-5
+          - paragraph [ref=e237]: 45 ₪
+        - generic [ref=e238] [cursor=pointer]:
+          - generic [ref=e239]:
+            - link "New Palestine Map & Flag Set" [ref=e240]:
+              - /url: /Urun/Detay/palestine-map-a-flag-set-6
+              - generic [ref=e241]: New
+              - img "Palestine Map & Flag Set" [ref=e242]
+            - button "" [ref=e243]:
+              - generic [ref=e244]: 
+          - heading "Palestine Map & Flag Set" [level=3] [ref=e245]:
+            - link "Palestine Map & Flag Set" [ref=e246]:
+              - /url: /Urun/Detay/palestine-map-a-flag-set-6
+          - paragraph [ref=e248]: 65 ₪
+        - generic [ref=e249] [cursor=pointer]:
+          - generic [ref=e250]:
+            - link "New Jerusalem Living Room Decor" [ref=e251]:
+              - /url: /Urun/Detay/jerusalem-living-room-decor-7
+              - generic [ref=e252]: New
+              - img "Jerusalem Living Room Decor" [ref=e253]
+            - button "" [ref=e254]:
+              - generic [ref=e255]: 
+          - heading "Jerusalem Living Room Decor" [level=3] [ref=e256]:
+            - link "Jerusalem Living Room Decor" [ref=e257]:
+              - /url: /Urun/Detay/jerusalem-living-room-decor-7
+          - paragraph [ref=e259]: 135 ₪
+      - link "View All" [ref=e261] [cursor=pointer]:
+        - /url: /Urun
+    - generic [ref=e262]:
+      - generic [ref=e263]:
+        - generic [ref=e264]:
+          - paragraph [ref=e265]: Best Sellers
+          - heading "Most Preferred" [level=2] [ref=e266]
+        - link "View All " [ref=e267] [cursor=pointer]:
+          - /url: /Urun?sort=popularity
+          - text: View All
+          - generic [ref=e268]: 
+      - generic [ref=e269]:
+        - article [ref=e270]:
+          - link "Best Seller %7 Gold Framed Wall Decor Gold Framed Wall Decor 135 ₪ 145 ₪ -%7" [ref=e271] [cursor=pointer]:
+            - /url: /Urun/Detay/gold-framed-wall-decor-8
+            - generic [ref=e272]:
+              - generic [ref=e273]: Best Seller
+              - generic [ref=e274]: "%7"
+              - img "Gold Framed Wall Decor" [ref=e275]
+            - heading "Gold Framed Wall Decor" [level=3] [ref=e276]
+            - generic [ref=e277]:
+              - paragraph [ref=e278]: 135 ₪
+              - paragraph [ref=e279]: 145 ₪
+              - generic [ref=e280]: "-%7"
+        - article [ref=e281]:
+          - link "Best Seller Palestine Table Serving Set Palestine Table Serving Set 88 ₪" [ref=e282] [cursor=pointer]:
+            - /url: /Urun/Detay/palestine-table-serving-set-9
+            - generic [ref=e283]:
+              - generic [ref=e284]: Best Seller
+              - img "Palestine Table Serving Set" [ref=e285]
+            - heading "Palestine Table Serving Set" [level=3] [ref=e286]
+            - paragraph [ref=e288]: 88 ₪
+        - article [ref=e289]:
+          - link "Best Seller Personalized Palestine Gift Personalized Palestine Gift 55 ₪" [ref=e290] [cursor=pointer]:
+            - /url: /Urun/Detay/personalized-palestine-gift-10
+            - generic [ref=e291]:
+              - generic [ref=e292]: Best Seller
+              - img "Personalized Palestine Gift" [ref=e293]
+            - heading "Personalized Palestine Gift" [level=3] [ref=e294]
+            - paragraph [ref=e296]: 55 ₪
+        - article [ref=e297]:
+          - link "Best Seller Jerusalem Keychain & Magnet Set Jerusalem Keychain & Magnet Set 28 ₪" [ref=e298] [cursor=pointer]:
+            - /url: /Urun/Detay/jerusalem-keychain-a-magnet-set-11
+            - generic [ref=e299]:
+              - generic [ref=e300]: Best Seller
+              - img "Jerusalem Keychain & Magnet Set" [ref=e301]
+            - heading "Jerusalem Keychain & Magnet Set" [level=3] [ref=e302]
+            - paragraph [ref=e304]: 28 ₪
+        - article [ref=e305]:
+          - link "Best Seller Embroidered Palestine Tote Bag Embroidered Palestine Tote Bag 70 ₪" [ref=e306] [cursor=pointer]:
+            - /url: /Urun/Detay/embroidered-palestine-tote-bag-12
+            - generic [ref=e307]:
+              - generic [ref=e308]: Best Seller
+              - img "Embroidered Palestine Tote Bag" [ref=e309]
+            - heading "Embroidered Palestine Tote Bag" [level=3] [ref=e310]
+            - paragraph [ref=e312]: 70 ₪
+    - generic [ref=e315]:
+      - generic [ref=e316]:
+        - generic [ref=e318]: 
+        - heading "Bank Transfer" [level=4] [ref=e319]
+        - paragraph [ref=e320]: Easy payment with IBAN details
+      - generic [ref=e321]:
+        - generic [ref=e323]: 
+        - heading "Fast Delivery" [level=4] [ref=e324]
+        - paragraph [ref=e325]: Your orders arrive quickly
+      - generic [ref=e326]:
+        - generic [ref=e328]: 
+        - heading "Customer Satisfaction" [level=4] [ref=e329]
+        - paragraph [ref=e330]: 100% customer satisfaction focused service
+  - contentinfo [ref=e331]:
+    - generic [ref=e333]:
+      - generic [ref=e334]:
+        - generic [ref=e336]: 
+        - generic [ref=e337]:
+          - generic [ref=e338]: Across Palestine
+          - generic [ref=e339]: Free Shipping
+      - generic [ref=e340]:
+        - generic [ref=e342]: 
+        - generic [ref=e343]:
+          - generic [ref=e344]: Bank Transfer
+          - generic [ref=e345]: Easy payment by IBAN
+      - generic [ref=e346]:
+        - generic [ref=e348]: 
+        - generic [ref=e349]:
+          - generic [ref=e350]: Cash on Delivery
+          - generic [ref=e351]: Pay on delivery option
+    - generic [ref=e352]:
+      - generic [ref=e353]:
+        - generic [ref=e354]:
+          - heading "Subscribe to newsletter" [level=3] [ref=e355]
+          - paragraph [ref=e356]: Stay informed about campaigns and deals
+          - generic [ref=e357]:
+            - textbox "Email Address" [ref=e358]
+            - button "Subscribe" [ref=e359] [cursor=pointer]
+        - generic [ref=e360]:
+          - heading "Corporate" [level=4] [ref=e361]
+          - list [ref=e362]:
+            - listitem [ref=e363]:
+              - link "About Us" [ref=e364] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=e365]:
+              - link "Contact" [ref=e366] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=e367]:
+              - link "Collections" [ref=e368] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=e369]:
+              - link "Privacy Policy" [ref=e370] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=e371]:
+              - link "Distance Sales Contract" [ref=e372] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=e374] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=e375]: 
+      - generic [ref=e376]:
+        - paragraph [ref=e378]: © 2026 7ANRPS48 All rights reserved.
+        - generic [ref=e379]:
+          - link "Privacy Policy" [ref=e380] [cursor=pointer]:
+            - /url: /Kurumsal/Gizlilik
+          - text: "|"
+          - link "Terms of Use" [ref=e381] [cursor=pointer]:
+            - /url: /Kurumsal/KullaniciSozlesmesi
+          - text: "|"
+          - link "Return and Exchange" [ref=e382] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+  - link "WhatsApp Contact" [ref=e383] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=e384]
+    - generic [ref=e386]: WhatsApp
+  - link "Cart" [ref=e387] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=e388]
+    - generic [ref=e390]: "2"

@@ -1,0 +1,87 @@
+@model List<FilistinProje.Core.Varliklar.CarkOdul>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_CarkOdul_Title"];
+}
+
+<div class="container-fluid ca-fade-in">
+    <div class="ca-page-header">
+        <div>
+            <h1 class="ca-page-title">@Localizer["Admin_CarkOdul_Title"]</h1>
+            <p class="ca-page-subtitle">@Localizer["Admin_CarkOdul_Subtitle"]</p>
+        </div>
+        <a href="/Admin/CarkOdul/Ekle" class="ca-btn ca-btn-primary">
+            <i class="fas fa-plus"></i> @Localizer["Admin_CarkOdul_YeniOdul"]
+        </a>
+    </div>
+
+    @if (TempData["Mesaj"] != null)
+    {
+        <div class="alert alert-@(TempData["Durum"] ?? "success") alert-dismissible fade show">@TempData["Mesaj"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card ca-card">
+        <div class="table-responsive">
+            <table class="table ca-table mb-0">
+                <thead>
+                    <tr>
+                        <th style="width:50px">@Localizer["Admin_CarkOdul_TableNo"]</th>
+                        <th style="width:60px">@Localizer["Admin_CarkOdul_TableColor"]</th>
+                        <th>@Localizer["Admin_CarkOdul_TableLabelTr"]</th>
+                        <th>@Localizer["Admin_CarkOdul_TableLabelEn"]</th>
+                        <th>@Localizer["Admin_CarkOdul_TableLabelAr"]</th>
+                        <th>@Localizer["Admin_CarkOdul_TableType"]</th>
+                        <th>@Localizer["Admin_CarkOdul_TableValue"]</th>
+                        <th style="width:80px">@Localizer["Admin_CarkOdul_TableOrder"]</th>
+                        <th style="width:80px">@Localizer["Admin_CarkOdul_TableActive"]</th>
+                        <th style="width:120px">@Localizer["Admin_CarkOdul_TableActions"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>
+                                <span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:@item.Renk;border:2px solid #e5e2dc;"></span>
+                            </td>
+                            <td>@item.LabelTr</td>
+                            <td>@item.LabelEn</td>
+                            <td>@item.LabelAr</td>
+                            <td>
+                                <span class="ca-badge ca-badge-@(item.Tip == "discount" ? "success" : item.Tip == "freeship" ? "primary" : "secondary")">
+                                    @(item.Tip switch { "discount" => Localizer["Admin_CarkOdul_TypeDiscount"].Value, "freeship" => Localizer["Admin_CarkOdul_TypeFreeship"].Value, _ => Localizer["Admin_CarkOdul_TypeOther"].Value })
+                                </span>
+                            </td>
+                            <td>@(item.Tip == "discount" ? $"%{item.Deger}" : "-")</td>
+                            <td>@item.Sira</td>
+                            <td>
+                                @if (item.AktifMi)
+                                {
+                                    <span class="text-success"><i class="fas fa-check-circle"></i></span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger"><i class="fas fa-times-circle"></i></span>
+                                }
+                            </td>
+                            <td>
+                                <a href="/Admin/CarkOdul/Duzenle/@item.Id" class="btn btn-sm btn-outline-secondary me-1" title="@Localizer["Admin_CarkOdul_Edit"]">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form method="post" action="/Admin/CarkOdul/Sil/@item.Id" style="display:inline" onsubmit="return confirm('@Localizer["Admin_CarkOdul_DeleteConfirm"]')">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="@Localizer["Admin_CarkOdul_Delete"]">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,110 @@
+@model IEnumerable<FilistinProje.Core.Varliklar.UrunSecenek>
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var siteSettings = SiteSettingsService.GetSettings();
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>@Localizer["OptionsFor"] <span class="text-primary">@ViewBag.UrunBaslik</span></h2>
+        <a href="/Urun" class="btn btn-secondary">@Localizer["BackToList"]</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">@Localizer["AddNewOption"]</div>
+                <div class="card-body">
+                    <form asp-action="SecenekEkle" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="UrunId" value="@ViewBag.UrunId" />
+
+                        <div class="mb-3">
+                            <label>@Localizer["Size"]</label>
+                            <select name="Olcu" class="form-select">
+                                <option>@Localizer["FrameNone"] (35x50 cm)</option>
+                                <option>50x70 cm</option>
+                                <option>70x100 cm</option>
+                                <option>100x140 cm</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>@Localizer["FrameType"]</label>
+                            <select name="CerceveTipi" class="form-select">
+                                <option>@Localizer["FrameNone"] (@Localizer["FrameNone"])</option>
+                                <option>@Localizer["FrameBlack"]</option>
+                                <option>@Localizer["FrameWhite"]</option>
+                                <option>@Localizer["FrameGold"]</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>@Localizer["CostPrice"]</label>
+                            <input type="number" name="MaliyetFiyati" class="form-control" placeholder="@Localizer["CostPlaceholder"]" step="0.01" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label>@Localizer["SellingPrice"]</label>
+                            <input type="number" name="SatisFiyati" class="form-control" placeholder="@Localizer["PricePlaceholder"]" step="0.01" />
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">@Localizer["Add"]</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">@Localizer["ExistingOptions"]</div>
+                <div class="card-body p-0">
+                    <table class="table table-striped mb-0">
+                        <thead>
+                            <tr>
+                                <th>@Localizer["Size"]</th>
+                                <th>@Localizer["Frame"]</th>
+                                <th>@Localizer["Cost"]</th>
+                                <th>@Localizer["SellingPrice"]</th>
+                                <th>@Localizer["Profit"]</th>
+                                <th>@Localizer["Delete"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!Model.Any())
+                            {
+                                <tr><td colspan="6" class="text-center p-3">@Localizer["NoOptionsAdded"]</td></tr>
+                            }
+                            else
+                            {
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.Olcu</td>
+                                        <td>@item.CerceveTipi</td>
+                                        <td class="text-danger">@item.MaliyetFiyati @currencySymbol</td>
+                                        <td class="text-success fw-bold">@item.SatisFiyati @currencySymbol</td>
+                                        <td>
+                                            <span class="badge bg-info text-dark">
+                                                +@(item.SatisFiyati - item.MaliyetFiyati) @currencySymbol
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <form asp-action="SecenekSil" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">@Localizer["Delete"]</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

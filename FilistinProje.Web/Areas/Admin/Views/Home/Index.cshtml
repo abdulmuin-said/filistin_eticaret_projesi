@@ -1,0 +1,545 @@
+@model FilistinProje.Core.Models.AdminDashboardViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_Yonetim_Paneli"];
+    var chartLabelsJson = System.Text.Json.JsonSerializer.Serialize(Model.RevenueChartLabels);
+    var chartDataJson = System.Text.Json.JsonSerializer.Serialize(Model.RevenueChartValues);
+    var monthlyLabelsJson = System.Text.Json.JsonSerializer.Serialize(Model.MonthlyRevenueLabels);
+    var monthlyDataJson = System.Text.Json.JsonSerializer.Serialize(Model.MonthlyRevenueValues);
+    var cityLabelsJson = System.Text.Json.JsonSerializer.Serialize(Model.CitySales.Select(x => x.Sehir));
+    var cityOrdersJson = System.Text.Json.JsonSerializer.Serialize(Model.CitySales.Select(x => x.SiparisAdedi));
+    var cityRevenueJson = System.Text.Json.JsonSerializer.Serialize(Model.CitySales.Select(x => x.Ciro));
+    var categoryLabelsJson = System.Text.Json.JsonSerializer.Serialize(Model.CategorySales.Select(x => x.KategoriAdi));
+    var categoryRevenueJson = System.Text.Json.JsonSerializer.Serialize(Model.CategorySales.Select(x => x.Ciro));
+}
+
+<div class="container-fluid ca-fade-in">
+    <div class="ca-page-header">
+        <div>
+            <h1 class="ca-page-title">@Localizer["Admin_Yonetim_Paneli"]</h1>
+            <p class="ca-page-subtitle">@Localizer["Admin_Siparis_stok_ve_trafik_gorunumunun_tek_ekrandaki_ozeti"]</p>
+        </div>
+        <div class="ca-date-pill">
+            <i class="far fa-calendar-alt"></i> @DateTime.Now.ToString("dd MMMM yyyy, dddd")
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-xl-2 col-md-4 col-6">
+            <div class="ca-stat">
+                <div class="ca-stat-label">@Localizer["Admin_TotalRevenue"]</div>
+                <div class="ca-stat-value ca-text-success">@Model.TotalRevenue.ToString("N2") <small>₪</small></div>
+                <div class="ca-stat-footer">@Localizer["Admin_MonthlyAmount", Model.MonthlyRevenue.ToString("N2")] ₪</div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-6">
+            <div class="ca-stat">
+                <div class="ca-stat-label">@Localizer["Admin_Bugunku_Ciro"]</div>
+                <div class="ca-stat-value ca-text-primary">@Model.DailyRevenue.ToString("N2") <small>₪</small></div>
+                <div class="ca-stat-footer">@Localizer["Admin_WeeklyAmount", Model.WeeklyRevenue.ToString("N2")] ₪</div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-6">
+            <div class="ca-stat">
+                <div class="ca-stat-label">@Localizer["Admin_Toplam_Siparis"]</div>
+                <div class="ca-stat-value">@Model.TotalOrders</div>
+                <div class="ca-stat-footer">@Localizer["Admin_TodayOrders", Model.TodayOrders]</div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-6">
+            <div class="ca-stat">
+                <div class="ca-stat-label">@Localizer["Admin_Pending"]</div>
+                <div class="ca-stat-value ca-text-warning">@Model.PendingOrders</div>
+                <div class="ca-stat-footer">@Localizer["Admin_ReadyToShipCount", Model.ReadyToShipOrders]</div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-6">
+            <div class="ca-stat">
+                <div class="ca-stat-label">@Localizer["Admin_Kargoda_Iade"]</div>
+                <div class="ca-stat-value ca-text-info">@Model.ShippedOrders / @Model.CancelledOrReturnedOrders</div>
+                <div class="ca-stat-footer">@Localizer["Admin_Operasyon_ozet_durumu"]</div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-6">
+            <div class="ca-stat">
+                <div class="ca-stat-label">@Localizer["Admin_Mesaj_Aktif_Urun"]</div>
+                <div class="ca-stat-value">@Model.UnreadContactCount / @Model.ActiveProductCount</div>
+                <div class="ca-stat-footer">@Localizer["Admin_OperationTracking"]</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="ca-card mb-4">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title"><i class="fas fa-chart-area me-2 ca-text-primary"></i>@Localizer["Admin_Son_7_Gun_Gelir_Grafigi"]</h3>
+                </div>
+                <div class="ca-card-body">
+                    <div class="ca-chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ca-card mb-4">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title"><i class="fas fa-chart-line me-2 ca-text-success"></i>@Localizer["Admin_Aylik_Ciro_Trendi"]</h3>
+                </div>
+                <div class="ca-card-body">
+                    <div class="ca-chart-container">
+                        <canvas id="monthlyRevenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ca-card mb-4">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title"><i class="fas fa-bolt me-2 ca-text-warning"></i>@Localizer["Admin_Hizli_Islemler"]</h3>
+                </div>
+                <div class="ca-card-body">
+                    <div class="row g-3">
+                        <div class="col-md-3 col-6">
+                            <a href="/Admin/Urun/Ekle" class="text-decoration-none">
+                                <div class="ca-quick-action">
+                                    <div class="ca-quick-icon ca-text-primary"><i class="fas fa-plus-circle"></i></div>
+                                    <div class="ca-quick-label">@Localizer["Admin_Urun_Ekle"]</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <a href="/Admin/Siparis" class="text-decoration-none">
+                                <div class="ca-quick-action">
+                                    <div class="ca-quick-icon ca-text-success"><i class="fas fa-box"></i></div>
+                                    <div class="ca-quick-label">@Localizer["Admin_Siparisler"]</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <a href="/Admin/UrunOzellik" class="text-decoration-none">
+                                <div class="ca-quick-action">
+                                    <div class="ca-quick-icon ca-text-info"><i class="fas fa-sliders-h"></i></div>
+                                    <div class="ca-quick-label">@Localizer["Admin_Ozellik_Alanlari"]</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <a href="/Admin/Iletisim" class="text-decoration-none">
+                                <div class="ca-quick-action">
+                                    <div class="ca-quick-icon ca-text-warning"><i class="fas fa-inbox"></i></div>
+                                    <div class="ca-quick-label">@Localizer["Admin_Iletisim_Kutusu"]</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="ca-card h-100">
+                        <div class="ca-card-header">
+                            <h3 class="ca-card-title"><i class="fas fa-fire me-2 ca-text-danger"></i>@Localizer["Admin_En_Cok_Satanlar"]</h3>
+                        </div>
+                        <div class="ca-card-body p-0">
+                            @if (Model.TopSellingProducts.Any())
+                            {
+                                <div class="list-group list-group-flush">
+                                    @foreach (var item in Model.TopSellingProducts)
+                                    {
+                                        <a href="/Admin/Urun/Duzenle/@item.ProductId" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                                            <img src="@item.ProductImageUrl" alt="@item.ProductName" width="48" height="48" loading="lazy" decoding="async" style="object-fit:cover; border-radius:12px; background:#f7f7f7;">
+                                            <div class="flex-grow-1">
+                                                <div class="fw-semibold">@item.ProductName</div>
+                                                <div class="small text-muted">@item.AmountLabel</div>
+                                            </div>
+                                            <i class="fas fa-chevron-right small text-muted"></i>
+                                        </a>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="ca-empty" style="padding:32px;">
+                                    <i class="fas fa-box-open"></i>
+                                    <p>@Localizer["Admin_Henuz_satis_verisi_yok"]</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="ca-card h-100">
+                        <div class="ca-card-header">
+                            <h3 class="ca-card-title"><i class="fas fa-eye me-2 ca-text-primary"></i>@Localizer["Admin_MostViewed"]</h3>
+                        </div>
+                        <div class="ca-card-body p-0">
+                            @if (Model.MostViewedProducts.Any())
+                            {
+                                <div class="list-group list-group-flush">
+                                    @foreach (var item in Model.MostViewedProducts)
+                                    {
+                                        <a href="/Admin/Urun/Duzenle/@item.ProductId" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                                            <img src="@item.ProductImageUrl" alt="@item.ProductName" width="48" height="48" loading="lazy" decoding="async" style="object-fit:cover; border-radius:12px; background:#f7f7f7;">
+                                            <div class="flex-grow-1">
+                                                <div class="fw-semibold">@item.ProductName</div>
+                                                <div class="small text-muted">@item.AmountLabel</div>
+                                            </div>
+                                            <i class="fas fa-chevron-right small text-muted"></i>
+                                        </a>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="ca-empty" style="padding:32px;">
+                                    <i class="fas fa-chart-line"></i>
+                                    <p>@Localizer["Admin_NoViewData"]</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mt-1">
+                <div class="col-md-6">
+                    <div class="ca-card h-100">
+                        <div class="ca-card-header">
+                            <h3 class="ca-card-title"><i class="fas fa-box-open me-2 ca-text-success"></i>@Localizer["Admin_RecentProducts"]</h3>
+                        </div>
+                        <div class="ca-card-body p-0">
+                            <div class="list-group list-group-flush">
+                                @foreach (var item in Model.RecentProducts)
+                                {
+                                    <a href="/Admin/Urun/Duzenle/@item.Id" class="list-group-item list-group-item-action">
+                                        <div class="fw-semibold">@item.Title</div>
+                                        <div class="small text-muted">@item.Subtitle</div>
+                                        <div class="small text-muted mt-1">@item.CreatedAt.ToString("dd.MM.yyyy HH:mm")</div>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="ca-card h-100">
+                        <div class="ca-card-header">
+                            <h3 class="ca-card-title"><i class="fas fa-comments me-2 ca-text-warning"></i>@Localizer["Admin_RecentCustomerReviews"]</h3>
+                        </div>
+                        <div class="ca-card-body p-0">
+                            @if (Model.RecentReviews.Any())
+                            {
+                                <div class="list-group list-group-flush">
+                                    @foreach (var item in Model.RecentReviews.Take(5))
+                                    {
+                                        <a href="/Admin/Yorum" class="list-group-item list-group-item-action">
+                                            <div class="d-flex justify-content-between gap-3">
+                                                <div class="fw-semibold">@item.CustomerName</div>
+                                                <span class="badge @(item.Approved ? "text-bg-success" : "text-bg-warning")">@(item.Approved ? Localizer["Admin_Approved"].Value : Localizer["Admin_Waiting"].Value)</span>
+                                            </div>
+                                            <div class="small text-muted">@item.ProductName | @item.Rating / 5</div>
+                                            <div class="small mt-1">@(item.Comment.Length > 90 ? item.Comment[..90] + "..." : item.Comment)</div>
+                                        </a>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="ca-empty" style="padding:32px;">
+                                    <i class="fas fa-comment-slash"></i>
+                                    <p>@Localizer["Admin_NoReviewsYet"]</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="ca-card mb-4">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title"><i class="fas fa-triangle-exclamation me-2 ca-text-warning"></i>@Localizer["Admin_SystemAlerts"]</h3>
+                </div>
+                <div class="ca-card-body">
+                    @if (Model.Alerts.Any())
+                    {
+                        foreach (var alert in Model.Alerts)
+                        {
+                            var alertClass = alert.Severity switch
+                            {
+                                "danger" => "alert-danger",
+                                "warning" => "alert-warning",
+                                "secondary" => "alert-secondary",
+                                _ => "alert-info"
+                            };
+                            <div class="alert @alertClass mb-3">
+                                <div class="fw-semibold">@alert.Title</div>
+                                <div class="small">@alert.Description</div>
+                                <a href="@alert.Link" class="small fw-semibold text-decoration-none">@Localizer["Admin_GoToDetail"]</a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-success mb-0">
+                            @Localizer["Admin_NoCriticalSystemAlerts"]
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="ca-card mb-4">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title"><i class="fas fa-route me-2 ca-text-primary"></i>@Localizer["Admin_OperationSummary"]</h3>
+                </div>
+                <div class="ca-card-body">
+                    <div class="d-flex justify-content-between mb-3"><span>@Localizer["Admin_PendingOrders"]</span><strong>@Model.PendingOrders</strong></div>
+                    <div class="d-flex justify-content-between mb-3"><span>@Localizer["Admin_Kargoya_hazir"]</span><strong>@Model.ReadyToShipOrders</strong></div>
+                    <div class="d-flex justify-content-between mb-3"><span>@Localizer["Admin_Shipped"]</span><strong>@Model.ShippedOrders</strong></div>
+                    <div class="d-flex justify-content-between"><span>@Localizer["Admin_CancelReturn"]</span><strong>@Model.CancelledOrReturnedOrders</strong></div>
+                </div>
+            </div>
+
+            <div class="ca-card mb-4">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title"><i class="fas fa-city me-2 ca-text-warning"></i>@Localizer["Admin_CityBasedSales"]</h3>
+                </div>
+                <div class="ca-card-body p-0">
+                    @if (Model.CitySales.Any())
+                    {
+                        <div class="list-group list-group-flush">
+                            @foreach (var item in Model.CitySales)
+                            {
+                                <div class="list-group-item d-flex align-items-center gap-3">
+                                    <div class="flex-shrink-0" style="width:32px;height:32px;border-radius:10px;background:var(--ca-bg);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:var(--ca-primary);">
+                                        @item.SiparisAdedi
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="fw-semibold">@item.Sehir</div>
+                                        <div class="small text-muted">@item.Ciro.ToString("N2") ₪</div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="ca-empty" style="padding:32px;">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p>@Localizer["Admin_NoCityData"]</p>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="ca-card mb-4">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title"><i class="fas fa-signal me-2 ca-text-success"></i>@Localizer["Admin_TrafficArea"]</h3>
+                </div>
+                <div class="ca-card-body">
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>@Localizer["Admin_Last7DaysVisits"]</span>
+                        <strong>@Model.TotalVisitsLast7Days</strong>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>@Localizer["Admin_UniqueVisitors"]</span>
+                        <strong>@Model.UniqueVisitorsLast7Days</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ca-card mb-4">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title"><i class="fas fa-chart-pie me-2 ca-text-info"></i>@Localizer["Admin_Kategori_Performansi"]</h3>
+                </div>
+                <div class="ca-card-body">
+                    @if (Model.CategorySales.Any())
+                    {
+                        <div class="ca-chart-container-sm" style="height:200px;">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                        <hr class="my-2">
+                        <div class="small">
+                            @foreach (var item in Model.CategorySales.Take(4))
+                            {
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>@item.KategoriAdi</span>
+                                    <span class="fw-semibold">@item.Ciro.ToString("N2") ₪</span>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="ca-empty" style="padding:32px;">
+                            <i class="fas fa-chart-simple"></i>
+                            <p>@Localizer["Admin_NoCategoryData"]</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="ca-card">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title"><i class="fas fa-bell me-2 ca-text-warning"></i>@Localizer["Admin_RecentActivities"]</h3>
+                </div>
+                <div class="ca-card-body p-0">
+                    @if (Model.RecentActivities.Any())
+                    {
+                        foreach (var item in Model.RecentActivities)
+                        {
+                            var iconClass = item.Type switch
+                            {
+                                "Siparis" => "fas fa-shopping-cart ca-text-success",
+                                "Mesaj" => "fas fa-envelope ca-text-warning",
+                                _ => "fas fa-box-open ca-text-primary"
+                            };
+                            <div class="ca-activity-item">
+                                <div class="ca-activity-icon">
+                                    <i class="@iconClass"></i>
+                                </div>
+                                <div>
+                                    <div class="ca-activity-title">@item.Title</div>
+                                    <div class="ca-activity-desc">@item.Detail</div>
+                                </div>
+                                <span class="ca-activity-time">@item.OccurredAt.ToString("HH:mm")</span>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="ca-empty" style="padding:32px;">
+                            <i class="fas fa-inbox"></i>
+                                    <p>@Localizer["Admin_NoActivitiesYet"]</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const chartCanvas = document.getElementById('revenueChart');
+    if (chartCanvas) {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const gridColor = isDark ? 'rgba(255,255,255,.08)' : 'rgba(15,23,42,.08)';
+        const textColor = isDark ? '#94a3b8' : '#64748b';
+        const chartLabels = @Html.Raw(chartLabelsJson);
+        const chartData = @Html.Raw(chartDataJson);
+
+        new Chart(chartCanvas, {
+            type: 'line',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: '@Localizer["Admin_RevenueCurrency"]',
+                    data: chartData,
+                    borderColor: '#ff6b35',
+                    backgroundColor: 'rgba(255,107,53,.12)',
+                    fill: true,
+                    tension: .35,
+                    borderWidth: 3,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    pointBackgroundColor: '#ff6b35',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        grid: { color: gridColor },
+                        ticks: { color: textColor }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: gridColor },
+                        ticks: {
+                            color: textColor,
+                            callback: function(value) { return value + ' ₪'; }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // --- 12 Aylık Ciro Trendi ---
+    const monthlyChart = document.getElementById('monthlyRevenueChart');
+    if (monthlyChart) {
+        const monthlyLabels = @Html.Raw(monthlyLabelsJson);
+        const monthlyData = @Html.Raw(monthlyDataJson);
+        new Chart(monthlyChart, {
+            type: 'bar',
+            data: {
+                labels: monthlyLabels,
+                datasets: [{
+                    label: '@Localizer["Admin_RevenueCurrency"]',
+                    data: monthlyData,
+                    backgroundColor: 'rgba(49,53,17,.72)',
+                    borderRadius: 6,
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        grid: { color: gridColor },
+                        ticks: { color: textColor }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: gridColor },
+                        ticks: {
+                            color: textColor,
+                            callback: function(value) { return value + ' ₪'; }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // --- Kategori Performansı (doughnut) ---
+    const categoryChart = document.getElementById('categoryChart');
+    if (categoryChart) {
+        const catLabels = @Html.Raw(categoryLabelsJson);
+        const catData = @Html.Raw(categoryRevenueJson);
+        const catColors = ['#313511','#b8a35a','#ff6b35','#2563eb','#16a34a','#f59e0b'];
+        new Chart(categoryChart, {
+            type: 'doughnut',
+            data: {
+                labels: catLabels,
+                datasets: [{
+                    data: catData,
+                    backgroundColor: catColors.slice(0, catLabels.length),
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 12, padding: 8, font: { size: 10 } } }
+                }
+            }
+        });
+    }
+</script>
+}

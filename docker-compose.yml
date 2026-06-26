@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # PostgreSQL Veritabanı
+  # ==========================================
+  db:
+    image: postgres:16-alpine
+    container_name: filistinproje-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-filistindb}
+      POSTGRES_USER: ${POSTGRES_USER:-kanvasuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme_in_production}
+    volumes:
+      - filistin_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-kanvasuser} -d ${POSTGRES_DB:-filistindb}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==========================================
+  # Web Uygulaması
+  # ==========================================
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: filistinproje-web
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - DOTNET_RUNNING_IN_CONTAINER=true
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=${POSTGRES_DB:-filistindb};Username=${POSTGRES_USER:-kanvasuser};Password=${POSTGRES_PASSWORD:-changeme_in_production}
+      - EmailSettings__Host=${EMAIL_HOST:-smtp-relay.brevo.com}
+      - EmailSettings__Port=${EMAIL_PORT:-587}
+      - EmailSettings__EnableSSL=${EMAIL_ENABLE_SSL:-true}
+      - EmailSettings__Username=${EMAIL_USERNAME:-}
+      - EmailSettings__Password=${EMAIL_PASSWORD:-}
+      - EmailSettings__FromEmail=${EMAIL_FROM_EMAIL:-}
+      - EmailSettings__FromName=${EMAIL_FROM_NAME:-7ANRPS48}
+    volumes:
+      - filistin_app_uploads:/app/wwwroot/img/products
+      - filistin_app_media:/app/wwwroot/media/products
+      - filistin_app_logs:/app/logs
+      - filistin_app_data:/app/App_Data
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  filistin_postgres_data:
+    driver: local
+  filistin_app_uploads:
+    driver: local
+  filistin_app_media:
+    driver: local
+  filistin_app_logs:
+    driver: local
+  filistin_app_data:
+    driver: local

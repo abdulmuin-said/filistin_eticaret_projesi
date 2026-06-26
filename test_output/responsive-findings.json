@@ -1,0 +1,255 @@
+[
+  {
+    "viewport": "mobile-375",
+    "page": "anasayfa",
+    "issues": [
+      "39 clickable elements are smaller than 36px (touch target risk)",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "mobile-375",
+    "page": "urun-liste",
+    "issues": [
+      "48 clickable elements are smaller than 36px (touch target risk)",
+      "14 elements have font-size < 10px",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "mobile-375",
+    "page": "urun-detay",
+    "issues": [
+      "26 clickable elements are smaller than 36px (touch target risk)",
+      "12 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "mobile-375",
+    "page": "sepet",
+    "issues": [
+      "17 clickable elements are smaller than 36px (touch target risk)",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "mobile-375",
+    "page": "odeme",
+    "issues": [
+      "17 clickable elements are smaller than 36px (touch target risk)",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "mobile-375",
+    "page": "kayit",
+    "issues": [
+      "19 clickable elements are smaller than 36px (touch target risk)",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "mobile-375",
+    "page": "giris",
+    "issues": [
+      "19 clickable elements are smaller than 36px (touch target risk)",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "mobile-375",
+    "page": "favori",
+    "issues": [
+      "19 clickable elements are smaller than 36px (touch target risk)",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "mobile-375",
+    "page": "iletisim",
+    "issues": [
+      "17 clickable elements are smaller than 36px (touch target risk)",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "mobile-375",
+    "page": "hakkimizda",
+    "issues": [
+      "18 clickable elements are smaller than 36px (touch target risk)",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "tablet-768",
+    "page": "anasayfa",
+    "issues": [
+      "Horizontal overflow: doc=3029px > view=768px",
+      "59 clickable elements are smaller than 36px (touch target risk)",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "tablet-768",
+    "page": "urun-liste",
+    "issues": [
+      "Horizontal overflow: doc=3029px > view=768px",
+      "95 clickable elements are smaller than 36px (touch target risk)",
+      "14 elements have font-size < 10px",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "tablet-768",
+    "page": "urun-detay",
+    "issues": [
+      "Horizontal overflow: doc=3029px > view=768px",
+      "46 clickable elements are smaller than 36px (touch target risk)",
+      "12 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "tablet-768",
+    "page": "sepet",
+    "issues": [
+      "Horizontal overflow: doc=3029px > view=768px",
+      "37 clickable elements are smaller than 36px (touch target risk)",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "tablet-768",
+    "page": "odeme",
+    "issues": [
+      "Horizontal overflow: doc=3029px > view=768px",
+      "37 clickable elements are smaller than 36px (touch target risk)",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "tablet-768",
+    "page": "kayit",
+    "issues": [
+      "Horizontal overflow: doc=3029px > view=768px",
+      "39 clickable elements are smaller than 36px (touch target risk)",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "tablet-768",
+    "page": "giris",
+    "issues": [
+      "Horizontal overflow: doc=3029px > view=768px",
+      "39 clickable elements are smaller than 36px (touch target risk)",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "tablet-768",
+    "page": "favori",
+    "issues": [
+      "Horizontal overflow: doc=3029px > view=768px",
+      "39 clickable elements are smaller than 36px (touch target risk)",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "tablet-768",
+    "page": "iletisim",
+    "issues": [
+      "Horizontal overflow: doc=3029px > view=768px",
+      "37 clickable elements are smaller than 36px (touch target risk)",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "tablet-768",
+    "page": "hakkimizda",
+    "issues": [
+      "Horizontal overflow: doc=3029px > view=768px",
+      "38 clickable elements are smaller than 36px (touch target risk)",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "desktop-1280",
+    "page": "anasayfa",
+    "issues": [
+      "Horizontal overflow: doc=3221px > view=1280px",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "desktop-1280",
+    "page": "urun-liste",
+    "issues": [
+      "Horizontal overflow: doc=3221px > view=1280px",
+      "14 elements have font-size < 10px",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "desktop-1280",
+    "page": "urun-detay",
+    "issues": [
+      "Horizontal overflow: doc=3221px > view=1280px",
+      "12 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "desktop-1280",
+    "page": "sepet",
+    "issues": [
+      "Horizontal overflow: doc=3221px > view=1280px",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "desktop-1280",
+    "page": "odeme",
+    "issues": [
+      "Horizontal overflow: doc=3221px > view=1280px",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "desktop-1280",
+    "page": "kayit",
+    "issues": [
+      "Horizontal overflow: doc=3221px > view=1280px",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "desktop-1280",
+    "page": "giris",
+    "issues": [
+      "Horizontal overflow: doc=3221px > view=1280px",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "desktop-1280",
+    "page": "favori",
+    "issues": [
+      "Horizontal overflow: doc=3221px > view=1280px",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "desktop-1280",
+    "page": "iletisim",
+    "issues": [
+      "Horizontal overflow: doc=3221px > view=1280px",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  },
+  {
+    "viewport": "desktop-1280",
+    "page": "hakkimizda",
+    "issues": [
+      "Horizontal overflow: doc=3221px > view=1280px",
+      "9 fixed/sticky elements — potential overlap risk on small screens"
+    ]
+  }
+]

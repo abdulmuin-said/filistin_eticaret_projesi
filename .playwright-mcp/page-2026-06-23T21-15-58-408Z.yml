@@ -1,0 +1,236 @@
+- generic [ref=e2]:
+  - text:          +               
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "7ANRPS48 لوحة التحكم" [ref=e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=e6]
+      - generic [ref=e7]: لوحة البائع
+    - navigation "القائمة الرئيسية للإدارة" [ref=e8]:
+      - link " لوحة البيانات" [ref=e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=e10]: 
+        - text: لوحة البيانات
+      - generic [ref=e11]:
+        - button " إدارة الطلبات" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]: 
+          - text: إدارة الطلبات
+        - text:      
+      - generic [ref=e14]:
+        - button " إدارة المنتجات" [ref=e15] [cursor=pointer]:
+          - generic [ref=e16]: 
+          - text: إدارة المنتجات
+        - text:  +    
+      - generic [ref=e17]:
+        - button " محتوى المتجر" [ref=e18] [cursor=pointer]:
+          - generic [ref=e19]: 
+          - text: محتوى المتجر
+        - text:         
+      - link " الأعضاء" [ref=e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=e21]: 
+        - text: الأعضاء
+      - link " تجار الجملة" [ref=e22] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=e23]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=e25]: 
+        - text: مجموعات الجملة
+      - generic [ref=e26]:
+        - button " التقارير" [ref=e27] [cursor=pointer]:
+          - generic [ref=e28]: 
+          - text: التقارير
+        - text:  
+      - link " الحسابات البنكية" [ref=e29] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=e30]: 
+        - text: الحسابات البنكية
+      - link " الإعدادات" [ref=e31] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=e32]: 
+        - text: الإعدادات
+    - generic [ref=e33]:
+      - text: 
+      - combobox "اللغة" [ref=e35]:
+        - option "AR" [selected]
+        - option "EN"
+        - option "TR"
+      - generic [ref=e36]:
+        - button "7ANRPS48 Admin Admin 7" [ref=e37] [cursor=pointer]:
+          - generic [ref=e38]:
+            - strong [ref=e39]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=e40]: "7"
+        - text:  
+  - generic [ref=e41]:
+    - main [ref=e42]:
+      - generic [ref=e43]:
+        - generic [ref=e44]:
+          - generic [ref=e45]:
+            - heading "Çark Ödülleri" [level=1] [ref=e46]
+            - paragraph [ref=e47]: Çarkıfelek ödüllerini yönetin. Sıralama, dil, renk ve tip ayarları.
+          - link "+ Yeni Ödül" [ref=e48] [cursor=pointer]:
+            - /url: /Admin/CarkOdul/Ekle
+            - generic [ref=e49]: +
+            - text: Yeni Ödül
+        - table [ref=e52]:
+          - rowgroup [ref=e53]:
+            - row "# Renk Türkçe English العربية Tip Değer Sıra Aktif İşlem" [ref=e54]:
+              - columnheader "#" [ref=e55]
+              - columnheader "Renk" [ref=e56]
+              - columnheader "Türkçe" [ref=e57]
+              - columnheader "English" [ref=e58]
+              - columnheader "العربية" [ref=e59]
+              - columnheader "Tip" [ref=e60]
+              - columnheader "Değer" [ref=e61]
+              - columnheader "Sıra" [ref=e62]
+              - columnheader "Aktif" [ref=e63]
+              - columnheader "İşlem" [ref=e64]
+          - rowgroup [ref=e65]:
+            - row "1 %5 İndirim 5% Off خصم 5% İndirim %5 1   " [ref=e66]:
+              - cell "1" [ref=e67]
+              - cell [ref=e68]
+              - cell "%5 İndirim" [ref=e70]
+              - cell "5% Off" [ref=e71]
+              - cell "خصم 5%" [ref=e72]
+              - cell "İndirim" [ref=e73]:
+                - generic [ref=e74]: İndirim
+              - cell "%5" [ref=e75]
+              - cell "1" [ref=e76]
+              - cell "" [ref=e77]:
+                - generic [ref=e79]: 
+              - cell " " [ref=e80]:
+                - link "" [ref=e81] [cursor=pointer]:
+                  - /url: /Admin/CarkOdul/Duzenle/1
+                  - generic [ref=e82]: 
+                - button "" [ref=e84] [cursor=pointer]:
+                  - generic [ref=e85]: 
+            - row "2 %10 İndirim 10% Off خصم 10% İndirim %10 2   " [ref=e86]:
+              - cell "2" [ref=e87]
+              - cell [ref=e88]
+              - cell "%10 İndirim" [ref=e90]
+              - cell "10% Off" [ref=e91]
+              - cell "خصم 10%" [ref=e92]
+              - cell "İndirim" [ref=e93]:
+                - generic [ref=e94]: İndirim
+              - cell "%10" [ref=e95]
+              - cell "2" [ref=e96]
+              - cell "" [ref=e97]:
+                - generic [ref=e99]: 
+              - cell " " [ref=e100]:
+                - link "" [ref=e101] [cursor=pointer]:
+                  - /url: /Admin/CarkOdul/Duzenle/2
+                  - generic [ref=e102]: 
+                - button "" [ref=e104] [cursor=pointer]:
+                  - generic [ref=e105]: 
+            - row "3 %15 İndirim 15% Off خصم 15% İndirim %15 3   " [ref=e106]:
+              - cell "3" [ref=e107]
+              - cell [ref=e108]
+              - cell "%15 İndirim" [ref=e110]
+              - cell "15% Off" [ref=e111]
+              - cell "خصم 15%" [ref=e112]
+              - cell "İndirim" [ref=e113]:
+                - generic [ref=e114]: İndirim
+              - cell "%15" [ref=e115]
+              - cell "3" [ref=e116]
+              - cell "" [ref=e117]:
+                - generic [ref=e119]: 
+              - cell " " [ref=e120]:
+                - link "" [ref=e121] [cursor=pointer]:
+                  - /url: /Admin/CarkOdul/Duzenle/3
+                  - generic [ref=e122]: 
+                - button "" [ref=e124] [cursor=pointer]:
+                  - generic [ref=e125]: 
+            - row "4 %20 İndirim 20% Off خصم 20% İndirim %20 4   " [ref=e126]:
+              - cell "4" [ref=e127]
+              - cell [ref=e128]
+              - cell "%20 İndirim" [ref=e130]
+              - cell "20% Off" [ref=e131]
+              - cell "خصم 20%" [ref=e132]
+              - cell "İndirim" [ref=e133]:
+                - generic [ref=e134]: İndirim
+              - cell "%20" [ref=e135]
+              - cell "4" [ref=e136]
+              - cell "" [ref=e137]:
+                - generic [ref=e139]: 
+              - cell " " [ref=e140]:
+                - link "" [ref=e141] [cursor=pointer]:
+                  - /url: /Admin/CarkOdul/Duzenle/4
+                  - generic [ref=e142]: 
+                - button "" [ref=e144] [cursor=pointer]:
+                  - generic [ref=e145]: 
+            - row "5 %25 İndirim 25% Off خصم 25% İndirim %25 5   " [ref=e146]:
+              - cell "5" [ref=e147]
+              - cell [ref=e148]
+              - cell "%25 İndirim" [ref=e150]
+              - cell "25% Off" [ref=e151]
+              - cell "خصم 25%" [ref=e152]
+              - cell "İndirim" [ref=e153]:
+                - generic [ref=e154]: İndirim
+              - cell "%25" [ref=e155]
+              - cell "5" [ref=e156]
+              - cell "" [ref=e157]:
+                - generic [ref=e159]: 
+              - cell " " [ref=e160]:
+                - link "" [ref=e161] [cursor=pointer]:
+                  - /url: /Admin/CarkOdul/Duzenle/5
+                  - generic [ref=e162]: 
+                - button "" [ref=e164] [cursor=pointer]:
+                  - generic [ref=e165]: 
+            - row "6 Ücretsiz Kargo Free Shipping شحن مجاني Kargo - 6   " [ref=e166]:
+              - cell "6" [ref=e167]
+              - cell [ref=e168]
+              - cell "Ücretsiz Kargo" [ref=e170]
+              - cell "Free Shipping" [ref=e171]
+              - cell "شحن مجاني" [ref=e172]
+              - cell "Kargo" [ref=e173]:
+                - generic [ref=e174]: Kargo
+              - cell "-" [ref=e175]
+              - cell "6" [ref=e176]
+              - cell "" [ref=e177]:
+                - generic [ref=e179]: 
+              - cell " " [ref=e180]:
+                - link "" [ref=e181] [cursor=pointer]:
+                  - /url: /Admin/CarkOdul/Duzenle/6
+                  - generic [ref=e182]: 
+                - button "" [ref=e184] [cursor=pointer]:
+                  - generic [ref=e185]: 
+            - row "7 Tekrar Dene Try Again حاول مرة أخرى Diğer - 7   " [ref=e186]:
+              - cell "7" [ref=e187]
+              - cell [ref=e188]
+              - cell "Tekrar Dene" [ref=e190]
+              - cell "Try Again" [ref=e191]
+              - cell "حاول مرة أخرى" [ref=e192]
+              - cell "Diğer" [ref=e193]:
+                - generic [ref=e194]: Diğer
+              - cell "-" [ref=e195]
+              - cell "7" [ref=e196]
+              - cell "" [ref=e197]:
+                - generic [ref=e199]: 
+              - cell " " [ref=e200]:
+                - link "" [ref=e201] [cursor=pointer]:
+                  - /url: /Admin/CarkOdul/Duzenle/7
+                  - generic [ref=e202]: 
+                - button "" [ref=e204] [cursor=pointer]:
+                  - generic [ref=e205]: 
+            - row "8 %10 İndirim 10% Off خصم 10% İndirim %10 8   " [ref=e206]:
+              - cell "8" [ref=e207]
+              - cell [ref=e208]
+              - cell "%10 İndirim" [ref=e210]
+              - cell "10% Off" [ref=e211]
+              - cell "خصم 10%" [ref=e212]
+              - cell "İndirim" [ref=e213]:
+                - generic [ref=e214]: İndirim
+              - cell "%10" [ref=e215]
+              - cell "8" [ref=e216]
+              - cell "" [ref=e217]:
+                - generic [ref=e219]: 
+              - cell " " [ref=e220]:
+                - link "" [ref=e221] [cursor=pointer]:
+                  - /url: /Admin/CarkOdul/Duzenle/8
+                  - generic [ref=e222]: 
+                - button "" [ref=e224] [cursor=pointer]:
+                  - generic [ref=e225]: 
+    - contentinfo [ref=e226]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

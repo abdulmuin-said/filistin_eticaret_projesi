@@ -1,0 +1,54 @@
+@model FilistinProje.Web.Models.SifreSifirlaViewModel
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = @Localizer["ResetPassword"];
+}
+
+<div class="min-h-[80vh] flex items-center justify-center py-16 px-4 bg-[#fcf9f3]">
+    <div class="w-full max-w-md">
+        <div class="text-center mb-10">
+            <h1 class="font-serif text-3xl tracking-widest text-[#313511] uppercase">@Localizer["NewPassword"]</h1>
+            <p class="text-xs text-[#47473d] mt-2 tracking-wide">@Localizer["ResetPasswordDescription"]</p>
+        </div>
+
+        @if (ViewBag.Hata != null)
+        {
+            <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded mb-6 flex items-start gap-2">
+                <i class="fas fa-exclamation-circle mt-0.5"></i>
+                <span>@ViewBag.Hata</span>
+            </div>
+        }
+
+        <div asp-validation-summary="ModelOnly" class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded mb-6 hidden [&:not(:empty)]:block"></div>
+
+        <div class="bg-white border border-[#e5e2dc] rounded-lg p-8 shadow-sm">
+            <form asp-action="SifreSifirla" method="post" class="space-y-5">
+                <input asp-for="Token" type="hidden" />
+
+                <div>
+                    <label asp-for="YeniSifre" class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["NewPassword"]</label>
+                    <input asp-for="YeniSifre" type="password" placeholder="@Localizer["MinSixChars"]" autocomplete="new-password" required
+                           class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3] transition-colors" />
+                    <span asp-validation-for="YeniSifre" class="text-red-600 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="SifreTekrar" class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["PasswordRepeat"]</label>
+                    <input asp-for="SifreTekrar" type="password" placeholder="@Localizer["EnterPasswordAgain"]" autocomplete="new-password" required
+                           class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3] transition-colors" />
+                    <span asp-validation-for="SifreTekrar" class="text-red-600 text-xs mt-1 block"></span>
+                </div>
+
+                <button type="submit"
+                        class="w-full bg-[#313511] text-white py-3 text-xs tracking-widest uppercase rounded hover:bg-[#1c2001] transition-colors flex items-center justify-center gap-2">
+                    <i class="fas fa-lock"></i>
+                    <span>@Localizer["UpdatePassword"]</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

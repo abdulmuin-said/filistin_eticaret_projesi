@@ -1,0 +1,86 @@
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["Admin_SendPush"];
+    var aboneSayisi = (int)(ViewBag.AboneSayisi ?? 0);
+    var firebaseHazir = (bool)(ViewBag.FirebaseAyarlariTam ?? false);
+}
+
+<div class="ca-page-header">
+    <h1 class="ca-page-title"><i class="fas fa-paper-plane me-2"></i>@Localizer["Admin_SendPush"]</h1>
+</div>
+
+@if (!firebaseHazir)
+{
+    <div class="alert alert-warning d-flex align-items-center gap-3 mb-4">
+        <i class="fas fa-exclamation-triangle fa-lg"></i>
+        <div>
+            <strong>@Localizer["Admin_FirebaseNotConfigured"]</strong><br>
+            <small>@Localizer["Admin_FirebaseNotConfiguredHint"]</small>
+        </div>
+    </div>
+}
+
+@if (ViewBag.Hata != null)
+{
+    <div class="alert alert-danger">@ViewBag.Hata</div>
+}
+
+<div class="ca-card">
+    <div class="ca-card-header">
+        <i class="fas fa-bullhorn me-2"></i> @Localizer["Admin_ComposeNotification"]
+    </div>
+    <div class="ca-card-body">
+        <form method="post" asp-action="Gonder">
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                <label class="ca-label">@Localizer["Admin_NotificationTitle"] <span class="required">*</span></label>
+                <input name="title" class="ca-input" type="text" maxlength="100" required placeholder="@Localizer["Admin_NotificationTitlePlaceholder"]" />
+            </div>
+
+            <div class="mb-3">
+                <label class="ca-label">@Localizer["Admin_NotificationBody"] <span class="required">*</span></label>
+                <textarea name="body" class="ca-input" rows="4" maxlength="500" required placeholder="@Localizer["Admin_NotificationBodyPlaceholder"]"></textarea>
+                <small class="ca-text-muted">@Localizer["Admin_NotificationBodyHint"]</small>
+            </div>
+
+            <div class="mb-4">
+                <label class="ca-label">@Localizer["Admin_ClickUrl"]</label>
+                <input name="clickUrl" class="ca-input" type="text" value="/" placeholder="/Kampanyalar" />
+                <small class="ca-text-muted">@Localizer["Admin_ClickUrlHint"]</small>
+            </div>
+
+            <div class="ca-card bg-light mb-4 p-3">
+                <div class="d-flex align-items-center gap-3">
+                    <i class="fas fa-users fa-2x text-muted"></i>
+                    <div>
+                        <strong>@Localizer["Admin_WillBeSentToSubscribers"]</strong><br>
+                        <span class="text-muted small">@string.Format(Localizer["Admin_TotalSubscribers"], aboneSayisi)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="ca-btn ca-btn-primary" @(aboneSayisi == 0 || !firebaseHazir ? "disabled" : "")>
+                    <i class="fas fa-paper-plane me-1"></i> @Localizer["Admin_Send"]
+                </button>
+                <a asp-action="Index" class="ca-btn ca-btn-secondary">@Localizer["Admin_Cancel"]</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="ca-card mt-4">
+    <div class="ca-card-header">
+        <i class="fas fa-info-circle me-2"></i> @Localizer["Admin_NotificationTips"]
+    </div>
+    <div class="ca-card-body">
+        <ul class="mb-0 small">
+            <li class="mb-1">@Localizer["Admin_PushTip1"]</li>
+            <li class="mb-1">@Localizer["Admin_PushTip2"]</li>
+            <li class="mb-1">@Localizer["Admin_PushTip3"]</li>
+            <li>@Localizer["Admin_PushTip4"]</li>
+        </ul>
+    </div>
+</div>

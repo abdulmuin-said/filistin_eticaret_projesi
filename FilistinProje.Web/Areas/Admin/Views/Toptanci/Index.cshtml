@@ -1,0 +1,612 @@
+@using FilistinProje.Core.Enums
+@model List<ToptanciViewModel>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_WholesaleAppManagement"];
+    var seciliDurum = ViewBag.SeciliDurum as WholesaleStatus?;
+    var aramaTerimi = ViewBag.AramaTerimi as string ?? "";
+    var beklemedeCount = Model.Count(x => x.WholesaleStatus == WholesaleStatus.Pending);
+    var onayliCount = Model.Count(x => x.WholesaleStatus == WholesaleStatus.Approved);
+    var reddedilenCount = Model.Count(x => x.WholesaleStatus == WholesaleStatus.Rejected);
+}
+
+<style>
+    .ca-ws-stats { display: flex; gap: 10px; flex-wrap: wrap; }
+    .ca-ws-stat {
+        display: flex; align-items: center; gap: 8px; padding: 8px 16px;
+        border-radius: 8px; font-size: .82rem; font-weight: 600;
+    }
+    .ca-ws-stat.pending { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+    .ca-ws-stat.approved { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+    .ca-ws-stat.rejected { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+    .ca-ws-stat .count { font-size: 1.1rem; font-weight: 700; }
+    .ca-ws-stat.active { box-shadow: 0 0 0 2px currentColor; }
+
+    .ca-filter-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 16px; }
+    .ca-filter-bar .ca-search-box {
+        flex: 1; min-width: 220px; position: relative;
+    }
+    .ca-filter-bar .ca-search-box input {
+        width: 100%; padding: 8px 14px 8px 38px; border: 1px solid var(--ca-border);
+        border-radius: 8px; font-size: .85rem; outline: none; transition: .18s;
+    }
+    .ca-filter-bar .ca-search-box input:focus { border-color: var(--ca-accent); box-shadow: 0 0 0 3px rgba(49,53,17,.1); }
+    .ca-filter-bar .ca-search-box i {
+        position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+        color: #9ca3af; font-size: .8rem;
+    }
+    .ca-filter-tabs { display: flex; gap: 4px; }
+    .ca-filter-tab {
+        padding: 6px 14px; border-radius: 6px; font-size: .78rem; font-weight: 600;
+        border: 1px solid var(--ca-border); background: #fff; color: var(--ca-text);
+        cursor: pointer; transition: .18s; text-decoration: none;
+    }
+    .ca-filter-tab:hover { background: var(--ca-bg); }
+    .ca-filter-tab.active { background: var(--ca-accent); color: #fff; border-color: var(--ca-accent); }
+    .ca-filter-tab .badge { margin-left: 4px; font-size: .7rem; }
+
+    .ca-ws-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+    .ca-ws-table th {
+        padding: 10px 14px; font-size: .75rem; font-weight: 600; color: #6b7280;
+        text-transform: uppercase; letter-spacing: .04em; border-bottom: 1px solid var(--ca-border);
+        background: #f9fafb;
+    }
+    .ca-ws-table td {
+        padding: 12px 14px; font-size: .85rem; border-bottom: 1px solid #f3f4f6;
+        vertical-align: middle;
+    }
+    .ca-ws-table tr:hover td { background: #fafafa; }
+    .ca-ws-table tr.ca-row-pending td { background: #fffbeb22; }
+    .ca-ws-table tr.ca-row-pending:hover td { background: #fffbeb44; }
+
+    .ca-ws-user { display: flex; align-items: center; gap: 10px; }
+    .ca-ws-avatar {
+        width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center;
+        justify-content: center; font-size: .85rem; font-weight: 700; color: #fff;
+        flex-shrink: 0;
+    }
+    .ca-ws-avatar.av-0 { background: #6366f1; }
+    .ca-ws-avatar.av-1 { background: #8b5cf6; }
+    .ca-ws-avatar.av-2 { background: #ec4899; }
+    .ca-ws-avatar.av-3 { background: #f59e0b; }
+    .ca-ws-avatar.av-4 { background: #10b981; }
+    .ca-ws-name { font-weight: 600; font-size: .88rem; }
+    .ca-ws-id { font-size: .7rem; color: #9ca3af; }
+
+    .ca-ws-contact { font-size: .8rem; color: #6b7280; line-height: 1.5; }
+    .ca-ws-contact i { width: 14px; text-align: center; margin-right: 4px; }
+
+    .ca-ws-status {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 4px 10px; border-radius: 20px; font-size: .75rem; font-weight: 600;
+    }
+    .ca-ws-status.pending { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+    .ca-ws-status.approved { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+    .ca-ws-status.rejected { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+
+    .ca-ws-actions { display: flex; gap: 4px; flex-wrap: wrap; }
+    .ca-ws-actions form { margin: 0; }
+    .ca-ws-btn {
+        display: inline-flex; align-items: center; gap: 4px;
+        padding: 5px 10px; border-radius: 6px; font-size: .72rem; font-weight: 600;
+        border: 1px solid var(--ca-border); background: #fff; color: var(--ca-text);
+        cursor: pointer; transition: .18s; white-space: nowrap;
+    }
+    .ca-ws-btn:hover { background: var(--ca-bg); }
+    .ca-ws-btn.approve { border-color: #bbf7d0; color: #166534; }
+    .ca-ws-btn.approve:hover { background: #f0fdf4; }
+    .ca-ws-btn.reject { border-color: #fecaca; color: #991b1b; }
+    .ca-ws-btn.reject:hover { background: #fef2f2; }
+    .ca-ws-btn.pending-btn { border-color: #fde68a; color: #92400e; }
+    .ca-ws-btn.pending-btn:hover { background: #fffbeb; }
+    .ca-ws-btn.detail { border-color: #bfdbfe; color: #1d4ed8; }
+    .ca-ws-btn.detail:hover { background: #eff6ff; }
+    .ca-ws-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+    .ca-ws-empty { text-align: center; padding: 60px 20px; }
+    .ca-ws-empty i { font-size: 2.5rem; color: #d1d5db; margin-bottom: 12px; display: block; }
+    .ca-ws-empty p { color: #9ca3af; font-size: .9rem; }
+
+    .ca-ws-date { font-size: .78rem; color: #6b7280; }
+    .ca-ws-id-badge {
+        display: inline-block; padding: 1px 6px; border-radius: 4px;
+        background: #f3f4f6; font-size: .68rem; color: #6b7280; font-family: monospace;
+    }
+
+    /* Detail Modal */
+    .ca-modal-overlay {
+        display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4);
+        z-index: 10000; align-items: center; justify-content: center;
+    }
+    .ca-modal-overlay.show { display: flex; }
+    .ca-modal {
+        background: #fff; border-radius: 12px; width: 90%; max-width: 560px;
+        max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,.15);
+        animation: caModalIn .2s ease;
+    }
+    @@keyframes caModalIn { from { opacity: 0; transform: translateY(20px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .ca-modal-header {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 18px 22px; border-bottom: 1px solid #f3f4f6;
+    }
+    .ca-modal-header h3 { font-size: 1.05rem; font-weight: 700; margin: 0; }
+    .ca-modal-close {
+        width: 32px; height: 32px; border-radius: 50%; border: none; background: #f3f4f6;
+        cursor: pointer; display: flex; align-items: center; justify-content: center;
+        font-size: .9rem; color: #6b7280; transition: .15s;
+    }
+    .ca-modal-close:hover { background: #e5e7eb; color: #374151; }
+    .ca-modal-body { padding: 22px; }
+    .ca-modal-footer { padding: 14px 22px; border-top: 1px solid #f3f4f6; display: flex; gap: 8px; justify-content: flex-end; }
+
+    .ca-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .ca-detail-item { }
+    .ca-detail-item.full { grid-column: 1 / -1; }
+    .ca-detail-label { font-size: .7rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 3px; }
+    .ca-detail-value { font-size: .88rem; color: #374151; font-weight: 500; }
+    .ca-detail-value.empty { color: #d1d5db; font-style: italic; }
+
+    .ca-detail-photo {
+        width: 100%; max-height: 200px; object-fit: contain; border-radius: 8px;
+        border: 1px solid #e5e7eb; margin-top: 4px;
+    }
+    .ca-detail-photo-link {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 6px 12px; border-radius: 6px; background: #eff6ff;
+        color: #1d4ed8; font-size: .8rem; font-weight: 600; text-decoration: none;
+    }
+    .ca-detail-photo-link:hover { background: #dbeafe; }
+
+    /* Reject Modal */
+    .ca-reject-form { }
+    .ca-reject-form textarea {
+        width: 100%; padding: 10px 14px; border: 1px solid var(--ca-border);
+        border-radius: 8px; font-size: .85rem; resize: vertical; min-height: 80px;
+        outline: none; transition: .18s; font-family: inherit;
+    }
+    .ca-reject-form textarea:focus { border-color: #fca5a5; box-shadow: 0 0 0 3px rgba(239,68,68,.1); }
+    .ca-reject-form .ca-reject-hint { font-size: .75rem; color: #9ca3af; margin-top: 4px; }
+
+    .ca-toast {
+        position: fixed; top: 20px; right: 20px; z-index: 99999;
+        padding: 12px 20px; border-radius: 8px; font-size: .85rem; font-weight: 600;
+        box-shadow: 0 8px 30px rgba(0,0,0,.12); animation: caToastIn .3s ease;
+        display: flex; align-items: center; gap: 8px;
+    }
+    .ca-toast.success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+    .ca-toast.error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+    @@keyframes caToastIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+</style>
+
+<div class="container-fluid ca-fade-in">
+    @if (TempData["Basari"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["Basari"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["Hata"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>@TempData["Hata"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="ca-page-header">
+        <div>
+            <h1 class="ca-page-title">@Localizer["Admin_WholesaleAppManagement"]</h1>
+            <p class="ca-page-subtitle">@Localizer["Admin_WholesaleAppSubtitle"]</p>
+        </div>
+        <div class="ca-ws-stats">
+            <div class="ca-ws-stat pending @(seciliDurum == WholesaleStatus.Pending ? "active" : "")">
+                <i class="fas fa-clock"></i>
+                <span class="count">@beklemedeCount</span> @Localizer["Admin_Pending"]
+            </div>
+            <div class="ca-ws-stat approved @(seciliDurum == WholesaleStatus.Approved ? "active" : "")">
+                <i class="fas fa-check-circle"></i>
+                <span class="count">@onayliCount</span> @Localizer["Admin_Approved"]
+            </div>
+            <div class="ca-ws-stat rejected @(seciliDurum == WholesaleStatus.Rejected ? "active" : "")">
+                <i class="fas fa-times-circle"></i>
+                <span class="count">@reddedilenCount</span> @Localizer["Admin_Rejected"]
+            </div>
+        </div>
+    </div>
+
+    <div class="ca-card">
+        <div class="ca-filter-bar">
+            <div class="ca-search-box">
+                <i class="fas fa-search"></i>
+                <form method="get" action="/Admin/Toptanci">
+                    <input type="hidden" name="durum" value="@(seciliDurum?.ToString() ?? "")" />
+                    <input type="text" name="arama" value="@aramaTerimi"
+                           placeholder='@Localizer["Admin_SearchUserAppPlaceholder"]'
+                           onkeydown="if(event.key==='Enter') this.form.submit();" />
+                </form>
+            </div>
+            <div class="ca-filter-tabs">
+                <a href="/Admin/Toptanci" class="ca-filter-tab @(seciliDurum == null ? "active" : "")">
+                    @Localizer["Admin_Tumu"] <span class="badge bg-secondary">@Model.Count</span>
+                </a>
+                <a href="/Admin/Toptanci?durum=Pending" class="ca-filter-tab @(seciliDurum == WholesaleStatus.Pending ? "active" : "")">
+                    <i class="fas fa-clock"></i> @Localizer["Admin_Pending"] <span class="badge bg-warning text-dark">@beklemedeCount</span>
+                </a>
+                <a href="/Admin/Toptanci?durum=Approved" class="ca-filter-tab @(seciliDurum == WholesaleStatus.Approved ? "active" : "")">
+                    <i class="fas fa-check"></i> @Localizer["Admin_Approved"] <span class="badge bg-success">@onayliCount</span>
+                </a>
+                <a href="/Admin/Toptanci?durum=Rejected" class="ca-filter-tab @(seciliDurum == WholesaleStatus.Rejected ? "active" : "")">
+                    <i class="fas fa-times"></i> @Localizer["Admin_Rejected"] <span class="badge bg-danger">@reddedilenCount</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="ca-ws-table">
+                <thead>
+                    <tr>
+                        <th style="width:28%;">@Localizer["Admin_Kullanici"]</th>
+                        <th style="width:20%;">@Localizer["Admin_Contact"]</th>
+                        <th style="width:12%;">@Localizer["Admin_KimlikNo"]</th>
+                        <th style="width:10%;">@Localizer["Admin_BasvuruTarihi"]</th>
+                        <th style="width:10%;">@Localizer["Admin_Durum"]</th>
+                        <th style="width:20%;" class="text-end">@Localizer["Admin_Islem"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        var avatarIdx = Math.Abs(user.AdSoyad.GetHashCode()) % 5;
+                        var rowClass = user.WholesaleStatus == WholesaleStatus.Pending ? "ca-row-pending" : "";
+                        var statusClass = user.WholesaleStatus switch
+                        {
+                            WholesaleStatus.Pending => "pending",
+                            WholesaleStatus.Approved => "approved",
+                            WholesaleStatus.Rejected => "rejected",
+                            _ => ""
+                        };
+
+                        <tr class="@rowClass" id="row-@user.Id">
+                            <td>
+                                <div class="ca-ws-user">
+                                    <div class="ca-ws-avatar av-@avatarIdx">
+                                        @(!string.IsNullOrWhiteSpace(user.AdSoyad) ? user.AdSoyad.Substring(0, 1).ToUpperInvariant() : "U")
+                                    </div>
+                                    <div>
+                                        <div class="ca-ws-name">@user.AdSoyad</div>
+                                        <span class="ca-ws-id-badge">#@(user.Id.Substring(0, Math.Min(8, user.Id.Length)))</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ca-ws-contact">
+                                    <i class="far fa-envelope"></i> @user.Email
+                                </div>
+                                <div class="ca-ws-contact" style="margin-top:2px;">
+                                    <i class="fas fa-phone"></i> @(!string.IsNullOrWhiteSpace(user.PhoneNumber) ? user.PhoneNumber : "-")
+                                </div>
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrWhiteSpace(user.KimlikNo))
+                                {
+                                    <span class="ca-ws-id-badge">@user.KimlikNo</span>
+                                }
+                                else
+                                {
+                                    <span class="ca-detail-value empty">-</span>
+                                }
+                            </td>
+                            <td>
+                                @if (user.BasvuruTarihi.HasValue)
+                                {
+                                    <div class="ca-ws-date">
+                                        @user.BasvuruTarihi.Value.ToString("dd.MM.yyyy")
+                                        <br />@user.BasvuruTarihi.Value.ToString("HH:mm")
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="ca-detail-value empty">-</span>
+                                }
+                            </td>
+                            <td>
+                                <span class="ca-ws-status @statusClass">
+                                    <i class="fas @(user.WholesaleStatus == WholesaleStatus.Pending ? "fa-clock" : user.WholesaleStatus == WholesaleStatus.Approved ? "fa-check-circle" : "fa-times-circle")"></i>
+                                    @user.StatusLabel
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <div class="ca-ws-actions justify-content-end">
+                                    <button type="button" class="ca-ws-btn detail" onclick="showDetail('@user.Id')">
+                                        <i class="fas fa-eye"></i> @Localizer["Admin_Detay"]
+                                    </button>
+                                    @if (user.WholesaleStatus != WholesaleStatus.Approved)
+                                    {
+                                        <form asp-action="Onayla" asp-route-id="@user.Id" method="post" class="ws-ajax-form">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="ca-ws-btn approve"
+                                                    data-confirm="@string.Format(Localizer["Admin_OnaylaConfirm"].Value, user.AdSoyad)">
+                                                <i class="fas fa-check"></i> @Localizer["Admin_Onayla"]
+                                            </button>
+                                        </form>
+                                    }
+                                    @if (user.WholesaleStatus != WholesaleStatus.Rejected)
+                                    {
+                                        <button type="button" class="ca-ws-btn reject" onclick="showRejectModal('@user.Id', '@user.AdSoyad')">
+                                            <i class="fas fa-times"></i> @Localizer["Admin_Reddet"]
+                                        </button>
+                                    }
+                                    @if (user.WholesaleStatus != WholesaleStatus.Pending)
+                                    {
+                                        <form asp-action="Beklemede" asp-route-id="@user.Id" method="post" class="ws-ajax-form">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="ca-ws-btn pending-btn"
+                                                    data-confirm="@string.Format(Localizer["Admin_BeklemedeyeConfirm"].Value, user.AdSoyad)">
+                                                <i class="fas fa-undo"></i> @Localizer["Admin_BeklemedeyeAl"]
+                                            </button>
+                                        </form>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (Model.Count == 0)
+        {
+            <div class="ca-ws-empty">
+                <i class="fas fa-inbox"></i>
+                <p>
+                    @if (!string.IsNullOrWhiteSpace(aramaTerimi))
+                    {
+                        <span><strong>"@aramaTerimi"</strong> @Localizer["Admin_AramaSonucYok"]</span>
+                    }
+                    else if (seciliDurum.HasValue)
+                    {
+                        <span>@Localizer["Admin_BuDurumBasvuruYok"]</span>
+                    }
+                    else
+                    {
+                        <span>@Localizer["Admin_HicBasvuruYok"]</span>
+                    }
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="font-size:.78rem; color:#9ca3af;">
+                <span>@string.Format(Localizer["Admin_ToplamKayitListeleniyor"].Value, Model.Count)</span>
+                @if (!string.IsNullOrWhiteSpace(aramaTerimi))
+                {
+                    <span><strong>"@aramaTerimi"</strong> @Localizer["Admin_AramaSonucu"]</span>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="ca-modal-overlay" id="detailModal">
+    <div class="ca-modal">
+        <div class="ca-modal-header">
+            <h3><i class="fas fa-user-tie me-2"></i>@Localizer["Admin_BasvuruDetayi"]</h3>
+            <button class="ca-modal-close" onclick="closeDetailModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="ca-modal-body" id="detailModalBody">
+            <div class="text-center py-4">
+                <i class="fas fa-spinner fa-spin" style="font-size:1.5rem; color:#9ca3af;"></i>
+                <p class="mt-2" style="color:#9ca3af;">@Localizer["Admin_Yukleniyor"]</p>
+            </div>
+        </div>
+        <div class="ca-modal-footer" id="detailModalFooter" style="display:none;">
+        </div>
+    </div>
+</div>
+
+<!-- Reject Modal -->
+<div class="ca-modal-overlay" id="rejectModal">
+    <div class="ca-modal" style="max-width:440px;">
+        <div class="ca-modal-header">
+            <h3><i class="fas fa-times-circle me-2" style="color:#dc2626;"></i>@Localizer["Admin_BasvuruReddet"]</h3>
+            <button class="ca-modal-close" onclick="closeRejectModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="ca-modal-body">
+            <p style="font-size:.88rem; color:#374151; margin-bottom:14px;">
+                <strong id="rejectUserName"></strong> @Localizer["Admin_ReddetUzeresiniz"]
+            </p>
+            <form id="rejectForm" class="ca-reject-form" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" id="rejectUserId" />
+                <div class="mb-2">
+                    <label class="ca-detail-label">@Localizer["Admin_RedSebebi"]</label>
+                    <textarea name="redSebebi" rows="3" placeholder='@Localizer["Admin_RedSebebiPlaceholder"]'></textarea>
+                    <div class="ca-reject-hint">@Localizer["Admin_AdminKayitGorur"]</div>
+                </div>
+            </form>
+        </div>
+        <div class="ca-modal-footer">
+            <button type="button" class="ca-ws-btn" onclick="closeRejectModal()" style="border-color:#d1d5db;">@Localizer["Admin_Iptal"]</button>
+            <button type="button" class="ca-ws-btn reject" onclick="submitReject()">
+                <i class="fas fa-times"></i> @Localizer["Admin_Reddet"]
+            </button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    // Detail Modal
+    function showDetail(userId) {
+        var modal = document.getElementById('detailModal');
+        var body = document.getElementById('detailModalBody');
+        var footer = document.getElementById('detailModalFooter');
+        modal.classList.add('show');
+        body.innerHTML = '<div class="text-center py-4"><i class="fas fa-spinner fa-spin" style="font-size:1.5rem; color:#9ca3af;"></i><p class="mt-2" style="color:#9ca3af;">@Localizer["Admin_Yukleniyor"]</p></div>';
+        footer.style.display = 'none';
+
+        fetch('/Admin/Toptanci/Detay?id=' + encodeURIComponent(userId))
+            .then(function(r) { return r.json(); })
+            .then(function(d) {
+                var avatarIdx = d.adSoyad ? Math.abs(d.adSoyad.split('').reduce(function(a,c){a=((a<<5)-a)+c.charCodeAt(0);return a&a;},0)) % 5 : 0;
+                var avatarLetter = d.adSoyad ? d.adSoyad.charAt(0).toUpperCase() : 'U';
+                var statusClass = d.wholesaleStatus === 'Pending' ? 'pending' : d.wholesaleStatus === 'Approved' ? 'approved' : 'rejected';
+                var statusIcon = d.wholesaleStatus === 'Pending' ? 'fa-clock' : d.wholesaleStatus === 'Approved' ? 'fa-check-circle' : 'fa-times-circle';
+
+                var html = '<div class="ca-detail-grid">';
+                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_Ad_Soyad"]</div><div class="ca-detail-value">' + (d.adSoyad || '-') + '</div></div>';
+                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_Durum"]</div><div><span class="ca-ws-status ' + statusClass + '"><i class="fas ' + statusIcon + '"></i> ' + d.statusLabel + '</span></div></div>';
+                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_E_posta"]</div><div class="ca-detail-value">' + (d.email || '-') + '</div></div>';
+                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_Telefon"]</div><div class="ca-detail-value">' + (d.phoneNumber || '-') + '</div></div>';
+                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_KimlikNo"]</div><div class="ca-detail-value">' + (d.kimlikNo || '-') + '</div></div>';
+                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_DogumTarihi"]</div><div class="ca-detail-value">' + (d.dogumTarihi || '-') + '</div></div>';
+                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_Sehir"]</div><div class="ca-detail-value">' + (d.sehir || '-') + '</div></div>';
+                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_BasvuruTarihi"]</div><div class="ca-detail-value">' + (d.basvuruTarihi || '-') + '</div></div>';
+                html += '<div class="ca-detail-item full"><div class="ca-detail-label">@Localizer["Admin_Adres"]</div><div class="ca-detail-value ' + (!d.adres ? 'empty' : '') + '">' + (d.adres || '@Localizer["Admin_Belirtilmemis"]') + '</div></div>';
+                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_SiparisSayisi"]</div><div class="ca-detail-value">' + d.siparisSayisi + '</div></div>';
+                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_ToptanciRolu"]</div><div class="ca-detail-value">' + (d.isWholesaleRole ? '<span style="color:#166534;"><i class="fas fa-check"></i> @Localizer["Admin_Evet"]</span>' : '<span style="color:#991b1b;"><i class="fas fa-times"></i> @Localizer["Admin_Hayir"]</span>') + '</div></div>';
+
+                if (d.kimlikFotografYolu) {
+                    html += '<div class="ca-detail-item full"><div class="ca-detail-label">@Localizer["Admin_KimlikFotografi"]</div>';
+                    html += '<a href="' + d.kimlikFotografYolu + '" target="_blank" class="ca-detail-photo-link"><i class="fas fa-external-link-alt"></i> @Localizer["Admin_FotografiYeniSekmede"]</a>';
+                    html += '<br/><img src="' + d.kimlikFotografYolu + '" class="ca-detail-photo" alt="@Localizer["Admin_KimlikFotografi"]" />';
+                    html += '</div>';
+                } else {
+                    html += '<div class="ca-detail-item full"><div class="ca-detail-label">@Localizer["Admin_KimlikFotografi"]</div><div class="ca-detail-value empty">@Localizer["Admin_YuklenmemisText"]</div></div>';
+                }
+                html += '</div>';
+
+                body.innerHTML = html;
+
+                // Footer actions
+                var footerHtml = '';
+                if (d.wholesaleStatus !== 'Approved') {
+                    footerHtml += '<form asp-action="Onayla" method="post" class="ws-ajax-form" style="margin:0;">';
+                    footerHtml += '<input type="hidden" name="id" value="' + d.id + '" />';
+                    footerHtml += document.querySelector('input[name="__RequestVerificationToken"]').outerHTML;
+                    footerHtml += '<button type="submit" class="ca-ws-btn approve" data-confirm="' + (d.adSoyad || '') + ' @Localizer["Admin_OnaylaConfirmJS"]"><i class="fas fa-check"></i> @Localizer["Admin_Onayla"]</button>';
+                    footerHtml += '</form>';
+                }
+                if (d.wholesaleStatus !== 'Rejected') {
+                    footerHtml += '<button type="button" class="ca-ws-btn reject" onclick="closeDetailModal();showRejectModal(\'' + d.id + '\',\'' + (d.adSoyad || '') + '\')"><i class="fas fa-times"></i> @Localizer["Admin_Reddet"]</button>';
+                }
+                if (d.wholesaleStatus !== 'Pending') {
+                    footerHtml += '<form asp-action="Beklemede" method="post" class="ws-ajax-form" style="margin:0;">';
+                    footerHtml += '<input type="hidden" name="id" value="' + d.id + '" />';
+                    footerHtml += document.querySelector('input[name="__RequestVerificationToken"]').outerHTML;
+                    footerHtml += '<button type="submit" class="ca-ws-btn pending-btn" data-confirm="' + (d.adSoyad || '') + ' @Localizer["Admin_BeklemedeyeConfirmJS"]"><i class="fas fa-undo"></i> @Localizer["Admin_BeklemedeyeAl"]</button>';
+                    footerHtml += '</form>';
+                }
+                footer.innerHTML = footerHtml;
+                footer.style.display = 'flex';
+
+                // Re-bind AJAX forms
+                bindAjaxForms();
+            })
+            .catch(function() {
+                body.innerHTML = '<div class="text-center py-4"><i class="fas fa-exclamation-triangle" style="font-size:1.5rem; color:#f59e0b;"></i><p class="mt-2" style="color:#991b1b;">@Localizer["Admin_YuklemeHata"]</p></div>';
+            });
+    }
+
+    function closeDetailModal() {
+        document.getElementById('detailModal').classList.remove('show');
+    }
+
+    // Reject Modal
+    function showRejectModal(userId, userName) {
+        document.getElementById('rejectUserId').value = userId;
+        document.getElementById('rejectUserName').textContent = userName;
+        document.querySelector('#rejectForm textarea').value = '';
+        document.getElementById('rejectModal').classList.add('show');
+    }
+
+    function closeRejectModal() {
+        document.getElementById('rejectModal').classList.remove('show');
+    }
+
+    function submitReject() {
+        var form = document.getElementById('rejectForm');
+        var btn = document.querySelector('#rejectModal .ca-ws-btn.reject');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> @Localizer["Admin_Isleniyor"]';
+
+        var formData = new FormData(form);
+        fetch(form.getAttribute('action') || '/Admin/Toptanci/Reddet', {
+            method: 'POST',
+            body: formData
+        }).then(function() {
+            showToast('@Localizer["Admin_BasvuruReddedildi"]', 'success');
+            setTimeout(function() { location.reload(); }, 800);
+        }).catch(function() {
+            showToast('@Localizer["Admin_IslemHata"]', 'error');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-times"></i> @Localizer["Admin_Reddet"]';
+        });
+    }
+
+    // AJAX form handling
+    function bindAjaxForms() {
+        document.querySelectorAll('.ws-ajax-form').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                var btn = form.querySelector('button[type="submit"]');
+                var confirmMsg = btn.getAttribute('data-confirm');
+                if (confirmMsg && !confirm(confirmMsg)) return;
+
+                btn.disabled = true;
+                var originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+                var formData = new FormData(form);
+                fetch(form.getAttribute('action'), {
+                    method: 'POST',
+                    body: formData
+                }).then(function() {
+                    var row = form.closest('tr');
+                    if (row) {
+                        row.style.transition = 'opacity .3s';
+                        row.style.opacity = '0';
+                    }
+                    showToast('@Localizer["Admin_IslemBasarili"]', 'success');
+                    setTimeout(function() { location.reload(); }, 600);
+                }).catch(function() {
+                    showToast('@Localizer["Admin_IslemHata"]', 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                });
+            });
+        });
+    }
+
+    // Toast notification
+    function showToast(message, type) {
+        var existing = document.querySelector('.ca-toast');
+        if (existing) existing.remove();
+
+        var toast = document.createElement('div');
+        toast.className = 'ca-toast ' + type;
+        toast.innerHTML = '<i class="fas ' + (type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle') + '"></i> ' + message;
+        document.body.appendChild(toast);
+        setTimeout(function() { toast.remove(); }, 3000);
+    }
+
+    // Close modals on overlay click
+    document.querySelectorAll('.ca-modal-overlay').forEach(function(overlay) {
+        overlay.addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('show');
+        });
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.ca-modal-overlay.show').forEach(function(m) { m.classList.remove('show'); });
+        }
+    });
+
+    // Bind on load
+    bindAjaxForms();
+</script>
+}

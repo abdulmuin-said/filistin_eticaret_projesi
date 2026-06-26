@@ -1,0 +1,56 @@
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["FAQ"];
+    ViewData["MetaDescription"] = "7ANRPS48 sıkça sorulan sorular. Sipariş, kargo, iade ve ödeme hakkında merak ettiğiniz her şey.";
+    ViewData["SeoTitle"] = Localizer["FAQ"] + " - 7ANRPS48";
+}
+
+<div class="bg-[#f1ede7] border-b border-[#e5e2dc] py-3">
+    <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-[#47473d]">
+        <a href="/" class="hover:text-[#313511] transition-colors">@Localizer["HomePage"]</a>
+        <span>/</span>
+        <span class="text-[#1c1c18] font-medium">@Localizer["FAQ"]</span>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-16 max-w-4xl">
+    <div class="text-center mb-12">
+        <h1 class="font-serif text-3xl md:text-5xl text-[#313511] mb-4">@Localizer["FAQ"]</h1>
+        <div class="w-16 h-1 bg-[#b58735] mx-auto"></div>
+    </div>
+
+    <div class="bg-white border border-[#e5e2dc] rounded-lg p-8 md:p-12 shadow-sm prose prose-sm md:prose-base max-w-none prose-headings:font-serif prose-headings:text-[#313511] prose-a:text-[#b58735] prose-strong:text-[#1c1c18]">
+
+        <h2>@Localizer["FAQOrderShipping"]</h2>
+
+        <h4>@Localizer["FAQWhenShipped"]</h4>
+        <p>@Localizer["FAQWhenShippedAnswer"]</p>
+
+        <h4>@Localizer["FAQShippingCost"]</h4>
+        <p>@Localizer["FAQShippingCostAnswer"]</p>
+
+        <h4>@Localizer["FAQTrackOrder"]</h4>
+        <p>@Localizer["FAQTrackOrderAnswer"]</p>
+
+        <hr class="my-8 border-[#e5e2dc]">
+
+        <h2>@Localizer["FAQProductsQuality"]</h2>
+
+        <h4>@Localizer["FAQMaterials"]</h4>
+        <p>@Localizer["FAQMaterialsAnswer"]</p>
+
+        <h4>@Localizer["FAQFade"]</h4>
+        <p>@Localizer["FAQFadeAnswer"]</p>
+
+        <h4>@Localizer["FAQCleaning"]</h4>
+        <p>@Localizer["FAQCleaningAnswer"]</p>
+
+        <hr class="my-8 border-[#e5e2dc]">
+
+        <h2>@Localizer["FAQReturnExchange"]</h2>
+
+        <h4>@Localizer["FAQReturn"]</h4>
+        <p>@Localizer["FAQReturnAnswer"]</p>
+
+    </div>
+</div>

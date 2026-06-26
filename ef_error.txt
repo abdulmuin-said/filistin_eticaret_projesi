@@ -1,0 +1,67 @@
+﻿Using project 'E:\Projeler\filistin_eticaret_projesi\KanvasProje.Data\KanvasProje.Data.csproj'.
+Using startup project 'E:\Projeler\filistin_eticaret_projesi\KanvasProje.Web\KanvasProje.Web.csproj'.
+dotnet msbuild /getProperty:ProjectName /getProperty:AssemblyName /getProperty:DesignAssembly /getProperty:Language /getProperty:OutputPath /getProperty:PlatformTarget /getProperty:ProjectAssetsFile /getProperty:ProjectDir /getProperty:RootNamespace /getProperty:RuntimeFrameworkVersion /getProperty:TargetFileName /getProperty:TargetFrameworkMoniker /getProperty:Nullable /getProperty:TargetFramework /getProperty:TargetPlatformIdentifier /getProperty:Platform /t:ResolvePackageAssets /getItem:RuntimeCopyLocalItems E:\Projeler\filistin_eticaret_projesi\KanvasProje.Data\KanvasProje.Data.csproj
+dotnet msbuild /getProperty:ProjectName /getProperty:AssemblyName /getProperty:DesignAssembly /getProperty:Language /getProperty:OutputPath /getProperty:PlatformTarget /getProperty:ProjectAssetsFile /getProperty:ProjectDir /getProperty:RootNamespace /getProperty:RuntimeFrameworkVersion /getProperty:TargetFileName /getProperty:TargetFrameworkMoniker /getProperty:Nullable /getProperty:TargetFramework /getProperty:TargetPlatformIdentifier /getProperty:Platform /t:ResolvePackageAssets /getItem:RuntimeCopyLocalItems E:\Projeler\filistin_eticaret_projesi\KanvasProje.Web\KanvasProje.Web.csproj
+Build started...
+dotnet build E:\Projeler\filistin_eticaret_projesi\KanvasProje.Web\KanvasProje.Web.csproj /verbosity:quiet /nologo /p:PublishAot=false
+
+Oluşturma başarılı oldu.
+    0 Uyarı
+    0 Hata
+
+Geçen Süre 00:00:03.55
+
+Build succeeded.
+dotnet exec --depsfile E:\Projeler\filistin_eticaret_projesi\KanvasProje.Web\bin\Debug\net8.0\KanvasProje.Web.deps.json --additionalprobingpath C:\Users\abdul\.nuget\packages --runtimeconfig E:\Projeler\filistin_eticaret_projesi\KanvasProje.Web\bin\Debug\net8.0\KanvasProje.Web.runtimeconfig.json C:\Users\abdul\.dotnet\tools\.store\dotnet-ef\10.0.3\dotnet-ef\10.0.3\tools\net8.0\any\tools\net8.0\any\ef.dll database update --assembly E:\Projeler\filistin_eticaret_projesi\KanvasProje.Web\bin\Debug\net8.0\KanvasProje.Data.dll --project E:\Projeler\filistin_eticaret_projesi\KanvasProje.Data\KanvasProje.Data.csproj --startup-assembly E:\Projeler\filistin_eticaret_projesi\KanvasProje.Web\bin\Debug\net8.0\KanvasProje.Web.dll --startup-project E:\Projeler\filistin_eticaret_projesi\KanvasProje.Web\KanvasProje.Web.csproj --project-dir E:\Projeler\filistin_eticaret_projesi\KanvasProje.Data\ --root-namespace KanvasProje.Data --language C# --framework net8.0 --design-assembly C:\Users\abdul\.nuget\packages\microsoft.entityframeworkcore.design\8.0.4\lib\net8.0\Microsoft.EntityFrameworkCore.Design.dll --nullable --working-dir E:\Projeler\filistin_eticaret_projesi --verbose
+Using assembly 'KanvasProje.Data'.
+Using startup assembly 'KanvasProje.Web'.
+Using application base 'E:\Projeler\filistin_eticaret_projesi\KanvasProje.Web\bin\Debug\net8.0'.
+Using working directory 'E:\Projeler\filistin_eticaret_projesi\KanvasProje.Web'.
+Using root namespace 'KanvasProje.Data'.
+Using project directory 'E:\Projeler\filistin_eticaret_projesi\KanvasProje.Data\'.
+Remaining arguments: .
+Finding DbContext classes...
+Finding IDesignTimeDbContextFactory implementations...
+Finding application service provider in assembly 'KanvasProje.Web'...
+Finding Microsoft.Extensions.Hosting service provider...
+Using environment 'Development'.
+Using application service provider from Microsoft.Extensions.Hosting.
+Found DbContext 'KanvasDbContext'.
+Finding DbContext classes in the project...
+Using context 'KanvasDbContext'.
+Finding design-time services referenced by assembly 'KanvasProje.Web'...
+Finding design-time services referenced by assembly 'KanvasProje.Data'...
+No referenced design-time services were found.
+Finding design-time services for provider 'Npgsql.EntityFrameworkCore.PostgreSQL'...
+Using design-time services from provider 'Npgsql.EntityFrameworkCore.PostgreSQL'.
+Finding IDesignTimeServices implementations in assembly 'KanvasProje.Web'...
+No design-time services were found.
+[17:57:09 ERR] Failed executing DbCommand (8ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+ALTER TABLE "Urunler" ADD "FiyatGizliMi" boolean NOT NULL DEFAULT FALSE;
+Npgsql.PostgresException (0x80004005): 42701: column "FiyatGizliMi" of relation "Urunler" already exists
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteNonQuery(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Migrations.MigrationCommand.ExecuteNonQuery(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.MigrationCommandExecutor.ExecuteNonQuery(IEnumerable`1 migrationCommands, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Migrations.Internal.Migrator.Migrate(String targetMigration)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Migrations.Internal.NpgsqlMigrator.Migrate(String targetMigration)
+   at Microsoft.EntityFrameworkCore.Design.Internal.MigrationsOperations.UpdateDatabase(String targetMigration, String connectionString, String contextType)
+   at Microsoft.EntityFrameworkCore.Design.OperationExecutor.UpdateDatabaseImpl(String targetMigration, String connectionString, String contextType)
+   at Microsoft.EntityFrameworkCore.Design.OperationExecutor.UpdateDatabase.<>c__DisplayClass0_0.<.ctor>b__0()
+   at Microsoft.EntityFrameworkCore.Design.OperationExecutor.OperationBase.Execute(Action action)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42701
+    MessageText: column "FiyatGizliMi" of relation "Urunler" already exists
+    File: tablecmds.c
+    Line: 7347
+    Routine: check_for_column_name_collision
+42701: column "FiyatGizliMi" of relation "Urunler" already exists

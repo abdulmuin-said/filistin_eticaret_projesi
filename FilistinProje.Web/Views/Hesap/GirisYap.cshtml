@@ -1,0 +1,74 @@
+@inject IStringLocalizer<SharedResource> Localizer
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
+@{
+    ViewData["Title"] = @Localizer["Login"];
+    var siteSettings = SiteSettingsService.GetSettings();
+}
+
+<div class="min-h-[80vh] flex items-center justify-center py-16 px-4 bg-[#fcf9f3]">
+    <div class="w-full max-w-md">
+        <!-- Logo / Başlık -->
+        <div class="text-center mb-10">
+             <a href="/" class="font-serif text-3xl tracking-widest text-[#313511]">@(siteSettings.MarkaAdi ?? "7ANRPS48")</a>
+            <p class="text-xs text-[#47473d] mt-2 tracking-wide">@Localizer["LoginToYourAccount"]</p>
+        </div>
+
+        <!-- Hata / Başarı Mesajları -->
+        @if (ViewBag.Hata != null)
+        {
+            <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded mb-6 flex items-center gap-2">
+                <i class="fas fa-circle-exclamation"></i>
+                @ViewBag.Hata
+            </div>
+        }
+        @if (TempData.Peek("Basari") != null)
+        {
+            <div class="bg-green-50 border border-green-200 text-green-700 text-sm px-4 py-3 rounded mb-6 flex items-center gap-2">
+                <i class="fas fa-circle-check"></i>
+                @TempData.Peek("Basari")
+            </div>
+        }
+
+        @if (siteSettings.GirisZorunluMu)
+        {
+            <div class="bg-amber-50 border border-amber-200 text-amber-800 text-sm px-4 py-3 rounded mb-6 flex items-center gap-2">
+                <i class="fas fa-triangle-exclamation text-amber-600"></i>
+                 <span>@Localizer["LoginRequiredMessage"]</span>
+            </div>
+        }
+
+        <!-- Form Kartı -->
+        <div class="bg-white border border-[#e5e2dc] rounded-lg p-8 shadow-sm">
+            <form asp-action="GirisYap" method="post" class="space-y-5">
+                <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+
+                <div>
+                    <label for="eposta" class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["Email"]</label>
+                    <input id="eposta" name="eposta" type="email" placeholder="@Localizer["ExampleEmail"]" autocomplete="email" required
+                           class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm text-[#1c1c18] focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none transition bg-[#fcf9f3]" />
+                </div>
+
+                <div>
+                    <label for="sifre" class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["Password"]</label>
+                    <input id="sifre" name="sifre" type="password" placeholder="@Localizer["PasswordPlaceholder"]" autocomplete="current-password" required
+                           class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm text-[#1c1c18] focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none transition bg-[#fcf9f3]" />
+                </div>
+
+                <div class="flex justify-end">
+                    <a href="/Hesap/SifremiUnuttum" class="text-xs text-[#b58735] hover:underline">@Localizer["ForgotPassword"]</a>
+                </div>
+
+                <button type="submit"
+                        class="w-full bg-[#313511] text-white py-3 text-xs tracking-widest uppercase rounded hover:bg-[#1c2001] transition-colors font-medium">
+                    @Localizer["Login"]
+                </button>
+            </form>
+        </div>
+
+        <!-- Kayıt Linki -->
+        <p class="text-center text-sm text-[#47473d] mt-6">
+            @Localizer["NoAccount"]
+            <a href="/Hesap/KayitOl" class="text-[#b58735] hover:underline font-medium">@Localizer["Register"]</a>
+        </p>
+    </div>
+</div>

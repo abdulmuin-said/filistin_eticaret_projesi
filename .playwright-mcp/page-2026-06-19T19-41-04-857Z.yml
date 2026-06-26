@@ -1,0 +1,197 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: 
+      - text: توصيل مجاني للطلبات فوق 200 ₪
+    - generic [ref=e6]:
+      - generic [ref=e7]: 
+      - text: الدفع عند الاستلام متاح
+    - generic [ref=e8]:
+      - generic [ref=e9]: 
+      - text: Güvenli Ödeme
+    - generic [ref=e10]:
+      - generic [ref=e11]: 
+      - text: Kredi Kartı ile Ödeme
+    - generic [ref=e12]:
+      - generic [ref=e13]: 
+      - text: Hızlı Üretim
+    - generic [ref=e14]:
+      - generic [ref=e15]: 
+      - text: Özenli Paketleme
+    - generic [ref=e16]:
+      - generic [ref=e17]: 
+      - text: Filistin Geneli Teslimat
+    - generic [ref=e18]:
+      - generic [ref=e19]: 
+      - text: 14 Gün İade
+    - generic [ref=e20]:
+      - generic [ref=e21]: 
+      - text: Üretici Garantisi
+    - generic [ref=e22]:
+      - generic [ref=e23]: 
+      - text: WhatsApp Destek
+    - generic [ref=e24]:
+      - generic [ref=e25]: 
+      - text: توصيل مجاني للطلبات فوق 200 ₪
+    - generic [ref=e26]:
+      - generic [ref=e27]: 
+      - text: الدفع عند الاستلام متاح
+    - generic [ref=e28]:
+      - generic [ref=e29]: 
+      - text: Güvenli Ödeme
+    - generic [ref=e30]:
+      - generic [ref=e31]: 
+      - text: Kredi Kartı ile Ödeme
+    - generic [ref=e32]:
+      - generic [ref=e33]: 
+      - text: Hızlı Üretim
+    - generic [ref=e34]:
+      - generic [ref=e35]: 
+      - text: Özenli Paketleme
+    - generic [ref=e36]:
+      - generic [ref=e37]: 
+      - text: Filistin Geneli Teslimat
+    - generic [ref=e38]:
+      - generic [ref=e39]: 
+      - text: 14 Gün İade
+    - generic [ref=e40]:
+      - generic [ref=e41]: 
+      - text: Üretici Garantisi
+    - generic [ref=e42]:
+      - generic [ref=e43]: 
+      - text: WhatsApp Destek
+  - banner [ref=e44]:
+    - generic [ref=e45]:
+      - generic [ref=e46]:
+        - generic [ref=e48]: 
+        - link "AR" [ref=e49] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FHesap%2FGirisYap%3FReturnUrl%3D%252FAdmin%252FHome%252FIndex
+        - link "EN" [ref=e50] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FHesap%2FGirisYap%3FReturnUrl%3D%252FAdmin%252FHome%252FIndex
+        - link "TR" [ref=e51] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=tr&returnUrl=%2FHesap%2FGirisYap%3FReturnUrl%3D%252FAdmin%252FHome%252FIndex
+      - link "7ANRPS48" [ref=e52] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=e53]
+      - generic [ref=e54]:
+        - button "Ara" [ref=e55] [cursor=pointer]:
+          - img [ref=e56]
+        - link "Giriş Yap" [ref=e58] [cursor=pointer]:
+          - /url: /Hesap/GirisYap
+          - img [ref=e59]
+        - link "Favorilerim" [ref=e61] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=e62]
+        - link "Sepet" [ref=e64] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=e65]
+          - generic [ref=e67]: "0"
+      - navigation [ref=e68]:
+        - list [ref=e69]:
+          - listitem [ref=e70] [cursor=pointer]:
+            - link "Filistin Temalı " [ref=e71]:
+              - /url: /Urun?k=1
+              - text: Filistin Temalı
+              - generic [ref=e72]: 
+          - listitem [ref=e73] [cursor=pointer]:
+            - link "Ev & Dekorasyon " [ref=e74]:
+              - /url: /Urun?k=2
+              - text: Ev & Dekorasyon
+              - generic [ref=e75]: 
+          - listitem [ref=e76] [cursor=pointer]:
+            - link "Hediyelik & Aksesuar " [ref=e77]:
+              - /url: /Urun?k=3
+              - text: Hediyelik & Aksesuar
+              - generic [ref=e78]: 
+          - listitem [ref=e79] [cursor=pointer]:
+            - link "İletişim" [ref=e80]:
+              - /url: /Kurumsal/Iletisim
+    - text:      
+  - main [ref=e81]:
+    - generic [ref=e83]:
+      - generic [ref=e84]:
+        - link "7ANRPS48" [ref=e85] [cursor=pointer]:
+          - /url: /
+        - paragraph [ref=e86]: Hesabınıza Giriş Yapın
+      - generic [ref=e88]:
+        - generic [ref=e89]:
+          - generic [ref=e90]: E-posta
+          - textbox "E-posta" [ref=e91]:
+            - /placeholder: ornek@email.com
+            - text: admin@7anrps48.com
+        - generic [ref=e92]:
+          - generic [ref=e93]: Şifre
+          - textbox "Şifre" [ref=e94]:
+            - /placeholder: Şifreniz
+            - text: Admin123!
+        - link "Şifremi Unuttum" [ref=e96] [cursor=pointer]:
+          - /url: /Hesap/SifremiUnuttum
+        - button "Giriş Yap" [ref=e97] [cursor=pointer]
+      - paragraph [ref=e98]:
+        - text: Hesabınız yok mu?
+        - link "Kayıt Ol" [ref=e99] [cursor=pointer]:
+          - /url: /Hesap/KayitOl
+  - contentinfo [ref=e100]:
+    - generic [ref=e102]:
+      - generic [ref=e103]:
+        - generic [ref=e105]: 
+        - generic [ref=e106]:
+          - generic [ref=e107]: Filistin'in Her Bölgesine
+          - generic [ref=e108]: Ücretsiz Kargo
+      - generic [ref=e109]:
+        - generic [ref=e111]: 
+        - generic [ref=e112]:
+          - generic [ref=e113]: Güvenli Alışveriş
+          - generic [ref=e114]: 256 Bit SSL
+      - generic [ref=e115]:
+        - generic [ref=e117]: 
+        - generic [ref=e118]:
+          - generic [ref=e119]: Tüm Kredi Kartları
+          - generic [ref=e120]: 12 Taksit
+    - generic [ref=e121]:
+      - generic [ref=e122]:
+        - generic [ref=e123]:
+          - heading "E-posta bültenine abone ol" [level=3] [ref=e124]
+          - paragraph [ref=e125]: Kampanya ve fırsatlardan haberdar olun
+          - generic [ref=e126]:
+            - textbox "E-posta Adresi" [ref=e127]
+            - button "Abone Ol" [ref=e128] [cursor=pointer]
+        - generic [ref=e129]:
+          - heading "Kurumsal" [level=4] [ref=e130]
+          - list [ref=e131]:
+            - listitem [ref=e132]:
+              - link "Hakkımızda" [ref=e133] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=e134]:
+              - link "İletişim" [ref=e135] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=e136]:
+              - link "Koleksiyonlar" [ref=e137] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=e138]:
+              - link "Gizlilik Politikası" [ref=e139] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=e140]:
+              - link "Mesafeli Satış Sözleşmesi" [ref=e141] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=e143] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=e144]: 
+      - generic [ref=e145]:
+        - paragraph [ref=e147]: © 2026 7ANRPS48 Tüm hakları saklıdır.
+        - generic [ref=e148]:
+          - link "Gizlilik Politikası" [ref=e149] [cursor=pointer]:
+            - /url: /Kurumsal/Gizlilik
+          - text: "|"
+          - link "Kullanım Koşulları" [ref=e150] [cursor=pointer]:
+            - /url: /Kurumsal/KullaniciSozlesmesi
+          - text: "|"
+          - link "İade ve Değişim" [ref=e151] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+  - link "WhatsApp İletişim" [ref=e152] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=e153]
+    - generic [ref=e155]: WhatsApp
+  - link "Sepet" [ref=e156] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=e157]

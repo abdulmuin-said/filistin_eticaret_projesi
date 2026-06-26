@@ -1,0 +1,355 @@
+@model List<FilistinProje.Web.Areas.Admin.Controllers.OlcuFiyatModel>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_BulkPriceUpdate"];
+}
+
+<style>
+    .tf-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+    
+    .tf-header-left h1 {
+        font-family: var(--ca-font-serif);
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: var(--ca-primary);
+        margin: 0 0 4px 0;
+    }
+    
+    .tf-header-left p {
+        font-size: 14px;
+        color: var(--ca-text-secondary);
+        margin: 0;
+    }
+    
+    .tf-header-right {
+        display: flex;
+        gap: 8px;
+    }
+    
+    .tf-export-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        border: 1px solid var(--ca-border);
+        border-radius: var(--ca-radius);
+        background: #fff;
+        color: var(--ca-text-secondary);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all var(--ca-transition);
+    }
+    
+    .tf-export-btn:hover {
+        background: var(--ca-surface-hover);
+        color: var(--ca-primary);
+        border-color: var(--ca-primary);
+    }
+    
+    .tf-search {
+        margin-bottom: 20px;
+    }
+    
+    .tf-search input {
+        max-width: 320px;
+        padding: 10px 14px;
+        border: 1px solid var(--ca-border);
+        border-radius: var(--ca-radius);
+        font-size: 14px;
+        width: 100%;
+    }
+    
+    .tf-search input:focus {
+        outline: none;
+        border-color: var(--ca-accent);
+    }
+    
+    .tf-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 16px;
+    }
+    
+    .tf-card {
+        background: #fff;
+        border: 1px solid var(--ca-border);
+        border-radius: var(--ca-radius);
+        padding: 16px;
+    }
+    
+    .tf-card-header {
+        font-weight: 600;
+        color: var(--ca-primary);
+        font-size: 15px;
+        margin-bottom: 8px;
+    }
+    
+    .tf-card-info {
+        font-size: 13px;
+        color: var(--ca-text-secondary);
+        margin-bottom: 12px;
+    }
+    
+    .tf-card-price {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+    
+    .tf-card-price label {
+        font-size: 13px;
+        color: var(--ca-text-secondary);
+    }
+    
+    .tf-card-price .price-value {
+        font-weight: 600;
+        color: var(--ca-success);
+    }
+    
+    .tf-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .tf-input-group label {
+        font-size: 13px;
+        color: var(--ca-text-secondary);
+    }
+    
+    .tf-input-group input {
+        padding: 10px 12px;
+        border: 1px solid var(--ca-border);
+        border-radius: var(--ca-radius-sm);
+        font-size: 14px;
+    }
+    
+    .tf-input-group input:focus {
+        outline: none;
+        border-color: var(--ca-accent);
+    }
+    
+    .tf-save-btn {
+        background: var(--ca-success);
+        color: #fff;
+        border: none;
+        padding: 10px 16px;
+        border-radius: var(--ca-radius);
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all var(--ca-transition);
+    }
+    
+    .tf-save-btn:hover {
+        background: #0d9668;
+    }
+    
+    .tf-save-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+    }
+    
+    .tf-save-btn.loading {
+        opacity: 0.7;
+        pointer-events: none;
+    }
+    
+    .tf-toast {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: var(--ca-success);
+        color: #fff;
+        padding: 14px 20px;
+        border-radius: var(--ca-radius);
+        font-weight: 500;
+        font-size: 14px;
+        box-shadow: var(--ca-shadow-lg);
+        transform: translateX(120%);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 10001;
+    }
+    
+    .tf-toast.show {
+        transform: translateX(0);
+    }
+    
+    .tf-toast.error {
+        background: var(--ca-danger);
+    }
+    
+    .tf-count {
+        background: #f1ede7;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 11px;
+    }
+    
+    .tf-empty {
+        text-align: center;
+        padding: 40px;
+        color: var(--ca-text-muted);
+    }
+</style>
+
+@Html.AntiForgeryToken()
+
+<div class="container-fluid">
+    <div class="tf-header">
+        <div class="tf-header-left">
+            <h1>@Localizer["Admin_BulkPriceUpdate"]</h1>
+            <p>@Localizer["Admin_BulkPriceUpdateSubtitle"]</p>
+        </div>
+        <div class="tf-header-right">
+            <button type="button" class="tf-export-btn" onclick="exportXlsx()">
+                <i class="fas fa-file-excel"></i> XLSX Export
+            </button>
+            <button type="button" class="tf-export-btn" onclick="exportPdf()">
+                <i class="fas fa-file-pdf"></i> PDF Export
+            </button>
+        </div>
+    </div>
+
+    <div class="tf-search">
+        <input type="text" id="olcuAra" placeholder='@Localizer["Admin_SearchSizePlaceholder"]' onkeyup="filtrele()">
+    </div>
+
+    <div id="tfGrid" class="tf-grid">
+        @if (Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <div class="tf-card" data-olcu="@item.Olcu">
+                    <div class="tf-card-header">
+                        @item.Olcu
+                    </div>
+                    <div class="tf-card-info">
+                        @item.UrunSayisi @Localizer["Admin_ProductLower"]
+                    </div>
+                    <div class="tf-card-price">
+                        <label>@Localizer["Admin_CurrentLabel"]</label>
+                        <span class="price-value">@item.MevcutFiyat.ToString("N2") ₪</span>
+                    </div>
+                    <div class="tf-input-group">
+                        <label>@Localizer["Admin_NewPriceLabel"]</label>
+                        <input type="number" 
+                               id="fiyat_@item.Olcu" 
+                               placeholder="@item.MevcutFiyat.ToString("N2")"
+                               step="0.01" 
+                               min="0" />
+                        <button type="button" class="tf-save-btn" onclick="kaydet('@item.Olcu', @item.MevcutFiyat)">
+                            <i class="fas fa-save"></i> @Localizer["Admin_Kaydet"]
+                        </button>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="tf-empty">@Localizer["Admin_SizeNotFound"]</div>
+        }
+    </div>
+</div>
+
+<div id="tfToast" class="tf-toast"></div>
+
+<script>
+    const pleaseEnterValidPrice = @Json.Serialize(Localizer["Admin_EnterValidPrice"].Value);
+    const savingText = @Json.Serialize(Localizer["Admin_Saving"].Value);
+    const saveText = @Json.Serialize(Localizer["Admin_Kaydet"].Value);
+    const priceUpdatedForSize = @Json.Serialize(Localizer["Admin_PriceUpdatedForSize"].Value);
+    const anErrorOccurred = @Json.Serialize(Localizer["Admin_ErrorOccurred"].Value);
+    const xlsxComingSoon = @Json.Serialize(Localizer["Admin_XlsxComingSoon"].Value);
+    const pdfComingSoon = @Json.Serialize(Localizer["Admin_PdfComingSoon"].Value);
+
+function filtrele() {
+    const arama = document.getElementById('olcuAra').value.toLowerCase();
+    const kartlar = document.querySelectorAll('.tf-card');
+    
+    kartlar.forEach(kart => {
+        const olcu = kart.getAttribute('data-olcu').toLowerCase();
+        if (olcu.includes(arama)) {
+            kart.style.display = 'block';
+        } else {
+            kart.style.display = 'none';
+        }
+    });
+}
+
+function kaydet(olcu, mevcutFiyat) {
+    const input = document.getElementById('fiyat_' + olcu);
+    const yeniFiyat = parseFloat(input.value);
+    
+    if (!yeniFiyat || yeniFiyat <= 0) {
+        showToast(pleaseEnterValidPrice, true);
+        return;
+    }
+    
+    const btn = input.parentElement.querySelector('.tf-save-btn');
+    btn.classList.add('loading');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + savingText;
+    
+    const formData = new FormData();
+    formData.append('olcu', olcu);
+    formData.append('yeniFiyat', yeniFiyat);
+    
+    fetch('/Admin/TopluFiyatGuncelle/FiyatGuncelle', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast(priceUpdatedForSize.replace('{0}', olcu));
+            input.placeholder = yeniFiyat.toString();
+            input.value = '';
+            
+            const mevcutSpan = input.closest('.tf-card').querySelector('.price-value');
+            mevcutSpan.textContent = yeniFiyat.toLocaleString('tr-TR', { minimumFractionDigits: 2 }) + ' ₪';
+        } else {
+            showToast(data.message || anErrorOccurred, true);
+        }
+    })
+    .catch(error => {
+        showToast(anErrorOccurred + ': ' + error.message, true);
+    })
+    .finally(() => {
+        btn.classList.remove('loading');
+        btn.innerHTML = '<i class="fas fa-save"></i> ' + saveText;
+    });
+}
+
+function showToast(message, isError = false) {
+    const toast = document.getElementById('tfToast');
+    toast.textContent = message;
+    toast.className = 'tf-toast' + (isError ? ' error' : '');
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3500);
+}
+
+
+
+function exportXlsx() {
+    showToast(xlsxComingSoon);
+}
+
+function exportPdf() {
+    showToast(pdfComingSoon);
+}
+</script>

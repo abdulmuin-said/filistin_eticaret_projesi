@@ -1,0 +1,361 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: 
+      - text: شحن مجاني للطلبات فوق 200 ₪
+    - generic [ref=e6]:
+      - generic [ref=e7]: 
+      - text: دفع سهل عبر الآيبان
+    - generic [ref=e8]:
+      - generic [ref=e9]: 
+      - text: خيار الدفع عند الاستلام
+    - generic [ref=e10]:
+      - generic [ref=e11]: 
+      - text: إنتاج سريع
+    - generic [ref=e12]:
+      - generic [ref=e13]: 
+      - text: تغليف دقيق
+    - generic [ref=e14]:
+      - generic [ref=e15]: 
+      - text: توصيل إلى جميع مناطق فلسطين
+    - generic [ref=e16]:
+      - generic [ref=e17]: 
+      - text: إرجاع 14 يوم
+    - generic [ref=e18]:
+      - generic [ref=e19]: 
+      - text: ضمان الشركة المصنعة
+    - generic [ref=e20]:
+      - generic [ref=e21]: 
+      - text: دعم واتساب
+    - generic [ref=e22]:
+      - generic [ref=e23]: 
+      - text: شحن مجاني للطلبات فوق 200 ₪
+    - generic [ref=e24]:
+      - generic [ref=e25]: 
+      - text: دفع سهل عبر الآيبان
+    - generic [ref=e26]:
+      - generic [ref=e27]: 
+      - text: خيار الدفع عند الاستلام
+    - generic [ref=e28]:
+      - generic [ref=e29]: 
+      - text: إنتاج سريع
+    - generic [ref=e30]:
+      - generic [ref=e31]: 
+      - text: تغليف دقيق
+    - generic [ref=e32]:
+      - generic [ref=e33]: 
+      - text: توصيل إلى جميع مناطق فلسطين
+    - generic [ref=e34]:
+      - generic [ref=e35]: 
+      - text: إرجاع 14 يوم
+    - generic [ref=e36]:
+      - generic [ref=e37]: 
+      - text: ضمان الشركة المصنعة
+    - generic [ref=e38]:
+      - generic [ref=e39]: 
+      - text: دعم واتساب
+  - banner [ref=e40]:
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e44]: 
+        - link "AR" [ref=e45] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FUrun
+        - link "EN" [ref=e46] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FUrun
+        - link "TR" [ref=e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=tr&returnUrl=%2FUrun
+      - link "7ANRPS48" [ref=e48] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=e49]
+      - generic [ref=e50]:
+        - button "بحث" [ref=e51] [cursor=pointer]:
+          - img [ref=e52]
+        - link "تسجيل الدخول" [ref=e54] [cursor=pointer]:
+          - /url: /Hesap/GirisYap
+          - img [ref=e55]
+        - link "المفضلة" [ref=e57] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=e58]
+        - link "السلة" [ref=e60] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=e61]
+          - generic [ref=e63]: "0"
+      - navigation [ref=e64]:
+        - list [ref=e65]:
+          - listitem [ref=e66] [cursor=pointer]:
+            - link "مستوحى من فلسطين " [ref=e67]:
+              - /url: /Urun?k=1
+              - text: مستوحى من فلسطين
+              - generic [ref=e68]: 
+          - listitem [ref=e69] [cursor=pointer]:
+            - link "المنزل والديكور " [ref=e70]:
+              - /url: /Urun?k=2
+              - text: المنزل والديكور
+              - generic [ref=e71]: 
+          - listitem [ref=e72] [cursor=pointer]:
+            - link "الهدايا والإكسسوارات " [ref=e73]:
+              - /url: /Urun?k=3
+              - text: الهدايا والإكسسوارات
+              - generic [ref=e74]: 
+          - listitem [ref=e75] [cursor=pointer]:
+            - link "اتصل بنا" [ref=e76]:
+              - /url: /Kurumsal/Iletisim
+    - text:      
+  - main [ref=e77]:
+    - generic [ref=e79]:
+      - link "الصفحة الرئيسية" [ref=e80] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e81]: /
+      - generic [ref=e82]: جميع المجموعات
+    - generic [ref=e84]:
+      - complementary [ref=e85]:
+        - heading "التصنيفات" [level=3] [ref=e86]
+        - list [ref=e87]:
+          - listitem [ref=e88]:
+            - link "جميع المجموعات (12)" [ref=e89] [cursor=pointer]:
+              - /url: /Urun
+              - generic [ref=e90]: جميع المجموعات
+              - generic [ref=e91]: (12)
+          - listitem [ref=e92]:
+            - group [ref=e93]:
+              - generic "مستوحى من فلسطين (4) " [ref=e94] [cursor=pointer]:
+                - generic [ref=e95]: مستوحى من فلسطين
+                - generic [ref=e96]:
+                  - text: (4)
+                  - generic [ref=e97]: 
+          - listitem [ref=e98]:
+            - group [ref=e99]:
+              - generic "المنزل والديكور (4) " [ref=e100] [cursor=pointer]:
+                - generic [ref=e101]: المنزل والديكور
+                - generic [ref=e102]:
+                  - text: (4)
+                  - generic [ref=e103]: 
+          - listitem [ref=e104]:
+            - group [ref=e105]:
+              - generic "الهدايا والإكسسوارات (4) " [ref=e106] [cursor=pointer]:
+                - generic [ref=e107]: الهدايا والإكسسوارات
+                - generic [ref=e108]:
+                  - text: (4)
+                  - generic [ref=e109]: 
+        - heading "نطاق السعر" [level=3] [ref=e110]
+        - generic [ref=e111]:
+          - generic [ref=e112]:
+            - generic [ref=e113]: ₪28
+            - generic [ref=e114]: ₪135
+          - generic [ref=e116]:
+            - slider [ref=e119] [cursor=pointer]
+            - slider [ref=e121] [cursor=pointer]
+          - button "تطبيق" [ref=e123] [cursor=pointer]
+      - main [ref=e124]:
+        - generic [ref=e125]:
+          - generic [ref=e126]:
+            - heading "جميع المجموعات" [level=1] [ref=e127]
+            - paragraph [ref=e128]: ProductCountListing
+          - combobox [ref=e130]:
+            - option "الأحدث" [selected]
+            - option "السعر من الأقل إلى الأعلى"
+            - option "السعر من الأعلى إلى الأقل"
+            - option "الأكثر مبيعاً"
+        - generic [ref=e131]:
+          - generic [ref=e132]:
+            - link "جديد لوحة جدارية بنقوش فلسطينية" [ref=e133] [cursor=pointer]:
+              - /url: /Urun/Detay/palestinian-pattern-wall-art-1
+              - generic [ref=e134]: جديد
+              - img "لوحة جدارية بنقوش فلسطينية" [ref=e135]
+            - button "" [ref=e136] [cursor=pointer]:
+              - generic [ref=e137]: 
+            - heading "لوحة جدارية بنقوش فلسطينية" [level=3] [ref=e138]:
+              - link "لوحة جدارية بنقوش فلسطينية" [ref=e139] [cursor=pointer]:
+                - /url: /Urun/Detay/palestinian-pattern-wall-art-1
+            - generic [ref=e141]: 95 ₪
+          - generic [ref=e142]:
+            - link "جديد طقم ديكور غصن الزيتون" [ref=e143] [cursor=pointer]:
+              - /url: /Urun/Detay/olive-branch-decor-set-2
+              - generic [ref=e144]: جديد
+              - img "طقم ديكور غصن الزيتون" [ref=e145]
+            - button "" [ref=e146] [cursor=pointer]:
+              - generic [ref=e147]: 
+            - heading "طقم ديكور غصن الزيتون" [level=3] [ref=e148]:
+              - link "طقم ديكور غصن الزيتون" [ref=e149] [cursor=pointer]:
+                - /url: /Urun/Detay/olive-branch-decor-set-2
+            - generic [ref=e150]:
+              - generic [ref=e151]: 110 ₪
+              - generic [ref=e152]: 120 ₪
+          - generic [ref=e153]:
+            - link "جديد صندوق هدايا تذكاري فلسطيني" [ref=e154] [cursor=pointer]:
+              - /url: /Urun/Detay/palestine-keepsake-gift-box-3
+              - generic [ref=e155]: جديد
+              - img "صندوق هدايا تذكاري فلسطيني" [ref=e156]
+            - button "" [ref=e157] [cursor=pointer]:
+              - generic [ref=e158]: 
+            - heading "صندوق هدايا تذكاري فلسطيني" [level=3] [ref=e159]:
+              - link "صندوق هدايا تذكاري فلسطيني" [ref=e160] [cursor=pointer]:
+                - /url: /Urun/Detay/palestine-keepsake-gift-box-3
+            - generic [ref=e162]: 75 ₪
+          - generic [ref=e163]:
+            - link "جديد لوحة أفق القدس" [ref=e164] [cursor=pointer]:
+              - /url: /Urun/Detay/jerusalem-skyline-art-4
+              - generic [ref=e165]: جديد
+              - img "لوحة أفق القدس" [ref=e166]
+            - button "" [ref=e167] [cursor=pointer]:
+              - generic [ref=e168]: 
+            - heading "لوحة أفق القدس" [level=3] [ref=e169]:
+              - link "لوحة أفق القدس" [ref=e170] [cursor=pointer]:
+                - /url: /Urun/Detay/jerusalem-skyline-art-4
+            - generic [ref=e171]:
+              - generic [ref=e172]: 100 ₪
+              - generic [ref=e173]: 110 ₪
+          - generic [ref=e174]:
+            - link "جديد ملصق تضامن غزة" [ref=e175] [cursor=pointer]:
+              - /url: /Urun/Detay/gaza-solidarity-poster-5
+              - generic [ref=e176]: جديد
+              - img "ملصق تضامن غزة" [ref=e177]
+            - button "" [ref=e178] [cursor=pointer]:
+              - generic [ref=e179]: 
+            - heading "ملصق تضامن غزة" [level=3] [ref=e180]:
+              - link "ملصق تضامن غزة" [ref=e181] [cursor=pointer]:
+                - /url: /Urun/Detay/gaza-solidarity-poster-5
+            - generic [ref=e183]: 45 ₪
+          - generic [ref=e184]:
+            - link "جديد طقم خريطة وعلم فلسطين" [ref=e185] [cursor=pointer]:
+              - /url: /Urun/Detay/palestine-map-a-flag-set-6
+              - generic [ref=e186]: جديد
+              - img "طقم خريطة وعلم فلسطين" [ref=e187]
+            - button "" [ref=e188] [cursor=pointer]:
+              - generic [ref=e189]: 
+            - heading "طقم خريطة وعلم فلسطين" [level=3] [ref=e190]:
+              - link "طقم خريطة وعلم فلسطين" [ref=e191] [cursor=pointer]:
+                - /url: /Urun/Detay/palestine-map-a-flag-set-6
+            - generic [ref=e193]: 65 ₪
+          - generic [ref=e194]:
+            - link "جديد ديكور القدس لغرفة المعيشة" [ref=e195] [cursor=pointer]:
+              - /url: /Urun/Detay/jerusalem-living-room-decor-7
+              - generic [ref=e196]: جديد
+              - img "ديكور القدس لغرفة المعيشة" [ref=e197]
+            - button "" [ref=e198] [cursor=pointer]:
+              - generic [ref=e199]: 
+            - heading "ديكور القدس لغرفة المعيشة" [level=3] [ref=e200]:
+              - link "ديكور القدس لغرفة المعيشة" [ref=e201] [cursor=pointer]:
+                - /url: /Urun/Detay/jerusalem-living-room-decor-7
+            - generic [ref=e203]: 135 ₪
+          - generic [ref=e204]:
+            - link "جديد ديكور جداري بإطار ذهبي" [ref=e205] [cursor=pointer]:
+              - /url: /Urun/Detay/gold-framed-wall-decor-8
+              - generic [ref=e206]: جديد
+              - img "ديكور جداري بإطار ذهبي" [ref=e207]
+            - button "" [ref=e208] [cursor=pointer]:
+              - generic [ref=e209]: 
+            - heading "ديكور جداري بإطار ذهبي" [level=3] [ref=e210]:
+              - link "ديكور جداري بإطار ذهبي" [ref=e211] [cursor=pointer]:
+                - /url: /Urun/Detay/gold-framed-wall-decor-8
+            - generic [ref=e212]:
+              - generic [ref=e213]: 135 ₪
+              - generic [ref=e214]: 145 ₪
+          - generic [ref=e215]:
+            - link "جديد طقم تقديم مائدة فلسطيني" [ref=e216] [cursor=pointer]:
+              - /url: /Urun/Detay/palestine-table-serving-set-9
+              - generic [ref=e217]: جديد
+              - img "طقم تقديم مائدة فلسطيني" [ref=e218]
+            - button "" [ref=e219] [cursor=pointer]:
+              - generic [ref=e220]: 
+            - heading "طقم تقديم مائدة فلسطيني" [level=3] [ref=e221]:
+              - link "طقم تقديم مائدة فلسطيني" [ref=e222] [cursor=pointer]:
+                - /url: /Urun/Detay/palestine-table-serving-set-9
+            - generic [ref=e224]: 88 ₪
+          - generic [ref=e225]:
+            - link "جديد هدية فلسطينية مخصصة بالاسم" [ref=e226] [cursor=pointer]:
+              - /url: /Urun/Detay/personalized-palestine-gift-10
+              - generic [ref=e227]: جديد
+              - img "هدية فلسطينية مخصصة بالاسم" [ref=e228]
+            - button "" [ref=e229] [cursor=pointer]:
+              - generic [ref=e230]: 
+            - heading "هدية فلسطينية مخصصة بالاسم" [level=3] [ref=e231]:
+              - link "هدية فلسطينية مخصصة بالاسم" [ref=e232] [cursor=pointer]:
+                - /url: /Urun/Detay/personalized-palestine-gift-10
+            - generic [ref=e234]: 55 ₪
+          - generic [ref=e235]:
+            - link "جديد طقم ميدالية ومغناطيس القدس" [ref=e236] [cursor=pointer]:
+              - /url: /Urun/Detay/jerusalem-keychain-a-magnet-set-11
+              - generic [ref=e237]: جديد
+              - img "طقم ميدالية ومغناطيس القدس" [ref=e238]
+            - button "" [ref=e239] [cursor=pointer]:
+              - generic [ref=e240]: 
+            - heading "طقم ميدالية ومغناطيس القدس" [level=3] [ref=e241]:
+              - link "طقم ميدالية ومغناطيس القدس" [ref=e242] [cursor=pointer]:
+                - /url: /Urun/Detay/jerusalem-keychain-a-magnet-set-11
+            - generic [ref=e244]: 28 ₪
+          - generic [ref=e245]:
+            - link "جديد حقيبة قماش فلسطينية مطرزة" [ref=e246] [cursor=pointer]:
+              - /url: /Urun/Detay/embroidered-palestine-tote-bag-12
+              - generic [ref=e247]: جديد
+              - img "حقيبة قماش فلسطينية مطرزة" [ref=e248]
+            - button "" [ref=e249] [cursor=pointer]:
+              - generic [ref=e250]: 
+            - heading "حقيبة قماش فلسطينية مطرزة" [level=3] [ref=e251]:
+              - link "حقيبة قماش فلسطينية مطرزة" [ref=e252] [cursor=pointer]:
+                - /url: /Urun/Detay/embroidered-palestine-tote-bag-12
+            - generic [ref=e254]: 70 ₪
+  - contentinfo [ref=e255]:
+    - generic [ref=e257]:
+      - generic [ref=e258]:
+        - generic [ref=e260]: 
+        - generic [ref=e261]:
+          - generic [ref=e262]: في جميع مناطق فلسطين
+          - generic [ref=e263]: شحن مجاني
+      - generic [ref=e264]:
+        - generic [ref=e266]: 
+        - generic [ref=e267]:
+          - generic [ref=e268]: تحويل بنكي
+          - generic [ref=e269]: دفع سهل عبر الآيبان
+      - generic [ref=e270]:
+        - generic [ref=e272]: 
+        - generic [ref=e273]:
+          - generic [ref=e274]: الدفع عند الاستلام
+          - generic [ref=e275]: خيار الدفع عند الاستلام
+    - generic [ref=e276]:
+      - generic [ref=e277]:
+        - generic [ref=e278]:
+          - heading "اشترك في النشرة البريدية" [level=3] [ref=e279]
+          - paragraph [ref=e280]: ابق على اطلاع بالحملات والعروض
+          - generic [ref=e281]:
+            - textbox "عنوان البريد الإلكتروني" [ref=e282]
+            - button "اشتراك" [ref=e283] [cursor=pointer]
+        - generic [ref=e284]:
+          - heading "مؤسسي" [level=4] [ref=e285]
+          - list [ref=e286]:
+            - listitem [ref=e287]:
+              - link "من نحن" [ref=e288] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=e289]:
+              - link "اتصل بنا" [ref=e290] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=e291]:
+              - link "المجموعات" [ref=e292] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=e293]:
+              - link "سياسة الخصوصية" [ref=e294] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=e295]:
+              - link "عقد البيع عن بعد" [ref=e296] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "واتساب" [ref=e298] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=e299]: 
+      - generic [ref=e300]:
+        - paragraph [ref=e302]: © 2026 7ANRPS48 جميع الحقوق محفوظة.
+        - generic [ref=e303]:
+          - link "سياسة الخصوصية" [ref=e304] [cursor=pointer]:
+            - /url: /Kurumsal/Gizlilik
+          - text: "|"
+          - link "شروط الاستخدام" [ref=e305] [cursor=pointer]:
+            - /url: /Kurumsal/KullaniciSozlesmesi
+          - text: "|"
+          - link "الإرجاع والاستبدال" [ref=e306] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+  - link "اتصال واتساب" [ref=e307] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=e308]
+    - generic [ref=e310]: WhatsApp
+  - link "السلة" [ref=e311] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=e312]

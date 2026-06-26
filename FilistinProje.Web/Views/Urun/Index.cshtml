@@ -1,0 +1,522 @@
+@model IEnumerable<FilistinProje.Core.Varliklar.Urun>
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
+@inject IStringLocalizer<SharedResource> Localizer
+@using FilistinProje.Core.Helpers
+
+@{
+    ViewData["Title"] = Localizer["Collections"];
+    var siteSettings = SiteSettingsService.GetSettings();
+    var stoktaYokSatisIzni = siteSettings.StoktaYokSatisIzni;
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
+    var isWholesale = User.IsInRole("Wholesale");
+
+    int currentPage = ViewBag.CurrentPage != null ? (int)ViewBag.CurrentPage : 1;
+    int totalPages = ViewBag.TotalPages != null ? (int)ViewBag.TotalPages : 1;
+    int totalItems = ViewBag.TotalItems != null ? (int)ViewBag.TotalItems : 0;
+
+    int? aktifKategori = ViewBag.KategoriId;
+    string aktifArama = ViewBag.Search ?? "";
+    string aktifSort = ViewBag.Sort ?? "yeni";
+    decimal? aktifMin = ViewBag.Min;
+    decimal? aktifMax = ViewBag.Max;
+    string aktifMarka = ViewBag.Marka ?? "";
+    var markaListesi = ViewBag.MarkaListesi as List<dynamic> ?? new List<dynamic>();
+    var ozellikFiltreleri = ViewBag.OzellikFiltreleri as List<FilistinProje.Web.Models.ProductFeatureFilterViewModel> ?? new List<FilistinProje.Web.Models.ProductFeatureFilterViewModel>();
+    var seciliOzellikler = ViewBag.SeciliOzellikler as Dictionary<int, string> ?? new Dictionary<int, string>();
+
+    var kategoriler = ViewBag.Kategoriler as List<FilistinProje.Core.Varliklar.Kategori>;
+    var kategoriUrunSayilari = ViewBag.KategoriUrunSayilari as Dictionary<int, int> ?? new Dictionary<int, int>();
+    int toplamAktifUrunSayisi = ViewBag.ToplamAktifUrunSayisi != null ? (int)ViewBag.ToplamAktifUrunSayisi : totalItems;
+    var kategoriIdSet = kategoriler?.Select(x => x.Id).ToHashSet() ?? new HashSet<int>();
+    var anaKategoriler = kategoriler?
+        .Where(x => !x.SilindiMi && x.AktifMi && (!x.ParentKategoriId.HasValue || !kategoriIdSet.Contains(x.ParentKategoriId.Value)))
+        .OrderBy(x => x.Sira)
+        .ThenBy(x => x.LocalizedAd)
+        .ToList() ?? new List<FilistinProje.Core.Varliklar.Kategori>();
+    var kategoriLookup = kategoriler?.ToDictionary(x => x.Id) ?? new Dictionary<int, FilistinProje.Core.Varliklar.Kategori>();
+
+    var sortOptions = new Dictionary<string, string>
+    {
+        { "yeni", Localizer["Newest"].Value },
+        { "fiyat_artan", Localizer["PriceLowToHigh"].Value },
+        { "fiyat_azalan", Localizer["PriceHighToLow"].Value },
+        { "cok_satan", Localizer["BestSellers"].Value }
+    };
+
+    string aktifKategoriAd = Localizer["AllCollections"].Value;
+    if (aktifKategori.HasValue && kategoriler != null)
+    {
+        var kat = kategoriler.FirstOrDefault(x => x.Id == aktifKategori.Value);
+        if (kat != null) aktifKategoriAd = kat.LocalizedAd;
+    }
+
+    string BuildOzellikFilterUrl(int definitionId, string value)
+    {
+        var yeniSecili = new Dictionary<int, string>(seciliOzellikler);
+        if (yeniSecili.ContainsKey(definitionId) && yeniSecili[definitionId] == value)
+        {
+            yeniSecili.Remove(definitionId);
+        }
+        else
+        {
+            yeniSecili[definitionId] = value;
+        }
+
+        var values = new List<(string Key, string Value)>();
+        void AddQueryValue(string qk, string? qv)
+        {
+            if (!string.IsNullOrWhiteSpace(qv)) values.Add((qk, qv));
+        }
+        if (aktifKategori.HasValue) AddQueryValue("k", aktifKategori.Value.ToString());
+        AddQueryValue("s", aktifArama);
+        AddQueryValue("marka", aktifMarka);
+        if (aktifMin.HasValue) AddQueryValue("min", aktifMin.Value.ToString());
+        if (aktifMax.HasValue) AddQueryValue("max", aktifMax.Value.ToString());
+        AddQueryValue("sort", aktifSort);
+        foreach (var kv in yeniSecili)
+        {
+            AddQueryValue("ozellik", $"{kv.Key}:{kv.Value}");
+        }
+        var parts = values.Select(x => $"{Uri.EscapeDataString(x.Key)}={Uri.EscapeDataString(x.Value)}").ToList();
+        return parts.Count == 0 ? "/Urun" : "/Urun?" + string.Join("&", parts);
+    }
+
+    string BuildProductUrl(FilistinProje.Core.Varliklar.Urun urun)
+        => "/Urun/Detay/" + (string.IsNullOrEmpty(urun.Slug) ? (FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(urun.Baslik) + "-" + urun.Id) : urun.Slug + "-" + urun.Id);
+
+    int GetKategoriUrunSayisi(int kategoriId)
+        => kategoriUrunSayilari.TryGetValue(kategoriId, out var count) ? count : 0;
+
+    bool AktifKategoriDalindaMi(FilistinProje.Core.Varliklar.Kategori kategori)
+    {
+        var currentId = aktifKategori;
+        while (currentId.HasValue && kategoriLookup.TryGetValue(currentId.Value, out var current))
+        {
+            if (current.Id == kategori.Id)
+            {
+                return true;
+            }
+
+            currentId = current.ParentKategoriId;
+        }
+
+        return false;
+    }
+
+    string BuildFilterUrl(string key, string val)
+    {
+        var values = new List<(string Key, string Value)>();
+
+        void AddQueryValue(string queryKey, string? queryValue)
+        {
+            if (!string.IsNullOrWhiteSpace(queryValue))
+            {
+                values.Add((queryKey, queryValue));
+            }
+        }
+
+        if (aktifKategori.HasValue) AddQueryValue("k", aktifKategori.Value.ToString());
+        AddQueryValue("s", aktifArama);
+        AddQueryValue("marka", aktifMarka);
+        if (aktifMin.HasValue) AddQueryValue("min", aktifMin.Value.ToString());
+        if (aktifMax.HasValue) AddQueryValue("max", aktifMax.Value.ToString());
+        if (!string.Equals(key, "sort", StringComparison.OrdinalIgnoreCase)) AddQueryValue("sort", aktifSort);
+
+        if (!key.StartsWith("ozellik"))
+        {
+            foreach (var secili in seciliOzellikler)
+            {
+                AddQueryValue("ozellik", $"{secili.Key}:{secili.Value}");
+            }
+        }
+
+        AddQueryValue(key, val);
+
+        var parts = values
+            .Select(x => $"{System.Uri.EscapeDataString(x.Key)}={System.Uri.EscapeDataString(x.Value)}")
+            .ToList();
+
+        return parts.Count == 0 ? "/Urun" : "/Urun?" + string.Join("&", parts);
+    }
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" />
+    <style>
+        #priceSlider { height: 6px; margin: 8px 4px 4px; }
+        #priceSlider .noUi-connect { background: #b58735; }
+        #priceSlider .noUi-handle {
+            width: 18px; height: 18px; border-radius: 50%;
+            background: #313511; border: 2px solid #e5e2dc;
+            cursor: pointer; box-shadow: none; top: -7px; right: -9px;
+        }
+        #priceSlider .noUi-handle::before,
+        #priceSlider .noUi-handle::after { display: none; }
+        #priceSlider .noUi-handle:hover { transform: scale(1.15); }
+        #priceSlider .noUi-handle:active { transform: scale(0.95); }
+        #priceSlider .noUi-touch-area { border-radius: 50%; }
+        #priceSlider .noUi-base { background: transparent; }
+        #priceSlider .noUi-pips { display: none; }
+        #priceSlider .noUi-target {
+            background: #e5e2dc;
+            border: none;
+            border-radius: 4px;
+            box-shadow: none;
+        }
+    </style>
+}
+
+<!-- Breadcrumb -->
+<div class="bg-[#f1ede7] border-b border-[#e5e2dc] py-3">
+    <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-[#47473d]">
+        <a href="/" class="hover:text-[#313511] transition-colors">@Localizer["HomePage"]</a>
+        <span>/</span>
+        <span class="text-[#1c1c18] font-medium">@aktifKategoriAd</span>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-10">
+    <div class="flex gap-8">
+
+        <!-- Sidebar Filtreler -->
+        <aside class="hidden lg:block w-56 flex-shrink-0">
+            <h3 class="font-serif text-lg text-[#313511] mb-4 border-b border-[#e5e2dc] pb-2">@Localizer["Categories"]</h3>
+            <ul class="space-y-2 text-sm mb-8">
+                <li>
+                    <a href="/Urun" class="flex items-center justify-between rounded-lg px-3 py-2 @(!aktifKategori.HasValue ? "bg-[#313511] text-white font-semibold" : "text-[#47473d] hover:bg-[#f1ede7] hover:text-[#313511]") transition-colors">
+                        <span>@Localizer["AllCollections"]</span>
+                        <span class="text-xs @(!aktifKategori.HasValue ? "text-white/75" : "text-[#9a958c]")">(@toplamAktifUrunSayisi)</span>
+                    </a>
+                </li>
+                @foreach (var anaKategori in anaKategoriler)
+                {
+                    var altKategoriler = kategoriler?
+                        .Where(x => !x.SilindiMi && x.AktifMi && x.ParentKategoriId == anaKategori.Id)
+                        .OrderBy(x => x.Sira)
+                        .ThenBy(x => x.LocalizedAd)
+                        .ToList() ?? new List<FilistinProje.Core.Varliklar.Kategori>();
+                    var anaAktif = aktifKategori.HasValue && aktifKategori.Value == anaKategori.Id;
+                    var grupAcik = anaAktif || AktifKategoriDalindaMi(anaKategori);
+                    var anaUrunSayisi = GetKategoriUrunSayisi(anaKategori.Id);
+
+                    <li>
+                    @if (altKategoriler.Count == 0)
+                    {
+                            <a href="/Urun?k=@anaKategori.Id" class="flex items-center justify-between rounded-lg px-3 py-2 @(anaAktif ? "bg-[#f6efe3] text-[#b58735] font-semibold" : "text-[#47473d] hover:bg-[#f1ede7] hover:text-[#313511]") transition-colors">
+                                <span>@anaKategori.LocalizedAd</span>
+                                <span class="text-xs @(anaUrunSayisi == 0 ? "text-red-400" : "text-[#9a958c]")">(@anaUrunSayisi)</span>
+                            </a>
+                    }
+                    else
+                    {
+                            <details class="group rounded-xl border border-[#e5e2dc] bg-white/70" open="@grupAcik">
+                                <summary class="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2 text-[#313511] transition-colors group-open:border-b group-open:border-[#eee8df] [&::-webkit-details-marker]:hidden">
+                                    <span class="font-medium">@anaKategori.LocalizedAd</span>
+                                    <span class="flex items-center gap-2 text-xs text-[#9a958c]">
+                                        (@anaUrunSayisi)
+                                        <i class="fas fa-chevron-down text-[10px] transition-transform group-open:rotate-180"></i>
+                                    </span>
+                                </summary>
+                                <div class="space-y-1 px-2 py-2">
+                                    <a href="/Urun?k=@anaKategori.Id" class="flex items-center justify-between rounded-lg px-2 py-1.5 text-xs @(anaAktif ? "bg-[#313511] text-white font-semibold" : "text-[#6a665e] hover:bg-[#f1ede7] hover:text-[#313511]") transition-colors">
+                                        <span>@Localizer["AllCategoryPrefix"] @anaKategori.LocalizedAd</span>
+                                        <span class="@(anaAktif ? "text-white/75" : "text-[#9a958c]")">(@anaUrunSayisi)</span>
+                                    </a>
+                                    @foreach (var altKategori in altKategoriler)
+                                    {
+                                        var altAktif = aktifKategori.HasValue && aktifKategori.Value == altKategori.Id;
+                                        var altUrunSayisi = GetKategoriUrunSayisi(altKategori.Id);
+                                        <a href="/Urun?k=@altKategori.Id" class="flex items-center justify-between gap-3 rounded-lg px-2 py-1.5 text-xs @(altAktif ? "bg-[#f6efe3] text-[#b58735] font-semibold" : "text-[#47473d] hover:bg-[#f1ede7] hover:text-[#313511]") transition-colors">
+                                            <span class="truncate">@altKategori.LocalizedAd</span>
+                                            <span class="shrink-0 @(altUrunSayisi == 0 ? "text-red-400" : "text-[#9a958c]")">(@altUrunSayisi)</span>
+                                        </a>
+                                    }
+                                </div>
+                            </details>
+                    }
+                    </li>
+                }
+            </ul>
+
+            <!-- Fiyat Filtresi (Slider) -->
+            <h3 class="font-serif text-lg text-[#313511] mb-4 border-b border-[#e5e2dc] pb-2">@Localizer["PriceRange"]</h3>
+            <form method="get" action="/Urun" class="space-y-3" id="priceFilterForm">
+                @if (aktifKategori.HasValue)
+                {
+                    <input type="hidden" name="k" value="@aktifKategori" />
+                }
+                @if (!string.IsNullOrWhiteSpace(aktifArama))
+                {
+                    <input type="hidden" name="s" value="@aktifArama" />
+                }
+                <input type="hidden" name="sort" value="@aktifSort" />
+
+                <div class="flex items-center justify-between text-xs font-medium text-[#313511]">
+                    <span id="minPriceDisplay">@currencySymbol@((aktifMin ?? ViewBag.AvailableMinFiyat ?? 0).ToString("N0"))</span>
+                    <span id="maxPriceDisplay">@currencySymbol@((aktifMax ?? ViewBag.AvailableMaxFiyat ?? 10000).ToString("N0"))</span>
+                </div>
+
+                <div id="priceSlider" class="mx-1"></div>
+
+                <input type="hidden" name="min" id="minInput" value="@aktifMin" />
+                <input type="hidden" name="max" id="maxInput" value="@aktifMax" />
+
+                <button type="submit" class="w-full bg-[#313511] text-white text-xs py-2 rounded hover:bg-[#1c2001] transition-colors tracking-widest uppercase">
+                    @Localizer["Apply"]
+                </button>
+            </form>
+
+            <!-- Marka Filtresi -->
+            @if (markaListesi.Count > 0)
+            {
+                <h3 class="font-serif text-lg text-[#313511] mb-4 mt-8 border-b border-[#e5e2dc] pb-2">@Localizer["Brand"]</h3>
+                <ul class="space-y-1 text-sm mb-8">
+                    <li>
+                        <a href="@BuildFilterUrl("marka", "")" class="flex items-center justify-between rounded-lg px-3 py-1.5 @(string.IsNullOrWhiteSpace(aktifMarka) ? "bg-[#313511] text-white font-semibold" : "text-[#47473d] hover:bg-[#f1ede7] hover:text-[#313511]") transition-colors text-xs">
+                            <span>@Localizer["AllBrands"]</span>
+                        </a>
+                    </li>
+                    @foreach (var m in markaListesi)
+                    {
+                        var markaAdi = (string)m.Marka;
+                        var markaCount = (int)m.Count;
+                        var markaAktif = string.Equals(aktifMarka, markaAdi, StringComparison.OrdinalIgnoreCase);
+                        <li>
+                            <a href="@BuildFilterUrl("marka", markaAdi)" class="flex items-center justify-between rounded-lg px-3 py-1.5 @(markaAktif ? "bg-[#f6efe3] text-[#b58735] font-semibold" : "text-[#47473d] hover:bg-[#f1ede7] hover:text-[#313511]") transition-colors text-xs">
+                                <span>@markaAdi</span>
+                                <span class="text-[#9a958c] text-[10px]">(@markaCount)</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
+
+            <!-- Özellik Filtreleri -->
+            @if (ozellikFiltreleri.Count > 0)
+            {
+                foreach (var filtre in ozellikFiltreleri)
+                {
+                    var seciliDeger = seciliOzellikler.ContainsKey(filtre.DefinitionId) ? seciliOzellikler[filtre.DefinitionId] : null;
+                    <h3 class="font-serif text-lg text-[#313511] mb-4 mt-8 border-b border-[#e5e2dc] pb-2">@filtre.Title</h3>
+                    <ul class="space-y-1 text-sm mb-8">
+                        @foreach (var opt in filtre.Options)
+                        {
+                            var optAktif = seciliDeger == opt.Value;
+                            <li>
+                                <a href="@BuildOzellikFilterUrl(filtre.DefinitionId, opt.Value)" class="flex items-center justify-between rounded-lg px-3 py-1.5 @(optAktif ? "bg-[#f6efe3] text-[#b58735] font-semibold" : "text-[#47473d] hover:bg-[#f1ede7] hover:text-[#313511]") transition-colors text-xs">
+                                    <span>@opt.DisplayValue</span>
+                                    <span class="text-[#9a958c] text-[10px]">(@opt.Count)</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                }
+            }
+        </aside>
+
+        <!-- Ana İçerik -->
+        <main class="flex-1 min-w-0">
+            <!-- Başlık + Sıralama -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                <div>
+                    <h1 class="font-serif text-3xl text-[#313511]">@aktifKategoriAd</h1>
+                    <p class="text-xs text-[#47473d] mt-1">@Localizer["ProductCountListing", totalItems]</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    @if (!string.IsNullOrWhiteSpace(aktifArama))
+                    {
+                        <span class="bg-[#313511] text-white text-xs px-3 py-1 rounded-full flex items-center gap-1">
+                            "<span>@aktifArama</span>"
+                            <a href="/Urun@(aktifKategori.HasValue ? "?k=" + aktifKategori : "")" class="ml-1 opacity-70 hover:opacity-100">×</a>
+                        </span>
+                    }
+                    <select id="sortSelect" onchange="window.location.href=this.value" class="border border-[#e5e2dc] text-xs rounded px-3 py-2 focus:ring-1 focus:ring-[#b58735] bg-white text-[#47473d]">
+                        @foreach (var opt in sortOptions)
+                        {
+                            <option value="@BuildFilterUrl("sort", opt.Key)" selected="@(aktifSort == opt.Key)">@opt.Value</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <!-- Mobile Kategori Chips -->
+            <div class="hidden md:flex lg:hidden flex gap-2 overflow-x-auto pb-3 mb-6 custom-scrollbar">
+                <a href="/Urun" class="whitespace-nowrap text-xs border @(!aktifKategori.HasValue ? "bg-[#313511] text-white border-[#313511]" : "border-[#e5e2dc] text-[#47473d]") rounded-full px-3 py-1.5">@Localizer["All"]</a>
+                @if (kategoriler != null)
+                {
+                    foreach (var kat in kategoriler.Where(x => !x.SilindiMi && x.AktifMi))
+                    {
+                        bool isActive = aktifKategori.HasValue && aktifKategori.Value == kat.Id;
+                        <a href="/Urun?k=@kat.Id" class="whitespace-nowrap text-xs border @(isActive ? "bg-[#313511] text-white border-[#313511]" : "border-[#e5e2dc] text-[#47473d]") rounded-full px-3 py-1.5">@kat.LocalizedAd</a>
+                    }
+                }
+            </div>
+
+            <!-- Ürün Grid -->
+            @if (Model != null && Model.Any())
+            {
+                <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+                    @foreach (var urun in Model)
+                    {
+                        var anaResim = urun.AnaGorselUrl;
+                        if (string.IsNullOrWhiteSpace(anaResim))
+                        {
+                            anaResim = urun.UrunResimleri?.OrderBy(r => r.Sira).FirstOrDefault()?.ResimYolu ?? "";
+                        }
+                        <div class="group relative">
+                            <a href="@BuildProductUrl(urun)" class="block relative overflow-hidden aspect-square bg-[#f8f6f2] mb-3 shadow-[inset_0_0_8px rgba(0,0,0,0.03)] flex items-center justify-center p-2">
+                                @if (!stoktaYokSatisIzni && !urun.StoktaVarMi)
+                                {
+                                    <span class="absolute top-2 left-2 z-10 bg-[#6b7280] text-white text-[9px] tracking-widest px-2 py-0.5 uppercase">@Localizer["OutOfStock"]</span>
+                                }
+                                else
+                                {
+                                    @if (urun.ToplamStok > 0 && urun.ToplamStok <= 5)
+                                    {
+                                        <span class="absolute top-2 left-2 z-10 bg-red-600 text-white text-[9px] tracking-widest px-2 py-0.5 uppercase">Son @urun.ToplamStok Adet</span>
+                                    }
+                                    else if (urun.YeniUrunMu)
+                                    {
+                                        <span class="absolute top-2 left-2 z-10 bg-[#313511] text-white text-[9px] tracking-widest px-2 py-0.5 uppercase">@Localizer["New"]</span>
+                                    }
+                                }
+                                @if (urun.IndirimVarMi && !(!stoktaYokSatisIzni && !urun.StoktaVarMi))
+                                {
+                                    <span class="absolute top-2 right-11 z-10 bg-[#b58735] text-white text-[10px] font-bold px-2 py-0.5 rounded-sm shadow-sm">%@urun.IndirimYuzdesi</span>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(anaResim))
+                                {
+                                    <img src="@anaResim" alt="@urun.LocalizedBaslik" class="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-700" loading="lazy" decoding="async" />
+                                }
+                                else
+                                {
+                                    <div class="w-full h-full flex items-center justify-center text-[#c5c0b8]">
+                                        <i class="fas fa-image fa-3x"></i>
+                                    </div>
+                                }
+                            </a>
+                            <!-- Kalp / Favori Butonu -->
+                            <button type="button" onclick="window.toggleFavori(this, @urun.Id)" class="group/btn absolute top-2 right-2 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-200 shadow-sm z-20 hover:scale-110" title="@Localizer["AddToFavorites"]">
+                                <i class="far fa-heart text-sm text-[#47473d] group-hover/btn:text-red-500 transition-colors"></i>
+                            </button>
+                            <h3 class="text-xs font-medium text-[#1c1c18] line-clamp-2 mb-1 leading-relaxed">
+                                <a href="@BuildProductUrl(urun)" class="hover:text-[#b58735] transition-colors">@urun.LocalizedBaslik</a>
+                            </h3>
+                            <div class="flex items-center gap-2">
+                                @if (isWholesale && urun.TopFiyat.HasValue && urun.TopFiyat.Value > 0)
+                                {
+                                    <span class="text-sm font-semibold text-[#b58735]">@urun.TopFiyat?.ToString("N0") @currencySymbol</span>
+                                    <span class="text-xs text-gray-400 line-through">@urun.Fiyat.ToString("N0") @currencySymbol</span>
+                                }
+                                else if (urun.IndirimVarMi)
+                                {
+                                    <span class="text-sm font-semibold text-[#b58735]">@urun.IndirimliFiyat?.ToString("N0") @currencySymbol</span>
+                                    <span class="text-xs text-gray-400 line-through">@urun.Fiyat.ToString("N0") @currencySymbol</span>
+                                    <span class="text-[10px] text-white bg-[#b58735] px-1 py-0.5 rounded font-bold">-%@urun.IndirimYuzdesi</span>
+                                }
+                                else
+                                {
+                                    <span class="text-sm font-semibold text-[#1c1c18]">@urun.Fiyat.ToString("N0") @currencySymbol</span>
+                                }
+                            </div>
+                            @if (urun.KampanyaBitisTarihi.HasValue && urun.KampanyaBitisTarihi.Value > DateTime.UtcNow)
+                            {
+                                @await Html.PartialAsync("_CountdownPartial", urun.KampanyaBitisTarihi.Value)
+                            }
+                        </div>
+                    }
+                </div>
+
+                <!-- Sayfalama -->
+                @if (totalPages > 1)
+                {
+                    <div class="flex justify-center items-center gap-2 mt-16">
+                        @if (currentPage > 1)
+                        {
+                            <a href="@BuildFilterUrl("page", (currentPage - 1).ToString())" class="w-9 h-9 border border-[#e5e2dc] rounded flex items-center justify-center text-[#47473d] hover:bg-[#313511] hover:text-white hover:border-[#313511] transition-colors text-xs">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        }
+                        @for (int i = Math.Max(1, currentPage - 2); i <= Math.Min(totalPages, currentPage + 2); i++)
+                        {
+                            <a href="@BuildFilterUrl("page", i.ToString())" class="w-9 h-9 border @(i == currentPage ? "bg-[#313511] text-white border-[#313511]" : "border-[#e5e2dc] text-[#47473d] hover:bg-[#f1ede7]") rounded flex items-center justify-center text-xs transition-colors">
+                                @i
+                            </a>
+                        }
+                        @if (currentPage < totalPages)
+                        {
+                            <a href="@BuildFilterUrl("page", (currentPage + 1).ToString())" class="w-9 h-9 border border-[#e5e2dc] rounded flex items-center justify-center text-[#47473d] hover:bg-[#313511] hover:text-white hover:border-[#313511] transition-colors text-xs">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="text-center py-24 text-[#47473d]">
+                    <i class="fas fa-search fa-3x mb-6 opacity-30"></i>
+                    <h3 class="font-serif text-2xl text-[#313511] mb-2">@Localizer["ProductNotFound"]</h3>
+                    <p class="text-sm mb-6">@Localizer["TryDifferentCategoryOrSearch"]</p>
+                    <a href="/Urun" class="inline-block border border-[#313511] text-[#313511] px-6 py-2 text-xs uppercase tracking-widest hover:bg-[#313511] hover:text-white transition-colors rounded-full">
+                        @Localizer["ViewAllProducts"]
+                    </a>
+                </div>
+            }
+        </main>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
+    <script>
+        (function () {
+            var slider = document.getElementById('priceSlider');
+            var minInput = document.getElementById('minInput');
+            var maxInput = document.getElementById('maxInput');
+            var minDisplay = document.getElementById('minPriceDisplay');
+            var maxDisplay = document.getElementById('maxPriceDisplay');
+            var form = document.getElementById('priceFilterForm');
+
+            var availableMin = @(ViewBag.AvailableMinFiyat ?? 0);
+            var availableMax = @(ViewBag.AvailableMaxFiyat ?? 10000);
+            var currentMin = @(aktifMin ?? ViewBag.AvailableMinFiyat ?? 0);
+            var currentMax = @(aktifMax ?? ViewBag.AvailableMaxFiyat ?? 10000);
+
+            if (slider && availableMax > availableMin) {
+                noUiSlider.create(slider, {
+                    start: [currentMin, currentMax],
+                    connect: true,
+                    step: 1,
+                    range: {
+                        'min': availableMin,
+                        'max': availableMax
+                    },
+                    format: {
+                        to: function (value) { return Math.round(value); },
+                        from: function (value) { return Number(value); }
+                    }
+                });
+
+                slider.noUiSlider.on('update', function (values, handle) {
+                    var value = values[handle];
+                    if (handle === 0) {
+                        minDisplay.textContent = '\u20AA' + Number(value).toLocaleString('tr-TR');
+                        minInput.value = value;
+                    } else {
+                        maxDisplay.textContent = '\u20AA' + Number(value).toLocaleString('tr-TR');
+                        maxInput.value = value;
+                    }
+                });
+
+                var timeout = null;
+                slider.noUiSlider.on('change', function () {
+                    if (timeout) clearTimeout(timeout);
+                    timeout = setTimeout(function () {
+                        form.requestSubmit();
+                    }, 300);
+                });
+            }
+        })();
+    </script>
+}

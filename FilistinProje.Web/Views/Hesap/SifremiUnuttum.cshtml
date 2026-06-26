@@ -1,0 +1,64 @@
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = @Localizer["ForgotPassword"];
+    var eposta = ViewBag.Eposta as string ?? string.Empty;
+    var basariMesaji = TempData.Peek("Basari") ?? ViewBag.Mesaj;
+}
+
+<div class="min-h-[80vh] flex items-center justify-center py-16 px-4 bg-[#fcf9f3]">
+    <div class="w-full max-w-md">
+        <div class="text-center mb-10">
+            <h1 class="font-serif text-3xl tracking-widest text-[#313511] uppercase">@Localizer["ForgotPassword"]</h1>
+            <p class="text-xs text-[#47473d] mt-2 tracking-wide">@Localizer["ForgotPasswordDescription"]</p>
+        </div>
+
+        @if (basariMesaji != null)
+        {
+            <div class="bg-[#f4f6df] border border-[#c6ca99] text-[#313511] text-sm px-4 py-3 rounded mb-6 flex items-start gap-2">
+                <i class="fas fa-check-circle mt-0.5"></i>
+                <span>@basariMesaji</span>
+            </div>
+        }
+        @if (ViewBag.Hata != null)
+        {
+            <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded mb-6 flex items-start gap-2">
+                <i class="fas fa-exclamation-circle mt-0.5"></i>
+                <span>@ViewBag.Hata</span>
+            </div>
+        }
+
+        <div class="bg-white border border-[#e5e2dc] rounded-lg p-8 shadow-sm">
+            <form asp-action="SifremiUnuttum" method="post" class="space-y-5" data-auth-mail-form>
+                <div>
+                    <label class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["RegisteredEmail"]</label>
+                    <input name="eposta" type="email" value="@eposta" placeholder="@Localizer["ExampleEmail"]" required
+                           class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3] transition-colors" />
+                </div>
+                <button type="submit"
+                        class="w-full bg-[#313511] text-white py-3 text-xs tracking-widest uppercase rounded hover:bg-[#1c2001] transition-colors flex items-center justify-center gap-2"
+                        data-auth-mail-button>
+                    <i class="fas fa-envelope"></i>
+                    <span>@Localizer["SendLink"]</span>
+                </button>
+            </form>
+            <div class="mt-6 text-center">
+                <a href="/Hesap/GirisYap" class="text-xs text-[#b58735] hover:underline uppercase tracking-widest">@Localizer["ReturnToLogin"]</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('[data-auth-mail-form]').forEach(function(form) {
+            form.addEventListener('submit', function() {
+                const button = form.querySelector('[data-auth-mail-button]');
+                if (!button) return;
+
+                button.disabled = true;
+                button.classList.add('opacity-80', 'cursor-wait');
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>@Localizer["Sending"]</span>';
+            });
+        });
+    </script>
+}

@@ -1,0 +1,17 @@
+@model List<FilistinProje.Web.ViewComponents.CategoryViewModel>
+@inject IStringLocalizer<SharedResource> Localizer
+
+<nav class="mg-nav">
+    <div class="mg-nav__inner">
+        <div class="mg-nav__links">
+            <a href="/Urun/Index" class="mg-nav__link">@Localizer["AllCollections"]</a>
+            @foreach (var item in Model.Take(8))
+            {
+                <a href="/Urun/Index?k=@item.Id" class="mg-nav__link">
+                    @item.Ad
+                </a>
+            }
+        </div>
+        <span class="mg-nav__caption">@Localizer["PremiumTableAndDecor"]</span>
+    </div>
+</nav>

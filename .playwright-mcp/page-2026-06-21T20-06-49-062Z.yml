@@ -1,0 +1,584 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "7ANRPS48 لوحة التحكم" [ref=e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=e6]
+      - generic [ref=e7]: لوحة البائع
+    - navigation "القائمة الرئيسية للإدارة" [ref=e8]:
+      - link " لوحة البيانات" [ref=e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=e10]: 
+        - text: لوحة البيانات
+      - generic [ref=e11]:
+        - button " إدارة الطلبات" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]: 
+          - text: إدارة الطلبات
+        - text:      
+      - generic [ref=e14]:
+        - button " إدارة المنتجات" [ref=e15] [cursor=pointer]:
+          - generic [ref=e16]: 
+          - text: إدارة المنتجات
+        - text:  +    
+      - generic [ref=e17]:
+        - button " محتوى المتجر" [ref=e18] [cursor=pointer]:
+          - generic [ref=e19]: 
+          - text: محتوى المتجر
+        - text:        
+      - link " الأعضاء" [ref=e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=e21]: 
+        - text: الأعضاء
+      - link " تجار الجملة" [ref=e22] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=e23]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=e25]: 
+        - text: مجموعات الجملة
+      - generic [ref=e26]:
+        - button " التقارير" [ref=e27] [cursor=pointer]:
+          - generic [ref=e28]: 
+          - text: التقارير
+        - text:  
+      - link " الحسابات البنكية" [ref=e29] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=e30]: 
+        - text: الحسابات البنكية
+      - link " الإعدادات" [ref=e31] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=e32]: 
+        - text: الإعدادات
+    - generic [ref=e33]:
+      - text: 
+      - combobox "اللغة" [ref=e35]:
+        - option "AR" [selected]
+        - option "EN"
+        - option "TR"
+      - generic [ref=e36]:
+        - button "7ANRPS48 Admin Admin 7" [ref=e37] [cursor=pointer]:
+          - generic [ref=e38]:
+            - strong [ref=e39]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=e40]: "7"
+        - text:  
+  - generic [ref=e41]:
+    - main [ref=e42]:
+      - generic [ref=e43]:
+        - generic [ref=e44]:
+          - generic [ref=e45]:
+            - heading "Admin_ProductCatalog" [level=1] [ref=e46]
+            - paragraph [ref=e47]: Admin_ProductCatalogDesc
+          - generic [ref=e48]:
+            - link " Admin_AllProductsXlsx" [ref=e49] [cursor=pointer]:
+              - /url: /Admin/Urun/UrunExcelExport
+              - generic [ref=e50]: 
+              - text: Admin_AllProductsXlsx
+            - link " عمليات Excel" [ref=e51] [cursor=pointer]:
+              - /url: /Admin/Urun/Excel
+              - generic [ref=e52]: 
+              - text: عمليات Excel
+            - button " Admin_CompleteSkus" [ref=e54] [cursor=pointer]:
+              - generic [ref=e55]: 
+              - text: Admin_CompleteSkus
+            - link "+ Admin_NewProduct" [ref=e56] [cursor=pointer]:
+              - /url: /Admin/Urun/Ekle
+              - generic [ref=e57]: +
+              - text: Admin_NewProduct
+        - generic [ref=e60]:
+          - generic [ref=e61]:
+            - generic [ref=e62]: 
+            - textbox "Admin_ProductSearchPlaceholder" [ref=e63]
+          - combobox [ref=e64]:
+            - option "Admin_AllCategories" [selected]
+            - option "مستوحى من فلسطين"
+            - option "هدايا مخصصة"
+            - option "مجموعة القدس"
+            - option "ديكور غرفة المعيشة"
+            - option "ميداليات ومغناطيس"
+            - option "ديكور الجدران"
+            - option "المنزل والديكور"
+            - option "تضامن غزة"
+            - option "الخريطة والعلم"
+            - option "الهدايا والإكسسوارات"
+            - option "المطبخ والمائدة"
+            - option "الحقائب والإكسسوارات"
+          - combobox [ref=e65]:
+            - option "20" [selected]
+            - option "50"
+            - option "100"
+          - button "" [ref=e66] [cursor=pointer]:
+            - generic [ref=e67]: 
+          - button " Admin_SelectedActivate" [disabled] [ref=e68] [cursor=pointer]:
+            - generic [ref=e69]: 
+            - text: Admin_SelectedActivate
+          - button " Admin_SelectedDeactivate" [disabled] [ref=e70] [cursor=pointer]:
+            - generic [ref=e71]: 
+            - text: Admin_SelectedDeactivate
+          - button " Admin_SelectedDelete" [disabled] [ref=e72] [cursor=pointer]:
+            - generic [ref=e73]: 
+            - text: Admin_SelectedDelete
+          - button " Admin_PermanentDelete" [disabled] [ref=e74] [cursor=pointer]:
+            - generic [ref=e75]: 
+            - text: Admin_PermanentDelete
+          - generic [ref=e76]: Admin_NoSelectedProduct
+          - generic [ref=e77]:
+            - text: المجموع
+            - strong [ref=e78]: "12"
+            - text: Admin_ProductCountSuffix
+        - generic [ref=e79]:
+          - table [ref=e81]:
+            - rowgroup [ref=e82]:
+              - row "Admin_Image منتج الفئة السعر Admin_PublishStatus Admin_Actions Admin_SelectProductsOnPage" [ref=e83]:
+                - columnheader "Admin_Image" [ref=e84]
+                - columnheader "منتج" [ref=e85]
+                - columnheader "الفئة" [ref=e86]
+                - columnheader "السعر" [ref=e87]
+                - columnheader "Admin_PublishStatus" [ref=e88]
+                - columnheader "Admin_Actions" [ref=e89]
+                - columnheader "Admin_SelectProductsOnPage" [ref=e90]:
+                  - checkbox "Admin_SelectProductsOnPage" [ref=e91]
+            - rowgroup [ref=e92]:
+              - 'row "لوحة جدارية بنقوش فلسطينية لوحة جدارية بنقوش فلسطينية SKU: DEMO-001 Admin_Featured Admin_New Ana Sayfa مستوحى من فلسطين Admin_Brand: 7ANRPS48 95٫00 ₪  Admin_Published Admin_Status: Stokta      Admin_SelectProductAria" [ref=e93]':
+                - cell "لوحة جدارية بنقوش فلسطينية" [ref=e94]:
+                  - img "لوحة جدارية بنقوش فلسطينية" [ref=e95]
+                - 'cell "لوحة جدارية بنقوش فلسطينية SKU: DEMO-001 Admin_Featured Admin_New Ana Sayfa" [ref=e96]':
+                  - generic [ref=e97]:
+                    - generic [ref=e98]: لوحة جدارية بنقوش فلسطينية
+                    - generic [ref=e99]: "SKU: DEMO-001"
+                    - generic [ref=e100]:
+                      - generic [ref=e101]: Admin_Featured
+                      - generic [ref=e102]: Admin_New
+                      - generic [ref=e103]: Ana Sayfa
+                - 'cell "مستوحى من فلسطين Admin_Brand: 7ANRPS48" [ref=e104]':
+                  - generic [ref=e105]: مستوحى من فلسطين
+                  - text: "Admin_Brand: 7ANRPS48"
+                - cell "95٫00 ₪" [ref=e106]:
+                  - generic [ref=e107]: 95٫00 ₪
+                - 'cell " Admin_Published Admin_Status: Stokta" [ref=e108]':
+                  - generic [ref=e110]:
+                    - generic [ref=e111]: 
+                    - text: Admin_Published
+                  - text: "Admin_Status: Stokta"
+                - cell "    " [ref=e112]:
+                  - generic [ref=e113]:
+                    - link "" [ref=e114] [cursor=pointer]:
+                      - /url: /Urun/Detay/palestinian-pattern-wall-art-1
+                      - generic [ref=e115]: 
+                    - link "" [ref=e116] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/1
+                      - generic [ref=e117]: 
+                    - button "" [ref=e119] [cursor=pointer]:
+                      - generic [ref=e120]: 
+                    - button "" [ref=e122] [cursor=pointer]:
+                      - generic [ref=e123]: 
+                    - button "" [ref=e125] [cursor=pointer]:
+                      - generic [ref=e126]: 
+                - cell "Admin_SelectProductAria" [ref=e127]:
+                  - checkbox "Admin_SelectProductAria" [ref=e128]
+              - 'row "طقم ديكور غصن الزيتون طقم ديكور غصن الزيتون SKU: DEMO-002 Admin_Featured Admin_New Ana Sayfa المنزل والديكور Admin_Brand: 7ANRPS48 110٫00 ₪ 120٫00 ₪  Admin_Published Admin_Status: Stokta      Admin_SelectProductAria" [ref=e129]':
+                - cell "طقم ديكور غصن الزيتون" [ref=e130]:
+                  - img "طقم ديكور غصن الزيتون" [ref=e131]
+                - 'cell "طقم ديكور غصن الزيتون SKU: DEMO-002 Admin_Featured Admin_New Ana Sayfa" [ref=e132]':
+                  - generic [ref=e133]:
+                    - generic [ref=e134]: طقم ديكور غصن الزيتون
+                    - generic [ref=e135]: "SKU: DEMO-002"
+                    - generic [ref=e136]:
+                      - generic [ref=e137]: Admin_Featured
+                      - generic [ref=e138]: Admin_New
+                      - generic [ref=e139]: Ana Sayfa
+                - 'cell "المنزل والديكور Admin_Brand: 7ANRPS48" [ref=e140]':
+                  - generic [ref=e141]: المنزل والديكور
+                  - text: "Admin_Brand: 7ANRPS48"
+                - cell "110٫00 ₪ 120٫00 ₪" [ref=e142]:
+                  - generic [ref=e143]: 110٫00 ₪
+                  - text: 120٫00 ₪
+                - 'cell " Admin_Published Admin_Status: Stokta" [ref=e144]':
+                  - generic [ref=e146]:
+                    - generic [ref=e147]: 
+                    - text: Admin_Published
+                  - text: "Admin_Status: Stokta"
+                - cell "    " [ref=e148]:
+                  - generic [ref=e149]:
+                    - link "" [ref=e150] [cursor=pointer]:
+                      - /url: /Urun/Detay/olive-branch-decor-set-2
+                      - generic [ref=e151]: 
+                    - link "" [ref=e152] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/2
+                      - generic [ref=e153]: 
+                    - button "" [ref=e155] [cursor=pointer]:
+                      - generic [ref=e156]: 
+                    - button "" [ref=e158] [cursor=pointer]:
+                      - generic [ref=e159]: 
+                    - button "" [ref=e161] [cursor=pointer]:
+                      - generic [ref=e162]: 
+                - cell "Admin_SelectProductAria" [ref=e163]:
+                  - checkbox "Admin_SelectProductAria" [ref=e164]
+              - 'row "صندوق هدايا تذكاري فلسطيني صندوق هدايا تذكاري فلسطيني SKU: DEMO-003 Admin_Featured Admin_New Ana Sayfa الهدايا والإكسسوارات Admin_Brand: 7ANRPS48 75٫00 ₪  Admin_Published Admin_Status: Stokta      Admin_SelectProductAria" [ref=e165]':
+                - cell "صندوق هدايا تذكاري فلسطيني" [ref=e166]:
+                  - img "صندوق هدايا تذكاري فلسطيني" [ref=e167]
+                - 'cell "صندوق هدايا تذكاري فلسطيني SKU: DEMO-003 Admin_Featured Admin_New Ana Sayfa" [ref=e168]':
+                  - generic [ref=e169]:
+                    - generic [ref=e170]: صندوق هدايا تذكاري فلسطيني
+                    - generic [ref=e171]: "SKU: DEMO-003"
+                    - generic [ref=e172]:
+                      - generic [ref=e173]: Admin_Featured
+                      - generic [ref=e174]: Admin_New
+                      - generic [ref=e175]: Ana Sayfa
+                - 'cell "الهدايا والإكسسوارات Admin_Brand: 7ANRPS48" [ref=e176]':
+                  - generic [ref=e177]: الهدايا والإكسسوارات
+                  - text: "Admin_Brand: 7ANRPS48"
+                - cell "75٫00 ₪" [ref=e178]:
+                  - generic [ref=e179]: 75٫00 ₪
+                - 'cell " Admin_Published Admin_Status: Stokta" [ref=e180]':
+                  - generic [ref=e182]:
+                    - generic [ref=e183]: 
+                    - text: Admin_Published
+                  - text: "Admin_Status: Stokta"
+                - cell "    " [ref=e184]:
+                  - generic [ref=e185]:
+                    - link "" [ref=e186] [cursor=pointer]:
+                      - /url: /Urun/Detay/palestine-keepsake-gift-box-3
+                      - generic [ref=e187]: 
+                    - link "" [ref=e188] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/3
+                      - generic [ref=e189]: 
+                    - button "" [ref=e191] [cursor=pointer]:
+                      - generic [ref=e192]: 
+                    - button "" [ref=e194] [cursor=pointer]:
+                      - generic [ref=e195]: 
+                    - button "" [ref=e197] [cursor=pointer]:
+                      - generic [ref=e198]: 
+                - cell "Admin_SelectProductAria" [ref=e199]:
+                  - checkbox "Admin_SelectProductAria" [ref=e200]
+              - 'row "لوحة أفق القدس لوحة أفق القدس SKU: DEMO-004 Admin_New Ana Sayfa مجموعة القدس Admin_Brand: 7ANRPS48 100٫00 ₪ 110٫00 ₪  Admin_Published Admin_Status: Stokta      Admin_SelectProductAria" [ref=e201]':
+                - cell "لوحة أفق القدس" [ref=e202]:
+                  - img "لوحة أفق القدس" [ref=e203]
+                - 'cell "لوحة أفق القدس SKU: DEMO-004 Admin_New Ana Sayfa" [ref=e204]':
+                  - generic [ref=e205]:
+                    - generic [ref=e206]: لوحة أفق القدس
+                    - generic [ref=e207]: "SKU: DEMO-004"
+                    - generic [ref=e208]:
+                      - generic [ref=e209]: Admin_New
+                      - generic [ref=e210]: Ana Sayfa
+                - 'cell "مجموعة القدس Admin_Brand: 7ANRPS48" [ref=e211]':
+                  - generic [ref=e212]: مجموعة القدس
+                  - text: "Admin_Brand: 7ANRPS48"
+                - cell "100٫00 ₪ 110٫00 ₪" [ref=e213]:
+                  - generic [ref=e214]: 100٫00 ₪
+                  - text: 110٫00 ₪
+                - 'cell " Admin_Published Admin_Status: Stokta" [ref=e215]':
+                  - generic [ref=e217]:
+                    - generic [ref=e218]: 
+                    - text: Admin_Published
+                  - text: "Admin_Status: Stokta"
+                - cell "    " [ref=e219]:
+                  - generic [ref=e220]:
+                    - link "" [ref=e221] [cursor=pointer]:
+                      - /url: /Urun/Detay/jerusalem-skyline-art-4
+                      - generic [ref=e222]: 
+                    - link "" [ref=e223] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/4
+                      - generic [ref=e224]: 
+                    - button "" [ref=e226] [cursor=pointer]:
+                      - generic [ref=e227]: 
+                    - button "" [ref=e229] [cursor=pointer]:
+                      - generic [ref=e230]: 
+                    - button "" [ref=e232] [cursor=pointer]:
+                      - generic [ref=e233]: 
+                - cell "Admin_SelectProductAria" [ref=e234]:
+                  - checkbox "Admin_SelectProductAria" [ref=e235]
+              - 'row "ملصق تضامن غزة ملصق تضامن غزة SKU: DEMO-005 Admin_New Admin_Campaign Ana Sayfa تضامن غزة Admin_Brand: 7ANRPS48 45٫00 ₪  Admin_Published Admin_Status: Stokta      Admin_SelectProductAria" [ref=e236]':
+                - cell "ملصق تضامن غزة" [ref=e237]:
+                  - img "ملصق تضامن غزة" [ref=e238]
+                - 'cell "ملصق تضامن غزة SKU: DEMO-005 Admin_New Admin_Campaign Ana Sayfa" [ref=e239]':
+                  - generic [ref=e240]:
+                    - generic [ref=e241]: ملصق تضامن غزة
+                    - generic [ref=e242]: "SKU: DEMO-005"
+                    - generic [ref=e243]:
+                      - generic [ref=e244]: Admin_New
+                      - generic [ref=e245]: Admin_Campaign
+                      - generic [ref=e246]: Ana Sayfa
+                - 'cell "تضامن غزة Admin_Brand: 7ANRPS48" [ref=e247]':
+                  - generic [ref=e248]: تضامن غزة
+                  - text: "Admin_Brand: 7ANRPS48"
+                - cell "45٫00 ₪" [ref=e249]:
+                  - generic [ref=e250]: 45٫00 ₪
+                - 'cell " Admin_Published Admin_Status: Stokta" [ref=e251]':
+                  - generic [ref=e253]:
+                    - generic [ref=e254]: 
+                    - text: Admin_Published
+                  - text: "Admin_Status: Stokta"
+                - cell "    " [ref=e255]:
+                  - generic [ref=e256]:
+                    - link "" [ref=e257] [cursor=pointer]:
+                      - /url: /Urun/Detay/gaza-solidarity-poster-5
+                      - generic [ref=e258]: 
+                    - link "" [ref=e259] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/5
+                      - generic [ref=e260]: 
+                    - button "" [ref=e262] [cursor=pointer]:
+                      - generic [ref=e263]: 
+                    - button "" [ref=e265] [cursor=pointer]:
+                      - generic [ref=e266]: 
+                    - button "" [ref=e268] [cursor=pointer]:
+                      - generic [ref=e269]: 
+                - cell "Admin_SelectProductAria" [ref=e270]:
+                  - checkbox "Admin_SelectProductAria" [ref=e271]
+              - 'row "طقم خريطة وعلم فلسطين طقم خريطة وعلم فلسطين SKU: DEMO-006 Admin_New Ana Sayfa الخريطة والعلم Admin_Brand: 7ANRPS48 65٫00 ₪  Admin_Published Admin_Status: Stokta      Admin_SelectProductAria" [ref=e272]':
+                - cell "طقم خريطة وعلم فلسطين" [ref=e273]:
+                  - img "طقم خريطة وعلم فلسطين" [ref=e274]
+                - 'cell "طقم خريطة وعلم فلسطين SKU: DEMO-006 Admin_New Ana Sayfa" [ref=e275]':
+                  - generic [ref=e276]:
+                    - generic [ref=e277]: طقم خريطة وعلم فلسطين
+                    - generic [ref=e278]: "SKU: DEMO-006"
+                    - generic [ref=e279]:
+                      - generic [ref=e280]: Admin_New
+                      - generic [ref=e281]: Ana Sayfa
+                - 'cell "الخريطة والعلم Admin_Brand: 7ANRPS48" [ref=e282]':
+                  - generic [ref=e283]: الخريطة والعلم
+                  - text: "Admin_Brand: 7ANRPS48"
+                - cell "65٫00 ₪" [ref=e284]:
+                  - generic [ref=e285]: 65٫00 ₪
+                - 'cell " Admin_Published Admin_Status: Stokta" [ref=e286]':
+                  - generic [ref=e288]:
+                    - generic [ref=e289]: 
+                    - text: Admin_Published
+                  - text: "Admin_Status: Stokta"
+                - cell "    " [ref=e290]:
+                  - generic [ref=e291]:
+                    - link "" [ref=e292] [cursor=pointer]:
+                      - /url: /Urun/Detay/palestine-map-a-flag-set-6
+                      - generic [ref=e293]: 
+                    - link "" [ref=e294] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/6
+                      - generic [ref=e295]: 
+                    - button "" [ref=e297] [cursor=pointer]:
+                      - generic [ref=e298]: 
+                    - button "" [ref=e300] [cursor=pointer]:
+                      - generic [ref=e301]: 
+                    - button "" [ref=e303] [cursor=pointer]:
+                      - generic [ref=e304]: 
+                - cell "Admin_SelectProductAria" [ref=e305]:
+                  - checkbox "Admin_SelectProductAria" [ref=e306]
+              - 'row "ديكور القدس لغرفة المعيشة ديكور القدس لغرفة المعيشة SKU: DEMO-007 Admin_New Ana Sayfa ديكور غرفة المعيشة Admin_Brand: 7ANRPS48 135٫00 ₪  Admin_Published Admin_Status: Stokta      Admin_SelectProductAria" [ref=e307]':
+                - cell "ديكور القدس لغرفة المعيشة" [ref=e308]:
+                  - img "ديكور القدس لغرفة المعيشة" [ref=e309]
+                - 'cell "ديكور القدس لغرفة المعيشة SKU: DEMO-007 Admin_New Ana Sayfa" [ref=e310]':
+                  - generic [ref=e311]:
+                    - generic [ref=e312]: ديكور القدس لغرفة المعيشة
+                    - generic [ref=e313]: "SKU: DEMO-007"
+                    - generic [ref=e314]:
+                      - generic [ref=e315]: Admin_New
+                      - generic [ref=e316]: Ana Sayfa
+                - 'cell "ديكور غرفة المعيشة Admin_Brand: 7ANRPS48" [ref=e317]':
+                  - generic [ref=e318]: ديكور غرفة المعيشة
+                  - text: "Admin_Brand: 7ANRPS48"
+                - cell "135٫00 ₪" [ref=e319]:
+                  - generic [ref=e320]: 135٫00 ₪
+                - 'cell " Admin_Published Admin_Status: Stokta" [ref=e321]':
+                  - generic [ref=e323]:
+                    - generic [ref=e324]: 
+                    - text: Admin_Published
+                  - text: "Admin_Status: Stokta"
+                - cell "    " [ref=e325]:
+                  - generic [ref=e326]:
+                    - link "" [ref=e327] [cursor=pointer]:
+                      - /url: /Urun/Detay/jerusalem-living-room-decor-7
+                      - generic [ref=e328]: 
+                    - link "" [ref=e329] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/7
+                      - generic [ref=e330]: 
+                    - button "" [ref=e332] [cursor=pointer]:
+                      - generic [ref=e333]: 
+                    - button "" [ref=e335] [cursor=pointer]:
+                      - generic [ref=e336]: 
+                    - button "" [ref=e338] [cursor=pointer]:
+                      - generic [ref=e339]: 
+                - cell "Admin_SelectProductAria" [ref=e340]:
+                  - checkbox "Admin_SelectProductAria" [ref=e341]
+              - 'row "ديكور جداري بإطار ذهبي ديكور جداري بإطار ذهبي SKU: DEMO-008 Admin_New Ana Sayfa ديكور الجدران Admin_Brand: 7ANRPS48 135٫00 ₪ 145٫00 ₪  Admin_Published Admin_Status: Stokta      Admin_SelectProductAria" [ref=e342]':
+                - cell "ديكور جداري بإطار ذهبي" [ref=e343]:
+                  - img "ديكور جداري بإطار ذهبي" [ref=e344]
+                - 'cell "ديكور جداري بإطار ذهبي SKU: DEMO-008 Admin_New Ana Sayfa" [ref=e345]':
+                  - generic [ref=e346]:
+                    - generic [ref=e347]: ديكور جداري بإطار ذهبي
+                    - generic [ref=e348]: "SKU: DEMO-008"
+                    - generic [ref=e349]:
+                      - generic [ref=e350]: Admin_New
+                      - generic [ref=e351]: Ana Sayfa
+                - 'cell "ديكور الجدران Admin_Brand: 7ANRPS48" [ref=e352]':
+                  - generic [ref=e353]: ديكور الجدران
+                  - text: "Admin_Brand: 7ANRPS48"
+                - cell "135٫00 ₪ 145٫00 ₪" [ref=e354]:
+                  - generic [ref=e355]: 135٫00 ₪
+                  - text: 145٫00 ₪
+                - 'cell " Admin_Published Admin_Status: Stokta" [ref=e356]':
+                  - generic [ref=e358]:
+                    - generic [ref=e359]: 
+                    - text: Admin_Published
+                  - text: "Admin_Status: Stokta"
+                - cell "    " [ref=e360]:
+                  - generic [ref=e361]:
+                    - link "" [ref=e362] [cursor=pointer]:
+                      - /url: /Urun/Detay/gold-framed-wall-decor-8
+                      - generic [ref=e363]: 
+                    - link "" [ref=e364] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/8
+                      - generic [ref=e365]: 
+                    - button "" [ref=e367] [cursor=pointer]:
+                      - generic [ref=e368]: 
+                    - button "" [ref=e370] [cursor=pointer]:
+                      - generic [ref=e371]: 
+                    - button "" [ref=e373] [cursor=pointer]:
+                      - generic [ref=e374]: 
+                - cell "Admin_SelectProductAria" [ref=e375]:
+                  - checkbox "Admin_SelectProductAria" [ref=e376]
+              - 'row "طقم تقديم مائدة فلسطيني طقم تقديم مائدة فلسطيني SKU: DEMO-009 Admin_New Ana Sayfa المطبخ والمائدة Admin_Brand: 7ANRPS48 88٫00 ₪  Admin_Published Admin_Status: Stokta      Admin_SelectProductAria" [ref=e377]':
+                - cell "طقم تقديم مائدة فلسطيني" [ref=e378]:
+                  - img "طقم تقديم مائدة فلسطيني" [ref=e379]
+                - 'cell "طقم تقديم مائدة فلسطيني SKU: DEMO-009 Admin_New Ana Sayfa" [ref=e380]':
+                  - generic [ref=e381]:
+                    - generic [ref=e382]: طقم تقديم مائدة فلسطيني
+                    - generic [ref=e383]: "SKU: DEMO-009"
+                    - generic [ref=e384]:
+                      - generic [ref=e385]: Admin_New
+                      - generic [ref=e386]: Ana Sayfa
+                - 'cell "المطبخ والمائدة Admin_Brand: 7ANRPS48" [ref=e387]':
+                  - generic [ref=e388]: المطبخ والمائدة
+                  - text: "Admin_Brand: 7ANRPS48"
+                - cell "88٫00 ₪" [ref=e389]:
+                  - generic [ref=e390]: 88٫00 ₪
+                - 'cell " Admin_Published Admin_Status: Stokta" [ref=e391]':
+                  - generic [ref=e393]:
+                    - generic [ref=e394]: 
+                    - text: Admin_Published
+                  - text: "Admin_Status: Stokta"
+                - cell "    " [ref=e395]:
+                  - generic [ref=e396]:
+                    - link "" [ref=e397] [cursor=pointer]:
+                      - /url: /Urun/Detay/palestine-table-serving-set-9
+                      - generic [ref=e398]: 
+                    - link "" [ref=e399] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/9
+                      - generic [ref=e400]: 
+                    - button "" [ref=e402] [cursor=pointer]:
+                      - generic [ref=e403]: 
+                    - button "" [ref=e405] [cursor=pointer]:
+                      - generic [ref=e406]: 
+                    - button "" [ref=e408] [cursor=pointer]:
+                      - generic [ref=e409]: 
+                - cell "Admin_SelectProductAria" [ref=e410]:
+                  - checkbox "Admin_SelectProductAria" [ref=e411]
+              - 'row "هدية فلسطينية مخصصة بالاسم هدية فلسطينية مخصصة بالاسم SKU: DEMO-010 Admin_New Ana Sayfa هدايا مخصصة Admin_Brand: 7ANRPS48 55٫00 ₪  Admin_Published Admin_Status: Stokta      Admin_SelectProductAria" [ref=e412]':
+                - cell "هدية فلسطينية مخصصة بالاسم" [ref=e413]:
+                  - img "هدية فلسطينية مخصصة بالاسم" [ref=e414]
+                - 'cell "هدية فلسطينية مخصصة بالاسم SKU: DEMO-010 Admin_New Ana Sayfa" [ref=e415]':
+                  - generic [ref=e416]:
+                    - generic [ref=e417]: هدية فلسطينية مخصصة بالاسم
+                    - generic [ref=e418]: "SKU: DEMO-010"
+                    - generic [ref=e419]:
+                      - generic [ref=e420]: Admin_New
+                      - generic [ref=e421]: Ana Sayfa
+                - 'cell "هدايا مخصصة Admin_Brand: 7ANRPS48" [ref=e422]':
+                  - generic [ref=e423]: هدايا مخصصة
+                  - text: "Admin_Brand: 7ANRPS48"
+                - cell "55٫00 ₪" [ref=e424]:
+                  - generic [ref=e425]: 55٫00 ₪
+                - 'cell " Admin_Published Admin_Status: Stokta" [ref=e426]':
+                  - generic [ref=e428]:
+                    - generic [ref=e429]: 
+                    - text: Admin_Published
+                  - text: "Admin_Status: Stokta"
+                - cell "    " [ref=e430]:
+                  - generic [ref=e431]:
+                    - link "" [ref=e432] [cursor=pointer]:
+                      - /url: /Urun/Detay/personalized-palestine-gift-10
+                      - generic [ref=e433]: 
+                    - link "" [ref=e434] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/10
+                      - generic [ref=e435]: 
+                    - button "" [ref=e437] [cursor=pointer]:
+                      - generic [ref=e438]: 
+                    - button "" [ref=e440] [cursor=pointer]:
+                      - generic [ref=e441]: 
+                    - button "" [ref=e443] [cursor=pointer]:
+                      - generic [ref=e444]: 
+                - cell "Admin_SelectProductAria" [ref=e445]:
+                  - checkbox "Admin_SelectProductAria" [ref=e446]
+              - 'row "طقم ميدالية ومغناطيس القدس طقم ميدالية ومغناطيس القدس SKU: DEMO-011 Admin_New Admin_Campaign Ana Sayfa ميداليات ومغناطيس Admin_Brand: 7ANRPS48 28٫00 ₪  Admin_Published Admin_Status: Stokta      Admin_SelectProductAria" [ref=e447]':
+                - cell "طقم ميدالية ومغناطيس القدس" [ref=e448]:
+                  - img "طقم ميدالية ومغناطيس القدس" [ref=e449]
+                - 'cell "طقم ميدالية ومغناطيس القدس SKU: DEMO-011 Admin_New Admin_Campaign Ana Sayfa" [ref=e450]':
+                  - generic [ref=e451]:
+                    - generic [ref=e452]: طقم ميدالية ومغناطيس القدس
+                    - generic [ref=e453]: "SKU: DEMO-011"
+                    - generic [ref=e454]:
+                      - generic [ref=e455]: Admin_New
+                      - generic [ref=e456]: Admin_Campaign
+                      - generic [ref=e457]: Ana Sayfa
+                - 'cell "ميداليات ومغناطيس Admin_Brand: 7ANRPS48" [ref=e458]':
+                  - generic [ref=e459]: ميداليات ومغناطيس
+                  - text: "Admin_Brand: 7ANRPS48"
+                - cell "28٫00 ₪" [ref=e460]:
+                  - generic [ref=e461]: 28٫00 ₪
+                - 'cell " Admin_Published Admin_Status: Stokta" [ref=e462]':
+                  - generic [ref=e464]:
+                    - generic [ref=e465]: 
+                    - text: Admin_Published
+                  - text: "Admin_Status: Stokta"
+                - cell "    " [ref=e466]:
+                  - generic [ref=e467]:
+                    - link "" [ref=e468] [cursor=pointer]:
+                      - /url: /Urun/Detay/jerusalem-keychain-a-magnet-set-11
+                      - generic [ref=e469]: 
+                    - link "" [ref=e470] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/11
+                      - generic [ref=e471]: 
+                    - button "" [ref=e473] [cursor=pointer]:
+                      - generic [ref=e474]: 
+                    - button "" [ref=e476] [cursor=pointer]:
+                      - generic [ref=e477]: 
+                    - button "" [ref=e479] [cursor=pointer]:
+                      - generic [ref=e480]: 
+                - cell "Admin_SelectProductAria" [ref=e481]:
+                  - checkbox "Admin_SelectProductAria" [ref=e482]
+              - 'row "حقيبة قماش فلسطينية مطرزة حقيبة قماش فلسطينية مطرزة SKU: DEMO-012 Admin_New Ana Sayfa الحقائب والإكسسوارات Admin_Brand: 7ANRPS48 70٫00 ₪  Admin_Published Admin_Status: Stokta      Admin_SelectProductAria" [ref=e483]':
+                - cell "حقيبة قماش فلسطينية مطرزة" [ref=e484]:
+                  - img "حقيبة قماش فلسطينية مطرزة" [ref=e485]
+                - 'cell "حقيبة قماش فلسطينية مطرزة SKU: DEMO-012 Admin_New Ana Sayfa" [ref=e486]':
+                  - generic [ref=e487]:
+                    - generic [ref=e488]: حقيبة قماش فلسطينية مطرزة
+                    - generic [ref=e489]: "SKU: DEMO-012"
+                    - generic [ref=e490]:
+                      - generic [ref=e491]: Admin_New
+                      - generic [ref=e492]: Ana Sayfa
+                - 'cell "الحقائب والإكسسوارات Admin_Brand: 7ANRPS48" [ref=e493]':
+                  - generic [ref=e494]: الحقائب والإكسسوارات
+                  - text: "Admin_Brand: 7ANRPS48"
+                - cell "70٫00 ₪" [ref=e495]:
+                  - generic [ref=e496]: 70٫00 ₪
+                - 'cell " Admin_Published Admin_Status: Stokta" [ref=e497]':
+                  - generic [ref=e499]:
+                    - generic [ref=e500]: 
+                    - text: Admin_Published
+                  - text: "Admin_Status: Stokta"
+                - cell "    " [ref=e501]:
+                  - generic [ref=e502]:
+                    - link "" [ref=e503] [cursor=pointer]:
+                      - /url: /Urun/Detay/embroidered-palestine-tote-bag-12
+                      - generic [ref=e504]: 
+                    - link "" [ref=e505] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/12
+                      - generic [ref=e506]: 
+                    - button "" [ref=e508] [cursor=pointer]:
+                      - generic [ref=e509]: 
+                    - button "" [ref=e511] [cursor=pointer]:
+                      - generic [ref=e512]: 
+                    - button "" [ref=e514] [cursor=pointer]:
+                      - generic [ref=e515]: 
+                - cell "Admin_SelectProductAria" [ref=e516]:
+                  - checkbox "Admin_SelectProductAria" [ref=e517]
+          - generic [ref=e519]: Admin_PageInfo
+    - contentinfo [ref=e520]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

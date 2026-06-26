@@ -1,0 +1,543 @@
+﻿@model List<FilistinProje.Core.Models.BultenListViewModel>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_Bulten_Aboneleri"];
+
+    var durum = ViewBag.Durum is int d ? d : 1;
+    var search = ViewBag.Search as string ?? string.Empty;
+    var currentPage = ViewBag.Page is int p ? p : 1;
+    var pageSize = ViewBag.PageSize is int ps ? ps : 20;
+    var totalPages = ViewBag.TotalPages is int tp ? tp : 1;
+    var totalCount = ViewBag.TotalCount is int tc ? tc : 0;
+    var activeCount = ViewBag.ActiveCount is int ac ? ac : 0;
+    var passiveCount = ViewBag.PassiveCount is int pc ? pc : 0;
+    var todayCount = ViewBag.TodayCount is int td ? td : 0;
+
+    string StatusUrl(int targetStatus) => $"/Admin/Bulten?durum={targetStatus}&pageSize={pageSize}";
+    string PageUrl(int targetPage) => $"/Admin/Bulten?durum={durum}&q={Uri.EscapeDataString(search)}&page={targetPage}&pageSize={pageSize}";
+    string ExportUrl() => $"/Admin/Bulten/Export?durum={durum}&q={Uri.EscapeDataString(search)}";
+}
+
+<style>
+    .ca-newsletter-stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 20px;
+    }
+
+    .ca-newsletter-stat {
+        border: 1px solid var(--ca-border);
+        border-radius: var(--ca-radius);
+        background: #fff;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .ca-newsletter-stat span {
+        display: block;
+        color: var(--ca-text-muted);
+        font-size: .82rem;
+        margin-bottom: 4px;
+    }
+
+    .ca-newsletter-stat strong {
+        font-size: 1.35rem;
+        color: var(--ca-text);
+    }
+
+    .ca-newsletter-stat i {
+        width: 42px;
+        height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        background: var(--ca-primary-light);
+        color: var(--ca-primary);
+    }
+
+    .ca-newsletter-toolbar {
+        display: grid;
+        grid-template-columns: minmax(260px, 1fr) auto;
+        gap: 12px;
+        align-items: center;
+        padding: 16px;
+        border-bottom: 1px solid var(--ca-border);
+    }
+
+    .ca-newsletter-search {
+        position: relative;
+    }
+
+    .ca-newsletter-search i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--ca-text-muted);
+    }
+
+    .ca-newsletter-search input {
+        padding-left: 40px;
+    }
+
+    .ca-email-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 240px;
+    }
+
+    .ca-email-actions {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .ca-device-cell {
+        min-width: 220px;
+    }
+
+    .ca-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 16px;
+        border-top: 1px solid var(--ca-border);
+        flex-wrap: wrap;
+    }
+
+    .ca-mail-composer {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    .ca-mail-preview {
+        border: 1px solid var(--ca-border);
+        border-radius: var(--ca-radius);
+        background: #fff;
+        overflow: hidden;
+    }
+
+    .ca-mail-preview-header {
+        padding: 18px;
+        background: #313511;
+        color: #fff;
+        text-align: center;
+        font-family: Georgia, serif;
+        font-size: 1.35rem;
+    }
+
+    .ca-mail-preview-body {
+        padding: 22px;
+        color: var(--ca-text);
+        font-size: .92rem;
+        line-height: 1.65;
+    }
+
+    .ca-mail-preview-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 12px;
+        padding: 10px 18px;
+        border-radius: 999px;
+        background: #313511;
+        color: #fff;
+        font-size: .75rem;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+    }
+
+    @@media (max-width: 1100px) {
+        .ca-newsletter-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .ca-newsletter-toolbar {
+            grid-template-columns: 1fr;
+        }
+
+        .ca-mail-composer {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 640px) {
+        .ca-newsletter-stats {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="container-fluid ca-fade-in">
+    <div class="ca-page-header">
+        <div>
+            <h1 class="ca-page-title">@Localizer["Admin_Bulten_Aboneleri"]</h1>
+            <p class="ca-page-subtitle">@Localizer["Admin_NewsletterSubtitle"]</p>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="@StatusUrl(1)" class="ca-btn @(durum == 1 ? "ca-btn-primary" : "ca-btn-outline")">
+                <i class="fas fa-circle-check"></i> @Localizer["Admin_ActiveItems"] (@activeCount)
+            </a>
+            <a href="@StatusUrl(2)" class="ca-btn @(durum == 2 ? "ca-btn-primary" : "ca-btn-outline")">
+                <i class="fas fa-user-slash"></i> @Localizer["Admin_PassiveItems"] (@passiveCount)
+            </a>
+            <a href="@StatusUrl(0)" class="ca-btn @(durum == 0 ? "ca-btn-primary" : "ca-btn-outline")">
+                <i class="fas fa-list"></i> @Localizer["Admin_Tumu"]
+            </a>
+        </div>
+    </div>
+
+    <div class="ca-newsletter-stats">
+        <div class="ca-newsletter-stat">
+            <div><span>@Localizer["Admin_ActiveSubscribers"]</span><strong>@activeCount</strong></div>
+            <i class="fas fa-envelope-circle-check"></i>
+        </div>
+        <div class="ca-newsletter-stat">
+            <div><span>@Localizer["Admin_ReceivedToday"]</span><strong>@todayCount</strong></div>
+            <i class="fas fa-calendar-day"></i>
+        </div>
+        <div class="ca-newsletter-stat">
+            <div><span>@Localizer["Admin_Pasif"]</span><strong>@passiveCount</strong></div>
+            <i class="fas fa-user-clock"></i>
+        </div>
+        <div class="ca-newsletter-stat">
+            <div><span>@Localizer["Admin_Listed"]</span><strong>@totalCount</strong></div>
+            <i class="fas fa-filter"></i>
+        </div>
+    </div>
+
+    <div class="ca-mail-composer">
+        <div class="ca-card">
+            <div class="ca-card-body">
+                <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-3">
+                    <div>
+                        <h2 class="h5 mb-1" style="color:var(--ca-text); font-weight:800;">@Localizer["Admin_SendNewsletterMail"]</h2>
+                        <p class="ca-text-muted mb-0">@Localizer["Admin_SendNewsletterMailSubtitle"]</p>
+                    </div>
+                    <span class="ca-badge ca-badge-success">@Localizer["Admin_ActiveSubscriberCount", activeCount]</span>
+                </div>
+                <form id="newsletterMailForm" action="/Admin/Bulten/TopluMailGonder" method="post" onsubmit='return confirm("@Localizer["Admin_NewsletterSendConfirm"]");'>
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="durum" value="@durum" />
+                    <input type="hidden" name="q" value="@search" />
+                    <input type="hidden" name="page" value="@currentPage" />
+                    <input type="hidden" name="pageSize" value="@pageSize" />
+                    <div id="selectedMailIds"></div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="ca-label">@Localizer["Admin_TargetAudience"]</label>
+                            <select class="ca-input" name="hedef" id="newsletterTarget">
+                                <option value="aktif">@Localizer["Admin_AllActiveSubscribers"]</option>
+                                <option value="filtre">@Localizer["Admin_FilteredActiveSubscribers"]</option>
+                                <option value="secili">@Localizer["Admin_SelectedTableSubscribers"]</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="ca-label">@Localizer["Admin_MailSubject"]</label>
+                            <input class="ca-input" name="baslik" id="newsletterSubject" maxlength="140" required value='@Localizer["Admin_DefaultNewsletterSubject"]' />
+                        </div>
+                        <div class="col-12">
+                            <label class="ca-label">@Localizer["Admin_MessageContent"]</label>
+                            <textarea class="ca-textarea" name="icerik" id="newsletterContent" rows="6" required>@Localizer["Admin_DefaultNewsletterContent"]</textarea>
+                        </div>
+                        <div class="col-md-7">
+                            <label class="ca-label">@Localizer["Admin_ButtonLink"]</label>
+                            <input class="ca-input" name="butonLink" id="newsletterButtonLink" placeholder="/Urun" value="/Urun" />
+                        </div>
+                        <div class="col-md-5">
+                            <label class="ca-label">@Localizer["Admin_ButtonText"]</label>
+                            <input class="ca-input" name="butonYazi" id="newsletterButtonText" maxlength="40" value='@Localizer["Admin_ExploreProducts"]' />
+                        </div>
+                    </div>
+                    <div class="mt-3 d-flex justify-content-end">
+                        <button type="submit" class="ca-btn ca-btn-primary">
+                            <i class="fas fa-paper-plane"></i> @Localizer["Admin_SendBulkMail"]
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="ca-mail-preview">
+            <div class="ca-mail-preview-header">7ANRPS48</div>
+            <div class="ca-mail-preview-body">
+                <h3 id="newsletterPreviewSubject" style="font-family:Georgia,serif; color:#313511; margin-bottom:14px;">@Localizer["Admin_DefaultNewsletterSubject"]</h3>
+                <div id="newsletterPreviewContent"></div>
+                <span id="newsletterPreviewButton" class="ca-mail-preview-button">@Localizer["Admin_ExploreProducts"]</span>
+            </div>
+        </div>
+    </div>
+
+    <form id="bulkPassiveForm" action="/Admin/Bulten/TopluPasifYap" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="durum" value="@durum" />
+        <input type="hidden" name="q" value="@search" />
+        <input type="hidden" name="page" value="@currentPage" />
+        <input type="hidden" name="pageSize" value="@pageSize" />
+    </form>
+
+    <div class="ca-card">
+        <div class="ca-newsletter-toolbar">
+            <form action="/Admin/Bulten" method="get" class="ca-newsletter-search">
+                <i class="fas fa-search"></i>
+                <input type="hidden" name="durum" value="@durum" />
+                <input type="hidden" name="pageSize" value="@pageSize" />
+                <input class="ca-input" type="search" name="q" value="@search" placeholder='@Localizer["Admin_SearchEmailOrIp"]' />
+            </form>
+            <div class="d-flex gap-2 flex-wrap justify-content-end">
+                <button type="submit" form="bulkPassiveForm" class="ca-btn ca-btn-outline">
+                    <i class="fas fa-user-slash"></i> @Localizer["Admin_MakeSelectedPassive"]
+                </button>
+                <a href="@ExportUrl()" class="ca-btn ca-btn-success">
+                    <i class="fas fa-file-excel"></i> @Localizer["Admin_DownloadExcel"]
+                </a>
+            </div>
+        </div>
+
+        <div class="ca-table-wrapper">
+            <table class="ca-table">
+                <thead>
+                    <tr>
+                        <th class="ps-4" style="width:44px;">
+                            <input type="checkbox" class="form-check-input" data-select-all-subscribers />
+                        </th>
+                        <th>@Localizer["Admin_Tarih"]</th>
+                        <th>@Localizer["Admin_E_posta"]</th>
+                        <th>@Localizer["Admin_Durum"]</th>
+                        <th>@Localizer["Admin_IpAddress"]</th>
+                        <th>@Localizer["Admin_Location"]</th>
+                        <th>@Localizer["Admin_DeviceInfo"]</th>
+                        <th class="text-end pe-4">@Localizer["Admin_Islem"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="ps-4">
+                                <input type="checkbox" class="form-check-input" name="aboneIds" value="@item.Id" form="bulkPassiveForm" data-subscriber-checkbox />
+                            </td>
+                            <td class="ca-text-muted" style="font-size:.85rem;">@item.KayitTarihi.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>
+                                <div class="ca-email-cell">
+                                    <a href="mailto:@item.Email" class="ca-fw-bold" style="text-decoration:none; color:var(--ca-text);">@item.Email</a>
+                                    <div class="ca-email-actions">
+                                        <button type="button" class="btn btn-sm btn-light border" data-copy-email="@item.Email">
+                                            <i class="fas fa-copy"></i> @Localizer["Admin_Copy"]
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                @if (item.AktifMi)
+                                {
+                                    <span class="ca-badge ca-badge-success">@Localizer["Admin_Aktif"]</span>
+                                }
+                                else
+                                {
+                                    <span class="ca-badge ca-badge-neutral">@Localizer["Admin_Pasif"]</span>
+                                }
+                            </td>
+                            <td><span class="ca-badge ca-badge-neutral">@item.IpAdresi</span></td>
+                            <td>
+                                @if (item.Ulke != "-")
+                                {
+                                    <div><i class="fas fa-city ca-text-primary me-1"></i> @item.Sehir</div>
+                                    <small class="ca-text-muted">@item.Ulke</small>
+                                }
+                                else
+                                {
+                                    <span class="ca-text-muted">-</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="ca-device-cell">
+                                    <span class="ca-fw-semi" style="font-size:.85rem;">
+                                        @if (item.IsletimSistemi.Contains("Windows"))
+                                        {
+                                            <i class="fab fa-windows ca-text-primary"></i>
+                                        }
+                                        else if (item.IsletimSistemi.Contains("Android"))
+                                        {
+                                            <i class="fab fa-android ca-text-success"></i>
+                                        }
+                                        else if (item.IsletimSistemi.Contains("iOS") || item.IsletimSistemi.Contains("Mac"))
+                                        {
+                                            <i class="fab fa-apple"></i>
+                                        }
+                                        @item.Cihaz
+                                    </span>
+                                    <div><small class="ca-text-muted">@item.Tarayici / @item.IsletimSistemi</small></div>
+                                </div>
+                            </td>
+                            <td class="text-end pe-4">
+                                @if (item.AktifMi)
+                                {
+                                    <form action="/Admin/Bulten/PasifYap" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <input type="hidden" name="durum" value="@durum" />
+                                        <input type="hidden" name="q" value="@search" />
+                                        <input type="hidden" name="page" value="@currentPage" />
+                                        <input type="hidden" name="pageSize" value="@pageSize" />
+                                        <button type="submit" class="ca-btn ca-btn-outline btn-sm">
+                                            <i class="fas fa-user-slash"></i> @Localizer["Admin_MakePassive"]
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form action="/Admin/Bulten/AktifYap" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <input type="hidden" name="durum" value="@durum" />
+                                        <input type="hidden" name="q" value="@search" />
+                                        <input type="hidden" name="page" value="@currentPage" />
+                                        <input type="hidden" name="pageSize" value="@pageSize" />
+                                        <button type="submit" class="ca-btn ca-btn-primary btn-sm">
+                                            <i class="fas fa-rotate-left"></i> @Localizer["Admin_MakeActive"]
+                                        </button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (Model.Count == 0)
+        {
+            <div class="ca-empty">
+                <i class="fas fa-envelope-open-text"></i>
+                <p>@Localizer["Admin_NoNewsletterSubscribersFound"]</p>
+            </div>
+        }
+
+        <div class="ca-pagination">
+            <div class="ca-text-muted">
+                @Localizer["Admin_PageXOfYRecords", currentPage, totalPages, totalCount]
+            </div>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <form action="/Admin/Bulten" method="get" class="d-flex align-items-center gap-2">
+                    <input type="hidden" name="durum" value="@durum" />
+                    <input type="hidden" name="q" value="@search" />
+                    <label class="ca-text-muted small">@Localizer["Admin_PerPage"]</label>
+                    <select name="pageSize" class="ca-input" style="width:90px;" onchange="this.form.submit()">
+                        <option value="20" selected="@(pageSize == 20)">20</option>
+                        <option value="50" selected="@(pageSize == 50)">50</option>
+                        <option value="100" selected="@(pageSize == 100)">100</option>
+                    </select>
+                </form>
+                <a class="ca-btn ca-btn-outline @(currentPage <= 1 ? "disabled" : "")" href="@(currentPage <= 1 ? "#" : PageUrl(currentPage - 1))">
+                    <i class="fas fa-chevron-left"></i> @Localizer["Admin_Previous"]
+                </a>
+                <a class="ca-btn ca-btn-outline @(currentPage >= totalPages ? "disabled" : "")" href="@(currentPage >= totalPages ? "#" : PageUrl(currentPage + 1))">
+                    @Localizer["Admin_Next"] <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const emailCopiedMessage = @Json.Serialize(Localizer["Admin_EmailCopied"].Value);
+        const emailCopyFailedMessage = @Json.Serialize(Localizer["Admin_EmailCopyFailed"].Value);
+        const newsletterTitleFallback = @Json.Serialize(Localizer["Admin_NewsletterTitleFallback"].Value);
+        const siteReviewFallback = @Json.Serialize(Localizer["Admin_ViewSite"].Value);
+
+        document.querySelector('[data-select-all-subscribers]')?.addEventListener('change', function (event) {
+            document.querySelectorAll('[data-subscriber-checkbox]').forEach(function (checkbox) {
+                checkbox.checked = event.target.checked;
+            });
+        });
+
+        document.querySelectorAll('[data-copy-email]').forEach(function (button) {
+            button.addEventListener('click', async function () {
+                const email = button.getAttribute('data-copy-email');
+                try {
+                    await navigator.clipboard.writeText(email);
+                    if (window.showAdminToast) {
+                        window.showAdminToast(emailCopiedMessage, 'success');
+                    } else if (window.showToast) {
+                        window.showToast(emailCopiedMessage, 'success');
+                    }
+                } catch {
+                    if (window.showAdminToast) {
+                        window.showAdminToast(emailCopyFailedMessage, 'error');
+                    } else if (window.showToast) {
+                        window.showToast(emailCopyFailedMessage, 'error');
+                    }
+                }
+            });
+        });
+
+        const subjectInput = document.getElementById('newsletterSubject');
+        const contentInput = document.getElementById('newsletterContent');
+        const buttonTextInput = document.getElementById('newsletterButtonText');
+        const buttonLinkInput = document.getElementById('newsletterButtonLink');
+        const previewSubject = document.getElementById('newsletterPreviewSubject');
+        const previewContent = document.getElementById('newsletterPreviewContent');
+        const previewButton = document.getElementById('newsletterPreviewButton');
+        const newsletterForm = document.getElementById('newsletterMailForm');
+        const selectedMailIds = document.getElementById('selectedMailIds');
+
+        function updateNewsletterPreview() {
+            if (previewSubject) {
+                previewSubject.textContent = subjectInput?.value?.trim() || newsletterTitleFallback;
+            }
+
+            if (previewContent) {
+                const lines = (contentInput?.value || '')
+                    .split(/\r?\n/)
+                    .map(x => x.trim())
+                    .filter(Boolean);
+
+                previewContent.innerHTML = '';
+                lines.forEach(function (line) {
+                    const paragraph = document.createElement('p');
+                    paragraph.textContent = line;
+                    previewContent.appendChild(paragraph);
+                });
+            }
+
+            if (previewButton) {
+                const buttonText = buttonTextInput?.value?.trim();
+                const buttonLink = buttonLinkInput?.value?.trim();
+                previewButton.textContent = buttonText || siteReviewFallback;
+                previewButton.style.display = buttonLink ? 'inline-flex' : 'none';
+            }
+        }
+
+        [subjectInput, contentInput, buttonTextInput, buttonLinkInput].forEach(function (input) {
+            input?.addEventListener('input', updateNewsletterPreview);
+        });
+
+        newsletterForm?.addEventListener('submit', function () {
+            if (!selectedMailIds) return;
+            selectedMailIds.innerHTML = '';
+            document.querySelectorAll('[data-subscriber-checkbox]:checked').forEach(function (checkbox) {
+                const hidden = document.createElement('input');
+                hidden.type = 'hidden';
+                hidden.name = 'mailAboneIds';
+                hidden.value = checkbox.value;
+                selectedMailIds.appendChild(hidden);
+            });
+        });
+
+        updateNewsletterPreview();
+    </script>
+}
+

@@ -1,0 +1,135 @@
+@model FilistinProje.Web.Models.KayitViewModel
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = @Localizer["Register"];
+}
+
+<div class="min-h-[80vh] flex items-center justify-center py-16 px-4 bg-[#fcf9f3]">
+    <div class="w-full max-w-lg">
+        <div class="text-center mb-10">
+             <a href="/" class="font-serif text-3xl tracking-widest text-[#313511]">@Localizer["BrandName"]</a>
+            <p class="text-xs text-[#47473d] mt-2 tracking-wide">@Localizer["CreateNewAccount"]</p>
+        </div>
+
+        <div asp-validation-summary="ModelOnly" class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded mb-6 hidden [&:not(:empty)]:block"></div>
+
+        <div class="bg-white border border-[#e5e2dc] rounded-lg p-8 shadow-sm">
+            <form asp-action="KayitOl" method="post" enctype="multipart/form-data" class="space-y-4">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label asp-for="AdSoyad" class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["FullName"]</label>
+                        <input asp-for="AdSoyad" placeholder="@Localizer["YourFullName"]" autocomplete="name"
+                               class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3]" />
+                        <span asp-validation-for="AdSoyad" class="text-red-600 text-xs mt-1 block"></span>
+                    </div>
+                    <div>
+                        <label asp-for="KimlikNo" class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["NationalId"]</label>
+                        <input asp-for="KimlikNo" placeholder="@Localizer["NationalIdPlaceholder"]" autocomplete="off"
+                               class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3]" />
+                        <span asp-validation-for="KimlikNo" class="text-red-600 text-xs mt-1 block"></span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label asp-for="DogumTarihi" class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["DateOfBirth"]</label>
+                        <input asp-for="DogumTarihi" type="date"
+                               class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3]" />
+                        <span asp-validation-for="DogumTarihi" class="text-red-600 text-xs mt-1 block"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Telefon" class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["Phone"]</label>
+                        <input asp-for="Telefon" type="tel" placeholder="@Localizer["PhonePlaceholder"]" autocomplete="tel"
+                               class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3]" />
+                        <span asp-validation-for="Telefon" class="text-red-600 text-xs mt-1 block"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label asp-for="Eposta" class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["Email"]</label>
+                    <input asp-for="Eposta" type="email" placeholder="@Localizer["ExampleEmail"]" autocomplete="email"
+                           class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3]" />
+                    <span asp-validation-for="Eposta" class="text-red-600 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Adres" class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["Address"]</label>
+                    <textarea asp-for="Adres" placeholder="@Localizer["AddressPlaceholder"]" rows="2"
+                              class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3] resize-none"></textarea>
+                    <span asp-validation-for="Adres" class="text-red-600 text-xs mt-1 block"></span>
+                </div>
+
+                <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-2">
+                    <div class="flex items-start gap-2">
+                        <svg class="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p class="text-xs text-amber-800 leading-relaxed">@Localizer["IdentityPhotoRequiredWarning"]</p>
+                    </div>
+                    <div class="pl-7">
+                        <label asp-for="KimlikFoto" class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["IdentityPhoto"] <span class="text-red-500">*</span></label>
+                        <input asp-for="KimlikFoto" type="file" accept="image/png,image/jpeg,image/webp" required
+                               class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-white file:mr-4 file:py-2 file:px-4 file:border-0 file:bg-[#313511] file:text-white file:text-xs file:rounded file:cursor-pointer file:uppercase file:tracking-wider" />
+                        <p class="text-[#47473d] text-xs mt-1">@Localizer["IdentityPhotoHelp"]</p>
+                        <span asp-validation-for="KimlikFoto" class="text-red-600 text-xs mt-1 block"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label asp-for="Sehir" class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["City"]</label>
+                     <select asp-for="Sehir" class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3]">
+                         <option value="">@Localizer["SelectCity"]</option>
+                         <option>Gaza</option><option>North Gaza</option><option>Beit Hanoun</option>
+                         <option>Beit Lahiya</option><option>Jabalia</option><option>Ramallah</option>
+                         <option>El-Bireh</option><option>Birzeit</option><option>Abu Dis</option>
+                         <option>Nablus</option><option>Tubas</option><option>Qalqilya</option>
+                         <option>Salfit</option><option>Jenin</option><option>Hebron</option>
+                         <option>Yatta</option><option>Dura</option><option>Halhul</option>
+                         <option>Bethlehem</option><option>Beit Jala</option><option>Artas</option>
+                         <option>Tulkarm</option><option>Ajjah</option><option>Jericho</option>
+                         <option>Jerusalem</option><option>Al-Ram</option><option>Al-Eizariya</option>
+                     </select>
+                    <span asp-validation-for="Sehir" class="text-red-600 text-xs mt-1 block"></span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label asp-for="Sifre" class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["Password"]</label>
+                        <input asp-for="Sifre" type="password" placeholder="@Localizer["MinSixChars"]" autocomplete="new-password"
+                               class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3]" />
+                        <span asp-validation-for="Sifre" class="text-red-600 text-xs mt-1 block"></span>
+                    </div>
+                    <div>
+                        <label asp-for="SifreTekrar" class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["PasswordRepeat"]</label>
+                        <input asp-for="SifreTekrar" type="password" placeholder="@Localizer["EnterPasswordAgain"]" autocomplete="new-password"
+                               class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3]" />
+                        <span asp-validation-for="SifreTekrar" class="text-red-600 text-xs mt-1 block"></span>
+                    </div>
+                </div>
+
+                 <div class="bg-[#f8f6f2] border border-[#e5e2dc] rounded-lg p-4">
+                     <label class="flex items-start gap-3 cursor-pointer">
+                         <input asp-for="ToptanciMi" type="checkbox"
+                                class="mt-0.5 w-4 h-4 rounded border-[#e5e2dc] text-[#313511] focus:ring-[#b58735] focus:ring-1 focus:ring-offset-0" />
+                         <div>
+                             <span class="text-sm font-medium text-[#1c1c18]">@Localizer["RegisterAsWholesale"]</span>
+                             <p class="text-xs text-[#47473d] mt-0.5 leading-relaxed">@Localizer["WholesaleRegistrationInfo"]</p>
+                         </div>
+                     </label>
+                     <span asp-validation-for="ToptanciMi" class="text-red-600 text-xs mt-1 block"></span>
+                 </div>
+
+                <button type="submit"
+                        class="w-full bg-[#313511] text-white py-3 text-xs tracking-widest uppercase rounded hover:bg-[#1c2001] transition-colors font-medium mt-2">
+                    @Localizer["CreateMembership"]
+                </button>
+            </form>
+        </div>
+
+        <p class="text-center text-sm text-[#47473d] mt-6">
+            @Localizer["AlreadyHaveAccount"]
+            <a href="/Hesap/GirisYap" class="text-[#b58735] hover:underline font-medium">@Localizer["Login"]</a>
+        </p>
+    </div>
+</div>

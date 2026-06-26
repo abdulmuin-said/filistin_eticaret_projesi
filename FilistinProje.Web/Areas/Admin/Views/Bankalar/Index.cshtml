@@ -1,0 +1,178 @@
+@using FilistinProje.Core.Varliklar
+@model IEnumerable<BankaHesap>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_Banka_Hesaplari"];
+    var hesaplar = Model.ToList();
+}
+
+<div class="container-fluid ca-fade-in">
+    <div class="ca-page-header">
+        <div>
+            <h1 class="ca-page-title">@Localizer["Admin_Banka_Hesaplari"]</h1>
+            <p class="ca-page-subtitle">@Localizer["Admin_BankAccountsSubtitle"]</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <div class="ca-card">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title"><i class="fas fa-plus me-2"></i>@Localizer["Admin_NewBankAccount"]</h3>
+                </div>
+                <div class="ca-card-body">
+                    <form method="post" action="/Admin/Bankalar/Kaydet">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" value="0" />
+                        <input type="hidden" name="AktifMi" value="True" />
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="ca-label">@Localizer["Admin_Banka_Adi"]</label>
+                                <input name="BankaAdi" class="ca-input" placeholder="Örn: Bank of Palestine" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="ca-label">@Localizer["Admin_AccountOwner"]</label>
+                                <input name="HesapSahibi" class="ca-input" placeholder='@Localizer["Admin_AccountOwnerPlaceholder"]' required />
+                            </div>
+                            <div class="col-12">
+                                <label class="ca-label">IBAN</label>
+                                <input name="IBAN" class="ca-input" placeholder="PS99 XXXX XXXX XXXX XXXX XXXX XXXX X" required style="font-family:monospace;letter-spacing:1px;" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="ca-label">@Localizer["Admin_Sube_Kodu"]</label>
+                                <input name="SubeKodu" class="ca-input" placeholder="001" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="ca-label">@Localizer["Admin_AccountNo"]</label>
+                                <input name="HesapNo" class="ca-input" placeholder="123456" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="ca-label">@Localizer["Admin_Sira"]</label>
+                                <input name="Sira" class="ca-input" type="number" min="0" value="0" />
+                            </div>
+                        </div>
+                        <button class="ca-btn ca-btn-primary mt-3" type="submit">
+                            <i class="fas fa-save"></i> @Localizer["Admin_SaveAccount"]
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="ca-card">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title"><i class="fas fa-university me-2"></i>@Localizer["Admin_RegisteredAccounts"] (@hesaplar.Count)</h3>
+                </div>
+                @if (!hesaplar.Any())
+                {
+                    <div class="ca-card-body text-center py-5">
+                        <i class="fas fa-university fa-3x mb-3" style="color:var(--ca-muted);"></i>
+                        <p class="text-muted">@Localizer["Admin_NoBankAccountsYet"]</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="ca-table-wrapper">
+                        <table class="ca-table">
+                            <thead>
+                                <tr>
+                                    <th class="ps-4">@Localizer["Admin_BankOrAccountOwner"]</th>
+                                    <th>IBAN</th>
+                                    <th>@Localizer["Admin_Durum"]</th>
+                                    <th class="text-end pe-4">@Localizer["Admin_Islem"]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var hesap in hesaplar)
+                                {
+                                    <tr>
+                                        <td class="ps-4">
+                                            <div>
+                                                <div class="ca-fw-bold">@hesap.BankaAdi</div>
+                                                <div class="small text-muted">@hesap.HesapSahibi</div>
+                                                @if (!string.IsNullOrWhiteSpace(hesap.SubeKodu) || !string.IsNullOrWhiteSpace(hesap.HesapNo))
+                                                {
+                                                    <div class="small text-muted">
+                                                        @if (!string.IsNullOrWhiteSpace(hesap.SubeKodu)) { <span>@Localizer["Admin_Branch"]: @hesap.SubeKodu</span> }
+                                                        @if (!string.IsNullOrWhiteSpace(hesap.HesapNo)) { <span class="ms-2">@Localizer["Admin_No"]: @hesap.HesapNo</span> }
+                                                    </div>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <code class="small" style="letter-spacing:1px;color:var(--ca-dark);">@FormatIban(hesap.IBAN)</code>
+                                        </td>
+                                        <td>
+                                            <span class="ca-badge @(hesap.AktifMi ? "ca-badge-success" : "ca-badge-neutral")">@(hesap.AktifMi ? Localizer["Admin_Aktif"].Value : Localizer["Admin_Pasif"].Value)</span>
+                                        </td>
+                                        <td class="text-end pe-4">
+                                            <div class="dropdown">
+                                                <button class="ca-btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false" title='@Localizer["Admin_Islemler"]'>
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end ca-dropdown-menu">
+                                                    <li>
+                                                        <button class="dropdown-item" type="button" data-bs-toggle="collapse" data-bs-target="#hesap-@hesap.Id">
+                                                            <i class="fas fa-pen me-2"></i> @Localizer["Admin_Duzenle"]
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <form method="post" action="/Admin/Bankalar/Sil/@hesap.Id" class="m-0" onsubmit='return confirm("@Localizer["Admin_DeleteBankAccountConfirm"]");'>
+                                                            @Html.AntiForgeryToken()
+                                                            <button class="dropdown-item text-danger" type="submit">
+                                                                <i class="fas fa-trash me-2"></i> @Localizer["Admin_Sil"]
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="collapse" id="hesap-@hesap.Id">
+                                        <td colspan="4" class="p-4" style="background:var(--ca-bg);">
+                                            <form method="post" action="/Admin/Bankalar/Kaydet">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="Id" value="@hesap.Id" />
+                                                <div class="row g-3">
+                                                    <div class="col-md-4"><label class="ca-label">@Localizer["Admin_Banka_Adi"]</label><input name="BankaAdi" value="@hesap.BankaAdi" class="ca-input" required /></div>
+                                                    <div class="col-md-4"><label class="ca-label">@Localizer["Admin_AccountOwner"]</label><input name="HesapSahibi" value="@hesap.HesapSahibi" class="ca-input" required /></div>
+                                                    <div class="col-md-4">
+                                                        <label class="ca-label">@Localizer["Admin_Durum"]</label>
+                                                        <select name="AktifMi" class="ca-select">
+                                                            <option value="true" selected="@hesap.AktifMi">@Localizer["Admin_Aktif"]</option>
+                                                            <option value="false" selected="@(!hesap.AktifMi)">@Localizer["Admin_Pasif"]</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-12"><label class="ca-label">IBAN</label><input name="IBAN" value="@hesap.IBAN" class="ca-input" required style="font-family:monospace;letter-spacing:1px;" /></div>
+                                                    <div class="col-md-3"><label class="ca-label">@Localizer["Admin_Sube_Kodu"]</label><input name="SubeKodu" value="@hesap.SubeKodu" class="ca-input" /></div>
+                                                    <div class="col-md-3"><label class="ca-label">@Localizer["Admin_AccountNo"]</label><input name="HesapNo" value="@hesap.HesapNo" class="ca-input" /></div>
+                                                    <div class="col-md-2"><label class="ca-label">@Localizer["Admin_Sira"]</label><input name="Sira" value="@hesap.Sira" class="ca-input" type="number" min="0" /></div>
+                                                    <div class="col-md-4 text-end d-flex align-items-end">
+                                                        <button class="ca-btn ca-btn-primary w-100" type="submit"><i class="fas fa-save"></i> @Localizer["Admin_Guncelle"]</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string FormatIban(string iban)
+    {
+        if (string.IsNullOrWhiteSpace(iban)) return "";
+        var clean = iban.Replace(" ", "");
+        var parts = new List<string>();
+        for (int i = 0; i < clean.Length; i += 4)
+            parts.Add(clean.Substring(i, Math.Min(4, clean.Length - i)));
+        return string.Join(" ", parts);
+    }
+}

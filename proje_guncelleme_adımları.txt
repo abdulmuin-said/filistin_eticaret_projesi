@@ -1,0 +1,141 @@
+Sen kıdemli bir .NET ve PostgreSQL yazılım mimarısın. Filistin'deki bir müşteri için geliştireceğimiz yeni e-ticaret projesi (**7ANRPS48.com**) üzerinde çalışacağız.
+
+### 📌 Proje Genel Bilgileri:
+- **Teknoloji Yığını:** ASP.NET Core 8.0 MVC, EF Core, PostgreSQL ve Docker.
+- **Proje Konumu:** `E:\Projeler\filistin_eticaret_projesi`
+- **Para Birimi:** `₪` (ILS - Yeni İsrail Şekeli)
+- **Dil Desteği:** Sitenin asıl dili Arapça (RTL) ve İngilizce (LTR) olacaktır. Ancak proje tamamen bitene kadar geliştirme/test kolaylığı için Türkçe (LTR) dil desteği de aktif tutulacaktır.
+- **Ödeme Yöntemleri:** Sadece Banka Havalesi (IBAN) ve Kapıda Ödeme (Online POS entegrasyonu bulunmuyor).
+
+### 🛠️ Yapılan Hazırlıklar (Mevcut Durum):
+1. Önceki "MeteorGaleri" (Canvasia) projemizin kaynak kodları temiz bir şekilde `E:\Projeler\filistin_eticaret_projesi` klasörüne kopyalandı. Ağır `.webp` ürün resimleri, `.git` geçmişi ve derleme dosyaları kopyalamadan hariç tutuldu.
+2. `appsettings.Development.json` ve `.env` dosyalarındaki veritabanı adı `filistindb` olarak güncellendi.
+3. `docker-compose.yml` içindeki konteyner adları (`filistinproje-db` / `filistinproje-web`), portlar (`5434:5432` / `8081:8080`) ve volume adları (`filistin_...`) çakışma olmaması için güncellendi.
+
+Şu anda proje klasörümüz hazır durumdadır. Senden ricam, aşağıdaki 100 adımlık Master Yol Haritası'nı takip ederek sıradaki adım olan **Faz 2 (Temiz Veritabanı ve Şema Yapılandırılması) / Adım 11**'den başlamandır.
+
+---
+
+### 📋 100 ADIMLIK DETAYLI MASTER YOL HARİTASI
+
+#### FAZ 1: Proje Kurulumu ve Klonlama (Tamamlandı)
+- [x] Adım 1 - 10: Kodların kopyalanması, ortam değişkenlerinin ve Docker Compose çakışma ayarlarının düzenlenmesi (Tamamlandı).
+
+#### FAZ 2: Temiz Veritabanı ve Şema Yapılandırması (Sıradaki Faz)
+- [ ] **Adım 11**: PostgreSQL üzerinde yerel ortamda `filistindb` adında boş bir veritabanı oluşturulması veya Docker DB'nin ayağa kaldırılması.
+- [ ] **Adım 12**: Entity Framework Core Migration'larının uygulanarak veritabanı tablolarının sıfırdan oluşturulması (`dotnet ef database update`).
+- [ ] **Adım 13**: Veritabanındaki eski ürünleri, kategorileri, yorumları, sepetleri, kuponları ve sipariş verilerini temizleyecek SQL temizleme betiğinin hazırlanması ve çalıştırılması.
+- [ ] **Adım 14**: `SiteSettings` veya `Ayarlar` tablosundaki varsayılan değerlerin güncellenmesi (E-posta ayarları, mağaza ismi `7ANRPS48` vb.).
+- [ ] **Adım 15**: Para birimi simgesi alanının veya veritabanındaki para birimi gösterimlerinin `₪` (ILS) olarak ayarlanması.
+- [ ] **Adım 16**: Ürün tablosuna (`Urunler`) toptan fiyat (`WholesalePrice`) alanı eklenmesi için yeni bir migration oluşturulması.
+- [ ] **Adım 17**: Ürün seçenekleri/varyasyonları tablosuna (`UrunSecenekleri`) stok miktarı (`StokAdet`) ve varyasyona özel fiyat artış/azalış miktarı sütunlarının eklenmesi.
+- [ ] **Adım 18**: Kullanıcı tablosuna (`Musteriler` veya `AspNetUsers`) `KimlikNo` (National ID), `DogumTarihi` (Birth Date) ve `KimlikFotografYolu` (Identity Image Path) alanlarının eklenmesi.
+- [ ] **Adım 19**: Siparişler tablosuna teslimat tipi (`TeslimatTipi`: Adrese Teslim / Mağazadan Teslim) ve `ReçeteDosyaYolu` alanlarının eklenmesi.
+- [ ] **Adım 20**: Migration'ların veritabanına uygulanarak şemanın güncellenmesi.
+
+#### FAZ 3: Çoklu Dil (Arapça-İngilizce-Türkçe) ve RTL Tasarım Altyapısı
+- [ ] **Adım 21**: ASP.NET Core Localization (`RequestLocalizationOptions`) servisinin Arapça (`ar`), İngilizce (`en`) ve Türkçe (`tr`) dillerini destekleyecek şekilde `Program.cs` üzerinde yapılandırılması (Varsayılan dil Arapça olacak).
+- [ ] **Adım 22**: Dil dosyalarının (.resx) oluşturulması (`SharedResource.ar.resx`, `SharedResource.en.resx` ve `SharedResource.tr.resx`).
+- [ ] **Adım 23**: Kullanıcının üst barda veya ayarlarda dil seçebileceği dil değiştirici (Language Switcher) bileşeninin eklenmesi.
+- [ ] **Adım 24**: Arapça seçildiğinde HTML etiketine `dir="rtl"` özniteliğini ekleyecek mantığın `_Layout.cshtml` şablonuna yazılması (Türkçe ve İngilizce için `dir="ltr"` olacak).
+- [ ] **Adım 25**: RTL uyumlu TailwindCSS/CSS kurallarının oluşturulması (ters yönlü kenar boşlukları ve hizalamalar).
+- [ ] **Adım 26**: Font ailesinin Arapça karakterlere uygun ve modern duran bir fontla (Cairo veya Tajawal) güncellenmesi.
+- [ ] **Adım 27**: Yönetim panelinin (Admin Panel) çoklu dil desteğinin hazırlanması.
+- [ ] **Adım 28**: Ürün ve Kategori açıklamalarının veritabanında çok dilli (Arapça/İngilizce/Türkçe) olarak saklanacağı yapının kurulması.
+- [ ] **Adım 29**: RTL modunda kaydırıcı (Slider) ve karusel bileşenlerinin yönlerinin düzeltilmesi.
+- [ ] **Adım 30**: Arayüzdeki tüm statik metinlerin dil kaynaklarından (`IStringLocalizer`) okunması.
+
+#### FAZ 4: Üyelik, Profil ve Toptancı Onay Mekanizması
+- [ ] **Adım 31**: Kayıt Ol (`Register`) sayfasının form alanlarıyla tasarlanması: İsim, Soyisim, Kimlik Numarası (National ID), Doğum Tarihi, Telefon, Adres.
+- [ ] **Adım 32**: Kayıt esnasında kimlik resmi yükleme alanının (`input type="file"`) eklenmesi.
+- [ ] **Adım 33**: Yüklenen kimlik resimlerinin sunucuda güvenli saklanması için dosya servisinin yazılması.
+- [ ] **Adım 34**: Kayıt formuna kimlik resmi yüklemenin zorunlu olduğuna dair arayüze uyarı mesajlarının eklenmesi.
+- [ ] **Adım 35**: Giriş yapma ekranının (Login) "Giriş Yapmak Zorunludur/İhtiyaridir" parametresine göre açıp kapatan ayar mekanizmasının kodlanması.
+- [ ] **Adım 36**: Müşteri profil sayfasına kimlik bilgilerini ve yüklenen kimlik görselini görüntüleme alanının eklenmesi.
+- [ ] **Adım 37**: Müşteri panelinde geçmiş sipariş takibi ve sipariş iptali sayfalarının oluşturulması.
+- [ ] **Adım 38 (Detaylı)**: Toptan Satış Müşterisi (`Wholesale`) rolünün tanımlanması. `AspNetRoles` tablosuna `Wholesale` rolünün eklenmesi. Kullanıcı kayıt tablosuna `WholesaleStatus` (Pending = 0, Approved = 1, Rejected = 2) adında bir enum alanı eklenerek admin panelinde bu başvuruları onaylayan bir onay mekanizmasının kodlanması.
+- [ ] **Adım 39**: Toptancı kayıt formu ve admin onay mekanizmasının hazırlanması (Admin onaylamadan toptancı fiyatları görünmeyecek).
+- [ ] **Adım 40**: Şifre sıfırlama ve hesap doğrulama e-postalarının Arapça, İngilizce ve Türkçe şablonlarıyla entegre edilmesi.
+
+#### FAZ 5: Ürün Varyasyonları ve Stok Takip Geliştirmeleri
+- [ ] **Adım 41**: Ürün detay sayfasında renk ve boyut seçim alanlarının dinamik varyasyon tablosuna göre yeniden tasarlanması.
+- [ ] **Adım 42**: Seçilen renk ve boyuta göre ürün fiyatını dinamik artıran JS kodunun yazılması.
+- [ ] **Adım 43**: Stok 5'in altına düştüğünde arayüzde "Son 5 Adet!" uyarısının çıkarılması.
+- [ ] **Adım 44**: Ürün yıldızlı puanlama ve yorum sisteminin detay sayfasına entegrasyonu.
+- [ ] **Adım 45**: Genel site/mağaza değerlendirme sistemi için ayrı bir sayfa tasarlanması.
+- [ ] **Adım 46**: Stoğu biten ürün varyasyonlarının (Örn: Siyah - XL) seçilmesinin engellenmesi (gray-out).
+- [ ] **Adım 47**: Ürün detayına hediye paketi veya özel not gibi "Ekstra Hizmet" seçeneği ve fiyatlandırmasının eklenmesi.
+- [ ] **Adım 48**: Ürün listeleme sayfasına "Akıllı Fiyat Aralığı Filtresi" (Slider) eklenmesi.
+- [ ] **Adım 49**: Kategori sayfasında marka, tür ve kategoriye göre gelişmiş tescilli filtre sisteminin kurulması.
+- [ ] **Adım 50**: Stokta biten ürünlerin siteden gizlenmek yerine "Tükendi" ibaresiyle gösterilmeye devam etmesi ve satın almanın kapatılması.
+
+#### FAZ 6: Gelişmiş Sepet ve Checkout Sistemi
+- [ ] **Adım 51**: Sepet sayfasının Arapça/RTL tasarımı ve sepeti tek tıkla boşaltma butonunun eklenmesi.
+- [ ] **Adım 52**: Sitede sürekli görünen "Yüzen Sepet" simgesinin entegrasyonu.
+- [ ] **Adım 53**: Ödeme sayfasında (Checkout) "Adrese Teslim" ve "Mağazadan Teslim" seçeneklerinin sunulması.
+- [ ] **Adım 54**: Bölge ve şehre göre dinamik kargo ücreti hesaplama motorunun yazılması.
+- [ ] **Adım 55**: Ücretsiz kargo barajı kontrolü ve limit aşım kampanya bildiriminin checkout'a eklenmesi.
+- [ ] **Adım 56**: Ödeme sayfasına WebRTC tabanlı "Kamera ile Kimlik Fotoğrafı Çek / Yükle" özelliğinin entegre edilmesi.
+- [ ] **Adım 57**: Ödeme sayfasına sipariş notu ekleme kutusunun yerleştirilmesi.
+- [ ] **Adım 58**: Sipariş onayından önce "Kullanım Şartları ve Gizlilik Sözleşmesi" onay kutusunun zorunlu yapılması.
+- [ ] **Adım 59 (Detaylı)**: Banka havalesi seçildiğinde gösterilecek IBAN bilgilerinin admin panelden yönetilebilir yapılması. Testler için veritabanına sahte IBAN bilgileri (Örn: Palestine Bank - PS99 0001 0203 0405 0607 0809, National Bank - PS88 0102 0304 0506 0708 0910) eklenmesi.
+- [ ] **Adım 60**: Kapıda ödemede ek bir kapıda ödeme hizmet bedelinin toplam tutara yansıtılması.
+
+#### FAZ 7: Kapıda Ödeme Limitleri, Reçete ve Filistin İlleri Entegrasyonu
+- [ ] **Adım 61**: 2000 ILS üzerindeki siparişlerde kapıda ödemenin kapatılarak sadece banka havalesine izin verilmesi.
+- [ ] **Adım 62**: İlaç/Medikal kategorisindeki ürünler sepetteyken reçete (roşeta) yükleme alanının zorunlu kılınması.
+- [ ] **Adım 63**: Çok pahalı veya özel sipariş ürünler için doğrudan "WhatsApp ile Sipariş Ver" (Fiyatı gizli) butonu konması.
+- [ ] **Adım 64**: Reçete yükleme formundaki validasyonların ve uyarı mesajlarının kodlanması.
+- [ ] **Adım 65**: Sipariş tamamlandığında admin ve müşteriye Arapça/İngilizce onay/bilgilendirme maillerinin gitmesi.
+- [ ] **Adım 66**: Toptancı girişi yapıldıktan sonra tüm sitedeki fiyatların `WholesalePrice` olarak güncellenmesi.
+- [ ] **Adım 67**: Toptancılar için minimum sipariş tutarı (Minimum Order Limit) kısıtlamasının checkoutta kontrolü.
+- [ ] **Adım 68**: Toptancılara özel ürün grupları veya toplu alım iskonto tablolarının hazırlanması.
+- [ ] **Adım 69**: Admin panelinde toptancı üyelik başvurularının onay/red arayüzünün oluşturulması.
+- [ ] **Adım 70 (Detaylı)**: Filistin illerini (`KargoBölgeleri` tablosu) sisteme ekleyin. Veritabanına varsayılan tohumlama (seed) verisi olarak Filistin'in ana illerini (Gazze, Ramallah, Nablus, El Halil/Hebron, Beytüşşebih/Bethlehem, Cenin, Eriha, Tulkerim, Kalkilya, Kudüs/Jerusalem) eklenmesi. Admin panelinden bu illere göre kargo fiyatlarının tanımlanabilmesini sağlayın.
+
+#### FAZ 8: Pazarlama ve Dönüşüm Artırıcı Eklentiler
+- [ ] **Adım 71**: İlk kez siteye girenlere indirim/kargo kuponu veren "Çarkıfelek" (Spin the Wheel) eklentisi.
+- [ ] **Adım 72**: İndirimli ürünler için geri sayım sayacı (Countdown Timer) bileşeni.
+- [ ] **Adım 73**: Ürün detay sayfasının altına "İlgili Ürünler" öneri bandının eklenmesi.
+- [ ] **Adım 74**: Sağ alt köşeye yüzen WhatsApp hızlı destek butonu.
+- [ ] **Adım 75**: Canlı arama (Live/Instant Search) altyapısının kurulması (Yazarken görselle anlık öneriler).
+- [ ] **Adım 76**: Ürün kartlarına "Favorilere Ekle" (Wishlist - Kalp simgesi) eklenmesi.
+- [ ] **Adım 77**: Profil sayfasında müşterinin favori ürünlerini listeleyebileceği alanın yapılması.
+- [ ] **Adım 78**: En üst kısma admin panelinden düzenlenebilir kayan haber bandı (Marquee News Ticker) konması.
+- [ ] **Adım 79**: Ürün fiyatının üstünü çizip indirim oranını belirten etiketlerin dinamikleştirilmesi.
+- [ ] **Adım 80**: Firebase Web Push Bildirimleri (Kampanyalar için anlık bildirim) altyapısının kurulması.
+
+#### FAZ 9: Admin Panel Geliştirmeleri, Raporlama ve Test Verileri
+- [ ] **Adım 81**: Admin dashboardunda ciro, en çok satan ürünler ve en çok sipariş gelen bölgelerin istatistikleri.
+- [ ] **Adım 82**: Kupon yönetim arayüzü (Kod, limit, yüzde/tutar ve son tarih ayarları).
+- [ ] **Adım 83**: Personel yetkilendirme sayfası (Sipariş yöneticisi, kargo yöneticisi yetki sınırları).
+- [ ] **Adım 84**: Sipariş iptal politikası (Müşteri siparişi geçtikten kaç saat sonraya kadar iptal edebilir ayarı).
+- [ ] **Adım 85**: Ürün stoğu tükendiğinde admin e-posta uyarı mekanizmasının kurulması.
+- [ ] **Adım 86**: Siparişler listesinde faturaların tek tıkla PDF olarak dışa aktarılması (Export PDF Invoice).
+- [ ] **Adım 87**: Admin panelinden "Ürünü Gizle" (Satıştan geçici çekme) özelliğinin kodlanması.
+- [ ] **Adım 88**: Şehir ve bölge bazlı kargo fiyat listesi tanımlama arayüzü.
+- [ ] **Adım 89**: Reçeteli (roşetalı) siparişlerin reçete resimlerini admin panelden inceleme arayüzü.
+- [ ] **Adım 90 (Detaylı)**: Sitedeki tüm eski ürünleri sildikten sonra, testleri gerçekleştirebilmek amacıyla veritabanına 3-4 adet sahte test ürünü eklenmesi (Örn: Reçete gerektiren "Test İlaç A", toptancılara özel fiyatı olan "Toptan Test Ürünü B", 2000 ILS üzeri olan "Lüks Saat C" vb.) ve bunlara ait örnek resimleri test edin.
+
+#### FAZ 10: Canlıya Alma, Test ve Optimizasyon
+- [ ] **Adım 91**: Logo, Favicon ve marka ismi güncellemelerinin tüm sistemde tamamlanması.
+- [ ] **Adım 92**: Kayıt, Sepet, Ödeme ve Reçete yükleme formlarının güvenlik testleri.
+- [ ] **Adım 93**: Arayüzün mobil uyumluluğunu (Responsive) test edilmesi ve optimizasyonlar.
+- [ ] **Adım 94**: robots.txt, sitemap.xml ve SEO meta etiketlerinin ayarlanması.
+- [ ] **Adım 95**: Projenin sunucuya (Docker / VPS) deploy edilmesi.
+- [ ] **Adım 96**: Dil geçişlerinin (Arapça, İngilizce, Türkçe) ve RTL düzeninin sunucu ortamında test edilmesi.
+- [ ] **Adım 97**: Toptancı akışı ve cari hesap testlerinin canlıda yapılması.
+- [ ] **Adım 98**: Reçete yükleme ve yüksek fiyatlı COD kapıda ödeme kısıtlamalarının test edilmesi.
+- [ ] **Adım 99**: Cloudflare önbellek ve CDN ayarlarının sunucuda yapılması.
+- [ ] **Adım 100**: Tüm sistemin uçtan uca test edilip müşteriye teslim edilmesi.
+
+Lütfen `E:\Projeler\filistin_eticaret_projesi` dizinine geçiş yap, kod yapısını ve veritabanı bağlantı ayarlarını kontrol et ve **Faz 2 / Adım 11**'den başlayarak süreci yönetmeye başla. Adım adım gidelim, her adımdan sonra kodları yazıp test edelim. adım adım gidelim 1 adım bittikten sonra diğerine geçmeden önce haber ver ben devam dedidkten sonra devam ederiz . 
+
+
+
+
+
+
+
+
+kargo firması müşteri tarafından seçilmeyecek . müşteri sadece adresi ve ili seçecek ve daha soınra ise de kargoyu belirleyecek ve her bmlge için ayrı kargo fiyatı olacak ve o fiyatta sipairşe eklenecek ve müşterinin sişğarişin toplam fiytatı bu olacaktır . 

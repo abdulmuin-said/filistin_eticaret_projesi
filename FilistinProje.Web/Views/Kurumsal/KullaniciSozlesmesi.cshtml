@@ -1,0 +1,45 @@
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["UserAgreement"];
+    ViewData["MetaDescription"] = "7ANRPS48 kullanıcı sözleşmesi. Site kullanım koşulları ve üyelik sözleşmesi hakkında detaylı bilgi.";
+    ViewData["SeoTitle"] = Localizer["UserAgreement"] + " - 7ANRPS48";
+}
+
+<div class="bg-[#f1ede7] border-b border-[#e5e2dc] py-3">
+    <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-[#47473d]">
+        <a href="/" class="hover:text-[#313511] transition-colors">@Localizer["HomePage"]</a>
+        <span>/</span>
+        <span class="text-[#1c1c18] font-medium">@Localizer["UserAgreement"]</span>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-16 max-w-4xl">
+    <div class="text-center mb-12">
+        <h1 class="font-serif text-3xl md:text-5xl text-[#313511] mb-4">@Localizer["UserAgreement"]</h1>
+        <div class="w-16 h-1 bg-[#b58735] mx-auto"></div>
+    </div>
+
+    <div class="bg-white border border-[#e5e2dc] rounded-lg p-8 md:p-12 shadow-sm prose prose-sm md:prose-base max-w-none prose-headings:font-serif prose-headings:text-[#313511] prose-a:text-[#b58735] prose-strong:text-[#1c1c18]">
+
+        <h2>1. @Localizer["SectionParties"]</h2>
+        <p>@Localizer["UserAgreementParties"]</p>
+
+        <h2>2. @Localizer["SectionSubject"]</h2>
+        <p>@Localizer["UserAgreementSubject"]</p>
+
+        <h2>3. @Localizer["SectionTerms"]</h2>
+        <p>@Localizer["UserAgreementTerms"]</p>
+
+        <h2>4. @Localizer["SectionPrivacy"]</h2>
+        <p>@Localizer["UserAgreementPrivacy"]</p>
+
+        <h2>5. @Localizer["SectionPayment"]</h2>
+        <p>@Localizer["UserAgreementPayment"]</p>
+
+        <h2>6. @Localizer["SectionChanges"]</h2>
+        <p>@Localizer["UserAgreementChanges"]</p>
+
+        <h2>7. @Localizer["SectionContact"]</h2>
+        <p>@Localizer["UserAgreementContact"]</p>
+    </div>
+</div>

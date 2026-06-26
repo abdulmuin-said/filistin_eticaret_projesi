@@ -1,0 +1,228 @@
+@model IEnumerable<FilistinProje.Core.Varliklar.Favori>
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["MyFavorites"];
+    var siteSettings = SiteSettingsService.GetSettings();
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
+}
+
+<form id="favoriAntiForgeryForm" class="hidden">
+    @Html.AntiForgeryToken()
+</form>
+
+<!-- Breadcrumb -->
+<div class="bg-[#f1ede7] border-b border-[#e5e2dc] py-3">
+    <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-[#47473d]">
+        <a href="/" class="hover:text-[#313511] transition-colors">@Localizer["HomePage"]</a>
+        <span>/</span>
+        <a href="/Profil" class="hover:text-[#313511] transition-colors">@Localizer["MyAccount"]</a>
+        <span>/</span>
+        <span class="text-[#1c1c18] font-medium">@Localizer["MyFavorites"]</span>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-16 max-w-6xl">
+    <div class="text-center mb-12">
+        <h1 class="font-serif text-3xl md:text-5xl text-[#313511] mb-4">@Localizer["FavoriteCollection"]</h1>
+        <p class="text-sm text-[#47473d]">@Localizer["FavoriteDescription"]</p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-16 bg-white border border-[#e5e2dc] rounded-lg">
+            <i class="far fa-heart text-6xl text-[#e5e2dc] mb-4"></i>
+            <h4 class="font-serif text-2xl text-[#313511] mb-2">@Localizer["NoFavorites"]</h4>
+            <p class="text-sm text-[#47473d] mb-6">@Localizer["ExploreFavoriteCollection"]</p>
+            <a href="/Urun" class="inline-block bg-[#313511] text-white px-8 py-3 text-xs tracking-widest uppercase rounded hover:bg-[#1c2001] transition-colors">
+                @Localizer["ExploreCollection"]
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="favoriListesi">
+            @foreach (var favori in Model)
+            {
+                var urun = favori.Urun;
+                if (urun == null) continue;
+                var urlSlug = string.IsNullOrEmpty(urun.Slug) ? $"{FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(urun.Baslik)}-{urun.Id}" : $"{urun.Slug}-{urun.Id}";
+                var bildirimAktif = favori.FiyatDustugundaBildir;
+                <div class="favori-item group relative flex flex-col bg-white border border-[#e5e2dc] hover:border-[#b58735] transition-colors rounded-lg overflow-hidden">
+                    <div class="relative aspect-[4/5] bg-[#fcf9f3] overflow-hidden">
+                        <a href="/Urun/Detay/@urlSlug" class="block w-full h-full">
+                    <img src="@urun.AnaGorselUrl" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="@urun.Baslik" loading="lazy" decoding="async">
+                        </a>
+
+                        <button onclick="favoridenCikar(this, @urun.Id)" class="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full text-red-500 flex items-center justify-center hover:bg-white transition-colors shadow-sm" title="@Localizer["RemoveFromFavorites"]">
+                            <i class="fas fa-heart"></i>
+                        </button>
+
+                        @if (urun.IndirimVarMi)
+                        {
+                            <span class="absolute top-3 left-3 bg-[#b58735] text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm">
+                                %@urun.IndirimYuzdesi @Localizer["Discount"]
+                            </span>
+                        }
+                    </div>
+
+                    <div class="p-4 flex flex-col flex-1">
+                        <h6 class="font-semibold text-sm text-[#1c1c18] mb-1 line-clamp-1">
+                            <a href="/Urun/Detay/@urlSlug" class="hover:text-[#b58735] transition-colors">@urun.Baslik</a>
+                        </h6>
+                        <div class="mb-3">
+                            @if (urun.IndirimVarMi)
+                            {
+                                <span class="text-xs text-[#999] line-through mr-1">@urun.Fiyat.ToString("N2") @currencySymbol</span>
+                                <span class="text-sm font-bold text-[#b58735]">@urun.EtkinFiyat.ToString("N2") @currencySymbol</span>
+                            }
+                            else
+                            {
+                                <span class="text-sm text-[#47473d]">@urun.Fiyat.ToString("N2") @currencySymbol</span>
+                            }
+                        </div>
+
+                        <!-- Fiyat Düşüş Bildirimi Butonu -->
+                        <button type="button"
+                                class="mb-2 w-full flex items-center justify-center gap-2 py-2 text-xs rounded transition-all duration-300
+                                       @(bildirimAktif
+                                           ? "bg-emerald-50 border border-emerald-300 text-emerald-700 hover:bg-emerald-100"
+                                           : "bg-[#fcf9f3] border border-[#e5e2dc] text-[#47473d] hover:border-[#b58735] hover:text-[#b58735]")"
+                                onclick="togglePriceNotification(this, @urun.Id)"
+                                title="@(bildirimAktif ? Localizer["PriceDropNotificationOn"].Value : Localizer["NotifyPriceDropTitle"].Value)">
+                            <i class="fas @(bildirimAktif ? "fa-bell" : "fa-bell-slash") text-xs"></i>
+                            <span>@(bildirimAktif ? Localizer["NotificationOn"] : Localizer["NotifyPriceDrop"])</span>
+                        </button>
+
+                        <button type="button" class="mt-auto w-full border border-[#313511] text-[#313511] hover:bg-[#313511] hover:text-white py-2 text-xs tracking-widest uppercase rounded transition-colors" onclick="favoriSepeteEkle(this, @urun.Id)">
+                            @Localizer["AddToCart"]
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<script>
+    function getAntiForgeryToken() {
+        return document.querySelector('#favoriAntiForgeryForm input[name="__RequestVerificationToken"]').value;
+    }
+
+    function favoridenCikar(btn, id) {
+        if (!confirm('@Localizer["ConfirmRemoveFavorite"]')) return;
+
+        fetch('/Favori/Toggle?urunId=' + id, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': getAntiForgeryToken()
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                var kart = btn.closest('.favori-item');
+                kart.style.transition = 'all 0.4s ease';
+                kart.style.opacity = '0';
+                kart.style.transform = 'scale(0.9)';
+                setTimeout(function () {
+                    kart.remove();
+                    if (window.showToast) window.showToast('@Localizer["FavoriteRemoved"]', 'info');
+                    var kalanUrunler = document.querySelectorAll('.favori-item');
+                    if (kalanUrunler.length === 0) { location.reload(); }
+                }, 400);
+            } else {
+                if (window.showToast) window.showToast(data.message || '@Localizer["ProcessFailed"]', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('@Localizer["Error"]', error);
+            if (window.showToast) window.showToast('@Localizer["ConnectionError"]', 'error');
+        });
+    }
+
+    function togglePriceNotification(btn, urunId) {
+        var originalHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> <span>@Localizer["Processing"]</span>';
+        btn.disabled = true;
+
+        fetch('/Favori/TogglePriceNotification?urunId=' + urunId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': getAntiForgeryToken()
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (data.isEnabled) {
+                    btn.className = 'mb-2 w-full flex items-center justify-center gap-2 py-2 text-xs rounded transition-all duration-300 bg-emerald-50 border border-emerald-300 text-emerald-700 hover:bg-emerald-100';
+                    btn.innerHTML = '<i class="fas fa-bell text-xs"></i> <span>@Localizer["NotificationOn"]</span>';
+                } else {
+                    btn.className = 'mb-2 w-full flex items-center justify-center gap-2 py-2 text-xs rounded transition-all duration-300 bg-[#fcf9f3] border border-[#e5e2dc] text-[#47473d] hover:border-[#b58735] hover:text-[#b58735]';
+                    btn.innerHTML = '<i class="fas fa-bell-slash text-xs"></i> <span>@Localizer["NotifyPriceDrop"]</span>';
+                }
+                if (window.showToast) window.showToast(data.message, 'success');
+            } else {
+                btn.innerHTML = originalHtml;
+                if (window.showToast) window.showToast(data.message || '@Localizer["ProcessFailed"]', 'error');
+            }
+            btn.disabled = false;
+        })
+        .catch(err => {
+            console.error(err);
+            btn.innerHTML = originalHtml;
+            btn.disabled = false;
+            if (window.showToast) window.showToast('@Localizer["ConnectionError"]', 'error');
+        });
+    }
+
+    function favoriSepeteEkle(btn, urunId) {
+        var originalHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        btn.disabled = true;
+
+        fetch('/Sepet/Ekle?UrunId=' + urunId + '&Adet=1', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': getAntiForgeryToken()
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                btn.innerHTML = '<i class="fas fa-check"></i>';
+                btn.classList.add('bg-[#313511]', 'text-white');
+
+                if (window.showToast) window.showToast('@Localizer["ProductAddedToCart"]', 'success');
+
+                var cartBadge = document.getElementById('cartItemCount');
+                if (cartBadge) {
+                    var count = parseInt(cartBadge.textContent) || 0;
+                    cartBadge.textContent = count + 1;
+                    cartBadge.classList.add('scale-150');
+                    setTimeout(() => cartBadge.classList.remove('scale-150'), 300);
+                }
+
+                setTimeout(function () {
+                    btn.innerHTML = originalHtml;
+                    btn.classList.remove('bg-[#313511]', 'text-white');
+                    btn.disabled = false;
+                }, 2000);
+            } else {
+                if (window.showToast) window.showToast(data.message || '@Localizer["ErrorOccurred"]', 'error');
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            if (window.showToast) window.showToast('@Localizer["ConnectionError"]', 'error');
+            btn.innerHTML = originalHtml;
+            btn.disabled = false;
+        });
+    }
+</script>

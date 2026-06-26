@@ -1,0 +1,236 @@
+- generic [ref=e2]:
+  - text:          +               
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "7ANRPS48 Admin Panel" [ref=e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=e6]
+      - generic [ref=e7]: Seller Panel
+    - navigation "Admin main menu" [ref=e8]:
+      - link " Dashboard" [ref=e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=e10]: 
+        - text: Dashboard
+      - generic [ref=e11]:
+        - button " Order Management" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]: 
+          - text: Order Management
+        - text:      
+      - generic [ref=e14]:
+        - button " Product Management" [ref=e15] [cursor=pointer]:
+          - generic [ref=e16]: 
+          - text: Product Management
+        - text:  +    
+      - generic [ref=e17]:
+        - button " Store Content" [ref=e18] [cursor=pointer]:
+          - generic [ref=e19]: 
+          - text: Store Content
+        - text:         
+      - link " Members" [ref=e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=e21]: 
+        - text: Members
+      - link " Wholesalers" [ref=e22] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=e23]: 
+        - text: Wholesalers
+      - link " Wholesale Groups" [ref=e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=e25]: 
+        - text: Wholesale Groups
+      - generic [ref=e26]:
+        - button " Reports" [ref=e27] [cursor=pointer]:
+          - generic [ref=e28]: 
+          - text: Reports
+        - text:  
+      - link " Bank Accounts" [ref=e29] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=e30]: 
+        - text: Bank Accounts
+      - link " Settings" [ref=e31] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=e32]: 
+        - text: Settings
+    - generic [ref=e33]:
+      - text: 
+      - combobox "Language" [ref=e35]:
+        - option "AR"
+        - option "EN" [selected]
+        - option "TR"
+      - generic [ref=e36]:
+        - button "7ANRPS48 Admin Admin 7" [ref=e37] [cursor=pointer]:
+          - generic [ref=e38]:
+            - strong [ref=e39]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=e40]: "7"
+        - text:  
+  - generic [ref=e41]:
+    - main [ref=e42]:
+      - generic [ref=e43]:
+        - generic [ref=e44]:
+          - generic [ref=e45]:
+            - heading "Wheel Prizes" [level=1] [ref=e46]
+            - paragraph [ref=e47]: Manage spin-the-wheel prizes. Sort, language, color and type settings.
+          - link "+ New Prize" [ref=e48] [cursor=pointer]:
+            - /url: /Admin/CarkOdul/Ekle
+            - generic [ref=e49]: +
+            - text: New Prize
+        - table [ref=e52]:
+          - rowgroup [ref=e53]:
+            - row "# Color Türkçe English العربية Type Value Order Active Actions" [ref=e54]:
+              - columnheader "#" [ref=e55]
+              - columnheader "Color" [ref=e56]
+              - columnheader "Türkçe" [ref=e57]
+              - columnheader "English" [ref=e58]
+              - columnheader "العربية" [ref=e59]
+              - columnheader "Type" [ref=e60]
+              - columnheader "Value" [ref=e61]
+              - columnheader "Order" [ref=e62]
+              - columnheader "Active" [ref=e63]
+              - columnheader "Actions" [ref=e64]
+          - rowgroup [ref=e65]:
+            - row "1 %5 İndirim 5% Off خصم 5% Discount %5 1   " [ref=e66]:
+              - cell "1" [ref=e67]
+              - cell [ref=e68]
+              - cell "%5 İndirim" [ref=e70]
+              - cell "5% Off" [ref=e71]
+              - cell "خصم 5%" [ref=e72]
+              - cell "Discount" [ref=e73]:
+                - generic [ref=e74]: Discount
+              - cell "%5" [ref=e75]
+              - cell "1" [ref=e76]
+              - cell "" [ref=e77]:
+                - generic [ref=e79]: 
+              - cell " " [ref=e80]:
+                - link "" [ref=e81] [cursor=pointer]:
+                  - /url: /Admin/CarkOdul/Duzenle/1
+                  - generic [ref=e82]: 
+                - button "" [ref=e84] [cursor=pointer]:
+                  - generic [ref=e85]: 
+            - row "2 %10 İndirim 10% Off خصم 10% Discount %10 2   " [ref=e86]:
+              - cell "2" [ref=e87]
+              - cell [ref=e88]
+              - cell "%10 İndirim" [ref=e90]
+              - cell "10% Off" [ref=e91]
+              - cell "خصم 10%" [ref=e92]
+              - cell "Discount" [ref=e93]:
+                - generic [ref=e94]: Discount
+              - cell "%10" [ref=e95]
+              - cell "2" [ref=e96]
+              - cell "" [ref=e97]:
+                - generic [ref=e99]: 
+              - cell " " [ref=e100]:
+                - link "" [ref=e101] [cursor=pointer]:
+                  - /url: /Admin/CarkOdul/Duzenle/2
+                  - generic [ref=e102]: 
+                - button "" [ref=e104] [cursor=pointer]:
+                  - generic [ref=e105]: 
+            - row "3 %15 İndirim 15% Off خصم 15% Discount %15 3   " [ref=e106]:
+              - cell "3" [ref=e107]
+              - cell [ref=e108]
+              - cell "%15 İndirim" [ref=e110]
+              - cell "15% Off" [ref=e111]
+              - cell "خصم 15%" [ref=e112]
+              - cell "Discount" [ref=e113]:
+                - generic [ref=e114]: Discount
+              - cell "%15" [ref=e115]
+              - cell "3" [ref=e116]
+              - cell "" [ref=e117]:
+                - generic [ref=e119]: 
+              - cell " " [ref=e120]:
+                - link "" [ref=e121] [cursor=pointer]:
+                  - /url: /Admin/CarkOdul/Duzenle/3
+                  - generic [ref=e122]: 
+                - button "" [ref=e124] [cursor=pointer]:
+                  - generic [ref=e125]: 
+            - row "4 %20 İndirim 20% Off خصم 20% Discount %20 4   " [ref=e126]:
+              - cell "4" [ref=e127]
+              - cell [ref=e128]
+              - cell "%20 İndirim" [ref=e130]
+              - cell "20% Off" [ref=e131]
+              - cell "خصم 20%" [ref=e132]
+              - cell "Discount" [ref=e133]:
+                - generic [ref=e134]: Discount
+              - cell "%20" [ref=e135]
+              - cell "4" [ref=e136]
+              - cell "" [ref=e137]:
+                - generic [ref=e139]: 
+              - cell " " [ref=e140]:
+                - link "" [ref=e141] [cursor=pointer]:
+                  - /url: /Admin/CarkOdul/Duzenle/4
+                  - generic [ref=e142]: 
+                - button "" [ref=e144] [cursor=pointer]:
+                  - generic [ref=e145]: 
+            - row "5 %25 İndirim 25% Off خصم 25% Discount %25 5   " [ref=e146]:
+              - cell "5" [ref=e147]
+              - cell [ref=e148]
+              - cell "%25 İndirim" [ref=e150]
+              - cell "25% Off" [ref=e151]
+              - cell "خصم 25%" [ref=e152]
+              - cell "Discount" [ref=e153]:
+                - generic [ref=e154]: Discount
+              - cell "%25" [ref=e155]
+              - cell "5" [ref=e156]
+              - cell "" [ref=e157]:
+                - generic [ref=e159]: 
+              - cell " " [ref=e160]:
+                - link "" [ref=e161] [cursor=pointer]:
+                  - /url: /Admin/CarkOdul/Duzenle/5
+                  - generic [ref=e162]: 
+                - button "" [ref=e164] [cursor=pointer]:
+                  - generic [ref=e165]: 
+            - row "6 Ücretsiz Kargo Free Shipping شحن مجاني Shipping - 6   " [ref=e166]:
+              - cell "6" [ref=e167]
+              - cell [ref=e168]
+              - cell "Ücretsiz Kargo" [ref=e170]
+              - cell "Free Shipping" [ref=e171]
+              - cell "شحن مجاني" [ref=e172]
+              - cell "Shipping" [ref=e173]:
+                - generic [ref=e174]: Shipping
+              - cell "-" [ref=e175]
+              - cell "6" [ref=e176]
+              - cell "" [ref=e177]:
+                - generic [ref=e179]: 
+              - cell " " [ref=e180]:
+                - link "" [ref=e181] [cursor=pointer]:
+                  - /url: /Admin/CarkOdul/Duzenle/6
+                  - generic [ref=e182]: 
+                - button "" [ref=e184] [cursor=pointer]:
+                  - generic [ref=e185]: 
+            - row "7 Tekrar Dene Try Again حاول مرة أخرى Other - 7   " [ref=e186]:
+              - cell "7" [ref=e187]
+              - cell [ref=e188]
+              - cell "Tekrar Dene" [ref=e190]
+              - cell "Try Again" [ref=e191]
+              - cell "حاول مرة أخرى" [ref=e192]
+              - cell "Other" [ref=e193]:
+                - generic [ref=e194]: Other
+              - cell "-" [ref=e195]
+              - cell "7" [ref=e196]
+              - cell "" [ref=e197]:
+                - generic [ref=e199]: 
+              - cell " " [ref=e200]:
+                - link "" [ref=e201] [cursor=pointer]:
+                  - /url: /Admin/CarkOdul/Duzenle/7
+                  - generic [ref=e202]: 
+                - button "" [ref=e204] [cursor=pointer]:
+                  - generic [ref=e205]: 
+            - row "8 %10 İndirim 10% Off خصم 10% Discount %10 8   " [ref=e206]:
+              - cell "8" [ref=e207]
+              - cell [ref=e208]
+              - cell "%10 İndirim" [ref=e210]
+              - cell "10% Off" [ref=e211]
+              - cell "خصم 10%" [ref=e212]
+              - cell "Discount" [ref=e213]:
+                - generic [ref=e214]: Discount
+              - cell "%10" [ref=e215]
+              - cell "8" [ref=e216]
+              - cell "" [ref=e217]:
+                - generic [ref=e219]: 
+              - cell " " [ref=e220]:
+                - link "" [ref=e221] [cursor=pointer]:
+                  - /url: /Admin/CarkOdul/Duzenle/8
+                  - generic [ref=e222]: 
+                - button "" [ref=e224] [cursor=pointer]:
+                  - generic [ref=e225]: 
+    - contentinfo [ref=e226]: © 2026 7ANRPS48 Admin Panel. All rights reserved.

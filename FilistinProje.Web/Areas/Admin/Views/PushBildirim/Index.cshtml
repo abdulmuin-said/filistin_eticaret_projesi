@@ -1,0 +1,108 @@
+@model IEnumerable<FilistinProje.Core.Varliklar.PushAbonelik>
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["Admin_PushNotifications"];
+    var aboneSayisi = (int)(ViewBag.AboneSayisi ?? 0);
+    var firebaseHazir = (bool)(ViewBag.FirebaseAyarlariTam ?? false);
+}
+
+<div class="ca-page-header">
+    <h1 class="ca-page-title"><i class="fas fa-bell me-2"></i>@Localizer["Admin_PushNotifications"]</h1>
+    <div class="ca-header-actions">
+        <a asp-action="Gonder" class="ca-btn ca-btn-primary">
+            <i class="fas fa-paper-plane me-1"></i> @Localizer["Admin_SendPush"]
+        </a>
+    </div>
+</div>
+
+@if (!firebaseHazir)
+{
+    <div class="alert alert-warning d-flex align-items-center gap-3 mb-4">
+        <i class="fas fa-exclamation-triangle fa-lg"></i>
+        <div>
+            <strong>@Localizer["Admin_FirebaseNotConfigured"]</strong><br>
+            <small>@Localizer["Admin_FirebaseNotConfiguredHint"]</small>
+        </div>
+    </div>
+}
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="ca-card ca-card-hover p-4">
+            <div class="d-flex align-items-center gap-3">
+                <div class="ca-stat-icon" style="background:#3135111a;color:#313511">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div>
+                    <div class="ca-stat-label">@Localizer["Admin_ActiveSubscribers"]</div>
+                    <div class="ca-stat-value">@aboneSayisi</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="ca-card ca-card-hover p-4">
+            <div class="d-flex align-items-center gap-3">
+                <div class="ca-stat-icon" style="background:#b587351a;color:#b58735">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div>
+                    <div class="ca-stat-label">@Localizer["Admin_FirebaseStatus"]</div>
+                    <div class="ca-stat-value" style="color:@(firebaseHazir ? "#16a34a" : "#dc2626")">
+                        @(firebaseHazir ? Localizer["Admin_Active"] : Localizer["Admin_Passive"])
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ca-card">
+    <div class="ca-card-header">
+        <i class="fas fa-list me-2"></i> @Localizer["Admin_Subscribers"]
+        <span class="ca-badge ca-badge-primary ms-2">@Model.Count()</span>
+    </div>
+    <div class="ca-table-responsive">
+        <table class="ca-table">
+            <thead>
+                <tr>
+                    <th>@Localizer["Admin_User"]</th>
+                    <th>@Localizer["Admin_Token"]</th>
+                    <th>@Localizer["Admin_Browser"]</th>
+                    <th>@Localizer["Admin_Platform"]</th>
+                    <th>@Localizer["Admin_LastSeen"]</th>
+                    <th>@Localizer["Admin_Date"]</th>
+                    <th>@Localizer["Admin_Status"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="7" class="text-center py-4 text-muted">
+                            <i class="fas fa-inbox fa-2x d-block mb-2"></i>
+                            @Localizer["Admin_NoSubscribers"]
+                        </td>
+                    </tr>
+                }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@(item.AppUser?.AdSoyad ?? "-")</td>
+                        <td><code class="small">@item.Token[..Math.Min(item.Token.Length, 30)]...</code></td>
+                        <td>@item.Tarayici</td>
+                        <td>@item.Platform</td>
+                        <td>@(item.SonGorulmeTarihi?.ToString("g") ?? "-")</td>
+                        <td>@item.OlusturulmaTarihi.ToString("g")</td>
+                        <td>
+                            <span class="ca-badge ca-badge-@(item.AktifMi ? "success" : "secondary")">
+                                @(item.AktifMi ? Localizer["Admin_Active"] : Localizer["Admin_Passive"])
+                            </span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

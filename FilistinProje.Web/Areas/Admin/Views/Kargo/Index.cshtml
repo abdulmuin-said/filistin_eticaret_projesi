@@ -1,0 +1,605 @@
+@using FilistinProje.Core.Varliklar
+@model IEnumerable<KargoFirmasi>
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_Kargo_Yonetimi"];
+    var firmalar = Model.ToList();
+}
+
+<div class="container-fluid ca-fade-in">
+    <div class="ca-page-header">
+        <div>
+            <h1 class="ca-page-title">@Localizer["Admin_Kargo_Yonetimi"]</h1>
+            <p class="ca-page-subtitle">@Localizer["Admin_ShippingPageDesc"]</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <div class="ca-card">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title"><i class="fas fa-plus me-2"></i>@Localizer["Admin_Yeni_Kargo_Firmasi"]</h3>
+                </div>
+                <div class="ca-card-body">
+                    <form method="post" action="/Admin/Kargo/Kaydet">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" value="0" />
+                        <input type="hidden" name="AktifMi" value="True" />
+                        <div class="row g-3">
+                            <div class="col-md-7">
+                                <label class="ca-label">@Localizer["Admin_Firma_Adi"]</label>
+                                <input name="Ad" class="ca-input" placeholder="Palestine Post" required />
+                            </div>
+                            <div class="col-md-5">
+                                <label class="ca-label">Kod</label>
+                                <input name="Kod" class="ca-input" placeholder="aras" />
+                            </div>
+                            <div class="col-12">
+                                <label class="ca-label">Logo URL</label>
+                                <input name="LogoUrl" class="ca-input" placeholder="/img/kargo/aras-kargo.svg" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="ca-label">@Localizer["Admin_Telefon"]</label>
+                                <input name="Telefon" class="ca-input" placeholder="444 25 52" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="ca-label">@Localizer["Admin_ShippingFee"] (₪)</label>
+                                <input name="Fiyat" class="ca-input" type="number" step="0.01" min="0" value="0.00" required />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="ca-label">@Localizer["Admin_Varsayilan"]</label>
+                                <select name="VarsayilanMi" class="ca-select">
+                                    <option value="false">@Localizer["Admin_Hayir"]</option>
+                                    <option value="true">@Localizer["Admin_Evet"]</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="ca-label">Takip URL</label>
+                                <input name="TakipUrl" class="ca-input" placeholder="https://..." />
+                            </div>
+                            <div class="col-12">
+                                <label class="ca-label">@Localizer["Admin_Gonderici_Unvani"]</label>
+                                <input name="GondericiUnvan" class="ca-input" value="7ANRPS48" />
+                            </div>
+                            <div class="col-12">
+                                <label class="ca-label">@Localizer["Admin_Gonderici_Adresi"]</label>
+                                <textarea name="GondericiAdres" class="ca-textarea" rows="2" placeholder="@Localizer["Admin_SenderAddressPlaceholder"]"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="ca-label">@Localizer["Admin_Gonderici_Telefonu"]</label>
+                                <input name="GondericiTelefon" class="ca-input" placeholder="0850 123 45 67" />
+                            </div>
+                        </div>
+                        <button class="ca-btn ca-btn-primary mt-3" type="submit">
+                            <i class="fas fa-save"></i> @Localizer["Admin_Firmayi_Kaydet"]
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="ca-card">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title"><i class="fas fa-truck-fast me-2"></i>@Localizer["Admin_Kargo_Firmalari"]</h3>
+                </div>
+                <div class="ca-table-wrapper">
+                    <table class="ca-table">
+                        <thead>
+                            <tr>
+                                <th class="ps-4">Firma</th>
+                                <th>Takip</th>
+                                <th>@Localizer["Admin_Kargo_Ucreti"]</th>
+                                <th>@Localizer["Admin_Durum"]</th>
+                                <th class="text-end pe-4">@Localizer["Admin_Islem"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var firma in firmalar)
+                            {
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center gap-3">
+                                            @if (!string.IsNullOrWhiteSpace(firma.LogoUrl))
+                                            {
+                                                <img src="@firma.LogoUrl" alt="@firma.Ad" width="54" height="28" loading="lazy" decoding="async" style="object-fit:contain;">
+                                            }
+                                            <div>
+                                                <div class="ca-fw-bold">@firma.Ad</div>
+                                                <div class="small text-muted">@firma.Kod</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="small">@firma.Telefon</div>
+                                        <div class="small text-muted text-truncate" style="max-width:240px;">@firma.TakipUrl</div>
+                                    </td>
+                                    <td class="ca-fw-bold">
+                                        @firma.Fiyat.ToString("N2") ₪
+                                    </td>
+                                    <td>
+                                        <span class="ca-badge @(firma.AktifMi ? "ca-badge-success" : "ca-badge-neutral")">@(firma.AktifMi ? Localizer["Admin_Active"].Value : Localizer["Admin_Passive"].Value)</span>
+                                        @if (firma.VarsayilanMi)
+                                        {
+                                            <span class="ca-badge ca-badge-warning ms-1">@Localizer["Admin_Varsayilan"]</span>
+                                        }
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <div class="dropdown">
+                                             <button class="ca-btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="@Localizer["Admin_Actions"]">
+
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end ca-dropdown-menu">
+                                                <li>
+                                                    <form method="post" action="/Admin/Kargo/VarsayilanYap/@firma.Id" class="m-0">
+                                                        @Html.AntiForgeryToken()
+                                                        <button class="dropdown-item" type="submit">
+                                                            <i class="fas fa-star me-2"></i> @Localizer["Admin_MakeDefault"]
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                                <li>
+                                                    <button class="dropdown-item" type="button" data-bs-toggle="collapse" data-bs-target="#firma-@firma.Id">
+                                                        <i class="fas fa-pen me-2"></i> @Localizer["Admin_Duzenle"]
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="collapse" id="firma-@firma.Id">
+                                    <td colspan="5" class="p-4" style="background:var(--ca-bg);">
+                                        <form method="post" action="/Admin/Kargo/Kaydet">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="Id" value="@firma.Id" />
+                                            <div class="row g-3">
+                                                <div class="col-md-3"><input name="Ad" value="@firma.Ad" class="ca-input" placeholder="@Localizer["Admin_Firma_Adi"]" /></div>
+                                                <div class="col-md-2"><input name="Kod" value="@firma.Kod" class="ca-input" placeholder="Kod" /></div>
+                                                <div class="col-md-2"><input name="Telefon" value="@firma.Telefon" class="ca-input" placeholder="@Localizer["Admin_Telefon"]" /></div>
+                                                <div class="col-md-2"><input name="Fiyat" value="@firma.Fiyat.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)" class="ca-input" type="number" step="0.01" min="0" placeholder="@Localizer["Admin_Kargo_Ucreti"]" required /></div>
+                                                <div class="col-md-3">
+                                                    <select name="AktifMi" class="ca-select">
+                                                        <option value="true" selected="@firma.AktifMi">@Localizer["Admin_Aktif"]</option>
+                                                        <option value="false" selected="@(!firma.AktifMi)">@Localizer["Admin_Pasif"]</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6"><input name="LogoUrl" value="@firma.LogoUrl" class="ca-input" /></div>
+                                                <div class="col-md-6"><input name="TakipUrl" value="@firma.TakipUrl" class="ca-input" /></div>
+                                                <div class="col-md-4"><input name="GondericiUnvan" value="@firma.GondericiUnvan" class="ca-input" /></div>
+                                                <div class="col-md-5"><input name="GondericiAdres" value="@firma.GondericiAdres" class="ca-input" /></div>
+                                                <div class="col-md-3"><input name="GondericiTelefon" value="@firma.GondericiTelefon" class="ca-input" /></div>
+                                                <div class="col-md-3">
+                                                    <select name="VarsayilanMi" class="ca-select">
+                                                        <option value="false" selected="@(!firma.VarsayilanMi)">@Localizer["Admin_NotDefault"]</option>
+                                                        <option value="true" selected="@firma.VarsayilanMi">@Localizer["Admin_Varsayilan"]</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-9 text-end">
+                                                    <button class="ca-btn ca-btn-primary" type="submit"><i class="fas fa-save"></i> @Localizer["Admin_Guncelle"]</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid ca-fade-in mt-4">
+    <div class="ca-page-header">
+        <div>
+            <h2 class="ca-page-title"><i class="fas fa-map-location-dot me-2"></i>@Localizer["Admin_ShippingRegionsCities"]</h2>
+            <p class="ca-page-subtitle">@Localizer["Admin_ShippingRegionsCitiesDesc"]</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="ca-card">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title" id="bolgeFormTitle"><i class="fas fa-plus me-2"></i>@Localizer["Admin_NewRegion"]</h3>
+                </div>
+                <div class="ca-card-body">
+                    <form id="bolgeForm">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="BolgeId" name="id" value="0" />
+                        <div class="mb-3">
+                            <label class="ca-label">@Localizer["Admin_RegionName"]</label>
+                            <input id="BolgeAd" name="ad" class="ca-input" placeholder="Gaza" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="ca-label">@Localizer["Admin_Country"]</label>
+                            <input id="BolgeUlke" name="ulke" class="ca-input" placeholder="Palestine" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="ca-label">@Localizer["Admin_Aciklama"]</label>
+                            <textarea id="BolgeAciklama" name="aciklama" class="ca-textarea" rows="2" placeholder="@Localizer["Admin_RegionDescPlaceholder"]"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="ca-label">@Localizer["Admin_Sira"]</label>
+                            <input id="BolgeSira" name="sira" class="ca-input" type="number" min="0" value="0" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="ca-label">Fiyat (₪)</label>
+                            <input id="BolgeFiyat" name="fiyat" class="ca-input" type="number" step="0.01" min="0" value="0.00" />
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="ca-btn ca-btn-primary" id="bolgeKaydetBtn">
+                                <i class="fas fa-save me-1"></i> @Localizer["Admin_Kaydet"]
+                            </button>
+                            <button type="button" class="ca-btn ca-btn-secondary" id="bolgeIptalBtn" style="display:none;">
+                                <i class="fas fa-times me-1"></i> @Localizer["Admin_Iptal"]
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="ca-card mt-4">
+                <div class="ca-card-header">
+                    <h3 class="ca-card-title"><i class="fas fa-city me-2"></i>@Localizer["Admin_AddCity"]</h3>
+                </div>
+                <div class="ca-card-body">
+                    <form id="sehirForm">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" id="SehirId" name="id" value="0" />
+                        <div class="mb-3">
+                            <label class="ca-label">@Localizer["Admin_Bolge"]</label>
+                            <select id="SehirBolgeId" name="bolgeId" class="ca-select" required>
+                                <option value="">@Localizer["Admin_SelectRegion"]</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="ca-label">@Localizer["Admin_CityName"]</label>
+                            <input id="SehirAdi" name="sehirAdi" class="ca-input" placeholder="Ramallah" required />
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="ca-btn ca-btn-primary">
+                                <i class="fas fa-plus me-1"></i> @Localizer["Admin_AddCity"]
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="ca-card">
+                <div class="ca-card-header d-flex justify-content-between align-items-center">
+                    <h3 class="ca-card-title"><i class="fas fa-globe me-2"></i>@Localizer["Admin_RegionCityList"]</h3>
+                    <div class="d-flex gap-2">
+                        <select id="bolgeFiltreUlke" class="ca-select form-select-sm" style="width:auto; min-width:120px;">
+                             <option value="">@Localizer["Admin_AllCountries"]</option>
+
+                            <option value="Filistin">Filistin</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="ca-card-body">
+                    <div id="bolgeListesi" class="row g-3">
+                        <div class="col-12 text-center py-5 text-muted">
+                            <i class="fas fa-spinner fa-spin me-2"></i> @Localizer["Admin_Loading"]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid ca-fade-in mt-4">
+    <div class="ca-page-header">
+        <div>
+            <h2 class="ca-page-title"><i class="fas fa-shekel-sign me-2"></i>@Localizer["Admin_PalestineProvinceShippingPrices"]</h2>
+            <p class="ca-page-subtitle">@Localizer["Admin_PalestineProvinceShippingPricesDesc"]</p>
+        </div>
+    </div>
+
+    <div class="ca-card">
+        <div class="ca-card-header d-flex justify-content-between align-items-center">
+            <h3 class="ca-card-title"><i class="fas fa-map-marked-alt me-2"></i>@Localizer["Admin_ProvincePriceMatrix"]</h3>
+            <button type="button" class="ca-btn ca-btn-secondary" id="bolgeFiyatYenileBtn">
+                <i class="fas fa-rotate me-1"></i> Yenile
+            </button>
+        </div>
+        <div class="ca-card-body">
+            <div id="bolgeFiyatListesi" class="table-responsive">
+                <div class="text-center py-5 text-muted">
+                    <i class="fas fa-spinner fa-spin me-2"></i> @Localizer["Admin_Loading"]
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function() {
+    const deleteRegionText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_DeleteRegionConfirm"].Value));
+    const deleteCityText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_DeleteCityConfirm"].Value));
+    const noRegionText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_NoRegionYet"].Value));
+    const noCityText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_NoCity"].Value));
+    const cityCountText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_CityCount"].Value));
+    const loadErrorText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_LoadError"].Value));
+    const priceLoadErrorText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_PriceLoadError"].Value));
+    const noCarrierProvinceText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_NoCarrierProvince"].Value));
+    const editRegionText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_EditRegion"].Value));
+
+    function getToken() {
+        return document.querySelector('#bolgeForm input[name="__RequestVerificationToken"]')?.value
+            || document.querySelector('#sehirForm input[name="__RequestVerificationToken"]')?.value;
+    }
+
+    function showToast(message, type) {
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({ icon: type === 'success' ? 'success' : 'error', title: message, timer: 2500, showConfirmButton: false });
+        } else {
+            alert(message);
+        }
+    }
+
+    function loadBolgeler() {
+        fetch('/Admin/Kargo/BolgeListesi')
+            .then(r => r.json())
+            .then(data => {
+                renderBolgeler(data);
+                populateBolgeSelect(data);
+            })
+             .catch(() => {
+                 document.getElementById('bolgeListesi').innerHTML = '<div class="col-12 text-center text-danger py-4">' + loadErrorText + '</div>';
+             });
+
+    }
+
+    function loadBolgeFiyatlari() {
+        fetch('/Admin/Kargo/BolgeFiyatListesi')
+            .then(r => r.json())
+            .then(renderBolgeFiyatlari)
+             .catch(() => {
+                 document.getElementById('bolgeFiyatListesi').innerHTML = '<div class="text-center text-danger py-4">' + priceLoadErrorText + '</div>';
+             });
+
+    }
+
+    function renderBolgeFiyatlari(data) {
+        const container = document.getElementById('bolgeFiyatListesi');
+        const firmalar = data.firmalar || [];
+        const bolgeler = data.bolgeler || [];
+        const fiyatlar = data.fiyatlar || [];
+
+        if (!firmalar.length || !bolgeler.length) {
+             container.innerHTML = '<div class="text-center text-muted py-4">' + noCarrierProvinceText + '</div>';
+
+            return;
+        }
+
+        const fiyatMap = new Map(fiyatlar.map(f => [f.kargoFirmasiId + '-' + f.bolgeId, f.fiyat]));
+        const rows = bolgeler.map(bolge => {
+            const cells = firmalar.map(firma => {
+                const value = fiyatMap.has(firma.id + '-' + bolge.id) ? fiyatMap.get(firma.id + '-' + bolge.id) : firma.fiyat;
+                return `<td>
+                    <div class="input-group input-group-sm" style="min-width:130px;">
+                        <input class="form-control bolge-fiyat-input" type="number" min="0" step="0.01" value="${Number(value || 0).toFixed(2)}" data-firma-id="${firma.id}" data-bolge-id="${bolge.id}" />
+                        <span class="input-group-text">₪</span>
+                    </div>
+                </td>`;
+            }).join('');
+
+            return `<tr><td class="ps-4 ca-fw-bold">${bolge.ad}</td>${cells}</tr>`;
+        }).join('');
+
+        container.innerHTML = `<table class="ca-table">
+            <thead><tr><th class="ps-4">Vilayet</th>${firmalar.map(f => `<th>${f.ad}</th>`).join('')}</tr></thead>
+            <tbody>${rows}</tbody>
+        </table>`;
+    }
+
+    function saveBolgeFiyat(input) {
+        const fd = new FormData();
+        fd.append('kargoFirmasiId', input.dataset.firmaId);
+        fd.append('bolgeId', input.dataset.bolgeId);
+        fd.append('fiyat', input.value || '0');
+        fd.append('__RequestVerificationToken', getToken());
+
+        fetch('/Admin/Kargo/BolgeFiyatKaydet', { method: 'POST', body: fd })
+            .then(r => r.json())
+            .then(d => showToast(d.message, d.success ? 'success' : 'error'));
+    }
+
+    function renderBolgeler(bolgeler) {
+        const container = document.getElementById('bolgeListesi');
+        const ulkeFilter = document.getElementById('bolgeFiltreUlke')?.value || '';
+        const filtered = ulkeFilter ? bolgeler.filter(b => b.ulke === ulkeFilter) : bolgeler;
+
+        if (!filtered.length) {
+             container.innerHTML = '<div class="col-12 text-center text-muted py-4">' + noRegionText + '</div>';
+
+            return;
+        }
+
+        container.innerHTML = filtered.map(b => {
+            const sehirlerHtml = b.sehirler && b.sehirler.length
+                ? b.sehirler.map(s =>
+                    `<span class="badge fs-6 fw-normal py-2 px-3 me-1 mb-1" style="background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:20px;">
+                        <i class="fas fa-location-dot me-1" style="font-size:0.65rem;"></i>\${s.sehirAdi}
+                        <button type="button" class="btn-close btn-close-sm ms-2" style="font-size:0.6rem;" onclick="window.bolgeApp.silSehir(\${s.id}, '\${s.sehirAdi.replace(/'/g, "\\'")}')" title="@Localizer["Admin_Sil"]"></button>
+                    </span>`
+                ).join('')
+                 : '<span class="text-muted small">' + noCityText + '</span>';
+
+
+            const ulkeBadge = b.ulke
+                ? `<span class="ca-badge ca-badge-info me-1">\${b.ulke}</span>`
+                : '';
+
+            return `
+            <div class="col-md-6">
+                <div class="ca-card h-100">
+                    <div class="ca-card-header py-2 px-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>\${b.ad}</strong>
+                            \${ulkeBadge}
+                            <div class="small text-muted">\${b.aciklama || ''}</div>
+                        </div>
+                        <div class="d-flex gap-1">
+                            <button class="ca-btn-icon" onclick="window.bolgeApp.duzenleBolge(\${b.id}, '\${b.ad.replace(/'/g, "\\'")}', '\${(b.ulke||'').replace(/'/g, "\\'")}', '\${(b.aciklama||'').replace(/'/g, "\\'")}', \${b.sira}, \${b.fiyat})" title="@Localizer["Admin_Duzenle"]">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                            <button class="ca-btn-icon text-danger" onclick="window.bolgeApp.silBolge(\${b.id}, '\${b.ad.replace(/'/g, "\\'")}')" title="@Localizer["Admin_Sil"]">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ca-card-body py-2 px-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <div class="small text-muted"><i class="fas fa-city me-1"></i>' + cityCountText.replace('{0}', b.sehirSayisi || 0) + '</div>
+                            <div class="ca-fw-bold small text-primary"><i class="fas fa-shekel-sign me-1"></i>\${Number(b.fiyat || 0).toFixed(2)} ₪</div>
+                        </div>
+                        <div class="sehir-list d-flex flex-wrap gap-1">\${sehirlerHtml}</div>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function populateBolgeSelect(bolgeler) {
+        const select = document.getElementById('SehirBolgeId');
+        if (!select) return;
+        const currentVal = select.value;
+        select.innerHTML = '<option value="">@Localizer["Admin_SelectRegion"]</option>';
+        bolgeler.forEach(b => {
+            const opt = document.createElement('option');
+            opt.value = b.id;
+            opt.textContent = (b.ulke ? b.ulke + ' - ' : '') + b.ad;
+            select.appendChild(opt);
+        });
+        if (currentVal) select.value = currentVal;
+    }
+
+    window.bolgeApp = {
+        duzenleBolge(id, ad, ulke, aciklama, sira, fiyat) {
+            document.getElementById('BolgeId').value = id;
+            document.getElementById('BolgeAd').value = ad;
+            document.getElementById('BolgeUlke').value = ulke || '';
+            document.getElementById('BolgeAciklama').value = aciklama || '';
+            document.getElementById('BolgeSira').value = sira;
+            document.getElementById('BolgeFiyat').value = Number(fiyat || 0).toFixed(2);
+             document.getElementById('bolgeFormTitle').innerHTML = '<i class="fas fa-pen me-2"></i>' + editRegionText;
+
+            document.getElementById('bolgeIptalBtn').style.display = 'inline-block';
+            document.getElementById('BolgeAd').focus();
+        },
+        silBolge(id, ad) {
+            Swal.fire({
+                 title: @System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_AreYouSure"].Value),
+
+                text: deleteRegionText.replace('{0}', ad),
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: @System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Yes"].Value),
+                cancelButtonText: @System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Iptal"].Value)
+            }).then(result => {
+                if (!result.isConfirmed) return;
+                const fd = new FormData();
+                fd.append('id', id);
+                fd.append('__RequestVerificationToken', getToken());
+                fetch('/Admin/Kargo/BolgeSil', { method: 'POST', body: fd })
+                    .then(r => r.json())
+                    .then(d => {
+                        showToast(d.message, d.success ? 'success' : 'error');
+                        if (d.success) loadBolgeler();
+                    });
+            });
+        },
+        silSehir(id, ad) {
+            Swal.fire({
+                 title: @System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_DeleteCity"].Value),
+
+                text: deleteCityText.replace('{0}', ad),
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonText: @System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Iptal"].Value),
+                confirmButtonText: @System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Delete"].Value)
+            }).then(result => {
+                if (!result.isConfirmed) return;
+                const fd = new FormData();
+                fd.append('id', id);
+                fd.append('__RequestVerificationToken', getToken());
+                fetch('/Admin/Kargo/SehirSil', { method: 'POST', body: fd })
+                    .then(r => r.json())
+                    .then(d => {
+                        showToast(d.message, d.success ? 'success' : 'error');
+                        if (d.success) loadBolgeler();
+                    });
+            });
+        }
+    };
+
+    document.getElementById('bolgeForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const fd = new FormData(this);
+        fd.append('__RequestVerificationToken', getToken());
+        fetch('/Admin/Kargo/BolgeKaydet', { method: 'POST', body: fd })
+            .then(r => r.json())
+            .then(d => {
+                showToast(d.message, d.success ? 'success' : 'error');
+                if (d.success) {
+                    this.reset();
+                    document.getElementById('BolgeId').value = '0';
+                    document.getElementById('bolgeFormTitle').innerHTML = '<i class="fas fa-plus me-2"></i>@Localizer["Admin_NewRegion"]';
+                    document.getElementById('bolgeIptalBtn').style.display = 'none';
+                    loadBolgeler();
+                }
+            });
+    });
+
+    document.getElementById('bolgeIptalBtn').addEventListener('click', function() {
+        document.getElementById('bolgeForm').reset();
+        document.getElementById('BolgeId').value = '0';
+        document.getElementById('bolgeFormTitle').innerHTML = '<i class="fas fa-plus me-2"></i>@Localizer["Admin_NewRegion"]';
+        this.style.display = 'none';
+    });
+
+    document.getElementById('sehirForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const fd = new FormData(this);
+        fd.append('__RequestVerificationToken', getToken());
+        fetch('/Admin/Kargo/SehirKaydet', { method: 'POST', body: fd })
+            .then(r => r.json())
+            .then(d => {
+                showToast(d.message, d.success ? 'success' : 'error');
+                if (d.success) {
+                    document.getElementById('SehirAdi').value = '';
+                    loadBolgeler();
+                }
+            });
+    });
+
+    document.getElementById('bolgeFiltreUlke')?.addEventListener('change', function() {
+        fetch('/Admin/Kargo/BolgeListesi')
+            .then(r => r.json())
+            .then(data => renderBolgeler(data));
+    });
+
+    document.getElementById('bolgeFiyatYenileBtn')?.addEventListener('click', loadBolgeFiyatlari);
+    document.getElementById('bolgeFiyatListesi')?.addEventListener('change', function(e) {
+        if (e.target.classList.contains('bolge-fiyat-input')) {
+            saveBolgeFiyat(e.target);
+        }
+    });
+
+    loadBolgeler();
+    loadBolgeFiyatlari();
+})();
+</script>
+}

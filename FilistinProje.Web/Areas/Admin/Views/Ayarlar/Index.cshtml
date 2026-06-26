@@ -1,0 +1,767 @@
+@model FilistinProje.Core.Models.SiteAyarlari
+@using FilistinProje.Core.Varliklar
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_Site_Ayarlari"];
+    var kargoFirmalari = ViewBag.KargoFirmalari as List<KargoFirmasi> ?? new List<KargoFirmasi>();
+    var paytrMerchantKeyKayitli = ViewBag.PaytrMerchantKeyKayitli as bool? ?? false;
+    var paytrMerchantSaltKayitli = ViewBag.PaytrMerchantSaltKayitli as bool? ?? false;
+}
+
+<style>
+    .ca-settings-shell {
+        max-width: 1320px;
+        margin: 0 auto;
+    }
+
+    .ca-settings-hero {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: flex-start;
+        margin-bottom: 18px;
+    }
+
+    .ca-settings-tabs {
+        position: sticky;
+        top: 84px;
+        z-index: 8;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        padding: 12px;
+        margin-bottom: 16px;
+        background: rgba(252, 249, 243, .94);
+        border: 1px solid var(--ca-border);
+        border-radius: 14px;
+        backdrop-filter: blur(12px);
+    }
+
+    .ca-settings-tab {
+        border: 1px solid transparent;
+        background: #fff;
+        color: var(--ca-text);
+        border-radius: 10px;
+        padding: 10px 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: .82rem;
+        font-weight: 800;
+        transition: .18s ease;
+    }
+
+    .ca-settings-tab:hover,
+    .ca-settings-tab.active {
+        background: var(--ca-primary);
+        border-color: var(--ca-primary);
+        color: #fff;
+    }
+
+    .ca-settings-panel {
+        display: none;
+    }
+
+    .ca-settings-panel.active {
+        display: block;
+    }
+
+    .ca-settings-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: 16px;
+        align-items: start;
+    }
+
+    .ca-settings-side {
+        position: sticky;
+        top: 164px;
+    }
+
+    .ca-section-heading {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+
+    .ca-section-heading i {
+        width: 42px;
+        height: 42px;
+        border-radius: 13px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(var(--ca-primary-rgb), .08);
+        color: var(--ca-primary);
+        flex: 0 0 auto;
+    }
+
+    .ca-section-heading h2 {
+        margin: 0;
+        color: var(--ca-text);
+        font-size: 1rem;
+        font-weight: 800;
+    }
+
+    .ca-section-heading p {
+        margin: 3px 0 0;
+        color: var(--ca-text-muted);
+        font-size: .82rem;
+    }
+
+    .ca-help-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 10px;
+    }
+
+    .ca-help-list li {
+        display: flex;
+        gap: 9px;
+        color: var(--ca-text-muted);
+        font-size: .82rem;
+        line-height: 1.45;
+    }
+
+    .ca-help-list i {
+        color: var(--ca-accent);
+        margin-top: 3px;
+    }
+
+    .ca-toggle-box {
+        padding: 14px;
+        background: var(--ca-bg);
+        border: 1px solid var(--ca-border);
+        border-radius: 12px;
+        min-height: 70px;
+        display: flex;
+        align-items: center;
+    }
+
+    .ca-settings-save-bar {
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
+        margin-top: 18px;
+        padding: 14px 0 2px;
+        background: linear-gradient(180deg, rgba(252,249,243,0), var(--ca-bg) 30%);
+    }
+
+    .ca-settings-save-inner {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border: 1px solid var(--ca-border);
+        border-radius: 14px;
+        background: #fff;
+        box-shadow: 0 -8px 24px rgba(49, 53, 17, .045);
+    }
+
+    @@media (max-width: 1100px) {
+        .ca-settings-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .ca-settings-side {
+            position: static;
+        }
+    }
+
+    @@media (max-width: 760px) {
+        .ca-settings-hero {
+            flex-direction: column;
+        }
+
+        .ca-settings-tabs {
+            position: static;
+        }
+
+        .ca-settings-tab {
+            flex: 1 1 45%;
+            justify-content: center;
+        }
+
+        .ca-settings-save-inner {
+            flex-direction: column;
+            align-items: stretch;
+        }
+    }
+</style>
+
+<div class="container-fluid ca-fade-in">
+    <div class="ca-settings-shell">
+        <div class="ca-settings-hero">
+            <div>
+                <div class="ca-page-kicker">@Localizer["Admin_StoreConfiguration"]</div>
+                <h1 class="ca-page-title">@Localizer["Admin_Site_Ayarlari"]</h1>
+                <p class="ca-page-subtitle">@Localizer["Admin_StoreConfigurationDesc"]</p>
+            </div>
+            <div class="d-flex gap-2 flex-wrap justify-content-end">
+                <a href="/" target="_blank" class="ca-btn ca-btn-outline">
+                    <i class="fas fa-arrow-up-right-from-square"></i> @Localizer["Admin_ViewSite"]
+                </a>
+                <a href="/Admin/AnaSayfa" class="ca-btn ca-btn-outline">
+                    <i class="fas fa-images"></i> @Localizer["Admin_HomePageSettings"]
+                </a>
+            </div>
+        </div>
+
+        <form method="post" asp-antiforgery="true">
+            <div class="ca-settings-tabs" role="tablist" aria-label="Ayar sekmeleri">
+                <button type="button" class="ca-settings-tab active" data-target="genel"><i class="fas fa-store"></i> @Localizer["Admin_Brand"]</button>
+                <button type="button" class="ca-settings-tab" data-target="iletisim"><i class="fas fa-address-card"></i> @Localizer["Admin_Contact"]</button>
+                <button type="button" class="ca-settings-tab" data-target="sosyal"><i class="fas fa-share-nodes"></i> @Localizer["Admin_Social"]</button>
+                <button type="button" class="ca-settings-tab" data-target="satis"><i class="fas fa-cart-shopping"></i> @Localizer["Admin_Sales"]</button>
+                <button type="button" class="ca-settings-tab" data-target="odeme"><i class="fas fa-credit-card"></i> @Localizer["Admin_Odeme"]</button>
+                <button type="button" class="ca-settings-tab" data-target="kapida-odeme"><i class="fas fa-hand-holding-dollar"></i> @Localizer["Admin_Kapida_Odeme"]</button>
+                <button type="button" class="ca-settings-tab" data-target="seo"><i class="fas fa-magnifying-glass-chart"></i> SEO</button>
+                <button type="button" class="ca-settings-tab" data-target="mail"><i class="fas fa-envelope"></i> @Localizer["Admin_Mail"]</button>
+                <button type="button" class="ca-settings-tab" data-target="bakim"><i class="fas fa-screwdriver-wrench"></i> @Localizer["Admin_Maintenance"]</button>
+            </div>
+
+            <div class="ca-settings-layout">
+                <main>
+                    <section class="ca-settings-panel active" id="panel-genel">
+                        <div class="ca-card">
+                            <div class="ca-card-body">
+                                <div class="ca-section-heading">
+                                    <i class="fas fa-store"></i>
+                                    <div>
+                                         <h2>@Localizer["Admin_BrandStoreInfo"]</h2>
+                                         <p>@Localizer["Admin_BrandStoreInfoDesc"]</p>
+
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_SiteName"] <span class="required">*</span></label>
+                                         <input asp-for="SiteAdi" class="ca-input" required />
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_BrandName"]</label>
+                                         <input asp-for="MarkaAdi" class="ca-input" />
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_SiteTitle"]</label>
+                                         <input asp-for="SiteBasligi" class="ca-input" />
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_SiteURL"]</label>
+                                         <input asp-for="BaseUrl" class="ca-input" placeholder="https://7anrps48.com" />
+                                     </div>
+                                     <div class="col-12">
+                                         <label class="ca-label">@Localizer["Admin_SiteDescription"]</label>
+                                         <textarea asp-for="SiteAciklamasi" class="ca-textarea" rows="3"></textarea>
+                                     </div>
+                                     <div class="col-12">
+                                         <label class="ca-label">@Localizer["Admin_FooterDescription"]</label>
+                                         <textarea asp-for="FooterAciklamasi" class="ca-textarea" rows="2"></textarea>
+                                     </div>
+                                     <div class="col-md-4">
+                                         <label class="ca-label">@Localizer["Admin_LogoURL"]</label>
+                                         <input asp-for="SiteLogoUrl" class="ca-input" placeholder="/74anrps48logo2.svg" />
+                                     </div>
+                                     <div class="col-md-4">
+                                         <label class="ca-label">@Localizer["Admin_FaviconURL"]</label>
+                                         <input asp-for="FaviconUrl" class="ca-input" placeholder="/74anrps48logo2.svg" />
+                                     </div>
+                                     <div class="col-md-4">
+                                         <label class="ca-label">@Localizer["Admin_ThemeColor"]</label>
+                                         <input asp-for="TemaRengi" class="ca-input" placeholder="#313511" />
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_TopBarMessage"]</label>
+                                         <input asp-for="UstBarMesaji" class="ca-input" placeholder="@Localizer["Admin_TopBarMessagePlaceholder"]" />
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_CampaignMessage"]</label>
+                                         <input asp-for="KampanyaMesaji" class="ca-input" placeholder="@Localizer["Admin_CampaignMessagePlaceholder"]" />
+                                     </div>
+                                     <div class="col-md-4">
+                                         <label class="ca-label">@Localizer["Admin_TopBarEnabled"]</label>
+                                         <select asp-for="UstBarEtkin" class="ca-input">
+                                             <option value="True">@Localizer["Admin_Active"]</option>
+                                             <option value="False">@Localizer["Admin_Passive"]</option>
+                                         </select>
+                                     </div>
+                                     <div class="col-md-4">
+                                         <label class="ca-label">@Localizer["Admin_ScrollSpeed"]</label>
+                                         <input asp-for="UstBarHizi" class="ca-input" type="number" step="1" min="10" max="100" placeholder="34" />
+                                         <small class="text-muted">@Localizer["Admin_AnimationDuration"]</small>
+                                     </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="ca-settings-panel" id="panel-iletisim">
+                        <div class="ca-card">
+                            <div class="ca-card-body">
+                                <div class="ca-section-heading">
+                                    <i class="fas fa-address-card"></i>
+                                    <div>
+                                         <h2>@Localizer["Admin_ContactInfo"]</h2>
+                                         <p>@Localizer["Admin_ContactInfoDesc"]</p>
+
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="ca-label">@Localizer["Admin_Telefon"]</label>
+                                        <input asp-for="Telefon" class="ca-input" placeholder="+90 5XX XXX XX XX" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="ca-label">@Localizer["Admin_E_posta"]</label>
+                                        <input asp-for="Email" class="ca-input" type="email" placeholder="info@7anrps48.com" />
+                                    </div>
+                                    <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_WhatsAppNumber"]</label>
+                                         <input asp-for="WhatsappNumarasi" class="ca-input" placeholder="905XXXXXXXXX" />
+                                         <small class="text-muted">@Localizer["Admin_WhatsAppHint"]</small>
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_WorkingHours"]</label>
+                                         <input asp-for="CalismaSaatleri" class="ca-input" placeholder="@Localizer["Admin_WorkingHoursPlaceholder"]" />
+                                     </div>
+
+                                    <div class="col-12">
+                                        <label class="ca-label">@Localizer["Admin_Adres"]</label>
+                                        <textarea asp-for="Adres" class="ca-textarea" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="ca-settings-panel" id="panel-sosyal">
+                        <div class="ca-card">
+                            <div class="ca-card-body">
+                                <div class="ca-section-heading">
+                                    <i class="fas fa-share-nodes"></i>
+                                    <div>
+                                         <h2>@Localizer["Admin_SocialMediaLinks"]</h2>
+                                         <p>@Localizer["Admin_SocialMediaLinksDesc"]</p>
+
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6"><label class="ca-label">Instagram</label><input asp-for="InstagramUrl" class="ca-input" placeholder="https://instagram.com/7anrps48" /></div>
+                                    <div class="col-md-6"><label class="ca-label">Facebook</label><input asp-for="FacebookUrl" class="ca-input" placeholder="https://facebook.com/7anrps48" /></div>
+                                    <div class="col-md-6"><label class="ca-label">TikTok</label><input asp-for="TiktokUrl" class="ca-input" placeholder="https://tiktok.com/@@7anrps48" /></div>
+                                    <div class="col-md-6"><label class="ca-label">YouTube</label><input asp-for="YoutubeUrl" class="ca-input" placeholder="https://youtube.com/..." /></div>
+                                    <div class="col-md-6"><label class="ca-label">Pinterest</label><input asp-for="PinterestUrl" class="ca-input" placeholder="https://pinterest.com/7anrps48" /></div>
+                                    <div class="col-md-6"><label class="ca-label">X / Twitter</label><input asp-for="TwitterUrl" class="ca-input" placeholder="https://x.com/7anrps48" /></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="ca-settings-panel" id="panel-satis">
+                        <div class="ca-card">
+                            <div class="ca-card-body">
+                                <div class="ca-section-heading">
+                                    <i class="fas fa-cart-shopping"></i>
+                                    <div>
+                                         <h2>@Localizer["Admin_SalesShippingOperation"]</h2>
+                                         <p>@Localizer["Admin_SalesShippingOperationDesc"]</p>
+
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                         <label class="ca-label">@Localizer["Admin_Currency"]</label>
+                                         <input asp-for="ParaBirimi" class="ca-input" placeholder="₪" />
+                                     </div>
+                                     <div class="col-md-4">
+                                         <label class="ca-label">@Localizer["Admin_ShippingFee"]</label>
+                                         <input asp-for="KargoBedeli" type="number" step="0.01" class="ca-input" />
+                                     </div>
+                                     <div class="col-md-4">
+                                         <label class="ca-label">@Localizer["Admin_FreeShippingLimit"]</label>
+                                         <input asp-for="UcretsizKargoLimiti" type="number" step="0.01" class="ca-input" />
+                                     </div>
+                                     <div class="col-md-4">
+                                         <label class="ca-label">@Localizer["Admin_StockWarningLimit"]</label>
+                                         <input asp-for="StokUyariLimiti" type="number" class="ca-input" />
+                                     </div>
+
+                                    <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_PreorderSales"]</label>
+                                         <div class="ca-toggle-box">
+                                             <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
+                                                 <span>
+                                                     <strong>@Localizer["Admin_AllowOutOfStockPurchase"]</strong><br>
+                                                     <small class="text-muted">@Localizer["Admin_AllowOutOfStockPurchaseHint"]</small>
+                                                 </span>
+                                                 <input asp-for="StoktaYokSatisIzni" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_OutOfStockVariantDisplay"]</label>
+                                         <div class="ca-toggle-box">
+                                             <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
+                                                 <span>
+                                                     <strong>@Localizer["Admin_ShowOutOfStockVariantsGray"]</strong><br>
+                                                     <small class="text-muted">@Localizer["Admin_ShowOutOfStockVariantsGrayHint"]</small>
+                                                 </span>
+                                                 <input asp-for="StokBiteniGriGoster" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_DefaultShippingCompany"]</label>
+                                         <select asp-for="KargoFirmasi" class="ca-select" id="kargoFirmasiSelect">
+                                             @foreach (var firma in kargoFirmalari)
+                                             {
+                                                 <option value="@firma.Ad" data-takip-url="@firma.TakipUrl">@firma.Ad</option>
+                                             }
+                                         </select>
+                                         <small class="text-muted d-block mt-1">
+                                             @Localizer["Admin_ShippingCompanyListHint"]
+                                         </small>
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_ShippingTrackingURL"]</label>
+                                         <input asp-for="KargoTakipUrl" class="ca-input" placeholder="https://www.araskargo.com.tr/..." />
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_EstimatedDeliveryDays"]</label>
+                                         <input asp-for="SiparisTeslimSuresiGun" type="number" class="ca-input" />
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_ReturnPeriodDays"]</label>
+                                         <input asp-for="IadeHakkiGun" type="number" class="ca-input" />
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_CancelPeriodHours"]</label>
+                                         <input asp-for="IptalSuresiSaat" type="number" class="ca-input" min="0" max="168" />
+                                         <small class="ca-field-help">@Localizer["Admin_CancelPeriodHours_Hint"]</small>
+                                     </div>
+                                     <div class="col-12">
+                                         <div class="ca-toggle-box">
+                                             <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
+                                                 <span>
+                                                     <strong>@Localizer["Admin_LoginRequired"]</strong><br>
+                                                     <small class="text-muted">@Localizer["Admin_LoginRequiredHint"]</small>
+                                                 </span>
+                                                 <input asp-for="GirisZorunluMu" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
+                                             </div>
+                                         </div>
+                                     </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="ca-settings-panel" id="panel-odeme">
+                        <div class="ca-card">
+                            <div class="ca-card-body">
+                                <div class="ca-section-heading">
+                                    <i class="fas fa-credit-card"></i>
+                                    <div>
+                                         <h2>@Localizer["Admin_PayTRSettings"]</h2>
+                                         <p>@Localizer["Admin_PayTRSettingsDesc"]</p>
+
+                                    </div>
+                                </div>
+                                <div class="ca-alert ca-alert-warning mb-3">
+                                    <i class="fas fa-shield-halved"></i>
+                                     <span>@Localizer["Admin_PayTRSecurityNotice"]</span>
+
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_PayTRStatus"]</label>
+                                         <div class="ca-toggle-box">
+                                             <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
+                                                 <span>
+                                                     <strong>@Localizer["Admin_ReceivePaymentWithPayTR"]</strong><br>
+                                                     <small class="text-muted">@Localizer["Admin_ReceivePaymentWithPayTRHint"]</small>
+                                                 </span>
+                                                 <input asp-for="PaytrAktifMi" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_TestMode"]</label>
+                                         <div class="ca-toggle-box">
+                                             <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
+                                                 <span>
+                                                     <strong>@Localizer["Admin_PayTRTestMode"]</strong><br>
+                                                     <small class="text-muted">@Localizer["Admin_PayTRTestModeHint"]</small>
+                                                 </span>
+                                                 <input asp-for="PaytrTestModu" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_MerchantID"]</label>
+                                         <input asp-for="PaytrMerchantId" class="ca-input" autocomplete="off" placeholder="@Localizer["Admin_PayTRStoreNumberPlaceholder"]" />
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_MerchantKey"]</label>
+                                         <input name="paytrMerchantKey" class="ca-input" type="password" autocomplete="new-password" placeholder="@(paytrMerchantKeyKayitli ? Localizer["Admin_KeepExistingValuePlaceholder"].Value : Localizer["Admin_PayTRMerchantKeyPlaceholder"].Value)" />
+                                         <small class="text-muted">@(paytrMerchantKeyKayitli ? Localizer["Admin_MerchantKeyRegistered"].Value : Localizer["Admin_MerchantKeyNotRegistered"].Value)</small>
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_MerchantSalt"]</label>
+                                         <input name="paytrMerchantSalt" class="ca-input" type="password" autocomplete="new-password" placeholder="@(paytrMerchantSaltKayitli ? Localizer["Admin_KeepExistingValuePlaceholder"].Value : Localizer["Admin_PayTRMerchantSaltPlaceholder"].Value)" />
+                                         <small class="text-muted">@(paytrMerchantSaltKayitli ? Localizer["Admin_MerchantSaltRegistered"].Value : Localizer["Admin_MerchantSaltNotRegistered"].Value)</small>
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_CallbackURL"]</label>
+                                         <input asp-for="PaytrCallbackUrl" class="ca-input" placeholder="https://7anrps48.com/Siparis/PaytrCallback" />
+                                         <small class="text-muted">@Localizer["Admin_PayTRCallbackURLHint"]</small>
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_SuccessReturnURL"]</label>
+                                         <input asp-for="PaytrBasariliDonusUrl" class="ca-input" placeholder="https://7anrps48.com/Siparis/Basarili" />
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_FailReturnURL"]</label>
+                                         <input asp-for="PaytrBasarisizDonusUrl" class="ca-input" placeholder="https://7anrps48.com/Siparis/OdemeBasarisiz" />
+                                     </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="ca-settings-panel" id="panel-kapida-odeme">
+                        <div class="ca-card">
+                            <div class="ca-card-body">
+                                <div class="ca-section-heading">
+                                    <i class="fas fa-hand-holding-dollar"></i>
+                                    <div>
+                                         <h2>@Localizer["Admin_CODSettings"]</h2>
+                                         <p>@Localizer["Admin_CODSettingsDesc"]</p>
+
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                         <label class="ca-label">@Localizer["Admin_CODStatus"]</label>
+                                         <div class="ca-toggle-box">
+                                             <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
+                                                 <span>
+                                                     <strong>@Localizer["Admin_EnableCOD"]</strong><br>
+                                                     <small class="text-muted">@Localizer["Admin_EnableCODHint"]</small>
+                                                 </span>
+                                                 <input asp-for="KapidaOdemeAktifMi" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="col-md-4">
+                                         <label class="ca-label">@Localizer["Admin_CODServiceFee"] (@Model.ParaBirimi)</label>
+                                         <input asp-for="KapidaOdemeHizmetBedeli" type="number" step="0.01" min="0" class="ca-input" required />
+                                         <small class="text-muted">@Localizer["Admin_CODServiceFeeHint"]</small>
+                                     </div>
+                                     <div class="col-md-4">
+                                         <label class="ca-label">@Localizer["Admin_CODUpperLimit"] (@Model.ParaBirimi)</label>
+                                         <input asp-for="KapidaOdemeLimiti" type="number" step="0.01" min="0" class="ca-input" required />
+                                         <small class="text-muted">@Localizer["Admin_CODUpperLimitHint"]</small>
+                                     </div>
+                                 </div>
+                                 <div class="row g-3 mt-2">
+                                     <div class="col-md-4">
+                                         <label class="ca-label">@Localizer["Admin_WholesaleMinOrder"] (@Model.ParaBirimi)</label>
+                                         <input asp-for="ToptanciMinSiparisTutari" type="number" step="0.01" min="0" class="ca-input" required />
+                                         <small class="text-muted">@Localizer["Admin_WholesaleMinOrderHint"]</small>
+                                     </div>
+                                 </div>
+
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="ca-settings-panel" id="panel-seo">
+                        <div class="ca-card">
+                            <div class="ca-card-body">
+                                <div class="ca-section-heading">
+                                    <i class="fas fa-magnifying-glass-chart"></i>
+                                    <div>
+                                         <h2>@Localizer["Admin_SEOAnalytics"]</h2>
+                                         <p>@Localizer["Admin_SEOAnalyticsDesc"]</p>
+
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6"><label class="ca-label">Meta Title</label><input asp-for="MetaTitle" class="ca-input" /></div>
+                                    <div class="col-md-6"><label class="ca-label">Meta Keywords</label><input asp-for="MetaKeywords" class="ca-input" /></div>
+                                    <div class="col-12"><label class="ca-label">Meta Description</label><textarea asp-for="MetaDescription" class="ca-textarea" rows="3"></textarea></div>
+                                    <div class="col-md-6"><label class="ca-label">Google Analytics ID</label><input asp-for="GoogleAnalyticsId" class="ca-input" placeholder="G-XXXXXXXXXX" /></div>
+                                    <div class="col-md-6"><label class="ca-label">Facebook Pixel ID</label><input asp-for="FacebookPixelId" class="ca-input" /></div>
+                                     <div class="col-md-6"><label class="ca-label">@Localizer["Admin_DefaultSocialShareImage"]</label><input asp-for="VarsayilanSosyalPaylasimGorseliUrl" class="ca-input" placeholder="/img/share-default.jpg" /></div>
+                                     <div class="col-md-6"><label class="ca-label">@Localizer["Admin_CookieNoticeText"]</label><input asp-for="CookieMetni" class="ca-input" /></div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="ca-settings-panel" id="panel-mail">
+                        <div class="ca-card">
+                            <div class="ca-card-body">
+                                <div class="ca-section-heading">
+                                    <i class="fas fa-envelope"></i>
+                                    <div>
+                                         <h2>@Localizer["Admin_MailNotifications"]</h2>
+                                         <p>@Localizer["Admin_MailNotificationsDesc"]</p>
+
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_NotificationRecipientEmail"]</label>
+                                         <input asp-for="BildirimAliciEmail" class="ca-input" type="email" placeholder="operations@7anrps48.com" />
+                                         <small class="text-muted">@Localizer["Admin_NotificationRecipientEmailHint"]</small>
+                                     </div>
+                                     <div class="col-md-6">
+                                         <label class="ca-label">@Localizer["Admin_MailInfrastructureTest"]</label>
+                                         <div class="ca-toggle-box">
+                                             <div class="d-flex align-items-center justify-content-between gap-3 w-100">
+                                                 <span><strong>@Localizer["Admin_BrevoSMTPTest"]</strong><br><small class="text-muted">@Localizer["Admin_BrevoSMTPTestHint"]</small></span>
+                                                 <button type="submit" formaction="/Admin/Ayarlar/TestMail" formmethod="post" class="ca-btn ca-btn-outline">
+                                                     <i class="fas fa-paper-plane"></i> @Localizer["Admin_Test"]
+                                                 </button>
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="col-md-4">
+                                         <div class="ca-toggle-box">
+                                             <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
+                                                 <label class="form-check-label fw-semibold">@Localizer["Admin_NewOrderNotification"]</label>
+                                                 <input asp-for="YeniSiparisMailBildirimi" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="col-md-4">
+                                         <div class="ca-toggle-box">
+                                             <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
+                                                 <label class="form-check-label fw-semibold">@Localizer["Admin_StockWarningNotification"]</label>
+                                                 <input asp-for="StokUyarisiMailBildirimi" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="col-md-4">
+                                         <div class="ca-toggle-box">
+                                             <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
+                                                 <label class="form-check-label fw-semibold">@Localizer["Admin_ReturnRequestNotification"]</label>
+                                                 <input asp-for="IadeTalebiMailBildirimi" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
+                                             </div>
+                                         </div>
+                                     </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="ca-settings-panel" id="panel-bakim">
+                        <div class="ca-card">
+                            <div class="ca-card-body">
+                                <div class="ca-section-heading">
+                                    <i class="fas fa-screwdriver-wrench"></i>
+                                    <div>
+                                         <h2>@Localizer["Admin_MaintenanceMode"]</h2>
+                                         <p>@Localizer["Admin_MaintenanceModeDesc"]</p>
+
+                                    </div>
+                                </div>
+                                <div class="ca-alert ca-alert-warning mb-3">
+                                    <i class="fas fa-triangle-exclamation"></i>
+                                     <span>@Localizer["Admin_MaintenanceModeWarning"]</span>
+
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="ca-toggle-box" style="background:var(--ca-danger-light); border-color:#fecaca;">
+                                            <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
+                                                 <label class="form-check-label fw-bold text-danger">@Localizer["Admin_EnableMaintenanceMode"]</label>
+
+                                                <input asp-for="BakimModuAktif" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                         <label class="ca-label">@Localizer["Admin_MaintenanceModeMessage"]</label>
+
+                                        <textarea asp-for="BakimModuMesaji" class="ca-textarea" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+
+                <aside class="ca-settings-side">
+                    <div class="ca-card">
+                        <div class="ca-card-header">
+                             <h2 class="ca-card-title mb-0">@Localizer["Admin_WhatThisPageAffects"]</h2>
+
+                        </div>
+                        <div class="ca-card-body">
+                            <ul class="ca-help-list">
+                                 <li><i class="fas fa-check-circle"></i><span>@Localizer["Admin_HelpItem1"]</span></li>
+                                 <li><i class="fas fa-check-circle"></i><span>@Localizer["Admin_HelpItem2"]</span></li>
+                                 <li><i class="fas fa-check-circle"></i><span>@Localizer["Admin_HelpItem3"]</span></li>
+                                 <li><i class="fas fa-check-circle"></i><span>@Localizer["Admin_HelpItem4"]</span></li>
+                                 <li><i class="fas fa-check-circle"></i><span>@Localizer["Admin_HelpItem5"]</span></li>
+                                 <li><i class="fas fa-check-circle"></i><span>@Localizer["Admin_HelpItem6"]</span></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <div class="ca-settings-save-bar">
+                <div class="ca-settings-save-inner">
+                     <small class="text-muted"><i class="fas fa-circle-info me-1"></i> @Localizer["Admin_ChangesTakeEffectAfterSave"]</small>
+                     <button type="submit" class="ca-btn ca-btn-success ca-btn-lg">
+                         <i class="fas fa-save"></i> @Localizer["Admin_SaveAllSettings"]
+                     </button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.ca-settings-tab');
+            const panels = document.querySelectorAll('.ca-settings-panel');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    tabs.forEach(item => item.classList.remove('active'));
+                    panels.forEach(panel => panel.classList.remove('active'));
+                    this.classList.add('active');
+                    document.getElementById('panel-' + this.dataset.target)?.classList.add('active');
+                });
+            });
+
+            const kargoSelect = document.getElementById('kargoFirmasiSelect');
+            const takipInput = document.querySelector('[name="KargoTakipUrl"]');
+
+            kargoSelect?.addEventListener('change', function () {
+                const selectedOption = this.options[this.selectedIndex];
+                const takipUrl = selectedOption?.dataset?.takipUrl;
+
+                if (takipInput && takipUrl && !takipInput.value.trim()) {
+                    takipInput.value = takipUrl;
+                }
+            });
+        });
+    </script>
+}

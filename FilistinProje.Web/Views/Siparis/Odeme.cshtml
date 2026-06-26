@@ -1,0 +1,1196 @@
+@model FilistinProje.Core.Varliklar.Siparis
+@using FilistinProje.Core.Varliklar
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["SecurePayment"];
+    var siteSettings = SiteSettingsService.GetSettings();
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
+
+    decimal araToplam = ViewBag.AraToplam ?? 0;
+    decimal indirim = ViewBag.IndirimTutari ?? 0;
+    decimal genelToplam = ViewBag.ToplamTutar ?? 0;
+    string? kuponKodu = ViewBag.KuponKodu as string;
+    var sepetItems = ViewBag.SepetItems as List<FilistinProje.Core.Varliklar.SepetItem> ?? new List<FilistinProje.Core.Varliklar.SepetItem>();
+    var ucretsizKargoLimiti = (decimal)(ViewBag.UcretsizKargoLimiti ?? 500);
+    bool codAktif = ViewBag.KapidaOdemeAktifMi is bool codAccess && codAccess;
+    decimal codBedel = (decimal)(ViewBag.KapidaOdemeHizmetBedeli ?? 0);
+    decimal codLimit = (decimal)(ViewBag.KapidaOdemeLimiti ?? 2000);
+    bool receteZorunlu = ViewBag.ReceteZorunluMu is bool rxRequired && rxRequired;
+    bool isWholesale = User.IsInRole("Wholesale");
+    decimal toptanciMinTutar = (decimal)(ViewBag.ToptanciMinSiparisTutari ?? 500);
+
+    var kayitliAdresler = ViewBag.KayitliAdresler as List<FilistinProje.Core.Varliklar.Adres>;
+    bool girisYapmis = User.Identity?.IsAuthenticated == true;
+    // Şehir listesini veritabanındaki KargoBolgeSehirler'den çek (controller ViewBag üzerinden gönderir)
+    var sehirListesi = ViewBag.Sehirler as List<string> ?? new List<string>();
+    var sehirler = sehirListesi.Any() ? sehirListesi.ToArray() : new[]
+    {
+        "Beytüllahim", "Cenin (Jenin)", "Deyr el-Balah", "El-Halil (Hebron)",
+        "El-Kudüs (Jerusalem)", "Eriha (Jericho)", "Gazze", "Han Yunus (Khan Yunis)",
+        "Kalkilya (Qalqilya)", "Kuzey Gazze", "Nablus", "Ramallah & El-Bireh",
+        "Refah (Rafah)", "Salfit", "Tubas", "Tulkarim"
+    };
+}
+
+<!-- Breadcrumb -->
+<div class="bg-[#f1ede7] border-b border-[#e5e2dc] py-4">
+    <div class="container mx-auto px-4 flex items-center justify-center gap-4 text-xs tracking-widest uppercase">
+        <a href="/Sepet" class="text-[#47473d] hover:text-[#313511] transition-colors flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-[#e5e2dc] text-[#47473d] flex items-center justify-center font-bold">1</span> @Localizer["Cart"]
+        </a>
+        <span class="text-[#e5e2dc]">/</span>
+        <span class="text-[#313511] font-bold flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-[#313511] text-white flex items-center justify-center font-bold">2</span> @Localizer["PaymentAndDelivery"]
+        </span>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-12 md:py-16">
+    <div class="text-center mb-12">
+        <h1 class="font-serif text-3xl md:text-5xl text-[#313511] mb-4">@Localizer["SecurePayment"]</h1>
+        <p class="text-sm text-[#47473d] max-w-2xl mx-auto">@Localizer["VerifyDeliveryInfo"]</p>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-12 lg:gap-16 max-w-6xl mx-auto">
+        <!-- Sol Form Alanı -->
+        <div class="lg:w-2/3 space-y-12">
+            
+            @if (kayitliAdresler != null && kayitliAdresler.Any())
+            {
+                <section>
+                    <h2 class="font-serif text-2xl text-[#313511] mb-6 flex items-center gap-3 border-b border-[#e5e2dc] pb-4">
+                        <i class="fas fa-address-book text-[#b58735]"></i> @Localizer["SavedAddresses"]
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        @foreach (var adres in kayitliAdresler)
+                        {
+                            <label class="relative border border-[#e5e2dc] rounded-lg p-5 cursor-pointer transition-colors hover:border-[#b58735] has-[:checked]:border-[#313511] has-[:checked]:bg-[#fcf9f3] group block">
+                                <input type="radio" name="kayitliAdresSecimi" class="absolute opacity-0 w-0 h-0 peer" onclick="selectAddress('@adres.AdSoyad', '@adres.Telefon', '@adres.Sehir', '@adres.Ilce', '@adres.AcikAdres')">
+                                <div class="flex items-start gap-3">
+                                    <span class="address-radio w-5 h-5 rounded-full border-2 border-[#b58735] flex items-center justify-center bg-white transition-all duration-200">
+                                        <span class="address-radio-inner w-2.5 h-2.5 rounded-full bg-[#b58735] opacity-0 scale-0 transition-all duration-200"></span>
+                                    </span>
+                                    <div class="flex-1">
+                                        <div class="text-sm font-semibold text-[#1c1c18] mb-2 uppercase tracking-wide">@adres.Baslik</div>
+                                        <div class="text-sm text-[#47473d] mb-1">@adres.AdSoyad</div>
+                                        <div class="text-sm text-[#47473d] mb-1">@adres.Telefon</div>
+                                        <div class="text-sm text-[#47473d] mb-2">@adres.Sehir / @adres.Ilce</div>
+                                        <div class="text-xs text-[#47473d] leading-relaxed line-clamp-2">@adres.AcikAdres</div>
+                                    </div>
+                                </div>
+                            </label>
+                        }
+                    </div>
+                </section>
+            }
+
+            <section>
+                <h2 class="font-serif text-2xl text-[#313511] mb-6 flex items-center gap-3 border-b border-[#e5e2dc] pb-4">
+                    <i class="fas fa-truck text-[#b58735]"></i> @Localizer["DeliveryInfo"]
+                </h2>
+
+                @if (ViewBag.FormHata != null || !ViewData.ModelState.IsValid)
+                {
+                    <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                        <div class="font-semibold">@((string?)ViewBag.FormHata ?? Localizer["CheckFormInfo"].Value)</div>
+                        <div asp-validation-summary="All" class="mt-2"></div>
+                    </div>
+                }
+
+                <form asp-action="Odeme" method="post" id="odemeForm">
+                    @if (girisYapmis)
+                    {
+                        <input type="hidden" asp-for="Eposta" />
+                    }
+
+                    <!-- Teslimat Tipi Seçimi -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                        <label class="relative border border-[#e5e2dc] rounded-lg p-5 cursor-pointer transition-all hover:border-[#b58735] has-[:checked]:border-[#313511] has-[:checked]:bg-[#fcf9f3] group">
+                            <input type="radio" asp-for="TeslimatTipi" value="AdreseTeslim" class="absolute opacity-0 w-0 h-0 peer" checked="@(Model.TeslimatTipi != "MagazadanTeslim")" onchange="toggleDeliveryType()">
+                            <div class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full border-2 border-[#b58735] flex items-center justify-center bg-white transition-all peer-checked:border-[#313511]">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#313511] scale-0 transition-all peer-checked:scale-100"></span>
+                                </span>
+                                <div>
+                                    <div class="text-sm font-semibold text-[#1c1c18]">@Localizer["DeliverToAddress"]</div>
+                                    <div class="text-[11px] text-[#6f6a5e]">@Localizer["DeliverToAddressDesc"]</div>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="relative border border-[#e5e2dc] rounded-lg p-5 cursor-pointer transition-all hover:border-[#b58735] has-[:checked]:border-[#313511] has-[:checked]:bg-[#fcf9f3] group">
+                            <input type="radio" asp-for="TeslimatTipi" value="MagazadanTeslim" class="absolute opacity-0 w-0 h-0 peer" onchange="toggleDeliveryType()">
+                            <div class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full border-2 border-[#b58735] flex items-center justify-center bg-white transition-all peer-checked:border-[#313511]">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#313511] scale-0 transition-all peer-checked:scale-100"></span>
+                                </span>
+                                <div>
+                                    <div class="text-sm font-semibold text-[#1c1c18]">@Localizer["StorePickup"]</div>
+                                    <div class="text-[11px] text-[#6f6a5e]">@Localizer["StorePickupDesc"]</div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Mağazadan Teslim Bilgisi -->
+                    <div id="storePickupInfo" class="hidden mb-6 bg-[#f7f8ed] border border-[#cbd3a3] rounded-lg p-5">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-store text-[#b58735] mt-1"></i>
+                            <div>
+                                <h4 class="text-sm font-bold text-[#313511] mb-1">@Localizer["StorePickupInfo"]</h4>
+                                <p class="text-xs text-[#47473d] leading-relaxed">@Localizer["StorePickupAddressInfo"]</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Adres Alanları -->
+                    <div id="adresAlanlari">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
+                            <div class="md:col-span-2">
+                                <label class="block text-xs uppercase tracking-widest text-[#1c1c18] font-medium mb-2" for="MusteriAdSoyad">@Localizer["FullName"]</label>
+                                <input asp-for="MusteriAdSoyad" id="MusteriAdSoyad" class="w-full bg-transparent border-0 border-b border-[#e5e2dc] px-0 py-2 focus:ring-0 focus:border-[#313511] text-[#1c1c18] transition-colors" placeholder="@Localizer["FullNamePlaceholder"]" required>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase tracking-widest text-[#1c1c18] font-medium mb-2" for="Eposta">@Localizer["Email"]</label>
+                                @if (girisYapmis)
+                                {
+                                    <input value="@Model.Eposta" class="w-full bg-transparent border-0 border-b border-[#e5e2dc] px-0 py-2 text-[#47473d] cursor-not-allowed" readonly>
+                                    <div class="mt-2 text-[10px] uppercase tracking-widest text-[#b58735]">@Localizer["RegisteredEmailUsed"]</div>
+                                }
+                                else
+                                {
+                                    <input asp-for="Eposta" id="Eposta" type="email" class="w-full bg-transparent border-0 border-b border-[#e5e2dc] px-0 py-2 focus:ring-0 focus:border-[#313511] text-[#1c1c18] transition-colors" placeholder="@Localizer["EmailPlaceholder"]" required>
+                                }
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase tracking-widest text-[#1c1c18] font-medium mb-2" for="Telefon">@Localizer["Phone"]</label>
+                                <input asp-for="Telefon" id="Telefon" class="w-full bg-transparent border-0 border-b border-[#e5e2dc] px-0 py-2 focus:ring-0 focus:border-[#313511] text-[#1c1c18] transition-colors" placeholder="@Localizer["PhonePlaceholder"]" maxlength="13" required>
+                            </div>
+
+                            <div id="adresSehirAlani">
+                                <label class="block text-xs uppercase tracking-widest text-[#1c1c18] font-medium mb-2" for="Sehir">@Localizer["City"]</label>
+                                <select asp-for="Sehir" id="Sehir" class="w-full bg-transparent border-0 border-b border-[#e5e2dc] px-0 py-2 focus:ring-0 focus:border-[#313511] text-[#1c1c18] transition-colors" required>
+                                    <option value="">@Localizer["SelectCity"]</option>
+                                    @foreach (var sehir in sehirler)
+                                    {
+                                        <option value="@sehir">@sehir</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div id="adresIlceAlani">
+                                <label class="block text-xs uppercase tracking-widest text-[#1c1c18] font-medium mb-2" for="Ilce">@Localizer["District"]</label>
+                                <input asp-for="Ilce" id="Ilce" class="w-full bg-transparent border-0 border-b border-[#e5e2dc] px-0 py-2 focus:ring-0 focus:border-[#313511] text-[#1c1c18] transition-colors" placeholder="@Localizer["DistrictPlaceholder"]" required>
+                            </div>
+
+                            <div id="adresAcikAdresAlani" class="md:col-span-2">
+                                <label class="block text-xs uppercase tracking-widest text-[#1c1c18] font-medium mb-2" for="AcikAdres">@Localizer["FullAddress"]</label>
+                                <textarea asp-for="AcikAdres" id="AcikAdres" class="w-full bg-transparent border-0 border-b border-[#e5e2dc] px-0 py-2 focus:ring-0 focus:border-[#313511] text-[#1c1c18] transition-colors resize-none h-24" placeholder="@Localizer["FullAddressPlaceholder"]" required></textarea>
+                            </div>
+
+                            @if (girisYapmis)
+                            {
+                                <div id="adresKaydetAlani" class="md:col-span-2 mt-4 bg-white border border-[#e5e2dc] p-5 rounded-lg">
+                                    <label class="flex items-center gap-3 cursor-pointer group">
+                                        <input type="checkbox" id="AdresiKaydet" name="AdresiKaydet" value="true" class="w-4 h-4 text-[#313511] border-[#e5e2dc] rounded focus:ring-[#313511]">
+                                        <span class="text-sm font-medium text-[#1c1c18] group-hover:text-[#313511] transition-colors">@Localizer["SaveAddressToAccount"]</span>
+                                    </label>
+                                    
+                                    <div id="adresBaslikWrapper" class="mt-4 hidden transition-all duration-300">
+                                        <label class="block text-xs uppercase tracking-widest text-[#1c1c18] font-medium mb-2" for="YeniAdresBasligi">@Localizer["AddressTitle"]</label>
+                                        <input type="text" id="YeniAdresBasligi" name="YeniAdresBasligi" class="w-full bg-transparent border-0 border-b border-[#e5e2dc] px-0 py-2 focus:ring-0 focus:border-[#313511] text-[#1c1c18] transition-colors" placeholder="@Localizer["AddressTitlePlaceholder"]">
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Kargo Bilgisi -->
+                    <div id="kargoAlanlari" class="mt-12">
+                        <h2 class="font-serif text-2xl text-[#313511] mb-6 flex items-center gap-3 border-b border-[#e5e2dc] pb-4">
+                            <i class="fas fa-truck-fast text-[#b58735]"></i> @Localizer["ShippingFee"]
+                        </h2>
+
+                        <div class="bg-[#f7f8ed] border border-[#cbd3a3] rounded-lg p-5">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-truck text-[#b58735] mt-1"></i>
+                                <div>
+                                    <p class="text-sm text-[#47473d] leading-relaxed">
+                                        Kargo ücreti şehrinize göre otomatik hesaplanacaktır<br>
+                                        Shipping fee will be calculated automatically based on your city<br>
+                                        سيتم حساب رسوم الشحن تلقائيًا حسب مدينتك
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-12">
+                        <h2 class="font-serif text-2xl text-[#313511] mb-6 flex items-center gap-3 border-b border-[#e5e2dc] pb-4">
+                            <i class="fas fa-credit-card text-[#b58735]"></i> @Localizer["PaymentMethod"]
+                        </h2>
+                        
+                        <div class="border border-[#e5e2dc] rounded-lg p-6 bg-white relative overflow-hidden">
+                            <div class="absolute top-0 right-0 bg-[#b58735] text-white text-[10px] uppercase tracking-widest px-3 py-1 font-bold rounded-bl-lg">@Localizer["256BitSSL"]</div>
+                            
+                            <div class="flex items-center gap-4 mb-4">
+                                <i class="fas fa-shield-alt text-[#313511] text-3xl"></i>
+                                <div>
+                                    <h6 class="text-base font-bold text-[#1c1c18]">@Localizer["OrderRequest"]</h6>
+                                    <p class="text-xs text-[#47473d]">@Localizer["OrderRequestInfo"]</p>
+                                </div>
+                            </div>
+
+                            <p class="text-sm text-[#47473d] mb-6 border-t border-[#e5e2dc] pt-4">
+                                @Localizer["OrderCompleteDescription"]
+                            </p>
+
+                            <!-- Ödeme Yöntemi Seçenekleri -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <label class="relative border border-[#e5e2dc] rounded-lg p-5 cursor-pointer transition-all hover:border-[#b58735] has-[:checked]:border-[#313511] has-[:checked]:bg-[#fcf9f3] group block">
+                                    <input type="radio" name="odemeYontemi" value="BankaHavalesi" class="absolute opacity-0 w-0 h-0 peer" checked onchange="togglePaymentMethod('BankaHavalesi')">
+                                    <div class="flex items-center gap-3">
+                                        <span class="w-5 h-5 rounded-full border-2 border-[#b58735] flex items-center justify-center bg-white transition-all peer-checked:border-[#313511]">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-[#313511] scale-0 transition-all peer-checked:scale-100"></span>
+                                        </span>
+                                        <div>
+                                            <div class="text-sm font-semibold text-[#1c1c18]">@Localizer["BankTransfer"]</div>
+                                            <div class="text-[11px] text-[#6f6a5e]">@Localizer["BankTransferDescShort"]</div>
+                                        </div>
+                                    </div>
+                                </label>
+                                
+                                @if (codAktif)
+                                {
+                                    <label class="relative border border-[#e5e2dc] rounded-lg p-5 cursor-pointer transition-all hover:border-[#b58735] has-[:checked]:border-[#313511] has-[:checked]:bg-[#fcf9f3] group block" id="codPaymentOption">
+                                        <input type="radio" name="odemeYontemi" value="KapidaOdeme" class="absolute opacity-0 w-0 h-0 peer" onchange="togglePaymentMethod('KapidaOdeme')">
+                                        <div class="flex items-center gap-3">
+                                            <span class="w-5 h-5 rounded-full border-2 border-[#b58735] flex items-center justify-center bg-white transition-all peer-checked:border-[#313511]">
+                                                <span class="w-2.5 h-2.5 rounded-full bg-[#313511] scale-0 transition-all peer-checked:scale-100"></span>
+                                            </span>
+                                            <div>
+                                                <div class="text-sm font-semibold text-[#1c1c18]">@Localizer["CashOnDelivery"]</div>
+                                                <div class="text-[11px] text-[#6f6a5e]">
+                                                    @Localizer["CashOnDeliveryDescShort"] 
+                                                    @if (codBedel > 0) { <span>(+ @codBedel.ToString("N0") @currencySymbol)</span> }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </label>
+                                }
+                            </div>
+
+                            @{
+                                var bankaHesaplari = ViewBag.BankaHesaplari as List<FilistinProje.Core.Varliklar.BankaHesap>;
+                            }
+                            @if (bankaHesaplari != null && bankaHesaplari.Any())
+                            {
+                                <div id="bankAccountsSection" class="mb-6">
+                                    <div class="flex items-center gap-2 mb-3">
+                                        <i class="fas fa-university text-[#b58735]"></i>
+                                        <h6 class="text-sm font-bold text-[#1c1c18] uppercase tracking-wider">@Localizer["BankTransferInfo"]</h6>
+                                    </div>
+                                    <p class="text-xs text-[#47473d] mb-4">@Localizer["BankTransferDesc"]</p>
+                                    <div class="space-y-3">
+                                        @foreach (var banka in bankaHesaplari)
+                                        {
+                                            <div class="border border-[#e5e2dc] rounded-lg p-4 bg-[#fcf9f3] hover:border-[#cbd3a3] transition-colors">
+                                                <div class="flex items-start justify-between gap-4 flex-wrap">
+                                                    <div class="flex-1 min-w-0">
+                                                        <div class="text-sm font-bold text-[#313511] mb-1">@banka.BankaAdi</div>
+                                                        <div class="text-xs text-[#47473d] mb-2">@banka.HesapSahibi</div>
+                                                        <div class="flex items-center gap-2">
+                                                            <code class="text-xs font-mono tracking-wider text-[#1c1c18] bg-white px-2 py-1 rounded border border-[#e5e2dc] select-all" id="iban-@banka.Id">@FormatIban(banka.IBAN)</code>
+                                                            <button type="button" class="text-[#b58735] hover:text-[#313511] transition-colors" onclick="copyIban('iban-@banka.Id', this)" title="@Localizer["CopyIBAN"]">
+                                                                <i class="fas fa-copy text-sm"></i>
+                                                            </button>
+                                                        </div>
+                                                         @if (!string.IsNullOrWhiteSpace(banka.SubeKodu) || !string.IsNullOrWhiteSpace(banka.HesapNo))
+                                                         {
+                                                             <div class="flex gap-4 mt-2 text-[10px] text-[#6f6a5e] uppercase tracking-wider">
+                                                                 @if (!string.IsNullOrWhiteSpace(banka.SubeKodu))
+                                                                 {
+                                                                     <span>@Localizer["BranchCode"]: @banka.SubeKodu</span>
+                                                                 }
+                                                                 @if (!string.IsNullOrWhiteSpace(banka.HesapNo))
+                                                                 {
+                                                                     <span>@Localizer["AccountNo"]: @banka.HesapNo</span>
+                                                                 }
+                                                             </div>
+                                                         }
+                                                     </div>
+                                                 </div>
+                                             </div>
+                                         }
+                                     </div>
+                                 </div>
+                             }
+
+
+                              <!-- Reçete Yükle -->
+                              @if (receteZorunlu)
+                              {
+                                  <div class="mt-12 bg-[#fdfaf6] border border-[#f5efe6] rounded-lg p-6">
+                                      <h2 class="font-serif text-2xl text-[#313511] mb-2 flex items-center gap-3">
+                                          <i class="fas fa-file-prescription text-[#b58735]"></i> @Localizer["PrescriptionVerification"]
+                                      </h2>
+                                      <p class="text-xs text-[#47473d] mb-6">@Localizer["PrescriptionPhotoDesc"]</p>
+
+                                      <input type="hidden" name="ReceteDosyaYolu" id="ReceteDosyaYolu" value="" />
+
+                                      <div class="border-2 border-dashed border-[#e5e2dc] rounded-lg p-8 text-center hover:border-[#b58735] transition-colors cursor-pointer bg-white" onclick="document.getElementById('receteFileInput').click()">
+                                          <i class="fas fa-file-medical fa-3x text-[#b58735] mb-3"></i>
+                                          <p class="text-sm font-semibold text-[#1c1c18] mb-1">@Localizer["UploadPrescription"]</p>
+                                          <p class="text-[10px] text-[#9ca3af]">PDF, JPEG, PNG, WebP (max 5MB)</p>
+                                          <input type="file" id="receteFileInput" accept="image/jpeg,image/png,image/webp,application/pdf" class="hidden" onchange="handleReceteFileUpload(this)" />
+                                      </div>
+
+                                      <div id="recetePreviewContainer" class="hidden mt-4 max-w-xs mx-auto">
+                                          <div class="relative rounded-lg overflow-hidden border border-[#cbd3a3] bg-[#f7f8ed] p-2">
+                                              <div id="recetePdfPlaceholder" class="hidden text-center py-6">
+                                                  <i class="fas fa-file-pdf text-red-500 fa-3x mb-2"></i>
+                                                  <div class="text-xs font-semibold text-[#1c1c18]" id="recetePdfName">PDF Dosyası</div>
+                                              </div>
+                                              <img id="recetePreview" class="hidden w-full aspect-[4/3] object-contain rounded" alt="@Localizer["PrescriptionVerification"]" />
+                                              <div class="absolute top-3 end-3 bg-green-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full">
+                                                  <i class="fas fa-check-circle me-1"></i>@Localizer["PrescriptionUploaded"]
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      @{
+                                          var rxErrors = ViewData.ModelState.ContainsKey("ReceteDosyaYolu") ? ViewData.ModelState["ReceteDosyaYolu"]?.Errors : null;
+                                      }
+                                      @if (rxErrors != null && rxErrors.Any())
+                                      {
+                                          <div class="mt-2 text-xs text-red-600 flex items-center gap-1">
+                                              <i class="fas fa-exclamation-circle"></i>
+                                              @foreach (var error in rxErrors)
+                                              {
+                                                  <span>@error.ErrorMessage</span>
+                                              }
+                                          </div>
+                                      }
+                                  </div>
+                              }
+
+
+                            <label class="flex items-start gap-3 cursor-pointer group mt-4 bg-[#fcf9f3] p-4 rounded border border-[#e5e2dc] has-[:checked]:border-[#cbd3a3]">
+                                <input type="checkbox" name="sozlesmeOnaylandi" value="true" class="w-4 h-4 mt-0.5 text-[#313511] border-[#e5e2dc] rounded focus:ring-[#313511]">
+                                <span class="text-sm leading-relaxed text-[#47473d]">
+                                    <a href="/Kurumsal/Gizlilik" class="text-[#313511] font-semibold hover:text-[#b58735] transition-colors underline decoration-1 underline-offset-2">@Localizer["PrivacyPolicy"]</a> @Localizer["And"] 
+                                    <a href="/Kurumsal/KullaniciSozlesmesi" class="text-[#313511] font-semibold hover:text-[#b58735] transition-colors underline decoration-1 underline-offset-2">@Localizer["UserAgreement"]</a> @Localizer["TermsAccepted"]
+                                </span>
+                            </label>
+                            @{
+                                var termsErrors = ViewData.ModelState.ContainsKey("sozlesmeOnaylandi") ? ViewData.ModelState["sozlesmeOnaylandi"]?.Errors : null;
+                            }
+                            @if (termsErrors != null && termsErrors.Any())
+                            {
+                                <div class="mt-2 text-xs text-red-600 flex items-center gap-1">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    @foreach (var error in termsErrors)
+                                    {
+                                        <span>@error.ErrorMessage</span>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Sipariş Notu -->
+                    <div class="mt-8">
+                        <h2 class="font-serif text-xl text-[#313511] mb-4 flex items-center gap-3 border-b border-[#e5e2dc] pb-3">
+                            <i class="fas fa-pen text-[#b58735]"></i> @Localizer["OrderNote"]
+                        </h2>
+                        <textarea asp-for="Aciklama" rows="3" maxlength="1000" class="w-full border border-[#e5e2dc] rounded-lg px-4 py-3 text-sm text-[#1c1c18] bg-white focus:ring-1 focus:ring-[#b58735] focus:outline-none resize-none placeholder:text-[#a09e99] transition-colors" placeholder="@Localizer["OrderNotePlaceholder"]"></textarea>
+                        <p class="text-[10px] text-[#a09e99] mt-1">@string.Format(Localizer["MaxChars"].Value, 1000)</p>
+                    </div>
+
+                    <!-- Kimlik Fotoğrafı Çek/Yükle -->
+                    <div class="mt-12">
+                        <h2 class="font-serif text-2xl text-[#313511] mb-4 flex items-center gap-3 border-b border-[#e5e2dc] pb-4">
+                            <i class="fas fa-id-card text-[#b58735]"></i> @Localizer["IdentityVerification"]
+                        </h2>
+                        <p class="text-xs text-[#47473d] mb-6">@Localizer["IdentityPhotoDesc"]</p>
+
+                        <input type="hidden" name="KimlikFotoYolu" id="KimlikFotoYolu" value="" />
+
+                        <div class="flex gap-3 mb-5">
+                            <button type="button" id="btnCameraMode" class="flex-1 bg-[#313511] text-white text-xs tracking-widest uppercase py-3 rounded hover:bg-[#1c2001] transition-colors font-medium" onclick="switchIdentityMode('camera')">
+                                <i class="fas fa-camera me-2"></i>@Localizer["CameraCapture"]
+                            </button>
+                            <button type="button" id="btnUploadMode" class="flex-1 bg-[#f1ede7] text-[#313511] text-xs tracking-widest uppercase py-3 rounded hover:bg-[#e5e2dc] transition-colors font-medium" onclick="switchIdentityMode('upload')">
+                                <i class="fas fa-upload me-2"></i>@Localizer["FileUpload"]
+                            </button>
+                        </div>
+
+                        <!-- Camera Mode -->
+                        <div id="identityCameraMode" class="hidden">
+                            <div class="relative bg-black rounded-lg overflow-hidden mb-4 max-w-md mx-auto">
+                                <video id="identityVideo" playsinline class="w-full aspect-[4/3] object-cover"></video>
+                                <canvas id="identityCanvas" class="hidden"></canvas>
+                                <div id="identityCameraPlaceholder" class="absolute inset-0 flex items-center justify-center bg-[#1c1c18] text-[#6f6a5e]">
+                                    <div class="text-center">
+                                        <i class="fas fa-camera fa-3x mb-3"></i>
+                                        <p class="text-xs uppercase tracking-widest">@Localizer["CameraCapture"]</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex justify-center gap-3">
+                                <button type="button" id="btnStartCamera" class="bg-[#313511] text-white text-xs tracking-widest uppercase px-6 py-2.5 rounded hover:bg-[#1c2001] transition-colors font-medium" onclick="startIdentityCamera()">
+                                    <i class="fas fa-play me-2"></i>@Localizer["CameraCapture"]
+                                </button>
+                                <button type="button" id="btnCapturePhoto" class="hidden bg-[#b58735] text-white text-xs tracking-widest uppercase px-6 py-2.5 rounded hover:bg-[#a0742d] transition-colors font-medium" onclick="captureIdentityPhoto()">
+                                    <i class="fas fa-camera me-2"></i>@Localizer["CapturePhoto"]
+                                </button>
+                                <button type="button" id="btnRetakePhoto" class="hidden bg-[#f1ede7] text-[#313511] text-xs tracking-widest uppercase px-6 py-2.5 rounded hover:bg-[#e5e2dc] transition-colors font-medium" onclick="retakeIdentityPhoto()">
+                                    <i class="fas fa-redo me-2"></i>@Localizer["RetakePhoto"]
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Upload Mode -->
+                        <div id="identityUploadMode" class="hidden">
+                            <div class="border-2 border-dashed border-[#e5e2dc] rounded-lg p-8 text-center hover:border-[#b58735] transition-colors cursor-pointer" onclick="document.getElementById('identityFileInput').click()">
+                                <i class="fas fa-cloud-upload-alt fa-3x text-[#b58735] mb-3"></i>
+                                <p class="text-sm text-[#47473d] mb-2">@Localizer["FileUpload"]</p>
+                                <p class="text-[10px] text-[#9ca3af]">JPEG, PNG, WebP (max 5MB)</p>
+                                <input type="file" id="identityFileInput" accept="image/jpeg,image/png,image/webp" class="hidden" onchange="handleIdentityFileUpload(this)" />
+                            </div>
+                        </div>
+
+                        <!-- Preview -->
+                        <div id="identityPreviewContainer" class="hidden mt-4 max-w-xs mx-auto">
+                            <div class="relative rounded-lg overflow-hidden border border-[#cbd3a3] bg-[#f7f8ed] p-2">
+                                <img id="identityPreview" class="w-full aspect-[4/3] object-contain rounded" alt="@Localizer["IdentityVerification"]" />
+                                <div class="absolute top-3 end-3 bg-green-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full">
+                                    <i class="fas fa-check-circle me-1"></i>@Localizer["IdentityPhotoUploaded"]
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (isWholesale && genelToplam < toptanciMinTutar)
+                    {
+                        <div class="w-full mt-4 bg-amber-50 border border-amber-300 rounded-lg px-4 py-3 text-center">
+                            <p class="text-sm font-semibold text-amber-700">@Localizer["WholesaleMinOrderWarning", toptanciMinTutar.ToString("N0"), currencySymbol]</p>
+                            <p class="text-xs text-amber-600 mt-1">@Localizer["WholesaleMinOrderRemaining", (toptanciMinTutar - genelToplam).ToString("N0"), currencySymbol]</p>
+                        </div>
+                    }
+                    <button type="submit" class="w-full mt-4 bg-[#313511] text-white text-sm font-medium tracking-widest uppercase py-4 rounded hover:bg-[#1c2001] transition-colors flex items-center justify-center gap-3 @(isWholesale && genelToplam < toptanciMinTutar ? "opacity-50 cursor-not-allowed" : "")" @(isWholesale && genelToplam < toptanciMinTutar ? "disabled" : "")>
+                        <i class="fas fa-check"></i> @Localizer["CreateOrder"] - <span id="checkoutBtnTotal">@genelToplam.ToString("N2")</span> @currencySymbol
+                    </button>
+                </form>
+            </section>
+        </div>
+
+        <!-- Sağ Sipariş Özeti -->
+        <div class="lg:w-1/3">
+            <div class="sticky top-8 bg-white border border-[#e5e2dc] rounded-lg p-6 lg:p-8">
+                <h3 class="font-serif text-2xl text-[#313511] mb-6 pb-4 border-b border-[#e5e2dc]">@Localizer["OrderSummary"]</h3>
+                
+                @if (sepetItems.Any())
+                {
+                    <div class="mb-6 space-y-3 border-b border-[#e5e2dc] pb-5">
+                        @foreach (var item in sepetItems)
+                        {
+                            <div class="flex gap-3">
+                                <div class="h-14 w-14 shrink-0 overflow-hidden rounded bg-[#f1ede7]">
+                                    <img src="@item.UrunResimUrl" alt="@item.UrunBaslik" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="line-clamp-2 text-xs font-semibold text-[#1c1c18]">@item.UrunBaslik</div>
+                                    @if (!string.IsNullOrWhiteSpace(item.SecenekAdi))
+                                    {
+                                        <div class="mt-1 text-[11px] leading-snug text-[#6f6a5e]">@item.SecenekAdi</div>
+                                    }
+                                    @if (item.HediyePaketi)
+                                    {
+                                        <div class="mt-0.5 text-[10px] text-[#313511] font-medium">
+                                            <i class="fas fa-gift mr-0.5"></i> @Localizer["GiftWrapShort"]
+                                        </div>
+                                    }
+                                    <div class="mt-1 flex justify-between gap-2 text-xs text-[#47473d]">
+                                        <span>x @item.Adet</span>
+                                        <span>@item.Toplam.ToString("N2") @currencySymbol</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+
+                @{
+                    var sepetToplamiIndirimliCheckout = araToplam - indirim;
+                    var kalanTutarCheckout = ucretsizKargoLimiti - sepetToplamiIndirimliCheckout;
+                    var shippingProgressCheckout = Math.Min(100, (int)(((double)sepetToplamiIndirimliCheckout / (double)ucretsizKargoLimiti) * 100));
+                }
+                @if (kalanTutarCheckout > 0)
+                {
+                    <div id="checkoutFreeShippingBanner" class="mb-5 bg-amber-50 border border-amber-200 rounded-lg p-4">
+                        <div class="flex items-center gap-2 text-xs text-amber-800 mb-3">
+                            <i class="fas fa-truck text-[#b58735]"></i>
+                            <span>@Localizer["FreeShippingNotice", currencySymbol + kalanTutarCheckout.ToString("N2")]</span>
+                        </div>
+                        <div class="w-full h-2 bg-amber-200 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-[#b58735] to-[#d4a84b] rounded-full transition-all duration-700" style="width: @(shippingProgressCheckout)%"></div>
+                        </div>
+                        <div class="flex justify-between text-[10px] text-amber-700 mt-1">
+                            <span>@currencySymbol@("0")</span>
+                            <span>@Localizer["FreeShippingProgress", currencySymbol + kalanTutarCheckout.ToString("N2")]</span>
+                            <span>@currencySymbol@ucretsizKargoLimiti.ToString("N2")</span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div id="checkoutFreeShippingBanner" class="mb-5 bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div class="flex items-center gap-2 text-xs text-green-800">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            <span class="font-semibold">@Localizer["FreeShippingReached"]</span>
+                        </div>
+                    </div>
+                }
+
+                <div class="space-y-4 mb-6 text-sm">
+                    <div class="flex justify-between text-[#47473d]">
+                        <span>@Localizer["Subtotal"]</span>
+                        <span>@araToplam.ToString("N2") @currencySymbol</span>
+                    </div>
+
+                    @if (indirim > 0)
+                    {
+                        <div class="flex justify-between text-[#b58735] font-medium">
+                            <span>@Localizer["Discount"] (@kuponKodu)</span>
+                            <span>-@indirim.ToString("N2") @currencySymbol</span>
+                        </div>
+                    }
+
+                    <div id="checkoutKargoSatiri" class="flex justify-between text-[#47473d]">
+                        <span>@Localizer["ShippingFee"]</span>
+                        <span id="checkoutKargoUcreti" class="text-[#313511] font-medium">@((ViewBag.GosterilecekKargoBedeli == 0) ? Localizer["Free"].Value : $"{currencySymbol}{((decimal)ViewBag.GosterilecekKargoBedeli).ToString("N2")}")</span>
+                    </div>
+
+                    <div id="checkoutCodSurchargeSatiri" class="flex justify-between text-[#47473d] hidden">
+                        <span>@Localizer["CODServiceFee"]</span>
+                        <span id="checkoutCodSurchargeUcreti" class="text-[#b58735] font-semibold">@currencySymbol@codBedel.ToString("N2")</span>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-end border-t border-[#e5e2dc] pt-6 mb-8">
+                    <span class="text-sm text-[#47473d] uppercase tracking-wider font-medium">@Localizer["GrandTotal"]</span>
+                    <span id="checkoutGenelToplam" class="text-4xl font-bold text-[#313511] tracking-tight">@genelToplam.ToString("N2") <span class="text-lg font-normal text-[#47473d]">@currencySymbol</span></span>
+                </div>
+
+                <div class="space-y-4 pt-6 border-t border-[#e5e2dc]">
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-shield-check text-[#b58735] mt-1"></i>
+                        <div>
+                            <p class="text-xs font-bold text-[#1c1c18] uppercase tracking-wider mb-1">@Localizer["256BitSslEncryption"]</p>
+                            <p class="text-[10px] text-[#47473d]">@Localizer["256BitSslDescription"]</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-box-open text-[#b58735] mt-1"></i>
+                        <div>
+                            <p class="text-xs font-bold text-[#1c1c18] uppercase tracking-wider mb-1">@Localizer["UndamagedDelivery"]</p>
+                            <p class="text-[10px] text-[#47473d]">@Localizer["UndamagedDeliveryDescription"]</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-undo text-[#b58735] mt-1"></i>
+                        <div>
+                            <p class="text-xs font-bold text-[#1c1c18] uppercase tracking-wider mb-1">@Localizer["EasyReturns"]</p>
+                            <p class="text-[10px] text-[#47473d]">@Localizer["EasyReturnsDescription"]</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function selectAddress(ad, tel, sehir, ilce, acikAdres) {
+        document.getElementById("MusteriAdSoyad").value = ad;
+        document.getElementById("Telefon").value = tel;
+        document.getElementById("Sehir").value = sehir;
+        document.getElementById("Ilce").value = ilce;
+        document.getElementById("AcikAdres").value = acikAdres;
+
+        if (window.showToast) {
+            window.showToast('@Localizer["AddressLoaded"]', 'success');
+        }
+    }
+
+    function handleReceteFileUpload(input) {
+        if (input.files && input.files[0]) {
+            var file = input.files[0];
+
+            if (file.size > 5 * 1024 * 1024) {
+                if (window.showToast) {
+                    window.showToast('@Localizer["Siparis_FileUploadError"]', 'error');
+                }
+                return;
+            }
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var preview = document.getElementById('recetePreview');
+                var pdfPlaceholder = document.getElementById('recetePdfPlaceholder');
+                var container = document.getElementById('recetePreviewContainer');
+
+                if (file.type === 'application/pdf') {
+                    if (preview) preview.classList.add('hidden');
+                    if (pdfPlaceholder) {
+                        pdfPlaceholder.classList.remove('hidden');
+                        var nameEl = document.getElementById('recetePdfName');
+                        if (nameEl) nameEl.textContent = file.name;
+                    }
+                } else {
+                    if (pdfPlaceholder) pdfPlaceholder.classList.add('hidden');
+                    if (preview) {
+                        preview.src = e.target.result;
+                        preview.classList.remove('hidden');
+                    }
+                }
+                if (container) container.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+
+            uploadRecetePhoto(file, file.name);
+        }
+    }
+
+    function uploadRecetePhoto(file, filename) {
+        var formData = new FormData();
+        formData.append('dosya', file, filename);
+
+        var token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/Siparis/YukleRecete', true);
+        xhr.setRequestHeader('RequestVerificationToken', token);
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                try {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        document.getElementById('ReceteDosyaYolu').value = response.url;
+                        if (window.showToast) {
+                            window.showToast('@Localizer["PrescriptionUploaded"]', 'success');
+                        }
+                    } else {
+                        if (window.showToast) {
+                            window.showToast(response.message || 'Hata oluştu', 'error');
+                        }
+                    }
+                } catch (e) {
+                    if (window.showToast) {
+                        window.showToast('@Localizer["Siparis_FileUploadError"]', 'error');
+                    }
+                }
+            } else {
+                if (window.showToast) {
+                    window.showToast('@Localizer["Siparis_FileUploadError"]', 'error');
+                }
+            }
+        };
+
+        xhr.send(formData);
+    }
+
+    function toggleDeliveryType() {
+        var isStorePickup = document.querySelector('input[name="TeslimatTipi"]:checked').value === 'MagazadanTeslim';
+        var adresAlanlari = document.getElementById('adresAlanlari');
+        var kargoAlanlari = document.getElementById('kargoAlanlari');
+        var storePickupInfo = document.getElementById('storePickupInfo');
+        var checkoutKargoSatiri = document.getElementById('checkoutKargoSatiri');
+        var checkoutFreeShippingBanner = document.getElementById('checkoutFreeShippingBanner');
+        var checkoutKargoDisplay = document.getElementById('checkoutKargoUcreti');
+        var totalDisplay = document.getElementById('checkoutGenelToplam');
+        var btnTotalDisplay = document.getElementById('checkoutBtnTotal');
+        var codPaymentOption = document.getElementById('codPaymentOption');
+
+        if (isStorePickup) {
+            if (adresAlanlari) adresAlanlari.classList.add('hidden');
+            if (kargoAlanlari) kargoAlanlari.classList.add('hidden');
+            if (storePickupInfo) storePickupInfo.classList.remove('hidden');
+            if (checkoutKargoSatiri) checkoutKargoSatiri.classList.add('hidden');
+            if (checkoutFreeShippingBanner) checkoutFreeShippingBanner.classList.add('hidden');
+            if (codPaymentOption) {
+                codPaymentOption.classList.add('hidden');
+                var bankRadio = document.querySelector('input[name="odemeYontemi"][value="BankaHavalesi"]');
+                if (bankRadio) {
+                    bankRadio.checked = true;
+                    togglePaymentMethod('BankaHavalesi');
+                }
+            }
+
+            var subtotal = parseFloat("@((araToplam - indirim).ToString(System.Globalization.CultureInfo.InvariantCulture))");
+            if (totalDisplay) {
+                totalDisplay.innerHTML = subtotal.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' <span class="text-lg font-normal text-[#47473d]">' + currencySymbol + '</span>';
+            }
+            if (btnTotalDisplay) {
+                btnTotalDisplay.textContent = subtotal.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+        } else {
+            if (adresAlanlari) adresAlanlari.classList.remove('hidden');
+            if (kargoAlanlari) kargoAlanlari.classList.remove('hidden');
+            if (storePickupInfo) storePickupInfo.classList.add('hidden');
+            if (checkoutKargoSatiri) checkoutKargoSatiri.classList.remove('hidden');
+            if (checkoutFreeShippingBanner) checkoutFreeShippingBanner.classList.remove('hidden');
+            if (codPaymentOption) codPaymentOption.classList.remove('hidden');
+            if (typeof sehirKargoHesapla === 'function') {
+                sehirKargoHesapla();
+            }
+        }
+    }
+
+    const adresKaydetCheckbox = document.getElementById('AdresiKaydet');
+    if (adresKaydetCheckbox) {
+        adresKaydetCheckbox.addEventListener('change', function () {
+            const target = document.getElementById('adresBaslikWrapper');
+            if (!target) return;
+
+            if (this.checked) {
+                target.classList.remove('hidden');
+            } else {
+                target.classList.add('hidden');
+            }
+        });
+    }
+
+    const telefonInput = document.getElementById('Telefon');
+    if (telefonInput) {
+        telefonInput.addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+
+            if (value.startsWith('0')) {
+                value = value.substring(1);
+            }
+
+            if (value.length > 10) {
+                value = value.substring(0, 10);
+            }
+
+            if (value.length > 6) {
+                value = value.replace(/(\d{3})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4');
+            } else if (value.length > 3) {
+                value = value.replace(/(\d{3})(\d{3})/, '$1 $2');
+            }
+
+            e.target.value = value;
+        });
+    }
+
+    // Form submission validation UI
+    const form = document.getElementById('odemeForm');
+    form.addEventListener('submit', function(e) {
+        const receteZorunlu = @(receteZorunlu ? "true" : "false");
+        if (receteZorunlu) {
+            const receteYolu = document.getElementById('ReceteDosyaYolu')?.value;
+            if (!receteYolu || receteYolu.trim() === '') {
+                e.preventDefault();
+                if (window.showToast) {
+                    window.showToast('@Localizer["Siparis_PrescriptionRequired"]', 'error');
+                }
+                return;
+            }
+        }
+
+        if (!form.checkValidity()) {
+            e.preventDefault();
+            if (window.showToast) {
+                window.showToast('@Localizer["FillRequiredFields"]', 'error');
+            }
+        }
+    });
+
+    // Address radio button visual update
+    document.querySelectorAll('input[name="kayitliAdresSecimi"]').forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            document.querySelectorAll('.address-radio-inner').forEach(function(inner) {
+                inner.classList.remove('opacity-100', 'scale-100');
+                inner.classList.add('opacity-0', 'scale-0');
+            });
+            var container = this.closest('label').querySelector('.address-radio-inner');
+            if (container) {
+                container.classList.remove('opacity-0', 'scale-0');
+                container.classList.add('opacity-100', 'scale-100');
+            }
+        });
+    });
+
+    // Identity Photo (WebRTC + Upload)
+    var identityStream = null;
+
+    function switchIdentityMode(mode) {
+        var camMode = document.getElementById('identityCameraMode');
+        var uplMode = document.getElementById('identityUploadMode');
+        var btnCam = document.getElementById('btnCameraMode');
+        var btnUpl = document.getElementById('btnUploadMode');
+
+        if (mode === 'camera') {
+            camMode.classList.remove('hidden');
+            uplMode.classList.add('hidden');
+            btnCam.className = 'flex-1 bg-[#313511] text-white text-xs tracking-widest uppercase py-3 rounded hover:bg-[#1c2001] transition-colors font-medium';
+            btnUpl.className = 'flex-1 bg-[#f1ede7] text-[#313511] text-xs tracking-widest uppercase py-3 rounded hover:bg-[#e5e2dc] transition-colors font-medium';
+        } else {
+            camMode.classList.add('hidden');
+            uplMode.classList.remove('hidden');
+            btnCam.className = 'flex-1 bg-[#f1ede7] text-[#313511] text-xs tracking-widest uppercase py-3 rounded hover:bg-[#e5e2dc] transition-colors font-medium';
+            btnUpl.className = 'flex-1 bg-[#313511] text-white text-xs tracking-widest uppercase py-3 rounded hover:bg-[#1c2001] transition-colors font-medium';
+            stopIdentityCamera();
+        }
+    }
+
+    function startIdentityCamera() {
+        var video = document.getElementById('identityVideo');
+        var placeholder = document.getElementById('identityCameraPlaceholder');
+        var startBtn = document.getElementById('btnStartCamera');
+        var captureBtn = document.getElementById('btnCapturePhoto');
+
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 960 } } })
+                .then(function(stream) {
+                    identityStream = stream;
+                    video.srcObject = stream;
+                    video.play();
+                    placeholder.classList.add('hidden');
+                    startBtn.classList.add('hidden');
+                    captureBtn.classList.remove('hidden');
+                })
+                .catch(function(err) {
+                    if (window.showToast) {
+                        window.showToast('@Localizer["ConnectionErrorOccurred"]', 'error');
+                    }
+                    console.error('Camera error:', err);
+                });
+        } else {
+            if (window.showToast) {
+                window.showToast('@Localizer["ConnectionErrorOccurred"]', 'error');
+            }
+        }
+    }
+
+    function captureIdentityPhoto() {
+        var video = document.getElementById('identityVideo');
+        var canvas = document.getElementById('identityCanvas');
+
+        canvas.width = video.videoWidth || 1280;
+        canvas.height = video.videoHeight || 960;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        canvas.toBlob(function(blob) {
+            uploadIdentityPhoto(blob, 'captured-id-' + Date.now() + '.jpg');
+        }, 'image/jpeg', 0.92);
+    }
+
+    function uploadIdentityPhoto(blob, fileName) {
+        var formData = new FormData();
+        formData.append('dosya', blob, fileName);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/Siparis/YukleKimlikFoto', true);
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                try {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        document.getElementById('KimlikFotoYolu').value = response.url;
+                        showIdentityPreview(response.url);
+                        if (window.showToast) {
+                            window.showToast('@Localizer["IdentityPhotoUploaded"]', 'success');
+                        }
+                        stopIdentityCamera();
+                        showIdentityControlsAfterCapture();
+                    } else {
+                        if (window.showToast) {
+                            window.showToast(response.message, 'error');
+        }
+    }
+
+    function togglePaymentMethod(method) {
+        var bankAccountsSection = document.getElementById('bankAccountsSection');
+        var checkoutCodSurchargeSatiri = document.getElementById('checkoutCodSurchargeSatiri');
+
+        if (method === 'KapidaOdeme') {
+            if (bankAccountsSection) bankAccountsSection.classList.add('hidden');
+            if (checkoutCodSurchargeSatiri) checkoutCodSurchargeSatiri.classList.remove('hidden');
+        } else {
+            if (bankAccountsSection) bankAccountsSection.classList.remove('hidden');
+            if (checkoutCodSurchargeSatiri) checkoutCodSurchargeSatiri.classList.add('hidden');
+        }
+
+        if (typeof sehirKargoHesapla === 'function') {
+            sehirKargoHesapla();
+        }
+    }
+                } catch(e) {
+                    if (window.showToast) {
+                        window.showToast('@Localizer["Siparis_FileUploadError"]', 'error');
+                    }
+                }
+            } else {
+                if (window.showToast) {
+                    window.showToast('@Localizer["Siparis_FileUploadError"]', 'error');
+                }
+            }
+        };
+
+        xhr.onerror = function() {
+            if (window.showToast) {
+                window.showToast('@Localizer["ConnectionErrorOccurred"]', 'error');
+            }
+        };
+
+        xhr.send(formData);
+    }
+
+    function showIdentityPreview(url) {
+        var preview = document.getElementById('identityPreview');
+        var container = document.getElementById('identityPreviewContainer');
+        preview.src = url;
+        container.classList.remove('hidden');
+    }
+
+    function showIdentityControlsAfterCapture() {
+        var captureBtn = document.getElementById('btnCapturePhoto');
+        var retakeBtn = document.getElementById('btnRetakePhoto');
+        captureBtn.classList.add('hidden');
+        retakeBtn.classList.remove('hidden');
+    }
+
+    function retakeIdentityPhoto() {
+        var preview = document.getElementById('identityPreviewContainer');
+        var retakeBtn = document.getElementById('btnRetakePhoto');
+        var startBtn = document.getElementById('btnStartCamera');
+        var captureBtn = document.getElementById('btnCapturePhoto');
+        var hiddenInput = document.getElementById('KimlikFotoYolu');
+
+        preview.classList.add('hidden');
+        retakeBtn.classList.add('hidden');
+        hiddenInput.value = '';
+        startBtn.classList.remove('hidden');
+
+        startIdentityCamera();
+    }
+
+    function stopIdentityCamera() {
+        if (identityStream) {
+            identityStream.getTracks().forEach(function(track) {
+                track.stop();
+            });
+            identityStream = null;
+        }
+        var video = document.getElementById('identityVideo');
+        if (video) {
+            video.srcObject = null;
+        }
+    }
+
+    function handleIdentityFileUpload(input) {
+        if (input.files && input.files[0]) {
+            var file = input.files[0];
+
+            if (file.size > 5 * 1024 * 1024) {
+                if (window.showToast) {
+                    window.showToast('@Localizer["Siparis_FileUploadError"]', 'error');
+                }
+                return;
+            }
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var preview = document.getElementById('identityPreview');
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+
+            uploadIdentityPhoto(file, file.name);
+        }
+    }
+
+    window.addEventListener('beforeunload', function() {
+        stopIdentityCamera();
+    });
+
+    // --- Dinamik Kargo Hesaplama (Şehir Bazlı) ---
+    function sehirKargoHesapla() {
+        const sehir = document.getElementById("Sehir")?.value;
+        if (!sehir) return;
+
+        const url = "/Siparis/KargoHesapla?sehir=" + encodeURIComponent(sehir);
+
+        fetch(url)
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    const kargoDisplay = document.getElementById("checkoutKargoUcreti");
+                    const totalDisplay = document.getElementById("checkoutGenelToplam");
+                    const btnTotalDisplay = document.getElementById("checkoutBtnTotal");
+                    const checkoutKargoSatiri = document.getElementById("checkoutKargoSatiri");
+                    const freeShippingBanner = document.getElementById("checkoutFreeShippingBanner");
+
+                    const araToplam = parseFloat("@((araToplam - indirim).ToString(System.Globalization.CultureInfo.InvariantCulture))");
+                    const codBedel = parseFloat("@codBedel.ToString(System.Globalization.CultureInfo.InvariantCulture)");
+                    const selectedPayment = document.querySelector('input[name="odemeYontemi"]:checked')?.value || 'BankaHavalesi';
+                    const codPrice = (selectedPayment === 'KapidaOdeme') ? codBedel : 0;
+
+                    // Kargo ücretini güncelle
+                    const isFree = data.kargoUcreti <= 0 || araToplam >= data.ucretsizKargoLimiti;
+                    const gecerliKargoUcreti = isFree ? 0 : data.kargoUcreti;
+
+                    if (kargoDisplay) {
+                        if (gecerliKargoUcreti === 0) {
+                            kargoDisplay.textContent = '@Localizer["Free"]';
+                            kargoDisplay.className = "text-green-600 font-bold uppercase";
+                        } else {
+                            kargoDisplay.textContent = currencySymbol + gecerliKargoUcreti.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            kargoDisplay.className = "text-[#313511] font-medium";
+                        }
+                    }
+
+                    // Free shipping banner güncelleme
+                    const kalanTutar = data.ucretsizKargoLimiti - araToplam;
+                    if (checkoutFreeShippingBanner) {
+                        if (kalanTutar > 0) {
+                            checkoutFreeShippingBanner.innerHTML =
+                                '<div class="flex items-center gap-2 text-xs text-amber-800 mb-3">' +
+                                '<i class="fas fa-truck text-[#b58735]"></i>' +
+                                '<span>' + kalanTutar.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ' + currencySymbol + ' üzeri ücretsiz kargo</span></div>' +
+                                '<div class="w-full h-2 bg-amber-200 rounded-full overflow-hidden">' +
+                                '<div class="h-full bg-gradient-to-r from-[#b58735] to-[#d4a84b] rounded-full" style="width: ' + Math.min(100, Math.round((araToplam / data.ucretsizKargoLimiti) * 100)) + '%"></div></div>';
+                            checkoutFreeShippingBanner.className = "mb-5 bg-amber-50 border border-amber-200 rounded-lg p-4";
+                        } else {
+                            checkoutFreeShippingBanner.innerHTML =
+                                '<div class="flex items-center gap-2 text-xs text-green-800">' +
+                                '<i class="fas fa-check-circle text-green-500"></i>' +
+                                '<span class="font-semibold">@Localizer["FreeShippingReached"]</span></div>';
+                            checkoutFreeShippingBanner.className = "mb-5 bg-green-50 border border-green-200 rounded-lg p-4";
+                        }
+                        checkoutFreeShippingBanner.classList.remove('hidden');
+                    }
+
+                    // Total güncelle
+                    const genelToplamVal = araToplam + gecerliKargoUcreti + codPrice;
+                    if (totalDisplay) {
+                        totalDisplay.innerHTML = genelToplamVal.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' <span class="text-lg font-normal text-[#47473d]">' + currencySymbol + '</span>';
+                    }
+                    if (btnTotalDisplay) {
+                        btnTotalDisplay.textContent = genelToplamVal.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    }
+                }
+            })
+            .catch(err => console.error("Kargo hesaplama hatası:", err));
+    }
+
+    // Şehir değişince kargo hesapla
+    document.addEventListener("DOMContentLoaded", function () {
+        const sehirSelect = document.getElementById("Sehir");
+        if (sehirSelect) {
+            sehirSelect.addEventListener("change", sehirKargoHesapla);
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const kargoDisplay = document.getElementById("checkoutKargoUcreti");
+        const totalDisplay = document.getElementById("checkoutGenelToplam");
+        const btnTotalDisplay = document.getElementById("checkoutBtnTotal");
+        const currencySymbol = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(currencySymbol));
+
+        const subtotal = parseFloat("@((araToplam - indirim).ToString(System.Globalization.CultureInfo.InvariantCulture))");
+        const codBedel = parseFloat("@codBedel.ToString(System.Globalization.CultureInfo.InvariantCulture)");
+        const codLimit = parseFloat("@codLimit.ToString(System.Globalization.CultureInfo.InvariantCulture)");
+
+        function updateCheckoutTotals() {
+            const isStorePickup = document.querySelector('input[name="TeslimatTipi"]:checked')?.value === 'MagazadanTeslim';
+
+            const codPaymentOption = document.getElementById('codPaymentOption');
+            if (subtotal > codLimit) {
+                if (codPaymentOption) {
+                    codPaymentOption.classList.add('hidden');
+                    var bankRadio = document.querySelector('input[name="odemeYontemi"][value="BankaHavalesi"]');
+                    if (bankRadio && bankRadio.checked === false) {
+                        bankRadio.checked = true;
+                        togglePaymentMethod('BankaHavalesi');
+                    }
+                }
+            } else if (!isStorePickup) {
+                if (codPaymentOption) codPaymentOption.classList.remove('hidden');
+            }
+
+            const selectedPayment = document.querySelector('input[name="odemeYontemi"]:checked')?.value || 'BankaHavalesi';
+            const codPrice = (selectedPayment === 'KapidaOdeme' && !isStorePickup) ? codBedel : 0;
+
+            // Kargo ücreti için mevcut görünen değeri al (şehir bazlı hesaplama zaten yapıldıysa)
+            const mevcutKargo = kargoDisplay ? kargoDisplay.textContent : (isStorePickup ? '0.00 ' + currencySymbol : currencySymbol + '0.00');
+            let kargoPrice = 0;
+            if (!isStorePickup) {
+                const txt = mevcutKargo.replace(currencySymbol, '').replace(/[^0-9.,]/g, '').replace(',', '.');
+                kargoPrice = parseFloat(txt) || 0;
+            }
+
+            const genelToplamVal = subtotal + kargoPrice + codPrice;
+
+            if (kargoDisplay) {
+                if (isStorePickup) {
+                    kargoDisplay.textContent = '0.00 ' + currencySymbol;
+                    kargoDisplay.className = "text-[#313511] font-medium";
+                }
+            }
+
+            if (totalDisplay) {
+                totalDisplay.innerHTML = genelToplamVal.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' <span class="text-lg font-normal text-[#47473d]">' + currencySymbol + '</span>';
+            }
+
+            if (btnTotalDisplay) {
+                btnTotalDisplay.textContent = genelToplamVal.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+        }
+
+        // COD payment method change listener
+        const codRadios = document.querySelectorAll('input[name="odemeYontemi"]');
+        codRadios.forEach(radio => {
+            radio.addEventListener("change", function() {
+                updateCheckoutTotals();
+                sehirKargoHesapla();
+            });
+        });
+
+        updateCheckoutTotals();
+        toggleDeliveryType();
+    });
+
+    function copyIban(elementId, btn) {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        const text = el.textContent.replace(/\s+/g, '');
+        navigator.clipboard.writeText(text).then(() => {
+            const icon = btn.querySelector('i');
+            if (icon) {
+                icon.className = 'fas fa-check text-sm';
+                setTimeout(() => { icon.className = 'fas fa-copy text-sm'; }, 2000);
+            }
+        });
+    }
+</script>
+
+@functions {
+    string FormatIban(string iban)
+    {
+        if (string.IsNullOrWhiteSpace(iban)) return "";
+        var clean = iban.Replace(" ", "");
+        var parts = new List<string>();
+        for (int i = 0; i < clean.Length; i += 4)
+            parts.Add(clean.Substring(i, Math.Min(4, clean.Length - i)));
+        return string.Join(" ", parts);
+    }
+}

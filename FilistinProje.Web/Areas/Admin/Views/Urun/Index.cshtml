@@ -1,0 +1,386 @@
+@using FilistinProje.Core.Varliklar
+@model IEnumerable<Urun>
+@inject FilistinProje.Data.KanvasDbContext DbContext
+
+@{
+    ViewData["Title"] = Localizer["Admin_Urun_Yonetimi"];
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    var currentSearch = ViewBag.CurrentSearch as string ?? string.Empty;
+    int? currentKategori = ViewBag.CurrentKategori as int?;
+    var currentPage = ViewBag.Page as int? ?? 1;
+    var pageSize = ViewBag.PageSize as int? ?? 20;
+    var totalPages = ViewBag.TotalPages as int? ?? 1;
+    var totalCount = ViewBag.TotalCount as int? ?? Model.Count();
+    var pageSizeOptions = ViewBag.PageSizeOptions as int[] ?? new[] { 20, 50, 100 };
+    var kategoriler = DbContext.Kategoriler.OrderBy(x => x.Sira).ThenBy(x => x.Ad).ToList();
+
+    string BuildUrl(int? pageValue = null, int? pageSizeValue = null)
+    {
+        var query = new List<string>();
+        if (!string.IsNullOrWhiteSpace(currentSearch)) query.Add($"search={Uri.EscapeDataString(currentSearch)}");
+        if (currentKategori.HasValue) query.Add($"kategoriId={currentKategori.Value}");
+        query.Add($"page={pageValue ?? currentPage}");
+        query.Add($"pageSize={pageSizeValue ?? pageSize}");
+        return "/Admin/Urun?" + string.Join("&", query);
+    }
+}
+
+<div class="container-fluid ca-fade-in">
+    <form id="bulkProductActionForm" method="post" action="/Admin/Urun/TopluSil" class="d-none">
+        @Html.AntiForgeryToken()
+        <div id="bulkProductActionInputs"></div>
+    </form>
+
+    <div class="ca-page-header">
+        <div>
+            <h1 class="ca-page-title">@Localizer["Admin_ProductCatalog"]</h1>
+            <p class="ca-page-subtitle">@Localizer["Admin_ProductCatalogDesc"]</p>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="/Admin/Urun/UrunExcelExport" class="ca-btn ca-btn-outline">
+                <i class="fas fa-file-export"></i> @Localizer["Admin_AllProductsXlsx"]
+            </a>
+            <a href="/Admin/Urun/Excel" class="ca-btn ca-btn-excel">
+                <i class="fas fa-file-excel"></i> @Localizer["ExcelOperations"]
+            </a>
+            <form action="/Admin/Urun/BosSkulariOlustur" method="post" class="m-0" onsubmit="return confirm('@Localizer["Admin_CompleteSkusConfirm"]')">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="ca-btn ca-btn-outline">
+                    <i class="fas fa-barcode"></i> @Localizer["Admin_CompleteSkus"]
+                </button>
+            </form>
+            <a href="/Admin/Urun/Ekle" class="ca-btn ca-btn-primary">
+                <i class="fas fa-plus"></i> @Localizer["Admin_NewProduct"]
+            </a>
+        </div>
+    </div>
+
+    <div class="ca-card mb-4">
+        <form method="get" action="/Admin/Urun">
+            <div class="ca-filter-bar">
+                <div class="ca-input-icon-group" style="flex:1; max-width:360px;">
+                    <i class="fas fa-search ca-icon-left"></i>
+                    <input type="text" name="search" value="@currentSearch" class="ca-input" placeholder='@Localizer["Admin_ProductSearchPlaceholder"]'>
+                </div>
+                <select name="kategoriId" class="ca-select" style="max-width:240px;" onchange="this.form.submit()">
+                    <option value="">@Localizer["Admin_AllCategories"]</option>
+                    @foreach (var kat in kategoriler)
+                    {
+                        if (currentKategori == kat.Id)
+                        {
+                            <option value="@kat.Id" selected>@kat.LocalizedAd</option>
+                        }
+                        else
+                        {
+                            <option value="@kat.Id">@kat.LocalizedAd</option>
+                        }
+                    }
+                </select>
+                <select name="pageSize" class="ca-select" style="max-width:110px;" onchange="this.form.submit()">
+                    @foreach (var option in pageSizeOptions)
+                    {
+                        if (option == pageSize)
+                        {
+                            <option value="@option" selected>@option</option>
+                        }
+                        else
+                        {
+                            <option value="@option">@option</option>
+                        }
+                    }
+                </select>
+                <input type="hidden" name="page" value="1" />
+                <button type="submit" class="ca-btn ca-btn-primary ca-btn-sm"><i class="fas fa-search"></i></button>
+                <button type="submit"
+                        form="bulkProductActionForm"
+                        formaction="/Admin/Urun/TopluDurumGuncelle"
+                        name="aktif"
+                        value="true"
+                        class="ca-btn ca-btn-sm bulk-product-button"
+                        style="background:#157347; color:#fff; border-radius:999px;"
+                        disabled
+                        onclick="return confirm(@System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_SelectedActivateConfirm"].Value))">
+                    <i class="fas fa-check-circle"></i> @Localizer["Admin_SelectedActivate"]
+                </button>
+                <button type="submit"
+                        form="bulkProductActionForm"
+                        formaction="/Admin/Urun/TopluDurumGuncelle"
+                        name="aktif"
+                        value="false"
+                        class="ca-btn ca-btn-sm bulk-product-button"
+                        style="background:#6c757d; color:#fff; border-radius:999px;"
+                        disabled
+                        onclick="return confirm(@System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_SelectedDeactivateConfirm"].Value))">
+                    <i class="fas fa-pause-circle"></i> @Localizer["Admin_SelectedDeactivate"]
+                </button>
+                <button type="submit"
+                        form="bulkProductActionForm"
+                        formaction="/Admin/Urun/TopluSil"
+                        class="ca-btn ca-btn-sm bulk-product-button"
+                        style="background:#b42318; color:#fff; border-radius:999px;"
+                        disabled
+                        onclick="return confirm(@System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_SelectedArchiveConfirm"].Value))">
+                    <i class="fas fa-trash"></i> @Localizer["Admin_SelectedDelete"]
+                </button>
+                <button type="submit"
+                        form="bulkProductActionForm"
+                        formaction="/Admin/Urun/TopluKaliciSil"
+                        class="ca-btn ca-btn-sm bulk-product-button"
+                        style="background:#7f1d1d; color:#fff; border-radius:999px;"
+                        disabled
+                        onclick="return confirm(@System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_SelectedPermanentDeleteConfirm"].Value))">
+                    <i class="fas fa-ban"></i> @Localizer["Admin_PermanentDelete"]
+                </button>
+                <span id="selectedProductCount" class="small text-muted">@Localizer["Admin_Secili_urun_yok"]</span>
+                <span class="ca-filter-count">@Localizer["Admin_Toplam"] <strong>@totalCount</strong> @Localizer["Admin_ProductCountSuffix"]</span>
+            </div>
+        </form>
+    </div>
+
+    <div class="ca-card">
+        <div class="ca-table-wrapper">
+            <table class="ca-table">
+                <thead>
+                    <tr>
+                        <th class="ps-4">@Localizer["Admin_Image"]</th>
+                        <th>@Localizer["Admin_Urun"]</th>
+                        <th>@Localizer["Admin_Kategori"]</th>
+                        <th>@Localizer["Admin_Fiyat"]</th>
+                        <th>@Localizer["Admin_PublishStatus"]</th>
+                        <th class="text-end">@Localizer["Admin_Actions"]</th>
+                        <th class="text-center pe-4" style="width:54px;">
+                            <input id="selectAllProducts" type="checkbox" class="form-check-input" title='@Localizer["Admin_SelectProductsOnPage"]'>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="7">
+                                <div class="ca-empty">
+                                    <i class="fas fa-box-open"></i>
+                                    <p>@Localizer["Admin_NoProductsFound"]</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var item in Model)
+                        {
+                            var detailUrl = "/Urun/Detay/" + (string.IsNullOrWhiteSpace(item.Slug) ? item.Id.ToString() : item.Slug + "-" + item.Id);
+                            <tr>
+                                <td class="ps-4" width="84">
+                                    <img src="@item.AnaGorselUrl"
+                                         class="ca-thumb"
+                                         alt="@item.LocalizedBaslik"
+                                         loading="lazy"
+                                         decoding="async"
+                                         onerror="this.onerror=null; this.src='https://placehold.co/80x80/f1f5f9/94a3b8?text=-'; this.style.border='2px dashed var(--ca-border)';">
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column gap-1">
+                                        <span class="ca-fw-bold">@item.LocalizedBaslik</span>
+                                        <small class="ca-text-muted">SKU: @(string.IsNullOrWhiteSpace(item.SKU) ? "-" : item.SKU)</small>
+                                        <div class="d-flex gap-1 flex-wrap">
+                                            @if (item.OneCikanMi)
+                                            {
+                                                <span class="badge text-bg-warning">@Localizer["Admin_Featured"]</span>
+                                            }
+                                            @if (item.YeniUrunMu)
+                                            {
+                                                <span class="badge text-bg-success">@Localizer["Admin_New"]</span>
+                                            }
+                                            @if (item.KampanyaliMi)
+                                            {
+                                                <span class="badge text-bg-danger">@Localizer["Admin_Campaign"]</span>
+                                            }
+                                            @if (item.AnaSayfadaGoster)
+                                            {
+                                                <span class="badge text-bg-primary">@Localizer["Admin_Ana_Sayfa"]</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>@(item.Kategori?.LocalizedAd ?? Localizer["Admin_NoCategory"].Value)</div>
+                                    <small class="ca-text-muted">@Localizer["Admin_Brand"]: @(string.IsNullOrWhiteSpace(item.Marka) ? "-" : item.Marka)</small>
+                                </td>
+                                <td>
+                                    <div class="ca-fw-bold">@item.EtkinFiyat.ToString("N2") ₪</div>
+                                    @if (item.IndirimVarMi)
+                                    {
+                                        <small class="text-decoration-line-through text-muted">@item.Fiyat.ToString("N2") ₪</small>
+                                    }
+                                </td>
+                                <td>
+                                    <div>
+                                        @if (item.AktifMi && !item.SilindiMi && item.YayindaMi)
+                                        {
+                                            <span class="ca-badge ca-badge-success"><i class="fas fa-check-circle"></i> @Localizer["Admin_Published"]</span>
+                                        }
+                                        else if (item.AktifMi && !item.SilindiMi && !item.YayindaMi)
+                                        {
+                                            <span class="ca-badge ca-badge-secondary"><i class="fas fa-eye-slash"></i> @Localizer["Admin_HiddenFromStorefront"]</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="ca-badge ca-badge-danger"><i class="fas fa-times-circle"></i> @Localizer["Admin_Pasif"]</span>
+                                        }
+                                    </div>
+                                    <small class="ca-text-muted">@Localizer["Admin_Status"]: @item.StokDurumu</small>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="d-inline-flex gap-1">
+                                        <a href="@detailUrl" target="_blank" class="ca-btn-icon view" title='@Localizer["Admin_ViewOnSite"]'>
+                                            <i class="fas fa-external-link-alt"></i>
+                                        </a>
+                                        <a href="/Admin/Urun/Duzenle/@item.Id" class="ca-btn-icon edit" title='@Localizer["Admin_Duzenle"]'>
+                                            <i class="fas fa-pen"></i>
+                                        </a>
+                                        <form action="/Admin/Urun/DurumGuncelle" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <input type="hidden" name="aktif" value="@(!item.AktifMi)" />
+                                            <button type="submit"
+                                                    class="ca-btn-icon @(item.AktifMi ? "delete" : "view")"
+                                                    title="@(item.AktifMi ? Localizer["Admin_Deactivate"].Value : Localizer["Admin_Activate"].Value)">
+                                                <i class="fas @(item.AktifMi ? "fa-pause" : "fa-check")"></i>
+                                            </button>
+                                        </form>
+                                        @if (item.AktifMi)
+                                        {
+                                            <form action="/Admin/Urun/GizleGoster" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <input type="hidden" name="yayinda" value="@(!item.YayindaMi)" />
+                                                <button type="submit"
+                                                        class="ca-btn-icon @(item.YayindaMi ? "delete" : "view")"
+                                                        title="@(item.YayindaMi ? Localizer["Admin_HideFromStorefront"].Value : Localizer["Admin_ShowInStorefront"].Value)">
+                                                    <i class="fas @(item.YayindaMi ? "fa-eye-slash" : "fa-eye")"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                        <form action="/Admin/Urun/Sil" method="post" class="d-inline" onsubmit="return confirm(@System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_ProductArchiveConfirm"].Value))">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <button type="submit" class="ca-btn-icon delete" title='@Localizer["Admin_Sil"]'>
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                        <form action="/Admin/Urun/KaliciSil" method="post" class="d-inline" onsubmit="return confirm(@System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_ProductPermanentDeleteConfirm"].Value))">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <button type="submit" class="ca-btn-icon delete" title='@Localizer["Admin_PermanentDelete"]'>
+                                                <i class="fas fa-ban"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td class="text-center pe-4">
+                                    <input type="checkbox"
+                                           class="form-check-input product-select"
+                                           value="@item.Id"
+                                           aria-label='@Localizer["Admin_SelectProductAria", item.LocalizedBaslik]'>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="ca-card-footer d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <small class="ca-text-muted">@Localizer["Admin_PageInfo", currentPage, Math.Max(totalPages, 1), Model.Count()]</small>
+            @if (totalPages > 1)
+            {
+                <div class="ca-pagination p-0">
+                    @if (currentPage > 1)
+                    {
+                        <a href="@BuildUrl(currentPage - 1)" aria-label='@Localizer["Admin_Previous"]'><i class="fas fa-chevron-left"></i></a>
+                    }
+                    @for (var p = Math.Max(1, currentPage - 2); p <= Math.Min(totalPages, currentPage + 2); p++)
+                    {
+                        if (p == currentPage)
+                        {
+                            <span class="active">@p</span>
+                        }
+                        else
+                        {
+                            <a href="@BuildUrl(p)">@p</a>
+                        }
+                    }
+                    @if (currentPage < totalPages)
+                    {
+                        <a href="@BuildUrl(currentPage + 1)" aria-label='@Localizer["Admin_Next"]'><i class="fas fa-chevron-right"></i></a>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkboxes = Array.from(document.querySelectorAll('.product-select'));
+        const selectAll = document.getElementById('selectAllProducts');
+        const bulkButtons = Array.from(document.querySelectorAll('.bulk-product-button'));
+        const selectedText = document.getElementById('selectedProductCount');
+        const bulkForm = document.getElementById('bulkProductActionForm');
+        const hiddenInputs = document.getElementById('bulkProductActionInputs');
+        const noSelectedProductText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_NoSelectedProduct"].Value));
+        const selectedProductCountText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_SelectedProductCount"].Value));
+
+        function selectedValues() {
+            return checkboxes.filter(x => x.checked).map(x => x.value);
+        }
+
+        function refreshBulkState() {
+            const values = selectedValues();
+            bulkButtons.forEach(x => x.disabled = values.length === 0);
+            if (selectedText) {
+                selectedText.textContent = values.length === 0
+                    ? noSelectedProductText
+                    : selectedProductCountText.replace('{0}', values.length);
+            }
+            if (selectAll) {
+                selectAll.checked = values.length > 0 && values.length === checkboxes.length;
+                selectAll.indeterminate = values.length > 0 && values.length < checkboxes.length;
+            }
+        }
+
+        if (selectAll) {
+            selectAll.addEventListener('change', function () {
+                checkboxes.forEach(x => x.checked = selectAll.checked);
+                refreshBulkState();
+            });
+        }
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', refreshBulkState);
+        });
+
+        if (bulkForm) {
+            bulkForm.addEventListener('submit', function (event) {
+                const values = selectedValues();
+                if (values.length === 0) {
+                    event.preventDefault();
+                    return;
+                }
+
+                hiddenInputs.innerHTML = '';
+                values.forEach(function (id) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'urunIds';
+                    input.value = id;
+                    hiddenInputs.appendChild(input);
+                });
+            });
+        }
+
+        refreshBulkState();
+    });
+</script>

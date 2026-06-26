@@ -1,0 +1,25 @@
+@model int
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["ErrorOccurred"];
+}
+
+<div class="min-h-[75vh] flex items-center justify-center py-16 px-4 bg-[#fcf9f3]">
+    <div class="w-full max-w-xl text-center">
+        <div class="font-serif text-[120px] md:text-[160px] leading-none text-[#e5e2dc] font-bold mb-4 select-none">
+            @Model
+        </div>
+        <h1 class="font-serif text-2xl md:text-4xl text-[#313511] mb-4">@Localizer["ErrorOccurred"]</h1>
+        <p class="text-sm text-[#47473d] mb-8 leading-relaxed max-w-md mx-auto">
+            @Localizer["ErrorMessage"]
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="/" class="w-full sm:w-auto bg-[#313511] text-white px-8 py-3 text-xs tracking-widest uppercase rounded hover:bg-[#1c2001] transition-colors">
+                @Localizer["ReturnHome"]
+            </a>
+            <a href="/Kurumsal/Iletisim" class="w-full sm:w-auto bg-white border border-[#e5e2dc] text-[#313511] px-8 py-3 text-xs tracking-widest uppercase rounded hover:bg-[#f1ede7] transition-colors">
+                @Localizer["ContactUs"]
+            </a>
+        </div>
+    </div>
+</div>

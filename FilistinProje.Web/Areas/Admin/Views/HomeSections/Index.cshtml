@@ -1,0 +1,50 @@
+@model IEnumerable<FilistinProje.Core.Varliklar.HomePageSection>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_HomeSectionManagement"];
+}
+
+<div class="container-fluid ca-fade-in">
+    <div class="ca-page-header d-flex justify-content-between align-items-center">
+        <h1 class="ca-page-title">@Localizer["Admin_HomeSectionManagement"]</h1>
+        <a href="@Url.Action("Create", "HomeSections")" class="ca-btn ca-btn-primary"><i class="fas fa-plus"></i> @Localizer["Admin_AddNewSection"]</a>
+    </div>
+
+    @if (TempData["Basari"] != null)
+    {
+        <div class="ca-alert ca-alert-success mb-3"><i class="fas fa-check-circle"></i> @TempData["Basari"]</div>
+    }
+
+    <table class="table table-hover ca-table mt-4">
+        <thead class="ca-table-header">
+            <tr>
+                <th>#</th>
+                <th>@Localizer["Admin_Type"]</th>
+                <th>@Localizer["Admin_Baslik"]</th>
+                <th>@Localizer["Admin_Alt_Baslik"]</th>
+                <th>@Localizer["Admin_Aktif"]</th>
+                <th>@Localizer["Admin_Sira"]</th>
+                <th>@Localizer["Admin_Actions"]</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var sec in Model)
+        {
+            <tr>
+                <td>@sec.Id</td>
+                <td>@sec.SectionType</td>
+                <td>@sec.Title</td>
+                <td>@sec.Subtitle</td>
+                <td>
+                    <input type="checkbox" disabled @(sec.Enabled ? "checked" : "") class="form-check-input" />
+                </td>
+                <td>@sec.SortOrder</td>
+                <td>
+                    <a href="@Url.Action("Edit", "HomeSections", new { id = sec.Id })" class="ca-btn ca-btn-sm ca-btn-outline"><i class="fas fa-edit"></i></a>
+                    <a href="@Url.Action("Delete", "HomeSections", new { id = sec.Id })" class="ca-btn ca-btn-sm ca-btn-danger" onclick='return confirm("@Localizer["Admin_DeleteSectionConfirm"]");'><i class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

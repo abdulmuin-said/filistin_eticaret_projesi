@@ -1,0 +1,242 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: 
+      - text: توصيل مجاني للطلبات فوق 200 ₪
+    - generic [ref=e6]:
+      - generic [ref=e7]: 
+      - text: الدفع عند الاستلام متاح
+    - generic [ref=e8]:
+      - generic [ref=e9]: 
+      - text: SecurePayment
+    - generic [ref=e10]:
+      - generic [ref=e11]: 
+      - text: CreditCardPayment
+    - generic [ref=e12]:
+      - generic [ref=e13]: 
+      - text: FastProduction
+    - generic [ref=e14]:
+      - generic [ref=e15]: 
+      - text: CarefulPackaging
+    - generic [ref=e16]:
+      - generic [ref=e17]: 
+      - text: TurkeyWideShipping
+    - generic [ref=e18]:
+      - generic [ref=e19]: 
+      - text: EasyReturnDays
+    - generic [ref=e20]:
+      - generic [ref=e21]: 
+      - text: ManufacturerGuarantee
+    - generic [ref=e22]:
+      - generic [ref=e23]: 
+      - text: WhatsAppSupport
+    - generic [ref=e24]:
+      - generic [ref=e25]: 
+      - text: توصيل مجاني للطلبات فوق 200 ₪
+    - generic [ref=e26]:
+      - generic [ref=e27]: 
+      - text: الدفع عند الاستلام متاح
+    - generic [ref=e28]:
+      - generic [ref=e29]: 
+      - text: SecurePayment
+    - generic [ref=e30]:
+      - generic [ref=e31]: 
+      - text: CreditCardPayment
+    - generic [ref=e32]:
+      - generic [ref=e33]: 
+      - text: FastProduction
+    - generic [ref=e34]:
+      - generic [ref=e35]: 
+      - text: CarefulPackaging
+    - generic [ref=e36]:
+      - generic [ref=e37]: 
+      - text: TurkeyWideShipping
+    - generic [ref=e38]:
+      - generic [ref=e39]: 
+      - text: EasyReturnDays
+    - generic [ref=e40]:
+      - generic [ref=e41]: 
+      - text: ManufacturerGuarantee
+    - generic [ref=e42]:
+      - generic [ref=e43]: 
+      - text: WhatsAppSupport
+  - banner [ref=e44]:
+    - generic [ref=e45]:
+      - generic [ref=e46]:
+        - generic [ref=e48]: 
+        - link "AR" [ref=e49] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2F
+        - link "EN" [ref=e50] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2F
+        - link "TR" [ref=e51] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=tr&returnUrl=%2F
+      - link "7ANRPS48" [ref=e52] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=e53]
+      - generic [ref=e54]:
+        - button "Search" [ref=e55] [cursor=pointer]:
+          - img [ref=e56]
+        - link "Login" [ref=e58] [cursor=pointer]:
+          - /url: /Hesap/GirisYap
+          - img [ref=e59]
+        - link "Favorites" [ref=e61] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=e62]
+        - link "Cart" [ref=e64] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=e65]
+          - generic [ref=e67]: "0"
+      - navigation [ref=e68]:
+        - list [ref=e69]:
+          - listitem [ref=e70] [cursor=pointer]:
+            - link "Filistin Temalı " [ref=e71]:
+              - /url: /Urun?k=1
+              - text: Filistin Temalı
+              - generic [ref=e72]: 
+          - listitem [ref=e73] [cursor=pointer]:
+            - link "Ev & Dekorasyon " [ref=e74]:
+              - /url: /Urun?k=2
+              - text: Ev & Dekorasyon
+              - generic [ref=e75]: 
+          - listitem [ref=e76] [cursor=pointer]:
+            - link "Hediyelik & Aksesuar " [ref=e77]:
+              - /url: /Urun?k=3
+              - text: Hediyelik & Aksesuar
+              - generic [ref=e78]: 
+          - listitem [ref=e79] [cursor=pointer]:
+            - link "Contact" [ref=e80]:
+              - /url: /Kurumsal/Iletisim
+    - text:      
+  - main [ref=e81]:
+    - generic [ref=e82]:
+      - img "Doğanın Canlı Renkleri" [ref=e89]
+      - button "PreviousSlide" [ref=e90] [cursor=pointer]:
+        - img [ref=e91]
+      - button "NextSlide" [ref=e93] [cursor=pointer]:
+        - img [ref=e94]
+      - generic [ref=e96]:
+        - button "SlideN" [ref=e97] [cursor=pointer]
+        - button "SlideN" [ref=e98] [cursor=pointer]
+        - button "SlideN" [ref=e99] [cursor=pointer]
+    - generic [ref=e103]:
+      - generic [ref=e104]:
+        - generic [ref=e106]: 
+        - heading "SecurePayment" [level=4] [ref=e107]
+        - paragraph [ref=e108]: SecurePaymentDesc
+      - generic [ref=e109]:
+        - generic [ref=e111]: 
+        - heading "FastDelivery" [level=4] [ref=e112]
+        - paragraph [ref=e113]: FastDeliveryDesc
+      - generic [ref=e114]:
+        - generic [ref=e116]: 
+        - heading "CustomerSatisfaction" [level=4] [ref=e117]
+        - paragraph [ref=e118]: CustomerSatisfactionDesc
+    - generic [ref=e120]:
+      - generic [ref=e121]:
+        - generic [ref=e122]:
+          - paragraph [ref=e123]: FromProductionToDelivery
+          - heading "YourOrderPreparedWithCare" [level=2] [ref=e124]
+        - paragraph [ref=e125]: ProductionStoryDesc
+      - generic [ref=e126]:
+        - generic [ref=e127]:
+          - generic [ref=e128]: "01"
+          - heading "DesignPrepared" [level=3] [ref=e129]
+          - paragraph [ref=e130]: DesignPreparedDesc
+        - generic [ref=e131]:
+          - generic [ref=e132]: "02"
+          - heading "QualityPrint" [level=3] [ref=e133]
+          - paragraph [ref=e134]: QualityPrintDesc
+        - generic [ref=e135]:
+          - generic [ref=e136]: "03"
+          - heading "ProductPrepared" [level=3] [ref=e137]
+          - paragraph [ref=e138]: ProductPreparedDesc
+        - generic [ref=e139]:
+          - generic [ref=e140]: "04"
+          - heading "CarefullyPackaged" [level=3] [ref=e141]
+          - paragraph [ref=e142]: CarefullyPackagedDesc
+        - generic [ref=e143]:
+          - generic [ref=e144]: "05"
+          - heading "Shipped" [level=3] [ref=e145]
+          - paragraph [ref=e146]: ShippedDesc
+    - generic [ref=e148]:
+      - img "ProductionQualityAlt" [ref=e150]
+      - generic [ref=e151]:
+        - paragraph [ref=e152]: MaterialAndPrintQuality
+        - heading "LongLastingTouch" [level=2] [ref=e153]
+        - paragraph [ref=e154]: MaterialQualityDesc1
+        - paragraph [ref=e155]: MaterialQualityDesc2
+        - generic [ref=e156]:
+          - generic [ref=e157]:
+            - generic [ref=e158]: 
+            - paragraph [ref=e159]: VibrantColors
+          - generic [ref=e160]:
+            - generic [ref=e161]: 
+            - paragraph [ref=e162]: SizeOptions
+          - generic [ref=e163]:
+            - generic [ref=e164]: 
+            - paragraph [ref=e165]: ProtectivePackaging
+  - contentinfo [ref=e166]:
+    - generic [ref=e168]:
+      - generic [ref=e169]:
+        - generic [ref=e171]: 
+        - generic [ref=e172]:
+          - generic [ref=e173]: AllOverTurkey
+          - generic [ref=e174]: FreeShipping
+      - generic [ref=e175]:
+        - generic [ref=e177]: 
+        - generic [ref=e178]:
+          - generic [ref=e179]: SecureShopping
+          - generic [ref=e180]: 256BitSSL
+      - generic [ref=e181]:
+        - generic [ref=e183]: 
+        - generic [ref=e184]:
+          - generic [ref=e185]: AllCreditCards
+          - generic [ref=e186]: 12Installments
+    - generic [ref=e187]:
+      - generic [ref=e188]:
+        - generic [ref=e189]:
+          - heading "SubscribeToNewsletter" [level=3] [ref=e190]
+          - paragraph [ref=e191]: NewsletterDescription
+          - generic [ref=e192]:
+            - textbox "EmailAddress" [ref=e193]
+            - button "Subscribe" [ref=e194] [cursor=pointer]
+        - generic [ref=e195]:
+          - heading "Corporate" [level=4] [ref=e196]
+          - list [ref=e197]:
+            - listitem [ref=e198]:
+              - link "AboutUs" [ref=e199] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=e200]:
+              - link "Contact" [ref=e201] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=e202]:
+              - link "Collections" [ref=e203] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=e204]:
+              - link "PrivacyPolicy" [ref=e205] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=e206]:
+              - link "DistanceSalesContract" [ref=e207] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=e209] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=e210]: 
+      - generic [ref=e211]:
+        - paragraph [ref=e213]: © 2026 7ANRPS48 AllRightsReserved
+        - generic [ref=e214]:
+          - link "PrivacyPolicy" [ref=e215] [cursor=pointer]:
+            - /url: /Kurumsal/Gizlilik
+          - text: "|"
+          - link "TermsOfUse" [ref=e216] [cursor=pointer]:
+            - /url: /Kurumsal/KullaniciSozlesmesi
+          - text: "|"
+          - link "ReturnExchange" [ref=e217] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+    - img "PaymentMethods" [ref=e220]
+  - link "WhatsAppContact" [ref=e221] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=e222]
+    - generic [ref=e224]: WhatsApp
+  - link "Cart" [ref=e225] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=e226]

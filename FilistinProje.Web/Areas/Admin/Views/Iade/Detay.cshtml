@@ -1,0 +1,258 @@
+@model FilistinProje.Core.Varliklar.IadeTalebi
+@using FilistinProje.Core.Helpers
+@{
+    ViewData["Title"] = Localizer["Admin_ReviewReturnRequest"];
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+    var siparis = Model.Siparis;
+    var detaylar = siparis?.SiparisDetaylari?.Where(x => !x.SilindiMi).ToList() ?? new List<FilistinProje.Core.Varliklar.SiparisDetay>();
+    var iadeHakkiGun = ViewBag.IadeHakkiGun is int gun ? gun : 14;
+    var iadeSonTarih = ViewBag.IadeSonTarih is DateTime sonTarih ? sonTarih : (siparis?.OlusturulmaTarihi.ToUniversalTime().AddDays(iadeHakkiGun) ?? DateTime.UtcNow.AddDays(iadeHakkiGun));
+    var talepZamanindaMi = ViewBag.IadeTalepZamanindaMi is bool zamanindaMi && zamanindaMi;
+}
+
+<div class="container-fluid ca-fade-in">
+    <div class="ca-page-header">
+        <div>
+            <h1 class="ca-page-title">@Localizer["Admin_ReviewReturnRequest"]</h1>
+            <p class="ca-page-subtitle">@Localizer["Admin_ReviewReturnRequestSubtitle"]</p>
+        </div>
+        <a href="/Admin/Iade" class="ca-btn ca-btn-light">
+            <i class="fas fa-arrow-left"></i> @Localizer["Admin_BackToList"]
+        </a>
+    </div>
+
+    @if (TempData["Mesaj"] != null)
+    {
+        <div class="alert alert-success">@TempData["Mesaj"]</div>
+    }
+    @if (TempData["Hata"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Hata"]</div>
+    }
+
+    <div class="row g-4">
+        <div class="col-xl-8">
+            <div class="ca-card mb-4">
+                <div class="ca-card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="ca-card-title mb-1">@Localizer["Admin_OrderInfo"]</h2>
+                        <div class="ca-text-muted">@(string.IsNullOrWhiteSpace(siparis?.SiparisNo) ? $"#{siparis?.Id}" : siparis?.SiparisNo)</div>
+                    </div>
+                    <span class="ca-badge ca-badge-info">@SiparisDurumHelper.GetShortLabel(siparis?.Durum ?? 0)</span>
+                </div>
+                <div class="ca-card-body">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <div class="ca-text-muted small">@Localizer["Admin_OrderDate"]</div>
+                            <div class="ca-fw-semi">@siparis?.OlusturulmaTarihi.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="ca-text-muted small">@Localizer["Admin_TotalAmount"]</div>
+                            <div class="ca-fw-semi">@(siparis?.ToplamTutar.ToString("N2") ?? "0,00") ₪</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="ca-text-muted small">@Localizer["Admin_Kargo"]</div>
+                            <div class="ca-fw-semi">@(string.IsNullOrWhiteSpace(siparis?.KargoFirmasi) ? "-" : siparis.KargoFirmasi)</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="ca-text-muted small">@Localizer["Admin_TrackingNo"]</div>
+                            <div class="ca-fw-semi">@(string.IsNullOrWhiteSpace(siparis?.KargoTakipNo) ? "-" : siparis.KargoTakipNo)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ca-card">
+                <div class="ca-card-header">
+                    <h2 class="ca-card-title mb-1">@Localizer["Admin_ProductInfo"]</h2>
+                    <div class="ca-text-muted">@Localizer["Admin_LineItemCount", detaylar.Count]</div>
+                </div>
+                <div class="ca-card-body p-0">
+                    <div class="table-responsive">
+                        <table class="ca-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="ps-4">@Localizer["Admin_Urun"]</th>
+                                    <th>@Localizer["Admin_Variation"]</th>
+                                    <th>@Localizer["Admin_Quantity"]</th>
+                                    <th>@Localizer["Admin_UnitPrice"]</th>
+                                    <th>@Localizer["Admin_Toplam"]</th>
+                                    <th class="pe-4">@Localizer["Admin_Musteri_Notu"]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var detay in detaylar)
+                                {
+                                    var gorsel = GetProductImage(detay);
+                                    <tr>
+                                        <td class="ps-4">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <img src="@gorsel" alt="@detay.Urun?.Baslik" style="width:56px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--ca-border);" />
+                                                <div>
+                                                    <div class="ca-fw-semi">@(detay.Urun?.Baslik ?? Localizer["Admin_ProductInfoMissing"].Value)</div>
+                                                    <small class="ca-text-muted">SKU: @(detay.Urun?.SKU ?? "-")</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>@GetVariantText(detay)</td>
+                                        <td>@detay.Adet</td>
+                                        <td>@detay.BirimFiyat.ToString("N2") ₪</td>
+                                        <td>@((detay.Adet * detay.BirimFiyat).ToString("N2")) ₪</td>
+                                        <td class="pe-4">@(string.IsNullOrWhiteSpace(detay.MusteriNotu) ? "-" : detay.MusteriNotu)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4">
+            <div class="ca-card mb-4">
+                <div class="ca-card-header">
+                    <h2 class="ca-card-title mb-1">@Localizer["Admin_CustomerInfo"]</h2>
+                </div>
+                <div class="ca-card-body">
+                    <dl class="row mb-0 gy-3">
+                        <dt class="col-4 ca-text-muted">@Localizer["Admin_Ad_Soyad"]</dt>
+                        <dd class="col-8 ca-fw-semi">@siparis?.MusteriAdSoyad</dd>
+                        <dt class="col-4 ca-text-muted">@Localizer["Admin_Telefon"]</dt>
+                        <dd class="col-8">@siparis?.Telefon</dd>
+                        <dt class="col-4 ca-text-muted">@Localizer["Admin_E_posta"]</dt>
+                        <dd class="col-8">@siparis?.Eposta</dd>
+                        <dt class="col-4 ca-text-muted">@Localizer["Admin_Adres"]</dt>
+                        <dd class="col-8">@(siparis?.AcikAdres) @(siparis?.Ilce) / @(siparis?.Sehir)</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="ca-card mb-4">
+                <div class="ca-card-header d-flex justify-content-between align-items-center">
+                    <h2 class="ca-card-title mb-0">@Localizer["Admin_ReturnRequest"]</h2>
+                    @IadeDurumBadge(Model.Durum)
+                </div>
+                <div class="ca-card-body">
+                    <div class="mb-3">
+                        <div class="ca-text-muted small">@Localizer["Admin_RequestDate"]</div>
+                        <div class="ca-fw-semi">@Model.OlusturulmaTarihi.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="ca-text-muted small">@Localizer["Admin_ReturnWindowCheck"]</div>
+                        @if (talepZamanindaMi)
+                        {
+                            <span class="ca-badge ca-badge-success"><i class="fas fa-check"></i> @Localizer["Admin_WithinTime"]</span>
+                        }
+                        else
+                        {
+                            <span class="ca-badge ca-badge-danger"><i class="fas fa-triangle-exclamation"></i> @Localizer["Admin_OutOfTime"]</span>
+                        }
+                        <div class="ca-text-muted small mt-1">@Localizer["Admin_LastRequestDate", iadeSonTarih.ToLocalTime().ToString("dd.MM.yyyy HH:mm")]</div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="ca-text-muted small">@Localizer["Admin_CustomerReason"]</div>
+                        <div class="ca-fw-semi">@Model.Neden</div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="ca-text-muted small">@Localizer["Admin_Aciklama"]</div>
+                        <div>@(string.IsNullOrWhiteSpace(Model.Aciklama) ? "-" : Model.Aciklama)</div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="ca-text-muted small">IBAN</div>
+                        <code>@(string.IsNullOrWhiteSpace(Model.IBAN) ? "-" : Model.IBAN)</code>
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(Model.AdminNotu))
+                    {
+                        <div class="mb-3">
+                            <div class="ca-text-muted small">@Localizer["Admin_AdminNote"]</div>
+                            <div>@Model.AdminNotu</div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="ca-card">
+                <div class="ca-card-header">
+                    <h2 class="ca-card-title mb-1">@Localizer["Admin_Islem"]</h2>
+                    <div class="ca-text-muted">@Localizer["Admin_CheckOrderBeforeDecision"]</div>
+                </div>
+                <div class="ca-card-body">
+                    <form action="/Admin/Iade/DurumGuncelle" method="post" class="d-grid gap-3">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <div>
+                            <label class="ca-label">@Localizer["Admin_AdminNote"]</label>
+                            <textarea name="adminNotu" class="ca-textarea" rows="4" placeholder='@Localizer["Admin_CustomerVisibleNotePlaceholder"]'>@Model.AdminNotu</textarea>
+                        </div>
+
+                        @if (Model.Durum == 0)
+                        {
+                            <button type="submit" name="durum" value="1" class="ca-btn ca-btn-success" @(talepZamanindaMi ? null : "disabled")>
+                                <i class="fas fa-check"></i> @Localizer["Admin_ApproveReturn"]
+                            </button>
+                            <button type="submit" name="durum" value="3" class="ca-btn ca-btn-danger">
+                                <i class="fas fa-times"></i> @Localizer["Admin_RejectReturn"]
+                            </button>
+                        }
+                        else if (Model.Durum == 1)
+                        {
+                            <button type="submit" name="durum" value="2" class="ca-btn ca-btn-primary">
+                                <i class="fas fa-check-double"></i> @Localizer["Admin_CompleteReturn"]
+                            </button>
+                            <button type="submit" name="durum" value="3" class="ca-btn ca-btn-danger">
+                                <i class="fas fa-times"></i> @Localizer["Admin_Reject"]
+                            </button>
+                        }
+                        else
+                        {
+                            <div class="alert alert-secondary mb-0">@Localizer["Admin_ReturnRequestCompleted"]</div>
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    private static string Para(decimal tutar) => tutar.ToString("N2") + " ₪";
+
+    private static string GetProductImage(FilistinProje.Core.Varliklar.SiparisDetay detay)
+    {
+        var image = detay.UrunSecenek?.GorselUrl
+            ?? detay.Urun?.AnaGorselUrl
+            ?? detay.Urun?.UrunResimleri?.FirstOrDefault(x => !x.SilindiMi)?.ResimYolu;
+
+        return string.IsNullOrWhiteSpace(image) ? "/74anrps48logo2.svg" : image;
+    }
+
+    private static string GetVariantText(FilistinProje.Core.Varliklar.SiparisDetay detay)
+    {
+        var secenek = detay.UrunSecenek?.VaryantOzeti;
+        var cerceve = detay.CerceveModeli;
+
+        if (!string.IsNullOrWhiteSpace(secenek) && !string.IsNullOrWhiteSpace(cerceve))
+        {
+            return $"{secenek} / {cerceve}";
+        }
+
+        return !string.IsNullOrWhiteSpace(secenek)
+            ? secenek
+            : (!string.IsNullOrWhiteSpace(cerceve) ? cerceve : "-");
+    }
+
+    private Microsoft.AspNetCore.Html.IHtmlContent IadeDurumBadge(int durum)
+    {
+        var html = durum switch
+        {
+            0 => $"<span class=\"ca-badge ca-badge-warning\"><i class=\"fas fa-clock\"></i> {Localizer["Pending"]}</span>",
+            1 => $"<span class=\"ca-badge ca-badge-info\"><i class=\"fas fa-check\"></i> {Localizer["Approved"]}</span>",
+            2 => $"<span class=\"ca-badge ca-badge-success\"><i class=\"fas fa-check-double\"></i> {Localizer["Completed"]}</span>",
+            3 => $"<span class=\"ca-badge ca-badge-danger\"><i class=\"fas fa-times\"></i> {Localizer["Rejected"]}</span>",
+            _ => $"<span class=\"ca-badge ca-badge-secondary\">{Localizer["Unknown"]}</span>"
+        };
+
+        return new Microsoft.AspNetCore.Html.HtmlString(html);
+    }
+}

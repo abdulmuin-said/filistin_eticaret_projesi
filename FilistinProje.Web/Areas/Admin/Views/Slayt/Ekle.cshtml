@@ -1,0 +1,231 @@
+@model FilistinProje.Core.Varliklar.Slayt
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_AddNewSlide"];
+    var currentTur = Model.Tur;
+    var isVideoTur = currentTur == "Video";
+}
+
+<div class="container-fluid">
+    <div class="ca-page-header">
+        <div>
+            <h1 class="ca-page-title">@Localizer["Admin_AddNewSlide"]</h1>
+            <p class="ca-page-subtitle">@Localizer["Admin_AddNewSlideSubtitle"]</p>
+        </div>
+        <div>
+            <a href="@Url.Action("Index", "Slayt")" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-1"></i> @Localizer["Admin_BackToSlideList"]
+            </a>
+        </div>
+    </div>
+
+    <div class="alert alert-info mb-3">
+        <div class="d-flex align-items-start gap-2">
+            <i class="fas fa-info-circle mt-1"></i>
+            <div>
+                <strong>@Localizer["Admin_SliderDimensions"]:</strong>
+                <ul class="mb-0 mt-1 small">
+                    <li><strong>@Localizer["Admin_Resim"]:</strong> @Localizer["Admin_SliderImageDimensionsHelp"]</li>
+                    <li><strong>@Localizer["Admin_Video"]:</strong> @Localizer["Admin_SliderVideoDimensionsHelp"]</li>
+                    <li>@Localizer["Admin_SliderFilesStorageHelp"] <code>/uploads/slider/</code></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["Hata"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i> @TempData["Hata"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <form method="post" enctype="multipart/form-data" autocomplete="off">
+        @Html.AntiForgeryToken()
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <strong><i class="fas fa-exclamation-triangle me-2"></i> @Localizer["Admin_FixErrorsBelow"]</strong>
+                @Html.ValidationSummary(false, "", new { @class = "mb-0 mt-2" })
+            </div>
+        }
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="ca-card">
+                    <div class="ca-card-header">
+                        <h3 class="ca-card-title"><i class="fas fa-edit me-2 ca-text-primary"></i>@Localizer["Admin_SlideInfo"]</h3>
+                    </div>
+                    <div class="ca-card-body">
+                        <div class="mb-3">
+                            <label class="form-label">@Localizer["Admin_Baslik"] <span class="text-danger">*</span></label>
+                            <input type="text" name="Baslik" value="@Model.Baslik" class="form-control" placeholder='@Localizer["Admin_SlideTitlePlaceholder"]' required />
+                            @Html.ValidationMessage("Baslik", "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">@Localizer["Admin_Alt_Baslik"]</label>
+                            <input type="text" name="AltBaslik" value="@Model.AltBaslik" class="form-control" placeholder='@Localizer["Admin_SubtitlePlaceholder"]' />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">@Localizer["Admin_Aciklama"]</label>
+                            <textarea name="Aciklama" class="form-control" rows="2" placeholder='@Localizer["Admin_ShortDescriptionPlaceholder"]'>@Model.Aciklama</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ca-card">
+                    <div class="ca-card-header">
+                        <h3 class="ca-card-title"><i class="fas fa-photo-video me-2 ca-text-primary"></i>@Localizer["Admin_ImageVideo"]</h3>
+                    </div>
+                    <div class="ca-card-body">
+                        <div class="mb-3">
+                            <label class="form-label">@Localizer["Admin_SlideType"] <span class="text-danger">*</span></label>
+                            <select name="Tur" id="turSelect" class="form-select" onchange="toggleMediaFields()">
+                                <option value="Resim" selected="@(!isVideoTur)">@Localizer["Admin_Resim"]</option>
+                                <option value="Video" selected="@(isVideoTur)">@Localizer["Admin_Video"]</option>
+                            </select>
+                        </div>
+
+                        <div id="resimYukleme" class="mb-3">
+                            <label class="form-label">@Localizer["Admin_UploadImage"]</label>
+                            <input type="file" name="Resim" id="resimInput" class="form-control" accept="image/*" onchange="previewResim(this)" />
+                            @Html.ValidationMessage("Resim", "", new { @class = "text-danger small" })
+                            <div class="form-text">@Localizer["Admin_ImageFormatsHelp"]</div>
+                            <div id="resimOnizleme" class="mt-2 @(string.IsNullOrEmpty(Model.ResimUrl) ? "d-none" : "")">
+                                <img src="@Model.ResimUrl" id="resimPreviewImg" class="img-thumbnail" style="max-height:200px;" alt='@Localizer["Admin_Preview"]' />
+                            </div>
+                        </div>
+
+                        <div id="videoYukleme" class="@(isVideoTur ? "" : "d-none") mb-3">
+                            <label class="form-label">@Localizer["Admin_UploadVideoFile"]</label>
+                            <input type="file" name="Video" id="videoInput" class="form-control" accept="video/mp4,video/webm" onchange="previewVideo(this)" />
+                            @Html.ValidationMessage("Video", "", new { @class = "text-danger small" })
+                            <div class="form-text">@Localizer["Admin_VideoFormatsHelp"]</div>
+                            <div id="videoOnizleme" class="mt-2 @(string.IsNullOrEmpty(Model.VideoUrl) ? "d-none" : "")">
+                                <video src="@Model.VideoUrl" id="videoPreviewTag" controls style="max-height:200px;border-radius:8px;"></video>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">@Localizer["Admin_OrImageUrl"]</label>
+                                <input type="url" name="ResimUrl" value="@Model.ResimUrl" class="form-control" placeholder="https://..." />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">@Localizer["Admin_OrVideoUrl"]</label>
+                                <input type="url" name="VideoUrl" value="@Model.VideoUrl" class="form-control" placeholder="https://..." />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="ca-card">
+                    <div class="ca-card-header">
+                        <h3 class="ca-card-title"><i class="fas fa-cog me-2 ca-text-primary"></i>@Localizer["Admin_Ayarlar"]</h3>
+                    </div>
+                    <div class="ca-card-body">
+                        <div class="mb-3">
+                            <label class="form-label">@Localizer["Admin_Sira"]</label>
+                            <input type="number" name="Sira" value="@Model.Sira" class="form-control" min="1" />
+                            <div class="form-text">@Localizer["Admin_SortSmallNumberFirst"]</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input type="checkbox" name="AktifMi" value="true" class="form-check-input" id="aktifMi" @(Model.AktifMi ? "checked" : "") />
+                                <label class="form-check-label" for="aktifMi">@Localizer["Admin_Aktif"]</label>
+                            </div>
+                            <div class="form-text">@Localizer["Admin_InactiveSlideHiddenHelp"]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ca-card">
+                    <div class="ca-card-header">
+                        <h3 class="ca-card-title"><i class="fas fa-eye me-2 ca-text-primary"></i>@Localizer["Admin_Preview"]</h3>
+                    </div>
+                    <div class="ca-card-body">
+                        <div id="livePreview" class="bg-dark rounded p-2 text-center">
+                            @if (!string.IsNullOrEmpty(Model.ResimUrl))
+                            {
+                                <img src="@Model.ResimUrl" class="img-fluid rounded" style="max-height:150px;" alt='@Localizer["Admin_Preview"]' />
+                            }
+                            else if (!string.IsNullOrEmpty(Model.VideoUrl))
+                            {
+                                <video src="@Model.VideoUrl" controls style="max-height:150px;border-radius:8px;"></video>
+                            }
+                            else
+                            {
+                                <div class="text-muted py-4">
+                                    <i class="fas fa-image fa-2x mb-2"></i>
+                                    <div class="small">@Localizer["Admin_PreviewVisibleAfterUpload"]</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-1"></i> @Localizer["Admin_Kaydet"]
+            </button>
+            <a href="@Url.Action("Index", "Slayt")" class="btn btn-secondary ms-2">@Localizer["Admin_Iptal"]</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+<script>
+function toggleMediaFields() {
+    var tur = document.getElementById('turSelect').value;
+    document.getElementById('resimYukleme').classList.toggle('d-none', tur === 'Video');
+    document.getElementById('videoYukleme').classList.toggle('d-none', tur === 'Resim');
+}
+
+function previewResim(input) {
+    var preview = document.getElementById('resimPreviewImg');
+    var container = document.getElementById('resimOnizleme');
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            container.classList.remove('d-none');
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function previewVideo(input) {
+    var preview = document.getElementById('videoPreviewTag');
+    var container = document.getElementById('videoOnizleme');
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            container.classList.remove('d-none');
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+document.querySelectorAll('input[name="Baslik"], input[name="ResimUrl"]').forEach(function(input) {
+    input.addEventListener('input', updatePreview);
+});
+
+function updatePreview() {
+    var baslik = document.querySelector('input[name="Baslik"]')?.value || '';
+    var url = document.querySelector('input[name="ResimUrl"]')?.value || '';
+    if (url) {
+        var preview = document.querySelector('#livePreview img');
+        if (preview) preview.src = url;
+    }
+}
+</script>
+}

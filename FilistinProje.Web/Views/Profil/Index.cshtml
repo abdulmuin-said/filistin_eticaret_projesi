@@ -1,0 +1,223 @@
+@model FilistinProje.Core.Varliklar.AppUser
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["MyAccount"];
+    var siteSettings = SiteSettingsService.GetSettings();
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
+    var firstLetter = !string.IsNullOrEmpty(Model.AdSoyad) ? Model.AdSoyad.Substring(0, 1).ToUpperInvariant() : "U";
+}
+
+<!-- Breadcrumb -->
+<div class="bg-[#f1ede7] border-b border-[#e5e2dc] py-3">
+    <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-[#47473d]">
+        <a href="/" class="hover:text-[#313511] transition-colors">@Localizer["HomePage"]</a>
+        <span>/</span>
+        <span class="text-[#1c1c18] font-medium">@Localizer["MyAccount"]</span>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-10">
+    <div class="flex flex-col lg:flex-row gap-8">
+
+        <!-- Yan Menü -->
+        <aside class="lg:w-56 flex-shrink-0">
+            <div class="bg-white border border-[#e5e2dc] rounded-lg overflow-hidden">
+                <!-- Avatar -->
+                <div class="bg-[#313511] p-6 text-center">
+                    <div class="w-16 h-16 rounded-full bg-[#b58735] flex items-center justify-center text-white font-serif text-2xl mx-auto mb-3">
+                        @firstLetter
+                    </div>
+                    <p class="text-white text-sm font-medium">@Model.AdSoyad</p>
+                    <p class="text-[#c6ca99] text-xs mt-0.5">@Model.Email</p>
+                </div>
+                <!-- Menü -->
+                <nav class="p-2">
+                    <a href="/Profil" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-[#313511] bg-[#f1ede7] font-medium mb-1">
+                        <i class="fas fa-user w-4"></i> @Localizer["MyAccount"]
+                    </a>
+                    <a href="/Profil/Siparislerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-[#47473d] hover:bg-[#f1ede7] transition-colors mb-1">
+                        <i class="fas fa-box w-4"></i> @Localizer["MyOrders"]
+                    </a>
+                    <a href="/Profil/Adreslerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-[#47473d] hover:bg-[#f1ede7] transition-colors mb-1">
+                        <i class="fas fa-location-dot w-4"></i> @Localizer["MyAddresses"]
+                    </a>
+                    <a href="/Favori" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-[#47473d] hover:bg-[#f1ede7] transition-colors mb-1">
+                        <i class="fas fa-heart w-4"></i> @Localizer["MyFavorites"]
+                    </a>
+                    <hr class="border-[#e5e2dc] my-2" />
+                    <form action="/Hesap/CikisYap" method="post" class="m-0">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded text-sm text-red-500 hover:bg-red-50 transition-colors text-left">
+                            <i class="fas fa-right-from-bracket w-4"></i> @Localizer["Logout"]
+                        </button>
+                    </form>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Ana İçerik -->
+        <main class="flex-1 space-y-6">
+            <!-- Hoş Geldin Kartı -->
+            <div class="bg-white border border-[#e5e2dc] rounded-lg p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="font-serif text-2xl text-[#313511] mb-1">@Localizer["HelloUser", Model.AdSoyad]</h1>
+                        <p class="text-xs text-[#47473d]">@Localizer["WelcomeToAccount"]</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <a href="/Profil/Siparislerim" class="border border-[#313511] text-[#313511] text-xs tracking-widest uppercase px-4 py-2 rounded hover:bg-[#313511] hover:text-white transition-colors">
+                            @Localizer["Orders"]
+                        </a>
+                        <a href="/Profil/Adreslerim" class="bg-[#313511] text-white text-xs tracking-widest uppercase px-4 py-2 rounded hover:bg-[#1c2001] transition-colors">
+                            @Localizer["Addresses"]
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- İstatistikler -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-white border border-[#e5e2dc] rounded-lg p-5 text-center">
+                    <div class="font-serif text-4xl text-[#313511] mb-1">@ViewBag.SiparisSayisi</div>
+                    <div class="text-xs text-[#47473d] uppercase tracking-wide">@Localizer["TotalOrders"]</div>
+                </div>
+                <div class="bg-white border border-[#e5e2dc] rounded-lg p-5 text-center">
+                    <div class="font-serif text-3xl text-[#313511] mb-1">@ViewBag.ToplamHarcama <span class="text-lg">@currencySymbol</span></div>
+                    <div class="text-xs text-[#47473d] uppercase tracking-wide">@Localizer["TotalSpent"]</div>
+                </div>
+                <a href="/Favori" class="bg-white border border-[#e5e2dc] rounded-lg p-5 text-center hover:border-[#b58735] transition-colors group">
+                    <div class="font-serif text-4xl text-red-400 mb-1 group-hover:scale-110 transition-transform">@ViewBag.FavoriSayisi</div>
+                    <div class="text-xs text-[#47473d] uppercase tracking-wide">@Localizer["MyFavorites"]</div>
+                </a>
+            </div>
+
+            @if (ViewBag.SonFavoriler != null && ((List<FilistinProje.Core.Varliklar.Favori>)ViewBag.SonFavoriler).Count > 0)
+            {
+                var sonFavoriler = (List<FilistinProje.Core.Varliklar.Favori>)ViewBag.SonFavoriler;
+                <div class="bg-white border border-[#e5e2dc] rounded-lg p-6">
+                    <div class="flex items-center justify-between mb-5 pb-3 border-b border-[#e5e2dc]">
+                        <h2 class="font-serif text-xl text-[#313511]">
+                            <i class="fas fa-heart text-red-400 mr-2"></i> @Localizer["RecentFavorites"]
+                        </h2>
+                        <a href="/Favori" class="text-xs text-[#b58735] hover:text-[#313511] transition-colors font-medium uppercase tracking-wider">
+                            @Localizer["ViewAll"] <i class="fas fa-arrow-right ml-1 text-[10px]"></i>
+                        </a>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        @foreach (var favori in sonFavoriler)
+                        {
+                            var urun = favori.Urun;
+                            if (urun == null) continue;
+                            var urlSlug = string.IsNullOrEmpty(urun.Slug)
+                                ? $"{FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(urun.Baslik)}-{urun.Id}"
+                                : $"{urun.Slug}-{urun.Id}";
+                            <a href="/Urun/Detay/@urlSlug" class="group block">
+                                <div class="aspect-square bg-[#fcf9f3] rounded-lg overflow-hidden mb-2 border border-[#e5e2dc]">
+                                    <img src="@urun.AnaGorselUrl" alt="@urun.Baslik"
+                                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                         loading="lazy" decoding="async" />
+                                </div>
+                                <h6 class="text-xs font-medium text-[#1c1c18] line-clamp-1 group-hover:text-[#b58735] transition-colors">@urun.Baslik</h6>
+                                <p class="text-xs text-[#b58735] font-semibold mt-0.5">
+                                    @urun.EtkinFiyat.ToString("N2") @currencySymbol
+                                </p>
+                            </a>
+                        }
+                    </div>
+                </div>
+            }
+
+            <!-- Hesap Bilgileri -->
+            <div class="bg-white border border-[#e5e2dc] rounded-lg p-6">
+                <h2 class="font-serif text-xl text-[#313511] mb-5 pb-3 border-b border-[#e5e2dc]">@Localizer["AccountInfo"]</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4 py-3 border-b border-[#f1ede7]">
+                        <div class="w-9 h-9 rounded-full bg-[#e2e6b3] flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-user text-[#313511] text-xs"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs text-[#47473d] uppercase tracking-wide mb-0.5">@Localizer["FullName"]</div>
+                            <div class="text-sm font-medium text-[#1c1c18]">@Model.AdSoyad</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 py-3 border-b border-[#f1ede7]">
+                        <div class="w-9 h-9 rounded-full bg-[#e2e6b3] flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-envelope text-[#313511] text-xs"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs text-[#47473d] uppercase tracking-wide mb-0.5">@Localizer["Email"]</div>
+                            <div class="text-sm font-medium text-[#1c1c18]">@Model.Email</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 py-3 border-b border-[#f1ede7]">
+                        <div class="w-9 h-9 rounded-full bg-[#e2e6b3] flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-phone text-[#313511] text-xs"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs text-[#47473d] uppercase tracking-wide mb-0.5">@Localizer["Phone"]</div>
+                            <div class="text-sm font-medium text-[#1c1c18]">@(!string.IsNullOrEmpty(Model.PhoneNumber) ? Model.PhoneNumber : Localizer["NotSpecified"].Value)</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 py-3 border-b border-[#f1ede7]">
+                        <div class="w-9 h-9 rounded-full bg-[#e2e6b3] flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-id-card text-[#313511] text-xs"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs text-[#47473d] uppercase tracking-wide mb-0.5">@Localizer["NationalId"]</div>
+                            <div class="text-sm font-medium text-[#1c1c18]">@(!string.IsNullOrEmpty(Model.KimlikNo) ? Model.KimlikNo : Localizer["NotSpecified"].Value)</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 py-3 border-b border-[#f1ede7]">
+                        <div class="w-9 h-9 rounded-full bg-[#e2e6b3] flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-calendar text-[#313511] text-xs"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs text-[#47473d] uppercase tracking-wide mb-0.5">@Localizer["DateOfBirth"]</div>
+                            <div class="text-sm font-medium text-[#1c1c18]">@(Model.DogumTarihi.HasValue ? Model.DogumTarihi.Value.ToString("dd MMMM yyyy") : Localizer["NotSpecified"].Value)</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 py-3 border-b border-[#f1ede7]">
+                        <div class="w-9 h-9 rounded-full bg-[#e2e6b3] flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-location-dot text-[#313511] text-xs"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs text-[#47473d] uppercase tracking-wide mb-0.5">@Localizer["City"]</div>
+                            <div class="text-sm font-medium text-[#1c1c18]">@(!string.IsNullOrEmpty(Model.Sehir) ? Model.Sehir : Localizer["NotSpecified"].Value)</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 py-3 border-b border-[#f1ede7]">
+                        <div class="w-9 h-9 rounded-full bg-[#e2e6b3] flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-home text-[#313511] text-xs"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs text-[#47473d] uppercase tracking-wide mb-0.5">@Localizer["Address"]</div>
+                            <div class="text-sm font-medium text-[#1c1c18]">@(!string.IsNullOrEmpty(Model.Adres) ? Model.Adres : Localizer["NotSpecified"].Value)</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 py-3">
+                        <div class="w-9 h-9 rounded-full bg-[#e2e6b3] flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-id-card text-[#313511] text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-xs text-[#47473d] uppercase tracking-wide mb-0.5">@Localizer["IdentityPhoto"]</div>
+                            @if (!string.IsNullOrEmpty(Model.KimlikFotografYolu))
+                            {
+                                <div class="mt-2">
+                                    <img src="@Model.KimlikFotografYolu" alt="Kimlik Fotoğrafı"
+                                         class="w-48 h-32 object-cover rounded border border-[#e5e2dc] cursor-pointer hover:opacity-90 transition-opacity"
+                                         onclick="window.open(this.src, '_blank')" />
+                                    <p class="text-xs text-[#47473d] mt-1">@Localizer["ClickToViewFull"]</p>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-sm font-medium text-[#1c1c18]">@Localizer["NotSpecified"]</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+@using FilistinProje.Core.Varliklar
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    var isAuthenticated = SignInManager.IsSignedIn(User);
+    var isLoggedInAttr = isAuthenticated ? "true" : "false";
+}
+<!-- Spin the Wheel Overlay -->
+<div id="spinWheelOverlay"
+     data-logged-in="@isLoggedInAttr"
+     class="fixed inset-0 z-[9999] hidden flex items-center justify-center bg-[#1c1c18]/70 backdrop-blur-sm"
+     role="dialog" aria-modal="true">
+    <div class="relative bg-[#f7f1e6] rounded-3xl shadow-2xl border border-[#c9b58a]/60 p-5 md:p-8 max-w-xs sm:max-w-sm md:max-w-md w-full mx-auto overflow-visible">
+
+        <!-- Anti-Forgery Token for API calls -->
+        @Html.AntiForgeryToken()
+        <input id="wheelAntiForgeryToken" type="hidden" />
+
+        <!-- Close Button -->
+        <button type="button" class="sw-close-btn absolute -top-3 -end-3 z-10 w-9 h-9 bg-white rounded-full shadow-md border border-[#d8c9aa] flex items-center justify-center text-[#47473d] hover:bg-[#efe4cf] hover:text-[#313511] transition-all">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+
+        <!-- WHEEL SECTION -->
+        <div class="sw-wheel-container text-center">
+            <h2 class="sw-title font-serif text-2xl md:text-3xl text-[#313511] mb-1"></h2>
+            <p class="sw-subtitle text-sm text-[#6f6a5e] mb-5 font-light"></p>
+
+            <div class="relative inline-flex items-center justify-center mb-5">
+                <canvas id="wheelCanvas" class="block mx-auto"></canvas>
+            </div>
+
+            <button type="button" class="sw-spin-btn w-full bg-[#b58735] hover:bg-[#9a6d24] text-white font-semibold text-sm tracking-widest uppercase py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"></button>
+
+            <p class="sw-onechance text-[10px] text-[#a09e99] mt-3"></p>
+        </div>
+
+        <!-- RESULT SECTION -->
+        <div class="sw-result-modal hidden text-center">
+            <div class="sw-result-icon mb-4"></div>
+            <h2 class="sw-result-title font-serif text-2xl md:text-3xl text-[#313511] mb-2"></h2>
+            <p class="sw-result-subtitle text-sm text-[#6f6a5e] mb-5 font-light"></p>
+
+            <!-- Coupon Code Display -->
+            <div class="sw-coupon-code hidden bg-[#313511] text-[#b58735] font-mono font-bold text-lg tracking-widest py-3 px-6 rounded-xl mb-5 inline-block border border-[#b58735]/30 shadow-inner select-all"></div>
+
+            <!-- Copy Button -->
+            <button type="button" class="sw-copy-btn hidden w-full bg-[#313511] hover:bg-[#1c2001] text-white font-semibold text-sm tracking-widest uppercase py-2.5 rounded-xl mb-3 border border-[#b58735]/30 transition-all duration-300"></button>
+
+            <!-- Primary Action (Use Coupon / Login / Close) -->
+            <button type="button" class="sw-claim-btn w-full bg-[#b58735] hover:bg-[#9a6d24] text-white font-semibold text-sm tracking-widest uppercase py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"></button>
+
+            <!-- Alt Action (Copy when not logged in) -->
+            <button type="button" class="sw-claim-btn-alt hidden w-full mt-2 bg-[#f7f1e6] hover:bg-[#efe4cf] text-[#47473d] font-semibold text-sm tracking-widest uppercase py-2.5 rounded-xl border border-[#d8c9aa] transition-all duration-300"></button>
+        </div>
+
+        <div class="mt-4 text-center">
+            <span class="text-[9px] tracking-[0.25em] uppercase text-[#a09e99] font-light">7ANRPS48.com</span>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/site-spin-wheel.js" asp-append-version="true"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if (!isAuthenticated)
+        {
+            <text>
+            var swShown = false;
+            try { swShown = localStorage.getItem('sw_shown') === 'true'; } catch(e) {}
+            if (!swShown) {
+                setTimeout(function () {
+                    if (window.SpinWheel && typeof window.SpinWheel.open === 'function') {
+                        window.SpinWheel.open();
+                    }
+                }, 2500);
+            }
+            </text>
+        }
+    });
+</script>

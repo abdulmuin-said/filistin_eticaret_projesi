@@ -1,0 +1,281 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - link "7ANRPS48 Admin Panel" [ref=e5] [cursor=pointer]:
+      - /url: /Admin/Home
+      - img "7ANRPS48" [ref=e6]
+    - navigation "Admin ana menü" [ref=e7]:
+      - link " Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=e9]: 
+        - text: Dashboard
+      - generic [ref=e10]:
+        - button " Order Management" [ref=e11] [cursor=pointer]:
+          - generic [ref=e12]: 
+          - text: Order Management
+        - text:      
+      - generic [ref=e13]:
+        - button " Product Management" [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]: 
+          - text: Product Management
+        - text:  +    
+      - generic [ref=e16]:
+        - button " Store Content" [ref=e17] [cursor=pointer]:
+          - generic [ref=e18]: 
+          - text: Store Content
+        - text:        
+      - link " Members" [ref=e19] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=e20]: 
+        - text: Members
+      - link " Toptancılar" [ref=e21] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=e22]: 
+        - text: Toptancılar
+      - link " Toptancı Grupları" [ref=e23] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=e24]: 
+        - text: Toptancı Grupları
+      - generic [ref=e25]:
+        - button " Reports" [ref=e26] [cursor=pointer]:
+          - generic [ref=e27]: 
+          - text: Reports
+        - text:  
+      - link " Banka Hesapları" [ref=e28] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=e29]: 
+        - text: Banka Hesapları
+      - link " Settings" [ref=e30] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=e31]: 
+        - text: Settings
+    - generic [ref=e32]:
+      - text: 
+      - combobox "Language" [ref=e34]:
+        - option "AR"
+        - option "EN" [selected]
+        - option "TR"
+      - generic [ref=e35]:
+        - button "S" [ref=e36] [cursor=pointer]:
+          - generic [ref=e37]: S
+        - text:  
+  - generic [ref=e38]:
+    - main [ref=e39]:
+      - generic [ref=e40]:
+        - generic [ref=e41]:
+          - generic [ref=e42]:
+            - heading "Yönetim Paneli" [level=1] [ref=e43]
+            - paragraph [ref=e44]: Sipariş, stok ve trafik görünümünün tek ekrandaki özeti.
+          - generic [ref=e45]:
+            - generic [ref=e46]: 
+            - text: 19 June 2026, Friday
+        - generic [ref=e47]:
+          - generic [ref=e49]:
+            - generic [ref=e50]: Toplam Ciro
+            - generic [ref=e51]: 0.00 TL
+            - generic [ref=e52]: "Aylık: 0.00 TL"
+          - generic [ref=e54]:
+            - generic [ref=e55]: Bugünkü Ciro
+            - generic [ref=e56]: 0.00 TL
+            - generic [ref=e57]: "Haftalık: 0.00 TL"
+          - generic [ref=e59]:
+            - generic [ref=e60]: Toplam Sipariş
+            - generic [ref=e61]: "0"
+            - generic [ref=e62]: "Bugün: 0 sipariş"
+          - generic [ref=e64]:
+            - generic [ref=e65]: Bekleyen
+            - generic [ref=e66]: "0"
+            - generic [ref=e67]: "Kargoya hazır: 0"
+          - generic [ref=e69]:
+            - generic [ref=e70]: Kargoda / İade
+            - generic [ref=e71]: 0 / 0
+            - generic [ref=e72]: Operasyon özet durumu
+          - generic [ref=e74]:
+            - generic [ref=e75]: Mesaj / Aktif Ürün
+            - generic [ref=e76]: 0 / 12
+            - generic [ref=e77]: Operasyon takibi
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - heading " Son 7 Gün Gelir Grafiği" [level=3] [ref=e82]:
+              - generic [ref=e83]: 
+              - text: Son 7 Gün Gelir Grafiği
+            - generic [ref=e87]:
+              - heading " Hızlı İşlemler" [level=3] [ref=e89]:
+                - generic [ref=e90]: 
+                - text: Hızlı İşlemler
+              - generic [ref=e92]:
+                - link " Ürün Ekle" [ref=e94] [cursor=pointer]:
+                  - /url: /Admin/Urun/Ekle
+                  - generic [ref=e95]:
+                    - generic [ref=e97]: 
+                    - generic [ref=e98]: Ürün Ekle
+                - link " Siparişler" [ref=e100] [cursor=pointer]:
+                  - /url: /Admin/Siparis
+                  - generic [ref=e101]:
+                    - generic [ref=e103]: 
+                    - generic [ref=e104]: Siparişler
+                - link " Özellik Alanları" [ref=e106] [cursor=pointer]:
+                  - /url: /Admin/UrunOzellik
+                  - generic [ref=e107]:
+                    - generic [ref=e109]: 
+                    - generic [ref=e110]: Özellik Alanları
+                - link " İletişim Kutusu" [ref=e112] [cursor=pointer]:
+                  - /url: /Admin/Iletisim
+                  - generic [ref=e113]:
+                    - generic [ref=e115]: 
+                    - generic [ref=e116]: İletişim Kutusu
+            - generic [ref=e117]:
+              - generic [ref=e119]:
+                - heading " En Çok Satanlar" [level=3] [ref=e121]:
+                  - generic [ref=e122]: 
+                  - text: En Çok Satanlar
+                - generic [ref=e124]:
+                  - generic [ref=e125]: 
+                  - paragraph [ref=e126]: Henüz satış verisi yok.
+              - generic [ref=e128]:
+                - heading " En Çok Görüntülenenler" [level=3] [ref=e130]:
+                  - generic [ref=e131]: 
+                  - text: En Çok Görüntülenenler
+                - generic [ref=e133]:
+                  - link "Filistin Motifli Duvar Tablosu Filistin Motifli Duvar Tablosu 4 görüntülenme " [ref=e134] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/1
+                    - img "Filistin Motifli Duvar Tablosu" [ref=e135]
+                    - generic [ref=e136]:
+                      - generic [ref=e137]: Filistin Motifli Duvar Tablosu
+                      - generic [ref=e138]: 4 görüntülenme
+                    - generic [ref=e139]: 
+                  - link "Filistin Hatıra Hediye Kutusu Filistin Hatıra Hediye Kutusu 3 görüntülenme " [ref=e140] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/3
+                    - img "Filistin Hatıra Hediye Kutusu" [ref=e141]
+                    - generic [ref=e142]:
+                      - generic [ref=e143]: Filistin Hatıra Hediye Kutusu
+                      - generic [ref=e144]: 3 görüntülenme
+                    - generic [ref=e145]: 
+                  - link "Filistin Harita & Bayrak Seti Filistin Harita & Bayrak Seti 0 görüntülenme " [ref=e146] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/6
+                    - img "Filistin Harita & Bayrak Seti" [ref=e147]
+                    - generic [ref=e148]:
+                      - generic [ref=e149]: Filistin Harita & Bayrak Seti
+                      - generic [ref=e150]: 0 görüntülenme
+                    - generic [ref=e151]: 
+                  - link "Salon İçin Kudüs Dekoru Salon İçin Kudüs Dekoru 0 görüntülenme " [ref=e152] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/7
+                    - img "Salon İçin Kudüs Dekoru" [ref=e153]
+                    - generic [ref=e154]:
+                      - generic [ref=e155]: Salon İçin Kudüs Dekoru
+                      - generic [ref=e156]: 0 görüntülenme
+                    - generic [ref=e157]: 
+                  - link "Altın Çerçeveli Duvar Dekoru Altın Çerçeveli Duvar Dekoru 0 görüntülenme " [ref=e158] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/8
+                    - img "Altın Çerçeveli Duvar Dekoru" [ref=e159]
+                    - generic [ref=e160]:
+                      - generic [ref=e161]: Altın Çerçeveli Duvar Dekoru
+                      - generic [ref=e162]: 0 görüntülenme
+                    - generic [ref=e163]: 
+            - generic [ref=e164]:
+              - generic [ref=e166]:
+                - heading " Son Eklenen Ürünler" [level=3] [ref=e168]:
+                  - generic [ref=e169]: 
+                  - text: Son Eklenen Ürünler
+                - generic [ref=e171]:
+                  - link "Filistin Motifli Duvar Tablosu DEMO-001 | 95.00 TL 19.06.2026 12:01" [ref=e172] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/1
+                    - generic [ref=e173]: Filistin Motifli Duvar Tablosu
+                    - generic [ref=e174]: DEMO-001 | 95.00 TL
+                    - generic [ref=e175]: 19.06.2026 12:01
+                  - link "Zeytin Dalı Dekoratif Set DEMO-002 | 110.00 TL 19.06.2026 12:01" [ref=e176] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/2
+                    - generic [ref=e177]: Zeytin Dalı Dekoratif Set
+                    - generic [ref=e178]: DEMO-002 | 110.00 TL
+                    - generic [ref=e179]: 19.06.2026 12:01
+                  - link "Kudüs Silüet Tablosu DEMO-004 | 100.00 TL 19.06.2026 12:01" [ref=e180] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/4
+                    - generic [ref=e181]: Kudüs Silüet Tablosu
+                    - generic [ref=e182]: DEMO-004 | 100.00 TL
+                    - generic [ref=e183]: 19.06.2026 12:01
+                  - link "Gazze Dayanışma Posteri DEMO-005 | 45.00 TL 19.06.2026 12:01" [ref=e184] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/5
+                    - generic [ref=e185]: Gazze Dayanışma Posteri
+                    - generic [ref=e186]: DEMO-005 | 45.00 TL
+                    - generic [ref=e187]: 19.06.2026 12:01
+                  - link "Filistin Harita & Bayrak Seti DEMO-006 | 65.00 TL 19.06.2026 12:01" [ref=e188] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/6
+                    - generic [ref=e189]: Filistin Harita & Bayrak Seti
+                    - generic [ref=e190]: DEMO-006 | 65.00 TL
+                    - generic [ref=e191]: 19.06.2026 12:01
+              - generic [ref=e193]:
+                - heading " Son Müşteri Yorumları" [level=3] [ref=e195]:
+                  - generic [ref=e196]: 
+                  - text: Son Müşteri Yorumları
+                - generic [ref=e198]:
+                  - generic [ref=e199]: 
+                  - paragraph [ref=e200]: Henüz yorum yok.
+          - generic [ref=e201]:
+            - generic [ref=e202]:
+              - heading " Sistem Uyarıları" [level=3] [ref=e204]:
+                - generic [ref=e205]: 
+                - text: Sistem Uyarıları
+              - generic [ref=e207]: Kritik sistem uyarısı bulunmuyor.
+            - generic [ref=e208]:
+              - heading " Operasyon Özeti" [level=3] [ref=e210]:
+                - generic [ref=e211]: 
+                - text: Operasyon Özeti
+              - generic [ref=e212]:
+                - generic [ref=e213]:
+                  - generic [ref=e214]: Bekleyen sipariş
+                  - strong [ref=e215]: "0"
+                - generic [ref=e216]:
+                  - generic [ref=e217]: Kargoya hazır
+                  - strong [ref=e218]: "0"
+                - generic [ref=e219]:
+                  - generic [ref=e220]: Kargoda
+                  - strong [ref=e221]: "0"
+                - generic [ref=e222]:
+                  - generic [ref=e223]: İptal / İade
+                  - strong [ref=e224]: "0"
+            - generic [ref=e225]:
+              - heading " Trafik Alanı" [level=3] [ref=e227]:
+                - generic [ref=e228]: 
+                - text: Trafik Alanı
+              - generic [ref=e229]:
+                - generic [ref=e230]:
+                  - generic [ref=e231]: Son 7 gün ziyaret
+                  - strong [ref=e232]: "434"
+                - generic [ref=e233]:
+                  - generic [ref=e234]: Tekil ziyaretçi
+                  - strong [ref=e235]: "2"
+            - generic [ref=e236]:
+              - heading " Son Aktiviteler" [level=3] [ref=e238]:
+                - generic [ref=e239]: 
+                - text: Son Aktiviteler
+              - generic [ref=e240]:
+                - generic [ref=e241]:
+                  - generic [ref=e243]: 
+                  - generic [ref=e244]:
+                    - generic [ref=e245]: Yeni ürün eklendi
+                    - generic [ref=e246]: Filistin Motifli Duvar Tablosu
+                  - generic [ref=e247]: 12:01
+                - generic [ref=e248]:
+                  - generic [ref=e250]: 
+                  - generic [ref=e251]:
+                    - generic [ref=e252]: Yeni ürün eklendi
+                    - generic [ref=e253]: Zeytin Dalı Dekoratif Set
+                  - generic [ref=e254]: 12:01
+                - generic [ref=e255]:
+                  - generic [ref=e257]: 
+                  - generic [ref=e258]:
+                    - generic [ref=e259]: Yeni ürün eklendi
+                    - generic [ref=e260]: Kudüs Silüet Tablosu
+                  - generic [ref=e261]: 12:01
+                - generic [ref=e262]:
+                  - generic [ref=e264]: 
+                  - generic [ref=e265]:
+                    - generic [ref=e266]: Yeni ürün eklendi
+                    - generic [ref=e267]: Gazze Dayanışma Posteri
+                  - generic [ref=e268]: 12:01
+                - generic [ref=e269]:
+                  - generic [ref=e271]: 
+                  - generic [ref=e272]:
+                    - generic [ref=e273]: Yeni ürün eklendi
+                    - generic [ref=e274]: Filistin Harita & Bayrak Seti
+                  - generic [ref=e275]: 12:01
+    - contentinfo [ref=e276]: © 2026 7ANRPS48 Admin Panel. All rights reserved.

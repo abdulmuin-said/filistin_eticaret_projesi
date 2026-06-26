@@ -1,0 +1,24 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.7anrps48.com/sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /Admin/
+Disallow: /Hesap/
+Disallow: /Profil/
+Disallow: /Sepet/
+Disallow: /Siparis/
+Disallow: /Sozlesmeler/
+Disallow: /Dil/
+
+# Allow static assets
+Allow: /img/
+Allow: /css/
+Allow: /js/
+Allow: /lib/
+Allow: /media/
+
+# Crawl-delay: 10 (be gentle)
+Crawl-Delay: 10

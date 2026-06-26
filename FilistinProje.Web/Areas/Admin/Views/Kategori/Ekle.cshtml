@@ -1,0 +1,256 @@
+@model FilistinProje.Core.Varliklar.Kategori
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_Yeni_Kategori"];
+}
+
+<style>
+    .category-edit-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: 22px;
+        align-items: start;
+    }
+
+    .category-aside {
+        position: sticky;
+        top: 84px;
+        display: grid;
+        gap: 16px;
+    }
+
+    .category-preview {
+        min-height: 180px;
+        border-radius: var(--ca-radius);
+        border: 1px solid var(--ca-border);
+        overflow: hidden;
+        background: linear-gradient(135deg, #f7f4ee, #ffffff);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .category-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .category-preview-placeholder {
+        text-align: center;
+        color: var(--ca-text-muted);
+    }
+
+    .category-preview-placeholder i {
+        display: block;
+        font-size: 2rem;
+        margin-bottom: 8px;
+        color: var(--ca-primary);
+    }
+
+    .category-save-bar {
+        position: sticky;
+        bottom: 0;
+        z-index: 20;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        padding-top: 14px;
+        margin-top: 18px;
+        background: linear-gradient(180deg, rgba(247, 244, 238, 0), #f7f4ee 34%);
+    }
+
+    @@media (max-width: 1180px) {
+        .category-edit-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .category-aside {
+            position: static;
+            grid-row: 1;
+        }
+    }
+</style>
+
+<div class="container-fluid ca-fade-in">
+    <div class="ca-page-header">
+        <div>
+             <h1 class="ca-page-title">@Localizer["Admin_Yeni_Kategori"]</h1>
+             <p class="ca-page-subtitle">@Localizer["Admin_Yeni_KategoriDesc"]</p>
+
+        </div>
+        <a href="/Admin/Kategori" class="ca-btn ca-btn-outline">
+             <i class="fas fa-arrow-left"></i> @Localizer["Admin_BackToCategories"]
+
+        </a>
+    </div>
+
+    <form asp-action="Ekle" method="post">
+        @Html.AntiForgeryToken()
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        }
+
+        <div class="category-edit-layout">
+            <div>
+                <div class="ca-card mb-3">
+                    <div class="ca-card-header">
+                         <span class="ca-card-title">@Localizer["Admin_BasicInfo"]</span>
+
+                    </div>
+                    <div class="ca-card-body">
+                        <div class="row g-3">
+                            <div class="col-lg-8">
+                                 <label class="ca-label">@Localizer["Admin_Kategori_Adi"]</label>
+                                 <input asp-for="Ad" class="ca-input" placeholder="@Localizer["Admin_Kategori_Adi_Placeholder"]" />
+
+                            </div>
+                            <div class="col-lg-4">
+                                 <label class="ca-label">@Localizer["Admin_ParentCategories"]</label>
+
+                                <select asp-for="ParentKategoriId" asp-items="ViewBag.ParentKategoriler" class="ca-select"></select>
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="ca-label">Slug</label>
+                                <input asp-for="Slug" class="ca-input" placeholder="cam-tablo" />
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="ca-label">@Localizer["Admin_Sira"]</label>
+                                <input asp-for="Sira" class="ca-input" type="number" min="0" />
+                            </div>
+                            <div class="col-lg-4">
+                                 <label class="ca-label">@Localizer["Admin_ProductSortType"]</label>
+                                 <select asp-for="UrunSiralamaTipi" class="ca-select">
+                                     <option value="manual">@Localizer["Admin_ManualSort"]</option>
+                                     <option value="newest">@Localizer["Admin_Newest"]</option>
+                                     <option value="popular">@Localizer["Admin_Popular"]</option>
+                                     <option value="price_asc">@Localizer["Admin_PriceAsc"]</option>
+                                     <option value="price_desc">@Localizer["Admin_PriceDesc"]</option>
+                                 </select>
+
+                            </div>
+                            <div class="col-12">
+                                 <label class="ca-label">@Localizer["Admin_ShortDescription"]</label>
+                                 <textarea asp-for="KisaAciklama" class="ca-textarea" rows="2" placeholder="@Localizer["Admin_ShortDescriptionPlaceholder"]"></textarea>
+
+                            </div>
+                            <div class="col-12">
+                                 <label class="ca-label">@Localizer["Admin_Kategori_Aciklamasi"]</label>
+                                 <textarea asp-for="Aciklama" class="ca-textarea" rows="4" placeholder="@Localizer["Admin_Kategori_Aciklamasi_Placeholder"]"></textarea>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ca-card mb-3">
+                    <div class="ca-card-header">
+                         <span class="ca-card-title">@Localizer["Admin_ImageDisplaySEO"]</span>
+
+                    </div>
+                    <div class="ca-card-body">
+                        <div class="row g-3">
+                            <div class="col-lg-6">
+                                 <label class="ca-label">@Localizer["Admin_Kategori_Gorsel_URL"]</label>
+
+                                <input asp-for="GorselUrl" class="ca-input" id="categoryImageUrl" onchange="updateCategoryPreview()" />
+                            </div>
+                            <div class="col-lg-6">
+                                 <label class="ca-label">@Localizer["Admin_Kategori_Banner_URL"]</label>
+
+                                <input asp-for="BannerUrl" class="ca-input" />
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="ca-label">@Localizer["Admin_SEO_Basligi"]</label>
+                                <input asp-for="SeoTitle" class="ca-input" />
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="ca-label">@Localizer["Admin_SEO_Aciklamasi"]</label>
+                                <input asp-for="SeoDescription" class="ca-input" />
+                            </div>
+                            <div class="col-lg-6">
+                                 <label class="ca-label">@Localizer["Admin_Ust_Metin"]</label>
+
+                                <textarea asp-for="UstMetin" class="ca-textarea" rows="4"></textarea>
+                            </div>
+                            <div class="col-lg-6">
+                                 <label class="ca-label">@Localizer["Admin_Alt_Metin"]</label>
+
+                                <textarea asp-for="AltMetin" class="ca-textarea" rows="4"></textarea>
+                            </div>
+                            <div class="col-lg-4">
+                                 <label class="ca-label">@Localizer["Admin_CampaignTag"]</label>
+                                 <input asp-for="KampanyaEtiketi" class="ca-input" placeholder="@Localizer["Admin_CampaignTagPlaceholder"]" />
+
+                            </div>
+                            <div class="col-lg-4 d-flex align-items-end">
+                                <label class="form-check form-switch w-100" style="padding:14px 16px; background:var(--ca-bg); border-radius:var(--ca-radius); border:1px solid var(--ca-border);">
+                                    <input asp-for="ReceteGerekliMi" class="form-check-input" type="checkbox" style="width:3em; height:1.5em;">
+                                     <span class="form-check-label ms-2">@Localizer["Admin_RecipeRequired"]</span>
+
+                                </label>
+                            </div>
+                            <div class="col-lg-4 d-flex align-items-end">
+                                <label class="form-check form-switch w-100" style="padding:14px 16px; background:var(--ca-bg); border-radius:var(--ca-radius); border:1px solid var(--ca-border);">
+                                    <input asp-for="AktifMi" class="form-check-input" type="checkbox" style="width:3em; height:1.5em;">
+                                     <span class="form-check-label ms-2">@Localizer["Admin_CategoryPublished"]</span>
+
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-save-bar">
+                     <a href="/Admin/Kategori" class="ca-btn ca-btn-outline">@Localizer["Admin_Cancel"]</a>
+                     <button type="submit" class="ca-btn ca-btn-primary">
+                         <i class="fas fa-save"></i> @Localizer["Admin_SaveCategory"]
+                     </button>
+
+                </div>
+            </div>
+
+            <aside class="category-aside">
+                <div class="ca-card">
+                    <div class="ca-card-header">
+                         <span class="ca-card-title">@Localizer["Admin_UsageNote"]</span>
+
+                    </div>
+                    <div class="ca-card-body">
+                        <div class="category-preview mb-3" id="categoryPreview">
+                            <div class="category-preview-placeholder">
+                                <i class="fas fa-folder-plus"></i>
+                                 @Localizer["Admin_ImagePreview"]
+
+                            </div>
+                        </div>
+                        <p class="small text-muted mb-0">
+                            @Localizer["Admin_CategoryParentHelp"]
+                        </p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </form>
+</div>
+
+<script>
+    function updateCategoryPreview() {
+        const input = document.getElementById('categoryImageUrl');
+        const preview = document.getElementById('categoryPreview');
+        if (!input || !preview) return;
+
+        if (!input.value) {
+             preview.innerHTML = '<div class="category-preview-placeholder"><i class="fas fa-folder-plus"></i>@Localizer["Admin_ImagePreview"]</div>';
+
+            return;
+        }
+
+         preview.innerHTML = `<img src="${input.value}" alt="@Localizer["Admin_Kategori_Gorsel"]" onerror="this.closest('.category-preview').innerHTML='<div class=&quot;category-preview-placeholder&quot;><i class=&quot;fas fa-image&quot;></i>@Localizer["Admin_ImageLoadFailed"]</div>';">`;
+
+    }
+</script>

@@ -1,0 +1,174 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: 
+      - text: توصيل مجاني للطلبات فوق 200 ₪
+    - generic [ref=e6]:
+      - generic [ref=e7]: 
+      - text: الدفع عند الاستلام متاح
+    - generic [ref=e8]:
+      - generic [ref=e9]: 
+      - text: SecurePayment
+    - generic [ref=e10]:
+      - generic [ref=e11]: 
+      - text: CreditCardPayment
+    - generic [ref=e12]:
+      - generic [ref=e13]: 
+      - text: FastProduction
+    - generic [ref=e14]:
+      - generic [ref=e15]: 
+      - text: CarefulPackaging
+    - generic [ref=e16]:
+      - generic [ref=e17]: 
+      - text: TurkeyWideShipping
+    - generic [ref=e18]:
+      - generic [ref=e19]: 
+      - text: EasyReturnDays
+    - generic [ref=e20]:
+      - generic [ref=e21]: 
+      - text: ManufacturerGuarantee
+    - generic [ref=e22]:
+      - generic [ref=e23]: 
+      - text: WhatsAppSupport
+    - generic [ref=e24]:
+      - generic [ref=e25]: 
+      - text: توصيل مجاني للطلبات فوق 200 ₪
+    - generic [ref=e26]:
+      - generic [ref=e27]: 
+      - text: الدفع عند الاستلام متاح
+    - generic [ref=e28]:
+      - generic [ref=e29]: 
+      - text: SecurePayment
+    - generic [ref=e30]:
+      - generic [ref=e31]: 
+      - text: CreditCardPayment
+    - generic [ref=e32]:
+      - generic [ref=e33]: 
+      - text: FastProduction
+    - generic [ref=e34]:
+      - generic [ref=e35]: 
+      - text: CarefulPackaging
+    - generic [ref=e36]:
+      - generic [ref=e37]: 
+      - text: TurkeyWideShipping
+    - generic [ref=e38]:
+      - generic [ref=e39]: 
+      - text: EasyReturnDays
+    - generic [ref=e40]:
+      - generic [ref=e41]: 
+      - text: ManufacturerGuarantee
+    - generic [ref=e42]:
+      - generic [ref=e43]: 
+      - text: WhatsAppSupport
+  - banner [ref=e44]:
+    - generic [ref=e45]:
+      - text: 
+      - link "7ANRPS48" [ref=e46] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=e47]
+      - generic [ref=e48]:
+        - button "OpenMenu" [ref=e49] [cursor=pointer]:
+          - img [ref=e50]
+        - button "Search" [ref=e52] [cursor=pointer]:
+          - img [ref=e53]
+      - generic [ref=e55]:
+        - link "Login" [ref=e56] [cursor=pointer]:
+          - /url: /Hesap/GirisYap
+          - img [ref=e57]
+        - link "Favorites" [ref=e59] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=e60]
+        - link "Cart" [ref=e62] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=e63]
+          - generic [ref=e65]: "0"
+      - text:              
+    - text:   
+  - text: 
+  - main [ref=e66]:
+    - generic [ref=e68]:
+      - generic [ref=e69]:
+        - link "7ANRPS48" [ref=e70] [cursor=pointer]:
+          - /url: /
+        - paragraph [ref=e71]: LoginToYourAccount
+      - generic [ref=e73]:
+        - generic [ref=e74]:
+          - generic [ref=e75]: Email
+          - textbox "Email" [ref=e76]:
+            - /placeholder: ExampleEmail
+        - generic [ref=e77]:
+          - generic [ref=e78]: Password
+          - textbox "Password" [ref=e79]:
+            - /placeholder: PasswordPlaceholder
+        - link "ForgotPassword" [ref=e81] [cursor=pointer]:
+          - /url: /Hesap/SifremiUnuttum
+        - button "Login" [ref=e82] [cursor=pointer]
+      - paragraph [ref=e83]:
+        - text: NoAccount
+        - link "Register" [ref=e84] [cursor=pointer]:
+          - /url: /Hesap/KayitOl
+  - contentinfo [ref=e85]:
+    - generic [ref=e87]:
+      - generic [ref=e88]:
+        - generic [ref=e90]: 
+        - generic [ref=e91]:
+          - generic [ref=e92]: AllOverTurkey
+          - generic [ref=e93]: FreeShipping
+      - generic [ref=e94]:
+        - generic [ref=e96]: 
+        - generic [ref=e97]:
+          - generic [ref=e98]: SecureShopping
+          - generic [ref=e99]: 256BitSSL
+      - generic [ref=e100]:
+        - generic [ref=e102]: 
+        - generic [ref=e103]:
+          - generic [ref=e104]: AllCreditCards
+          - generic [ref=e105]: 12Installments
+    - generic [ref=e106]:
+      - generic [ref=e107]:
+        - generic [ref=e108]:
+          - heading "SubscribeToNewsletter" [level=3] [ref=e109]
+          - paragraph [ref=e110]: NewsletterDescription
+          - generic [ref=e111]:
+            - textbox "EmailAddress" [ref=e112]
+            - button "Subscribe" [ref=e113] [cursor=pointer]
+        - generic [ref=e114]:
+          - heading "Corporate" [level=4] [ref=e115]
+          - list [ref=e116]:
+            - listitem [ref=e117]:
+              - link "AboutUs" [ref=e118] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=e119]:
+              - link "Contact" [ref=e120] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=e121]:
+              - link "Collections" [ref=e122] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=e123]:
+              - link "PrivacyPolicy" [ref=e124] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=e125]:
+              - link "DistanceSalesContract" [ref=e126] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=e128] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=e129]: 
+      - generic [ref=e130]:
+        - paragraph [ref=e132]: © 2026 7ANRPS48 AllRightsReserved
+        - generic [ref=e133]:
+          - link "PrivacyPolicy" [ref=e134] [cursor=pointer]:
+            - /url: /Kurumsal/Gizlilik
+          - text: "|"
+          - link "TermsOfUse" [ref=e135] [cursor=pointer]:
+            - /url: /Kurumsal/KullaniciSozlesmesi
+          - text: "|"
+          - link "ReturnExchange" [ref=e136] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+    - img "PaymentMethods" [ref=e139]
+  - link "WhatsAppContact" [ref=e140] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=e141]
+    - generic [ref=e143]: WhatsApp
+  - link "Cart" [ref=e144] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=e145]

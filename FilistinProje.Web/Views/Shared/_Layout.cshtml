@@ -1,0 +1,1232 @@
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+@using FilistinProje.Core.Helpers
+@using FilistinProje.Core.Varliklar
+@using FilistinProje.Web.Extensions
+@using FilistinProje.Web.Models
+@using System.Globalization
+@using System.Text
+@inject SignInManager<FilistinProje.Core.Varliklar.AppUser> SignInManager
+@inject UserManager<FilistinProje.Core.Varliklar.AppUser> UserManager
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject FilistinProje.Core.Interfaces.ISepetService SepetService
+@inject FilistinProje.Data.KanvasDbContext DbContext
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
+@inject IStringLocalizer<SharedResource> Localizer
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    var userId = UserManager.GetUserId(User);
+    var sessionId = HttpContextAccessor.HttpContext?.Session.Id ?? string.Empty;
+    var sepetCount = await SepetService.GetSepetUrunSayisiAsync(userId, sessionId);
+    var siteSettings = SiteSettingsService.GetSettings();
+    var brandName = string.IsNullOrWhiteSpace(siteSettings.MarkaAdi) ? siteSettings.SiteAdi : siteSettings.MarkaAdi;
+    var pageTitle = ViewData["Title"]?.ToString();
+    var seoTitle = ViewData["SeoTitle"]?.ToString();
+    var layoutTitle = !string.IsNullOrWhiteSpace(seoTitle)
+        ? seoTitle
+        : (string.IsNullOrWhiteSpace(pageTitle) ? brandName : $"{pageTitle} - {brandName}");
+    var metaDescription = ViewData["MetaDescription"]?.ToString();
+    if (string.IsNullOrWhiteSpace(metaDescription))
+    {
+        metaDescription = string.IsNullOrWhiteSpace(siteSettings.MetaDescription)
+            ? (string.IsNullOrWhiteSpace(siteSettings.SiteAciklamasi) ? "Profesyonel premium dekorasyon ürünleri." : siteSettings.SiteAciklamasi)
+            : siteSettings.MetaDescription;
+    }
+    var metaKeywords = ViewData["MetaKeywords"]?.ToString();
+    var logoUrl = string.IsNullOrWhiteSpace(siteSettings.SiteLogoUrl) ? "/74anrps48logo2.svg" : siteSettings.SiteLogoUrl;
+    var touchIconUrl = "/74anrps48logo2.svg";
+    var faviconUrl = string.IsNullOrWhiteSpace(siteSettings.FaviconUrl) ? "/74anrps48logo2.svg" : siteSettings.FaviconUrl;
+    var siteUrl = SiteSettingsService.BuildAbsoluteUrl(string.Empty);
+    var viewOgImage = ViewData["OgImage"]?.ToString();
+    var ogImage = !string.IsNullOrWhiteSpace(viewOgImage)
+        ? SiteSettingsService.BuildAbsoluteUrl(viewOgImage)
+        : (string.IsNullOrWhiteSpace(siteSettings.VarsayilanSosyalPaylasimGorseliUrl)
+            ? SiteSettingsService.BuildAbsoluteUrl(logoUrl)
+            : SiteSettingsService.BuildAbsoluteUrl(siteSettings.VarsayilanSosyalPaylasimGorseliUrl));
+    var currentPath = HttpContextAccessor.HttpContext?.Request.Path.Value ?? "/";
+    var currentQuery = HttpContextAccessor.HttpContext?.Request.QueryString.Value ?? string.Empty;
+    var currentUrl = SiteSettingsService.BuildAbsoluteUrl($"{currentPath}{currentQuery}");
+    var currentCulture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+    var currentDirection = currentCulture == "ar" ? "rtl" : "ltr";
+    var languageReturnUrl = $"{currentPath}{currentQuery}";
+    var encodedLanguageReturnUrl = Uri.EscapeDataString(languageReturnUrl);
+    var canonicalUrl = ViewData["CanonicalUrl"]?.ToString();
+
+    canonicalUrl = string.IsNullOrWhiteSpace(canonicalUrl)
+        ? currentUrl
+        : SiteSettingsService.BuildAbsoluteUrl(canonicalUrl);
+    var ogType = string.IsNullOrWhiteSpace(ViewData["OgType"]?.ToString()) ? "website" : ViewData["OgType"]!.ToString();
+    var topBarPrimary = string.Format(Localizer["FreeShippingLimit"], siteSettings.UcretsizKargoLimiti.ToString("N0"), siteSettings.ParaBirimi);
+    var trustMessages = new List<string>
+    {
+        topBarPrimary,
+        Localizer["BankTransferFooter"],
+        Localizer["CashOnDeliveryFooter"],
+        Localizer["FastProduction"],
+        Localizer["CarefulPackaging"],
+        Localizer["TurkeyWideShipping"],
+        string.Format(Localizer["EasyReturnDays"], siteSettings.IadeHakkiGun),
+        Localizer["ManufacturerGuarantee"]
+    };
+
+    if (!string.IsNullOrWhiteSpace(siteSettings.WhatsappNumarasi))
+    {
+        trustMessages.Add(Localizer["WhatsAppSupport"]);
+    }
+
+    trustMessages = trustMessages
+        .Where(message => !string.IsNullOrWhiteSpace(message))
+        .Distinct(StringComparer.OrdinalIgnoreCase)
+        .ToList();
+
+    var tumKategoriler = await DbContext.Kategoriler
+        .Where(k => k.AktifMi && !k.SilindiMi)
+        .OrderBy(k => k.Sira)
+        .ThenBy(k => k.Ad)
+        .ToListAsync();
+
+    string NormalizeCategoryKey(string? value)
+    {
+        var normalized = (value ?? string.Empty)
+            .Trim()
+            .ToLowerInvariant()
+            .Replace("ı", "i")
+            .Replace("İ", "i")
+            .Replace("&", "and")
+            .Normalize(NormalizationForm.FormD);
+
+        var builder = new StringBuilder(normalized.Length);
+        foreach (var character in normalized)
+        {
+            if (CharUnicodeInfo.GetUnicodeCategory(character) != UnicodeCategory.NonSpacingMark)
+            {
+                builder.Append(character);
+            }
+        }
+
+        return builder.ToString().Normalize(NormalizationForm.FormC);
+    }
+
+    string GetCategoryMenuImage(Kategori category)
+    {
+        var configured = !string.IsNullOrWhiteSpace(category.GorselUrl) ? category.GorselUrl : category.BannerUrl;
+        if (!string.IsNullOrWhiteSpace(configured))
+        {
+            var keyForOverride = NormalizeCategoryKey(category.Ad);
+            if (keyForOverride != "ataturk kosesi")
+            {
+                return configured;
+            }
+        }
+
+        return NormalizeCategoryKey(category.Ad) switch
+        {
+            "ataturk kosesi" or "ataturk ve turkiye" => "/img/products/7-parcali-kanvas-tablo-tarihi-liderler-mustafa-kemal-ataturk-portre-serisi-ana.webp",
+            "islami sanat and hat" or "dini ve hat sanati" => "/img/products/35-besmele-lila-allah-ve-muhammed-yazili-kanvas-tablo-ana.webp",
+            "osmanli ve tugra" => "/img/products/5-parca-tugra-allah-muhammed-kanvas-tablo-ana.webp",
+            "dunya klasikleri" or "klasik eserler" => "/img/products/ademin-yaratilisi-the-creation-of-adam-kanvas-tablosu-ana.webp",
+            "modern and soyut" or "soyut ve sanatsal" or "farkli tasarimlar" => "/img/products/3-parcali-renkli-gokkusagi-kanvas-tablo-ana.webp",
+            "sehir manzaralari" or "sehir ve mimari" => "/img/products/i-stanbul-bogazici-koprusu-kanvas-tablosu-ana.webp",
+            "parcali tablolar" or "panoramik tablolar" => "/img/products/5-parcali-manzarali-sisli-orman-kanvas-tablo-ana.webp",
+            "manzara temali" => "/img/products/5-parcali-manzarali-sisli-orman-kanvas-tablo-ana.webp",
+            "hayvanlar alemi" => "/img/products/2-beyaz-kurt-ve-ay-manzarali-5-parca-kanvas-tablo-ana.webp",
+            "araba ve araclar" => "/img/products/bmw-e30-araba-5-parca-kanvas-tablo-ana.webp",
+            "cocuk odasi" => "/img/products/cocuk-odasi-i-cin-dekoratif-zebra-ve-fil-resimli-kanvas-tablo-ana.webp",
+            "nu sanat" or "kadin temali" => "/img/products/3-lu-afrikali-kadin-kanvas-tablo-ana.webp",
+            "unluler ve sinema" => "/img/products/gitar-ve-sehir-sliuetli-kanvas-tablo-ana.webp",
+            "yiyecek ve icecek" => "/img/products/cicekli-vintage-fincan-ve-kahve-temali-5-parcali-kanvas-tablo-ana.webp",
+            "ask ve romantizm" => "/img/products/acik-pembe-renkli-romantik-guller-kanvas-tablo-ana.webp",
+            "taraftar kosesi" => "/img/products_yeni/dalgalanan-turk-bayragi-5-parca-kanvas-t-bc6a.jpg",
+            "adalet ve hukuk" => "/img/products/adalet-ve-hukuk-resimli-kanvas-tablo-ana.webp",
+            "cicekli ve dekoratif" => "/img/products/3-parca-orkide-cicekli-kanvas-tablo-ana.webp",
+            _ => configured ?? "/slider1.png"
+        };
+    }
+}
+<!DOCTYPE html>
+<html lang="@currentCulture" dir="@currentDirection">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@layoutTitle</title>
+<link rel="icon" href="@faviconUrl" type="image/svg+xml">
+    <link rel="apple-touch-icon" sizes="180x180" href="@touchIconUrl">
+    <link rel="canonical" href="@canonicalUrl">
+    <meta name="description" content="@metaDescription">
+    @if (!string.IsNullOrWhiteSpace(metaKeywords))
+    {
+        <meta name="keywords" content="@metaKeywords">
+    }
+    <meta property="og:site_name" content="@brandName">
+    <meta property="og:title" content="@layoutTitle">
+    <meta property="og:description" content="@metaDescription">
+    <meta property="og:type" content="@ogType">
+    <meta property="og:url" content="@canonicalUrl">
+    <meta property="og:image" content="@ogImage">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@layoutTitle">
+    <meta name="twitter:description" content="@metaDescription">
+    <meta name="twitter:image" content="@ogImage">
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style data-purpose="custom-fonts">
+        body { font-family: 'IBM Plex Sans Arabic', 'Inter', -apple-system, sans-serif; color: #1c1c18; padding: 0 !important; margin: 0 !important; background: #fcf9f3 !important; font-size: 14px; line-height: 1.6; }
+        h1, h2, h3, h4, h5, h6, .font-serif { font-family: 'IBM Plex Sans Arabic', 'Inter', sans-serif; font-weight: 600; }
+        .text-xxs { font-size: 0.65rem; }
+        nav a, button, .tracking-widest { letter-spacing: 0.1em; }
+    </style>
+    <style data-purpose="custom-utilities">
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .custom-scrollbar::-webkit-scrollbar { display: none; }
+        .custom-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .trust-ticker-track { width: max-content; animation: trustTicker 34s linear infinite; }
+        .trust-ticker:hover .trust-ticker-track { animation-play-state: paused; }
+        @@keyframes trustTicker {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+@@media (prefers-reduced-motion: reduce) {
+            .trust-ticker-track { animation: none; transform: translateX(0); }
+        }
+        
+        /* Cart bounce animation */
+        @@keyframes cartBounce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1); }
+        }
+        .bounce-animation {
+            animation: cartBounce 0.4s ease-out;
+        }
+
+        /* Floating cart gentle pulse */
+        @@keyframes cartPulse {
+            0%, 100% { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); }
+            50% { box-shadow: 0 0 0 8px rgba(49, 53, 17, 0.15); }
+        }
+        .floating-cart-btn {
+            animation: cartPulse 3s ease-in-out infinite;
+        }
+        .floating-cart-btn:hover {
+            animation: none;
+        }
+        
+        @@media (max-width: 767px) {
+            body:has(.mobile-bottom-nav:not([style*="display: none"])) .whatsapp-btn,
+            body.has-bottom-nav .whatsapp-btn {
+                bottom: 80px !important;
+            }
+            body:has(.mobile-bottom-nav:not([style*="display: none"])) .floating-cart-btn,
+            body.has-bottom-nav .floating-cart-btn {
+                bottom: 80px !important;
+            }
+        }
+        
+        /* Kategori menü geçişlerindeki titremenin/kapanmanın gecikme süresi ile önlenmesi */
+        [data-category-dropdown] {
+            transition: opacity 0.25s ease, visibility 0.25s ease !important;
+            transition-delay: 0.15s !important;
+        }
+        .group:hover [data-category-dropdown] {
+            transition-delay: 0s !important;
+        }
+    </style>
+    
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="bg-[#fcf9f3] overflow-x-hidden antialiased flex flex-col min-h-screen">
+    <form id="globalAntiForgeryForm" class="hidden">
+        @Html.AntiForgeryToken()
+    </form>
+
+<!-- BEGIN: AnnouncementBar -->
+    @if (siteSettings.UstBarEtkin)
+    {
+        var tickerSpeed = siteSettings.UstBarHizi > 0 ? siteSettings.UstBarHizi : 34;
+        <div class="trust-ticker relative z-50 overflow-hidden bg-[#b58735] py-2 text-xs font-light tracking-wider text-white">
+            <div class="trust-ticker-track flex items-center" style="animation-duration: @tickerSpeed.ToString("0", System.Globalization.CultureInfo.InvariantCulture)s;">
+                @for (var repeat = 0; repeat < 2; repeat++)
+                {
+                    foreach (var message in trustMessages)
+                    {
+                        <span class="mx-5 flex shrink-0 items-center gap-2 whitespace-nowrap">
+                            <i class="fas fa-check text-[10px] text-[#f7ead8]"></i>
+                            @message
+                        </span>
+                    }
+                }
+            </div>
+        </div>
+    }
+    <!-- END: AnnouncementBar -->
+
+<!-- BEGIN: MainHeader -->
+    <header class="sticky top-0 bg-[#fcf9f3] z-[100] border-b border-[#e5e2dc]">
+        <div class="w-full max-w-[1360px] mx-auto px-4 py-1.5 md:py-2 flex flex-col items-center relative">
+            <div class="absolute left-4 top-1/2 -translate-y-1/2 hidden md:flex items-center rounded-full border border-[#d8c9aa] bg-white/80 p-1 shadow-sm">
+                <span class="px-2 text-[#b58735]"><i class="fas fa-globe"></i></span>
+                <a href="/Dil/Degistir?culture=ar&returnUrl=@encodedLanguageReturnUrl" class="rounded-full px-2.5 py-1 text-xs font-semibold tracking-widest text-[#47473d] transition-colors hover:bg-[#efe4cf] hover:text-[#313511]">AR</a>
+                <a href="/Dil/Degistir?culture=en&returnUrl=@encodedLanguageReturnUrl" class="rounded-full px-2.5 py-1 text-xs font-semibold tracking-widest text-[#47473d] transition-colors hover:bg-[#efe4cf] hover:text-[#313511]">EN</a>
+                <a href="/Dil/Degistir?culture=tr&returnUrl=@encodedLanguageReturnUrl" class="rounded-full px-2.5 py-1 text-xs font-semibold tracking-widest text-[#47473d] transition-colors hover:bg-[#efe4cf] hover:text-[#313511]">TR</a>
+            </div>
+
+            <!-- Logo -->
+            <a class="mb-0.5 mt-0.5 inline-block leading-none" href="/" aria-label="@brandName" id="siteLogo">
+                @if (!string.IsNullOrEmpty(logoUrl)) {
+                    <img src="@logoUrl" asp-append-version="true" alt="@siteSettings.MarkaAdi" class="block h-auto w-[132px] object-contain md:w-[178px]" width="178" height="77" decoding="async" fetchpriority="high" />
+                } else {
+                    <h1 class="font-serif text-2xl md:text-3xl tracking-widest text-[#313511] font-medium text-center">@siteSettings.MarkaAdi</h1>
+                }
+            </a>
+
+            <!-- Desktop Nav Right Side: Search + Account/Favorites/Cart -->
+            <div class="absolute right-4 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-4 text-[#1c1c18]">
+
+                <!-- Desktop Search Bar (inline, replaces button when active) -->
+                <div id="desktopSearchBar" class="hidden items-center">
+                    <form action="/Urun" method="get" class="relative flex items-center">
+                        <input type="text" name="s" id="desktopSearchInput" placeholder="@Localizer["SearchProducts"]" autocomplete="off"
+                               class="w-[260px] bg-white border border-[#e5e2dc] rounded-full px-4 pr-9 py-2 text-sm text-[#1c1c18] placeholder-[#a09e99] focus:outline-none focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] shadow-md" />
+                        <button type="submit" aria-label="@Localizer["Search"]" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#a09e99] hover:text-[#b58735] transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                        </button>
+                    </form>
+                    <button type="button" id="desktopSearchCloseBtn" class="ml-2 text-[#47473d] hover:text-[#313511]">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </button>
+                </div>
+
+                <!-- Desktop Search Button (shown when search is closed) -->
+                <button type="button" aria-label="@Localizer["Search"]" onclick="window.toggleSearchBar()" class="hover:text-[#b58735] transition-colors" id="desktopSearchBtn">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </button>
+
+                <!-- Account -->
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <a href="/Profil" aria-label="@Localizer["MyAccount"]" title="@Localizer["MyAccount"]" class="hover:text-[#b58735] transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </a>
+                }
+                else
+                {
+                    <a href="/Hesap/GirisYap" aria-label="@Localizer["Login"]" title="@Localizer["Login"]" class="hover:text-[#b58735] transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </a>
+                }
+
+                <!-- Favoriler -->
+                <a href="/Favori" aria-label="@Localizer["Favorites"]" class="hover:text-red-500 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
+                </a>
+
+                <!-- Sepet -->
+                <a href="/Sepet" aria-label="@Localizer["Cart"]" class="relative hover:text-[#b58735] transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    <span id="cartItemCount" class="absolute -top-1 -end-2 bg-[#b58735] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center transition-transform duration-300">@sepetCount</span>
+                </a>
+            </div>
+
+            <!-- Mobile Left: Hamburger + Search Toggle -->
+            <div class="absolute left-4 top-1/2 -translate-y-1/2 flex md:hidden items-center gap-3 text-[#1c1c18]">
+                <button aria-label="@Localizer["OpenMenu"]" onclick="window.toggleMobileNav(true)" class="hover:text-[#b58735]" id="mobileMenuBtn">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M3.75 6h16.5m-16.5 6h16.5m-16.5 6h16.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </button>
+                <button type="button" aria-label="@Localizer["Search"]" onclick="window.toggleSearchBar()" class="hover:text-[#b58735]" id="mobileSearchBtn">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </button>
+            </div>
+
+            <!-- Mobile Right: Account/Favorites/Cart -->
+            <div id="mobileIcons" class="absolute right-4 top-1/2 -translate-y-1/2 flex md:hidden items-center gap-3 text-[#1c1c18]">
+
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <a href="/Profil" aria-label="@Localizer["MyAccount"]" title="@Localizer["MyAccount"]" class="hover:text-[#b58735]">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </a>
+                }
+                else
+                {
+                    <a href="/Hesap/GirisYap" aria-label="@Localizer["Login"]" title="@Localizer["Login"]" class="hover:text-[#b58735]">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </a>
+                }
+                <a href="/Favori" aria-label="@Localizer["Favorites"]" class="hover:text-red-500">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
+                </a>
+                <a href="/Sepet" aria-label="@Localizer["Cart"]" class="relative hover:text-[#b58735]">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    <span id="cartItemCountMobile" class="absolute -top-1 -end-2 bg-[#b58735] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">@sepetCount</span>
+                </a>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <nav class="w-full hidden md:block z-50" data-desktop-nav>
+                <ul class="flex justify-center space-x-4 text-sm tracking-widest text-[#47473d] font-light uppercase" data-desktop-nav-list>
+                    @foreach (var kategori in tumKategoriler.Where(x => x.ParentKategoriId == null).OrderBy(x => x.Sira).ThenBy(x => x.LocalizedAd))
+                    {
+                        var altKategoriler = tumKategoriler.Where(x => x.ParentKategoriId == kategori.Id).OrderBy(x => x.Sira).ToList();
+                        var kategoriPreviewGorsel = GetCategoryMenuImage(kategori);
+                        var kategoriPreviewMetin = !string.IsNullOrWhiteSpace(kategori.KisaAciklama)
+                            ? kategori.KisaAciklama
+                            : Localizer["ExploreCollectionProducts"];
+                        
+                        <li class="relative group cursor-pointer hover:text-[#1c1c18] transition-colors py-2" data-category-menu-item>
+                            <a href="/Urun?k=@kategori.Id" class="flex items-center gap-1 whitespace-nowrap">
+                                @kategori.LocalizedAd
+                                <i class="fas fa-chevron-down text-[10px] opacity-70 group-hover:rotate-180 transition-transform"></i>
+                            </a>
+                            
+                            <!-- Dropdown Menü -->
+                            <div class="absolute left-1/2 top-full pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-300 w-[min(520px,calc(100vw-32px))] z-[9999]" style="transform:translateX(-50%) translateZ(1px);isolation:isolate" data-category-dropdown>
+                                <div class="bg-[#f7f1e6] border border-[#c9b58a]/60 shadow-xl rounded-sm p-5 ring-1 ring-[#313511]/5">
+                                    <div class="mb-4 flex items-center justify-between border-b border-[#d8c9aa] pb-3">
+                                        <div>
+                                            <div class="font-serif text-lg normal-case tracking-normal text-[#313511]">@kategori.LocalizedAd</div>
+                                            <div class="mt-1 text-[11px] font-light normal-case tracking-normal text-[#6f6a5e]">@(altKategoriler.Any() ? Localizer["Subcategories"] : Localizer["CategoryDetail"])</div>
+                                        </div>
+                                        <a href="/Urun?k=@kategori.Id" class="text-[11px] font-medium tracking-widest text-[#9a6d24] hover:text-[#313511]">@Localizer["ViewAll"]</a>
+                                    </div>
+
+                                    @if (altKategoriler.Any())
+                                    {
+                                        <div class="grid grid-cols-2 gap-x-8 gap-y-2 sm:grid-cols-3">
+                                            @foreach (var alt in altKategoriler)
+                                            {
+                                                <a href="/Urun?k=@alt.Id" class="border-b border-[#dfd3ba]/70 px-1 py-2 text-[12px] leading-snug text-[#47473d] transition-colors hover:text-[#9a6d24]">
+                                                    @alt.LocalizedAd
+                                                </a>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="normal-case tracking-normal">
+                                            <h4 class="font-serif text-xl text-[#313511]">@kategori.LocalizedAd</h4>
+                                            <p class="mt-2 text-sm leading-6 text-[#6f6a5e]">@kategoriPreviewMetin</p>
+                                            <a href="/Urun?k=@kategori.Id" class="mt-4 inline-flex w-fit items-center gap-2 border-b border-[#313511] pb-1 text-[11px] font-medium uppercase tracking-widest text-[#313511] transition-colors hover:text-[#9a6d24]">
+                                                @Localizer["ExploreCategory"]
+                                                <i class="fas fa-arrow-right text-[10px]"></i>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </li>
+                    }
+                    <li class="cursor-pointer hover:text-[#1c1c18] transition-colors py-2 whitespace-nowrap"><a href="/Kurumsal/Iletisim">@Localizer["Contact"]</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobileNavBackdrop" class="mobile-nav-backdrop fixed inset-0 z-[80] hidden bg-[#1c1c18]/45 md:hidden" onclick="window.toggleMobileNav(false)"></div>
+        <div id="mobileNav" class="mobile-nav-panel fixed left-0 top-0 z-[90] hidden h-dvh w-[88vw] max-w-[380px] overflow-y-auto overscroll-contain border-r border-[#d8c9aa] bg-[#f7f1e6] px-5 py-5 shadow-2xl md:hidden">
+            <div class="mb-5 flex items-center justify-between border-b border-[#d8c9aa] pb-4">
+                <a href="/" class="font-serif text-xl tracking-widest text-[#313511]">@brandName</a>
+                <button type="button" aria-label="@Localizer["CloseMenu"]" onclick="window.toggleMobileNav(false)" class="flex h-9 w-9 items-center justify-center rounded-full border border-[#c9b58a] text-[#313511]">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="mb-5 rounded-2xl border border-[#d8c9aa] bg-white/75 p-2 shadow-sm">
+                <div class="mb-2 flex items-center gap-2 px-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#9a6d24]">
+                    <i class="fas fa-globe"></i>
+                    <span>Dil Seçimi</span>
+                </div>
+                <div class="grid grid-cols-3 gap-1">
+                    <a href="/Dil/Degistir?culture=ar&returnUrl=@encodedLanguageReturnUrl" class="rounded-xl px-3 py-2 text-center text-xs font-semibold tracking-widest text-[#47473d] transition-colors hover:bg-[#efe4cf] hover:text-[#313511]">AR</a>
+                    <a href="/Dil/Degistir?culture=en&returnUrl=@encodedLanguageReturnUrl" class="rounded-xl px-3 py-2 text-center text-xs font-semibold tracking-widest text-[#47473d] transition-colors hover:bg-[#efe4cf] hover:text-[#313511]">EN</a>
+                    <a href="/Dil/Degistir?culture=tr&returnUrl=@encodedLanguageReturnUrl" class="rounded-xl px-3 py-2 text-center text-xs font-semibold tracking-widest text-[#47473d] transition-colors hover:bg-[#efe4cf] hover:text-[#313511]">TR</a>
+                </div>
+            </div>
+
+            <ul class="space-y-3 text-sm tracking-widest text-[#47473d] font-light uppercase" data-mobile-nav-list>
+                <li class="border-b border-[#d8c9aa] pb-3" data-mobile-nav-item><a href="/Urun" class="block w-full">@Localizer["AllProducts"]</a></li>
+                @foreach (var kategori in tumKategoriler.Where(x => x.ParentKategoriId == null).OrderBy(x => x.Sira).ThenBy(x => x.LocalizedAd))
+                {
+                    var altKategoriler = tumKategoriler.Where(x => x.ParentKategoriId == kategori.Id).OrderBy(x => x.Sira).ToList();
+                    <li class="border-b border-[#d8c9aa] pb-3" data-mobile-nav-item>
+                        @if (altKategoriler.Any())
+                        {
+                            <details class="group" data-mobile-category>
+                                <summary class="flex justify-between items-center cursor-pointer list-none w-full py-1">
+                                    <span class="hover:text-[#313511]">@kategori.LocalizedAd</span>
+                                    <span class="transition group-open:rotate-180 p-1 text-[#9a6d24]"><i class="fas fa-chevron-down"></i></span>
+                                </summary>
+                                <ul class="mt-3 max-h-[52vh] space-y-1 overflow-y-auto border-l-2 border-[#c9b58a] pl-4 pr-1 text-xs normal-case tracking-normal">
+                                    <li data-mobile-subitem>
+                                        <a href="/Urun?k=@kategori.Id" class="mb-2 block rounded-sm bg-[#313511] px-3 py-2 text-center font-medium tracking-widest text-white">
+                                            @Localizer["ViewAll"]
+                                        </a>
+                                    </li>
+                                    @foreach (var alt in altKategoriler)
+                                    {
+                                        <li data-mobile-subitem><a href="/Urun?k=@alt.Id" class="block w-full rounded-sm px-2 py-2 text-[#5f594e] hover:bg-[#efe4cf] hover:text-[#313511]">@alt.LocalizedAd</a></li>
+                                    }
+                                </ul>
+                            </details>
+                        }
+                        else
+                        {
+                            <a href="/Urun?k=@kategori.Id" class="block w-full">@kategori.LocalizedAd</a>
+                        }
+                    </li>
+                }
+                <li class="border-b border-[#d8c9aa] pb-3" data-mobile-nav-item><a href="/Kurumsal/Iletisim" class="block w-full">@Localizer["Contact"]</a></li>
+                <li class="border-b border-[#d8c9aa] pb-3" data-mobile-nav-item><a href="/Favori" class="block w-full flex items-center gap-2"><i class="far fa-heart text-red-400"></i> @Localizer["MyFavorites"]</a></li>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li data-mobile-nav-item><a href="/Profil" class="block w-full">@Localizer["MyAccount"]</a></li>
+                }
+                else
+                {
+                    <li data-mobile-nav-item><a href="/Hesap/GirisYap" class="block w-full">@Localizer["LoginRegister"]</a></li>
+                }
+            </ul>
+        </div>
+
+        <!-- Mobile Search Bar (full width overlay) -->
+        <form id="mobileSearchBar" action="/Urun" method="get" style="display:none;" class="absolute left-0 right-0 top-0 z-[95] bg-[#fcf9f3] px-4 py-3 flex items-center gap-3 border-b border-[#e5e2dc] md:hidden">
+            <button type="button" id="mobileSearchCloseBtn" class="shrink-0 text-[#47473d] hover:text-[#313511]">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </button>
+            <div class="flex-1 relative">
+                <input type="text" name="s" id="mobileSearchInput" placeholder="@Localizer["SearchProducts"]" autocomplete="off"
+                       class="w-full bg-white border border-[#e5e2dc] rounded-full px-4 pr-10 py-2.5 text-sm text-[#1c1c18] placeholder-[#a09e99] focus:outline-none focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735]" />
+                <svg class="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#a09e99] pointer-events-none" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </div>
+            <button type="submit" id="mobileSearchSubmit" class="shrink-0 text-[#b58735] hover:text-[#313511] text-xs font-medium uppercase tracking-wider">@Localizer["Search"]</button>
+        </form>
+    </header>
+    <!-- END: MainHeader -->
+
+    <main class="flex-grow">
+        @RenderBody()
+    </main>
+
+    <!-- BEGIN: Footer -->
+    <footer class="bg-[#313511] text-[#f4f0ea] pt-0 pb-8 mt-auto">
+        <div class="border-b border-white/10 bg-[#25280c]">
+            <div class="container mx-auto grid grid-cols-1 gap-4 px-8 py-5 text-center md:grid-cols-3">
+                <div class="flex items-center justify-center gap-3">
+                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#c6ca99]/35 text-[#c6ca99]">
+                        <i class="fas fa-truck-fast"></i>
+                    </span>
+                    <div>
+                        <div class="text-xs uppercase tracking-widest text-[#c6ca99]">@Localizer["AllOverTurkey"]</div>
+                        <div class="text-sm font-semibold text-white">@Localizer["FreeShipping"]</div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center gap-3">
+                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#c6ca99]/35 text-[#c6ca99]">
+                        <i class="fas fa-building-columns"></i>
+                    </span>
+                    <div>
+                        <div class="text-xs uppercase tracking-widest text-[#c6ca99]">@Localizer["BankTransfer"]</div>
+                        <div class="text-sm font-semibold text-white">@Localizer["BankTransferFooter"]</div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center gap-3">
+                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#c6ca99]/35 text-[#c6ca99]">
+                        <i class="fas fa-hand-holding-dollar"></i>
+                    </span>
+                    <div>
+                        <div class="text-xs uppercase tracking-widest text-[#c6ca99]">@Localizer["CashOnDelivery"]</div>
+                        <div class="text-sm font-semibold text-white">@Localizer["CashOnDeliveryFooter"]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mx-auto px-8 pt-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
+                <!-- Newsletter Signup -->
+                <div>
+                    <h3 class="font-serif text-2xl mb-4 text-[#c6ca99]">@Localizer["SubscribeToNewsletter"]</h3>
+                    <p class="text-sm font-light mb-6 text-gray-300 leading-relaxed max-w-md">
+                        @string.Format(Localizer["NewsletterDescription"], brandName)
+                    </p>
+                    <form id="newsletterForm" action="/Home/BulteneAboneOl" method="post" class="flex border-b border-gray-500 pb-2 max-w-md relative">
+                        @Html.AntiForgeryToken()
+                        <input name="email" id="newsletterEmail" class="bg-transparent border-none w-full focus:ring-0 text-sm px-0 text-white placeholder-gray-400 outline-none" placeholder="@Localizer["EmailAddress"]" required="" type="email"/>
+                        <button type="submit" class="text-sm tracking-widest uppercase hover:text-[#c6ca99] transition-colors ml-4 whitespace-nowrap">@Localizer["Subscribe"]</button>
+                    </form>
+                    <div id="newsletterMessage" class="text-xs mt-2 hidden"></div>
+                </div>
+                <!-- Footer Links & Socials -->
+                <div class="flex flex-col md:items-end">
+                    <h4 class="font-bold text-sm tracking-widest mb-4 uppercase text-[#c6ca99]">@Localizer["Corporate"]</h4>
+                    <ul class="space-y-2 text-sm font-light text-gray-300 text-left md:text-right">
+                        <li><a class="hover:text-white transition-colors" href="/Kurumsal/Hakkimizda">@Localizer["AboutUs"]</a></li>
+                        <li><a class="hover:text-white transition-colors" href="/Kurumsal/Iletisim">@Localizer["Contact"]</a></li>
+                        <li><a class="hover:text-white transition-colors" href="/Urun">@Localizer["Collections"]</a></li>
+                        <li><a class="hover:text-white transition-colors" href="/Sozlesmeler/Gizlilik">@Localizer["PrivacyPolicy"]</a></li>
+                        <li><a class="hover:text-white transition-colors" href="/Sozlesmeler/MesafeliSatis">@Localizer["DistanceSalesContract"]</a></li>
+                    </ul>
+                    <div class="mt-6 flex gap-4 text-gray-400">
+                        @if(!string.IsNullOrEmpty(siteSettings.InstagramUrl)) {
+                            <a href="@siteSettings.InstagramUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["Instagram"]" class="hover:text-white transition-colors"><i class="fab fa-instagram text-xl"></i></a>
+                        }
+                        @if(!string.IsNullOrEmpty(siteSettings.FacebookUrl)) {
+                            <a href="@siteSettings.FacebookUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["Facebook"]" class="hover:text-white transition-colors"><i class="fab fa-facebook text-xl"></i></a>
+                        }
+                        @if(!string.IsNullOrEmpty(siteSettings.WhatsappNumarasi)) {
+                            <a href="https://wa.me/@siteSettings.WhatsappNumarasi.Replace(" ", "").Replace("+", "")" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["WhatsApp"]" class="hover:text-white transition-colors"><i class="fab fa-whatsapp text-xl"></i></a>
+                        }
+                        @if(!string.IsNullOrEmpty(siteSettings.YoutubeUrl)) {
+                            <a href="@siteSettings.YoutubeUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["YouTube"]" class="hover:text-white transition-colors"><i class="fab fa-youtube text-xl"></i></a>
+                        }
+                        @if(!string.IsNullOrEmpty(siteSettings.TiktokUrl)) {
+                            <a href="@siteSettings.TiktokUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["TikTok"]" class="hover:text-white transition-colors"><i class="fab fa-tiktok text-xl"></i></a>
+                        }
+                        @if(!string.IsNullOrEmpty(siteSettings.PinterestUrl)) {
+                            <a href="@siteSettings.PinterestUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["Pinterest"]" class="hover:text-white transition-colors"><i class="fab fa-pinterest text-xl"></i></a>
+                        }
+                        @if(!string.IsNullOrEmpty(siteSettings.TwitterUrl)) {
+                            <a href="@siteSettings.TwitterUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["X"]" class="hover:text-white transition-colors"><i class="fab fa-x-twitter text-xl"></i></a>
+                        }
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Bar -->
+            <div class="border-t border-[#47473d] pt-6 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
+                <div class="mb-4 md:mb-0 text-center md:text-left order-2 md:order-1">
+                    <p class="text-[11px] tracking-wide">© @DateTime.Now.Year <span class="text-[#f4f0ea] font-medium">@brandName</span> @Localizer["AllRightsReserved"]</p>
+                </div>
+                <div class="mb-4 md:mb-0 order-1 md:order-2">
+                    <a href="/Kurumsal/Gizlilik" class="text-[11px] text-gray-400 hover:text-[#f4f0ea] transition-colors mx-2">@Localizer["PrivacyPolicy"]</a>
+                    <span class="text-gray-600">|</span>
+                    <a href="/Kurumsal/KullaniciSozlesmesi" class="text-[11px] text-gray-400 hover:text-[#f4f0ea] transition-colors mx-2">@Localizer["TermsOfUse"]</a>
+                    <span class="text-gray-600">|</span>
+                    <a href="/Kurumsal/IadeKosullari" class="text-[11px] text-gray-400 hover:text-[#f4f0ea] transition-colors mx-2">@Localizer["ReturnExchange"]</a>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+    <!-- END: Footer -->
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/firebase-init.js" asp-append-version="true"></script>
+    <script nonce="firebase-config">
+        // ============================================================
+        // FIREBASE PUSH BILDIRIM — Yapilandirma
+        // ============================================================
+        var firebaseConfig = {
+            apiKey: '@Configuration["Firebase:ApiKey"]',
+            authDomain: '@Configuration["Firebase:AuthDomain"]',
+            projectId: '@Configuration["Firebase:ProjectId"]',
+            storageBucket: '@Configuration["Firebase:StorageBucket"]',
+            messagingSenderId: '@Configuration["Firebase:MessagingSenderId"]',
+            appId: '@Configuration["Firebase:AppId"]'
+        };
+        window.__firebaseVapidKey = '@Configuration["Firebase:VapidKey"]';
+
+        if (typeof window.__firebaseReady === 'function') {
+            window.__firebaseReady(firebaseConfig);
+        }
+
+        if ('serviceWorker' in navigator) {
+            var isConfigured = firebaseConfig.apiKey && firebaseConfig.apiKey.length > 5;
+            if (isConfigured) {
+                navigator.serviceWorker.register('/firebase-messaging-sw.js')
+                    .then(function (registration) {
+                        registration.active && registration.active.postMessage({ type: 'FIREBASE_CONFIG', config: firebaseConfig });
+                    })
+                    .catch(function () {});
+            }
+        }
+    </script>
+    <script>
+        window.toggleMobileNav = function(open) {
+            const drawer = document.getElementById('mobileNav');
+            const backdrop = document.getElementById('mobileNavBackdrop');
+            if (!drawer || !backdrop) return;
+
+            const shouldOpen = typeof open === 'boolean' ? open : drawer.classList.contains('hidden');
+            if (shouldOpen) {
+                drawer.classList.remove('hidden');
+                backdrop.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    drawer.classList.add('is-open');
+                    backdrop.classList.add('is-open');
+                });
+            } else {
+                drawer.classList.remove('is-open');
+                backdrop.classList.remove('is-open');
+                setTimeout(() => {
+                    drawer.classList.add('hidden');
+                    backdrop.classList.add('hidden');
+                }, 430);
+            }
+            document.documentElement.classList.toggle('overflow-hidden', shouldOpen);
+            document.body.classList.toggle('overflow-hidden', shouldOpen);
+        };
+
+        (function() {
+            const edgePadding = 16;
+
+function alignCategoryDropdown(menuItem) {
+                const dropdown = menuItem.querySelector('[data-category-dropdown]');
+                if (!dropdown || window.innerWidth < 768) return;
+                const mobileBar = document.getElementById('mobileSearchBar');
+                const desktopBar = document.getElementById('desktopSearchBar');
+                if ((mobileBar && mobileBar.style.display === 'flex') || (desktopBar && !desktopBar.classList.contains('hidden'))) return;
+
+                dropdown.style.left = '50%';
+                dropdown.style.right = 'auto';
+                dropdown.style.transform = 'translateX(-50%)';
+
+                const itemRect = menuItem.getBoundingClientRect();
+                const width = Math.min(dropdown.offsetWidth, window.innerWidth - (edgePadding * 2));
+                const preferredLeft = itemRect.left + (itemRect.width / 2) - (width / 2);
+                const boundedLeft = Math.min(
+                    Math.max(preferredLeft, edgePadding),
+                    window.innerWidth - edgePadding - width
+                );
+
+                dropdown.style.left = `${boundedLeft - itemRect.left}px`;
+                dropdown.style.transform = 'none';
+            }
+
+            function initCategoryDropdownAlignment() {
+                const menuItems = document.querySelectorAll('[data-category-menu-item]');
+
+                menuItems.forEach(menuItem => {
+                    menuItem.addEventListener('mouseenter', () => alignCategoryDropdown(menuItem));
+                    menuItem.addEventListener('focusin', () => alignCategoryDropdown(menuItem));
+                });
+
+                window.addEventListener('resize', () => {
+                    menuItems.forEach(menuItem => alignCategoryDropdown(menuItem));
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initCategoryDropdownAlignment);
+            } else {
+                initCategoryDropdownAlignment();
+            }
+        })();
+
+document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                window.toggleMobileNav(false);
+                window.toggleSearchBar(false);
+            }
+        });
+
+        $(document).ready(function() {
+            // Newsletter AJAX Submission
+            $('#newsletterForm').on('submit', function(e) {
+                e.preventDefault();
+                var form = $(this);
+                var messageDiv = $('#newsletterMessage');
+                var btn = form.find('button[type="submit"]');
+                var originalBtnText = btn.text();
+                
+                btn.text('@Localizer["PleaseWait"]').prop('disabled', true);
+                
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(response) {
+                        if (response.success) {
+                            window.showToast(response.message || '@Localizer["SuccessfullySubscribed"]', 'success');
+                            $('#newsletterEmail').val('');
+                        } else {
+                            window.showToast(response.message || 'Bir hata oluştu.', 'error');
+                        }
+                        btn.text(originalBtnText).prop('disabled', false);
+                    },
+                    error: function(xhr) {
+                        const responseMessage = xhr.responseJSON && xhr.responseJSON.message
+                            ? xhr.responseJSON.message
+                            : '@Localizer["OperationFailed"]';
+                        window.showToast(responseMessage, 'error');
+                        btn.text(originalBtnText).prop('disabled', false);
+                    }
+                });
+            });
+
+
+        });
+
+        window.showToast = function(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = 'transform translate-y-10 opacity-0 transition-all duration-500 ease-out flex items-center gap-3 px-6 py-4 rounded shadow-lg backdrop-blur-md min-w-[300px] border-l-4';
+            
+            let iconHtml = '';
+            const decoder = document.createElement('textarea');
+            decoder.innerHTML = String(message || '');
+            const safeMessage = decoder.value.replace(/[&<>"']/g, function(char) {
+                return ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                })[char];
+            });
+
+            if (type === 'success') {
+                toast.classList.add('bg-[#fcf9f3]', 'bg-opacity-95', 'text-[#313511]', 'border-[#313511]');
+                iconHtml = '<i class="fas fa-check-circle text-xl text-[#313511]"></i>';
+            } else if (type === 'error') {
+                toast.classList.add('bg-white', 'bg-opacity-95', 'text-red-800', 'border-red-600');
+                iconHtml = '<i class="fas fa-exclamation-circle text-xl text-red-600"></i>';
+            } else {
+                toast.classList.add('bg-white', 'bg-opacity-95', 'text-blue-800', 'border-blue-600');
+                iconHtml = '<i class="fas fa-info-circle text-xl text-blue-600"></i>';
+            }
+
+            toast.innerHTML = `
+                ${iconHtml}
+                <div class="flex-1">
+                    <p class="font-medium text-sm tracking-wide font-sans">${safeMessage}</p>
+                </div>
+                <button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-[#313511] transition-colors ml-4">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+
+            container.appendChild(toast);
+
+            // Trigger animation
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    toast.classList.remove('translate-y-10', 'opacity-0');
+                    toast.classList.add('translate-y-0', 'opacity-100');
+                });
+            });
+
+            // Auto remove
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => toast.remove(), 500);
+            }, 4000);
+        };
+
+    </script>
+    <script src="~/js/premium-motion.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="fixed bottom-4 left-4 z-[110] flex flex-col gap-3"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const successMessage = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["Basari"]?.ToString()));
+            const errorMessage = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["Hata"]?.ToString()));
+            const infoMessage = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["Mesaj"]?.ToString()));
+
+            if (successMessage && window.showToast) {
+                window.showToast(successMessage, 'success');
+            }
+
+            if (errorMessage && window.showToast) {
+                window.showToast(errorMessage, 'error');
+            }
+
+            if (infoMessage && window.showToast) {
+                window.showToast(infoMessage, 'info');
+            }
+        });
+</script>
+
+    <!-- Search Results Dropdown -->
+    <div id="searchResultsDropdown" class="fixed bg-white border border-[#e5e2dc] rounded-xl shadow-xl z-[200] hidden overflow-y-auto" style="max-height: 420px; min-width: 280px;"></div>
+
+    <script>
+        window.toggleSearchBar = function(open) {
+            const mobileBar = document.getElementById('mobileSearchBar');
+            const desktopBar = document.getElementById('desktopSearchBar');
+            const logo = document.getElementById('siteLogo');
+            const nav = document.querySelector('nav');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileSearchBtn = document.getElementById('mobileSearchBtn');
+            const mobileIcons = document.getElementById('mobileIcons');
+            const mobileNav = document.getElementById('mobileNav');
+            const mobileBackdrop = document.getElementById('mobileNavBackdrop');
+            const isMobile = window.innerWidth < 768;
+
+            if (mobileNav && !mobileNav.classList.contains('hidden')) window.toggleMobileNav(false);
+
+            let shouldOpen;
+            if (typeof open === 'boolean') {
+                shouldOpen = open;
+            } else {
+                shouldOpen = isMobile
+                    ? mobileBar.style.display !== 'flex'
+                    : desktopBar.classList.contains('hidden') || desktopBar.style.display !== 'flex';
+            }
+
+            if (isMobile) {
+                if (shouldOpen) {
+                    mobileBar.style.display = 'flex';
+                    mobileBar.classList.remove('hidden');
+                    const msb = document.getElementById('mobileSearchBtn');
+                    if (msb) msb.style.display = 'none';
+                    setTimeout(() => document.getElementById('mobileSearchInput')?.focus(), 50);
+                } else {
+                    mobileBar.style.display = 'none';
+                    mobileBar.classList.add('hidden');
+                    const msb = document.getElementById('mobileSearchBtn');
+                    if (msb) msb.style.display = 'inline-flex';
+                    const inp = document.getElementById('mobileSearchInput');
+                    if (inp) inp.value = '';
+                    document.getElementById('searchResultsDropdown')?.classList.add('hidden');
+                }
+            } else {
+                if (shouldOpen) {
+                    desktopBar.style.display = 'flex';
+                    desktopBar.classList.remove('hidden');
+                    const dsb = document.getElementById('desktopSearchBtn');
+                    if (dsb) dsb.style.display = 'none';
+                    setTimeout(() => document.getElementById('desktopSearchInput')?.focus(), 50);
+                } else {
+                    desktopBar.style.display = 'none';
+                    desktopBar.classList.add('hidden');
+                    const dsb = document.getElementById('desktopSearchBtn');
+                    if (dsb) dsb.style.display = 'block';
+                    const inp = document.getElementById('desktopSearchInput');
+                    if (inp) inp.value = '';
+                    document.getElementById('searchResultsDropdown')?.classList.add('hidden');
+                }
+            }
+        };
+
+        document.getElementById('mobileSearchCloseBtn')?.addEventListener('click', () => window.toggleSearchBar(false));
+        document.getElementById('desktopSearchCloseBtn')?.addEventListener('click', () => window.toggleSearchBar(false));
+        document.getElementById('mobileSearchBtn')?.addEventListener('click', (event) => {
+            event.preventDefault();
+            window.toggleSearchBar(true);
+        });
+        document.getElementById('desktopSearchBtn')?.addEventListener('click', (event) => {
+            event.preventDefault();
+            window.toggleSearchBar(true);
+        });
+        document.getElementById('mobileSearchSubmit')?.addEventListener('click', function (e) {
+            e.preventDefault();
+            const term = document.getElementById('mobileSearchInput')?.value.trim() || '';
+            window.location.href = '/Urun' + (term ? '?s=' + encodeURIComponent(term) : '');
+        });
+
+        (function () {
+            const desktopInput = document.getElementById('desktopSearchInput');
+            const mobileInput = document.getElementById('mobileSearchInput');
+            const resultsDropdown = document.getElementById('searchResultsDropdown');
+            let searchTimer = null, abortController = null;
+            let selectedIndex = -1;
+            let currentResults = [];
+
+            /* ---- helpers ---- */
+
+            function escapeHtml(value) {
+                return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            }
+
+            function getActiveInput() {
+                return window.innerWidth < 768 ? mobileInput : desktopInput;
+            }
+
+            function positionDropdown() {
+                if (!resultsDropdown || resultsDropdown.classList.contains('hidden')) return;
+                const input = getActiveInput();
+                if (!input) return;
+                const rect = input.getBoundingClientRect();
+                const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                const width = Math.max(rect.width, 300);
+                resultsDropdown.style.width = width + 'px';
+                if (window.innerWidth < 768) {
+                    resultsDropdown.style.top = (rect.bottom + scrollTop + 6) + 'px';
+                    resultsDropdown.style.left = '16px';
+                    resultsDropdown.style.right = '16px';
+                    resultsDropdown.style.minWidth = 'unset';
+                } else {
+                    resultsDropdown.style.top = (rect.bottom + scrollTop + 8) + 'px';
+                    resultsDropdown.style.left = Math.max(rect.left, 8) + 'px';
+                    resultsDropdown.style.right = 'auto';
+                    resultsDropdown.style.minWidth = '340px';
+                    resultsDropdown.style.maxWidth = Math.min(500, window.innerWidth - 32) + 'px';
+                }
+            }
+
+            /* ---- render helpers ---- */
+
+            function renderItemsHtml(items) {
+                return items.slice(0, 8).map((item, idx) => {
+                    const title = escapeHtml(item.baslik || '');
+                    const price = item.fiyat ? escapeHtml(item.fiyat) : '';
+                    const image = item.gorsel ? `<img src="${escapeHtml(item.gorsel)}" alt="${title}" class="w-12 h-12 object-cover rounded" loading="lazy">` : `<div class="w-12 h-12 rounded bg-[#f1ede7] flex items-center justify-center"><i class="fas fa-image text-[#b58735]"></i></div>`;
+                    const url = item.slug ? '/Urun/Detay/' + encodeURIComponent(item.slug) + '-' + item.id : '/Urun/Detay/' + item.id;
+                    return `<a href="${url}" class="search-result-item flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors hover:bg-[#f7f1e6] group" data-index="${idx}" role="option" aria-selected="false">
+                        ${image}
+                        <div class="flex-1 min-w-0">
+                            <div class="text-sm font-medium text-[#1c1c18] truncate group-hover:text-[#b58735] transition-colors">${title}</div>
+                            ${price ? `<div class="text-xs text-[#b58735] mt-0.5 font-semibold">${price}</div>` : ''}
+                        </div>
+                        <i class="fas fa-arrow-right text-[10px] text-[#b58735] opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </a>`;
+                }).join('');
+            }
+
+            function renderDropdown(items) {
+                currentResults = items;
+                selectedIndex = -1;
+                if (!items || items.length === 0) {
+                    showResults('<div class="px-4 py-5 text-center text-sm text-[#6f6a5e]"><i class="fas fa-search mr-1"></i>@Localizer["NoResultsFound"]</div>');
+                    return;
+                }
+                const term = (getActiveInput()?.value || '').trim();
+                const visible = items.slice(0, 8);
+                const resultCountLabel = '<div class="text-[10px] uppercase tracking-widest text-[#a09e99] px-2 pb-2">' + items.length + ' @Localizer["ResultsFound"]</div>';
+                const itemsHtml = renderItemsHtml(items);
+                const footer = items.length > 8
+                    ? `<a href="/Urun?s=${encodeURIComponent(term)}" class="block text-center text-xs text-[#b58735] font-semibold py-2.5 border-t border-[#e5e2dc] hover:bg-[#f7f1e6] transition-colors rounded-b-lg" role="option">@Localizer["ViewAllResults"] <i class="fas fa-arrow-right ml-1 text-[10px]"></i></a>`
+                    : '';
+                showResults('<div class="p-2" role="listbox" aria-label="@Localizer["SearchResults"]">' + resultCountLabel + itemsHtml + footer + '</div>');
+                // Scroll to top on new results
+                if (resultsDropdown) resultsDropdown.scrollTop = 0;
+            }
+
+            function showLoading() {
+                if (!resultsDropdown) return;
+                resultsDropdown.innerHTML = '<div class="px-4 py-6 text-center text-sm text-[#6f6a5e]"><i class="fas fa-spinner fa-spin mr-2"></i>@Localizer["Searching"]</div>';
+                resultsDropdown.classList.remove('hidden');
+                positionDropdown();
+            }
+
+            function showResults(html) {
+                if (!resultsDropdown) return;
+                resultsDropdown.innerHTML = html;
+                resultsDropdown.classList.remove('hidden');
+                positionDropdown();
+            }
+
+            function hideResults() {
+                resultsDropdown?.classList.add('hidden');
+                currentResults = [];
+                selectedIndex = -1;
+            }
+
+            /* ---- keyboard navigation ---- */
+
+            function getResultLinks() {
+                if (!resultsDropdown || resultsDropdown.classList.contains('hidden')) return [];
+                return Array.from(resultsDropdown.querySelectorAll('.search-result-item'));
+            }
+
+            function updateSelection() {
+                const links = getResultLinks();
+                links.forEach((link, i) => {
+                    link.classList.toggle('bg-[#f7f1e6]', i === selectedIndex);
+                    link.setAttribute('aria-selected', i === selectedIndex ? 'true' : 'false');
+                });
+                if (selectedIndex >= 0 && links[selectedIndex]) {
+                    links[selectedIndex].scrollIntoView({ block: 'nearest' });
+                }
+            }
+
+            function navigateSelection(direction) {
+                const links = getResultLinks();
+                if (links.length === 0) return;
+                selectedIndex = Math.max(0, Math.min(links.length - 1, selectedIndex + direction));
+                updateSelection();
+            }
+
+            function commitSelection() {
+                const links = getResultLinks();
+                if (selectedIndex >= 0 && selectedIndex < links.length) {
+                    window.location.href = links[selectedIndex].href;
+                    return true;
+                }
+                // No selection — submit the form to go to search results page
+                return false;
+            }
+
+            /* ---- fetch ---- */
+
+            function runSearch(term) {
+                if (term.length < 2) { hideResults(); return; }
+                if (abortController) abortController.abort();
+                abortController = new AbortController();
+                showLoading();
+                fetch('/Urun/CanliAra?q=' + encodeURIComponent(term), { signal: abortController.signal })
+                    .then(r => r.ok ? r.json() : [])
+                    .then(items => { renderDropdown(items); })
+                    .catch(error => {
+                        if (error.name !== 'AbortError') {
+                            showResults('<div class="px-4 py-5 text-center text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>@Localizer["SearchUnavailable"]</div>');
+                        }
+                    });
+            }
+
+            /* ---- event bindings ---- */
+
+            [desktopInput, mobileInput].forEach(input => {
+                if (!input) return;
+
+                input.addEventListener('input', function () {
+                    clearTimeout(searchTimer);
+                    const term = this.value.trim();
+                    if (term.length < 2) { hideResults(); return; }
+                    searchTimer = setTimeout(() => runSearch(term), 220);
+                });
+
+                input.addEventListener('keydown', function (e) {
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        if (resultsDropdown?.classList.contains('hidden') && this.value.trim().length >= 2) {
+                            runSearch(this.value.trim());
+                        } else {
+                            navigateSelection(1);
+                        }
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        navigateSelection(-1);
+                    } else if (e.key === 'Enter') {
+                        if (!resultsDropdown?.classList.contains('hidden')) {
+                            const committed = commitSelection();
+                            if (committed) { e.preventDefault(); return; }
+                        }
+                        // fall through to default form submit
+                    } else if (e.key === 'Escape') {
+                        hideResults();
+                    }
+                });
+
+                input.setAttribute('aria-autocomplete', 'list');
+                input.setAttribute('aria-controls', 'searchResultsDropdown');
+                input.setAttribute('aria-expanded', 'false');
+                input.setAttribute('role', 'combobox');
+            });
+
+            /* ---- global close/resize ---- */
+
+            document.addEventListener('click', function (e) {
+                if (!resultsDropdown?.contains(e.target) &&
+                    !e.target.closest('#desktopSearchInput') &&
+                    !e.target.closest('#mobileSearchInput')) {
+                    hideResults();
+                }
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') { hideResults(); window.toggleSearchBar(false); }
+            });
+
+            window.addEventListener('resize', positionDropdown);
+            window.addEventListener('scroll', positionDropdown, true);
+
+            /* update aria-expanded on dropdown toggle */
+            const observer = new MutationObserver(() => {
+                const input = getActiveInput();
+                if (input) {
+                    input.setAttribute('aria-expanded', resultsDropdown?.classList.contains('hidden') ? 'false' : 'true');
+                }
+            });
+            if (resultsDropdown) observer.observe(resultsDropdown, { attributes: true, attributeFilter: ['class'] });
+        })();
+    </script>
+
+<script>
+        window.toggleFavori = function(btn, urunId) {
+            const evt = window.event;
+            if (evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+            }
+            
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin text-sm text-[#47473d]"></i>';
+            btn.disabled = true;
+
+            let token = document.querySelector('#globalAntiForgeryForm input[name="__RequestVerificationToken"]')?.value;
+            
+            fetch('/Favori/Toggle?urunId=' + urunId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': token || ''
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    if(data.isAdded) {
+                        btn.innerHTML = '<i class="fas fa-heart text-sm text-red-500"></i>';
+                        if(window.showToast) window.showToast('@Localizer["ProductAddedToFavorites"]', 'success');
+                    } else {
+                        btn.innerHTML = '<i class="far fa-heart text-sm text-[#47473d] group-hover/btn:text-red-500 transition-colors"></i>';
+                        if(window.showToast) window.showToast('@Localizer["ProductRemovedFromFavorites"]', 'info');
+                    }
+                } else {
+                    if (data.message === '@Localizer["PleaseLogin"]') {
+                        window.location.href = '/Hesap/GirisYap?ReturnUrl=' + window.location.pathname;
+                    } else {
+                        if(window.showToast) window.showToast(data.message || '@Localizer["AnErrorOccurred"]', 'error');
+                        btn.innerHTML = originalHtml;
+                    }
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                if(window.showToast) window.showToast('@Localizer["ConnectionError"]', 'error');
+                btn.innerHTML = originalHtml;
+            })
+            .finally(() => {
+                btn.disabled = false;
+            });
+        };
+    </script>
+
+    <!-- Floating WhatsApp Button -->
+    @if (!string.IsNullOrWhiteSpace(siteSettings.WhatsappNumarasi))
+    {
+        var waNumber = siteSettings.WhatsappNumarasi.Replace(" ", "").Replace("+", "").TrimStart('0');
+        if (!waNumber.StartsWith("9")) waNumber = "9" + waNumber;
+        <a href="https://wa.me/@waNumber" target="_blank" rel="noopener noreferrer"
+           class="fixed bottom-6 end-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:bg-[#20BD5A] hover:scale-110 transition-all duration-300 group whatsapp-btn"
+           aria-label="@Localizer["WhatsAppContact"]">
+            <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.162-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            <span class="absolute end-full me-3 top-1/2 -translate-y-1/2 bg-white text-[#25D366] px-3 py-1.5 rounded-lg text-xs font-medium shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                WhatsApp
+            </span>
+        </a>
+    }
+
+    <!-- Floating Cart Button -->
+    <a href="/Sepet" aria-label="@Localizer["Cart"]"
+       class="fixed bottom-6 start-6 z-50 bg-[#313511] text-white p-3.5 rounded-full shadow-lg hover:bg-[#1c2001] hover:scale-110 transition-all duration-300 group floating-cart-btn"
+       title="@Localizer["MyCart"]">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+            <path d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        @if (sepetCount > 0)
+        {
+            <span class="absolute -top-1 -end-1 bg-[#b58735] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-md">@sepetCount</span>
+        }
+    </a>
+
+    <!-- Spin the Wheel -->
+    @await Html.PartialAsync("_SpinWheelPartial")
+</body>
+</html>

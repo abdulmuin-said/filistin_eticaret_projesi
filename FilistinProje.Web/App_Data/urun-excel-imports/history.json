@@ -1,0 +1,63 @@
+[
+  {
+    "Id": "45954657431641958073bea7550cb346",
+    "OriginalFileName": "urun-create-sablon (8).xlsx",
+    "StoredFileName": "20260510-125951-87b1cd4269f54740aebacf2189f2c5b7.xlsx",
+    "OperationType": "create",
+    "OperationLabel": "Toplu \u00DCr\u00FCn Y\u00FCkleme",
+    "UploadedAt": "2026-05-10T12:59:51.2649938+03:00",
+    "TotalRows": 1,
+    "SuccessCount": 1,
+    "ErrorCount": 0,
+    "Status": "Ba\u015Far\u0131l\u0131",
+    "Errors": []
+  },
+  {
+    "Id": "66df7b41c8524fa189a849ca14480c9a",
+    "OriginalFileName": "urun-create-sablon (8).xlsx",
+    "StoredFileName": "20260510-125917-8e2a6e7dbd3c41d79bbf50ce96c53886.xlsx",
+    "OperationType": "create",
+    "OperationLabel": "Toplu \u00DCr\u00FCn Y\u00FCkleme",
+    "UploadedAt": "2026-05-10T12:59:17.6854067+03:00",
+    "TotalRows": 1,
+    "SuccessCount": 0,
+    "ErrorCount": 1,
+    "Status": "K\u0131smi Ba\u015Far\u0131l\u0131",
+    "Errors": [
+      "Sat\u0131r 3: \u0130ndirimli fiyat sat\u0131\u015F fiyat\u0131ndan k\u00FC\u00E7\u00FCk olmal\u0131d\u0131r."
+    ]
+  },
+  {
+    "Id": "def4791a1a97438b85da8e0ae0acb8ed",
+    "OriginalFileName": "urun-create-sablon (6).xlsx",
+    "StoredFileName": "20260510-004618-3e659d3e12d44a9d98b159c65305dc46.xlsx",
+    "OperationType": "create",
+    "OperationLabel": "Toplu \u00DCr\u00FCn Y\u00FCkleme",
+    "UploadedAt": "2026-05-10T00:46:18.8876058+03:00",
+    "TotalRows": 1,
+    "SuccessCount": 1,
+    "ErrorCount": 0,
+    "Status": "Ba\u015Far\u0131l\u0131",
+    "Errors": []
+  },
+  {
+    "Id": "f3ce55abbbc54a1f9d7a93d2dfc8eb08",
+    "OriginalFileName": "urun-create-sablon (6).xlsx",
+    "StoredFileName": "20260510-003245-4431eaf68e614ca3b81cc5511ed31ea9.xlsx",
+    "OperationType": "create",
+    "OperationLabel": "Toplu \u00DCr\u00FCn Y\u00FCkleme",
+    "UploadedAt": "2026-05-10T00:32:45.8789184+03:00",
+    "TotalRows": 6,
+    "SuccessCount": 0,
+    "ErrorCount": 6,
+    "Status": "K\u0131smi Ba\u015Far\u0131l\u0131",
+    "Errors": [
+      "Sat\u0131r 3: \u00DCr\u00FCn ad\u0131 zorunludur.",
+      "Sat\u0131r 16: \u00DCr\u00FCn ad\u0131 zorunludur.",
+      "Sat\u0131r 23: \u00DCr\u00FCn ad\u0131 zorunludur.",
+      "Sat\u0131r 29: \u00DCr\u00FCn ad\u0131 zorunludur.",
+      "Sat\u0131r 34: \u00DCr\u00FCn ad\u0131 zorunludur.",
+      "Sat\u0131r 52: \u00DCr\u00FCn ad\u0131 zorunludur."
+    ]
+  }
+]
