@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict 1ofuXQL43P16gBc0aQ6wXXPrGDRqxxojwdqlyTifPNiJFFwABCcL5f1Yzk1NK07
+\restrict 6zJlJNe9nKLSfogMJN3r6oEqel7EDYoWaUuXUv5qUb5J6Amj8NtsqzgUY9aTf2a
 
 -- Dumped from database version 16.14
 -- Dumped by pg_dump version 16.14
@@ -4965,5 +4965,5 @@ ALTER TABLE ONLY public."Yorumlar"
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 1ofuXQL43P16gBc0aQ6wXXPrGDRqxxojwdqlyTifPNiJFFwABCcL5f1Yzk1NK07
+\unrestrict 6zJlJNe9nKLSfogMJN3r6oEqel7EDYoWaUuXUv5qUb5J6Amj8NtsqzgUY9aTf2a
 
