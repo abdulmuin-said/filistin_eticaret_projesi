@@ -32,7 +32,7 @@ services:
     container_name: filistinproje-web
     restart: unless-stopped
     ports:
-      - "8081:8080"
+      - "80:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - DOTNET_RUNNING_IN_CONTAINER=true
