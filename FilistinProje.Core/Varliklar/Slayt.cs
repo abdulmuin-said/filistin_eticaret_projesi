@@ -22,6 +22,12 @@ namespace FilistinProje.Core.Varliklar
         public bool AktifMi { get; set; } = true;
         public DateTime OlusturmaTarihi { get; set; } = DateTime.UtcNow;
 
+        // Slider buton alanları - Reve.com tarzı modern slider için
+        public string ButonMetni { get; set; } = string.Empty;
+        public string ButonMetniEn { get; set; } = string.Empty;
+        public string ButonMetniAr { get; set; } = string.Empty;
+        public string? BaglantiUrl { get; set; }
+
         [NotMapped]
         public string LocalizedBaslik => GetLocalized(Baslik, BaslikEn, BaslikAr);
 
@@ -30,6 +36,9 @@ namespace FilistinProje.Core.Varliklar
 
         [NotMapped]
         public string LocalizedAciklama => GetLocalized(Aciklama, AciklamaEn, AciklamaAr);
+
+        [NotMapped]
+        public string LocalizedButonMetni => GetLocalized(ButonMetni, ButonMetniEn, ButonMetniAr);
 
         private static string GetLocalized(string tr, string en, string ar)
         {

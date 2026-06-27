@@ -1,0 +1,135 @@
+- generic [ref=e2]:
+  - text:          +                 
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "7ANRPS48 Admin Panel" [ref=e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=e6]
+      - generic [ref=e7]: Seller Panel
+    - navigation "Admin main menu" [ref=e8]:
+      - link " Dashboard" [ref=e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=e10]: 
+        - text: Dashboard
+      - generic [ref=e11]:
+        - button " Order Management" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]: 
+          - text: Order Management
+        - text:      
+      - generic [ref=e14]:
+        - button " Product Management" [ref=e15] [cursor=pointer]:
+          - generic [ref=e16]: 
+          - text: Product Management
+        - text:  +    
+      - generic [ref=e17]:
+        - button " Store Content" [ref=e18] [cursor=pointer]:
+          - generic [ref=e19]: 
+          - text: Store Content
+        - text:          
+      - link " Members" [ref=e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=e21]: 
+        - text: Members
+      - link " Staff" [ref=e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=e23]: 
+        - text: Staff
+      - link " Wholesalers" [ref=e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=e25]: 
+        - text: Wholesalers
+      - link " Wholesale Groups" [ref=e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=e27]: 
+        - text: Wholesale Groups
+      - generic [ref=e28]:
+        - button " Reports" [ref=e29] [cursor=pointer]:
+          - generic [ref=e30]: 
+          - text: Reports
+        - text:  
+      - link " Bank Accounts" [ref=e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=e32]: 
+        - text: Bank Accounts
+      - link " Settings" [ref=e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=e34]: 
+        - text: Settings
+    - generic [ref=e35]:
+      - text: 
+      - combobox "Language" [ref=e37]:
+        - option "AR"
+        - option "EN" [selected]
+        - option "TR"
+      - generic [ref=e38]:
+        - button "7ANRPS48 Admin Admin 7" [ref=e39] [cursor=pointer]:
+          - generic [ref=e40]:
+            - strong [ref=e41]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=e42]: "7"
+        - text:  
+  - generic [ref=e43]:
+    - main [ref=e44]:
+      - generic [ref=e46]:
+        - generic [ref=e47]:
+          - generic [ref=e48]:
+            - generic [ref=e49]: STORE CONFIGURATION
+            - heading "إعدادات الموقع" [level=1] [ref=e50]
+            - paragraph [ref=e51]: Manage storefront, contact, social media, SEO, shipping and mail notifications from one place.
+          - generic [ref=e52]:
+            - link " View Site" [ref=e53] [cursor=pointer]:
+              - /url: /
+              - generic [ref=e54]: 
+              - text: View Site
+            - link " Home Page Settings" [ref=e55] [cursor=pointer]:
+              - /url: /Admin/AnaSayfa
+              - generic [ref=e56]: 
+              - text: Home Page Settings
+        - generic [ref=e57]:
+          - tablist "Ayar sekmeleri" [ref=e58]:
+            - button " Admin_Brand" [ref=e59] [cursor=pointer]:
+              - generic [ref=e60]: 
+              - text: Admin_Brand
+            - button " Contact" [ref=e61] [cursor=pointer]:
+              - generic [ref=e62]: 
+              - text: Contact
+            - button " Social" [ref=e63] [cursor=pointer]:
+              - generic [ref=e64]: 
+              - text: Social
+            - button " Admin_Sales" [active] [ref=e65] [cursor=pointer]:
+              - generic [ref=e66]: 
+              - text: Admin_Sales
+            - button " الدفع" [ref=e67] [cursor=pointer]:
+              - generic [ref=e68]: 
+              - text: الدفع
+            - button " الدفع عند الاستلام" [ref=e69] [cursor=pointer]:
+              - generic [ref=e70]: 
+              - text: الدفع عند الاستلام
+            - button " SEO" [ref=e71] [cursor=pointer]:
+              - generic [ref=e72]: 
+              - text: SEO
+            - button " Mail" [ref=e73] [cursor=pointer]:
+              - generic [ref=e74]: 
+              - text: Mail
+            - button " Maintenance" [ref=e75] [cursor=pointer]:
+              - generic [ref=e76]: 
+              - text: Maintenance
+          - generic [ref=e77]:
+            - main [ref=e78]:
+              - text:   
+              - generic [ref=e160]:
+                - generic [ref=e161]
+                - generic [ref=e166]
+              - text:        
+            - complementary [ref=e127]:
+              - generic [ref=e128]:
+                - heading "What Does This Page Affect?" [level=2] [ref=e130]
+                - list [ref=e132]
+          - generic [ref=e152]:
+            - generic [ref=e153]:
+              - generic [ref=e154]: 
+              - text: Changes take effect on the site after saving.
+            - button " Save All Settings" [ref=e155] [cursor=pointer]:
+              - generic [ref=e156]: 
+              - text: Save All Settings
+    - contentinfo [ref=e157]: © 2026 7ANRPS48 Admin Panel. All rights reserved.

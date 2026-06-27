@@ -1,0 +1,208 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: 
+      - text: Free shipping on orders over 200 ₪
+    - generic [ref=e6]:
+      - generic [ref=e7]: 
+      - text: Easy payment by IBAN
+    - generic [ref=e8]:
+      - generic [ref=e9]: 
+      - text: Pay on delivery option
+    - generic [ref=e10]:
+      - generic [ref=e11]: 
+      - text: Fast Production
+    - generic [ref=e12]:
+      - generic [ref=e13]: 
+      - text: Careful Packaging
+    - generic [ref=e14]:
+      - generic [ref=e15]: 
+      - text: Delivery Across Palestine
+    - generic [ref=e16]:
+      - generic [ref=e17]: 
+      - text: 14 Days Return
+    - generic [ref=e18]:
+      - generic [ref=e19]: 
+      - text: Manufacturer Guarantee
+    - generic [ref=e20]:
+      - generic [ref=e21]: 
+      - text: WhatsApp Support
+    - generic [ref=e22]:
+      - generic [ref=e23]: 
+      - text: Free shipping on orders over 200 ₪
+    - generic [ref=e24]:
+      - generic [ref=e25]: 
+      - text: Easy payment by IBAN
+    - generic [ref=e26]:
+      - generic [ref=e27]: 
+      - text: Pay on delivery option
+    - generic [ref=e28]:
+      - generic [ref=e29]: 
+      - text: Fast Production
+    - generic [ref=e30]:
+      - generic [ref=e31]: 
+      - text: Careful Packaging
+    - generic [ref=e32]:
+      - generic [ref=e33]: 
+      - text: Delivery Across Palestine
+    - generic [ref=e34]:
+      - generic [ref=e35]: 
+      - text: 14 Days Return
+    - generic [ref=e36]:
+      - generic [ref=e37]: 
+      - text: Manufacturer Guarantee
+    - generic [ref=e38]:
+      - generic [ref=e39]: 
+      - text: WhatsApp Support
+  - banner [ref=e40]:
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e44]: 
+        - link "AR" [ref=e45] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FHata%2F404
+        - link "EN" [ref=e46] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FHata%2F404
+        - link "TR" [ref=e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=tr&returnUrl=%2FHata%2F404
+      - link "7ANRPS48" [ref=e48] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=e49]
+      - generic [ref=e50]:
+        - button "Search" [ref=e51] [cursor=pointer]:
+          - img [ref=e52]
+        - link "My Account" [ref=e54] [cursor=pointer]:
+          - /url: /Profil
+          - img [ref=e55]
+        - link "My Favorites" [ref=e57] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=e58]
+        - link "Cart" [ref=e60] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=e61]
+          - generic [ref=e63]: "0"
+      - navigation [ref=e64]:
+        - list [ref=e65]:
+          - listitem [ref=e66] [cursor=pointer]:
+            - link "Cat & Dog Care " [ref=e67]:
+              - /url: /Urun?k=64
+              - text: Cat & Dog Care
+              - generic [ref=e68]: 
+          - listitem [ref=e69] [cursor=pointer]:
+            - link "Clinic Consumables & Hygiene " [ref=e70]:
+              - /url: /Urun?k=65
+              - text: Clinic Consumables & Hygiene
+              - generic [ref=e71]: 
+          - listitem [ref=e72] [cursor=pointer]:
+            - link "Farm Animal Support " [ref=e73]:
+              - /url: /Urun?k=66
+              - text: Farm Animal Support
+              - generic [ref=e74]: 
+          - listitem [ref=e75] [cursor=pointer]:
+            - link "Contact" [ref=e76]:
+              - /url: /Kurumsal/Iletisim
+    - text:     
+  - main [ref=e77]:
+    - generic [ref=e79]:
+      - generic [ref=e80]: "404"
+      - heading "Page Not Found" [level=1] [ref=e81]
+      - paragraph [ref=e82]: The page you are looking for may have been moved, deleted, or never existed. Don't worry, you can continue exploring our collections.
+      - generic [ref=e83]:
+        - link "Return Home" [ref=e84] [cursor=pointer]:
+          - /url: /
+        - link "Collections" [ref=e85] [cursor=pointer]:
+          - /url: /Urun
+  - contentinfo [ref=e86]:
+    - generic [ref=e88]:
+      - generic [ref=e89]:
+        - generic [ref=e91]: 
+        - generic [ref=e92]:
+          - generic [ref=e93]: Across Palestine
+          - generic [ref=e94]: Free Shipping
+      - generic [ref=e95]:
+        - generic [ref=e97]: 
+        - generic [ref=e98]:
+          - generic [ref=e99]: Bank Transfer
+          - generic [ref=e100]: Easy payment by IBAN
+      - generic [ref=e101]:
+        - generic [ref=e103]: 
+        - generic [ref=e104]:
+          - generic [ref=e105]: Cash on Delivery
+          - generic [ref=e106]: Pay on delivery option
+    - generic [ref=e107]:
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - link "7ANRPS48" [ref=e110] [cursor=pointer]:
+            - /url: /
+            - img "7ANRPS48" [ref=e112]
+          - paragraph [ref=e113]: متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن
+        - generic [ref=e114]:
+          - heading "QuickLinks" [level=5] [ref=e115]
+          - list [ref=e116]:
+            - listitem [ref=e117]:
+              - link "All Products" [ref=e118] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=e119]:
+              - link "Cart" [ref=e120] [cursor=pointer]:
+                - /url: /Sepet
+            - listitem [ref=e121]:
+              - link "My Favorites" [ref=e122] [cursor=pointer]:
+                - /url: /Favori
+            - listitem [ref=e123]:
+              - link "Contact" [ref=e124] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+        - generic [ref=e125]:
+          - heading "Corporate" [level=5] [ref=e126]
+          - list [ref=e127]:
+            - listitem [ref=e128]:
+              - link "About Us" [ref=e129] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=e130]:
+              - link "Contact" [ref=e131] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=e132]:
+              - link "Privacy Policy" [ref=e133] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=e134]:
+              - link "Distance Sales Contract" [ref=e135] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+        - generic [ref=e136]:
+          - heading "Contact" [level=5] [ref=e137]
+          - list [ref=e138]:
+            - listitem [ref=e139]:
+              - generic [ref=e140]: 
+              - generic [ref=e141]: +970-599-000-000
+            - listitem [ref=e142]:
+              - generic [ref=e143]: 
+              - generic [ref=e144]: info@7anrps48.com
+            - listitem [ref=e145]:
+              - generic [ref=e146]: 
+              - generic [ref=e147]: فلسطين
+            - listitem [ref=e148]:
+              - generic [ref=e149]: 
+              - generic [ref=e150]: "السبت - الخميس: 9:00 - 21:00"
+          - generic [ref=e151]:
+            - heading "Subscribe to newsletter" [level=5] [ref=e152]
+            - generic [ref=e153]:
+              - textbox "Email Address" [ref=e154]
+              - button "Subscribe" [ref=e155] [cursor=pointer]
+          - link "WhatsApp" [ref=e157] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=e158]: 
+      - generic [ref=e159]:
+        - paragraph [ref=e161]: © 2026 7ANRPS48 All rights reserved.
+        - generic [ref=e162]:
+          - link "Privacy Policy" [ref=e163] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - generic [ref=e164]: "|"
+          - link "Terms of Use" [ref=e165] [cursor=pointer]:
+            - /url: /Kurumsal/KullaniciSozlesmesi
+          - generic [ref=e166]: "|"
+          - link "Return and Exchange" [ref=e167] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+  - link "WhatsApp Contact" [ref=e168] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=e169]
+    - generic [ref=e171]: WhatsApp
+  - link "Cart" [ref=e172] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=e173]

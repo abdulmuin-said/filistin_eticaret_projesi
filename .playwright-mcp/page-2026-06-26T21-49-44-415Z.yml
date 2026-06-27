@@ -1,0 +1,382 @@
+- generic [ref=e2]:
+  - text:          +                 
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "7ANRPS48 Admin Panel" [ref=e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=e6]
+      - generic [ref=e7]: Seller Panel
+    - navigation "Admin main menu" [ref=e8]:
+      - link " Dashboard" [ref=e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=e10]: 
+        - text: Dashboard
+      - generic [ref=e11]:
+        - button " Order Management" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]: 
+          - text: Order Management
+        - text:      
+      - generic [ref=e14]:
+        - button " Product Management" [ref=e15] [cursor=pointer]:
+          - generic [ref=e16]: 
+          - text: Product Management
+        - text:  +    
+      - generic [ref=e17]:
+        - button " Store Content" [ref=e18] [cursor=pointer]:
+          - generic [ref=e19]: 
+          - text: Store Content
+        - text:          
+      - link " Members" [ref=e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=e21]: 
+        - text: Members
+      - link " Staff" [ref=e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=e23]: 
+        - text: Staff
+      - link " Wholesalers" [ref=e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=e25]: 
+        - text: Wholesalers
+      - link " Wholesale Groups" [ref=e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=e27]: 
+        - text: Wholesale Groups
+      - generic [ref=e28]:
+        - button " Reports" [ref=e29] [cursor=pointer]:
+          - generic [ref=e30]: 
+          - text: Reports
+        - text:  
+      - link " Bank Accounts" [ref=e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=e32]: 
+        - text: Bank Accounts
+      - link " Settings" [ref=e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=e34]: 
+        - text: Settings
+    - generic [ref=e35]:
+      - text: 
+      - combobox "Language" [ref=e37]:
+        - option "AR"
+        - option "EN" [selected]
+        - option "TR"
+      - generic [ref=e38]:
+        - button "7ANRPS48 Admin Admin 7" [ref=e39] [cursor=pointer]:
+          - generic [ref=e40]:
+            - strong [ref=e41]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=e42]: "7"
+        - text:  
+  - generic [ref=e43]:
+    - main [ref=e44]:
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - heading "لوحة التحكم" [level=1] [ref=e48]
+            - paragraph [ref=e49]: ملخص الطلبات والمخزون والزيارات في شاشة واحدة.
+          - generic [ref=e50]:
+            - generic [ref=e51]: 
+            - text: 27 June 2026, Saturday
+        - generic [ref=e52]:
+          - generic [ref=e54]:
+            - generic [ref=e55]: Total Revenue
+            - generic [ref=e56]: 1,239.00 ₪
+            - generic [ref=e57]: "Monthly: 1,239.00 ₪"
+          - generic [ref=e59]:
+            - generic [ref=e60]: إيرادات اليوم
+            - generic [ref=e61]: 0.00 ₪
+            - generic [ref=e62]: "Weekly: 338.00 ₪"
+          - generic [ref=e64]:
+            - generic [ref=e65]: إجمالي الطلبات
+            - generic [ref=e66]: "5"
+            - generic [ref=e67]: "Today: 0 orders"
+          - generic [ref=e69]:
+            - generic [ref=e70]: Pending
+            - generic [ref=e71]: "0"
+            - generic [ref=e72]: "Ready to ship: 1"
+          - generic [ref=e74]:
+            - generic [ref=e75]: الشحن / المرتجعات
+            - generic [ref=e76]: 1 / 2
+            - generic [ref=e77]: ملخص العمليات
+          - generic [ref=e79]:
+            - generic [ref=e80]: الرسائل / المنتجات النشطة
+            - generic [ref=e81]: 0 / 8
+            - generic [ref=e82]: Operation tracking
+        - generic [ref=e83]:
+          - generic [ref=e84]:
+            - heading " مخطط إيرادات آخر 7 أيام" [level=3] [ref=e87]:
+              - generic [ref=e88]: 
+              - text: مخطط إيرادات آخر 7 أيام
+            - heading " 12-Month Revenue Trend" [level=3] [ref=e94]:
+              - generic [ref=e95]: 
+              - text: 12-Month Revenue Trend
+            - generic [ref=e99]:
+              - heading " إجراءات سريعة" [level=3] [ref=e101]:
+                - generic [ref=e102]: 
+                - text: إجراءات سريعة
+              - generic [ref=e104]:
+                - link " إضافة منتج" [ref=e106] [cursor=pointer]:
+                  - /url: /Admin/Urun/Ekle
+                  - generic [ref=e107]:
+                    - generic [ref=e109]: 
+                    - generic [ref=e110]: إضافة منتج
+                - link " الطلبات" [ref=e112] [cursor=pointer]:
+                  - /url: /Admin/Siparis
+                  - generic [ref=e113]:
+                    - generic [ref=e115]: 
+                    - generic [ref=e116]: الطلبات
+                - link " حقول الخصائص" [ref=e118] [cursor=pointer]:
+                  - /url: /Admin/UrunOzellik
+                  - generic [ref=e119]:
+                    - generic [ref=e121]: 
+                    - generic [ref=e122]: حقول الخصائص
+                - link " صندوق الرسائل" [ref=e124] [cursor=pointer]:
+                  - /url: /Admin/Iletisim
+                  - generic [ref=e125]:
+                    - generic [ref=e127]: 
+                    - generic [ref=e128]: صندوق الرسائل
+            - generic [ref=e129]:
+              - generic [ref=e131]:
+                - heading " الأكثر مبيعاً" [level=3] [ref=e133]:
+                  - generic [ref=e134]: 
+                  - text: الأكثر مبيعاً
+                - generic [ref=e136]:
+                  - link "MineralBlock Büyükbaş & Küçükbaş Mineral Bloğu 2 kg MineralBlock Büyükbaş & Küçükbaş Mineral Bloğu 2 kg 2 adet " [ref=e137] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/31
+                    - img "MineralBlock Büyükbaş & Küçükbaş Mineral Bloğu 2 kg" [ref=e138]
+                    - generic [ref=e139]:
+                      - generic [ref=e140]: MineralBlock Büyükbaş & Küçükbaş Mineral Bloğu 2 kg
+                      - generic [ref=e141]: 2 adet
+                    - generic [ref=e142]: 
+                  - link "OtoClean Kulak Temizleme Solüsyonu 120 ml OtoClean Kulak Temizleme Solüsyonu 120 ml 2 adet " [ref=e143] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/30
+                    - img "OtoClean Kulak Temizleme Solüsyonu 120 ml" [ref=e144]
+                    - generic [ref=e145]:
+                      - generic [ref=e146]: OtoClean Kulak Temizleme Solüsyonu 120 ml
+                      - generic [ref=e147]: 2 adet
+                    - generic [ref=e148]: 
+                  - link "VetPlus Multivitamin Kedi & Köpek Damlası 50 ml VetPlus Multivitamin Kedi & Köpek Damlası 50 ml 2 adet " [ref=e149] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/26
+                    - img "VetPlus Multivitamin Kedi & Köpek Damlası 50 ml" [ref=e150]
+                    - generic [ref=e151]:
+                      - generic [ref=e152]: VetPlus Multivitamin Kedi & Köpek Damlası 50 ml
+                      - generic [ref=e153]: 2 adet
+                    - generic [ref=e154]: 
+                  - link "CalfStart Buzağı Başlangıç Destek Paketi CalfStart Buzağı Başlangıç Destek Paketi 1 adet " [ref=e155] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/33
+                    - img "CalfStart Buzağı Başlangıç Destek Paketi" [ref=e156]
+                    - generic [ref=e157]:
+                      - generic [ref=e158]: CalfStart Buzağı Başlangıç Destek Paketi
+                      - generic [ref=e159]: 1 adet
+                    - generic [ref=e160]: 
+                  - link "Dermacare Hassas Deri Pet Şampuanı 250 ml Dermacare Hassas Deri Pet Şampuanı 250 ml 1 adet " [ref=e161] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/27
+                    - img "Dermacare Hassas Deri Pet Şampuanı 250 ml" [ref=e162]
+                    - generic [ref=e163]:
+                      - generic [ref=e164]: Dermacare Hassas Deri Pet Şampuanı 250 ml
+                      - generic [ref=e165]: 1 adet
+                    - generic [ref=e166]: 
+              - generic [ref=e168]:
+                - heading " Most Viewed" [level=3] [ref=e170]:
+                  - generic [ref=e171]: 
+                  - text: Most Viewed
+                - generic [ref=e173]:
+                  - link "VetPlus Multivitamin Kedi & Köpek Damlası 50 ml VetPlus Multivitamin Kedi & Köpek Damlası 50 ml 1 görüntülenme " [ref=e174] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/26
+                    - img "VetPlus Multivitamin Kedi & Köpek Damlası 50 ml" [ref=e175]
+                    - generic [ref=e176]:
+                      - generic [ref=e177]: VetPlus Multivitamin Kedi & Köpek Damlası 50 ml
+                      - generic [ref=e178]: 1 görüntülenme
+                    - generic [ref=e179]: 
+                  - link "CalfStart Buzağı Başlangıç Destek Paketi CalfStart Buzağı Başlangıç Destek Paketi 1 görüntülenme " [ref=e180] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/33
+                    - img "CalfStart Buzağı Başlangıç Destek Paketi" [ref=e181]
+                    - generic [ref=e182]:
+                      - generic [ref=e183]: CalfStart Buzağı Başlangıç Destek Paketi
+                      - generic [ref=e184]: 1 görüntülenme
+                    - generic [ref=e185]: 
+                  - link "OtoClean Kulak Temizleme Solüsyonu 120 ml OtoClean Kulak Temizleme Solüsyonu 120 ml 0 görüntülenme " [ref=e186] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/30
+                    - img "OtoClean Kulak Temizleme Solüsyonu 120 ml" [ref=e187]
+                    - generic [ref=e188]:
+                      - generic [ref=e189]: OtoClean Kulak Temizleme Solüsyonu 120 ml
+                      - generic [ref=e190]: 0 görüntülenme
+                    - generic [ref=e191]: 
+                  - link "Dermacare Hassas Deri Pet Şampuanı 250 ml Dermacare Hassas Deri Pet Şampuanı 250 ml 0 görüntülenme " [ref=e192] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/27
+                    - img "Dermacare Hassas Deri Pet Şampuanı 250 ml" [ref=e193]
+                    - generic [ref=e194]:
+                      - generic [ref=e195]: Dermacare Hassas Deri Pet Şampuanı 250 ml
+                      - generic [ref=e196]: 0 görüntülenme
+                    - generic [ref=e197]: 
+                  - link "ProBioVet Sindirim Destek Tozu 100 g ProBioVet Sindirim Destek Tozu 100 g 0 görüntülenme " [ref=e198] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/28
+                    - img "ProBioVet Sindirim Destek Tozu 100 g" [ref=e199]
+                    - generic [ref=e200]:
+                      - generic [ref=e201]: ProBioVet Sindirim Destek Tozu 100 g
+                      - generic [ref=e202]: 0 görüntülenme
+                    - generic [ref=e203]: 
+            - generic [ref=e204]:
+              - generic [ref=e206]:
+                - heading " Recently Added Products" [level=3] [ref=e208]:
+                  - generic [ref=e209]: 
+                  - text: Recently Added Products
+                - generic [ref=e211]:
+                  - link "OtoClean Kulak Temizleme Solüsyonu 120 ml VET-CLN-002 | 119.00 TL 26.06.2026 19:12" [ref=e212] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/30
+                    - generic [ref=e213]: OtoClean Kulak Temizleme Solüsyonu 120 ml
+                    - generic [ref=e214]: VET-CLN-002 | 119.00 TL
+                    - generic [ref=e215]: 26.06.2026 19:12
+                  - link "VetPlus Multivitamin Kedi & Köpek Damlası 50 ml VET-PET-001 | 149.00 TL 26.06.2026 19:12" [ref=e216] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/26
+                    - generic [ref=e217]: VetPlus Multivitamin Kedi & Köpek Damlası 50 ml
+                    - generic [ref=e218]: VET-PET-001 | 149.00 TL
+                    - generic [ref=e219]: 26.06.2026 19:12
+                  - link "Dermacare Hassas Deri Pet Şampuanı 250 ml VET-PET-002 | 99.00 TL 26.06.2026 19:12" [ref=e220] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/27
+                    - generic [ref=e221]: Dermacare Hassas Deri Pet Şampuanı 250 ml
+                    - generic [ref=e222]: VET-PET-002 | 99.00 TL
+                    - generic [ref=e223]: 26.06.2026 19:12
+                  - link "ProBioVet Sindirim Destek Tozu 100 g VET-PET-003 | 179.00 TL 26.06.2026 19:12" [ref=e224] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/28
+                    - generic [ref=e225]: ProBioVet Sindirim Destek Tozu 100 g
+                    - generic [ref=e226]: VET-PET-003 | 179.00 TL
+                    - generic [ref=e227]: 26.06.2026 19:12
+                  - link "Klinik Yara Bakım Spreyi 100 ml VET-CLN-001 | 135.00 TL 26.06.2026 19:12" [ref=e228] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/29
+                    - generic [ref=e229]: Klinik Yara Bakım Spreyi 100 ml
+                    - generic [ref=e230]: VET-CLN-001 | 135.00 TL
+                    - generic [ref=e231]: 26.06.2026 19:12
+              - generic [ref=e233]:
+                - heading " Recent Customer Reviews" [level=3] [ref=e235]:
+                  - generic [ref=e236]: 
+                  - text: Recent Customer Reviews
+                - generic [ref=e238]:
+                  - generic [ref=e239]: 
+                  - paragraph [ref=e240]: No reviews yet.
+          - generic [ref=e241]:
+            - generic [ref=e242]:
+              - heading " System Alerts" [level=3] [ref=e244]:
+                - generic [ref=e245]: 
+                - text: System Alerts
+              - generic [ref=e247]: No critical system alerts.
+            - generic [ref=e248]:
+              - heading " Operation Summary" [level=3] [ref=e250]:
+                - generic [ref=e251]: 
+                - text: Operation Summary
+              - generic [ref=e252]:
+                - generic [ref=e253]:
+                  - generic [ref=e254]: Pending orders
+                  - strong [ref=e255]: "0"
+                - generic [ref=e256]:
+                  - generic [ref=e257]: جاهز للشحن
+                  - strong [ref=e258]: "1"
+                - generic [ref=e259]:
+                  - generic [ref=e260]: Shipped
+                  - strong [ref=e261]: "1"
+                - generic [ref=e262]:
+                  - generic [ref=e263]: Cancel / Return
+                  - strong [ref=e264]: "2"
+            - generic [ref=e265]:
+              - heading " City-Based Sales" [level=3] [ref=e267]:
+                - generic [ref=e268]: 
+                - text: City-Based Sales
+              - generic [ref=e270]:
+                - generic [ref=e271]:
+                  - generic [ref=e272]: "1"
+                  - generic [ref=e273]:
+                    - generic [ref=e274]: Nablus
+                    - generic [ref=e275]: 454.00 ₪
+                - generic [ref=e276]:
+                  - generic [ref=e277]: "1"
+                  - generic [ref=e278]:
+                    - generic [ref=e279]: Ramallah
+                    - generic [ref=e280]: 447.00 ₪
+                - generic [ref=e281]:
+                  - generic [ref=e282]: "1"
+                  - generic [ref=e283]:
+                    - generic [ref=e284]: Gazze
+                    - generic [ref=e285]: 338.00 ₪
+                - generic [ref=e286]:
+                  - generic [ref=e287]: "1"
+                  - generic [ref=e288]:
+                    - generic [ref=e289]: El Halil
+                    - generic [ref=e290]: 0.00 ₪
+                - generic [ref=e291]:
+                  - generic [ref=e292]: "1"
+                  - generic [ref=e293]:
+                    - generic [ref=e294]: Kudüs
+                    - generic [ref=e295]: 0.00 ₪
+            - generic [ref=e296]:
+              - heading " Traffic Area" [level=3] [ref=e298]:
+                - generic [ref=e299]: 
+                - text: Traffic Area
+              - generic [ref=e300]:
+                - generic [ref=e301]:
+                  - generic [ref=e302]: Last 7 days visits
+                  - strong [ref=e303]: "552"
+                - generic [ref=e304]:
+                  - generic [ref=e305]: Unique visitors
+                  - strong [ref=e306]: "1"
+            - generic [ref=e307]:
+              - heading " Category Performance" [level=3] [ref=e309]:
+                - generic [ref=e310]: 
+                - text: Category Performance
+              - generic [ref=e312]:
+                - generic [ref=e313]: 
+                - paragraph [ref=e314]: No category sales data yet.
+            - generic [ref=e315]:
+              - heading " Recent Activities" [level=3] [ref=e317]:
+                - generic [ref=e318]: 
+                - text: Recent Activities
+              - generic [ref=e319]:
+                - generic [ref=e320]:
+                  - generic [ref=e322]: 
+                  - generic [ref=e323]:
+                    - generic [ref=e324]: Yeni ürün eklendi
+                    - generic [ref=e325]: OtoClean Kulak Temizleme Solüsyonu 120 ml
+                  - generic [ref=e326]: 19:12
+                - generic [ref=e327]:
+                  - generic [ref=e329]: 
+                  - generic [ref=e330]:
+                    - generic [ref=e331]: Yeni ürün eklendi
+                    - generic [ref=e332]: VetPlus Multivitamin Kedi & Köpek Damlası 50 ml
+                  - generic [ref=e333]: 19:12
+                - generic [ref=e334]:
+                  - generic [ref=e336]: 
+                  - generic [ref=e337]:
+                    - generic [ref=e338]: Yeni ürün eklendi
+                    - generic [ref=e339]: Dermacare Hassas Deri Pet Şampuanı 250 ml
+                  - generic [ref=e340]: 19:12
+                - generic [ref=e341]:
+                  - generic [ref=e343]: 
+                  - generic [ref=e344]:
+                    - generic [ref=e345]: Yeni ürün eklendi
+                    - generic [ref=e346]: ProBioVet Sindirim Destek Tozu 100 g
+                  - generic [ref=e347]: 19:12
+                - generic [ref=e348]:
+                  - generic [ref=e350]: 
+                  - generic [ref=e351]:
+                    - generic [ref=e352]: Yeni ürün eklendi
+                    - generic [ref=e353]: Klinik Yara Bakım Spreyi 100 ml
+                  - generic [ref=e354]: 19:12
+                - generic [ref=e355]:
+                  - generic [ref=e357]: 
+                  - generic [ref=e358]:
+                    - generic [ref=e359]: "Yeni sipariş #3"
+                    - generic [ref=e360]: Sara Haddad - 338.00 TL
+                  - generic [ref=e361]: 19:12
+                - generic [ref=e362]:
+                  - generic [ref=e364]: 
+                  - generic [ref=e365]:
+                    - generic [ref=e366]: "Yeni sipariş #2"
+                    - generic [ref=e367]: Ahmad Nasser - 454.00 TL
+                  - generic [ref=e368]: 19:12
+                - generic [ref=e369]:
+                  - generic [ref=e371]: 
+                  - generic [ref=e372]:
+                    - generic [ref=e373]: "Yeni sipariş #5"
+                    - generic [ref=e374]: Layla Mansour - 288.00 TL
+                  - generic [ref=e375]: 19:12
+    - contentinfo [ref=e376]: © 2026 7ANRPS48 Admin Panel. All rights reserved.

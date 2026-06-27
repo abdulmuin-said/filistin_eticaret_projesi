@@ -396,8 +396,8 @@
                                 }
                             </a>
                             <!-- Kalp / Favori Butonu -->
-                            <button type="button" onclick="window.toggleFavori(this, @urun.Id)" class="group/btn absolute top-2 right-2 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-200 shadow-sm z-20 hover:scale-110" title="@Localizer["AddToFavorites"]">
-                                <i class="far fa-heart text-sm text-[#47473d] group-hover/btn:text-red-500 transition-colors"></i>
+                            <button type="button" onclick="window.toggleFavori(this, @urun.Id)" class="group/btn absolute top-3 right-3 w-9 h-9 bg-white/95 shadow-md rounded-full flex items-center justify-center transition-all duration-200 z-20 hover:scale-110 active:scale-90 md:w-8 md:h-8" title="@Localizer["AddToFavorites"]">
+                                <i class="far fa-heart text-sm text-[#47473d] group-hover/btn:text-red-400 transition-colors"></i>
                             </button>
                             <h3 class="text-xs font-medium text-[#1c1c18] line-clamp-2 mb-1 leading-relaxed">
                                 <a href="@BuildProductUrl(urun)" class="hover:text-[#b58735] transition-colors">@urun.LocalizedBaslik</a>

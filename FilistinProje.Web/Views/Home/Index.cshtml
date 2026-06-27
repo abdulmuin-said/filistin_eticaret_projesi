@@ -50,22 +50,26 @@
 </script>
 @if (aktifSlaytlar.Any())
 {
-<!-- BEGIN: HeroSection - Otomatik Slider -->
-<section class="relative w-full min-h-[140px] h-[55vw] max-h-[320px] md:h-[700px] md:max-h-none overflow-hidden bg-[#f1ede7]" id="heroSlider">
+<!-- BEGIN: HeroSection - Modern Reve.com Tarzı Slider -->
+<section class="relative w-full h-[55vw] min-h-[180px] max-h-[320px] md:h-[700px] md:max-h-none overflow-hidden bg-[#1a1a1a]" id="heroSlider">
 
-    <!-- Slayt Görselleri -->
-    <div id="heroTrack" class="flex h-full transition-transform duration-700 ease-in-out will-change-transform">
-
+    <!-- Slaytlar (Fade geçiş) -->
+    <div id="heroSlidesContainer" class="relative w-full h-full">
         @for (int i = 0; i < aktifSlaytlar.Count; i++)
         {
             var slide = aktifSlaytlar[i];
-            <div class="hero-slide relative flex-shrink-0 w-full h-full">
+            var hasContent = !string.IsNullOrWhiteSpace(slide.LocalizedBaslik)
+                          || !string.IsNullOrWhiteSpace(slide.LocalizedAltBaslik)
+                          || !string.IsNullOrWhiteSpace(slide.LocalizedAciklama);
+
+            <div class="hero-slide absolute inset-0 w-full h-full @(i == 0 ? "active" : "")"
+                 data-index="@i"
+                 style="z-index: @(aktifSlaytlar.Count - i);">
+
                 @if (!string.IsNullOrWhiteSpace(slide.VideoUrl))
                 {
-                    <video class="absolute inset-0 w-full h-full object-contain md:object-cover"
-                           muted
-                           playsinline
-                           preload="metadata"
+                    <video class="absolute inset-0 w-full h-full object-cover"
+                           muted playsinline preload="metadata"
                            data-hero-video>
                         <source src="@slide.VideoUrl">
                     </video>
@@ -74,41 +78,104 @@
                 {
                     <img src="@(string.IsNullOrEmpty(slide.ResimUrl) ? "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1600&q=80&auto=format&fit=crop" : slide.ResimUrl)"
                          alt="@(string.IsNullOrWhiteSpace(slide.LocalizedBaslik) ? Localizer["HomepageSlider"] : slide.LocalizedBaslik)"
-                         class="absolute inset-0 w-full h-full object-contain md:object-cover"
+                         class="absolute inset-0 w-full h-full object-cover"
                          loading="@(i == 0 ? "eager" : "lazy")"
                          decoding="async"
                          fetchpriority="@(i == 0 ? "high" : "auto")">
                 }
+
+                <!-- Koyu Gradyan Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent md:bg-gradient-to-r md:from-black/70 md:via-black/40 md:to-transparent"></div>
+
+                <!-- Slayt İçeriği (Başlık + Buton) -->
+                @if (hasContent)
+                {
+                    <div class="hero-content absolute inset-0 flex items-end md:items-center z-10">
+                        <div class="container mx-auto px-4 sm:px-6 pb-8 md:pb-16 md:px-12 lg:px-20">
+                            <div class="max-w-lg md:max-w-xl lg:max-w-2xl hero-text-container">
+                                @if (!string.IsNullOrWhiteSpace(slide.LocalizedAltBaslik))
+                                {
+                                    <p class="hero-subtitle text-xs md:text-sm lg:text-base font-medium uppercase tracking-[0.2em] text-[#c6ca99] mb-2 md:mb-3 drop-shadow-lg">
+                                        @slide.LocalizedAltBaslik
+                                    </p>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(slide.LocalizedBaslik))
+                                {
+                                    <h2 class="hero-title text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight drop-shadow-2xl mb-3 md:mb-4">
+                                        @slide.LocalizedBaslik
+                                    </h2>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(slide.LocalizedAciklama))
+                                {
+                                    <p class="hero-description text-xs sm:text-sm md:text-base lg:text-lg text-white/80 max-w-md md:max-w-xl leading-relaxed drop-shadow-lg mb-4 md:mb-6 line-clamp-2 md:line-clamp-3">
+                                        @slide.LocalizedAciklama
+                                    </p>
+                                }
+                                @{
+                                    var btnText = slide.LocalizedButonMetni;
+                                    var btnUrl = slide.BaglantiUrl;
+                                }
+                                @if (!string.IsNullOrWhiteSpace(btnText) && !string.IsNullOrWhiteSpace(btnUrl))
+                                {
+                                    <a href="@btnUrl"
+                                       class="hero-btn inline-flex items-center gap-2 px-5 py-2.5 md:px-7 md:py-3 rounded-full bg-[#c6ca99] text-[#1a1a1a] text-xs md:text-sm font-semibold tracking-wide
+                                              hover:bg-white hover:text-[#1a1a1a] transition-all duration-300 shadow-lg hover:shadow-xl
+                                              active:scale-95">
+                                        @btnText
+                                        <svg class="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                                        </svg>
+                                    </a>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(btnText) && string.IsNullOrWhiteSpace(btnUrl))
+                                {
+                                    <span class="hero-btn inline-flex items-center gap-2 px-5 py-2.5 md:px-7 md:py-3 rounded-full bg-[#c6ca99] text-[#1a1a1a] text-xs md:text-sm font-semibold tracking-wide shadow-lg cursor-default">
+                                        @btnText
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
         }
-
     </div>
 
-    <!-- Ok Butonları (Sol / Sağ) -->
+    <!-- Ok Butonları (Sol / Sağ) - Modern Stil -->
     <button id="heroPrev" onclick="heroSlide(-1)" aria-label="@Localizer["PreviousSlide"]"
-            class="absolute left-3 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-[#313511]/35 text-white backdrop-blur-sm transition-all duration-300 hover:bg-[#313511]/55 md:left-8 md:h-11 md:w-11 md:bg-white/20 md:hover:bg-white/40 group">
-<svg class="h-5 w-5 transition-transform group-hover:-translate-x-0.5 md:h-5 md:w-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            class="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-12 md:h-12 flex items-center justify-center
+                   rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white
+                   hover:bg-white/25 hover:border-white/40 transition-all duration-300
+                   opacity-0 md:opacity-100 group hover:scale-105 active:scale-95">
+        <svg class="w-4 h-4 md:w-5 md:h-5 transition-transform duration-300 group-hover:-translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
         </svg>
     </button>
     <button id="heroNext" onclick="heroSlide(1)" aria-label="@Localizer["NextSlide"]"
-            class="absolute right-3 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-[#313511]/35 text-white backdrop-blur-sm transition-all duration-300 hover:bg-[#313511]/55 md:right-8 md:h-11 md:w-11 md:bg-white/20 md:hover:bg-white/40 group">
-<svg class="h-5 w-5 transition-transform group-hover:translate-x-0.5 md:h-5 md:w-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            class="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-12 md:h-12 flex items-center justify-center
+                   rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white
+                   hover:bg-white/25 hover:border-white/40 transition-all duration-300
+                   opacity-0 md:opacity-100 group hover:scale-105 active:scale-95">
+        <svg class="w-4 h-4 md:w-5 md:h-5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
         </svg>
     </button>
 
-    <!-- Nokta İndikatörler -->
-    <div class="absolute bottom-2 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-[#313511]/20 px-2 py-1 backdrop-blur-sm md:bottom-6 md:gap-2 md:bg-transparent md:px-0 md:py-0 md:backdrop-blur-0" id="heroDots">
+    <!-- Nokta İndikatörler - Modern Stil -->
+    <div class="absolute bottom-3 md:bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 md:gap-2.5" id="heroDots">
         @for (int i = 0; i < aktifSlaytlar.Count; i++)
         {
-            <button onclick="heroGoTo(@i)" class="hero-dot block h-1.5 min-h-0 w-1.5 shrink-0 appearance-none rounded-full border-0 bg-white/50 p-0 leading-none transition-all duration-300 md:h-2 md:w-2" aria-label="@string.Format(Localizer["SlideN"], i+1)"></button>
+            <button onclick="heroGoTo(@i)"
+                    class="hero-dot block appearance-none border-0 p-0 leading-none cursor-pointer
+                           rounded-full transition-all duration-500 ease-out min-h-0
+                           @(i == 0 ? "bg-white w-2.5 h-2.5 md:w-3 md:h-3" : "bg-white/40 w-1.5 h-1.5 md:w-2 md:h-2 hover:bg-white/60")"
+                    aria-label="@string.Format(Localizer["SlideN"], i+1)"></button>
         }
     </div>
 
-    <!-- İlerleme Çubuğu -->
-    <div class="absolute bottom-0 left-0 h-0.5 bg-white/30 w-full z-20">
-        <div id="heroProgress" class="h-full bg-[#c6ca99] transition-none" style="width: 0%"></div>
+    <!-- İlerleme Çubuğu - İnce, Şeffaf -->
+    <div class="absolute bottom-0 left-0 z-20 w-full h-[2px] md:h-[3px] bg-white/10">
+        <div id="heroProgress" class="h-full bg-[#c6ca99]/80 transition-none rounded-full" style="width: 0%"></div>
     </div>
 
 </section>
@@ -120,34 +187,43 @@
     const TOTAL = @(aktifSlaytlar.Count > 0 ? aktifSlaytlar.Count : 1);
     const INTERVAL = 5000;
     const PROGRESS_STEP = 50;
+    const FADE_DURATION = 700;
 
     let current = 0;
     let autoTimer = null;
     let progressTimer = null;
     let progressVal = 0;
+    let isTransitioning = false;
 
-    const track = document.getElementById('heroTrack');
-    const dots  = document.querySelectorAll('.hero-dot');
+    const container = document.getElementById('heroSlidesContainer');
+    const slides    = document.querySelectorAll('.hero-slide');
+    const dots      = document.querySelectorAll('.hero-dot');
     const progressBar = document.getElementById('heroProgress');
-    const slides = document.querySelectorAll('.hero-slide');
-    const slider = document.getElementById('heroSlider');
-    const videos = document.querySelectorAll('[data-hero-video]');
-    const isRtl = document.documentElement.dir === 'rtl';
+    const slider    = document.getElementById('heroSlider');
+    const videos    = document.querySelectorAll('[data-hero-video]');
+    const prevBtn   = document.getElementById('heroPrev');
+    const nextBtn   = document.getElementById('heroNext');
+    const isRtl     = document.documentElement.dir === 'rtl';
 
-    if (!track || !slider || slides.length === 0) {
-        return;
-    }
+    if (!slides.length || !slider) return;
 
-    function activateSlide(idx) {
-        slides.forEach(s => s.classList.remove('active'));
-        slides[idx].classList.add('active');
+    // Mobilde ok butonlarını slider hover'ında göster
+    if (prevBtn && nextBtn) {
+        slider.addEventListener('mouseenter', () => {
+            prevBtn.classList.remove('opacity-0');
+            nextBtn.classList.remove('opacity-0');
+        });
+        slider.addEventListener('mouseleave', () => {
+            if (window.innerWidth >= 768) return;
+            prevBtn.classList.add('opacity-0');
+            nextBtn.classList.add('opacity-0');
+        });
     }
 
     function stopInactiveVideos(activeVideo) {
         videos.forEach(video => {
             video.onended = null;
             video.onerror = null;
-
             if (video !== activeVideo) {
                 video.pause();
                 try { video.currentTime = 0; } catch (_) { }
@@ -155,25 +231,100 @@
         });
     }
 
+    function animateTextContent(slideEl, entering) {
+        const title = slideEl.querySelector('.hero-title');
+        const subtitle = slideEl.querySelector('.hero-subtitle');
+        const description = slideEl.querySelector('.hero-description');
+        const btn = slideEl.querySelector('.hero-btn');
+        const items = [subtitle, title, description, btn].filter(Boolean);
+
+        if (!entering) {
+            items.forEach(el => {
+                el.classList.add('opacity-0', 'translate-y-4');
+                el.style.transitionDelay = '0ms';
+            });
+            return;
+        }
+
+        // Reset
+        items.forEach(el => {
+            el.classList.add('opacity-0', 'translate-y-4');
+            el.style.transitionDelay = '0ms';
+            el.classList.add('transition-all', 'duration-500', 'ease-out');
+        });
+
+        // Stagger animation
+        items.forEach((el, i) => {
+            setTimeout(() => {
+                el.classList.remove('opacity-0', 'translate-y-4');
+                el.style.transitionDelay = '0ms';
+            }, 100 + i * 120);
+        });
+    }
+
     function updateDots(idx) {
         dots.forEach((d, i) => {
-            d.classList.remove('w-1.5', 'w-3', 'md:w-2', 'md:w-6', 'bg-white', 'bg-white/50');
-
+            d.className = 'hero-dot block appearance-none border-0 p-0 leading-none cursor-pointer rounded-full transition-all duration-500 ease-out min-h-0';
             if (i === idx) {
-                d.classList.add('w-3', 'md:w-6', 'bg-white');
+                d.classList.add('bg-white', 'w-2.5', 'h-2.5', 'md:w-3', 'md:h-3');
             } else {
-                d.classList.add('w-1.5', 'md:w-2', 'bg-white/50');
+                d.classList.add('bg-white/40', 'w-1.5', 'h-1.5', 'md:w-2', 'md:h-2', 'hover:bg-white/60');
             }
         });
     }
 
     function goTo(idx) {
+        if (isTransitioning) return;
+        isTransitioning = true;
         clearAuto();
+
+        const prevIdx = current;
         current = (idx + TOTAL) % TOTAL;
-        track.style.transform = `translateX(${isRtl ? '' : '-'}${current * 100}%)`;
+
+        const prevSlide = slides[prevIdx];
+        const nextSlide = slides[current];
+
+        if (!nextSlide) { isTransitioning = false; return; }
+
+        // Mevcut slaydı opacity 0 yap
+        if (prevSlide && prevIdx !== current) {
+            animateTextContent(prevSlide, false);
+            prevSlide.style.transition = 'opacity ' + FADE_DURATION + 'ms ease-in-out';
+            prevSlide.style.opacity = '0';
+            prevSlide.style.zIndex = '1';
+        }
+
+        // Yeni slaydı hazırla
+        nextSlide.style.display = '';
+        nextSlide.style.transition = 'opacity ' + FADE_DURATION + 'ms ease-in-out';
+        nextSlide.style.opacity = '0';
+        nextSlide.style.zIndex = '2';
+
+        // Metinleri gizle
+        const textItems = nextSlide.querySelectorAll('.hero-title, .hero-subtitle, .hero-description, .hero-btn');
+        textItems.forEach(function(el) {
+            el.classList.add('opacity-0', 'translate-y-4');
+        });
+
+        // Force reflow
+        void nextSlide.offsetHeight;
+
+        // Fade in
+        requestAnimationFrame(function() {
+            nextSlide.style.opacity = '1';
+        });
+
         updateDots(current);
-        activateSlide(current);
-        playActiveSlide();
+
+        // Fade tamamlanınca metinleri animasyonla göster
+        setTimeout(function() {
+            if (prevSlide && prevIdx !== current) {
+                prevSlide.style.display = 'none';
+            }
+            animateTextContent(nextSlide, true);
+            isTransitioning = false;
+            playActiveSlide();
+        }, FADE_DURATION + 50);
     }
 
     window.heroSlide = function(dir) {
@@ -192,12 +343,12 @@
             progressBar.style.width = '0%';
         }
 
-        requestAnimationFrame(() => {
-            progressTimer = setInterval(() => {
+        requestAnimationFrame(function() {
+            progressTimer = setInterval(function() {
                 progressVal += (PROGRESS_STEP / INTERVAL) * 100;
                 if (progressVal >= 100) { progressVal = 100; }
                 if (progressBar) {
-                    progressBar.style.transition = `width ${PROGRESS_STEP}ms linear`;
+                    progressBar.style.transition = 'width ' + PROGRESS_STEP + 'ms linear';
                     progressBar.style.width = progressVal + '%';
                 }
             }, PROGRESS_STEP);
@@ -206,7 +357,7 @@
 
     function startAuto() {
         clearTimeout(autoTimer);
-        autoTimer = setTimeout(() => {
+        autoTimer = setTimeout(function() {
             goTo(current + 1);
         }, INTERVAL);
     }
@@ -218,17 +369,12 @@
 
     function startVideoProgress(video) {
         clearInterval(progressTimer);
-
         if (progressBar) {
             progressBar.style.transition = 'none';
             progressBar.style.width = '0%';
         }
-
-        progressTimer = setInterval(() => {
-            if (!progressBar || !video.duration || Number.isNaN(video.duration)) {
-                return;
-            }
-
+        progressTimer = setInterval(function() {
+            if (!progressBar || !video.duration || Number.isNaN(video.duration)) return;
             progressBar.style.transition = 'width 120ms linear';
             progressBar.style.width = Math.min(100, (video.currentTime / video.duration) * 100) + '%';
         }, 120);
@@ -245,15 +391,15 @@
 
         activeVideo.muted = true;
         activeVideo.playsInline = true;
-        activeVideo.onended = () => goTo(current + 1);
-        activeVideo.onerror = () => startImageSlide();
+        activeVideo.onended = function() { goTo(current + 1); };
+        activeVideo.onerror = function() { startImageSlide(); };
 
         try { activeVideo.currentTime = 0; } catch (_) { }
         startVideoProgress(activeVideo);
 
         const playPromise = activeVideo.play();
         if (playPromise && typeof playPromise.catch === 'function') {
-            playPromise.catch(() => startImageSlide());
+            playPromise.catch(function() { startImageSlide(); });
         }
     }
 
@@ -262,28 +408,46 @@
         clearInterval(progressTimer);
     }
 
-    slider.addEventListener('mouseenter', () => {
+    // Mouse ile üzerine gelince duraklat
+    slider.addEventListener('mouseenter', function() {
         if (!slides[current]?.querySelector('[data-hero-video]')) {
             clearAuto();
         }
     });
-
-    slider.addEventListener('mouseleave', () => {
+    slider.addEventListener('mouseleave', function() {
         if (!slides[current]?.querySelector('[data-hero-video]')) {
             startImageSlide();
         }
     });
 
-    let touchStartX = 0;
-    slider.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-    slider.addEventListener('touchend', e => {
-        const diff = touchStartX - e.changedTouches[0].clientX;
+    // Touch/swipe desteği
+    var touchStartX = 0;
+    slider.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+    slider.addEventListener('touchend', function(e) {
+        var diff = touchStartX - e.changedTouches[0].clientX;
         if (Math.abs(diff) > 40) {
             goTo(current + (diff > 0 ? (isRtl ? -1 : 1) : (isRtl ? 1 : -1)));
         }
     }, { passive: true });
 
-goTo(0);
+    // İlk slaydı başlat
+    slides.forEach(function(s, i) {
+        if (i === 0) {
+            s.style.display = '';
+            s.style.opacity = '1';
+            s.style.zIndex = '2';
+            animateTextContent(s, true);
+        } else {
+            s.style.display = 'none';
+            s.style.opacity = '0';
+            s.style.zIndex = '1';
+            var textItems = s.querySelectorAll('.hero-title, .hero-subtitle, .hero-description, .hero-btn');
+            textItems.forEach(function(el) { el.classList.add('opacity-0', 'translate-y-4'); });
+        }
+    });
+
+    updateDots(0);
+    playActiveSlide();
 })();
 </script>
 
@@ -469,8 +633,8 @@ goTo(0);
                                 }
                                 </a>
                                 <!-- Kalp / Favori Butonu -->
-                                <button type="button" onclick="window.toggleFavori(this, @urun.Id)" class="group/btn absolute top-2 right-2 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-200 shadow-sm z-20 hover:scale-110" title="@Localizer["AddToFavorites"]">
-                                    <i class="far fa-heart text-sm text-[#47473d] group-hover/btn:text-red-500 transition-colors"></i>
+                                <button type="button" onclick="window.toggleFavori(this, @urun.Id)" class="group/btn absolute top-3 right-3 w-9 h-9 bg-white/95 shadow-md rounded-full flex items-center justify-center transition-all duration-200 z-20 hover:scale-110 active:scale-90 md:w-8 md:h-8" title="@Localizer["AddToFavorites"]">
+                                    <i class="far fa-heart text-sm text-[#47473d] group-hover/btn:text-red-400 transition-colors"></i>
                                 </button>
                             </div>
                             <h3 class="text-xs font-semibold mb-1 text-[#1c1c18] tracking-wide line-clamp-2">
@@ -646,5 +810,3 @@ goTo(0);
     </div>
 </section>
 <!-- END: Features -->
-
-

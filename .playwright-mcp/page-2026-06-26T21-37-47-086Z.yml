@@ -1,0 +1,381 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: 
+      - text: Free shipping on orders over 200 ₪
+    - generic [ref=e6]:
+      - generic [ref=e7]: 
+      - text: Easy payment by IBAN
+    - generic [ref=e8]:
+      - generic [ref=e9]: 
+      - text: Pay on delivery option
+    - generic [ref=e10]:
+      - generic [ref=e11]: 
+      - text: Fast Production
+    - generic [ref=e12]:
+      - generic [ref=e13]: 
+      - text: Careful Packaging
+    - generic [ref=e14]:
+      - generic [ref=e15]: 
+      - text: Delivery Across Palestine
+    - generic [ref=e16]:
+      - generic [ref=e17]: 
+      - text: 14 Days Return
+    - generic [ref=e18]:
+      - generic [ref=e19]: 
+      - text: Manufacturer Guarantee
+    - generic [ref=e20]:
+      - generic [ref=e21]: 
+      - text: WhatsApp Support
+    - generic [ref=e22]:
+      - generic [ref=e23]: 
+      - text: Free shipping on orders over 200 ₪
+    - generic [ref=e24]:
+      - generic [ref=e25]: 
+      - text: Easy payment by IBAN
+    - generic [ref=e26]:
+      - generic [ref=e27]: 
+      - text: Pay on delivery option
+    - generic [ref=e28]:
+      - generic [ref=e29]: 
+      - text: Fast Production
+    - generic [ref=e30]:
+      - generic [ref=e31]: 
+      - text: Careful Packaging
+    - generic [ref=e32]:
+      - generic [ref=e33]: 
+      - text: Delivery Across Palestine
+    - generic [ref=e34]:
+      - generic [ref=e35]: 
+      - text: 14 Days Return
+    - generic [ref=e36]:
+      - generic [ref=e37]: 
+      - text: Manufacturer Guarantee
+    - generic [ref=e38]:
+      - generic [ref=e39]: 
+      - text: WhatsApp Support
+  - banner [ref=e40]:
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e44]: 
+        - link "AR" [ref=e45] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2F
+        - link "EN" [ref=e46] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2F
+        - link "TR" [ref=e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=tr&returnUrl=%2F
+      - link "7ANRPS48" [ref=e48] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=e49]
+      - generic [ref=e50]:
+        - button "Search" [ref=e51] [cursor=pointer]:
+          - img [ref=e52]
+        - link "My Account" [ref=e54] [cursor=pointer]:
+          - /url: /Profil
+          - img [ref=e55]
+        - link "My Favorites" [ref=e57] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=e58]
+        - link "Cart" [ref=e60] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=e61]
+          - generic [ref=e63]: "0"
+      - navigation [ref=e64]:
+        - list [ref=e65]:
+          - listitem [ref=e66] [cursor=pointer]:
+            - link "Cat & Dog Care " [ref=e67]:
+              - /url: /Urun?k=64
+              - text: Cat & Dog Care
+              - generic [ref=e68]: 
+          - listitem [ref=e69] [cursor=pointer]:
+            - link "Clinic Consumables & Hygiene " [ref=e70]:
+              - /url: /Urun?k=65
+              - text: Clinic Consumables & Hygiene
+              - generic [ref=e71]: 
+            - generic [ref=e347]:
+              - generic [ref=e348]:
+                - generic [ref=e349]:
+                  - generic [ref=e350]: Clinic Consumables & Hygiene
+                  - generic [ref=e351]: Subcategories
+                - link "View All" [ref=e352]:
+                  - /url: /Urun?k=65
+              - generic [ref=e353]:
+                - generic [ref=e354]:
+                  - link "Clinic Consumables Clinic Consumables" [ref=e355]:
+                    - /url: /Urun?k=70
+                    - img "Clinic Consumables" [ref=e357]
+                    - generic [ref=e358]: Clinic Consumables
+                  - link "Disinfectant & Hygiene Disinfectant & Hygiene" [ref=e359]:
+                    - /url: /Urun?k=71
+                    - img "Disinfectant & Hygiene" [ref=e361]
+                    - generic [ref=e362]: Disinfectant & Hygiene
+                  - link "Prescription Products Prescription Products" [ref=e363]:
+                    - /url: /Urun?k=72
+                    - img "Prescription Products" [ref=e365]
+                    - generic [ref=e366]: Prescription Products
+                - generic [ref=e367]:
+                  - img "Clinic Consumables & Hygiene" [ref=e368]
+                  - generic [ref=e369]:
+                    - generic [ref=e370]: Clinic Consumables & Hygiene
+                    - paragraph [ref=e371]: Veteriner klinikleri için pratik sarf ürünleri
+          - listitem [ref=e72] [cursor=pointer]:
+            - link "Farm Animal Support " [ref=e73]:
+              - /url: /Urun?k=66
+              - text: Farm Animal Support
+              - generic [ref=e74]: 
+          - listitem [ref=e75] [cursor=pointer]:
+            - link "Contact" [ref=e76]:
+              - /url: /Kurumsal/Iletisim
+    - text:     
+  - main [ref=e77]:
+    - generic [ref=e78]:
+      - generic [ref=e79]:
+        - img "Pet Health & Care" [ref=e81]
+        - img "Support Products for Farm Animals" [ref=e83]
+        - img "Clinic Consumables & Care Sets" [ref=e85]
+        - img "Fast Delivery Veterinary Products" [ref=e87]
+      - button "Previous Slide" [ref=e88] [cursor=pointer]:
+        - img [ref=e89]
+      - button "Next Slide" [ref=e91] [cursor=pointer]:
+        - img [ref=e92]
+      - generic [ref=e94]:
+        - button "Slide" [ref=e95] [cursor=pointer]
+        - button "Slide" [ref=e96] [cursor=pointer]
+        - button "Slide" [ref=e97] [cursor=pointer]
+        - button "Slide" [ref=e98] [cursor=pointer]
+    - generic [ref=e101]:
+      - generic [ref=e102]:
+        - separator [ref=e103]
+        - heading "Featured Works" [level=2] [ref=e104]
+        - separator [ref=e105]
+      - generic [ref=e106]:
+        - generic [ref=e107] [cursor=pointer]:
+          - generic [ref=e108]:
+            - link "New VetPlus Multivitamin Drops for Cats & Dogs 50 ml" [ref=e109]:
+              - /url: /Urun/Detay/vetplus-multivitamin-kedi-kopek-damlasi-50ml-26
+              - generic [ref=e110]: New
+              - img "VetPlus Multivitamin Drops for Cats & Dogs 50 ml" [ref=e111]
+            - button "" [ref=e112]:
+              - generic [ref=e113]: 
+          - heading "VetPlus Multivitamin Drops for Cats & Dogs 50 ml" [level=3] [ref=e114]:
+            - link "VetPlus Multivitamin Drops for Cats & Dogs 50 ml" [ref=e115]:
+              - /url: /Urun/Detay/vetplus-multivitamin-kedi-kopek-damlasi-50ml-26
+          - generic [ref=e116]:
+            - paragraph [ref=e117]: 149 ₪
+            - paragraph [ref=e118]: 185 ₪
+            - generic [ref=e119]: "-%19"
+        - generic [ref=e120] [cursor=pointer]:
+          - generic [ref=e121]:
+            - link "-%21 Off Dermacare Sensitive Skin Pet Shampoo 250 ml" [ref=e122]:
+              - /url: /Urun/Detay/dermacare-hassas-deri-pet-sampuani-250ml-27
+              - generic [ref=e123]: "-%21 Off"
+              - img "Dermacare Sensitive Skin Pet Shampoo 250 ml" [ref=e124]
+            - button "" [ref=e125]:
+              - generic [ref=e126]: 
+          - heading "Dermacare Sensitive Skin Pet Shampoo 250 ml" [level=3] [ref=e127]:
+            - link "Dermacare Sensitive Skin Pet Shampoo 250 ml" [ref=e128]:
+              - /url: /Urun/Detay/dermacare-hassas-deri-pet-sampuani-250ml-27
+          - generic [ref=e129]:
+            - paragraph [ref=e130]: 99 ₪
+            - paragraph [ref=e131]: 125 ₪
+            - generic [ref=e132]: "-%21"
+        - generic [ref=e133] [cursor=pointer]:
+          - generic [ref=e134]:
+            - link "New ProBioVet Digestive Support Powder 100 g" [ref=e135]:
+              - /url: /Urun/Detay/probiovet-sindirim-destek-tozu-100g-28
+              - generic [ref=e136]: New
+              - img "ProBioVet Digestive Support Powder 100 g" [ref=e137]
+            - button "" [ref=e138]:
+              - generic [ref=e139]: 
+          - heading "ProBioVet Digestive Support Powder 100 g" [level=3] [ref=e140]:
+            - link "ProBioVet Digestive Support Powder 100 g" [ref=e141]:
+              - /url: /Urun/Detay/probiovet-sindirim-destek-tozu-100g-28
+          - generic [ref=e142]:
+            - paragraph [ref=e143]: 179 ₪
+            - paragraph [ref=e144]: 210 ₪
+            - generic [ref=e145]: "-%15"
+        - generic [ref=e146] [cursor=pointer]:
+          - generic [ref=e147]:
+            - link "-%16 Off Clinic Wound Care Spray 100 ml" [ref=e148]:
+              - /url: /Urun/Detay/klinik-yara-bakim-spreyi-100ml-29
+              - generic [ref=e149]: "-%16 Off"
+              - img "Clinic Wound Care Spray 100 ml" [ref=e150]
+            - button "" [ref=e151]:
+              - generic [ref=e152]: 
+          - heading "Clinic Wound Care Spray 100 ml" [level=3] [ref=e153]:
+            - link "Clinic Wound Care Spray 100 ml" [ref=e154]:
+              - /url: /Urun/Detay/klinik-yara-bakim-spreyi-100ml-29
+          - generic [ref=e155]:
+            - paragraph [ref=e156]: 135 ₪
+            - paragraph [ref=e157]: 160 ₪
+            - generic [ref=e158]: "-%16"
+        - generic [ref=e159] [cursor=pointer]:
+          - generic [ref=e160]:
+            - link "-%18 Off OtoClean Ear Cleaning Solution 120 ml" [ref=e161]:
+              - /url: /Urun/Detay/otoclean-kulak-temizleme-solusyonu-120ml-30
+              - generic [ref=e162]: "-%18 Off"
+              - img "OtoClean Ear Cleaning Solution 120 ml" [ref=e163]
+            - button "" [ref=e164]:
+              - generic [ref=e165]: 
+          - heading "OtoClean Ear Cleaning Solution 120 ml" [level=3] [ref=e166]:
+            - link "OtoClean Ear Cleaning Solution 120 ml" [ref=e167]:
+              - /url: /Urun/Detay/otoclean-kulak-temizleme-solusyonu-120ml-30
+          - generic [ref=e168]:
+            - paragraph [ref=e169]: 119 ₪
+            - paragraph [ref=e170]: 145 ₪
+            - generic [ref=e171]: "-%18"
+        - generic [ref=e172] [cursor=pointer]:
+          - generic [ref=e173]:
+            - link "New MineralBlock Cattle & Small Ruminant Mineral Block 2 kg" [ref=e174]:
+              - /url: /Urun/Detay/mineralblock-buyukbas-kucukbas-mineral-blogu-2kg-31
+              - generic [ref=e175]: New
+              - img "MineralBlock Cattle & Small Ruminant Mineral Block 2 kg" [ref=e176]
+            - button "" [ref=e177]:
+              - generic [ref=e178]: 
+          - heading "MineralBlock Cattle & Small Ruminant Mineral Block 2 kg" [level=3] [ref=e179]:
+            - link "MineralBlock Cattle & Small Ruminant Mineral Block 2 kg" [ref=e180]:
+              - /url: /Urun/Detay/mineralblock-buyukbas-kucukbas-mineral-blogu-2kg-31
+          - generic [ref=e181]:
+            - paragraph [ref=e182]: 219 ₪
+            - paragraph [ref=e183]: 260 ₪
+            - generic [ref=e184]: "-%16"
+        - generic [ref=e185] [cursor=pointer]:
+          - generic [ref=e186]:
+            - link "-%16 Off PoultryCare Poultry Vitamin Premix 500 g" [ref=e187]:
+              - /url: /Urun/Detay/poultrycare-kanatli-vitamin-premiksi-500g-32
+              - generic [ref=e188]: "-%16 Off"
+              - img "PoultryCare Poultry Vitamin Premix 500 g" [ref=e189]
+            - button "" [ref=e190]:
+              - generic [ref=e191]: 
+          - heading "PoultryCare Poultry Vitamin Premix 500 g" [level=3] [ref=e192]:
+            - link "PoultryCare Poultry Vitamin Premix 500 g" [ref=e193]:
+              - /url: /Urun/Detay/poultrycare-kanatli-vitamin-premiksi-500g-32
+          - generic [ref=e194]:
+            - paragraph [ref=e195]: 159 ₪
+            - paragraph [ref=e196]: 190 ₪
+            - generic [ref=e197]: "-%16"
+        - generic [ref=e198] [cursor=pointer]:
+          - generic [ref=e199]:
+            - link "New CalfStart Calf Starter Support Pack" [ref=e200]:
+              - /url: /Urun/Detay/calfstart-buzagi-baslangic-destek-paketi-33
+              - generic [ref=e201]: New
+              - img "CalfStart Calf Starter Support Pack" [ref=e202]
+            - button "" [ref=e203]:
+              - generic [ref=e204]: 
+          - heading "CalfStart Calf Starter Support Pack" [level=3] [ref=e205]:
+            - link "CalfStart Calf Starter Support Pack" [ref=e206]:
+              - /url: /Urun/Detay/calfstart-buzagi-baslangic-destek-paketi-33
+          - generic [ref=e207]:
+            - paragraph [ref=e208]: 289 ₪
+            - paragraph [ref=e209]: 340 ₪
+            - generic [ref=e210]: "-%15"
+      - link "View All" [ref=e212] [cursor=pointer]:
+        - /url: /Urun
+    - generic [ref=e215]:
+      - generic [ref=e216]:
+        - generic [ref=e218]: 
+        - heading "Bank Transfer" [level=4] [ref=e219]
+        - paragraph [ref=e220]: Easy payment with IBAN details
+      - generic [ref=e221]:
+        - generic [ref=e223]: 
+        - heading "Fast Delivery" [level=4] [ref=e224]
+        - paragraph [ref=e225]: Your orders arrive quickly
+      - generic [ref=e226]:
+        - generic [ref=e228]: 
+        - heading "Customer Satisfaction" [level=4] [ref=e229]
+        - paragraph [ref=e230]: 100% customer satisfaction focused service
+  - contentinfo [ref=e231]:
+    - generic [ref=e233]:
+      - generic [ref=e234]:
+        - generic [ref=e236]: 
+        - generic [ref=e237]:
+          - generic [ref=e238]: Across Palestine
+          - generic [ref=e239]: Free Shipping
+      - generic [ref=e240]:
+        - generic [ref=e242]: 
+        - generic [ref=e243]:
+          - generic [ref=e244]: Bank Transfer
+          - generic [ref=e245]: Easy payment by IBAN
+      - generic [ref=e246]:
+        - generic [ref=e248]: 
+        - generic [ref=e249]:
+          - generic [ref=e250]: Cash on Delivery
+          - generic [ref=e251]: Pay on delivery option
+    - generic [ref=e252]:
+      - generic [ref=e253]:
+        - generic [ref=e254]:
+          - link "7ANRPS48" [ref=e255] [cursor=pointer]:
+            - /url: /
+            - img "7ANRPS48" [ref=e257]
+          - paragraph [ref=e258]: متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن
+        - generic [ref=e259]:
+          - heading "QuickLinks" [level=5] [ref=e260]
+          - list [ref=e261]:
+            - listitem [ref=e262]:
+              - link "All Products" [ref=e263] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=e264]:
+              - link "Cart" [ref=e265] [cursor=pointer]:
+                - /url: /Sepet
+            - listitem [ref=e266]:
+              - link "My Favorites" [ref=e267] [cursor=pointer]:
+                - /url: /Favori
+            - listitem [ref=e268]:
+              - link "Contact" [ref=e269] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+        - generic [ref=e270]:
+          - heading "Corporate" [level=5] [ref=e271]
+          - list [ref=e272]:
+            - listitem [ref=e273]:
+              - link "About Us" [ref=e274] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=e275]:
+              - link "Contact" [ref=e276] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=e277]:
+              - link "Privacy Policy" [ref=e278] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=e279]:
+              - link "Distance Sales Contract" [ref=e280] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+        - generic [ref=e281]:
+          - heading "Contact" [level=5] [ref=e282]
+          - list [ref=e283]:
+            - listitem [ref=e284]:
+              - generic [ref=e285]: 
+              - generic [ref=e286]: +970-599-000-000
+            - listitem [ref=e287]:
+              - generic [ref=e288]: 
+              - generic [ref=e289]: info@7anrps48.com
+            - listitem [ref=e290]:
+              - generic [ref=e291]: 
+              - generic [ref=e292]: فلسطين
+            - listitem [ref=e293]:
+              - generic [ref=e294]: 
+              - generic [ref=e295]: "السبت - الخميس: 9:00 - 21:00"
+          - generic [ref=e296]:
+            - heading "Subscribe to newsletter" [level=5] [ref=e297]
+            - generic [ref=e298]:
+              - textbox "Email Address" [ref=e299]
+              - button "Subscribe" [ref=e300] [cursor=pointer]
+          - link "WhatsApp" [ref=e302] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=e303]: 
+      - generic [ref=e304]:
+        - paragraph [ref=e306]: © 2026 7ANRPS48 All rights reserved.
+        - generic [ref=e307]:
+          - link "Privacy Policy" [ref=e308] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - generic [ref=e309]: "|"
+          - link "Terms of Use" [ref=e310] [cursor=pointer]:
+            - /url: /Kurumsal/KullaniciSozlesmesi
+          - generic [ref=e311]: "|"
+          - link "Return and Exchange" [ref=e312] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+  - link "WhatsApp Contact" [ref=e313] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=e314]
+    - generic [ref=e316]: WhatsApp
+  - link "Cart" [ref=e317] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=e318]

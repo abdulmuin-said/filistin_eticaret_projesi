@@ -16,6 +16,9 @@ namespace FilistinProje.Core.Models
         public bool UstBarEtkin { get; set; } = true;
         public double UstBarHizi { get; set; } = 34;
         public string FooterAciklamasi { get; set; } = "متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن";
+        public string FooterAciklamasiEn { get; set; } = "A Palestinian e-commerce site offering varied products at competitive prices with fast delivery to all cities.";
+        public string FooterAciklamasiAr { get; set; } = "متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن";
+        public string FooterAciklamasiTr { get; set; } = "Rekabetçi fiyatlarla çeşitli ürünler sunan ve tüm şehirlere hızlı teslimat yapan bir Filistin e-ticaret sitesi.";
 
         public string Telefon { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;

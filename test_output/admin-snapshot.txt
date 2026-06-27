@@ -1,0 +1,120 @@
+- generic [ref=e2]:
+  - text:          +                 
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "7ANRPS48 Admin Panel" [ref=e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=e6]
+      - generic [ref=e7]: Seller Panel
+    - navigation "Admin main menu" [ref=e8]:
+      - link " Dashboard" [ref=e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=e10]: 
+        - text: Dashboard
+      - generic [ref=e11]:
+        - button " Order Management" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]: 
+          - text: Order Management
+        - text:      
+      - generic [ref=e14]:
+        - button " Product Management" [ref=e15] [cursor=pointer]:
+          - generic [ref=e16]: 
+          - text: Product Management
+        - text:  +    
+      - generic [ref=e17]:
+        - button " Store Content" [ref=e18] [cursor=pointer]:
+          - generic [ref=e19]: 
+          - text: Store Content
+        - text:          
+      - link " Members" [ref=e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=e21]: 
+        - text: Members
+      - link " Staff" [ref=e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=e23]: 
+        - text: Staff
+      - link " Wholesalers" [ref=e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=e25]: 
+        - text: Wholesalers
+      - link " Wholesale Groups" [ref=e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=e27]: 
+        - text: Wholesale Groups
+      - generic [ref=e28]:
+        - button " Reports" [ref=e29] [cursor=pointer]:
+          - generic [ref=e30]: 
+          - text: Reports
+        - text:  
+      - link " Bank Accounts" [ref=e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=e32]: 
+        - text: Bank Accounts
+      - link " Settings" [ref=e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=e34]: 
+        - text: Settings
+    - generic [ref=e35]:
+      - text: 
+      - combobox "Language" [ref=e37]:
+        - option "AR"
+        - option "EN" [selected]
+        - option "TR"
+      - generic [ref=e38]:
+        - button "7ANRPS48 Admin Admin 7" [ref=e39] [cursor=pointer]:
+          - generic [ref=e40]:
+            - strong [ref=e41]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=e42]: "7"
+        - text:  
+  - generic [ref=e43]:
+    - main [ref=e44]:
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - heading "لوحة التحكم" [level=1] [ref=e48]
+            - paragraph [ref=e49]: ملخص الطلبات والمخزون والزيارات في شاشة واحدة.
+          - generic [ref=e50]:
+            - generic [ref=e51]: 
+            - text: 27 June 2026, Saturday
+        - generic [ref=e52]:
+          - generic [ref=e54]:
+            - generic [ref=e55]: Total Revenue
+            - generic [ref=e56]: 1,239.00 ₪
+            - generic [ref=e57]: "Monthly: 1,239.00 ₪"
+          - generic [ref=e59]:
+            - generic [ref=e60]: إيرادات اليوم
+            - generic [ref=e61]: 0.00 ₪
+            - generic [ref=e62]: "Weekly: 338.00 ₪"
+          - generic [ref=e64]:
+            - generic [ref=e65]: إجمالي الطلبات
+            - generic [ref=e66]: "5"
+            - generic [ref=e67]: "Today: 0 orders"
+          - generic [ref=e69]:
+            - generic [ref=e70]: Pending
+            - generic [ref=e71]: "0"
+            - generic [ref=e72]: "Ready to ship: 1"
+          - generic [ref=e74]:
+            - generic [ref=e75]: الشحن / المرتجعات
+            - generic [ref=e76]: 1 / 2
+            - generic [ref=e77]: ملخص العمليات
+          - generic [ref=e79]:
+            - generic [ref=e80]: الرسائل / المنتجات النشطة
+            - generic [ref=e81]: 0 / 8
+            - generic [ref=e82]: Operation tracking
+        - generic [ref=e83]:
+          - generic [ref=e84]:
+            - heading " مخطط إيرادات آخر 7 أيام" [level=3] [ref=e87]
+            - heading " 12-Month Revenue Trend" [level=3] [ref=e94]
+            - generic [ref=e99]
+            - generic [ref=e129]
+            - generic [ref=e204]
+          - generic [ref=e241]:
+            - generic [ref=e242]
+            - generic [ref=e248]
+            - generic [ref=e265]
+            - generic [ref=e296]
+            - generic [ref=e307]
+            - generic [ref=e315]
+    - contentinfo [ref=e376]: © 2026 7ANRPS48 Admin Panel. All rights reserved.

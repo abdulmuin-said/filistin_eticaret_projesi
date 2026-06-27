@@ -1,0 +1,211 @@
+- generic [ref=e2]:
+  - text:          +                 
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "7ANRPS48 Admin Panel" [ref=e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=e6]
+      - generic [ref=e7]: Seller Panel
+    - navigation "Admin main menu" [ref=e8]:
+      - link " Dashboard" [ref=e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=e10]: 
+        - text: Dashboard
+      - generic [ref=e11]:
+        - button " Order Management" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]: 
+          - text: Order Management
+        - text:      
+      - generic [ref=e14]:
+        - button " Product Management" [ref=e15] [cursor=pointer]:
+          - generic [ref=e16]: 
+          - text: Product Management
+        - text:  +    
+      - generic [ref=e17]:
+        - button " Store Content" [ref=e18] [cursor=pointer]:
+          - generic [ref=e19]: 
+          - text: Store Content
+        - text:          
+      - link " Members" [ref=e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=e21]: 
+        - text: Members
+      - link " Staff" [ref=e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=e23]: 
+        - text: Staff
+      - link " Wholesalers" [ref=e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=e25]: 
+        - text: Wholesalers
+      - link " Wholesale Groups" [ref=e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=e27]: 
+        - text: Wholesale Groups
+      - generic [ref=e28]:
+        - button " Reports" [ref=e29] [cursor=pointer]:
+          - generic [ref=e30]: 
+          - text: Reports
+        - text:  
+      - link " Bank Accounts" [ref=e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=e32]: 
+        - text: Bank Accounts
+      - link " Settings" [ref=e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=e34]: 
+        - text: Settings
+    - generic [ref=e35]:
+      - text: 
+      - combobox "Language" [ref=e37]:
+        - option "AR"
+        - option "EN" [selected]
+        - option "TR"
+      - generic [ref=e38]:
+        - button "7ANRPS48 Admin Admin 7" [ref=e39] [cursor=pointer]:
+          - generic [ref=e40]:
+            - strong [ref=e41]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=e42]: "7"
+        - text:  
+  - generic [ref=e43]:
+    - main [ref=e44]:
+      - generic [ref=e46]:
+        - generic [ref=e47]:
+          - generic [ref=e48]:
+            - generic [ref=e49]: STORE CONFIGURATION
+            - heading "إعدادات الموقع" [level=1] [ref=e50]
+            - paragraph [ref=e51]: Manage storefront, contact, social media, SEO, shipping and mail notifications from one place.
+          - generic [ref=e52]:
+            - link " View Site" [ref=e53] [cursor=pointer]:
+              - /url: /
+              - generic [ref=e54]: 
+              - text: View Site
+            - link " Home Page Settings" [ref=e55] [cursor=pointer]:
+              - /url: /Admin/AnaSayfa
+              - generic [ref=e56]: 
+              - text: Home Page Settings
+        - generic [ref=e57]:
+          - tablist "Ayar sekmeleri" [ref=e58]:
+            - button " Admin_Brand" [ref=e59] [cursor=pointer]:
+              - generic [ref=e60]: 
+              - text: Admin_Brand
+            - button " Contact" [ref=e61] [cursor=pointer]:
+              - generic [ref=e62]: 
+              - text: Contact
+            - button " Social" [ref=e63] [cursor=pointer]:
+              - generic [ref=e64]: 
+              - text: Social
+            - button " Admin_Sales" [active] [ref=e65] [cursor=pointer]:
+              - generic [ref=e66]: 
+              - text: Admin_Sales
+            - button " الدفع" [ref=e67] [cursor=pointer]:
+              - generic [ref=e68]: 
+              - text: الدفع
+            - button " الدفع عند الاستلام" [ref=e69] [cursor=pointer]:
+              - generic [ref=e70]: 
+              - text: الدفع عند الاستلام
+            - button " SEO" [ref=e71] [cursor=pointer]:
+              - generic [ref=e72]: 
+              - text: SEO
+            - button " Mail" [ref=e73] [cursor=pointer]:
+              - generic [ref=e74]: 
+              - text: Mail
+            - button " Maintenance" [ref=e75] [cursor=pointer]:
+              - generic [ref=e76]: 
+              - text: Maintenance
+          - generic [ref=e77]:
+            - main [ref=e78]:
+              - text:   
+              - generic [ref=e160]:
+                - generic [ref=e161]:
+                  - generic [ref=e162]: 
+                  - generic [ref=e163]:
+                    - heading "Sales, Shipping and Operation" [level=2] [ref=e164]
+                    - paragraph [ref=e165]: Settings used in cart, product detail, trust areas and order operations.
+                - generic [ref=e166]:
+                  - generic [ref=e167]:
+                    - generic [ref=e168]: Currency
+                    - textbox "₪" [ref=e169]
+                  - generic [ref=e170]:
+                    - generic [ref=e171]: Admin_ShippingFee
+                    - spinbutton [ref=e172]: "15"
+                  - generic [ref=e173]:
+                    - generic [ref=e174]: Free Shipping Limit
+                    - spinbutton [ref=e175]: "200"
+                  - generic [ref=e176]:
+                    - generic [ref=e177]: Stock Warning Limit
+                    - spinbutton [ref=e178]: "5"
+                  - generic [ref=e179]:
+                    - generic [ref=e180]: Pre-order Sales
+                    - generic [ref=e182]:
+                      - generic [ref=e183]:
+                        - strong [ref=e184]: Allow purchase when out of stock
+                        - text: Can be used for made-to-order products.
+                      - checkbox [ref=e185]
+                  - generic [ref=e186]:
+                    - generic [ref=e187]: Out of Stock Variant Display
+                    - generic [ref=e189]:
+                      - generic [ref=e190]:
+                        - strong [ref=e191]: Show out of stock variants in gray
+                        - text: When active, sold-out variants appear gray with a "Sold Out" badge; when inactive, they are completely hidden. If "Allow purchase when out of stock" is enabled, this setting has no effect.
+                      - checkbox [checked] [ref=e192]
+                  - generic [ref=e193]:
+                    - generic [ref=e194]: Admin_DefaultShippingCompany
+                    - combobox [ref=e195]:
+                      - option "توصيل محلي" [selected]
+                      - option "Aras Kargo"
+                      - option "Yurtiçi Kargo"
+                      - option "MNG Kargo"
+                      - option "PTT Kargo"
+                      - option "Sürat Kargo"
+                    - generic [ref=e196]: You can expand the list from the /Admin/Kargo page and manage active/passive and default company settings.
+                  - generic [ref=e197]:
+                    - generic [ref=e198]: Shipping Tracking URL
+                    - textbox "https://www.araskargo.com.tr/..." [ref=e199]
+                  - generic [ref=e200]:
+                    - generic [ref=e201]: Estimated Delivery Time (Days)
+                    - spinbutton [ref=e202]: "3"
+                  - generic [ref=e203]:
+                    - generic [ref=e204]: Return Period (Days)
+                    - spinbutton [ref=e205]: "7"
+                  - generic [ref=e206]:
+                    - generic [ref=e207]: Cancel Period (Hours)
+                    - spinbutton [ref=e208]: "3"
+                    - text: Hours after placing an order during which the customer can cancel. 0 = cancellation disabled.
+                  - generic [ref=e211]:
+                    - generic [ref=e212]:
+                      - strong [ref=e213]: Login Required
+                      - text: When active, categories, products and cart pages cannot be viewed without logging in. Only login, registration and password reset pages are open.
+                    - checkbox [ref=e214]
+              - text:        
+            - complementary [ref=e127]:
+              - generic [ref=e128]:
+                - heading "What Does This Page Affect?" [level=2] [ref=e130]
+                - list [ref=e132]:
+                  - listitem [ref=e133]:
+                    - generic [ref=e134]: 
+                    - generic [ref=e135]: Logo, brand name, top bar and footer are visible in the storefront.
+                  - listitem [ref=e136]:
+                    - generic [ref=e137]: 
+                    - generic [ref=e138]: Contact and social media information is used in footer, mail and contact areas.
+                  - listitem [ref=e139]:
+                    - generic [ref=e140]: 
+                    - generic [ref=e141]: SEO fields feed search engines and social sharing information.
+                  - listitem [ref=e142]:
+                    - generic [ref=e143]: 
+                    - generic [ref=e144]: PayTR settings are used in payment infrastructure configuration.
+                  - listitem [ref=e145]:
+                    - generic [ref=e146]: 
+                    - generic [ref=e147]: Cash on delivery status and service fee are reflected in the order total on the payment page.
+                  - listitem [ref=e148]:
+                    - generic [ref=e149]: 
+                    - generic [ref=e150]: Mail notifications are used in order and operation processes.
+          - generic [ref=e152]:
+            - generic [ref=e153]:
+              - generic [ref=e154]: 
+              - text: Changes take effect on the site after saving.
+            - button " Save All Settings" [ref=e155] [cursor=pointer]:
+              - generic [ref=e156]: 
+              - text: Save All Settings
+    - contentinfo [ref=e157]: © 2026 7ANRPS48 Admin Panel. All rights reserved.

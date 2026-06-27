@@ -186,7 +186,7 @@
         .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .custom-scrollbar::-webkit-scrollbar { display: none; }
         .custom-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .trust-ticker-track { width: max-content; animation: trustTicker 34s linear infinite; }
+        .trust-ticker-track { width: max-content; animation: trustTicker 80s linear infinite; }
         .trust-ticker:hover .trust-ticker-track { animation-play-state: paused; }
         @@keyframes trustTicker {
             from { transform: translateX(0); }
@@ -229,19 +229,39 @@
             }
         }
         
-        /* Kategori menü geçişlerindeki titremenin/kapanmanın gecikme süresi ile önlenmesi */
+        /* Kategori menü dropdown - Canvasia tarzı opacity/visibility geçişi */
         [data-category-dropdown] {
-            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
             transition: opacity 0.25s ease, visibility 0.25s ease !important;
             transition-delay: 0.15s !important;
         }
-        [data-category-menu-item]:hover > [data-category-dropdown],
-        [data-category-menu-item]:focus-within > [data-category-dropdown],
-        .group:hover [data-category-dropdown] {
+        li[data-category-menu-item]:hover > div[data-category-dropdown] {
             opacity: 1 !important;
             visibility: visible !important;
-            pointer-events: auto;
             transition-delay: 0s !important;
+        }
+        /* Header dropdown'ların slider üstünde kalması için */
+        header.sticky {
+            z-index: 9999 !important;
+        }
+
+        /* Footer styles */
+        .site-footer a { transition: color 0.2s ease; }
+        .footer-social-link {
+            width: 40px; height: 40px;
+            display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.05);
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
+        }
+        .footer-social-link:hover {
+            background: rgba(255,255,255,0.12);
+            transform: translateY(-2px);
+        }
+        @@media (max-width: 767px) {
+            .footer-social-link { width: 36px; height: 36px; font-size: 0.95rem; }
         }
     </style>
     
@@ -275,9 +295,9 @@
     <!-- END: AnnouncementBar -->
 
 <!-- BEGIN: MainHeader -->
-    <header class="sticky top-0 bg-[#fcf9f3] z-[100] border-b border-[#e5e2dc]">
+    <header class="sticky top-0 bg-[#fcf9f3] z-[9999] border-b border-[#e5e2dc]">
         <div class="w-full max-w-[1360px] mx-auto px-4 py-1.5 md:py-2 flex min-h-[62px] flex-col items-center justify-center relative md:min-h-0 md:justify-start">
-            <div class="absolute left-4 top-1/2 -translate-y-1/2 hidden md:flex items-center rounded-full border border-[#d8c9aa] bg-white/80 p-1 shadow-sm">
+            <div class="absolute left-4 top-1/2 -translate-y-1/2 hidden lg:flex items-center rounded-full border border-[#d8c9aa] bg-white/80 p-1 shadow-sm">
                 <span class="px-2 text-[#b58735]"><i class="fas fa-globe"></i></span>
                 <a href="/Dil/Degistir?culture=ar&returnUrl=@encodedLanguageReturnUrl" class="rounded-full px-2.5 py-1 text-xs font-semibold tracking-widest text-[#47473d] transition-colors hover:bg-[#efe4cf] hover:text-[#313511]">AR</a>
                 <a href="/Dil/Degistir?culture=en&returnUrl=@encodedLanguageReturnUrl" class="rounded-full px-2.5 py-1 text-xs font-semibold tracking-widest text-[#47473d] transition-colors hover:bg-[#efe4cf] hover:text-[#313511]">EN</a>
@@ -315,6 +335,21 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                 </button>
 
+                <!-- Desktop Language Toggle (md only, lg+ uses the pill) -->
+                <div class="relative hidden md:block lg:hidden" id="desktopLangToggle">
+                    <button type="button" onclick="window.toggleDesktopLangMenu()" class="hover:text-[#b58735] transition-colors" aria-label="@Localizer["Language"]">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <!-- Desktop Popover (md only) -->
+                    <div id="desktopLangPopover" class="absolute right-0 top-full mt-2 hidden z-[9999] min-w-[110px] rounded-lg border border-[#d8c9aa] bg-white p-1.5 shadow-xl">
+                        <a href="/Dil/Degistir?culture=ar&returnUrl=@encodedLanguageReturnUrl" class="block rounded-md px-3 py-2 text-center text-xs font-semibold tracking-widest text-[#313511] hover:bg-[#efe4cf] transition-colors @(currentCulture == "ar" ? "bg-[#efe4cf]" : "")">العربية</a>
+                        <a href="/Dil/Degistir?culture=en&returnUrl=@encodedLanguageReturnUrl" class="block rounded-md px-3 py-2 text-center text-xs font-semibold tracking-widest text-[#47473d] hover:bg-[#efe4cf] transition-colors @(currentCulture == "en" ? "bg-[#efe4cf]" : "")">English</a>
+                        <a href="/Dil/Degistir?culture=tr&returnUrl=@encodedLanguageReturnUrl" class="block rounded-md px-3 py-2 text-center text-xs font-semibold tracking-widest text-[#47473d] hover:bg-[#efe4cf] transition-colors @(currentCulture == "tr" ? "bg-[#efe4cf]" : "")">Türkçe</a>
+                    </div>
+                </div>
+
                 <!-- Account -->
                 @if (SignInManager.IsSignedIn(User))
                 {
@@ -342,13 +377,29 @@
             </div>
 
             <!-- Mobile Left: Hamburger + Search Toggle -->
-            <div class="absolute left-3 top-[calc(50%+3px)] -translate-y-1/2 flex md:hidden items-center gap-2.5 text-[#1c1c18] sm:left-4 sm:gap-3">
+            <div class="absolute left-3 top-[calc(50%+3px)] -translate-y-1/2 flex md:hidden items-center gap-2.5 text-[#1c1c18] sm:left-4 sm:gap-3" dir="ltr">
+                <!-- Hamburger (ilk sirada — her dilde en solda) -->
                 <button aria-label="@Localizer["OpenMenu"]" onclick="window.toggleMobileNav(true)" class="flex h-9 w-8 items-center justify-center hover:text-[#b58735]" id="mobileMenuBtn">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M3.75 6h16.5m-16.5 6h16.5m-16.5 6h16.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                 </button>
                 <button type="button" aria-label="@Localizer["Search"]" onclick="window.toggleSearchBar()" class="flex h-9 w-8 items-center justify-center hover:text-[#b58735]" id="mobileSearchBtn">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                 </button>
+                <!-- Mobile Language Toggle (son sirada) -->
+                <div class="relative" id="mobileLangToggle">
+                    <button type="button" onclick="window.toggleLangMenu()" class="flex h-9 w-8 items-center justify-center hover:text-[#b58735]" aria-label="@Localizer["Language"]">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span id="mobileLangCode" class="ml-0.5 text-[10px] font-bold uppercase text-[#47473d]">@currentCulture</span>
+                    </button>
+                    <!-- Popover -->
+                    <div id="mobileLangPopover" class="absolute left-1/2 -translate-x-1/2 top-full mt-2 hidden z-[9999] min-w-[110px] rounded-lg border border-[#d8c9aa] bg-white p-1.5 shadow-xl">
+                        <a href="/Dil/Degistir?culture=ar&returnUrl=@encodedLanguageReturnUrl" class="block rounded-md px-3 py-2 text-center text-xs font-semibold tracking-widest text-[#313511] hover:bg-[#efe4cf] transition-colors @(currentCulture == "ar" ? "bg-[#efe4cf]" : "")">العربية</a>
+                        <a href="/Dil/Degistir?culture=en&returnUrl=@encodedLanguageReturnUrl" class="block rounded-md px-3 py-2 text-center text-xs font-semibold tracking-widest text-[#47473d] hover:bg-[#efe4cf] transition-colors @(currentCulture == "en" ? "bg-[#efe4cf]" : "")">English</a>
+                        <a href="/Dil/Degistir?culture=tr&returnUrl=@encodedLanguageReturnUrl" class="block rounded-md px-3 py-2 text-center text-xs font-semibold tracking-widest text-[#47473d] hover:bg-[#efe4cf] transition-colors @(currentCulture == "tr" ? "bg-[#efe4cf]" : "")">Türkçe</a>
+                    </div>
+                </div>
             </div>
 
             <!-- Mobile Right: Account/Favorites/Cart -->
@@ -392,8 +443,8 @@
                                 <i class="fas fa-chevron-down text-[10px] opacity-70 group-hover:rotate-180 transition-transform"></i>
                             </a>
                             
-                            <!-- Dropdown Menü -->
-                            <div class="absolute left-1/2 top-full pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-300 w-[min(520px,calc(100vw-32px))] z-[9999]" style="transform:translateX(-50%) translateZ(1px);isolation:isolate" data-category-dropdown>
+                            <!-- Dropdown Menü (Canvasia tarzı geniş + preview) -->
+                            <div class="absolute left-1/2 top-full pt-3 w-[min(820px,calc(100vw-32px))] z-[9999]" style="transform:translateX(-50%)" data-category-dropdown>
                                 <div class="bg-[#f7f1e6] border border-[#c9b58a]/60 shadow-xl rounded-sm p-5 ring-1 ring-[#313511]/5">
                                     <div class="mb-4 flex items-center justify-between border-b border-[#d8c9aa] pb-3">
                                         <div>
@@ -405,24 +456,44 @@
 
                                     @if (altKategoriler.Any())
                                     {
-                                        <div class="grid grid-cols-2 gap-x-8 gap-y-2 sm:grid-cols-3">
-                                            @foreach (var alt in altKategoriler)
-                                            {
-                                                <a href="/Urun?k=@alt.Id" class="border-b border-[#dfd3ba]/70 px-1 py-2 text-[12px] leading-snug text-[#47473d] transition-colors hover:text-[#9a6d24]">
-                                                    @alt.LocalizedAd
-                                                </a>
-                                            }
+                                        <div class="grid gap-5 lg:grid-cols-[1.35fr_0.65fr]">
+                                            <div class="grid grid-cols-2 gap-x-5 gap-y-1 sm:grid-cols-3">
+                                                @foreach (var alt in altKategoriler)
+                                                {
+                                                    var altGorsel = GetCategoryMenuImage(alt);
+                                                    <a href="/Urun?k=@alt.Id"
+                                                       class="flex items-center gap-3 border-b border-[#dfd3ba]/70 px-1 py-2 text-left text-[11px] leading-snug text-[#47473d] transition-colors hover:text-[#9a6d24]">
+                                                        <span class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden bg-[#efe4cf] text-[#b58735]">
+                                                            <img src="@altGorsel" alt="@alt.LocalizedAd" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+                                                        </span>
+                                                        <span>@alt.LocalizedAd</span>
+                                                    </a>
+                                                }
+                                            </div>
+                                            <!-- Preview panel (Canvasia tarzı) -->
+                                            <div class="hidden sm:block overflow-hidden rounded-sm bg-[#efe4cf]">
+                                                <img src="@kategoriPreviewGorsel" alt="@kategori.LocalizedAd" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+                                                <div class="p-4">
+                                                    <div class="font-serif text-sm text-[#313511]">@kategori.LocalizedAd</div>
+                                                    <p class="mt-1 text-[11px] leading-relaxed text-[#6f6a5e]">@kategoriPreviewMetin</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     }
                                     else
                                     {
-                                        <div class="normal-case tracking-normal">
-                                            <h4 class="font-serif text-xl text-[#313511]">@kategori.LocalizedAd</h4>
-                                            <p class="mt-2 text-sm leading-6 text-[#6f6a5e]">@kategoriPreviewMetin</p>
-                                            <a href="/Urun?k=@kategori.Id" class="mt-4 inline-flex w-fit items-center gap-2 border-b border-[#313511] pb-1 text-[11px] font-medium uppercase tracking-widest text-[#313511] transition-colors hover:text-[#9a6d24]">
-                                                @Localizer["ExploreCategory"]
-                                                <i class="fas fa-arrow-right text-[10px]"></i>
-                                            </a>
+                                        <div class="grid gap-5 lg:grid-cols-[1.35fr_0.65fr]">
+                                            <div class="normal-case tracking-normal">
+                                                <h4 class="font-serif text-xl text-[#313511]">@kategori.LocalizedAd</h4>
+                                                <p class="mt-2 text-sm leading-6 text-[#6f6a5e]">@kategoriPreviewMetin</p>
+                                                <a href="/Urun?k=@kategori.Id" class="mt-4 inline-flex w-fit items-center gap-2 border-b border-[#313511] pb-1 text-[11px] font-medium uppercase tracking-widest text-[#313511] transition-colors hover:text-[#9a6d24]">
+                                                    @Localizer["ExploreCategory"]
+                                                    <i class="fas fa-arrow-right text-[10px]"></i>
+                                                </a>
+                                            </div>
+                                            <div class="hidden sm:block overflow-hidden rounded-sm bg-[#efe4cf]">
+                                                <img src="@kategoriPreviewGorsel" alt="@kategori.LocalizedAd" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+                                            </div>
                                         </div>
                                     }
                                 </div>
@@ -442,18 +513,6 @@
                 <button type="button" aria-label="@Localizer["CloseMenu"]" onclick="window.toggleMobileNav(false)" class="flex h-9 w-9 items-center justify-center rounded-full border border-[#c9b58a] text-[#313511]">
                     <i class="fas fa-times"></i>
                 </button>
-            </div>
-
-            <div class="mb-5 rounded-2xl border border-[#d8c9aa] bg-white/75 p-2 shadow-sm">
-                <div class="mb-2 flex items-center gap-2 px-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#9a6d24]">
-                    <i class="fas fa-globe"></i>
-                    <span>Dil Seçimi</span>
-                </div>
-                <div class="grid grid-cols-3 gap-1">
-                    <a href="/Dil/Degistir?culture=ar&returnUrl=@encodedLanguageReturnUrl" class="rounded-xl px-3 py-2 text-center text-xs font-semibold tracking-widest text-[#47473d] transition-colors hover:bg-[#efe4cf] hover:text-[#313511]">AR</a>
-                    <a href="/Dil/Degistir?culture=en&returnUrl=@encodedLanguageReturnUrl" class="rounded-xl px-3 py-2 text-center text-xs font-semibold tracking-widest text-[#47473d] transition-colors hover:bg-[#efe4cf] hover:text-[#313511]">EN</a>
-                    <a href="/Dil/Degistir?culture=tr&returnUrl=@encodedLanguageReturnUrl" class="rounded-xl px-3 py-2 text-center text-xs font-semibold tracking-widest text-[#47473d] transition-colors hover:bg-[#efe4cf] hover:text-[#313511]">TR</a>
-                </div>
             </div>
 
             <ul class="space-y-3 text-sm tracking-widest text-[#47473d] font-light uppercase" data-mobile-nav-list>
@@ -521,103 +580,173 @@
     </main>
 
     <!-- BEGIN: Footer -->
-    <footer class="bg-[#313511] text-[#f4f0ea] pt-0 pb-8 mt-auto">
-        <div class="border-b border-white/10 bg-[#25280c]">
+    <footer class="site-footer bg-[#1a2b1b] text-[#f4f0ea] pt-0 pb-8 mt-auto">
+        <!-- Trust Bar -->
+        <div class="border-b border-white/10 bg-[#14211a]">
             <div class="container mx-auto grid grid-cols-1 gap-4 px-8 py-5 text-center md:grid-cols-3">
-                <div class="flex items-center justify-center gap-3">
+                <div class="flex items-center justify-center gap-3 bg-white/5 rounded-lg px-4 py-3">
                     <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#c6ca99]/35 text-[#c6ca99]">
                         <i class="fas fa-truck-fast"></i>
                     </span>
-                    <div>
+                    <div class="text-left">
                         <div class="text-xs uppercase tracking-widest text-[#c6ca99]">@Localizer["AllOverTurkey"]</div>
                         <div class="text-sm font-semibold text-white">@Localizer["FreeShipping"]</div>
                     </div>
                 </div>
-                <div class="flex items-center justify-center gap-3">
+                <div class="flex items-center justify-center gap-3 bg-white/5 rounded-lg px-4 py-3">
                     <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#c6ca99]/35 text-[#c6ca99]">
                         <i class="fas fa-building-columns"></i>
                     </span>
-                    <div>
+                    <div class="text-left">
                         <div class="text-xs uppercase tracking-widest text-[#c6ca99]">@Localizer["BankTransfer"]</div>
                         <div class="text-sm font-semibold text-white">@Localizer["BankTransferFooter"]</div>
                     </div>
                 </div>
-                <div class="flex items-center justify-center gap-3">
+                <div class="flex items-center justify-center gap-3 bg-white/5 rounded-lg px-4 py-3">
                     <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#c6ca99]/35 text-[#c6ca99]">
                         <i class="fas fa-hand-holding-dollar"></i>
                     </span>
-                    <div>
+                    <div class="text-left">
                         <div class="text-xs uppercase tracking-widest text-[#c6ca99]">@Localizer["CashOnDelivery"]</div>
                         <div class="text-sm font-semibold text-white">@Localizer["CashOnDeliveryFooter"]</div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Main Footer Grid -->
         <div class="container mx-auto px-8 pt-16">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
-                <!-- Newsletter Signup -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 mb-12">
+
+                <!-- Sütun 1: Marka + Açıklama -->
                 <div>
-                    <h3 class="font-serif text-2xl mb-4 text-[#c6ca99]">@Localizer["SubscribeToNewsletter"]</h3>
-                    <p class="text-sm font-light mb-6 text-gray-300 leading-relaxed max-w-md">
-                        @string.Format(Localizer["NewsletterDescription"], brandName)
+                    <a href="/" class="inline-block mb-4">
+                        <span class="flex items-center justify-start w-full max-w-[220px] bg-white rounded-lg px-4 py-3">
+                            <img src="@logoUrl" alt="@brandName" class="h-10 w-auto object-contain" />
+                        </span>
+                    </a>
+                    <p class="text-sm text-gray-300 leading-relaxed">
+                        @{
+                            var localizedFooter = currentCulture switch
+                            {
+                                "en" when !string.IsNullOrWhiteSpace(siteSettings.FooterAciklamasiEn) => siteSettings.FooterAciklamasiEn,
+                                "tr" when !string.IsNullOrWhiteSpace(siteSettings.FooterAciklamasiTr) => siteSettings.FooterAciklamasiTr,
+                                "ar" when !string.IsNullOrWhiteSpace(siteSettings.FooterAciklamasiAr) => siteSettings.FooterAciklamasiAr,
+                                _ => string.IsNullOrWhiteSpace(siteSettings.FooterAciklamasi) ? siteSettings.SiteAciklamasi : siteSettings.FooterAciklamasi
+                            };
+                        }
+                        @localizedFooter
                     </p>
-                    <form id="newsletterForm" action="/Home/BulteneAboneOl" method="post" class="flex border-b border-gray-500 pb-2 max-w-md relative">
-                        @Html.AntiForgeryToken()
-                        <input name="email" id="newsletterEmail" class="bg-transparent border-none w-full focus:ring-0 text-sm px-0 text-white placeholder-gray-400 outline-none" placeholder="@Localizer["EmailAddress"]" required="" type="email"/>
-                        <button type="submit" class="text-sm tracking-widest uppercase hover:text-[#c6ca99] transition-colors ml-4 whitespace-nowrap">@Localizer["Subscribe"]</button>
-                    </form>
-                    <div id="newsletterMessage" class="text-xs mt-2 hidden"></div>
                 </div>
-                <!-- Footer Links & Socials -->
-                <div class="flex flex-col md:items-end">
-                    <h4 class="font-bold text-sm tracking-widest mb-4 uppercase text-[#c6ca99]">@Localizer["Corporate"]</h4>
-                    <ul class="space-y-2 text-sm font-light text-gray-300 text-left md:text-right">
-                        <li><a class="hover:text-white transition-colors" href="/Kurumsal/Hakkimizda">@Localizer["AboutUs"]</a></li>
-                        <li><a class="hover:text-white transition-colors" href="/Kurumsal/Iletisim">@Localizer["Contact"]</a></li>
-                        <li><a class="hover:text-white transition-colors" href="/Urun">@Localizer["Collections"]</a></li>
-                        <li><a class="hover:text-white transition-colors" href="/Sozlesmeler/Gizlilik">@Localizer["PrivacyPolicy"]</a></li>
-                        <li><a class="hover:text-white transition-colors" href="/Sozlesmeler/MesafeliSatis">@Localizer["DistanceSalesContract"]</a></li>
+
+                <!-- Sütun 2: Hızlı Linkler -->
+                <div>
+                    <h5 class="text-xs uppercase tracking-widest text-[#c6ca99] mb-5">@Localizer["QuickLinks"]</h5>
+                    <ul class="space-y-3 text-sm text-gray-300">
+                        <li><a href="/Urun" class="hover:text-white transition-colors">@Localizer["AllProducts"]</a></li>
+                        <li><a href="/Sepet" class="hover:text-white transition-colors">@Localizer["Cart"]</a></li>
+                        <li><a href="/Favori" class="hover:text-white transition-colors">@Localizer["MyFavorites"]</a></li>
+                        <li><a href="/Kurumsal/Iletisim" class="hover:text-white transition-colors">@Localizer["Contact"]</a></li>
                     </ul>
-                    <div class="mt-6 flex gap-4 text-gray-400">
+                </div>
+
+                <!-- Sütun 3: Kurumsal -->
+                <div>
+                    <h5 class="text-xs uppercase tracking-widest text-[#c6ca99] mb-5">@Localizer["Corporate"]</h5>
+                    <ul class="space-y-3 text-sm text-gray-300">
+                        <li><a href="/Kurumsal/Hakkimizda" class="hover:text-white transition-colors">@Localizer["AboutUs"]</a></li>
+                        <li><a href="/Kurumsal/Iletisim" class="hover:text-white transition-colors">@Localizer["Contact"]</a></li>
+                        <li><a href="/Sozlesmeler/Gizlilik" class="hover:text-white transition-colors">@Localizer["PrivacyPolicy"]</a></li>
+                        <li><a href="/Sozlesmeler/MesafeliSatis" class="hover:text-white transition-colors">@Localizer["DistanceSalesContract"]</a></li>
+                    </ul>
+                </div>
+
+                <!-- Sütun 4: İletişim + Bülten + Sosyal -->
+                <div>
+                    <h5 class="text-xs uppercase tracking-widest text-[#c6ca99] mb-5">@Localizer["Contact"]</h5>
+                    <ul class="space-y-3 text-sm text-gray-300">
+                        @if (!string.IsNullOrWhiteSpace(siteSettings.Telefon))
+                        {
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-phone text-[#c6ca99] text-xs mt-1 w-4 shrink-0"></i>
+                                <span dir="ltr">@siteSettings.Telefon</span>
+                            </li>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(siteSettings.Email))
+                        {
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-envelope text-[#c6ca99] text-xs mt-1 w-4 shrink-0"></i>
+                                <span>@siteSettings.Email</span>
+                            </li>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(siteSettings.Adres))
+                        {
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-location-dot text-[#c6ca99] text-xs mt-1 w-4 shrink-0"></i>
+                                <span>@siteSettings.Adres</span>
+                            </li>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(siteSettings.CalismaSaatleri))
+                        {
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-clock text-[#c6ca99] text-xs mt-1 w-4 shrink-0"></i>
+                                <span>@siteSettings.CalismaSaatleri</span>
+                            </li>
+                        }
+                    </ul>
+
+                    <!-- Newsletter -->
+                    <div class="mt-6">
+                        <h5 class="text-xs uppercase tracking-widest text-[#c6ca99] mb-3">@Localizer["SubscribeToNewsletter"]</h5>
+                        <form id="newsletterForm" action="/Home/BulteneAboneOl" method="post" class="flex border-b border-gray-500 pb-2 max-w-xs">
+                            @Html.AntiForgeryToken()
+                            <input name="email" id="newsletterEmail" class="bg-transparent border-none w-full focus:ring-0 text-sm px-0 text-white placeholder-gray-400 outline-none" placeholder="@Localizer["EmailAddress"]" required="" type="email"/>
+                            <button type="submit" class="text-xs tracking-widest uppercase hover:text-[#c6ca99] transition-colors ml-2 whitespace-nowrap shrink-0">@Localizer["Subscribe"]</button>
+                        </form>
+                        <div id="newsletterMessage" class="text-xs mt-2 hidden"></div>
+                    </div>
+
+                    <!-- Social Media -->
+                    <div class="mt-6 flex flex-wrap gap-3">
                         @if(!string.IsNullOrEmpty(siteSettings.InstagramUrl)) {
-                            <a href="@siteSettings.InstagramUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["Instagram"]" class="hover:text-white transition-colors"><i class="fab fa-instagram text-xl"></i></a>
+                            <a href="@siteSettings.InstagramUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["Instagram"]" class="footer-social-link text-gray-400 hover:text-[#c6ca99]"><i class="fab fa-instagram"></i></a>
                         }
                         @if(!string.IsNullOrEmpty(siteSettings.FacebookUrl)) {
-                            <a href="@siteSettings.FacebookUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["Facebook"]" class="hover:text-white transition-colors"><i class="fab fa-facebook text-xl"></i></a>
+                            <a href="@siteSettings.FacebookUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["Facebook"]" class="footer-social-link text-gray-400 hover:text-[#c6ca99]"><i class="fab fa-facebook-f"></i></a>
                         }
                         @if(!string.IsNullOrEmpty(siteSettings.WhatsappNumarasi)) {
-                            <a href="https://wa.me/@siteSettings.WhatsappNumarasi.Replace(" ", "").Replace("+", "")" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["WhatsApp"]" class="hover:text-white transition-colors"><i class="fab fa-whatsapp text-xl"></i></a>
+                            <a href="https://wa.me/@siteSettings.WhatsappNumarasi.Replace(" ", "").Replace("+", "")" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["WhatsApp"]" class="footer-social-link text-gray-400 hover:text-[#c6ca99]"><i class="fab fa-whatsapp"></i></a>
                         }
                         @if(!string.IsNullOrEmpty(siteSettings.YoutubeUrl)) {
-                            <a href="@siteSettings.YoutubeUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["YouTube"]" class="hover:text-white transition-colors"><i class="fab fa-youtube text-xl"></i></a>
+                            <a href="@siteSettings.YoutubeUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["YouTube"]" class="footer-social-link text-gray-400 hover:text-[#c6ca99]"><i class="fab fa-youtube"></i></a>
                         }
                         @if(!string.IsNullOrEmpty(siteSettings.TiktokUrl)) {
-                            <a href="@siteSettings.TiktokUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["TikTok"]" class="hover:text-white transition-colors"><i class="fab fa-tiktok text-xl"></i></a>
+                            <a href="@siteSettings.TiktokUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["TikTok"]" class="footer-social-link text-gray-400 hover:text-[#c6ca99]"><i class="fab fa-tiktok"></i></a>
                         }
                         @if(!string.IsNullOrEmpty(siteSettings.PinterestUrl)) {
-                            <a href="@siteSettings.PinterestUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["Pinterest"]" class="hover:text-white transition-colors"><i class="fab fa-pinterest text-xl"></i></a>
+                            <a href="@siteSettings.PinterestUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["Pinterest"]" class="footer-social-link text-gray-400 hover:text-[#c6ca99]"><i class="fab fa-pinterest"></i></a>
                         }
                         @if(!string.IsNullOrEmpty(siteSettings.TwitterUrl)) {
-                            <a href="@siteSettings.TwitterUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["X"]" class="hover:text-white transition-colors"><i class="fab fa-x-twitter text-xl"></i></a>
+                            <a href="@siteSettings.TwitterUrl" target="_blank" rel="noopener noreferrer" aria-label="@Localizer["X"]" class="footer-social-link text-gray-400 hover:text-[#c6ca99]"><i class="fab fa-x-twitter"></i></a>
                         }
                     </div>
                 </div>
             </div>
+
             <!-- Bottom Bar -->
-            <div class="border-t border-[#47473d] pt-6 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
+            <div class="border-t border-white/10 pt-6 mt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
                 <div class="mb-4 md:mb-0 text-center md:text-left order-2 md:order-1">
                     <p class="text-[11px] tracking-wide">© @DateTime.Now.Year <span class="text-[#f4f0ea] font-medium">@brandName</span> @Localizer["AllRightsReserved"]</p>
                 </div>
-                <div class="mb-4 md:mb-0 order-1 md:order-2">
-                    <a href="/Kurumsal/Gizlilik" class="text-[11px] text-gray-400 hover:text-[#f4f0ea] transition-colors mx-2">@Localizer["PrivacyPolicy"]</a>
+                <div class="mb-4 md:mb-0 order-1 md:order-2 flex items-center gap-3">
+                    <a href="/Sozlesmeler/Gizlilik" class="text-gray-400 hover:text-white transition-colors">@Localizer["PrivacyPolicy"]</a>
                     <span class="text-gray-600">|</span>
-                    <a href="/Kurumsal/KullaniciSozlesmesi" class="text-[11px] text-gray-400 hover:text-[#f4f0ea] transition-colors mx-2">@Localizer["TermsOfUse"]</a>
+                    <a href="/Kurumsal/KullaniciSozlesmesi" class="text-gray-400 hover:text-white transition-colors">@Localizer["TermsOfUse"]</a>
                     <span class="text-gray-600">|</span>
-                    <a href="/Kurumsal/IadeKosullari" class="text-[11px] text-gray-400 hover:text-[#f4f0ea] transition-colors mx-2">@Localizer["ReturnExchange"]</a>
+                    <a href="/Kurumsal/IadeKosullari" class="text-gray-400 hover:text-white transition-colors">@Localizer["ReturnExchange"]</a>
                 </div>
             </div>
         </div>
-
     </footer>
     <!-- END: Footer -->
 
@@ -678,6 +807,31 @@
             document.body.classList.toggle('overflow-hidden', shouldOpen);
         };
 
+        window.toggleLangMenu = function() {
+            const popover = document.getElementById('mobileLangPopover');
+            if (!popover) return;
+            popover.classList.toggle('hidden');
+        };
+
+        window.toggleDesktopLangMenu = function() {
+            const popover = document.getElementById('desktopLangPopover');
+            if (!popover) return;
+            popover.classList.toggle('hidden');
+        };
+
+        document.addEventListener('click', function(e) {
+            const toggle = document.getElementById('mobileLangToggle');
+            const popover = document.getElementById('mobileLangPopover');
+            if (toggle && popover && !toggle.contains(e.target) && !popover.classList.contains('hidden')) {
+                popover.classList.add('hidden');
+            }
+            const dtoggle = document.getElementById('desktopLangToggle');
+            const dpopover = document.getElementById('desktopLangPopover');
+            if (dtoggle && dpopover && !dtoggle.contains(e.target) && !dpopover.classList.contains('hidden')) {
+                dpopover.classList.add('hidden');
+            }
+        });
+
         (function() {
             const edgePadding = 16;
 
@@ -693,7 +847,7 @@ function alignCategoryDropdown(menuItem) {
                 dropdown.style.transform = 'translateX(-50%)';
 
                 const itemRect = menuItem.getBoundingClientRect();
-                const width = Math.min(dropdown.offsetWidth, window.innerWidth - (edgePadding * 2));
+                const width = Math.min(820, window.innerWidth - (edgePadding * 2));
                 const preferredLeft = itemRect.left + (itemRect.width / 2) - (width / 2);
                 const boundedLeft = Math.min(
                     Math.max(preferredLeft, edgePadding),
@@ -704,24 +858,21 @@ function alignCategoryDropdown(menuItem) {
                 dropdown.style.transform = 'none';
             }
 
-            function initCategoryDropdownAlignment() {
-                const menuItems = document.querySelectorAll('[data-category-menu-item]');
+            window.alignCatDropdown = alignCategoryDropdown;
 
-                menuItems.forEach(menuItem => {
-                    menuItem.addEventListener('mouseenter', () => alignCategoryDropdown(menuItem));
-                    menuItem.addEventListener('focusin', () => alignCategoryDropdown(menuItem));
+            // CSS group-hover zaten gösteriyor. JS sadece konumlandırma için.
+            $(document).ready(function() {
+                // Her hover'da konumlandırmayı güncelle (ilk seferde de çalışır)
+                $('[data-category-menu-item]').on('mouseenter', function() {
+                    if (window.alignCatDropdown) window.alignCatDropdown(this);
                 });
-
-                window.addEventListener('resize', () => {
-                    menuItems.forEach(menuItem => alignCategoryDropdown(menuItem));
+                $(window).on('resize', function() {
+                    // resize'da görünür dropdown varsa konumlandır
+                    $('[data-category-menu-item]:hover').each(function() {
+                        if (window.alignCatDropdown) window.alignCatDropdown(this);
+                    });
                 });
-            }
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initCategoryDropdownAlignment);
-            } else {
-                initCategoryDropdownAlignment();
-            }
+            });
         })();
 
 document.addEventListener('keydown', function(event) {
@@ -1158,13 +1309,13 @@ document.addEventListener('keydown', function(event) {
                 evt.preventDefault();
                 evt.stopPropagation();
             }
-            
+
             const originalHtml = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin text-sm text-[#47473d]"></i>';
             btn.disabled = true;
 
             let token = document.querySelector('#globalAntiForgeryForm input[name="__RequestVerificationToken"]')?.value;
-            
+
             fetch('/Favori/Toggle?urunId=' + urunId, {
                 method: 'POST',
                 headers: {
@@ -1176,10 +1327,10 @@ document.addEventListener('keydown', function(event) {
             .then(data => {
                 if(data.success) {
                     if(data.isAdded) {
-                        btn.innerHTML = '<i class="fas fa-heart text-sm text-red-500"></i>';
+                        btn.innerHTML = '<i class="fas fa-heart text-sm text-red-500 drop-shadow-sm"></i>';
                         if(window.showToast) window.showToast('@Localizer["ProductAddedToFavorites"]', 'success');
                     } else {
-                        btn.innerHTML = '<i class="far fa-heart text-sm text-[#47473d] group-hover/btn:text-red-500 transition-colors"></i>';
+                        btn.innerHTML = '<i class="far fa-heart text-sm text-[#4a4a4a] group-hover/btn:text-red-400 transition-colors"></i>';
                         if(window.showToast) window.showToast('@Localizer["ProductRemovedFromFavorites"]', 'info');
                     }
                 } else {
@@ -1221,9 +1372,9 @@ document.addEventListener('keydown', function(event) {
 
     <!-- Floating Cart Button -->
     <a href="/Sepet" aria-label="@Localizer["Cart"]"
-       class="fixed bottom-6 start-6 z-50 bg-[#313511] text-white p-3.5 rounded-full shadow-lg hover:bg-[#1c2001] hover:scale-110 transition-all duration-300 group floating-cart-btn"
+       class="fixed bottom-6 start-6 z-50 bg-[#313511] text-white p-4 rounded-full shadow-lg hover:bg-[#1c2001] hover:scale-110 transition-all duration-300 group floating-cart-btn"
        title="@Localizer["MyCart"]">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
             <path d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         @if (sepetCount > 0)

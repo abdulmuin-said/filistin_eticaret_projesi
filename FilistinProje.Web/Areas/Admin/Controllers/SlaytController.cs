@@ -105,8 +105,18 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return View(slayt);
 
             slayt.Baslik = model.Baslik;
+            slayt.BaslikEn = model.BaslikEn;
+            slayt.BaslikAr = model.BaslikAr;
             slayt.AltBaslik = model.AltBaslik;
+            slayt.AltBaslikEn = model.AltBaslikEn;
+            slayt.AltBaslikAr = model.AltBaslikAr;
             slayt.Aciklama = model.Aciklama;
+            slayt.AciklamaEn = model.AciklamaEn;
+            slayt.AciklamaAr = model.AciklamaAr;
+            slayt.ButonMetni = model.ButonMetni;
+            slayt.ButonMetniEn = model.ButonMetniEn;
+            slayt.ButonMetniAr = model.ButonMetniAr;
+            slayt.BaglantiUrl = model.BaglantiUrl;
             slayt.Tur = model.Tur;
             slayt.Sira = model.Sira;
             slayt.AktifMi = model.AktifMi;

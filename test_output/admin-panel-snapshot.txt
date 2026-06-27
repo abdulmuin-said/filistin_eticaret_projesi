@@ -1,0 +1,191 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: 
+      - text: Free shipping on orders over 200 ₪
+    - generic [ref=e6]:
+      - generic [ref=e7]: 
+      - text: Easy payment by IBAN
+    - generic [ref=e8]:
+      - generic [ref=e9]: 
+      - text: Pay on delivery option
+    - generic [ref=e10]:
+      - generic [ref=e11]: 
+      - text: Fast Production
+    - generic [ref=e12]:
+      - generic [ref=e13]: 
+      - text: Careful Packaging
+    - generic [ref=e14]:
+      - generic [ref=e15]: 
+      - text: Delivery Across Palestine
+    - generic [ref=e16]:
+      - generic [ref=e17]: 
+      - text: 14 Days Return
+    - generic [ref=e18]:
+      - generic [ref=e19]: 
+      - text: Manufacturer Guarantee
+    - generic [ref=e20]:
+      - generic [ref=e21]: 
+      - text: WhatsApp Support
+    - generic [ref=e22]:
+      - generic [ref=e23]: 
+      - text: Free shipping on orders over 200 ₪
+    - generic [ref=e24]:
+      - generic [ref=e25]: 
+      - text: Easy payment by IBAN
+    - generic [ref=e26]:
+      - generic [ref=e27]: 
+      - text: Pay on delivery option
+    - generic [ref=e28]:
+      - generic [ref=e29]: 
+      - text: Fast Production
+    - generic [ref=e30]:
+      - generic [ref=e31]: 
+      - text: Careful Packaging
+    - generic [ref=e32]:
+      - generic [ref=e33]: 
+      - text: Delivery Across Palestine
+    - generic [ref=e34]:
+      - generic [ref=e35]: 
+      - text: 14 Days Return
+    - generic [ref=e36]:
+      - generic [ref=e37]: 
+      - text: Manufacturer Guarantee
+    - generic [ref=e38]:
+      - generic [ref=e39]: 
+      - text: WhatsApp Support
+  - banner [ref=e40]:
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e44]: 
+        - link "AR" [ref=e45] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FUrun%2FDetay%2Fvetplus-multivitamin-kedi-kopek-damlasi-50ml-26
+        - link "EN" [ref=e46] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FUrun%2FDetay%2Fvetplus-multivitamin-kedi-kopek-damlasi-50ml-26
+        - link "TR" [ref=e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=tr&returnUrl=%2FUrun%2FDetay%2Fvetplus-multivitamin-kedi-kopek-damlasi-50ml-26
+      - link "7ANRPS48" [ref=e48] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=e49]
+      - generic [ref=e50]:
+        - button "Search" [ref=e51] [cursor=pointer]:
+          - img [ref=e52]
+        - link "My Account" [ref=e54] [cursor=pointer]:
+          - /url: /Profil
+          - img [ref=e55]
+        - link "My Favorites" [ref=e57] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=e58]
+        - link "Cart" [ref=e60] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=e61]
+          - generic [ref=e63]: "0"
+      - navigation [ref=e64]:
+        - list [ref=e65]:
+          - listitem [ref=e66] [cursor=pointer]
+          - listitem [ref=e69] [cursor=pointer]
+          - listitem [ref=e72] [cursor=pointer]
+          - listitem [ref=e75] [cursor=pointer]
+    - text:     
+  - main [ref=e77]:
+    - text:      
+    - generic [ref=e79]:
+      - link "Home Page" [ref=e80] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e81]: /
+      - link "Collection" [ref=e82] [cursor=pointer]:
+        - /url: /Urun
+      - generic [ref=e83]: /
+      - generic [ref=e84]: VetPlus Multivitamin Drops for Cats & Dogs 50 ml
+    - generic [ref=e85]:
+      - generic [ref=e86]:
+        - generic [ref=e87]:
+          - generic [ref=e88]
+          - button "VetPlus Multivitamin Kedi & Köpek Damlası 50 ml" [ref=e97] [cursor=pointer]
+        - generic [ref=e99]:
+          - heading "VetPlus Multivitamin Drops for Cats & Dogs 50 ml" [level=1] [ref=e100]
+          - generic [ref=e101]
+          - generic [ref=e109]
+          - generic [ref=e113]
+          - text: 
+          - paragraph [ref=e120]: A complementary multivitamin drop formulated for daily cat and dog support.
+          - generic [ref=e121]
+          - generic [ref=e135] [cursor=pointer]
+          - text: 
+          - generic [ref=e139]
+          - generic [ref=e149]
+          - generic [ref=e152]
+          - generic [ref=e165]
+      - generic [ref=e179]:
+        - generic [ref=e180]:
+          - generic [ref=e181]
+          - generic [ref=e185]
+        - generic [ref=e194]:
+          - heading " Reviews" [level=2] [ref=e195]
+          - generic [ref=e197]
+    - generic [ref=e203]:
+      - generic [ref=e204]:
+        - separator [ref=e205]
+        - heading "Similar Products" [level=2] [ref=e206]
+        - separator [ref=e207]
+      - link "ProBioVet Digestive Support Powder 100 g ProBioVet Digestive Support Powder 100 g 179.00 ₪ 210.00 ₪" [ref=e209] [cursor=pointer]:
+        - /url: /Urun/Detay/probiovet-sindirim-destek-tozu-100g-28
+        - img "ProBioVet Digestive Support Powder 100 g" [ref=e211]
+        - heading "ProBioVet Digestive Support Powder 100 g" [level=3] [ref=e212]
+        - generic [ref=e213]:
+          - generic [ref=e214]: 179.00 ₪
+          - generic [ref=e215]: 210.00 ₪
+  - contentinfo [ref=e216]:
+    - generic [ref=e218]:
+      - generic [ref=e219]:
+        - generic [ref=e221]: 
+        - generic [ref=e222]:
+          - generic [ref=e223]: Across Palestine
+          - generic [ref=e224]: Free Shipping
+      - generic [ref=e225]:
+        - generic [ref=e227]: 
+        - generic [ref=e228]:
+          - generic [ref=e229]: Bank Transfer
+          - generic [ref=e230]: Easy payment by IBAN
+      - generic [ref=e231]:
+        - generic [ref=e233]: 
+        - generic [ref=e234]:
+          - generic [ref=e235]: Cash on Delivery
+          - generic [ref=e236]: Pay on delivery option
+    - generic [ref=e237]:
+      - generic [ref=e238]:
+        - generic [ref=e239]:
+          - link "7ANRPS48" [ref=e240] [cursor=pointer]:
+            - /url: /
+          - paragraph [ref=e243]: متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن
+        - generic [ref=e244]:
+          - heading "QuickLinks" [level=5] [ref=e245]
+          - list [ref=e246]
+        - generic [ref=e255]:
+          - heading "Corporate" [level=5] [ref=e256]
+          - list [ref=e257]
+        - generic [ref=e266]:
+          - heading "Contact" [level=5] [ref=e267]
+          - list [ref=e268]
+          - generic [ref=e281]
+          - link "WhatsApp" [ref=e287] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+      - generic [ref=e289]:
+        - paragraph [ref=e291]: © 2026 7ANRPS48 All rights reserved.
+        - generic [ref=e292]:
+          - link "Privacy Policy" [ref=e293] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - generic [ref=e294]: "|"
+          - link "Terms of Use" [ref=e295] [cursor=pointer]:
+            - /url: /Kurumsal/KullaniciSozlesmesi
+          - generic [ref=e296]: "|"
+          - link "Return and Exchange" [ref=e297] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+  - link "WhatsApp Contact" [ref=e298] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=e299]
+    - generic [ref=e301]: WhatsApp
+  - link "Cart" [ref=e302] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=e303]
+  - text:        

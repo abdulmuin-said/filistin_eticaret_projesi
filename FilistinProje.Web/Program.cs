@@ -886,6 +886,10 @@ BEGIN
     ALTER TABLE "Slaytlar" ADD COLUMN IF NOT EXISTS "AltBaslikAr" text NOT NULL DEFAULT '';
     ALTER TABLE "Slaytlar" ADD COLUMN IF NOT EXISTS "AciklamaEn" text NOT NULL DEFAULT '';
     ALTER TABLE "Slaytlar" ADD COLUMN IF NOT EXISTS "AciklamaAr" text NOT NULL DEFAULT '';
+    ALTER TABLE "Slaytlar" ADD COLUMN IF NOT EXISTS "ButonMetni" text NOT NULL DEFAULT '';
+    ALTER TABLE "Slaytlar" ADD COLUMN IF NOT EXISTS "ButonMetniEn" text NOT NULL DEFAULT '';
+    ALTER TABLE "Slaytlar" ADD COLUMN IF NOT EXISTS "ButonMetniAr" text NOT NULL DEFAULT '';
+    ALTER TABLE "Slaytlar" ADD COLUMN IF NOT EXISTS "BaglantiUrl" text NULL;
 
     ALTER TABLE "Urunler" ADD COLUMN IF NOT EXISTS "UrunTipi" text NOT NULL DEFAULT 'Genel';
     ALTER TABLE "Urunler" ADD COLUMN IF NOT EXISTS "AktifMi" boolean NOT NULL DEFAULT true;
@@ -1030,6 +1034,9 @@ BEGIN
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "KapidaOdemeLimiti" numeric NOT NULL DEFAULT 2000;
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "ToptanciMinSiparisTutari" numeric NOT NULL DEFAULT 500;
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "IptalSuresiSaat" integer NOT NULL DEFAULT 3;
+    ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "FooterAciklamasiEn" text NOT NULL DEFAULT 'A Palestinian e-commerce site offering varied products at competitive prices with fast delivery to all cities.';
+    ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "FooterAciklamasiAr" text NOT NULL DEFAULT 'متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن';
+    ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "FooterAciklamasiTr" text NOT NULL DEFAULT 'Rekabetçi fiyatlarla çeşitli ürünler sunan ve tüm şehirlere hızlı teslimat yapan bir Filistin e-ticaret sitesi.';
 
     -- Filistin kargo bölgeleri: Ulke, Aciklama ve Fiyat alanları
     ALTER TABLE "KargoBolgeler" ADD COLUMN IF NOT EXISTS "Ulke" character varying(100) NULL;
