@@ -1,0 +1,358 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: 
+      - text: 200 ₪ ve üzeri siparişlerde kargo ücretsiz
+    - generic [ref=e6]:
+      - generic [ref=e7]: 
+      - text: IBAN ile kolay ödeme
+    - generic [ref=e8]:
+      - generic [ref=e9]: 
+      - text: Teslimatta ödeme seçeneği
+    - generic [ref=e10]:
+      - generic [ref=e11]: 
+      - text: Hızlı Üretim
+    - generic [ref=e12]:
+      - generic [ref=e13]: 
+      - text: Özenli Paketleme
+    - generic [ref=e14]:
+      - generic [ref=e15]: 
+      - text: Filistin Geneli Teslimat
+    - generic [ref=e16]:
+      - generic [ref=e17]: 
+      - text: 14 Gün İade
+    - generic [ref=e18]:
+      - generic [ref=e19]: 
+      - text: Üretici Garantisi
+    - generic [ref=e20]:
+      - generic [ref=e21]: 
+      - text: WhatsApp Destek
+    - generic [ref=e22]:
+      - generic [ref=e23]: 
+      - text: 200 ₪ ve üzeri siparişlerde kargo ücretsiz
+    - generic [ref=e24]:
+      - generic [ref=e25]: 
+      - text: IBAN ile kolay ödeme
+    - generic [ref=e26]:
+      - generic [ref=e27]: 
+      - text: Teslimatta ödeme seçeneği
+    - generic [ref=e28]:
+      - generic [ref=e29]: 
+      - text: Hızlı Üretim
+    - generic [ref=e30]:
+      - generic [ref=e31]: 
+      - text: Özenli Paketleme
+    - generic [ref=e32]:
+      - generic [ref=e33]: 
+      - text: Filistin Geneli Teslimat
+    - generic [ref=e34]:
+      - generic [ref=e35]: 
+      - text: 14 Gün İade
+    - generic [ref=e36]:
+      - generic [ref=e37]: 
+      - text: Üretici Garantisi
+    - generic [ref=e38]:
+      - generic [ref=e39]: 
+      - text: WhatsApp Destek
+  - banner [ref=e40]:
+    - generic [ref=e41]:
+      - text: 
+      - link "7ANRPS48" [ref=e42] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=e43]
+      - generic [ref=e44]:
+        - button "Menüyü Aç" [ref=e45] [cursor=pointer]:
+          - img [ref=e46]
+        - button "Ara" [ref=e48] [cursor=pointer]:
+          - img [ref=e49]
+        - button "Dil" [ref=e52] [cursor=pointer]:
+          - img [ref=e53]
+          - generic [ref=e55]: tr
+      - generic [ref=e56]:
+        - link "Giriş Yap" [ref=e57] [cursor=pointer]:
+          - /url: /Hesap/GirisYap
+          - img [ref=e58]
+        - link "Favorilerim" [ref=e60] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=e61]
+        - link "Sepet" [ref=e63] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=e64]
+          - generic [ref=e66]: "0"
+      - text:   
+    - text:     
+  - main [ref=e67]:
+    - generic [ref=e69]:
+      - link "Ana Sayfa" [ref=e70] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e71]: /
+      - generic [ref=e72]: Tüm Koleksiyonlar
+    - generic [ref=e74]:
+      - text:   
+      - main [ref=e75]:
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - heading "Tüm Koleksiyonlar" [level=1] [ref=e78]
+            - paragraph [ref=e79]: 11 ürün listeleniyor
+          - combobox [ref=e81]:
+            - option "En Yeni" [selected]
+            - option "Düşük Fiyattan Yükseğe"
+            - option "Yüksek Fiyattan Düşüğe"
+            - option "Çok Satanlar"
+        - generic [ref=e82]:
+          - generic [ref=e83]:
+            - link "Yeni %18 Veteriner Steteskop Cift Tambur 60 cm" [ref=e84] [cursor=pointer]:
+              - /url: /Urun/Detay/veteriner-steteskop-cift-tambur-60cm-37
+              - generic [ref=e85]: Yeni
+              - generic [ref=e86]: "%18"
+              - img "Veteriner Steteskop Cift Tambur 60 cm" [ref=e87]
+            - button "" [ref=e88] [cursor=pointer]:
+              - generic [ref=e89]: 
+            - heading "Veteriner Steteskop Cift Tambur 60 cm" [level=3] [ref=e90]:
+              - link "Veteriner Steteskop Cift Tambur 60 cm" [ref=e91] [cursor=pointer]:
+                - /url: /Urun/Detay/veteriner-steteskop-cift-tambur-60cm-37
+            - generic [ref=e92]:
+              - generic [ref=e93]: 180 ₪
+              - generic [ref=e94]: 220 ₪
+              - generic [ref=e95]: "-%18"
+          - generic [ref=e96]:
+            - link "Yeni %20 Cerrahi Dikis Seti 7 Parca Paslanmaz Celik" [ref=e97] [cursor=pointer]:
+              - /url: /Urun/Detay/cerrahi-dikis-seti-7-parca-38
+              - generic [ref=e98]: Yeni
+              - generic [ref=e99]: "%20"
+              - img "Cerrahi Dikis Seti 7 Parca Paslanmaz Celik" [ref=e100]
+            - button "" [ref=e101] [cursor=pointer]:
+              - generic [ref=e102]: 
+            - heading "Cerrahi Dikis Seti 7 Parca Paslanmaz Celik" [level=3] [ref=e103]:
+              - link "Cerrahi Dikis Seti 7 Parca Paslanmaz Celik" [ref=e104] [cursor=pointer]:
+                - /url: /Urun/Detay/cerrahi-dikis-seti-7-parca-38
+            - generic [ref=e105]:
+              - generic [ref=e106]: 280 ₪
+              - generic [ref=e107]: 350 ₪
+              - generic [ref=e108]: "-%20"
+          - generic [ref=e109]:
+            - link "Yeni %15 Bakir + Vitamin B12 Enjeksiyon 20 ml - Buyukbas & Kucukbas" [ref=e110] [cursor=pointer]:
+              - /url: /Urun/Detay/bakir-vitamin-b12-enjeksiyon-20ml-39
+              - generic [ref=e111]: Yeni
+              - generic [ref=e112]: "%15"
+              - img "Bakir + Vitamin B12 Enjeksiyon 20 ml - Buyukbas & Kucukbas" [ref=e113]
+            - button "" [ref=e114] [cursor=pointer]:
+              - generic [ref=e115]: 
+            - heading "Bakir + Vitamin B12 Enjeksiyon 20 ml - Buyukbas & Kucukbas" [level=3] [ref=e116]:
+              - link "Bakir + Vitamin B12 Enjeksiyon 20 ml - Buyukbas & Kucukbas" [ref=e117] [cursor=pointer]:
+                - /url: /Urun/Detay/bakir-vitamin-b12-enjeksiyon-20ml-39
+            - generic [ref=e118]:
+              - generic [ref=e119]: 55 ₪
+              - generic [ref=e120]: 65 ₪
+              - generic [ref=e121]: "-%15"
+          - generic [ref=e122]:
+            - link "Yeni %19 VetPlus Multivitamin Kedi & Köpek Damlası 50 ml" [ref=e123] [cursor=pointer]:
+              - /url: /Urun/Detay/vetplus-multivitamin-kedi-kopek-damlasi-50ml-26
+              - generic [ref=e124]: Yeni
+              - generic [ref=e125]: "%19"
+              - img "VetPlus Multivitamin Kedi & Köpek Damlası 50 ml" [ref=e126]
+            - button "" [ref=e127] [cursor=pointer]:
+              - generic [ref=e128]: 
+            - heading "VetPlus Multivitamin Kedi & Köpek Damlası 50 ml" [level=3] [ref=e129]:
+              - link "VetPlus Multivitamin Kedi & Köpek Damlası 50 ml" [ref=e130] [cursor=pointer]:
+                - /url: /Urun/Detay/vetplus-multivitamin-kedi-kopek-damlasi-50ml-26
+            - generic [ref=e131]:
+              - generic [ref=e132]: 149 ₪
+              - generic [ref=e133]: 185 ₪
+              - generic [ref=e134]: "-%19"
+          - generic [ref=e135]:
+            - link "Yeni %15 ProBioVet Sindirim Destek Tozu 100 g" [ref=e136] [cursor=pointer]:
+              - /url: /Urun/Detay/probiovet-sindirim-destek-tozu-100g-28
+              - generic [ref=e137]: Yeni
+              - generic [ref=e138]: "%15"
+              - img "ProBioVet Sindirim Destek Tozu 100 g" [ref=e139]
+            - button "" [ref=e140] [cursor=pointer]:
+              - generic [ref=e141]: 
+            - heading "ProBioVet Sindirim Destek Tozu 100 g" [level=3] [ref=e142]:
+              - link "ProBioVet Sindirim Destek Tozu 100 g" [ref=e143] [cursor=pointer]:
+                - /url: /Urun/Detay/probiovet-sindirim-destek-tozu-100g-28
+            - generic [ref=e144]:
+              - generic [ref=e145]: 179 ₪
+              - generic [ref=e146]: 210 ₪
+              - generic [ref=e147]: "-%15"
+          - generic [ref=e148]:
+            - link "Yeni %16 MineralBlock Büyükbaş & Küçükbaş Mineral Bloğu 2 kg" [ref=e149] [cursor=pointer]:
+              - /url: /Urun/Detay/mineralblock-buyukbas-kucukbas-mineral-blogu-2kg-31
+              - generic [ref=e150]: Yeni
+              - generic [ref=e151]: "%16"
+              - img "MineralBlock Büyükbaş & Küçükbaş Mineral Bloğu 2 kg" [ref=e152]
+            - button "" [ref=e153] [cursor=pointer]:
+              - generic [ref=e154]: 
+            - heading "MineralBlock Büyükbaş & Küçükbaş Mineral Bloğu 2 kg" [level=3] [ref=e155]:
+              - link "MineralBlock Büyükbaş & Küçükbaş Mineral Bloğu 2 kg" [ref=e156] [cursor=pointer]:
+                - /url: /Urun/Detay/mineralblock-buyukbas-kucukbas-mineral-blogu-2kg-31
+            - generic [ref=e157]:
+              - generic [ref=e158]: 219 ₪
+              - generic [ref=e159]: 260 ₪
+              - generic [ref=e160]: "-%16"
+          - generic [ref=e161]:
+            - link "Yeni %15 CalfStart Buzağı Başlangıç Destek Paketi" [ref=e162] [cursor=pointer]:
+              - /url: /Urun/Detay/calfstart-buzagi-baslangic-destek-paketi-33
+              - generic [ref=e163]: Yeni
+              - generic [ref=e164]: "%15"
+              - img "CalfStart Buzağı Başlangıç Destek Paketi" [ref=e165]
+            - button "" [ref=e166] [cursor=pointer]:
+              - generic [ref=e167]: 
+            - heading "CalfStart Buzağı Başlangıç Destek Paketi" [level=3] [ref=e168]:
+              - link "CalfStart Buzağı Başlangıç Destek Paketi" [ref=e169] [cursor=pointer]:
+                - /url: /Urun/Detay/calfstart-buzagi-baslangic-destek-paketi-33
+            - generic [ref=e170]:
+              - generic [ref=e171]: 289 ₪
+              - generic [ref=e172]: 340 ₪
+              - generic [ref=e173]: "-%15"
+          - generic [ref=e174]:
+            - link "%21 Dermacare Hassas Deri Pet Şampuanı 250 ml" [ref=e175] [cursor=pointer]:
+              - /url: /Urun/Detay/dermacare-hassas-deri-pet-sampuani-250ml-27
+              - generic [ref=e176]: "%21"
+              - img "Dermacare Hassas Deri Pet Şampuanı 250 ml" [ref=e177]
+            - button "" [ref=e178] [cursor=pointer]:
+              - generic [ref=e179]: 
+            - heading "Dermacare Hassas Deri Pet Şampuanı 250 ml" [level=3] [ref=e180]:
+              - link "Dermacare Hassas Deri Pet Şampuanı 250 ml" [ref=e181] [cursor=pointer]:
+                - /url: /Urun/Detay/dermacare-hassas-deri-pet-sampuani-250ml-27
+            - generic [ref=e182]:
+              - generic [ref=e183]: 99 ₪
+              - generic [ref=e184]: 125 ₪
+              - generic [ref=e185]: "-%21"
+          - generic [ref=e186]:
+            - link "%16 Klinik Yara Bakım Spreyi 100 ml" [ref=e187] [cursor=pointer]:
+              - /url: /Urun/Detay/klinik-yara-bakim-spreyi-100ml-29
+              - generic [ref=e188]: "%16"
+              - img "Klinik Yara Bakım Spreyi 100 ml" [ref=e189]
+            - button "" [ref=e190] [cursor=pointer]:
+              - generic [ref=e191]: 
+            - heading "Klinik Yara Bakım Spreyi 100 ml" [level=3] [ref=e192]:
+              - link "Klinik Yara Bakım Spreyi 100 ml" [ref=e193] [cursor=pointer]:
+                - /url: /Urun/Detay/klinik-yara-bakim-spreyi-100ml-29
+            - generic [ref=e194]:
+              - generic [ref=e195]: 135 ₪
+              - generic [ref=e196]: 160 ₪
+              - generic [ref=e197]: "-%16"
+          - generic [ref=e198]:
+            - link "%18 OtoClean Kulak Temizleme Solüsyonu 120 ml" [ref=e199] [cursor=pointer]:
+              - /url: /Urun/Detay/otoclean-kulak-temizleme-solusyonu-120ml-30
+              - generic [ref=e200]: "%18"
+              - img "OtoClean Kulak Temizleme Solüsyonu 120 ml" [ref=e201]
+            - button "" [ref=e202] [cursor=pointer]:
+              - generic [ref=e203]: 
+            - heading "OtoClean Kulak Temizleme Solüsyonu 120 ml" [level=3] [ref=e204]:
+              - link "OtoClean Kulak Temizleme Solüsyonu 120 ml" [ref=e205] [cursor=pointer]:
+                - /url: /Urun/Detay/otoclean-kulak-temizleme-solusyonu-120ml-30
+            - generic [ref=e206]:
+              - generic [ref=e207]: 119 ₪
+              - generic [ref=e208]: 145 ₪
+              - generic [ref=e209]: "-%18"
+          - generic [ref=e210]:
+            - link "%16 PoultryCare Kanatlı Vitamin Premiksi 500 g" [ref=e211] [cursor=pointer]:
+              - /url: /Urun/Detay/poultrycare-kanatli-vitamin-premiksi-500g-32
+              - generic [ref=e212]: "%16"
+              - img "PoultryCare Kanatlı Vitamin Premiksi 500 g" [ref=e213]
+            - button "" [ref=e214] [cursor=pointer]:
+              - generic [ref=e215]: 
+            - heading "PoultryCare Kanatlı Vitamin Premiksi 500 g" [level=3] [ref=e216]:
+              - link "PoultryCare Kanatlı Vitamin Premiksi 500 g" [ref=e217] [cursor=pointer]:
+                - /url: /Urun/Detay/poultrycare-kanatli-vitamin-premiksi-500g-32
+            - generic [ref=e218]:
+              - generic [ref=e219]: 159 ₪
+              - generic [ref=e220]: 190 ₪
+              - generic [ref=e221]: "-%16"
+  - contentinfo [ref=e222]:
+    - generic [ref=e224]:
+      - generic [ref=e225]:
+        - generic [ref=e227]: 
+        - generic [ref=e228]:
+          - generic [ref=e229]: Filistin'in Her Bölgesine
+          - generic [ref=e230]: Ücretsiz Kargo
+      - generic [ref=e231]:
+        - generic [ref=e233]: 
+        - generic [ref=e234]:
+          - generic [ref=e235]: Banka Havalesi
+          - generic [ref=e236]: IBAN ile kolay ödeme
+      - generic [ref=e237]:
+        - generic [ref=e239]: 
+        - generic [ref=e240]:
+          - generic [ref=e241]: Kapıda Ödeme
+          - generic [ref=e242]: Teslimatta ödeme seçeneği
+    - generic [ref=e243]:
+      - generic [ref=e244]:
+        - generic [ref=e245]:
+          - link "7ANRPS48" [ref=e246] [cursor=pointer]:
+            - /url: /
+            - img "7ANRPS48" [ref=e248]
+          - paragraph [ref=e249]: Rekabetçi fiyatlarla çeşitli ürünler sunan ve tüm şehirlere hızlı teslimat yapan bir Filistin e-ticaret sitesi.
+        - generic [ref=e250]:
+          - heading "QuickLinks" [level=5] [ref=e251]
+          - list [ref=e252]:
+            - listitem [ref=e253]:
+              - link "Tüm Ürünler" [ref=e254] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=e255]:
+              - link "Sepet" [ref=e256] [cursor=pointer]:
+                - /url: /Sepet
+            - listitem [ref=e257]:
+              - link "Favorilerim" [ref=e258] [cursor=pointer]:
+                - /url: /Favori
+            - listitem [ref=e259]:
+              - link "İletişim" [ref=e260] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+        - generic [ref=e261]:
+          - heading "Kurumsal" [level=5] [ref=e262]
+          - list [ref=e263]:
+            - listitem [ref=e264]:
+              - link "Hakkımızda" [ref=e265] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=e266]:
+              - link "İletişim" [ref=e267] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=e268]:
+              - link "Gizlilik Politikası" [ref=e269] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=e270]:
+              - link "Mesafeli Satış Sözleşmesi" [ref=e271] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+        - generic [ref=e272]:
+          - heading "İletişim" [level=5] [ref=e273]
+          - list [ref=e274]:
+            - listitem [ref=e275]:
+              - generic [ref=e276]: 
+              - generic [ref=e277]: +970-599-000-000
+            - listitem [ref=e278]:
+              - generic [ref=e279]: 
+              - generic [ref=e280]: info@7anrps48.com
+            - listitem [ref=e281]:
+              - generic [ref=e282]: 
+              - generic [ref=e283]: فلسطين
+            - listitem [ref=e284]:
+              - generic [ref=e285]: 
+              - generic [ref=e286]: "السبت - الخميس: 9:00 - 21:00"
+          - generic [ref=e287]:
+            - heading "E-posta bültenine abone ol" [level=5] [ref=e288]
+            - generic [ref=e289]:
+              - textbox "E-posta Adresi" [ref=e290]
+              - button "Abone Ol" [ref=e291] [cursor=pointer]
+          - link "WhatsApp" [ref=e293] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=e294]: 
+      - generic [ref=e295]:
+        - paragraph [ref=e297]: © 2026 7ANRPS48 Tüm hakları saklıdır.
+        - generic [ref=e298]:
+          - link "Gizlilik Politikası" [ref=e299] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - generic [ref=e300]: "|"
+          - link "Kullanım Koşulları" [ref=e301] [cursor=pointer]:
+            - /url: /Kurumsal/KullaniciSozlesmesi
+          - generic [ref=e302]: "|"
+          - link "İade ve Değişim" [ref=e303] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+  - link "WhatsApp İletişim" [ref=e304] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=e305]
+    - generic [ref=e307]: WhatsApp
+  - link "Sepet" [ref=e308] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=e309]

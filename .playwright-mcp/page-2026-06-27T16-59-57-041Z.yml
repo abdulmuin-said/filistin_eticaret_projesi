@@ -1,0 +1,194 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: 
+      - text: 200 ₪ ve üzeri siparişlerde kargo ücretsiz
+    - generic [ref=e6]:
+      - generic [ref=e7]: 
+      - text: IBAN ile kolay ödeme
+    - generic [ref=e8]:
+      - generic [ref=e9]: 
+      - text: Teslimatta ödeme seçeneği
+    - generic [ref=e10]:
+      - generic [ref=e11]: 
+      - text: Hızlı Üretim
+    - generic [ref=e12]:
+      - generic [ref=e13]: 
+      - text: Özenli Paketleme
+    - generic [ref=e14]:
+      - generic [ref=e15]: 
+      - text: Filistin Geneli Teslimat
+    - generic [ref=e16]:
+      - generic [ref=e17]: 
+      - text: 14 Gün İade
+    - generic [ref=e18]:
+      - generic [ref=e19]: 
+      - text: Üretici Garantisi
+    - generic [ref=e20]:
+      - generic [ref=e21]: 
+      - text: WhatsApp Destek
+    - generic [ref=e22]:
+      - generic [ref=e23]: 
+      - text: 200 ₪ ve üzeri siparişlerde kargo ücretsiz
+    - generic [ref=e24]:
+      - generic [ref=e25]: 
+      - text: IBAN ile kolay ödeme
+    - generic [ref=e26]:
+      - generic [ref=e27]: 
+      - text: Teslimatta ödeme seçeneği
+    - generic [ref=e28]:
+      - generic [ref=e29]: 
+      - text: Hızlı Üretim
+    - generic [ref=e30]:
+      - generic [ref=e31]: 
+      - text: Özenli Paketleme
+    - generic [ref=e32]:
+      - generic [ref=e33]: 
+      - text: Filistin Geneli Teslimat
+    - generic [ref=e34]:
+      - generic [ref=e35]: 
+      - text: 14 Gün İade
+    - generic [ref=e36]:
+      - generic [ref=e37]: 
+      - text: Üretici Garantisi
+    - generic [ref=e38]:
+      - generic [ref=e39]: 
+      - text: WhatsApp Destek
+  - banner [ref=e40]:
+    - generic [ref=e41]:
+      - text: 
+      - link "7ANRPS48" [ref=e42] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=e43]
+      - generic [ref=e44]:
+        - button "Menüyü Aç" [ref=e45] [cursor=pointer]:
+          - img [ref=e46]
+        - button "Ara" [ref=e48] [cursor=pointer]:
+          - img [ref=e49]
+        - button "Dil" [ref=e52] [cursor=pointer]:
+          - img [ref=e53]
+          - generic [ref=e55]: tr
+      - generic [ref=e56]:
+        - link "Giriş Yap" [ref=e57] [cursor=pointer]:
+          - /url: /Hesap/GirisYap
+          - img [ref=e58]
+        - link "Favorilerim" [ref=e60] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=e61]
+        - link "Sepet" [ref=e63] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=e64]
+          - generic [ref=e66]: "0"
+      - text:   
+    - text:     
+  - main [ref=e67]:
+    - generic [ref=e69]:
+      - link "Ana Sayfa" [ref=e70] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e71]: /
+      - generic [ref=e72]: Sepetim
+    - generic [ref=e73]:
+      - generic [ref=e75]:
+        - heading "Sepetim" [level=1] [ref=e76]
+        - paragraph [ref=e77]: 0 ürün
+      - generic [ref=e78]:
+        - generic [ref=e79]: 
+        - heading "Sepetiniz Boş" [level=3] [ref=e80]
+        - paragraph [ref=e81]: Sepetini Keşfet
+        - link "Alışverişe Başla" [ref=e82] [cursor=pointer]:
+          - /url: /Urun
+  - contentinfo [ref=e83]:
+    - generic [ref=e85]:
+      - generic [ref=e86]:
+        - generic [ref=e88]: 
+        - generic [ref=e89]:
+          - generic [ref=e90]: Filistin'in Her Bölgesine
+          - generic [ref=e91]: Ücretsiz Kargo
+      - generic [ref=e92]:
+        - generic [ref=e94]: 
+        - generic [ref=e95]:
+          - generic [ref=e96]: Banka Havalesi
+          - generic [ref=e97]: IBAN ile kolay ödeme
+      - generic [ref=e98]:
+        - generic [ref=e100]: 
+        - generic [ref=e101]:
+          - generic [ref=e102]: Kapıda Ödeme
+          - generic [ref=e103]: Teslimatta ödeme seçeneği
+    - generic [ref=e104]:
+      - generic [ref=e105]:
+        - generic [ref=e106]:
+          - link "7ANRPS48" [ref=e107] [cursor=pointer]:
+            - /url: /
+            - img "7ANRPS48" [ref=e109]
+          - paragraph [ref=e110]: Rekabetçi fiyatlarla çeşitli ürünler sunan ve tüm şehirlere hızlı teslimat yapan bir Filistin e-ticaret sitesi.
+        - generic [ref=e111]:
+          - heading "QuickLinks" [level=5] [ref=e112]
+          - list [ref=e113]:
+            - listitem [ref=e114]:
+              - link "Tüm Ürünler" [ref=e115] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=e116]:
+              - link "Sepet" [ref=e117] [cursor=pointer]:
+                - /url: /Sepet
+            - listitem [ref=e118]:
+              - link "Favorilerim" [ref=e119] [cursor=pointer]:
+                - /url: /Favori
+            - listitem [ref=e120]:
+              - link "İletişim" [ref=e121] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+        - generic [ref=e122]:
+          - heading "Kurumsal" [level=5] [ref=e123]
+          - list [ref=e124]:
+            - listitem [ref=e125]:
+              - link "Hakkımızda" [ref=e126] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=e127]:
+              - link "İletişim" [ref=e128] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=e129]:
+              - link "Gizlilik Politikası" [ref=e130] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=e131]:
+              - link "Mesafeli Satış Sözleşmesi" [ref=e132] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+        - generic [ref=e133]:
+          - heading "İletişim" [level=5] [ref=e134]
+          - list [ref=e135]:
+            - listitem [ref=e136]:
+              - generic [ref=e137]: 
+              - generic [ref=e138]: +970-599-000-000
+            - listitem [ref=e139]:
+              - generic [ref=e140]: 
+              - generic [ref=e141]: info@7anrps48.com
+            - listitem [ref=e142]:
+              - generic [ref=e143]: 
+              - generic [ref=e144]: فلسطين
+            - listitem [ref=e145]:
+              - generic [ref=e146]: 
+              - generic [ref=e147]: "السبت - الخميس: 9:00 - 21:00"
+          - generic [ref=e148]:
+            - heading "E-posta bültenine abone ol" [level=5] [ref=e149]
+            - generic [ref=e150]:
+              - textbox "E-posta Adresi" [ref=e151]
+              - button "Abone Ol" [ref=e152] [cursor=pointer]
+          - link "WhatsApp" [ref=e154] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=e155]: 
+      - generic [ref=e156]:
+        - paragraph [ref=e158]: © 2026 7ANRPS48 Tüm hakları saklıdır.
+        - generic [ref=e159]:
+          - link "Gizlilik Politikası" [ref=e160] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - generic [ref=e161]: "|"
+          - link "Kullanım Koşulları" [ref=e162] [cursor=pointer]:
+            - /url: /Kurumsal/KullaniciSozlesmesi
+          - generic [ref=e163]: "|"
+          - link "İade ve Değişim" [ref=e164] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+  - link "WhatsApp İletişim" [ref=e165] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=e166]
+    - generic [ref=e168]: WhatsApp
+  - link "Sepet" [ref=e169] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=e170]

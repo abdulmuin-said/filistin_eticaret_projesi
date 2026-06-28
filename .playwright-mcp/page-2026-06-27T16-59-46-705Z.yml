@@ -1,0 +1,328 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: 
+      - text: 200 ₪ ve üzeri siparişlerde kargo ücretsiz
+    - generic [ref=e6]:
+      - generic [ref=e7]: 
+      - text: IBAN ile kolay ödeme
+    - generic [ref=e8]:
+      - generic [ref=e9]: 
+      - text: Teslimatta ödeme seçeneği
+    - generic [ref=e10]:
+      - generic [ref=e11]: 
+      - text: Hızlı Üretim
+    - generic [ref=e12]:
+      - generic [ref=e13]: 
+      - text: Özenli Paketleme
+    - generic [ref=e14]:
+      - generic [ref=e15]: 
+      - text: Filistin Geneli Teslimat
+    - generic [ref=e16]:
+      - generic [ref=e17]: 
+      - text: 14 Gün İade
+    - generic [ref=e18]:
+      - generic [ref=e19]: 
+      - text: Üretici Garantisi
+    - generic [ref=e20]:
+      - generic [ref=e21]: 
+      - text: WhatsApp Destek
+    - generic [ref=e22]:
+      - generic [ref=e23]: 
+      - text: 200 ₪ ve üzeri siparişlerde kargo ücretsiz
+    - generic [ref=e24]:
+      - generic [ref=e25]: 
+      - text: IBAN ile kolay ödeme
+    - generic [ref=e26]:
+      - generic [ref=e27]: 
+      - text: Teslimatta ödeme seçeneği
+    - generic [ref=e28]:
+      - generic [ref=e29]: 
+      - text: Hızlı Üretim
+    - generic [ref=e30]:
+      - generic [ref=e31]: 
+      - text: Özenli Paketleme
+    - generic [ref=e32]:
+      - generic [ref=e33]: 
+      - text: Filistin Geneli Teslimat
+    - generic [ref=e34]:
+      - generic [ref=e35]: 
+      - text: 14 Gün İade
+    - generic [ref=e36]:
+      - generic [ref=e37]: 
+      - text: Üretici Garantisi
+    - generic [ref=e38]:
+      - generic [ref=e39]: 
+      - text: WhatsApp Destek
+  - banner [ref=e40]:
+    - generic [ref=e41]:
+      - text: 
+      - link "7ANRPS48" [ref=e42] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=e43]
+      - generic [ref=e44]:
+        - button "Menüyü Aç" [ref=e45] [cursor=pointer]:
+          - img [ref=e46]
+        - button "Ara" [ref=e48] [cursor=pointer]:
+          - img [ref=e49]
+        - button "Dil" [ref=e52] [cursor=pointer]:
+          - img [ref=e53]
+          - generic [ref=e55]: tr
+      - generic [ref=e56]:
+        - link "Giriş Yap" [ref=e57] [cursor=pointer]:
+          - /url: /Hesap/GirisYap
+          - img [ref=e58]
+        - link "Favorilerim" [ref=e60] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=e61]
+        - link "Sepet" [ref=e63] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=e64]
+          - generic [ref=e66]: "0"
+      - text:   
+    - text:     
+  - main [ref=e67]:
+    - text:      
+    - generic [ref=e69]:
+      - link "Ana Sayfa" [ref=e70] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e71]: /
+      - link "Koleksiyon" [ref=e72] [cursor=pointer]:
+        - /url: /Urun
+      - generic [ref=e73]: /
+      - generic [ref=e74]: Veteriner Steteskop Cift Tambur 60 cm
+    - generic [ref=e75]:
+      - generic [ref=e76]:
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - img "Veteriner Steteskop Cift Tambur 60 cm" [ref=e79]
+            - button "" [ref=e80] [cursor=pointer]:
+              - generic [ref=e81]: 
+            - button "" [ref=e82] [cursor=pointer]:
+              - generic [ref=e83]: 
+            - generic [ref=e85]: 
+          - button "Veteriner Steteskop Cift Tambur 60 cm" [ref=e87] [cursor=pointer]:
+            - img "Veteriner Steteskop Cift Tambur 60 cm" [ref=e88]
+        - generic [ref=e89]:
+          - heading "Veteriner Steteskop Cift Tambur 60 cm" [level=1] [ref=e90]
+          - generic [ref=e91]:
+            - generic [ref=e92]:
+              - generic [ref=e93]: 
+              - generic [ref=e94]: 
+              - generic [ref=e95]: 
+              - generic [ref=e96]: 
+              - generic [ref=e97]: 
+            - generic [ref=e98]: 0 yorum
+          - generic [ref=e99]:
+            - generic [ref=e100]: 180,00 ₪
+            - generic [ref=e101]: 220,00 ₪
+            - generic [ref=e102]: "%18 İndirim"
+          - generic [ref=e103]:
+            - generic [ref=e104]:
+              - generic [ref=e105]: 
+              - text: Siparişe Özel Üretim
+            - generic [ref=e106]:
+              - generic [ref=e107]: 
+              - text: 1 günde kargo
+            - generic [ref=e108]:
+              - generic [ref=e109]: 
+              - text: 1 günde hazırlanır
+          - text: 
+          - paragraph [ref=e110]: Veteriner kullanimi icin ozel tasarlanmis cift tambur ve cift borulu steteskop.
+          - generic [ref=e111]:
+            - generic [ref=e112]:
+              - generic [ref=e113]: Adet
+              - generic [ref=e114]:
+                - button "-" [ref=e115] [cursor=pointer]
+                - spinbutton [ref=e116]: "1"
+                - button "+" [ref=e117] [cursor=pointer]
+            - button " Sepete Ekle" [ref=e119] [cursor=pointer]:
+              - generic [ref=e120]: 
+              - generic [ref=e121]: Sepete Ekle
+            - button "" [ref=e122] [cursor=pointer]:
+              - generic [ref=e123]: 
+          - text: 
+          - generic [ref=e124]:
+            - generic [ref=e125]: Paylaş
+            - link "Facebook'ta Paylaş" [ref=e126] [cursor=pointer]:
+              - /url: https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffilistin.kastamonuesnaf.com.tr%2FUrun%2FDetay%2Fveteriner-steteskop-cift-tambur-60cm-37
+              - generic [ref=e127]: 
+            - link "Instagram'da Aç" [ref=e128] [cursor=pointer]:
+              - /url: https://www.instagram.com/
+              - generic [ref=e129]: 
+            - link "WhatsApp'ta Paylaş" [ref=e130] [cursor=pointer]:
+              - /url: https://wa.me/?text=Veteriner%20Steteskop%20Cift%20Tambur%2060%20cm%20@encodedProductUrl
+              - generic [ref=e131]: 
+            - button " Linki Kopyala" [ref=e132] [cursor=pointer]:
+              - generic [ref=e133]: 
+              - text: Linki Kopyala
+          - generic [ref=e134]:
+            - paragraph [ref=e135]: Malzeme Paslanmaz celik ve medikal PVC
+            - paragraph [ref=e136]: Paketleme Orijinal kutusu ve yedek set ile birlikte
+          - generic [ref=e137]:
+            - generic [ref=e138]:
+              - paragraph [ref=e139]:
+                - generic [ref=e140]: 
+                - text: Üretim
+              - paragraph [ref=e141]: BusinessDays
+            - generic [ref=e142]:
+              - paragraph [ref=e143]:
+                - generic [ref=e144]: 
+                - text: Paketleme
+              - paragraph [ref=e145]: Özenli Teslimat
+            - generic [ref=e146]:
+              - paragraph [ref=e147]:
+                - generic [ref=e148]: 
+                - text: Teslimat
+              - paragraph [ref=e149]: EstimatedDeliveryDays
+          - generic [ref=e150]:
+            - generic [ref=e151]:
+              - generic [ref=e152]: 
+              - paragraph [ref=e153]: Banka Havalesi
+              - paragraph [ref=e154]: IBAN ile kolay ödeme
+            - generic [ref=e155]:
+              - generic [ref=e156]: 
+              - paragraph [ref=e157]: Ücretsiz Kargo
+              - paragraph [ref=e158]: BusinessDays
+            - generic [ref=e159]:
+              - generic [ref=e160]: 
+              - paragraph [ref=e161]: İade Garantisi
+              - paragraph [ref=e162]: WithinDays
+      - generic [ref=e164]:
+        - generic [ref=e165]:
+          - generic [ref=e166]:
+            - heading " Ürün Açıklaması" [level=2] [ref=e167]:
+              - generic [ref=e168]: 
+              - text: Ürün Açıklaması
+            - generic [ref=e169]: Veteriner hekimler icin ozel olarak dizayn edilmis profesyonel steteskop. Cift tambur ve cift boru yapisi sayesinde net oskultasyon saglar. Yedek set ile birlikte gelir.
+          - generic [ref=e170]:
+            - heading " Teknik Özellikler" [level=2] [ref=e171]:
+              - generic [ref=e172]: 
+              - text: Teknik Özellikler
+            - table [ref=e174]:
+              - rowgroup [ref=e175]:
+                - row "Detay Cift tambur, cift boru, 60 cm" [ref=e176]:
+                  - rowheader "Detay" [ref=e177]
+                  - cell "Cift tambur, cift boru, 60 cm" [ref=e178]
+        - generic [ref=e179]:
+          - heading " Yorumlar" [level=2] [ref=e180]:
+            - generic [ref=e181]: 
+            - text: Yorumlar
+          - generic [ref=e182]:
+            - generic [ref=e183]: 
+            - heading "Henüz yorum yapılmamış" [level=5] [ref=e184]
+            - paragraph [ref=e185]: İlk yorumu yapan siz olun
+            - button "İlk Yorumu Yaz" [ref=e186] [cursor=pointer]
+    - generic [ref=e188]:
+      - heading "Benzer Ürünler" [level=2] [ref=e190]
+      - generic [ref=e191]:
+        - link "Cerrahi Dikis Seti 7 Parca Paslanmaz Celik Cerrahi Dikis Seti 7 Parca Paslanmaz Celik 280,00 ₪ 350,00 ₪" [ref=e192] [cursor=pointer]:
+          - /url: /Urun/Detay/cerrahi-dikis-seti-7-parca-38
+          - img "Cerrahi Dikis Seti 7 Parca Paslanmaz Celik" [ref=e194]
+          - heading "Cerrahi Dikis Seti 7 Parca Paslanmaz Celik" [level=3] [ref=e195]
+          - generic [ref=e196]:
+            - generic [ref=e197]: 280,00 ₪
+            - generic [ref=e198]: 350,00 ₪
+        - link "Klinik Yara Bakım Spreyi 100 ml Klinik Yara Bakım Spreyi 100 ml 135,00 ₪ 160,00 ₪" [ref=e199] [cursor=pointer]:
+          - /url: /Urun/Detay/klinik-yara-bakim-spreyi-100ml-29
+          - img "Klinik Yara Bakım Spreyi 100 ml" [ref=e201]
+          - heading "Klinik Yara Bakım Spreyi 100 ml" [level=3] [ref=e202]
+          - generic [ref=e203]:
+            - generic [ref=e204]: 135,00 ₪
+            - generic [ref=e205]: 160,00 ₪
+  - contentinfo [ref=e206]:
+    - generic [ref=e208]:
+      - generic [ref=e209]:
+        - generic [ref=e211]: 
+        - generic [ref=e212]:
+          - generic [ref=e213]: Filistin'in Her Bölgesine
+          - generic [ref=e214]: Ücretsiz Kargo
+      - generic [ref=e215]:
+        - generic [ref=e217]: 
+        - generic [ref=e218]:
+          - generic [ref=e219]: Banka Havalesi
+          - generic [ref=e220]: IBAN ile kolay ödeme
+      - generic [ref=e221]:
+        - generic [ref=e223]: 
+        - generic [ref=e224]:
+          - generic [ref=e225]: Kapıda Ödeme
+          - generic [ref=e226]: Teslimatta ödeme seçeneği
+    - generic [ref=e227]:
+      - generic [ref=e228]:
+        - generic [ref=e229]:
+          - link "7ANRPS48" [ref=e230] [cursor=pointer]:
+            - /url: /
+            - img "7ANRPS48" [ref=e232]
+          - paragraph [ref=e233]: Rekabetçi fiyatlarla çeşitli ürünler sunan ve tüm şehirlere hızlı teslimat yapan bir Filistin e-ticaret sitesi.
+        - generic [ref=e234]:
+          - heading "QuickLinks" [level=5] [ref=e235]
+          - list [ref=e236]:
+            - listitem [ref=e237]:
+              - link "Tüm Ürünler" [ref=e238] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=e239]:
+              - link "Sepet" [ref=e240] [cursor=pointer]:
+                - /url: /Sepet
+            - listitem [ref=e241]:
+              - link "Favorilerim" [ref=e242] [cursor=pointer]:
+                - /url: /Favori
+            - listitem [ref=e243]:
+              - link "İletişim" [ref=e244] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+        - generic [ref=e245]:
+          - heading "Kurumsal" [level=5] [ref=e246]
+          - list [ref=e247]:
+            - listitem [ref=e248]:
+              - link "Hakkımızda" [ref=e249] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=e250]:
+              - link "İletişim" [ref=e251] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=e252]:
+              - link "Gizlilik Politikası" [ref=e253] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=e254]:
+              - link "Mesafeli Satış Sözleşmesi" [ref=e255] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+        - generic [ref=e256]:
+          - heading "İletişim" [level=5] [ref=e257]
+          - list [ref=e258]:
+            - listitem [ref=e259]:
+              - generic [ref=e260]: 
+              - generic [ref=e261]: +970-599-000-000
+            - listitem [ref=e262]:
+              - generic [ref=e263]: 
+              - generic [ref=e264]: info@7anrps48.com
+            - listitem [ref=e265]:
+              - generic [ref=e266]: 
+              - generic [ref=e267]: فلسطين
+            - listitem [ref=e268]:
+              - generic [ref=e269]: 
+              - generic [ref=e270]: "السبت - الخميس: 9:00 - 21:00"
+          - generic [ref=e271]:
+            - heading "E-posta bültenine abone ol" [level=5] [ref=e272]
+            - generic [ref=e273]:
+              - textbox "E-posta Adresi" [ref=e274]
+              - button "Abone Ol" [ref=e275] [cursor=pointer]
+          - link "WhatsApp" [ref=e277] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=e278]: 
+      - generic [ref=e279]:
+        - paragraph [ref=e281]: © 2026 7ANRPS48 Tüm hakları saklıdır.
+        - generic [ref=e282]:
+          - link "Gizlilik Politikası" [ref=e283] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - generic [ref=e284]: "|"
+          - link "Kullanım Koşulları" [ref=e285] [cursor=pointer]:
+            - /url: /Kurumsal/KullaniciSozlesmesi
+          - generic [ref=e286]: "|"
+          - link "İade ve Değişim" [ref=e287] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+  - link "WhatsApp İletişim" [ref=e288] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=e289]
+    - generic [ref=e291]: WhatsApp
+  - link "Sepet" [ref=e292] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=e293]
+  - text:        
