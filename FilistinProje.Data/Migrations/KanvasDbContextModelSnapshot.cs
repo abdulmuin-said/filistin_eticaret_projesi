@@ -968,6 +968,9 @@ namespace FilistinProje.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("MenuGorselUrl")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("OlusturulmaTarihi")
                         .HasColumnType("timestamp with time zone");
 

@@ -1,4 +1,4 @@
-@model IEnumerable<FilistinProje.Core.Varliklar.Urun>
+﻿@model IEnumerable<FilistinProje.Core.Varliklar.Urun>
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @inject IStringLocalizer<SharedResource> Localizer
 @using FilistinProje.Core.Helpers
@@ -7,7 +7,7 @@
     ViewData["Title"] = Localizer["Collections"];
     var siteSettings = SiteSettingsService.GetSettings();
     var stoktaYokSatisIzni = siteSettings.StoktaYokSatisIzni;
-    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "â‚ª" : siteSettings.ParaBirimi;
     var isWholesale = User.IsInRole("Wholesale");
 
     int currentPage = ViewBag.CurrentPage != null ? (int)ViewBag.CurrentPage : 1;
@@ -163,15 +163,56 @@
             border-radius: 4px;
             box-shadow: none;
         }
+
+        /* ─── List View Layout overrides ─── */
+        .layout-list {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 1.5rem !important;
+        }
+        .layout-list article {
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 1.5rem !important;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #e5e2dc;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            transition: all 0.25s ease;
+        }
+        .layout-list article:hover {
+            box-shadow: 0 4px 12px rgba(49, 53, 17, 0.06);
+            border-color: #d8c9aa;
+        }
+        .layout-list article > div:first-child {
+            width: 140px !important;
+            height: 140px !important;
+            margin-bottom: 0 !important;
+            flex-shrink: 0 !important;
+            border-radius: 6px;
+        }
+        @@media (min-width: 768px) {
+            .layout-list article > div:first-child {
+                width: 180px !important;
+                height: 180px !important;
+            }
+        }
+        .layout-list article .js-quick-add-btn {
+            padding-left: 1.5rem !important;
+            padding-right: 1.5rem !important;
+            padding-top: 0.6rem !important;
+            padding-bottom: 0.6rem !important;
+        }
     </style>
 }
 
 <!-- Breadcrumb -->
-<div class="bg-[#f1ede7] border-b border-[#e5e2dc] py-3">
-    <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-[#47473d]">
-        <a href="/" class="hover:text-[#313511] transition-colors">@Localizer["HomePage"]</a>
+<div class="bg-brand-cream border-b border-brand-border py-3">
+    <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-brand-mutedtext">
+        <a href="/" class="hover:text-brand-olive transition-colors">@Localizer["HomePage"]</a>
         <span>/</span>
-        <span class="text-[#1c1c18] font-medium">@aktifKategoriAd</span>
+        <span class="text-brand-darktext font-medium">@aktifKategoriAd</span>
     </div>
 </div>
 
@@ -180,10 +221,10 @@
 
         <!-- Sidebar Filtreler -->
         <aside class="hidden lg:block w-56 flex-shrink-0">
-            <h3 class="font-serif text-lg text-[#313511] mb-4 border-b border-[#e5e2dc] pb-2">@Localizer["Categories"]</h3>
+            <h3 class="font-serif text-lg text-brand-olive mb-4 border-b border-brand-border pb-2">@Localizer["Categories"]</h3>
             <ul class="space-y-2 text-sm mb-8">
                 <li>
-                    <a href="/Urun" class="flex items-center justify-between rounded-lg px-3 py-2 @(!aktifKategori.HasValue ? "bg-[#313511] text-white font-semibold" : "text-[#47473d] hover:bg-[#f1ede7] hover:text-[#313511]") transition-colors">
+                    <a href="/Urun" class="flex items-center justify-between rounded-lg px-3 py-2 @(!aktifKategori.HasValue ? "bg-brand-olive text-white font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors">
                         <span>@Localizer["AllCollections"]</span>
                         <span class="text-xs @(!aktifKategori.HasValue ? "text-white/75" : "text-[#9a958c]")">(@toplamAktifUrunSayisi)</span>
                     </a>
@@ -202,15 +243,15 @@
                     <li>
                     @if (altKategoriler.Count == 0)
                     {
-                            <a href="/Urun?k=@anaKategori.Id" class="flex items-center justify-between rounded-lg px-3 py-2 @(anaAktif ? "bg-[#f6efe3] text-[#b58735] font-semibold" : "text-[#47473d] hover:bg-[#f1ede7] hover:text-[#313511]") transition-colors">
+                            <a href="/Urun?k=@anaKategori.Id" class="flex items-center justify-between rounded-lg px-3 py-2 @(anaAktif ? "bg-[#f6efe3] text-brand-gold font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors">
                                 <span>@anaKategori.LocalizedAd</span>
                                 <span class="text-xs @(anaUrunSayisi == 0 ? "text-red-400" : "text-[#9a958c]")">(@anaUrunSayisi)</span>
                             </a>
                     }
                     else
                     {
-                            <details class="group rounded-xl border border-[#e5e2dc] bg-white/70" open="@grupAcik">
-                                <summary class="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2 text-[#313511] transition-colors group-open:border-b group-open:border-[#eee8df] [&::-webkit-details-marker]:hidden">
+                            <details class="group rounded-xl border border-brand-border bg-white/70" open="@grupAcik">
+                                <summary class="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2 text-brand-olive transition-colors group-open:border-b group-open:border-[#eee8df] [&::-webkit-details-marker]:hidden">
                                     <span class="font-medium">@anaKategori.LocalizedAd</span>
                                     <span class="flex items-center gap-2 text-xs text-[#9a958c]">
                                         (@anaUrunSayisi)
@@ -218,7 +259,7 @@
                                     </span>
                                 </summary>
                                 <div class="space-y-1 px-2 py-2">
-                                    <a href="/Urun?k=@anaKategori.Id" class="flex items-center justify-between rounded-lg px-2 py-1.5 text-xs @(anaAktif ? "bg-[#313511] text-white font-semibold" : "text-[#6a665e] hover:bg-[#f1ede7] hover:text-[#313511]") transition-colors">
+                                    <a href="/Urun?k=@anaKategori.Id" class="flex items-center justify-between rounded-lg px-2 py-1.5 text-xs @(anaAktif ? "bg-brand-olive text-white font-semibold" : "text-[#6a665e] hover:bg-brand-warmcream hover:text-brand-olive") transition-colors">
                                         <span>@Localizer["AllCategoryPrefix"] @anaKategori.LocalizedAd</span>
                                         <span class="@(anaAktif ? "text-white/75" : "text-[#9a958c]")">(@anaUrunSayisi)</span>
                                     </a>
@@ -226,7 +267,7 @@
                                     {
                                         var altAktif = aktifKategori.HasValue && aktifKategori.Value == altKategori.Id;
                                         var altUrunSayisi = GetKategoriUrunSayisi(altKategori.Id);
-                                        <a href="/Urun?k=@altKategori.Id" class="flex items-center justify-between gap-3 rounded-lg px-2 py-1.5 text-xs @(altAktif ? "bg-[#f6efe3] text-[#b58735] font-semibold" : "text-[#47473d] hover:bg-[#f1ede7] hover:text-[#313511]") transition-colors">
+                                        <a href="/Urun?k=@altKategori.Id" class="flex items-center justify-between gap-3 rounded-lg px-2 py-1.5 text-xs @(altAktif ? "bg-[#f6efe3] text-brand-gold font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors">
                                             <span class="truncate">@altKategori.LocalizedAd</span>
                                             <span class="shrink-0 @(altUrunSayisi == 0 ? "text-red-400" : "text-[#9a958c]")">(@altUrunSayisi)</span>
                                         </a>
@@ -239,7 +280,7 @@
             </ul>
 
             <!-- Fiyat Filtresi (Slider) -->
-            <h3 class="font-serif text-lg text-[#313511] mb-4 border-b border-[#e5e2dc] pb-2">@Localizer["PriceRange"]</h3>
+            <h3 class="font-serif text-lg text-brand-olive mb-4 border-b border-brand-border pb-2">@Localizer["PriceRange"]</h3>
             <form method="get" action="/Urun" class="space-y-3" id="priceFilterForm">
                 @if (aktifKategori.HasValue)
                 {
@@ -251,7 +292,7 @@
                 }
                 <input type="hidden" name="sort" value="@aktifSort" />
 
-                <div class="flex items-center justify-between text-xs font-medium text-[#313511]">
+                <div class="flex items-center justify-between text-xs font-medium text-brand-olive">
                     <span id="minPriceDisplay">@currencySymbol@((aktifMin ?? ViewBag.AvailableMinFiyat ?? 0).ToString("N0"))</span>
                     <span id="maxPriceDisplay">@currencySymbol@((aktifMax ?? ViewBag.AvailableMaxFiyat ?? 10000).ToString("N0"))</span>
                 </div>
@@ -261,7 +302,7 @@
                 <input type="hidden" name="min" id="minInput" value="@aktifMin" />
                 <input type="hidden" name="max" id="maxInput" value="@aktifMax" />
 
-                <button type="submit" class="w-full bg-[#313511] text-white text-xs py-2 rounded hover:bg-[#1c2001] transition-colors tracking-widest uppercase">
+                <button type="submit" class="w-full bg-brand-olive text-white text-xs py-2 rounded hover:bg-[#1c2001] transition-colors tracking-widest uppercase">
                     @Localizer["Apply"]
                 </button>
             </form>
@@ -269,10 +310,10 @@
             <!-- Marka Filtresi -->
             @if (markaListesi.Count > 0)
             {
-                <h3 class="font-serif text-lg text-[#313511] mb-4 mt-8 border-b border-[#e5e2dc] pb-2">@Localizer["Brand"]</h3>
+                <h3 class="font-serif text-lg text-brand-olive mb-4 mt-8 border-b border-brand-border pb-2">@Localizer["Brand"]</h3>
                 <ul class="space-y-1 text-sm mb-8">
                     <li>
-                        <a href="@BuildFilterUrl("marka", "")" class="flex items-center justify-between rounded-lg px-3 py-1.5 @(string.IsNullOrWhiteSpace(aktifMarka) ? "bg-[#313511] text-white font-semibold" : "text-[#47473d] hover:bg-[#f1ede7] hover:text-[#313511]") transition-colors text-xs">
+                        <a href="@BuildFilterUrl("marka", "")" class="flex items-center justify-between rounded-lg px-3 py-1.5 @(string.IsNullOrWhiteSpace(aktifMarka) ? "bg-brand-olive text-white font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors text-xs">
                             <span>@Localizer["AllBrands"]</span>
                         </a>
                     </li>
@@ -282,7 +323,7 @@
                         var markaCount = (int)m.Count;
                         var markaAktif = string.Equals(aktifMarka, markaAdi, StringComparison.OrdinalIgnoreCase);
                         <li>
-                            <a href="@BuildFilterUrl("marka", markaAdi)" class="flex items-center justify-between rounded-lg px-3 py-1.5 @(markaAktif ? "bg-[#f6efe3] text-[#b58735] font-semibold" : "text-[#47473d] hover:bg-[#f1ede7] hover:text-[#313511]") transition-colors text-xs">
+                            <a href="@BuildFilterUrl("marka", markaAdi)" class="flex items-center justify-between rounded-lg px-3 py-1.5 @(markaAktif ? "bg-[#f6efe3] text-brand-gold font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors text-xs">
                                 <span>@markaAdi</span>
                                 <span class="text-[#9a958c] text-[10px]">(@markaCount)</span>
                             </a>
@@ -291,19 +332,19 @@
                 </ul>
             }
 
-            <!-- Özellik Filtreleri -->
+            <!-- Ã–zellik Filtreleri -->
             @if (ozellikFiltreleri.Count > 0)
             {
                 foreach (var filtre in ozellikFiltreleri)
                 {
                     var seciliDeger = seciliOzellikler.ContainsKey(filtre.DefinitionId) ? seciliOzellikler[filtre.DefinitionId] : null;
-                    <h3 class="font-serif text-lg text-[#313511] mb-4 mt-8 border-b border-[#e5e2dc] pb-2">@filtre.Title</h3>
+                    <h3 class="font-serif text-lg text-brand-olive mb-4 mt-8 border-b border-brand-border pb-2">@filtre.Title</h3>
                     <ul class="space-y-1 text-sm mb-8">
                         @foreach (var opt in filtre.Options)
                         {
                             var optAktif = seciliDeger == opt.Value;
                             <li>
-                                <a href="@BuildOzellikFilterUrl(filtre.DefinitionId, opt.Value)" class="flex items-center justify-between rounded-lg px-3 py-1.5 @(optAktif ? "bg-[#f6efe3] text-[#b58735] font-semibold" : "text-[#47473d] hover:bg-[#f1ede7] hover:text-[#313511]") transition-colors text-xs">
+                                <a href="@BuildOzellikFilterUrl(filtre.DefinitionId, opt.Value)" class="flex items-center justify-between rounded-lg px-3 py-1.5 @(optAktif ? "bg-[#f6efe3] text-brand-gold font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors text-xs">
                                     <span>@opt.DisplayValue</span>
                                     <span class="text-[#9a958c] text-[10px]">(@opt.Count)</span>
                                 </a>
@@ -314,116 +355,85 @@
             }
         </aside>
 
-        <!-- Ana İçerik -->
+        <!-- Ana Ä°Ã§erik -->
         <main class="flex-1 min-w-0">
-            <!-- Başlık + Sıralama -->
+            <!-- BaÅŸlÄ±k + SÄ±ralama -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                 <div>
-                    <h1 class="font-serif text-3xl text-[#313511]">@aktifKategoriAd</h1>
-                    <p class="text-xs text-[#47473d] mt-1">@Localizer["ProductCountListing", totalItems]</p>
+                    <h1 class="font-serif text-3xl text-brand-olive">@aktifKategoriAd</h1>
+                    <p class="text-xs text-brand-mutedtext mt-1">@Localizer["ProductCountListing", totalItems]</p>
                 </div>
                 <div class="flex items-center gap-3">
                     @if (!string.IsNullOrWhiteSpace(aktifArama))
                     {
-                        <span class="bg-[#313511] text-white text-xs px-3 py-1 rounded-full flex items-center gap-1">
+                        <span class="bg-brand-olive text-white text-xs px-3 py-1 rounded-full flex items-center gap-1">
                             "<span>@aktifArama</span>"
-                            <a href="/Urun@(aktifKategori.HasValue ? "?k=" + aktifKategori : "")" class="ml-1 opacity-70 hover:opacity-100">×</a>
+                            <a href="/Urun@(aktifKategori.HasValue ? "?k=" + aktifKategori : "")" class="ml-1 opacity-70 hover:opacity-100">Ã—</a>
                         </span>
                     }
-                    <select id="sortSelect" onchange="window.location.href=this.value" class="border border-[#e5e2dc] text-xs rounded px-3 py-2 focus:ring-1 focus:ring-[#b58735] bg-white text-[#47473d]">
+                    <select id="sortSelect" onchange="window.location.href=this.value" class="border border-brand-border text-xs rounded px-3 py-2 focus:ring-1 focus:ring-[#b58735] bg-white text-brand-mutedtext">
                         @foreach (var opt in sortOptions)
                         {
                             <option value="@BuildFilterUrl("sort", opt.Key)" selected="@(aktifSort == opt.Key)">@opt.Value</option>
                         }
                     </select>
+
+                    @* Grid / List Toggle Buttons *@
+                    <div class="flex items-center border border-brand-border rounded overflow-hidden h-[34px]">
+                        <button type="button" id="btnGridView" onclick="setProductLayout('grid')"
+                                class="p-2 transition-colors focus:outline-none" title="@Localizer["GridView"]">
+                            <i class="fas fa-th-large text-xs"></i>
+                        </button>
+                        <button type="button" id="btnListView" onclick="setProductLayout('list')"
+                                class="p-2 transition-colors focus:outline-none border-l border-brand-border" title="@Localizer["ListView"]">
+                            <i class="fas fa-list text-xs"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <!-- Mobile Kategori Chips -->
             <div class="hidden md:flex lg:hidden flex gap-2 overflow-x-auto pb-3 mb-6 custom-scrollbar">
-                <a href="/Urun" class="whitespace-nowrap text-xs border @(!aktifKategori.HasValue ? "bg-[#313511] text-white border-[#313511]" : "border-[#e5e2dc] text-[#47473d]") rounded-full px-3 py-1.5">@Localizer["All"]</a>
+                <a href="/Urun" class="whitespace-nowrap text-xs border @(!aktifKategori.HasValue ? "bg-brand-olive text-white border-brand-olive" : "border-brand-border text-brand-mutedtext") rounded-full px-3 py-1.5">@Localizer["All"]</a>
                 @if (kategoriler != null)
                 {
                     foreach (var kat in kategoriler.Where(x => !x.SilindiMi && x.AktifMi))
                     {
                         bool isActive = aktifKategori.HasValue && aktifKategori.Value == kat.Id;
-                        <a href="/Urun?k=@kat.Id" class="whitespace-nowrap text-xs border @(isActive ? "bg-[#313511] text-white border-[#313511]" : "border-[#e5e2dc] text-[#47473d]") rounded-full px-3 py-1.5">@kat.LocalizedAd</a>
+                        <a href="/Urun?k=@kat.Id" class="whitespace-nowrap text-xs border @(isActive ? "bg-brand-olive text-white border-brand-olive" : "border-brand-border text-brand-mutedtext") rounded-full px-3 py-1.5">@kat.LocalizedAd</a>
                     }
                 }
             </div>
 
-            <!-- Ürün Grid -->
+            <!-- ÃœrÃ¼n Grid -->
             @if (Model != null && Model.Any())
             {
-                <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+            <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6" id="productGrid" data-motion-stagger>
                     @foreach (var urun in Model)
                     {
-                        var anaResim = urun.AnaGorselUrl;
-                        if (string.IsNullOrWhiteSpace(anaResim))
+                        var cardVm = new FilistinProje.Web.Models.ProductCardViewModel
                         {
-                            anaResim = urun.UrunResimleri?.OrderBy(r => r.Sira).FirstOrDefault()?.ResimYolu ?? "";
-                        }
-                        <div class="group relative">
-                            <a href="@BuildProductUrl(urun)" class="block relative overflow-hidden aspect-square bg-[#f8f6f2] mb-3 shadow-[inset_0_0_8px rgba(0,0,0,0.03)] flex items-center justify-center p-2">
-                                @if (!stoktaYokSatisIzni && !urun.StoktaVarMi)
-                                {
-                                    <span class="absolute top-2 left-2 z-10 bg-[#6b7280] text-white text-[9px] tracking-widest px-2 py-0.5 uppercase">@Localizer["OutOfStock"]</span>
-                                }
-                                else
-                                {
-                                    @if (urun.ToplamStok > 0 && urun.ToplamStok <= 5)
-                                    {
-                                        <span class="absolute top-2 left-2 z-10 bg-red-600 text-white text-[9px] tracking-widest px-2 py-0.5 uppercase">Son @urun.ToplamStok Adet</span>
-                                    }
-                                    else if (urun.YeniUrunMu)
-                                    {
-                                        <span class="absolute top-2 left-2 z-10 bg-[#313511] text-white text-[9px] tracking-widest px-2 py-0.5 uppercase">@Localizer["New"]</span>
-                                    }
-                                }
-                                @if (urun.IndirimVarMi && !(!stoktaYokSatisIzni && !urun.StoktaVarMi))
-                                {
-                                    <span class="absolute top-2 right-11 z-10 bg-[#b58735] text-white text-[10px] font-bold px-2 py-0.5 rounded-sm shadow-sm">%@urun.IndirimYuzdesi</span>
-                                }
-                                @if (!string.IsNullOrWhiteSpace(anaResim))
-                                {
-                                    <img src="@anaResim" alt="@urun.LocalizedBaslik" class="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-700" loading="lazy" decoding="async" />
-                                }
-                                else
-                                {
-                                    <div class="w-full h-full flex items-center justify-center text-[#c5c0b8]">
-                                        <i class="fas fa-image fa-3x"></i>
-                                    </div>
-                                }
-                            </a>
-                            <!-- Kalp / Favori Butonu -->
-                            <button type="button" onclick="window.toggleFavori(this, @urun.Id)" class="group/btn absolute top-3 right-3 w-9 h-9 bg-white/95 shadow-md rounded-full flex items-center justify-center transition-all duration-200 z-20 hover:scale-110 active:scale-90 md:w-8 md:h-8" title="@Localizer["AddToFavorites"]">
-                                <i class="far fa-heart text-sm text-[#47473d] group-hover/btn:text-red-400 transition-colors"></i>
-                            </button>
-                            <h3 class="text-xs font-medium text-[#1c1c18] line-clamp-2 mb-1 leading-relaxed">
-                                <a href="@BuildProductUrl(urun)" class="hover:text-[#b58735] transition-colors">@urun.LocalizedBaslik</a>
-                            </h3>
-                            <div class="flex items-center gap-2">
-                                @if (isWholesale && urun.TopFiyat.HasValue && urun.TopFiyat.Value > 0)
-                                {
-                                    <span class="text-sm font-semibold text-[#b58735]">@urun.TopFiyat?.ToString("N0") @currencySymbol</span>
-                                    <span class="text-xs text-gray-400 line-through">@urun.Fiyat.ToString("N0") @currencySymbol</span>
-                                }
-                                else if (urun.IndirimVarMi)
-                                {
-                                    <span class="text-sm font-semibold text-[#b58735]">@urun.IndirimliFiyat?.ToString("N0") @currencySymbol</span>
-                                    <span class="text-xs text-gray-400 line-through">@urun.Fiyat.ToString("N0") @currencySymbol</span>
-                                    <span class="text-[10px] text-white bg-[#b58735] px-1 py-0.5 rounded font-bold">-%@urun.IndirimYuzdesi</span>
-                                }
-                                else
-                                {
-                                    <span class="text-sm font-semibold text-[#1c1c18]">@urun.Fiyat.ToString("N0") @currencySymbol</span>
-                                }
-                            </div>
-                            @if (urun.KampanyaBitisTarihi.HasValue && urun.KampanyaBitisTarihi.Value > DateTime.UtcNow)
-                            {
-                                @await Html.PartialAsync("_CountdownPartial", urun.KampanyaBitisTarihi.Value)
-                            }
-                        </div>
+                            Id = urun.Id,
+                            Baslik = urun.LocalizedBaslik,
+                            Slug = urun.Slug ?? "",
+                            GorselUrl = !string.IsNullOrWhiteSpace(urun.AnaGorselUrl)
+                                ? urun.AnaGorselUrl
+                                : urun.UrunResimleri?.OrderBy(r => r.Sira).FirstOrDefault()?.ResimYolu ?? "",
+                            Fiyat = urun.Fiyat,
+                            IndirimliFiyat = urun.IndirimliFiyat,
+                            TopFiyat = urun.TopFiyat,
+                            IndirimVarMi = urun.IndirimVarMi,
+                            IndirimYuzdesi = urun.IndirimYuzdesi,
+                            YeniUrunMu = urun.YeniUrunMu,
+                            StoktaVarMi = urun.StoktaVarMi,
+                            ToplamStok = urun.ToplamStok,
+                            FiyatGizliMi = urun.FiyatGizliMi,
+                            KampanyaBitisTarihi = urun.KampanyaBitisTarihi,
+                            IsWholesale = isWholesale,
+                            ShowFavori = true,
+                            ShowQuickAdd = true,
+                        };
+                        @await Html.PartialAsync("_ProductCard", cardVm)
                     }
                 </div>
 
@@ -433,19 +443,19 @@
                     <div class="flex justify-center items-center gap-2 mt-16">
                         @if (currentPage > 1)
                         {
-                            <a href="@BuildFilterUrl("page", (currentPage - 1).ToString())" class="w-9 h-9 border border-[#e5e2dc] rounded flex items-center justify-center text-[#47473d] hover:bg-[#313511] hover:text-white hover:border-[#313511] transition-colors text-xs">
+                            <a href="@BuildFilterUrl("page", (currentPage - 1).ToString())" class="w-9 h-9 border border-brand-border rounded flex items-center justify-center text-brand-mutedtext hover:bg-brand-olive hover:text-white hover:border-brand-olive transition-colors text-xs">
                                 <i class="fas fa-chevron-left"></i>
                             </a>
                         }
                         @for (int i = Math.Max(1, currentPage - 2); i <= Math.Min(totalPages, currentPage + 2); i++)
                         {
-                            <a href="@BuildFilterUrl("page", i.ToString())" class="w-9 h-9 border @(i == currentPage ? "bg-[#313511] text-white border-[#313511]" : "border-[#e5e2dc] text-[#47473d] hover:bg-[#f1ede7]") rounded flex items-center justify-center text-xs transition-colors">
+                            <a href="@BuildFilterUrl("page", i.ToString())" class="w-9 h-9 border @(i == currentPage ? "bg-brand-olive text-white border-brand-olive" : "border-brand-border text-brand-mutedtext hover:bg-brand-warmcream") rounded flex items-center justify-center text-xs transition-colors">
                                 @i
                             </a>
                         }
                         @if (currentPage < totalPages)
                         {
-                            <a href="@BuildFilterUrl("page", (currentPage + 1).ToString())" class="w-9 h-9 border border-[#e5e2dc] rounded flex items-center justify-center text-[#47473d] hover:bg-[#313511] hover:text-white hover:border-[#313511] transition-colors text-xs">
+                            <a href="@BuildFilterUrl("page", (currentPage + 1).ToString())" class="w-9 h-9 border border-brand-border rounded flex items-center justify-center text-brand-mutedtext hover:bg-brand-olive hover:text-white hover:border-brand-olive transition-colors text-xs">
                                 <i class="fas fa-chevron-right"></i>
                             </a>
                         }
@@ -454,11 +464,11 @@
             }
             else
             {
-                <div class="text-center py-24 text-[#47473d]">
+                <div class="text-center py-24 text-brand-mutedtext">
                     <i class="fas fa-search fa-3x mb-6 opacity-30"></i>
-                    <h3 class="font-serif text-2xl text-[#313511] mb-2">@Localizer["ProductNotFound"]</h3>
+                    <h3 class="font-serif text-2xl text-brand-olive mb-2">@Localizer["ProductNotFound"]</h3>
                     <p class="text-sm mb-6">@Localizer["TryDifferentCategoryOrSearch"]</p>
-                    <a href="/Urun" class="inline-block border border-[#313511] text-[#313511] px-6 py-2 text-xs uppercase tracking-widest hover:bg-[#313511] hover:text-white transition-colors rounded-full">
+                    <a href="/Urun" class="inline-block border border-brand-olive text-brand-olive px-6 py-2 text-xs uppercase tracking-widest hover:bg-brand-olive hover:text-white transition-colors rounded-full">
                         @Localizer["ViewAllProducts"]
                     </a>
                 </div>
@@ -517,6 +527,46 @@
                     }, 300);
                 });
             }
+        })();
+
+        // ─── Grid / List Layout Toggle ───
+        window.setProductLayout = function(layout) {
+            const grid = document.getElementById('productGrid');
+            const btnGrid = document.getElementById('btnGridView');
+            const btnList = document.getElementById('btnListView');
+
+            if (!grid) return;
+
+            if (layout === 'list') {
+                grid.classList.add('layout-list');
+                localStorage.setItem('product_layout', 'list');
+
+                if (btnGrid) {
+                    btnGrid.classList.remove('bg-brand-warmcream', 'text-brand-olive');
+                    btnGrid.classList.add('bg-white', 'text-brand-mutedtext');
+                }
+                if (btnList) {
+                    btnList.classList.remove('bg-white', 'text-brand-mutedtext');
+                    btnList.classList.add('bg-brand-warmcream', 'text-brand-olive');
+                }
+            } else {
+                grid.classList.remove('layout-list');
+                localStorage.setItem('product_layout', 'grid');
+
+                if (btnGrid) {
+                    btnGrid.classList.remove('bg-white', 'text-brand-mutedtext');
+                    btnGrid.classList.add('bg-brand-warmcream', 'text-brand-olive');
+                }
+                if (btnList) {
+                    btnList.classList.remove('bg-brand-warmcream', 'text-brand-olive');
+                    btnList.classList.add('bg-white', 'text-brand-mutedtext');
+                }
+            }
+        };
+
+        (function() {
+            const savedLayout = localStorage.getItem('product_layout') || 'grid';
+            window.setProductLayout(savedLayout);
         })();
     </script>
 }

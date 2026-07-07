@@ -11,8 +11,7 @@ namespace FilistinProje.Web.Controllers
             var supportedCultures = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
                 "ar",
-                "en",
-                "tr"
+                "en"
             };
 
             if (!supportedCultures.Contains(culture))

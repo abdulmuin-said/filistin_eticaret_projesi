@@ -1,0 +1,106 @@
+@using System.Globalization
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var siteSettings = SiteSettingsService.GetSettings();
+    var brandName = string.IsNullOrWhiteSpace(siteSettings.MarkaAdi) ? siteSettings.SiteAdi : siteSettings.MarkaAdi;
+    var logoUrl = string.IsNullOrWhiteSpace(siteSettings.SiteLogoUrl) ? "/74anrps48logo2.svg" : siteSettings.SiteLogoUrl;
+    var currentCulture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+    bool isRtl = currentCulture == "ar";
+}
+
+<footer class="bg-[#313511] text-white pt-0 pb-8 mt-auto" dir="@(isRtl ? "rtl" : "ltr")" style="color: #ffffff;">
+
+    <!-- Trust Bar -->
+    <div class="border-b border-white/10 bg-[#25280c]">
+        <div class="container mx-auto grid grid-cols-3 gap-2 px-3 py-4 text-center md:gap-4 md:px-8 md:py-5">
+            <div class="flex flex-col items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-2 py-3 md:flex-row md:gap-3 md:border-0 md:bg-transparent md:px-0 md:py-0">
+                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#c6ca99]/35 text-[#c6ca99] md:h-10 md:w-10">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/></svg>
+                </span>
+                <div>
+                    <div class="text-[10px] uppercase leading-tight tracking-widest text-[#d9ddaa] md:text-xs">@Localizer["AllOverTurkey"]</div>
+                    <div class="text-xs font-semibold leading-tight text-white md:text-sm">@Localizer["FreeShipping"]</div>
+                </div>
+            </div>
+            <div class="flex flex-col items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-2 py-3 md:flex-row md:gap-3 md:border-0 md:bg-transparent md:px-0 md:py-0">
+                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#c6ca99]/35 text-[#c6ca99] md:h-10 md:w-10">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"/></svg>
+                </span>
+                <div>
+                    <div class="text-[10px] uppercase leading-tight tracking-widest text-[#d9ddaa] md:text-xs">@Localizer["SecurePayment"]</div>
+                    <div class="text-xs font-semibold leading-tight text-white md:text-sm">256 Bit SSL</div>
+                </div>
+            </div>
+            <div class="flex flex-col items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-2 py-3 md:flex-row md:gap-3 md:border-0 md:bg-transparent md:px-0 md:py-0">
+                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#c6ca99]/35 text-[#c6ca99] md:h-10 md:w-10">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"/></svg>
+                </span>
+                <div>
+                    <div class="text-[10px] uppercase leading-tight tracking-widest text-[#d9ddaa] md:text-xs">@Localizer["BankTransfer"]</div>
+                    <div class="text-xs font-semibold leading-tight text-white md:text-sm">@Localizer["BankTransferFooter"]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-8 pt-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
+
+            <!-- Newsletter Signup -->
+            <div>
+                <h3 class="font-serif text-2xl mb-4 text-white drop-shadow-sm">@Localizer["SubscribeToNewsletter"]</h3>
+                <p class="text-sm font-light mb-6 text-gray-100 leading-relaxed max-w-md">
+                    @Localizer["SubscribeToNewsletterDesc"]
+                </p>
+                <form id="newsletterForm" action="/Home/BulteneAboneOl" method="post" class="relative flex max-w-md items-center rounded-full border border-white/20 bg-white/10 px-4 py-2 shadow-inner">
+                    @Html.AntiForgeryToken()
+                    <input name="email" id="newsletterEmail" class="bg-transparent border-none w-full focus:ring-0 text-sm px-0 text-white placeholder-gray-300 outline-none" placeholder="@Localizer["EmailAddress"]" required="" type="email"/>
+                    <button type="submit" class="rounded-full bg-[#eef2c3] px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#25280c] transition-colors ms-4 whitespace-nowrap hover:bg-white">@Localizer["Subscribe"]</button>
+                </form>
+                <div id="newsletterMessage" class="text-xs mt-2 hidden"></div>
+            </div>
+
+            <!-- Corporate Links & Socials -->
+            <div class="flex flex-col md:items-end">
+                <h4 class="font-bold text-sm tracking-widest mb-4 uppercase text-white drop-shadow-sm">@Localizer["Corporate"]</h4>
+                <ul class="space-y-2 text-sm font-light text-gray-100 text-start md:text-end">
+                    <li><a class="hover:text-white transition-colors" href="/Kurumsal/Hakkimizda">@Localizer["AboutUs"]</a></li>
+                    <li><a class="hover:text-white transition-colors" href="/Kurumsal/Iletisim">@Localizer["Contact"]</a></li>
+                    <li><a class="hover:text-white transition-colors" href="/Urun">@Localizer["AllProducts"]</a></li>
+                    <li><a class="hover:text-white transition-colors" href="/Sozlesmeler/Gizlilik">@Localizer["PrivacyPolicy"]</a></li>
+                    <li><a class="hover:text-white transition-colors" href="/Sozlesmeler/MesafeliSatis">@Localizer["DistanceSalesContract"]</a></li>
+                </ul>
+                <div class="mt-6 flex gap-3 text-gray-100">
+                    @if (!string.IsNullOrEmpty(siteSettings.InstagramUrl))
+                    {
+                        <a href="@siteSettings.InstagramUrl" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:border-white/40 hover:bg-white/10"><i class="fab fa-instagram text-lg"></i></a>
+                    }
+                    @if (!string.IsNullOrEmpty(siteSettings.WhatsappNumarasi))
+                    {
+                        <a href="https://wa.me/@siteSettings.WhatsappNumarasi.Replace(" ", "").Replace("+", "")" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:border-white/40 hover:bg-white/10"><i class="fab fa-whatsapp text-lg"></i></a>
+                    }
+                    @if (!string.IsNullOrEmpty(siteSettings.FacebookUrl))
+                    {
+                        <a href="@siteSettings.FacebookUrl" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:border-white/40 hover:bg-white/10"><i class="fab fa-facebook text-lg"></i></a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="border-t border-[#47473d] pt-6 flex flex-col md:flex-row justify-between items-center text-xs text-gray-200">
+            <div class="mb-4 md:mb-0 text-center md:text-start order-2 md:order-1">
+                <p class="text-[11px] tracking-wide">© @DateTime.Now.Year <span class="text-white font-medium">@brandName</span> — @Localizer["AllRightsReserved"]</p>
+            </div>
+            <div class="mb-4 md:mb-0 order-1 md:order-2">
+                <a href="/Sozlesmeler/Gizlilik" class="text-[11px] text-gray-200 hover:text-white transition-colors mx-2">@Localizer["PrivacyPolicy"]</a>
+                <span class="text-gray-600">|</span>
+                <a href="/Kurumsal/IadeKosullari" class="text-[11px] text-gray-200 hover:text-white transition-colors mx-2">@Localizer["ReturnExchange"]</a>
+                <span class="text-gray-600">|</span>
+                <a href="/Kurumsal/Hakkimizda" class="text-[11px] text-gray-200 hover:text-white transition-colors mx-2">@Localizer["AboutUs"]</a>
+            </div>
+        </div>
+    </div>
+</footer>

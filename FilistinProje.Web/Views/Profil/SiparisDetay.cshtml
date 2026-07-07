@@ -1,11 +1,11 @@
-@model FilistinProje.Core.Varliklar.Siparis
+﻿@model FilistinProje.Core.Varliklar.Siparis
 @using FilistinProje.Core.Helpers
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["OrderDetail"] + " #" + Model.Id;
     var siteSettings = SiteSettingsService.GetSettings();
-    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "â‚ª" : siteSettings.ParaBirimi;
     var urunler = ViewBag.Urunler as List<dynamic>;
     var statusStep = Model.Durum;
     var isCancelled = Model.Durum == 4;
@@ -14,41 +14,41 @@
 }
 
 <!-- Breadcrumb -->
-<div class="bg-[#f1ede7] border-b border-[#e5e2dc] py-3">
-    <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-[#47473d]">
-        <a href="/" class="hover:text-[#313511] transition-colors">@Localizer["HomePage"]</a>
+<div class="bg-brand-warmcream border-b border-brand-border py-3">
+    <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-brand-mutedtext">
+        <a href="/" class="hover:text-brand-olive transition-colors">@Localizer["HomePage"]</a>
         <span>/</span>
-        <a href="/Profil" class="hover:text-[#313511] transition-colors">@Localizer["MyAccount"]</a>
+        <a href="/Profil" class="hover:text-brand-olive transition-colors">@Localizer["MyAccount"]</a>
         <span>/</span>
-        <a href="/Profil/Siparislerim" class="hover:text-[#313511] transition-colors">@Localizer["MyOrders"]</a>
+        <a href="/Profil/Siparislerim" class="hover:text-brand-olive transition-colors">@Localizer["MyOrders"]</a>
         <span>/</span>
-        <span class="text-[#1c1c18] font-medium">#@Model.Id</span>
+        <span class="text-brand-darktext font-medium">#@Model.Id</span>
     </div>
 </div>
 
 <div class="container mx-auto px-4 py-10">
     <div class="flex flex-col lg:flex-row gap-8">
         
-        <!-- Yan Menü -->
+        <!-- Yan MenÃ¼ -->
         <aside class="lg:w-56 flex-shrink-0">
-            <div class="bg-white border border-[#e5e2dc] rounded-lg overflow-hidden">
-                <div class="bg-[#313511] p-4 text-center">
+            <div class="bg-white border border-brand-border rounded-lg overflow-hidden">
+                <div class="bg-brand-olive p-4 text-center">
                     <p class="text-white text-sm font-medium">@Localizer["MyAccount"]</p>
                 </div>
                 <nav class="p-2">
-                    <a href="/Profil" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-[#47473d] hover:bg-[#f1ede7] transition-colors mb-1">
+                    <a href="/Profil" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
                         <i class="fas fa-user w-4"></i> @Localizer["Overview"]
                     </a>
-                    <a href="/Profil/Siparislerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-[#313511] bg-[#f1ede7] font-semibold mb-1">
+                    <a href="/Profil/Siparislerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-olive bg-brand-warmcream font-semibold mb-1">
                         <i class="fas fa-box w-4"></i> @Localizer["MyOrders"]
                     </a>
-                    <a href="/Profil/Adreslerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-[#47473d] hover:bg-[#f1ede7] transition-colors mb-1">
+                    <a href="/Profil/Adreslerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
                         <i class="fas fa-location-dot w-4"></i> @Localizer["MyAddresses"]
                     </a>
-                    <a href="/Favori" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-[#47473d] hover:bg-[#f1ede7] transition-colors mb-1">
+                    <a href="/Favori" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
                         <i class="fas fa-heart w-4"></i> @Localizer["MyFavorites"]
                     </a>
-                    <hr class="border-[#e5e2dc] my-2" />
+                    <hr class="border-brand-border my-2" />
                     <form action="/Hesap/CikisYap" method="post" class="m-0">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded text-sm text-red-500 hover:bg-red-50 transition-colors text-left">
@@ -63,9 +63,9 @@
             <!-- Header -->
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
                 <div>
-                    <span class="text-xs uppercase tracking-widest text-[#b58735] font-medium block mb-1">@Localizer["OrderDetail"]</span>
-                    <h1 class="font-serif text-3xl text-[#313511]">@Localizer["OrderNo"] #@Model.Id</h1>
-                    <p class="text-xs text-[#47473d] mt-2">@Localizer["CreatedOnDate", Model.OlusturulmaTarihi.ToString("dd.MM.yyyy HH:mm")]</p>
+                    <span class="text-xs uppercase tracking-widest text-brand-gold font-medium block mb-1">@Localizer["OrderDetail"]</span>
+                    <h1 class="font-serif text-3xl text-brand-olive">@Localizer["OrderNo"] #@Model.Id</h1>
+                    <p class="text-xs text-brand-mutedtext mt-2">@Localizer["CreatedOnDate", Model.OlusturulmaTarihi.ToString("dd.MM.yyyy HH:mm")]</p>
                 </div>
                 <div class="flex gap-3">
                     @if (Model.Durum == 0 || Model.Durum == 1)
@@ -121,7 +121,7 @@
                             <i class="fas fa-rotate-left"></i> @Localizer["ReturnRequest"]
                         </a>
                     }
-                    <a href="/Profil/Siparislerim" class="border border-[#e5e2dc] text-[#47473d] text-xs tracking-widest uppercase px-4 py-2 rounded hover:bg-[#f1ede7] transition-colors flex items-center gap-2">
+                    <a href="/Profil/Siparislerim" class="border border-brand-border text-brand-mutedtext text-xs tracking-widest uppercase px-4 py-2 rounded hover:bg-brand-warmcream transition-colors flex items-center gap-2">
                         <i class="fas fa-arrow-left"></i> @Localizer["BackToList"]
                     </a>
                 </div>
@@ -135,15 +135,15 @@
                 </div>
             }
 
-            <!-- Takip Adımları -->
-            <div class="bg-white border border-[#e5e2dc] rounded-lg p-6 mb-8">
-                <h3 class="font-serif text-xl text-[#313511] mb-6 border-b border-[#e5e2dc] pb-4">
+            <!-- Takip AdÄ±mlarÄ± -->
+            <div class="bg-white border border-brand-border rounded-lg p-6 mb-8">
+                <h3 class="font-serif text-xl text-brand-olive mb-6 border-b border-brand-border pb-4">
                     @(isReturn ? Localizer["ReturnProcess"].Value : Localizer["OrderTracking"].Value)
                 </h3>
                 
                 <div class="flex flex-col md:flex-row gap-6 relative">
                     <!-- Progress Line -->
-                    <div class="hidden md:block absolute top-6 left-0 right-0 h-0.5 bg-[#e5e2dc] -z-10 mx-12"></div>
+                    <div class="hidden md:block absolute top-6 left-0 right-0 h-0.5 bg-brand-border -z-10 mx-12"></div>
                     
                     @if (isCancelled)
                     {
@@ -166,10 +166,10 @@
                                 ? statusStep >= adim.Puan
                                 : SiparisDurumHelper.GetProgressStep(Model.Durum) >= SiparisDurumHelper.GetProgressStep(adim.Puan);
                             <div class="flex-1 text-center relative z-10">
-                                <div class="w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-3 transition-colors @(isActive ? "bg-[#313511] text-white" : "bg-[#f1ede7] text-[#a09e99] border-2 border-white")">
+                                <div class="w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-3 transition-colors @(isActive ? "bg-brand-olive text-white" : "bg-brand-warmcream text-brand-mutedtext border-2 border-white")">
                                     <i class="@adim.Icon"></i>
                                 </div>
-                                <h4 class="text-xs font-semibold uppercase tracking-wider @(isActive ? "text-[#1c1c18]" : "text-[#a09e99]")">@adim.Baslik</h4>
+                                <h4 class="text-xs font-semibold uppercase tracking-wider @(isActive ? "text-brand-darktext" : "text-brand-mutedtext")">@adim.Baslik</h4>
                             </div>
                         }
                     }
@@ -189,10 +189,10 @@
                                 ? statusStep >= adim.Puan
                                 : SiparisDurumHelper.GetProgressStep(Model.Durum) >= SiparisDurumHelper.GetProgressStep(adim.Puan);
                             <div class="flex-1 text-center relative z-10">
-                                <div class="w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-3 transition-colors @(isActive ? "bg-[#313511] text-white" : "bg-[#f1ede7] text-[#a09e99] border-2 border-white")">
+                                <div class="w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-3 transition-colors @(isActive ? "bg-brand-olive text-white" : "bg-brand-warmcream text-brand-mutedtext border-2 border-white")">
                                     <i class="@adim.Icon"></i>
                                 </div>
-                                <h4 class="text-xs font-semibold uppercase tracking-wider @(isActive ? "text-[#1c1c18]" : "text-[#a09e99]")">@adim.Baslik</h4>
+                                <h4 class="text-xs font-semibold uppercase tracking-wider @(isActive ? "text-brand-darktext" : "text-brand-mutedtext")">@adim.Baslik</h4>
                             </div>
                         }
                     }
@@ -200,27 +200,27 @@
 
                 @if (!string.IsNullOrEmpty(Model.KargoTakipNo) && !isCancelled)
                 {
-                    <div class="mt-8 bg-[#f8f9fa] border border-[#e5e2dc] rounded p-4 flex items-center justify-between">
+                    <div class="mt-8 bg-gray-50 border border-brand-border rounded p-4 flex items-center justify-between">
                         <div>
-                            <p class="text-[10px] uppercase tracking-widest text-[#47473d] mb-1">@Localizer["TrackingNumber"]</p>
-                            <p class="font-mono text-lg font-medium text-[#1c1c18]" id="trackingNo">@Model.KargoTakipNo</p>
+                            <p class="text-[10px] uppercase tracking-widest text-brand-mutedtext mb-1">@Localizer["TrackingNumber"]</p>
+                            <p class="font-mono text-lg font-medium text-brand-darktext" id="trackingNo">@Model.KargoTakipNo</p>
                         </div>
-                        <button type="button" class="border border-[#e5e2dc] bg-white text-[#47473d] text-xs px-3 py-1.5 rounded hover:bg-[#f1ede7] transition-colors flex items-center gap-2" onclick="copyTracking(this)">
+                        <button type="button" class="border border-brand-border bg-white text-brand-mutedtext text-xs px-3 py-1.5 rounded hover:bg-brand-warmcream transition-colors flex items-center gap-2" onclick="copyTracking(this)">
                             <i class="far fa-copy"></i> @Localizer["Copy"]
                         </button>
                     </div>
                 }
             </div>
 
-            <!-- Ürünler Tablosu -->
-            <div class="bg-white border border-[#e5e2dc] rounded-lg overflow-hidden mb-8">
-                <div class="p-6 border-b border-[#e5e2dc]">
-                    <h3 class="font-serif text-xl text-[#313511]">@Localizer["PurchasedProducts"]</h3>
+            <!-- ÃœrÃ¼nler Tablosu -->
+            <div class="bg-white border border-brand-border rounded-lg overflow-hidden mb-8">
+                <div class="p-6 border-b border-brand-border">
+                    <h3 class="font-serif text-xl text-brand-olive">@Localizer["PurchasedProducts"]</h3>
                 </div>
                 
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
-                        <thead class="bg-[#f1ede7] text-[#47473d] text-xs uppercase tracking-widest">
+                        <thead class="bg-brand-warmcream text-brand-mutedtext text-xs uppercase tracking-widest">
                             <tr>
                                 <th class="px-6 py-4 font-medium">@Localizer["Product"]</th>
                                 <th class="px-6 py-4 font-medium">@Localizer["Features"]</th>
@@ -233,16 +233,16 @@
                             {
                                 foreach (var item in urunler)
                                 {
-                                    <tr class="hover:bg-[#fcf9f3] transition-colors">
+                                    <tr class="hover:bg-brand-cream transition-colors">
                                         <td class="px-6 py-4">
                                             <div class="flex items-center gap-4">
-                                            <img src="@item.Resim" alt="@item.Baslik" class="w-16 h-16 object-cover rounded border border-[#e5e2dc]" loading="lazy" decoding="async" />
+                                            <img src="@item.Resim" alt="@item.Baslik" class="w-16 h-16 object-cover rounded border border-brand-border" loading="lazy" decoding="async" />
                                                 <div>
-                                                    <a href="/Urun/Detay/@(FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.Baslik))-@item.UrunId" class="font-semibold text-[#1c1c18] hover:text-[#b58735] transition-colors block mb-1">@item.Baslik</a>
-                                                    <div class="text-xs text-[#47473d]">@Localizer["UnitPrice"]: @item.Fiyat.ToString("N2") @currencySymbol</div>
+                                                    <a href="/Urun/Detay/@(FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.Baslik))-@item.UrunId" class="font-semibold text-brand-darktext hover:text-brand-gold transition-colors block mb-1">@item.Baslik</a>
+                                                    <div class="text-xs text-brand-mutedtext">@Localizer["UnitPrice"]: @item.Fiyat.ToString("N2") @currencySymbol</div>
                                                     @if (Model.Durum == 3)
                                                     {
-                                                        <a href="/Urun/Detay/@(FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.Baslik))-@item.UrunId#reviews-section" class="text-[10px] text-[#b58735] hover:text-[#313511] uppercase tracking-wider mt-2 inline-block">
+                                                        <a href="/Urun/Detay/@(FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.Baslik))-@item.UrunId#reviews-section" class="text-[10px] text-brand-gold hover:text-brand-olive uppercase tracking-wider mt-2 inline-block">
                                                             <i class="fas fa-star mr-1"></i>@Localizer["RateProductShort"]
                                                         </a>
                                                     }
@@ -250,14 +250,14 @@
                                             </div>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <span class="inline-block border border-[#e5e2dc] rounded bg-white px-2 py-1 text-xs">@item.Secenek</span>
+                                            <span class="inline-block border border-brand-border rounded bg-white px-2 py-1 text-xs">@item.Secenek</span>
                                             @if (!string.IsNullOrEmpty(item.SecenekDetay))
                                             {
-                                                <div class="text-xs text-[#47473d] mt-2">@item.SecenekDetay</div>
+                                                <div class="text-xs text-brand-mutedtext mt-2">@item.SecenekDetay</div>
                                             }
                                             @if (!string.IsNullOrWhiteSpace(item.CerceveModeli))
                                             {
-                                                <div class="text-xs text-[#47473d] mt-2">@Localizer["FrameLabel"]: @item.CerceveModeli</div>
+                                                <div class="text-xs text-brand-mutedtext mt-2">@Localizer["FrameLabel"]: @item.CerceveModeli</div>
                                             }
                                             @if (!string.IsNullOrWhiteSpace(item.MusteriNotu))
                                             {
@@ -272,11 +272,11 @@
                                 }
                             }
                         </tbody>
-                        <tfoot class="bg-[#fcf9f3]">
+                        <tfoot class="bg-brand-cream">
                             <tr>
-                                <td colspan="3" class="px-6 py-4 text-right text-[#47473d]">
+                                <td colspan="3" class="px-6 py-4 text-right text-brand-mutedtext">
                                     <div class="text-xs mb-1">@Localizer["Subtotal"]</div>
-                                    <div class="font-medium text-[#1c1c18]">@araToplam.ToString("N2") @currencySymbol</div>
+                                    <div class="font-medium text-brand-darktext">@araToplam.ToString("N2") @currencySymbol</div>
                                     @if (Model.IndirimTutari > 0)
                                     {
                                         <div class="text-green-600 text-xs mt-2">
@@ -285,9 +285,9 @@
                                     }
                                     <div class="text-xs mt-2">@Localizer["ShippingLabel"]: @(Model.KargoUcreti == 0 ? Localizer["Free"].Value : $"{Model.KargoUcreti.ToString("N2")} {currencySymbol}")</div>
                                 </td>
-                                <td class="px-6 py-4 text-right border-l border-[#e5e2dc]">
-                                    <div class="text-[10px] uppercase tracking-widest text-[#47473d] mb-1">@Localizer["GrandTotal"]</div>
-                                    <div class="font-serif text-2xl text-[#313511]">@Model.ToplamTutar.ToString("N2") @currencySymbol</div>
+                                <td class="px-6 py-4 text-right border-l border-brand-border">
+                                    <div class="text-[10px] uppercase tracking-widest text-brand-mutedtext mb-1">@Localizer["GrandTotal"]</div>
+                                    <div class="font-serif text-2xl text-brand-olive">@Model.ToplamTutar.ToString("N2") @currencySymbol</div>
                                 </td>
                             </tr>
                         </tfoot>
@@ -295,56 +295,56 @@
                 </div>
             </div>
 
-            <!-- Adres ve Ödeme Bilgileri -->
+            <!-- Adres ve Ã–deme Bilgileri -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Teslimat Adresi -->
-                <div class="bg-white border border-[#e5e2dc] rounded-lg p-6">
-                    <h3 class="font-serif text-lg text-[#313511] mb-6 flex items-center gap-2 border-b border-[#e5e2dc] pb-3">
-                        <i class="fas fa-location-dot text-[#b58735]"></i> @Localizer["DeliveryAddress"]
+                <div class="bg-white border border-brand-border rounded-lg p-6">
+                    <h3 class="font-serif text-lg text-brand-olive mb-6 flex items-center gap-2 border-b border-brand-border pb-3">
+                        <i class="fas fa-location-dot text-brand-gold"></i> @Localizer["DeliveryAddress"]
                     </h3>
                     <div class="space-y-4 text-sm">
                         <div class="flex gap-3">
-                            <i class="fas fa-user text-[#a09e99] mt-1 w-4"></i>
+                            <i class="fas fa-user text-brand-mutedtext mt-1 w-4"></i>
                             <div>
-                                <div class="text-[10px] uppercase tracking-widest text-[#a09e99] mb-0.5">@Localizer["FullName"]</div>
-                                <div class="font-medium text-[#1c1c18]">@Model.MusteriAdSoyad</div>
+                                <div class="text-[10px] uppercase tracking-widest text-brand-mutedtext mb-0.5">@Localizer["FullName"]</div>
+                                <div class="font-medium text-brand-darktext">@Model.MusteriAdSoyad</div>
                             </div>
                         </div>
                         <div class="flex gap-3">
-                            <i class="fas fa-phone text-[#a09e99] mt-1 w-4"></i>
+                            <i class="fas fa-phone text-brand-mutedtext mt-1 w-4"></i>
                             <div>
-                                <div class="text-[10px] uppercase tracking-widest text-[#a09e99] mb-0.5">@Localizer["Phone"]</div>
-                                <div class="font-medium text-[#1c1c18]">@Model.Telefon</div>
+                                <div class="text-[10px] uppercase tracking-widest text-brand-mutedtext mb-0.5">@Localizer["Phone"]</div>
+                                <div class="font-medium text-brand-darktext">@Model.Telefon</div>
                             </div>
                         </div>
                         <div class="flex gap-3">
-                            <i class="fas fa-map text-[#a09e99] mt-1 w-4"></i>
+                            <i class="fas fa-map text-brand-mutedtext mt-1 w-4"></i>
                             <div>
-                                <div class="text-[10px] uppercase tracking-widest text-[#a09e99] mb-0.5">@Localizer["Address"]</div>
-                                <div class="text-[#1c1c18]">@Model.AcikAdres</div>
-                                <div class="text-xs text-[#47473d] mt-1">@Model.Ilce / @Model.Sehir</div>
+                                <div class="text-[10px] uppercase tracking-widest text-brand-mutedtext mb-0.5">@Localizer["Address"]</div>
+                                <div class="text-brand-darktext">@Model.AcikAdres</div>
+                                <div class="text-xs text-brand-mutedtext mt-1">@Model.Ilce / @Model.Sehir</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Ödeme Bilgisi -->
-                <div class="bg-white border border-[#e5e2dc] rounded-lg p-6">
-                    <h3 class="font-serif text-lg text-[#313511] mb-6 flex items-center gap-2 border-b border-[#e5e2dc] pb-3">
-                        <i class="fas fa-credit-card text-[#b58735]"></i> @Localizer["PaymentInfo"]
+                <!-- Ã–deme Bilgisi -->
+                <div class="bg-white border border-brand-border rounded-lg p-6">
+                    <h3 class="font-serif text-lg text-brand-olive mb-6 flex items-center gap-2 border-b border-brand-border pb-3">
+                        <i class="fas fa-credit-card text-brand-gold"></i> @Localizer["PaymentInfo"]
                     </h3>
                     <div class="space-y-4 text-sm">
                         <div class="flex gap-3">
-                            <i class="fas fa-shield-halved text-[#a09e99] mt-1 w-4"></i>
+                            <i class="fas fa-shield-halved text-brand-mutedtext mt-1 w-4"></i>
                             <div>
-                                <div class="text-[10px] uppercase tracking-widest text-[#a09e99] mb-0.5">@Localizer["PaymentStatus"]</div>
+                                <div class="text-[10px] uppercase tracking-widest text-brand-mutedtext mb-0.5">@Localizer["PaymentStatus"]</div>
                                 <div class="font-medium text-green-600">@Localizer["PaymentSuccessful"]</div>
                             </div>
                         </div>
                         <div class="flex gap-3">
-                            <i class="fas fa-file-invoice text-[#a09e99] mt-1 w-4"></i>
+                            <i class="fas fa-file-invoice text-brand-mutedtext mt-1 w-4"></i>
                             <div>
-                                <div class="text-[10px] uppercase tracking-widest text-[#a09e99] mb-0.5">@Localizer["Invoice"]</div>
+                                <div class="text-[10px] uppercase tracking-widest text-brand-mutedtext mb-0.5">@Localizer["Invoice"]</div>
                                 @if (Model.FaturaYuklendiMi)
                                 {
                                     <a href="/Siparis/FaturaIndir?id=@Model.Id" target="_blank" class="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-medium">
@@ -359,16 +359,16 @@
                                 }
                                 else
                                 {
-                                    <div class="text-[#47473d]">@Localizer["InvoiceNotCreated"]</div>
+                                    <div class="text-brand-mutedtext">@Localizer["InvoiceNotCreated"]</div>
                                 }
                             </div>
                         </div>
                         <div class="flex gap-3">
-                            <i class="fas fa-history text-[#a09e99] mt-1 w-4"></i>
+                            <i class="fas fa-history text-brand-mutedtext mt-1 w-4"></i>
                             <div>
-                                <div class="text-[10px] uppercase tracking-widest text-[#a09e99] mb-0.5">@Localizer["DocumentsAndRecords"]</div>
-                                <div class="text-[#1c1c18]">@Localizer["OrderRecordAdded"]</div>
-                                <div class="text-xs text-[#47473d] mt-1">@Localizer["SupportContactInfo"]</div>
+                                <div class="text-[10px] uppercase tracking-widest text-brand-mutedtext mb-0.5">@Localizer["DocumentsAndRecords"]</div>
+                                <div class="text-brand-darktext">@Localizer["OrderRecordAdded"]</div>
+                                <div class="text-xs text-brand-mutedtext mt-1">@Localizer["SupportContactInfo"]</div>
                             </div>
                         </div>
                     </div>

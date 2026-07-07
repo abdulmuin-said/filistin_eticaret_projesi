@@ -1,0 +1,204 @@
+- generic [ref=f193e2]:
+  - navigation "القائمة الرئيسية للإدارة" [ref=f193e3]:
+    - generic [ref=f193e4]:
+      - link "7ANRPS48" [ref=f193e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f193e6]
+      - button "Kapat" [ref=f193e7] [cursor=pointer]:
+        - generic [ref=f193e8]: 
+    - generic [ref=f193e9]:
+      - link " لوحة البيانات" [ref=f193e10] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f193e11]: 
+        - text: لوحة البيانات
+      - generic [ref=f193e12]:
+        - generic [ref=f193e13]:
+          - generic [ref=f193e14]: 
+          - text: إدارة الطلبات
+        - link " الطلبات" [ref=f193e15] [cursor=pointer]:
+          - /url: /Admin/Siparis
+          - generic [ref=f193e16]: 
+          - text: الطلبات
+        - link " طلبات جديدة" [ref=f193e17] [cursor=pointer]:
+          - /url: /Admin/Siparis?durum=0
+          - generic [ref=f193e18]: 
+          - text: طلبات جديدة
+        - link " شركات الشحن" [ref=f193e19] [cursor=pointer]:
+          - /url: /Admin/Kargo
+          - generic [ref=f193e20]: 
+          - text: شركات الشحن
+        - link " طلبات الإرجاع" [ref=f193e21] [cursor=pointer]:
+          - /url: /Admin/Iade
+          - generic [ref=f193e22]: 
+          - text: طلبات الإرجاع
+      - generic [ref=f193e23]:
+        - generic [ref=f193e24]:
+          - generic [ref=f193e25]: 
+          - text: إدارة المنتجات
+        - link " المنتجات" [ref=f193e26] [cursor=pointer]:
+          - /url: /Admin/Urun
+          - generic [ref=f193e27]: 
+          - text: المنتجات
+        - link "+ إضافة منتج جديد" [ref=f193e28] [cursor=pointer]:
+          - /url: /Admin/Urun/Ekle
+          - generic [ref=f193e29]: +
+          - text: إضافة منتج جديد
+        - link " التصنيفات" [ref=f193e30] [cursor=pointer]:
+          - /url: /Admin/Kategori
+          - generic [ref=f193e31]: 
+          - text: التصنيفات
+        - link " تحديث الأسعار الجماعي" [ref=f193e32] [cursor=pointer]:
+          - /url: /Admin/TopluFiyatGuncelle
+          - generic [ref=f193e33]: 
+          - text: تحديث الأسعار الجماعي
+      - generic [ref=f193e34]:
+        - generic [ref=f193e35]:
+          - generic [ref=f193e36]: 
+          - text: محتوى المتجر
+        - link " إدارة الشرائح" [ref=f193e37] [cursor=pointer]:
+          - /url: /Admin/Slayt
+          - generic [ref=f193e38]: 
+          - text: إدارة الشرائح
+        - link " إدارة عجلة الحظ" [ref=f193e39] [cursor=pointer]:
+          - /url: /Admin/CarkOdul
+          - generic [ref=f193e40]: 
+          - text: إدارة عجلة الحظ
+        - link " إشعارات الدفع" [ref=f193e41] [cursor=pointer]:
+          - /url: /Admin/PushBildirim
+          - generic [ref=f193e42]: 
+          - text: إشعارات الدفع
+        - link " كوبونات الخصم" [ref=f193e43] [cursor=pointer]:
+          - /url: /Admin/Kupon
+          - generic [ref=f193e44]: 
+          - text: كوبونات الخصم
+        - link " الرسائل" [ref=f193e45] [cursor=pointer]:
+          - /url: /Admin/Iletisim
+          - generic [ref=f193e46]: 
+          - text: الرسائل
+        - link " مشتركي النشرة البريدية" [ref=f193e47] [cursor=pointer]:
+          - /url: /Admin/Bulten
+          - generic [ref=f193e48]: 
+          - text: مشتركي النشرة البريدية
+      - link " الأعضاء" [ref=f193e49] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f193e50]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=f193e51] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f193e52]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=f193e53] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f193e54]: 
+        - text: تجار الجملة
+      - link " التقارير" [ref=f193e55] [cursor=pointer]:
+        - /url: /Admin/Rapor
+        - generic [ref=f193e56]: 
+        - text: التقارير
+      - link " الحسابات البنكية" [ref=f193e57] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f193e58]: 
+        - text: الحسابات البنكية
+      - link " الإعدادات" [ref=f193e59] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f193e60]: 
+        - text: الإعدادات
+      - generic [ref=f193e61]:
+        - link " عرض الموقع المباشر" [ref=f193e62] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f193e63]: 
+          - text: عرض الموقع المباشر
+        - button " تسجيل الخروج" [ref=f193e65] [cursor=pointer]:
+          - generic [ref=f193e66]: 
+          - text: تسجيل الخروج
+  - banner [ref=f193e67]:
+    - generic [ref=f193e68]:
+      - button "Menü" [ref=f193e69] [cursor=pointer]
+      - link "7ANRPS48 لوحة التحكم" [ref=f193e73] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f193e74]
+    - text:           +                        
+    - generic [ref=f193e75]:
+      - text: 
+      - combobox "اللغة" [ref=f193e77]:
+        - option "AR" [selected]
+        - option "EN"
+      - generic [ref=f193e78]:
+        - button "7" [ref=f193e79] [cursor=pointer]:
+          - generic [ref=f193e80]: "7"
+        - text:  
+  - generic [ref=f193e81]:
+    - main [ref=f193e82]:
+      - generic [ref=f193e83]:
+        - generic [ref=f193e84]:
+          - generic [ref=f193e85]:
+            - heading "إعدادات الصفحة الرئيسية" [level=1] [ref=f193e86]
+            - paragraph [ref=f193e87]: أدر صور وفيديوهات سلايدر الصفحة الرئيسية الظاهرة في الموقع. إذا وُجد فيديو يتغير السلايد بعد انتهائه.
+          - generic [ref=f193e88]:
+            - link " عرض الموقع" [ref=f193e89] [cursor=pointer]:
+              - /url: /
+              - generic [ref=f193e90]: 
+              - text: عرض الموقع
+            - button " حفظ التغييرات" [ref=f193e91] [cursor=pointer]:
+              - generic [ref=f193e92]: 
+              - text: حفظ التغييرات
+        - generic [ref=f193e94]:
+          - generic [ref=f193e95]:
+            - generic [ref=f193e96]:
+              - generic [ref=f193e97]:
+                - generic [ref=f193e98]: 
+                - text: سلايدر الصفحة الرئيسية
+              - checkbox [checked] [ref=f193e100]
+            - generic [ref=f193e102]:
+              - generic [ref=f193e104]:
+                - generic [ref=f193e108]: Slider 1
+                - generic [ref=f193e111]:
+                  - generic [ref=f193e112]:
+                    - generic [ref=f193e113]: صورة السلايدر
+                    - button "Choose File" [ref=f193e114]
+                    - generic [ref=f193e115]: تُستخدم هذه الصورة كبديل إذا تعذر تحميل الفيديو أو تشغيله.
+                  - generic [ref=f193e116]:
+                    - generic [ref=f193e117]: رابط الفيديو
+                    - textbox "/video/slider1.mp4" [ref=f193e118]
+                    - generic [ref=f193e119]: "مثال: /video/slider1.mp4 أو لاحقاً /video/slider1.webm."
+                  - generic [ref=f193e120]:
+                    - generic [ref=f193e121]: رفع ملف فيديو
+                    - button "Choose File" [ref=f193e122]
+                    - generic [ref=f193e123]: إذا لم يتم اختيار فيديو جديد فسيتم الاحتفاظ بالفيديو الحالي.
+              - generic [ref=f193e125]:
+                - generic [ref=f193e129]: Slider 2
+                - generic [ref=f193e132]:
+                  - generic [ref=f193e133]:
+                    - generic [ref=f193e134]: صورة السلايدر
+                    - button "Choose File" [ref=f193e135]
+                    - generic [ref=f193e136]: تُستخدم هذه الصورة كبديل إذا تعذر تحميل الفيديو أو تشغيله.
+                  - generic [ref=f193e137]:
+                    - generic [ref=f193e138]: رابط الفيديو
+                    - textbox "/video/slider1.mp4" [ref=f193e139]: /video/slider2.mp4
+                    - generic [ref=f193e140]: "مثال: /video/slider1.mp4 أو لاحقاً /video/slider1.webm."
+                  - generic [ref=f193e141]:
+                    - generic [ref=f193e142]: رفع ملف فيديو
+                    - button "Choose File" [ref=f193e143]
+                    - generic [ref=f193e144]: إذا لم يتم اختيار فيديو جديد فسيتم الاحتفاظ بالفيديو الحالي.
+          - complementary [ref=f193e145]:
+            - generic [ref=f193e147]:
+              - generic [ref=f193e148]: 
+              - text: ملاحظات الاستخدام
+            - generic [ref=f193e149]:
+              - list [ref=f193e150]:
+                - listitem [ref=f193e151]:
+                  - generic [ref=f193e152]: 
+                  - generic [ref=f193e153]: إذا كان رابط الفيديو ممتلئاً فسيتم تشغيل الفيديو بدلاً من الصورة في الصفحة الرئيسية.
+                - listitem [ref=f193e154]:
+                  - generic [ref=f193e155]: 
+                  - generic [ref=f193e156]: تعمل الفيديوهات بصمت وبدون عناصر تحكم وكخلفية؛ ينتقل السلايدر التالي عند انتهاء الفيديو.
+                - listitem [ref=f193e157]:
+                  - generic [ref=f193e158]: 
+                  - generic [ref=f193e159]: يُستخدم حقل الصورة كصورة بديلة/ملصق للفيديو.
+                - listitem [ref=f193e160]:
+                  - generic [ref=f193e161]: 
+                  - generic [ref=f193e162]: صيغة MP4 تعمل؛ يمكنك استخدام بديل WebM قبل النشر لتقليل حجم الملف.
+              - button " حفظ" [ref=f193e164] [cursor=pointer]:
+                - generic [ref=f193e165]: 
+                - text: حفظ
+    - contentinfo [ref=f193e166]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

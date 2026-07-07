@@ -583,9 +583,9 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 days.Add(new RaporDailyMetric
                 {
                     Tarih = day,
-                    Ciro = orders.Where(x => ToTurkeyLocal(x.OlusturulmaTarihi) >= day && ToTurkeyLocal(x.OlusturulmaTarihi) < nextDay).Sum(x => x.ToplamTutar),
-                    Siparis = orders.Count(x => ToTurkeyLocal(x.OlusturulmaTarihi) >= day && ToTurkeyLocal(x.OlusturulmaTarihi) < nextDay),
-                    Ziyaret = visitorLogs.Count(x => ToTurkeyLocal(x.OlusturulmaTarihi) >= day && ToTurkeyLocal(x.OlusturulmaTarihi) < nextDay)
+                    Ciro = orders.Where(x => ToPalestineLocal(x.OlusturulmaTarihi) >= day && ToPalestineLocal(x.OlusturulmaTarihi) < nextDay).Sum(x => x.ToplamTutar),
+                    Siparis = orders.Count(x => ToPalestineLocal(x.OlusturulmaTarihi) >= day && ToPalestineLocal(x.OlusturulmaTarihi) < nextDay),
+                    Ziyaret = visitorLogs.Count(x => ToPalestineLocal(x.OlusturulmaTarihi) >= day && ToPalestineLocal(x.OlusturulmaTarihi) < nextDay)
                 });
             }
 
@@ -598,9 +598,9 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .Select(hour => new RaporHourlyMetric
                 {
                     Saat = hour,
-                    Siparis = orders.Count(x => ToTurkeyLocal(x.OlusturulmaTarihi).Hour == hour),
-                    Ciro = orders.Where(x => ToTurkeyLocal(x.OlusturulmaTarihi).Hour == hour).Sum(x => x.ToplamTutar),
-                    Ziyaret = visitorLogs.Count(x => ToTurkeyLocal(x.OlusturulmaTarihi).Hour == hour)
+                    Siparis = orders.Count(x => ToPalestineLocal(x.OlusturulmaTarihi).Hour == hour),
+                    Ciro = orders.Where(x => ToPalestineLocal(x.OlusturulmaTarihi).Hour == hour).Sum(x => x.ToplamTutar),
+                    Ziyaret = visitorLogs.Count(x => ToPalestineLocal(x.OlusturulmaTarihi).Hour == hour)
                 })
                 .ToList();
         }
@@ -701,7 +701,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             return !SiparisDurumHelper.IsCancelled(order.Durum) && !SiparisDurumHelper.IsReturn(order.Durum);
         }
 
-        private static DateTime ToTurkeyLocal(DateTime value)
+        private static DateTime ToPalestineLocal(DateTime value)
         {
             return value.Kind == DateTimeKind.Utc ? value.AddHours(3) : value;
         }
@@ -899,7 +899,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 ws.Cells[row, 3].Value = item.Sehir;
                 ws.Cells[row, 4].Value = item.SiparisAdedi;
                 ws.Cells[row, 5].Value = item.Ciro;
-                ws.Cells[row, 6].Value = ToTurkeyLocal(item.SonSiparisTarihi);
+                ws.Cells[row, 6].Value = ToPalestineLocal(item.SonSiparisTarihi);
                 ws.Cells[row, 7].Value = item.YeniMusteri ? "Yeni" : "Tekrar";
                 row++;
             }

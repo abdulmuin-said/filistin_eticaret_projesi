@@ -6,7 +6,7 @@
 - **Architecture**: Clean Architecture (4 projeler: Web → Service → Data → Core)
 - **Brand**: 7ANRPS48.com (Filistin e-ticaret, eski Canvasia/MeteorGaleri fork)
 - **Para birimi**: ₪ (ILS - Yeni İsrail Şekeli)
-- **Diller**: Arapça (varsayılan, RTL), İngilizce (LTR), Türkçe (LTR) — `IStringLocalizer<SharedResource>` kullanılır
+- **Diller**: Arapça (varsayılan, RTL), İngilizce (LTR) — `IStringLocalizer<SharedResource>` kullanılır
 - **Entity property isimleri**: Türkçe PascalCase (`Urun.Baslik`, `Kategori.Ad`, `SiteAyarlari.GirisZorunluMu`)
 - **Kimlik doğrulama**: ASP.NET Core Identity (`AppUser : IdentityUser`)
 
@@ -14,7 +14,7 @@
 
 ```bash
 docker-compose up -d db
-cd KanvasProje.Web && dotnet watch run   # http://localhost:5002
+cd FilistinProje.Web && dotnet watch run   # http://localhost:5002
 
 # Full Docker
 docker-compose build --no-cache && docker-compose up -d   # http://localhost:8080
@@ -48,10 +48,10 @@ docker-compose build --no-cache && docker-compose up -d   # http://localhost:808
 ## Commands
 
 ```bash
-dotnet build KanvasProje.sln
-dotnet ef migrations add <Name> --project KanvasProje.Data --startup-project KanvasProje.Web
-dotnet ef database update --project KanvasProje.Data --startup-project KanvasProje.Web
-cd KanvasProje.Web && npm run watch:storefront-css
+dotnet build FilistinProje.sln
+dotnet ef migrations add <Name> --project FilistinProje.Data --startup-project FilistinProje.Web
+dotnet ef database update --project FilistinProje.Data --startup-project FilistinProje.Web
+cd FilistinProje.Web && npm run watch:storefront-css
 ```
 
 ## Key URLs
@@ -211,6 +211,25 @@ cd KanvasProje.Web && npm run watch:storefront-css
   - SmtpEmailService: logo ContentId
 - [x] **Adım 94**: UrunController.cs encoding bozulması düzeltildi (Türkçe char map)
 
+### Faz 10 (Türkçe Dil Desteğinin Kaldırılması & Lokalizasyon İyileştirmeleri — 7 Temmuz 2026)
+- [x] **Adım 95**: `generate_resx.py`'daki Turkey/Canvasia referansları temizlendi (AllOverTurkey, TurkeyWideShipping, HomeSeoTitle)
+- [x] **Adım 96**: `RaporController.cs` — `ToTurkeyLocal` → `ToPalestineLocal` (8 yerde)
+- [x] **Adım 97**: `Admin/Siparis/Index.cshtml` — `GetTurkeyTimeZone`/`FormatTurkeyDateTime` → Palestine
+- [x] **Adım 98**: **Türkçe dil desteği tamamen kaldırıldı**:
+  - Program.cs fallback "tr" → "en"
+  - DilController.cs'den "tr" çıkarıldı
+  - `SharedResource.tr.resx` silindi
+  - `_AdminLayout.cshtml` TR dropdown kaldırıldı
+  - `Slayt.cs` `GetLocalized` TR fallback → EN/AR fallback
+  - `Slayt/Ekle.cshtml`, `Slayt/Duzenle.cshtml` TR kolonları kaldırıldı
+  - Email servisleri: default culture "tr" → "ar", varsayılan şablon `Sablon.en.html`
+  - `ProfilController.cs` `CultureInfo("tr-TR")` → `CultureInfo.InvariantCulture`
+  - `Admin/UrunController.cs` Excel import "tr-TR" → `CultureInfo.InvariantCulture` (3 yerde)
+  - `generate_resx.py` tr_values dict + loop'tan tr entry kaldırıldı
+- [x] **Adım 99**: IBANPlaceholder TR00 → PS00, PhonePlaceholder +90 → +970
+- [x] **Adım 100**: Session.Id null-safety düzeltildi (`ISessionFeature?.Session?.Id`)
+- [x] **Adım 101**: Eksik localizer key'leri eklendi (SpinWheelManagement, BankTransferPayment), `Admin_HeroSubtitle_Tr` temizlendi
+
 ### Program.cs (önemli satırlar)
 - `~satır 784-1060` — `EnsureMissingMarch2026SchemaAsync`: hand-rolled SQL, tüm ek kolonları/tabloları kapsar (ReceteGerekliMi, WhatsappSiparisVarMi, FiyatGizliMi, ToptanciMinSiparisTutari, ToptanciUrunGrubuId, ToptanciUrunGruplari, ToptanciIskontoOranlari, BasvuruTarihi, KargoBolge.Ulke/Aciklama, Slayt dil alanları)
 - `~satır 460-510` — Migration + Seed uygulama mantığı
@@ -219,14 +238,14 @@ cd KanvasProje.Web && npm run watch:storefront-css
 
 ## Developer notları (AI için)
 
-1. **WholesaleStatus** enum'u `KanvasProje.Core/Enums/` altında. Yeni enum'lar da aynı yere eklenmeli.
-2. **View'da enum referansı**: `KanvasProje.Core.Enums.WholesaleStatus` — tam nitelikli kullan.
+1. **WholesaleStatus** enum'u `FilistinProje.Core/Enums/` altında. Yeni enum'lar da aynı yere eklenmeli.
+2. **View'da enum referansı**: `FilistinProje.Core.Enums.WholesaleStatus` — tam nitelikli kullan.
 3. **DbSeeder** tüm rolleri `AdminSecurityRoles.AllRoles` listesinden seed eder. Yeni rol eklenirse bu listeye ekle.
 4. **Wholesale** rolü admin rolü DEĞİLDİR. `AllAdminRoles`'a ekleme, `AllRoles`'a ekle.
 5. **AdminBaseController** tüm admin controller'ların base class'ıdır. Attribute'ları (`[Authorize]`, `[Area]`) zaten içerir. Sadece `: AdminBaseController` yap yeter.
 6. **Yeni bir admin controller eklerken**: (a) `: AdminBaseController` yap, (b) `AdminPermissionMatrix`'e controller adını ekle, (c) `AdminBaseController`'da ViewBag değişkenini set et, (d) `_AdminLayout.cshtml`'e link ekle.
-7. **View'lar Türkçe** yazılır (admin paneli için localizer kullanılmıyor).
-8. **Build'den önce** `dotnet build KanvasProje.sln` ile kontrol et. 0 hata 0 uyarı hedefi.
+7. **View'lar Türkçe** yazılır (admin paneli için localizer kullanılmıyor). Türkçe dil desteği projeden kaldırılmıştır, sadece AR/EN vardır.
+8. **Build'den önce** `dotnet build FilistinProje.sln` ile kontrol et. 0 hata 0 uyarı hedefi.
 9. **StokBiteniGriGoster** (`SiteAyarlari`): Admin panelden yönetilir. true=stoğu biten varyasyonlar gri+tükendi rozeti gösterilir, false=tamamen gizlenir. `StoktaYokSatisIzni` true ise bu ayar devre dışı kalır (tüm varyasyonlar seçilebilir).
 10. **HediyePaketi** akışı: `Urun.HediyePaketiVarMi` + `HediyePaketFiyati`. SepetItem ve SiparisDetay'da `HediyePaketi` (bool) ve `HediyePaketFiyati` (decimal) alanları.
 11. **WhatsappSiparisVarMi** — Ürün bazında WhatsApp sipariş modu. `FiyatGizliMi` ile birlikte çalışır: true ise ürün fiyatı gizlenir, "WhatsApp ile Sipariş Ver" butonu gösterilir.

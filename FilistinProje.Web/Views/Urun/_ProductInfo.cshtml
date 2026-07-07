@@ -1,0 +1,580 @@
+@model FilistinProje.Core.Varliklar.Urun
+@using FilistinProje.Service.Helpers
+@using FilistinProje.Service.Services
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Model.LocalizedBaslik;
+    var siteSettings = SiteSettingsService.GetSettings();
+    var brandName = string.IsNullOrWhiteSpace(siteSettings.MarkaAdi) ? siteSettings.SiteAdi : siteSettings.MarkaAdi;
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "â‚ª" : siteSettings.ParaBirimi;
+
+    // --- VARYANT VE FÃƒâ€Ã‚Â°YAT HESAPLAMA ---
+    var secenekler = ViewBag.Secenekler as List<FilistinProje.Core.Varliklar.UrunSecenek> ?? new List<FilistinProje.Core.Varliklar.UrunSecenek>();
+    var stokBiteniGriGoster = siteSettings.StokBiteniGriGoster;
+    var stoktaYokSatisIzni = siteSettings.StoktaYokSatisIzni;
+    var varsayilanSecenek = secenekler
+        .OrderByDescending(x => x.VarsayilanMi)
+        .ThenBy(x => x.Sira)
+        .ThenBy(x => x.SatisFiyati)
+        .FirstOrDefault(x => stoktaYokSatisIzni || x.SatinAlinabilirMi)
+        ?? secenekler
+            .OrderByDescending(x => x.VarsayilanMi)
+            .ThenBy(x => x.Sira)
+            .ThenBy(x => x.SatisFiyati)
+            .FirstOrDefault();
+    var isWholesale = ViewBag.IsWholesale is bool ws && ws;
+    decimal gosterilecekFiyat;
+    if (isWholesale && Model.TopFiyat.HasValue && Model.TopFiyat.Value > 0)
+    {
+        gosterilecekFiyat = Model.TopFiyat.Value;
+    }
+    else
+    {
+        gosterilecekFiyat = varsayilanSecenek != null ? varsayilanSecenek.SatisFiyati : Model.EtkinFiyat;
+    }
+    decimal eskiFiyat = gosterilecekFiyat * 1.15m;
+
+    // --- YORUM VERÃƒâ€Ã‚Â°LERÃƒâ€Ã‚Â° ---
+    decimal? gosterilecekEskiFiyatEski = varsayilanSecenek == null && Model.IndirimVarMi ? Model.Fiyat : null;
+    decimal? gosterilecekEskiFiyat = varsayilanSecenek != null && Model.Fiyat > gosterilecekFiyat
+        ? Model.Fiyat
+        : gosterilecekEskiFiyatEski;
+    int? gosterilecekIndirimYuzdesi = gosterilecekEskiFiyat.HasValue && gosterilecekEskiFiyat.Value > gosterilecekFiyat
+        ? (int)Math.Round((1 - (gosterilecekFiyat / gosterilecekEskiFiyat.Value)) * 100)
+        : null;
+    int toplamStok = secenekler.Any() ? secenekler.Where(x => !x.SilindiMi && x.AktifMi).Sum(x => x.StokAdedi) : Model.ToplamStok;
+    bool stoktaVar = secenekler.Any()
+        ? secenekler.Any(x => stoktaYokSatisIzni || x.SatinAlinabilirMi)
+        : Model.StoktaVarMi;
+    string stokDurumuMetni = varsayilanSecenek != null
+        ? (stoktaYokSatisIzni || varsayilanSecenek.SatinAlinabilirMi ? Localizer["MadeToOrder"].Value : (varsayilanSecenek.OnSipariseAcikMi ? Localizer["PreOrderOpen"].Value : Localizer["OutOfStock"].Value))
+        : (stoktaVar
+            ? Localizer["MadeToOrder"].Value
+            : Localizer["OutOfStock"].Value);
+    var stokIkonClass = stoktaVar ? "fas fa-check-circle text-green-600" : "fas fa-times-circle text-red-600";
+    int minSiparisAdedi = Model.MinSiparisAdedi > 0 ? Model.MinSiparisAdedi : 1;
+    int varsayilanMax = varsayilanSecenek?.StokAdedi > 0
+        ? varsayilanSecenek.StokAdedi
+        : (varsayilanSecenek?.OnSipariseAcikMi == true ? Math.Max(minSiparisAdedi, 25) : Math.Max(minSiparisAdedi, 10));
+    int maxSiparisAdedi = Model.MaxSiparisAdedi ?? varsayilanMax;
+    if (maxSiparisAdedi < minSiparisAdedi)
+    {
+        maxSiparisAdedi = minSiparisAdedi;
+    }
+
+    var rawVaryantMetni = varsayilanSecenek != null 
+        ? (string.IsNullOrWhiteSpace(varsayilanSecenek.VaryantBasligi) ? (varsayilanSecenek.Olcu ?? "Standart") : varsayilanSecenek.VaryantBasligi) 
+        : string.Empty;
+    var seciliVaryantMetni = string.Join(" / ", rawVaryantMetni.Split(new[] { " / " }, StringSplitOptions.RemoveEmptyEntries).Where(x => !x.Contains("Standart", StringComparison.OrdinalIgnoreCase) && !x.Contains("Bask", StringComparison.OrdinalIgnoreCase)));
+    if (string.IsNullOrWhiteSpace(seciliVaryantMetni) && !string.IsNullOrWhiteSpace(rawVaryantMetni)) seciliVaryantMetni = rawVaryantMetni.Split('/')[0].Trim();
+    if (secenekler.Count <= 1)
+    {
+        seciliVaryantMetni = string.Empty;
+    }
+    var seciliVaryantDetayi = varsayilanSecenek?.VaryantOzeti ?? string.Empty;
+    int gosterilecekUretimSuresi = varsayilanSecenek?.UretimSuresiGun > 0
+        ? varsayilanSecenek.UretimSuresiGun
+        : Model.UretimSuresiGun;
+    int gosterilecekKargoSuresi = Model.KargoyaVerilisSuresiGun > 0 ? Model.KargoyaVerilisSuresiGun : 3;
+    int gosterilecekTeslimSuresi = Model.TahminiTeslimSuresiGun > 0
+        ? Model.TahminiTeslimSuresiGun
+        : siteSettings.SiparisTeslimSuresiGun;
+    int iadeSuresi = siteSettings.IadeHakkiGun > 0 ? siteSettings.IadeHakkiGun : 14;
+    bool cerceveSecimiGerekli = (Model.UrunTipi ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase)
+        || (Model.Kategori?.Ad ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase)
+        || (Model.Kategori?.ParentKategori?.Ad ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase);
+    var cerceveModelleri = new[] { "Ã‡erÃ§evesiz", "Siyah", "Beyaz", "Gold", "GÃ¼mÃ¼ÅŸ", "MeÅŸe", "Ceviz" };
+
+    var teknikSatirlari = (Model.TeknikOzellikler ?? string.Empty)
+        .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
+        .Select(x => x.Trim())
+        .Where(x => !string.IsNullOrWhiteSpace(x))
+        .ToList();
+
+    var dinamikOzellikler = (Model.UrunOzellikleri ?? Enumerable.Empty<FilistinProje.Core.Varliklar.UrunOzellikDegeri>())
+        .Where(x =>
+            !x.SilindiMi &&
+            x.UrunOzellikTanimi != null &&
+            x.UrunOzellikTanimi.AktifMi &&
+            x.UrunOzellikTanimi.DetaySayfasindaGoster &&
+            !string.IsNullOrWhiteSpace(x.Deger))
+        .OrderBy(x => x.UrunOzellikTanimi.Sira)
+        .ThenBy(x => x.UrunOzellikTanimi.Ad)
+        .ToList();
+
+    var teknikTabloSatirlari = new List<(string Baslik, string Deger)>();
+    teknikTabloSatirlari.AddRange(dinamikOzellikler
+        .Where(x => x.UrunOzellikTanimi.TeknikTablodaGoster)
+        .Select(x => (x.UrunOzellikTanimi.Ad, x.DegerGosterimi)));
+
+    foreach (var satir in teknikSatirlari)
+    {
+        var ayiriciIndex = satir.IndexOf(':');
+        if (ayiriciIndex > 0 && ayiriciIndex < satir.Length - 1)
+        {
+            teknikTabloSatirlari.Add((satir[..ayiriciIndex].Trim(), satir[(ayiriciIndex + 1)..].Trim()));
+        }
+        else
+        {
+            teknikTabloSatirlari.Add(("Detay", satir));
+        }
+    }
+
+    var tumMedya = ViewBag.TumMedya as List<FilistinProje.Core.Varliklar.UrunResim> ?? new List<FilistinProje.Core.Varliklar.UrunResim>();
+    var galeriMedyalari = ViewBag.Galeri as List<FilistinProje.Core.Varliklar.UrunResim> ?? tumMedya.Where(x => !x.VideoMu).ToList();
+    var videoMedyalari = ViewBag.VideoMedyalari as List<FilistinProje.Core.Varliklar.UrunResim> ?? new List<FilistinProje.Core.Varliklar.UrunResim>();
+    var yakinDetayMedyalari = ViewBag.YakinDetayMedyalari as List<FilistinProje.Core.Varliklar.UrunResim> ?? new List<FilistinProje.Core.Varliklar.UrunResim>();
+    var uretimMedyalari = ViewBag.UretimMedyalari as List<FilistinProje.Core.Varliklar.UrunResim> ?? new List<FilistinProje.Core.Varliklar.UrunResim>();
+    var kullanimMedyalari = ViewBag.KullanimMedyalari as List<FilistinProje.Core.Varliklar.UrunResim> ?? new List<FilistinProje.Core.Varliklar.UrunResim>();
+    var varsayilanMedya = galeriMedyalari
+        .OrderByDescending(x => x.VarsayilanMi)
+        .ThenBy(x => x.Sira)
+        .FirstOrDefault();
+    var varsayilanGaleriGorseli = !string.IsNullOrWhiteSpace(varsayilanSecenek?.GorselUrl)
+        ? varsayilanSecenek.GorselUrl
+        : (varsayilanMedya?.ResimYolu ?? Model.AnaGorselUrl);
+    var varsayilanGaleriAltMetni = !string.IsNullOrWhiteSpace(varsayilanMedya?.AltMetin)
+        ? varsayilanMedya.AltMetin
+        : Model.LocalizedBaslik;
+    var varyantMedyaHaritasi = tumMedya
+        .Where(x => x.UrunSecenekId.HasValue && !x.VideoMu && !string.IsNullOrWhiteSpace(x.ResimYolu))
+        .GroupBy(x => x.UrunSecenekId!.Value)
+        .ToDictionary(
+            x => x.Key,
+            x => x.OrderByDescending(y => y.VarsayilanMi).ThenBy(y => y.Sira).Select(y => y.ResimYolu).First());
+    bool medyaVitriniVar = videoMedyalari.Any() || yakinDetayMedyalari.Any() || uretimMedyalari.Any() || kullanimMedyalari.Any();
+
+    List<FilistinProje.Core.Varliklar.Yorum> yorumlar = ViewBag.Yorumlar ?? new List<FilistinProje.Core.Varliklar.Yorum>();
+    double ortalamaPuan = ViewBag.OrtalamaPuan != null ? (double)ViewBag.OrtalamaPuan : 0;
+    int yorumSayisi = ViewBag.YorumSayisi != null ? (int)ViewBag.YorumSayisi : 0;
+    
+    // YÃƒâ€Ã‚Â±ldÃƒâ€Ã‚Â±z Hesaplama
+    int tamYildiz = (int)ortalamaPuan;
+    bool yarimYildiz = (ortalamaPuan - tamYildiz) >= 0.5;
+    
+    // --- SCHEMA.ORG Ãƒâ€Ã‚Â°ÃƒÆ’Ã¢â‚¬Â¡Ãƒâ€Ã‚Â°N URL VE GÃƒÆ’Ã¢â‚¬â€œRSEL ---
+    var request = HttpContextAccessor.HttpContext?.Request;
+    string baseUrl = request != null ? SiteSettingsService.BuildAbsoluteUrl(string.Empty) : "";
+    string detaySlug = string.IsNullOrWhiteSpace(Model.Slug) ? $"{FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(Model.LocalizedBaslik)}-{Model.Id}" : $"{Model.Slug}-{Model.Id}";
+    string productUrl = $"{baseUrl}/Urun/Detay/{detaySlug}";
+    var encodedProductUrl = Uri.EscapeDataString(productUrl);
+    var encodedProductTitle = Uri.EscapeDataString(Model.LocalizedBaslik);
+    var schemaImagePath = !string.IsNullOrWhiteSpace(varsayilanMedya?.EtkinPosterYolu) ? varsayilanMedya.EtkinPosterYolu : varsayilanGaleriGorseli;
+    string productImage = schemaImagePath.StartsWith("http", StringComparison.OrdinalIgnoreCase) ? schemaImagePath : $"{baseUrl}{schemaImagePath}";
+    var seoDescriptionSource = !string.IsNullOrWhiteSpace(Model.LocalizedKisaAciklama) ? Model.LocalizedKisaAciklama : Model.LocalizedAciklama;
+    var seoDescription = System.Text.RegularExpressions.Regex.Replace(seoDescriptionSource ?? string.Empty, "<.*?>", " ");
+    seoDescription = System.Net.WebUtility.HtmlDecode(seoDescription);
+    seoDescription = System.Text.RegularExpressions.Regex.Replace(seoDescription, @"\s+", " ").Trim();
+    if (seoDescription.Length > 155)
+    {
+        var cut = seoDescription[..155].Trim();
+        var lastSpace = cut.LastIndexOf(' ');
+        seoDescription = (lastSpace > 80 ? cut[..lastSpace] : cut).TrimEnd('.', ',', ';', ':') + "...";
+    }
+    if (string.IsNullOrWhiteSpace(seoDescription))
+    {
+        seoDescription = $"{Model.LocalizedBaslik} {Localizer["MadeToOrder"].Value}. {brandName}.";
+    }
+
+    var keywordParts = new List<string?>
+    {
+        Model.LocalizedBaslik,
+        Model.Kategori?.Ad,
+        Model.UrunTipi,
+        Model.Marka,
+        "dekorasyon",
+        "premium dekorasyon",
+        "sipariÅŸe Ã¶zel Ã¼retim"
+    };
+    keywordParts.AddRange((Model.Etiketler ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
+
+    ViewData["SeoTitle"] = !string.IsNullOrWhiteSpace(Model.LocalizedSeoTitle) ? Model.LocalizedSeoTitle : $"{Model.LocalizedBaslik} | {brandName}";
+    ViewData["MetaDescription"] = !string.IsNullOrWhiteSpace(Model.LocalizedSeoDescription) ? Model.LocalizedSeoDescription : seoDescription;
+    ViewData["MetaKeywords"] = !string.IsNullOrWhiteSpace(Model.SeoKeywords) ? Model.SeoKeywords : string.Join(", ", keywordParts.Where(x => !string.IsNullOrWhiteSpace(x)).Distinct(StringComparer.OrdinalIgnoreCase));
+    ViewData["CanonicalUrl"] = productUrl;
+    ViewData["OgType"] = "product";
+    ViewData["OgImage"] = productImage;
+    
+    <!-- SCHEMA.ORG JSON-LD: Google Shopping Rich Snippets -->
+    var productSchema = SchemaGenerator.GenerateProductSchema(
+        Model, 
+        ortalamaPuan, 
+        yorumSayisi, 
+        productImage, 
+        productUrl,
+        brandName
+    );
+}
+
+    [desktopModal, mobileModal].forEach(modal => {
+        if (modal && modal.parentElement !== document.body) {
+            document.body.appendChild(modal);
+        }
+    });
+
+    if (closeBtn && desktopModal) {
+        closeBtn.addEventListener('click', closeDesktopLightbox);
+    }
+
+    [desktopModal, mobileModal].forEach(modal => {
+        if (modal) {
+            modal.addEventListener('click', event => {
+                if (event.target === modal) {
+                    closeProductLightbox();
+                }
+            });
+        }
+    });
+
+    window.addEventListener('keydown', event => {
+        if (event.key === 'Escape' || event.code === 'Escape') {
+            closeProductLightbox();
+        }
+    }, true);
+
+    const commentModal = document.getElementById('commentModal');
+    if (commentModal) {
+        const openBtns = [document.getElementById('openCommentModalBtn'), document.getElementById('openCommentModalBtnEmpty')];
+        openBtns.forEach(btn => btn && btn.addEventListener('click', () => {
+            commentModal.classList.remove('hidden');
+            commentModal.classList.add('flex');
+        }));
+
+        const closeCommentBtn = document.getElementById('closeCommentModalBtn');
+        if (closeCommentBtn) {
+            closeCommentBtn.addEventListener('click', () => {
+                commentModal.classList.add('hidden');
+                commentModal.classList.remove('flex');
+            });
+        }
+    }
+
+    setTimeout(function() {
+        updateSelectionSummary();
+        updateVariantCardStyles();
+    }, 100);
+});
+
+document.getElementById('productQuantity')?.addEventListener('input', function() {
+    var val = parseInt(this.value) || 0;
+    var min = parseInt(this.getAttribute('min')) || 1;
+    var max = parseInt(this.getAttribute('max')) || 99;
+    if (val < min) this.value = min;
+    if (val > max) this.value = max;
+    var selectedQuantity = document.getElementById('selectedQuantity');
+    if (selectedQuantity) selectedQuantity.value = this.value;
+    updateSelectionSummary();
+});
+
+let currentZoom = 1;
+let currentRotation = 0;
+let previousBodyOverflow = '';
+
+function syncLightboxImage() {
+    const mainImage = document.getElementById('mainProductImage');
+    if (!mainImage) return;
+
+    const imageSrc = mainImage.currentSrc || mainImage.src;
+    const imageAlt = mainImage.alt || mainImage.getAttribute('data-product-name') || '';
+
+    const desktopImage = document.getElementById('desktopLightboxImage');
+    if (desktopImage && imageSrc) {
+        desktopImage.src = imageSrc;
+        desktopImage.alt = imageAlt;
+    }
+
+    const mobileImage = document.getElementById('mobileLightboxImage');
+    if (mobileImage && imageSrc) {
+        mobileImage.src = imageSrc;
+        mobileImage.alt = imageAlt;
+    }
+}
+
+function lockLightboxScroll() {
+    previousBodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+}
+
+function unlockLightboxScroll() {
+    document.body.style.overflow = previousBodyOverflow;
+}
+
+function openProductLightbox() {
+    syncLightboxImage();
+    lockLightboxScroll();
+
+    if (window.innerWidth >= 1024) {
+        const dm = document.getElementById('desktopLightboxModal');
+        if (dm) {
+            dm.classList.remove('hidden');
+            dm.classList.add('flex');
+            resetDesktopZoom();
+        }
+    } else {
+        const mm = document.getElementById('mobileLightbox');
+        if (mm) {
+            mm.classList.remove('hidden');
+            mm.classList.add('flex');
+            resetMobileZoom();
+        }
+    }
+}
+
+function toggleAllReviews() {
+    var list = document.getElementById('reviewsList');
+    var btn = document.getElementById('showAllReviewsBtn');
+    if (!list || !btn) return;
+    if (list.style.maxHeight && list.style.maxHeight !== '600px') {
+        list.style.maxHeight = '600px';
+        btn.textContent = 'TÃ¼m YorumlarÄ± GÃ¶r (' + btn.textContent.match(/\d+/)?.[0] + ')';
+    } else {
+        list.style.maxHeight = list.scrollHeight + 'px';
+        btn.textContent = 'Gizle';
+    }
+}
+
+function closeProductLightbox() {
+    closeDesktopLightbox();
+    closeMobileLightbox();
+}
+
+function closeDesktopLightbox() {
+    const dm = document.getElementById('desktopLightboxModal');
+    if (dm) {
+        dm.classList.add('hidden');
+        dm.classList.remove('flex');
+        resetDesktopZoom();
+    }
+    unlockLightboxScroll();
+}
+
+function closeMobileLightbox() {
+    const mm = document.getElementById('mobileLightbox');
+    if (mm) {
+        mm.classList.add('hidden');
+        mm.classList.remove('flex');
+        resetMobileZoom();
+    }
+    unlockLightboxScroll();
+}
+
+function resetMobileZoom() {
+    currentZoom = 1;
+    currentRotation = 0;
+    updateMobileTransform();
+}
+
+function zoomInMobile() {
+    if (currentZoom < 3) { currentZoom += 0.5; updateMobileTransform(); }
+}
+
+function zoomOutMobile() {
+    if (currentZoom > 1) { currentZoom -= 0.5; updateMobileTransform(); }
+}
+
+function rotateMobileImage() {
+    currentRotation = (currentRotation + 90) % 360;
+    updateMobileTransform();
+}
+
+function updateMobileTransform() {
+    const img = document.getElementById('mobileLightboxImage');
+    if (img) img.style.transform = `scale(${currentZoom}) rotate(${currentRotation}deg)`;
+    const zl = document.getElementById('zoomLevel');
+    if (zl) zl.innerText = `${Math.round(currentZoom * 100)}%`;
+}
+
+function resetDesktopZoom() {
+    currentZoom = 1;
+    currentRotation = 0;
+    updateDesktopTransform();
+}
+
+function zoomInDesktop() {
+    if (currentZoom < 3) { currentZoom += 0.5; updateDesktopTransform(); }
+}
+
+function zoomOutDesktop() {
+    if (currentZoom > 1) { currentZoom -= 0.5; updateDesktopTransform(); }
+}
+
+function rotateDesktopImage() {
+    currentRotation = (currentRotation + 90) % 360;
+    updateDesktopTransform();
+}
+
+function updateDesktopTransform() {
+    const img = document.getElementById('desktopLightboxImage');
+    if (img) {
+        img.style.transform = `scale(${currentZoom}) rotate(${currentRotation}deg)`;
+    }
+}
+
+function changeProductImage(imageUrl, thumbnailElement, altText) {
+    const mainImage = document.getElementById('mainProductImage');
+    if (mainImage) {
+        mainImage.src = imageUrl;
+        if (altText) mainImage.alt = altText;
+    }
+    
+    const deskImg = document.getElementById('desktopLightboxImage');
+    if (deskImg) deskImg.src = imageUrl;
+    
+    const mobImg = document.getElementById('mobileLightboxImage');
+    if (mobImg) mobImg.src = imageUrl;
+    
+    const thumbnails = document.querySelectorAll('.thumbnail-item');
+    thumbnails.forEach(item => {
+        if (item) {
+            item.classList.remove('border-brand-olive');
+            item.classList.add('border-transparent');
+        }
+    });
+    if (thumbnailElement) {
+        thumbnailElement.classList.remove('border-transparent');
+        thumbnailElement.classList.add('border-brand-olive');
+        thumbnailElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+
+}
+
+const FRAME_PRICE_PER_METER = 250;
+
+function parseOlcu(olcuText) {
+    if (!olcuText) return null;
+    var match = olcuText.match(/(\d+(?:[.,]\d+)?)\s*(?:cm)?\s*[xXÃ—]\s*(\d+(?:[.,]\d+)?)/i);
+    if (!match) return null;
+    var w = parseFloat(match[1].replace(',', '.'));
+    var h = parseFloat(match[2].replace(',', '.'));
+    if (isNaN(w) || isNaN(h)) return null;
+    return { width: w, height: h };
+}
+
+function calcFrameFiyat(olcuText, cerceve) {
+    if (!cerceve || cerceve === 'Ã‡erÃ§evesiz') return 0;
+    var dims = parseOlcu(olcuText);
+    if (!dims) return 0;
+    var cevreMetre = ((dims.width + dims.height) * 2) / 100;
+    return cevreMetre * FRAME_PRICE_PER_METER;
+}
+
+function updateSelectionSummary() {
+    var selectedVariant = document.querySelector('.variant-radio:checked');
+    var selectedFrame = document.querySelector('.frame-radio:checked');
+    var summary = document.getElementById('selectionSummary');
+    if (!summary) return;
+
+    if (!selectedVariant && !selectedFrame) {
+        summary.classList.add('hidden');
+        return;
+    }
+
+    var olcu = selectedVariant ? selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '-' : '-';
+    var cerceve = selectedFrame ? selectedFrame.value : null;
+    var temelFiyat = selectedVariant ? parseFloat(selectedVariant.getAttribute('data-price')) || 0 : 0;
+    var adet = parseInt(document.getElementById('productQuantity')?.value) || 1;
+    var cerceveFarki = selectedVariant ? calcFrameFiyat(olcu, cerceve || 'Ã‡erÃ§evesiz') : 0;
+    var toplamBirim = temelFiyat + cerceveFarki;
+    var toplam = toplamBirim * adet;
+
+    var summaryOlcuEl = document.getElementById('summaryOlcu');
+    if (summaryOlcuEl) summaryOlcuEl.textContent = olcu;
+
+    var summaryCerceveEl = document.getElementById('summaryCerceve');
+    if (summaryCerceveEl) {
+        summaryCerceveEl.textContent = cerceve || '@Localizer["SelectFrame"]';
+    }
+
+    var giftPrice = 0;
+    var giftCheck = document.getElementById('giftWrapCheckbox');
+    if (giftCheck && giftCheck.checked) {
+        var giftPriceInput = document.getElementById('hediyePaketFiyatiHidden');
+        if (giftPriceInput) giftPrice = parseFloat(giftPriceInput.value) || 0;
+    }
+    var toplamBirimGift = toplamBirim + giftPrice;
+    var toplamGift = toplamBirimGift * adet;
+
+    var summaryFiyatEl = document.getElementById('summaryFiyat');
+    if (summaryFiyatEl) {
+        summaryFiyatEl.textContent = toplamGift.toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + ' @currencySymbol';
+    }
+
+    var summaryBirimFiyatEl = document.getElementById('summaryBirimFiyat');
+    if (summaryBirimFiyatEl) {
+        summaryBirimFiyatEl.textContent = adet > 1 ? `(birim: ${toplamBirimGift.toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })} @currencySymbol)` : '';
+    }
+
+    var giftBadge = document.getElementById('summaryGiftBadge');
+    if (giftBadge) {
+        if (giftPrice > 0) {
+            giftBadge.classList.remove('hidden');
+        } else {
+            giftBadge.classList.add('hidden');
+        }
+    }
+
+    summary.classList.remove('hidden');
+}
+
+function toggleGiftWrap(container) {
+    var checkbox = container.querySelector('input[type="checkbox"]');
+    if (!checkbox) return;
+    checkbox.checked = !checkbox.checked;
+    
+    var hiddenInput = document.getElementById('hediyePaketiHidden');
+    if (hiddenInput) hiddenInput.value = checkbox.checked ? 'true' : 'false';
+    
+    var noteBlock = document.getElementById('giftNoteBlock');
+    if (noteBlock) {
+        if (checkbox.checked) {
+            noteBlock.classList.remove('hidden');
+        } else {
+            noteBlock.classList.add('hidden');
+        }
+    }
+    
+    updateSelectionSummary();
+    
+    var priceDisplay = document.getElementById('priceDisplay');
+    if (priceDisplay) {
+        var selectedVariant = document.querySelector('.variant-radio:checked');
+        if (selectedVariant) {
+            var basePrice = parseFloat(selectedVariant.getAttribute('data-price')) || 0;
+            var olcu = selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '';
+            var selectedFrame = document.querySelector('.frame-radio:checked');
+            var cerceve = selectedFrame ? selectedFrame.value : null;
+            var cerceveFarki = calcFrameFiyat(olcu, cerceve || 'Ã‡erÃ§evesiz');
+            var totalPrice = basePrice + cerceveFarki;
+            if (checkbox.checked) {
+                var giftPriceInput = document.getElementById('hediyePaketFiyatiHidden');
+                if (giftPriceInput) totalPrice += parseFloat(giftPriceInput.value) || 0;
+            }
+            priceDisplay.innerHTML = totalPrice.toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + ' @currencySymbol';
+        }
+    }
+}
+
+function updatePriceWithFrame() {
+    var selectedVariant = document.querySelector('.variant-radio:checked');
+    var selectedFrame = document.querySelector('.frame-radio:checked');
+    if (!selectedVariant) return;
+
+    var basePrice = parseFloat(selectedVariant.getAttribute('data-price')) || 0;
+    var olcu = selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '';
+    var cerceve = selectedFrame ? selectedFrame.value : null;
+    var cerceveFarki = calcFrameFiyat(olcu, cerceve || 'Ã‡erÃ§evesiz');
+    var newPrice = basePrice + cerceveFarki;
+
+    var priceDisplay = document.getElementById('priceDisplay');
+    if (priceDisplay) {
+        priceDisplay.innerHTML = `${newPrice.toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })} @currencySymbol`;
+    }
+
+    var frameFarkiInput = document.getElementById('selectedFrameFarki');
+    if (frameFarkiInput) {
+        frameFarkiInput.value = cerceveFarki.toFixed(2);
+    }
+
+    updateSelectionSummary();

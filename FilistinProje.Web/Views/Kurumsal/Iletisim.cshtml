@@ -1,63 +1,62 @@
-@inject IStringLocalizer<SharedResource> Localizer
+﻿@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["Contact"];
-    ViewData["MetaDescription"] = "7ANRPS48 iletişim sayfası. Telefon, e-posta ve adres bilgilerimizle size yardımcı olmaktan mutluluk duyarız.";
     ViewData["SeoTitle"] = Localizer["Contact"] + " - 7ANRPS48";
 }
 
-<div class="bg-[#f1ede7] border-b border-[#e5e2dc] py-3">
-    <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-[#47473d]">
-        <a href="/" class="hover:text-[#313511] transition-colors">@Localizer["HomePage"]</a>
+<div class="bg-brand-cream border-b border-brand-border py-3">
+    <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-brand-mutedtext">
+        <a href="/" class="hover:text-brand-olive transition-colors">@Localizer["HomePage"]</a>
         <span>/</span>
-        <span class="text-[#1c1c18] font-medium">@Localizer["Contact"]</span>
+        <span class="text-brand-darktext font-medium">@Localizer["Contact"]</span>
     </div>
 </div>
 
 <div class="container mx-auto px-4 py-16 max-w-5xl">
     <div class="text-center mb-12">
-        <h1 class="font-serif text-4xl text-[#313511] mb-3">@Localizer["Contact"]</h1>
-        <p class="text-sm text-[#47473d] max-w-md mx-auto">@Localizer["ContactDescription"]</p>
+        <h1 class="font-serif text-4xl text-brand-olive mb-3">@Localizer["Contact"]</h1>
+        <p class="text-sm text-brand-mutedtext max-w-md mx-auto">@Localizer["ContactDescription"]</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-5 gap-10">
         <div class="lg:col-span-2 space-y-6">
             <div class="flex items-start gap-4">
                 <div class="w-10 h-10 rounded-full bg-[#e2e6b3] flex items-center justify-center flex-shrink-0">
-                    <i class="fas fa-phone text-[#313511] text-sm"></i>
+                    <i class="fas fa-phone text-brand-olive text-sm"></i>
                 </div>
                 <div>
-                    <h4 class="font-semibold text-[#1c1c18] text-sm mb-1">@Localizer["Phone"]</h4>
-                    <p class="text-sm text-[#47473d]">@ViewBag.Telefon</p>
+                    <h4 class="font-semibold text-brand-darktext text-sm mb-1">@Localizer["Phone"]</h4>
+                    <p class="text-sm text-brand-mutedtext">@ViewBag.Telefon</p>
                 </div>
             </div>
             <div class="flex items-start gap-4">
                 <div class="w-10 h-10 rounded-full bg-[#e2e6b3] flex items-center justify-center flex-shrink-0">
-                    <i class="fas fa-envelope text-[#313511] text-sm"></i>
+                    <i class="fas fa-envelope text-brand-olive text-sm"></i>
                 </div>
                 <div>
-                    <h4 class="font-semibold text-[#1c1c18] text-sm mb-1">@Localizer["Email"]</h4>
-                    <p class="text-sm text-[#47473d]">@ViewBag.Eposta</p>
+                    <h4 class="font-semibold text-brand-darktext text-sm mb-1">@Localizer["Email"]</h4>
+                    <p class="text-sm text-brand-mutedtext">@ViewBag.Eposta</p>
                 </div>
             </div>
             @if (!string.IsNullOrEmpty(ViewBag.Adres))
             {
                 <div class="flex items-start gap-4">
                     <div class="w-10 h-10 rounded-full bg-[#e2e6b3] flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-location-dot text-[#313511] text-sm"></i>
+                        <i class="fas fa-location-dot text-brand-olive text-sm"></i>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-[#1c1c18] text-sm mb-1">@Localizer["Address"]</h4>
-                        <p class="text-sm text-[#47473d]">@ViewBag.Adres</p>
+                        <h4 class="font-semibold text-brand-darktext text-sm mb-1">@Localizer["Address"]</h4>
+                        <p class="text-sm text-brand-mutedtext">@ViewBag.Adres</p>
                     </div>
                 </div>
             }
             <div class="flex items-start gap-4">
                 <div class="w-10 h-10 rounded-full bg-[#e2e6b3] flex items-center justify-center flex-shrink-0">
-                    <i class="fas fa-clock text-[#313511] text-sm"></i>
+                    <i class="fas fa-clock text-brand-olive text-sm"></i>
                 </div>
                 <div>
-                    <h4 class="font-semibold text-[#1c1c18] text-sm mb-1">@Localizer["WorkingHours"]</h4>
-                    <p class="text-sm text-[#47473d]">@ViewBag.CalismaSaatleri</p>
+                    <h4 class="font-semibold text-brand-darktext text-sm mb-1">@Localizer["WorkingHours"]</h4>
+                    <p class="text-sm text-brand-mutedtext">@ViewBag.CalismaSaatleri</p>
                 </div>
             </div>
         </div>
@@ -80,28 +79,28 @@
                 @Html.AntiForgeryToken()
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["FullName"]</label>
+                        <label class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["FullName"]</label>
                         <input name="AdSoyad" type="text" required placeholder="@Localizer["FullNamePlaceholder"]"
-                               class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3] transition-colors" />
+                               class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream transition-colors" />
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["Email"]</label>
+                        <label class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["Email"]</label>
                         <input name="Email" type="email" required placeholder="@Localizer["EmailPlaceholder"]"
-                               class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3] transition-colors" />
+                               class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream transition-colors" />
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["Subject"]</label>
+                    <label class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["Subject"]</label>
                     <input name="Konu" type="text" required placeholder="@Localizer["SubjectPlaceholder"]"
-                           class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none bg-[#fcf9f3] transition-colors" />
+                           class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream transition-colors" />
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-[#1c1c18] tracking-wide mb-1.5 uppercase">@Localizer["Message"]</label>
+                    <label class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["Message"]</label>
                     <textarea name="Mesaj" rows="5" required placeholder="@Localizer["MessagePlaceholder"]"
-                              class="w-full border border-[#e5e2dc] rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-[#b58735] outline-none resize-none bg-[#fcf9f3] transition-colors"></textarea>
+                              class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none resize-none bg-brand-cream transition-colors"></textarea>
                 </div>
                 <button type="submit" id="contactSubmitBtn"
-                        class="w-full bg-[#313511] text-white py-3 text-xs tracking-widest uppercase rounded hover:bg-[#1c2001] transition-colors flex items-center justify-center gap-2">
+                        class="w-full bg-brand-olive text-white py-3 text-xs tracking-widest uppercase rounded hover:bg-[#1c2001] transition-colors flex items-center justify-center gap-2">
                     <i class="fas fa-paper-plane"></i> @Localizer["Send"]
                 </button>
             </form>

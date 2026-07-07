@@ -18,6 +18,7 @@ namespace FilistinProje.Core.Varliklar
         public string? Slug { get; set; }
         public string? GorselUrl { get; set; }
         public string? BannerUrl { get; set; }
+        public string? MenuGorselUrl { get; set; }
         public string SeoTitle { get; set; } = string.Empty;
         public string SeoTitleEn { get; set; } = string.Empty;
         public string SeoTitleAr { get; set; } = string.Empty;

@@ -1,0 +1,357 @@
+- generic [ref=f9e2]:
+  - text:          +                 
+  - banner [ref=f9e3]:
+    - generic [ref=f9e4]:
+      - link "7ANRPS48 لوحة التحكم" [ref=f9e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f9e6]
+      - generic [ref=f9e7]: لوحة البائع
+    - navigation "القائمة الرئيسية للإدارة" [ref=f9e8]:
+      - link " لوحة البيانات" [ref=f9e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f9e10]: 
+        - text: لوحة البيانات
+      - generic [ref=f9e11]:
+        - button " إدارة الطلبات" [ref=f9e12] [cursor=pointer]:
+          - generic [ref=f9e13]: 
+          - text: إدارة الطلبات
+        - text:      
+      - generic [ref=f9e14]:
+        - button " إدارة المنتجات" [ref=f9e15] [cursor=pointer]:
+          - generic [ref=f9e16]: 
+          - text: إدارة المنتجات
+        - text:  +    
+      - generic [ref=f9e17]:
+        - button " محتوى المتجر" [ref=f9e18] [cursor=pointer]:
+          - generic [ref=f9e19]: 
+          - text: محتوى المتجر
+        - text:          
+      - link " الأعضاء" [ref=f9e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f9e21]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=f9e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f9e23]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=f9e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f9e25]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=f9e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f9e27]: 
+        - text: مجموعات الجملة
+      - generic [ref=f9e28]:
+        - button " التقارير" [ref=f9e29] [cursor=pointer]:
+          - generic [ref=f9e30]: 
+          - text: التقارير
+        - text:  
+      - link " الحسابات البنكية" [ref=f9e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f9e32]: 
+        - text: الحسابات البنكية
+      - link " الإعدادات" [ref=f9e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f9e34]: 
+        - text: الإعدادات
+    - generic [ref=f9e35]:
+      - text: 
+      - combobox "اللغة" [ref=f9e37]:
+        - option "AR" [selected]
+        - option "EN"
+        - option "TR"
+      - generic [ref=f9e38]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f9e39] [cursor=pointer]:
+          - generic [ref=f9e40]:
+            - strong [ref=f9e41]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f9e42]: "7"
+        - text:  
+  - generic [ref=f9e43]:
+    - main [ref=f9e44]:
+      - generic [ref=f9e45]:
+        - generic [ref=f9e46]:
+          - generic [ref=f9e47]:
+            - heading "إدارة الطلبات" [level=1] [ref=f9e48]
+            - paragraph [ref=f9e49]: تابع الطلبات مع التشغيل والشحن ومعلومات العميل من شاشة واحدة.
+          - generic [ref=f9e50]:
+            - generic [ref=f9e51]:
+              - generic [ref=f9e52]: 
+              - textbox "ابحث برقم الطلب أو العميل أو الهاتف أو البريد" [ref=f9e53]
+            - button "" [ref=f9e54] [cursor=pointer]:
+              - generic [ref=f9e55]: 
+            - link " XLSX" [ref=f9e56] [cursor=pointer]:
+              - /url: /Admin/Siparis/ExcelExport
+              - generic [ref=f9e57]: 
+              - text: XLSX
+        - generic [ref=f9e58]:
+          - link "الكل 5" [ref=f9e59] [cursor=pointer]:
+            - /url: /Admin/Siparis
+            - text: الكل
+            - generic [ref=f9e60]: "5"
+          - link " جديد 0" [ref=f9e61] [cursor=pointer]:
+            - /url: /Admin/Siparis?durum=0
+            - generic [ref=f9e62]: 
+            - text: جديد
+            - generic [ref=f9e63]: "0"
+          - link " قيد التجهيز 1" [ref=f9e64] [cursor=pointer]:
+            - /url: /Admin/Siparis?durum=1
+            - generic [ref=f9e65]: 
+            - text: قيد التجهيز
+            - generic [ref=f9e66]: "1"
+          - link " قيد التغليف 0" [ref=f9e67] [cursor=pointer]:
+            - /url: /Admin/Siparis?durum=8
+            - generic [ref=f9e68]: 
+            - text: قيد التغليف
+            - generic [ref=f9e69]: "0"
+          - link " تم الشحن 1" [ref=f9e70] [cursor=pointer]:
+            - /url: /Admin/Siparis?durum=2
+            - generic [ref=f9e71]: 
+            - text: تم الشحن
+            - generic [ref=f9e72]: "1"
+          - link " تم التسليم 1" [ref=f9e73] [cursor=pointer]:
+            - /url: /Admin/Siparis?durum=3
+            - generic [ref=f9e74]: 
+            - text: تم التسليم
+            - generic [ref=f9e75]: "1"
+        - generic [ref=f9e76]:
+          - generic [ref=f9e77]:
+            - generic [ref=f9e78]: 
+            - text: "Reçete:"
+          - link " Bekleyen 0" [ref=f9e79] [cursor=pointer]:
+            - /url: /Admin/Siparis?receteDurum=0
+            - generic [ref=f9e80]: 
+            - text: Bekleyen
+            - generic [ref=f9e81]: "0"
+          - link " Onaylı 0" [ref=f9e82] [cursor=pointer]:
+            - /url: /Admin/Siparis?receteDurum=1
+            - generic [ref=f9e83]: 
+            - text: Onaylı
+            - generic [ref=f9e84]: "0"
+          - link " Red 0" [ref=f9e85] [cursor=pointer]:
+            - /url: /Admin/Siparis?receteDurum=2
+            - generic [ref=f9e86]: 
+            - text: Red
+            - generic [ref=f9e87]: "0"
+        - generic [ref=f9e88]:
+          - generic [ref=f9e89]:
+            - generic [ref=f9e90]:
+              - button " طباعة الملصق" [disabled]:
+                - generic: 
+                - text: طباعة الملصق
+              - button " تحديد كتم الشحن" [ref=f9e91] [cursor=pointer]:
+                - generic [ref=f9e92]: 
+                - text: تحديد كتم الشحن
+              - button " تحديد كقيد التغليف" [ref=f9e93] [cursor=pointer]:
+                - generic [ref=f9e94]: 
+                - text: تحديد كقيد التغليف
+              - button " إلغاء" [ref=f9e95] [cursor=pointer]:
+                - generic [ref=f9e96]: 
+                - text: إلغاء
+              - generic [ref=f9e97]: لا توجد طلبات محددة.
+              - generic [ref=f9e98]: يتم عرض 5 سجل من أصل 5 طلب.
+            - generic [ref=f9e99]:
+              - generic [ref=f9e100]: لكل صفحة
+              - combobox [ref=f9e101]:
+                - option "20" [selected]
+                - option "50"
+                - option "100"
+          - table [ref=f9e103]:
+            - rowgroup [ref=f9e104]:
+              - row "الطلب العميل التسليم المحتوى الإجمالي الحالة / الشحن الفاتورة الإجراءات تحديد طلبات هذه الصفحة" [ref=f9e105]:
+                - columnheader "الطلب" [ref=f9e106]
+                - columnheader "العميل" [ref=f9e107]
+                - columnheader "التسليم" [ref=f9e108]
+                - columnheader "المحتوى" [ref=f9e109]
+                - columnheader "الإجمالي" [ref=f9e110]
+                - columnheader "الحالة / الشحن" [ref=f9e111]
+                - columnheader "الفاتورة" [ref=f9e112]
+                - columnheader "الإجراءات" [ref=f9e113]
+                - columnheader "تحديد طلبات هذه الصفحة" [ref=f9e114]:
+                  - checkbox "تحديد طلبات هذه الصفحة" [ref=f9e115]
+            - rowgroup [ref=f9e116]:
+              - 'row "VET-202606-1006 ID: #7 27.06.2026 10:40 A Ahmet El-Filistini +970599111111 ahmet@example.com Ramallah / Al-Bireh Ramallah, Filistin لا توجد تفاصيل للمنتج 450٫00 ₪  تم التسليم Aras Kargo - بانتظار رقم التتبع Admin_NotExists  فاتورة PDF  تحديد الطلب VET-202606-1006" [ref=f9e117]':
+                - 'cell "VET-202606-1006 ID: #7 27.06.2026 10:40" [ref=f9e118]':
+                  - text: VET-202606-1006
+                  - generic [ref=f9e119]: "ID: #7"
+                  - generic [ref=f9e120]: 27.06.2026 10:40
+                - cell "A Ahmet El-Filistini +970599111111 ahmet@example.com" [ref=f9e121]:
+                  - generic [ref=f9e122]:
+                    - generic [ref=f9e123]: A
+                    - generic [ref=f9e124]:
+                      - generic [ref=f9e125]: Ahmet El-Filistini
+                      - generic [ref=f9e126]: "+970599111111"
+                      - generic [ref=f9e127]: ahmet@example.com
+                - cell "Ramallah / Al-Bireh Ramallah, Filistin" [ref=f9e128]:
+                  - generic [ref=f9e129]: Ramallah / Al-Bireh
+                  - generic [ref=f9e130]: Ramallah, Filistin
+                - cell "لا توجد تفاصيل للمنتج" [ref=f9e131]:
+                  - generic [ref=f9e132]: لا توجد تفاصيل للمنتج
+                - cell "450٫00 ₪" [ref=f9e133]
+                - cell " تم التسليم Aras Kargo - بانتظار رقم التتبع" [ref=f9e134]:
+                  - generic [ref=f9e135]:
+                    - generic [ref=f9e136]: 
+                    - text: تم التسليم
+                  - generic [ref=f9e137]: Aras Kargo - بانتظار رقم التتبع
+                - cell "Admin_NotExists  فاتورة PDF" [ref=f9e138]:
+                  - generic [ref=f9e139]: Admin_NotExists
+                  - link " فاتورة PDF" [ref=f9e141] [cursor=pointer]:
+                    - /url: /Admin/Siparis/FaturaPdf/7
+                    - generic [ref=f9e142]: 
+                    - text: فاتورة PDF
+                - cell "" [ref=f9e143]:
+                  - generic [ref=f9e144]:
+                    - button "" [ref=f9e145] [cursor=pointer]:
+                      - generic [ref=f9e146]: 
+                    - text: 
+                - cell "تحديد الطلب VET-202606-1006" [ref=f9e147]:
+                  - checkbox "تحديد الطلب VET-202606-1006" [ref=f9e148]
+              - 'row "VET-202606-1007 ID: #8 27.06.2026 10:40 F Fatima Hassan +970599222222 fatima@example.com Hebron / Halhul Hebron, Filistin لا توجد تفاصيل للمنتج 280٫00 ₪  قيد التجهيز Aras Kargo - بانتظار رقم التتبع Admin_NotExists  فاتورة PDF  تحديد الطلب VET-202606-1007" [ref=f9e149]':
+                - 'cell "VET-202606-1007 ID: #8 27.06.2026 10:40" [ref=f9e150]':
+                  - text: VET-202606-1007
+                  - generic [ref=f9e151]: "ID: #8"
+                  - generic [ref=f9e152]: 27.06.2026 10:40
+                - cell "F Fatima Hassan +970599222222 fatima@example.com" [ref=f9e153]:
+                  - generic [ref=f9e154]:
+                    - generic [ref=f9e155]: F
+                    - generic [ref=f9e156]:
+                      - generic [ref=f9e157]: Fatima Hassan
+                      - generic [ref=f9e158]: "+970599222222"
+                      - generic [ref=f9e159]: fatima@example.com
+                - cell "Hebron / Halhul Hebron, Filistin" [ref=f9e160]:
+                  - generic [ref=f9e161]: Hebron / Halhul
+                  - generic [ref=f9e162]: Hebron, Filistin
+                - cell "لا توجد تفاصيل للمنتج" [ref=f9e163]:
+                  - generic [ref=f9e164]: لا توجد تفاصيل للمنتج
+                - cell "280٫00 ₪" [ref=f9e165]
+                - cell " قيد التجهيز Aras Kargo - بانتظار رقم التتبع" [ref=f9e166]:
+                  - generic [ref=f9e167]:
+                    - generic [ref=f9e168]: 
+                    - text: قيد التجهيز
+                  - generic [ref=f9e169]: Aras Kargo - بانتظار رقم التتبع
+                - cell "Admin_NotExists  فاتورة PDF" [ref=f9e170]:
+                  - generic [ref=f9e171]: Admin_NotExists
+                  - link " فاتورة PDF" [ref=f9e173] [cursor=pointer]:
+                    - /url: /Admin/Siparis/FaturaPdf/8
+                    - generic [ref=f9e174]: 
+                    - text: فاتورة PDF
+                - cell "" [ref=f9e175]:
+                  - generic [ref=f9e176]:
+                    - button "" [ref=f9e177] [cursor=pointer]:
+                      - generic [ref=f9e178]: 
+                    - text:    
+                - cell "تحديد الطلب VET-202606-1007" [ref=f9e179]:
+                  - checkbox "تحديد الطلب VET-202606-1007" [ref=f9e180]
+              - 'row "VET-202606-1008 ID: #9 27.06.2026 10:40 M Mahmoud Abbas +970599333333 mahmoud@example.com Nablus / Rafidia Nablus, Filistin لا توجد تفاصيل للمنتج كوبون: WELCOME10 (-10٫00 ₪) 620٫00 ₪  تم الشحن Aras Kargo - بانتظار رقم التتبع Admin_NotExists  فاتورة PDF  تحديد الطلب VET-202606-1008" [ref=f9e181]':
+                - 'cell "VET-202606-1008 ID: #9 27.06.2026 10:40" [ref=f9e182]':
+                  - text: VET-202606-1008
+                  - generic [ref=f9e183]: "ID: #9"
+                  - generic [ref=f9e184]: 27.06.2026 10:40
+                - cell "M Mahmoud Abbas +970599333333 mahmoud@example.com" [ref=f9e185]:
+                  - generic [ref=f9e186]:
+                    - generic [ref=f9e187]: M
+                    - generic [ref=f9e188]:
+                      - generic [ref=f9e189]: Mahmoud Abbas
+                      - generic [ref=f9e190]: "+970599333333"
+                      - generic [ref=f9e191]: mahmoud@example.com
+                - cell "Nablus / Rafidia Nablus, Filistin" [ref=f9e192]:
+                  - generic [ref=f9e193]: Nablus / Rafidia
+                  - generic [ref=f9e194]: Nablus, Filistin
+                - 'cell "لا توجد تفاصيل للمنتج كوبون: WELCOME10 (-10٫00 ₪)" [ref=f9e195]':
+                  - generic [ref=f9e196]: لا توجد تفاصيل للمنتج
+                  - generic [ref=f9e197]: "كوبون: WELCOME10 (-10٫00 ₪)"
+                - cell "620٫00 ₪" [ref=f9e198]
+                - cell " تم الشحن Aras Kargo - بانتظار رقم التتبع" [ref=f9e199]:
+                  - generic [ref=f9e200]:
+                    - generic [ref=f9e201]: 
+                    - text: تم الشحن
+                  - generic [ref=f9e202]: Aras Kargo - بانتظار رقم التتبع
+                - cell "Admin_NotExists  فاتورة PDF" [ref=f9e203]:
+                  - generic [ref=f9e204]: Admin_NotExists
+                  - link " فاتورة PDF" [ref=f9e206] [cursor=pointer]:
+                    - /url: /Admin/Siparis/FaturaPdf/9
+                    - generic [ref=f9e207]: 
+                    - text: فاتورة PDF
+                - cell "" [ref=f9e208]:
+                  - generic [ref=f9e209]:
+                    - button "" [ref=f9e210] [cursor=pointer]:
+                      - generic [ref=f9e211]: 
+                    - text: 
+                - cell "تحديد الطلب VET-202606-1008" [ref=f9e212]:
+                  - checkbox "تحديد الطلب VET-202606-1008" [ref=f9e213]
+              - 'row "VET-202606-1009 ID: #10 27.06.2026 10:40 L Layla Khoury +970599444444 layla@example.com Gaza / Al-Rimal Gaza, Filistin لا توجد تفاصيل للمنتج 195٫00 ₪  إلغاء / إرجاع Aras Kargo - بانتظار رقم التتبع Admin_NotExists  فاتورة PDF  تحديد الطلب VET-202606-1009" [ref=f9e214]':
+                - 'cell "VET-202606-1009 ID: #10 27.06.2026 10:40" [ref=f9e215]':
+                  - text: VET-202606-1009
+                  - generic [ref=f9e216]: "ID: #10"
+                  - generic [ref=f9e217]: 27.06.2026 10:40
+                - cell "L Layla Khoury +970599444444 layla@example.com" [ref=f9e218]:
+                  - generic [ref=f9e219]:
+                    - generic [ref=f9e220]: L
+                    - generic [ref=f9e221]:
+                      - generic [ref=f9e222]: Layla Khoury
+                      - generic [ref=f9e223]: "+970599444444"
+                      - generic [ref=f9e224]: layla@example.com
+                - cell "Gaza / Al-Rimal Gaza, Filistin" [ref=f9e225]:
+                  - generic [ref=f9e226]: Gaza / Al-Rimal
+                  - generic [ref=f9e227]: Gaza, Filistin
+                - cell "لا توجد تفاصيل للمنتج" [ref=f9e228]:
+                  - generic [ref=f9e229]: لا توجد تفاصيل للمنتج
+                - cell "195٫00 ₪" [ref=f9e230]
+                - cell " إلغاء / إرجاع Aras Kargo - بانتظار رقم التتبع" [ref=f9e231]:
+                  - generic [ref=f9e232]:
+                    - generic [ref=f9e233]: 
+                    - text: إلغاء / إرجاع
+                  - generic [ref=f9e234]: Aras Kargo - بانتظار رقم التتبع
+                - cell "Admin_NotExists  فاتورة PDF" [ref=f9e235]:
+                  - generic [ref=f9e236]: Admin_NotExists
+                  - link " فاتورة PDF" [ref=f9e238] [cursor=pointer]:
+                    - /url: /Admin/Siparis/FaturaPdf/10
+                    - generic [ref=f9e239]: 
+                    - text: فاتورة PDF
+                - cell "" [ref=f9e240]:
+                  - generic [ref=f9e241]:
+                    - button "" [ref=f9e242] [cursor=pointer]:
+                      - generic [ref=f9e243]: 
+                    - text: 
+                - cell "تحديد الطلب VET-202606-1009" [ref=f9e244]:
+                  - checkbox "تحديد الطلب VET-202606-1009" [ref=f9e245]
+              - 'row "VET-202606-1010 ID: #11 27.06.2026 10:40 Y Yusuf Ibrahim +970599555555 yusuf@example.com Jenin / Jenin Camp Jenin, Filistin لا توجد تفاصيل للمنتج كوبون: KURBAN25 (-25٫00 ₪) 540٫00 ₪  إلغاء / إرجاع Aras Kargo - بانتظار رقم التتبع Admin_NotExists  فاتورة PDF  تحديد الطلب VET-202606-1010" [ref=f9e246]':
+                - 'cell "VET-202606-1010 ID: #11 27.06.2026 10:40" [ref=f9e247]':
+                  - text: VET-202606-1010
+                  - generic [ref=f9e248]: "ID: #11"
+                  - generic [ref=f9e249]: 27.06.2026 10:40
+                - cell "Y Yusuf Ibrahim +970599555555 yusuf@example.com" [ref=f9e250]:
+                  - generic [ref=f9e251]:
+                    - generic [ref=f9e252]: "Y"
+                    - generic [ref=f9e253]:
+                      - generic [ref=f9e254]: Yusuf Ibrahim
+                      - generic [ref=f9e255]: "+970599555555"
+                      - generic [ref=f9e256]: yusuf@example.com
+                - cell "Jenin / Jenin Camp Jenin, Filistin" [ref=f9e257]:
+                  - generic [ref=f9e258]: Jenin / Jenin Camp
+                  - generic [ref=f9e259]: Jenin, Filistin
+                - 'cell "لا توجد تفاصيل للمنتج كوبون: KURBAN25 (-25٫00 ₪)" [ref=f9e260]':
+                  - generic [ref=f9e261]: لا توجد تفاصيل للمنتج
+                  - generic [ref=f9e262]: "كوبون: KURBAN25 (-25٫00 ₪)"
+                - cell "540٫00 ₪" [ref=f9e263]
+                - cell " إلغاء / إرجاع Aras Kargo - بانتظار رقم التتبع" [ref=f9e264]:
+                  - generic [ref=f9e265]:
+                    - generic [ref=f9e266]: 
+                    - text: إلغاء / إرجاع
+                  - generic [ref=f9e267]: Aras Kargo - بانتظار رقم التتبع
+                - cell "Admin_NotExists  فاتورة PDF" [ref=f9e268]:
+                  - generic [ref=f9e269]: Admin_NotExists
+                  - link " فاتورة PDF" [ref=f9e271] [cursor=pointer]:
+                    - /url: /Admin/Siparis/FaturaPdf/11
+                    - generic [ref=f9e272]: 
+                    - text: فاتورة PDF
+                - cell "" [ref=f9e273]:
+                  - generic [ref=f9e274]:
+                    - button "" [ref=f9e275] [cursor=pointer]:
+                      - generic [ref=f9e276]: 
+                    - text:  
+                - cell "تحديد الطلب VET-202606-1010" [ref=f9e277]:
+                  - checkbox "تحديد الطلب VET-202606-1010" [ref=f9e278]
+          - generic [ref=f9e280]: الصفحة 1 / 1 - يتم عرض 5 منتج في هذه الصفحة.
+    - contentinfo [ref=f9e281]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

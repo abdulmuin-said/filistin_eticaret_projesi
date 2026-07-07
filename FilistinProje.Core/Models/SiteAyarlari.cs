@@ -82,5 +82,13 @@ namespace FilistinProje.Core.Models
         /// Müşterinin sipariş verdikten sonra iptal edebileceği süre (saat). 0 = iptal kapalı.
         /// </summary>
         public int IptalSuresiSaat { get; set; } = 3;
+
+        public string HeroBaslikAr { get; set; } = "جلب الفن الفلسطيني إلى منزلك";
+        public string HeroBaslikEn { get; set; } = "Bring Palestinian Art to Your Home";
+        public string HeroBaslikTr { get; set; } = "Filistin Sanatını Evinize Getirin";
+        public string HeroAltBaslikAr { get; set; } = "تصاميم فريدة تجمع بين التراث والحداثة";
+        public string HeroAltBaslikEn { get; set; } = "Unique designs blending heritage and modernity";
+        public string HeroAltBaslikTr { get; set; } = "Mirasa modern bir dokunuş katan özel tasarımlar";
+        public string HeroGorselUrl { get; set; } = "/slider-demo.jpg";
     }
 }

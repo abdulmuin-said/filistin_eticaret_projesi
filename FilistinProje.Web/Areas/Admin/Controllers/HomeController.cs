@@ -241,8 +241,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .Select(x => new DashboardActivityItem
                 {
                     Type = "Siparis",
-                    Title = $"Yeni sipariş #{x.Id}",
-                    Detail = $"{x.MusteriAdSoyad} - {x.ToplamTutar:N2} TL",
+                    Title = $"طلب جديد #{x.Id}",
+                    Detail = $"{x.MusteriAdSoyad} - {x.ToplamTutar:N2} ₪",
                     OccurredAt = x.OlusturulmaTarihi
                 }));
             recentActivities.AddRange(aktifUrunler
@@ -251,7 +251,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .Select(x => new DashboardActivityItem
                 {
                     Type = "Urun",
-                    Title = "Yeni ürün eklendi",
+                    Title = "تمت إضافة منتج جديد",
                     Detail = x.Baslik,
                     OccurredAt = x.OlusturulmaTarihi
                 }));

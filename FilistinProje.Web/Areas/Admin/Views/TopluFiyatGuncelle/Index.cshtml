@@ -1,4 +1,4 @@
-@model List<FilistinProje.Web.Areas.Admin.Controllers.OlcuFiyatModel>
+﻿@model List<FilistinProje.Web.Areas.Admin.Controllers.OlcuFiyatModel>
 @{
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = Localizer["Admin_BulkPriceUpdate"];
@@ -189,7 +189,7 @@
     }
     
     .tf-count {
-        background: #f1ede7;
+        background: ;
         padding: 2px 8px;
         border-radius: 10px;
         font-size: 11px;
@@ -238,7 +238,7 @@
                     </div>
                     <div class="tf-card-price">
                         <label>@Localizer["Admin_CurrentLabel"]</label>
-                        <span class="price-value">@item.MevcutFiyat.ToString("N2") ₪</span>
+                        <span class="price-value">@item.MevcutFiyat.ToString("N2") â‚ª</span>
                     </div>
                     <div class="tf-input-group">
                         <label>@Localizer["Admin_NewPriceLabel"]</label>
@@ -318,7 +318,7 @@ function kaydet(olcu, mevcutFiyat) {
             input.value = '';
             
             const mevcutSpan = input.closest('.tf-card').querySelector('.price-value');
-            mevcutSpan.textContent = yeniFiyat.toLocaleString('tr-TR', { minimumFractionDigits: 2 }) + ' ₪';
+            mevcutSpan.textContent = yeniFiyat.toLocaleString('tr-TR', { minimumFractionDigits: 2 }) + ' â‚ª';
         } else {
             showToast(data.message || anErrorOccurred, true);
         }

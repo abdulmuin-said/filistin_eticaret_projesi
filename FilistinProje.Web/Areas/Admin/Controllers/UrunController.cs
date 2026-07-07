@@ -1888,7 +1888,7 @@ await _context.SaveChangesAsync();
 
         private static string NormalizeExcelKey(string? value)
         {
-            var text = (value ?? string.Empty).Trim().ToLower(new CultureInfo("tr-TR"));
+            var text = (value ?? string.Empty).Trim().ToLower(CultureInfo.InvariantCulture);
             var map = new Dictionary<char, char>
             {
                 ['ç'] = 'c',
@@ -1930,7 +1930,7 @@ await _context.SaveChangesAsync();
         {
             var value = GetExcelString(worksheet, headers, row, keys);
             return int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var parsed) ||
-                   int.TryParse(value, NumberStyles.Any, new CultureInfo("tr-TR"), out parsed)
+                    int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsed)
                 ? parsed
                 : null;
         }
@@ -1944,7 +1944,7 @@ await _context.SaveChangesAsync();
             }
 
             value = value.Replace("TL", string.Empty, StringComparison.OrdinalIgnoreCase).Trim();
-            return decimal.TryParse(value, NumberStyles.Any, new CultureInfo("tr-TR"), out var parsed) ||
+            return decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var parsed) ||
                    decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsed)
                 ? parsed
                 : null;

@@ -1,0 +1,128 @@
+@model FilistinProje.Core.Varliklar.Siparis
+@using FilistinProje.Core.Varliklar
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["SecurePayment"];
+    var siteSettings = SiteSettingsService.GetSettings();
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "â‚ª" : siteSettings.ParaBirimi;
+
+    decimal araToplam = ViewBag.AraToplam ?? 0;
+    decimal indirim = ViewBag.IndirimTutari ?? 0;
+    decimal genelToplam = ViewBag.ToplamTutar ?? 0;
+    string? kuponKodu = ViewBag.KuponKodu as string;
+    var sepetItems = ViewBag.SepetItems as List<FilistinProje.Core.Varliklar.SepetItem> ?? new List<FilistinProje.Core.Varliklar.SepetItem>();
+    var ucretsizKargoLimiti = (decimal)(ViewBag.UcretsizKargoLimiti ?? 500);
+    bool codAktif = ViewBag.KapidaOdemeAktifMi is bool codAccess && codAccess;
+    decimal codBedel = (decimal)(ViewBag.KapidaOdemeHizmetBedeli ?? 0);
+    decimal codLimit = (decimal)(ViewBag.KapidaOdemeLimiti ?? 2000);
+    bool receteZorunlu = ViewBag.ReceteZorunluMu is bool rxRequired && rxRequired;
+    bool isWholesale = User.IsInRole("Wholesale");
+    decimal toptanciMinTutar = (decimal)(ViewBag.ToptanciMinSiparisTutari ?? 500);
+
+    var kayitliAdresler = ViewBag.KayitliAdresler as List<FilistinProje.Core.Varliklar.Adres>;
+    bool girisYapmis = User.Identity?.IsAuthenticated == true;
+    // Åehir listesini veritabanÄ±ndaki KargoBolgeSehirler'den Ã§ek (controller ViewBag Ã¼zerinden gÃ¶nderir)
+    var sehirListesi = ViewBag.Sehirler as List<string> ?? new List<string>();
+    var sehirler = sehirListesi.Any() ? sehirListesi.ToArray() : new[]
+    {
+        "BeytÃ¼llahim", "Cenin (Jenin)", "Deyr el-Balah", "El-Halil (Hebron)",
+        "El-KudÃ¼s (Jerusalem)", "Eriha (Jericho)", "Gazze", "Han Yunus (Khan Yunis)",
+        "Kalkilya (Qalqilya)", "Kuzey Gazze", "Nablus", "Ramallah & El-Bireh",
+        "Refah (Rafah)", "Salfit", "Tubas", "Tulkarim"
+    };
+}
+
+<!-- Breadcrumb -->
+<div class="bg-brand-cream border-b border-brand-border py-4">
+    <div class="container mx-auto px-4 flex items-center justify-center gap-4 text-xs tracking-widest uppercase">
+        <a href="/Sepet" class="text-brand-mutedtext hover:text-brand-olive transition-colors flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-brand-border text-brand-mutedtext flex items-center justify-center font-bold">1</span> @Localizer["Cart"]
+        </a>
+        <span class="text-brand-border">/</span>
+        <span class="text-brand-olive font-bold flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-brand-olive text-white flex items-center justify-center font-bold">2</span> @Localizer["PaymentAndDelivery"]
+        </span>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-12 md:py-16">
+    <div class="text-center mb-12">
+        <h1 class="font-serif text-3xl md:text-5xl text-brand-olive mb-4">@Localizer["SecurePayment"]</h1>
+        <p class="text-sm text-brand-mutedtext max-w-2xl mx-auto">@Localizer["VerifyDeliveryInfo"]</p>
+    </div>
+
+
+                    <div class="mt-12">
+                        <h2 class="font-serif text-2xl text-brand-olive mb-4 flex items-center gap-3 border-b border-brand-border pb-4">
+                            <i class="fas fa-id-card text-brand-gold"></i> @Localizer["IdentityVerification"]
+                        </h2>
+                        <p class="text-xs text-brand-mutedtext mb-6">@Localizer["IdentityPhotoDesc"]</p>
+
+                        <input type="hidden" name="KimlikFotoYolu" id="KimlikFotoYolu" value="" />
+
+                        <div class="flex gap-3 mb-5">
+                            <button type="button" id="btnCameraMode" class="flex-1 bg-brand-olive text-white text-xs tracking-widest uppercase py-3 rounded hover:bg-[#1c2001] transition-colors font-medium" onclick="switchIdentityMode('camera')">
+                                <i class="fas fa-camera me-2"></i>@Localizer["CameraCapture"]
+                            </button>
+                            <button type="button" id="btnUploadMode" class="flex-1 bg-brand-cream text-brand-olive text-xs tracking-widest uppercase py-3 rounded hover:bg-brand-border transition-colors font-medium" onclick="switchIdentityMode('upload')">
+                                <i class="fas fa-upload me-2"></i>@Localizer["FileUpload"]
+                            </button>
+                        </div>
+
+                        <!-- Camera Mode -->
+                        <div id="identityCameraMode" class="hidden">
+                            <div class="relative bg-black rounded-lg overflow-hidden mb-4 max-w-md mx-auto">
+                                <video id="identityVideo" playsinline class="w-full aspect-[4/3] object-cover"></video>
+                                <canvas id="identityCanvas" class="hidden"></canvas>
+                                <div id="identityCameraPlaceholder" class="absolute inset-0 flex items-center justify-center bg-brand-darktext text-white">
+                                    <div class="text-center">
+                                        <i class="fas fa-camera fa-3x mb-3"></i>
+                                        <p class="text-xs uppercase tracking-widest">@Localizer["CameraCapture"]</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex justify-center gap-3">
+                                <button type="button" id="btnStartCamera" class="bg-brand-olive text-white text-xs tracking-widest uppercase px-6 py-2.5 rounded hover:bg-[#1c2001] transition-colors font-medium" onclick="startIdentityCamera()">
+                                    <i class="fas fa-play me-2"></i>@Localizer["CameraCapture"]
+                                </button>
+                                <button type="button" id="btnCapturePhoto" class="hidden bg-brand-gold text-white text-xs tracking-widest uppercase px-6 py-2.5 rounded hover:bg-[#a0742d] transition-colors font-medium" onclick="captureIdentityPhoto()">
+                                    <i class="fas fa-camera me-2"></i>@Localizer["CapturePhoto"]
+                                </button>
+                                <button type="button" id="btnRetakePhoto" class="hidden bg-brand-cream text-brand-olive text-xs tracking-widest uppercase px-6 py-2.5 rounded hover:bg-brand-border transition-colors font-medium" onclick="retakeIdentityPhoto()">
+                                    <i class="fas fa-redo me-2"></i>@Localizer["RetakePhoto"]
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Upload Mode -->
+                        <div id="identityUploadMode" class="hidden">
+                            <div class="border-2 border-dashed border-brand-border rounded-lg p-8 text-center hover:border-brand-gold transition-colors cursor-pointer" onclick="document.getElementById('identityFileInput').click()">
+                                <i class="fas fa-cloud-upload-alt fa-3x text-brand-gold mb-3"></i>
+                                <p class="text-sm text-brand-mutedtext mb-2">@Localizer["FileUpload"]</p>
+                                <p class="text-[10px] text-brand-mutedtext">JPEG, PNG, WebP (max 5MB)</p>
+                                <input type="file" id="identityFileInput" accept="image/jpeg,image/png,image/webp" class="hidden" onchange="handleIdentityFileUpload(this)" />
+                            </div>
+                        </div>
+
+                        <!-- Preview -->
+                        <div id="identityPreviewContainer" class="hidden mt-4 max-w-xs mx-auto">
+                            <div class="relative rounded-lg overflow-hidden border border-[#cbd3a3] bg-[#f7f8ed] p-2">
+                                <img id="identityPreview" class="w-full aspect-[4/3] object-contain rounded" alt="@Localizer["IdentityVerification"]" />
+                                <div class="absolute top-3 end-3 bg-green-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full">
+                                    <i class="fas fa-check-circle me-1"></i>@Localizer["IdentityPhotoUploaded"]
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (isWholesale && genelToplam < toptanciMinTutar)
+                    {
+                        <div class="w-full mt-4 bg-amber-50 border border-amber-300 rounded-lg px-4 py-3 text-center">
+                            <p class="text-sm font-semibold text-amber-700">@Localizer["WholesaleMinOrderWarning", toptanciMinTutar.ToString("N0"), currencySymbol]</p>
+                            <p class="text-xs text-amber-600 mt-1">@Localizer["WholesaleMinOrderRemaining", (toptanciMinTutar - genelToplam).ToString("N0"), currencySymbol]</p>
+                        </div>
+                    }
+                    <button type="submit" class="w-full mt-4 bg-brand-olive text-white text-sm font-medium tracking-widest uppercase py-4 rounded hover:bg-[#1c2001] transition-colors flex items-center justify-center gap-3 @(isWholesale && genelToplam < toptanciMinTutar ? "opacity-50 cursor-not-allowed" : "")" @(isWholesale && genelToplam < toptanciMinTutar ? "disabled" : "")>
+                        <i class="fas fa-check"></i> @Localizer["CreateOrder"] - <span id="checkoutBtnTotal">@genelToplam.ToString("N2")</span> @currencySymbol
+                    </button>

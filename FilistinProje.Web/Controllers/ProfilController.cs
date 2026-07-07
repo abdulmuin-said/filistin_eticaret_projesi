@@ -59,7 +59,7 @@ namespace FilistinProje.Web.Controllers
             var toplamHarcama = siparislerim
                 .Where(x => x.Durum is >= 1 and < 4 && x.ToplamTutar > 0 && x.ToplamTutar <= 1_000_000)
                 .Sum(x => x.ToplamTutar);
-            ViewBag.ToplamHarcama = toplamHarcama.ToString("N2", new System.Globalization.CultureInfo("tr-TR"));
+            ViewBag.ToplamHarcama = toplamHarcama.ToString("N2", System.Globalization.CultureInfo.InvariantCulture);
 
             // Favori bilgileri
             var favoriler = await _context.Favoriler

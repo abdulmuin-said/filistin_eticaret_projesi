@@ -204,7 +204,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (durum == eskiDurum)
             {
-                TempData["Mesaj"] = "SipariÅŸ operasyon bilgileri gÃ¼ncellendi.";
+                TempData["Mesaj"] = "تم تحديث معلومات عملية الطلب.";
                 TempData["Durum"] = "success";
                 return RedirectToAction("Detay", new { id });
             }
@@ -212,12 +212,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var mailSonucu = await SendStatusNotificationAsync(siparis, eskiDurum, durum, firma?.Ad ?? "Aras Kargo", temizKargoNo);
             if (mailSonucu.Success)
             {
-                TempData["Mesaj"] = "SipariÅŸ durumu gÃ¼ncellendi. MÃ¼ÅŸteriye bilgilendirme e-postasÄ± gÃ¶nderildi.";
+                TempData["Mesaj"] = "تم تحديث حالة الطلب. تم إرسال بريد إلكتروني إعلامي للعميل.";
                 TempData["Durum"] = "success";
             }
             else
             {
-                TempData["Mesaj"] = $"SipariÅŸ durumu gÃ¼ncellendi. E-posta gÃ¶nderimi atlandÄ±: {mailSonucu.Message}";
+                TempData["Mesaj"] = $"تم تحديث حالة الطلب. تم تخطي إرسال البريد الإلكتروني: {mailSonucu.Message}";
                 TempData["Durum"] = "warning";
             }
 
@@ -455,13 +455,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{siparisler.Count} siparis 'Teslim Edildi' durumuna alindi.";
+            TempData["Mesaj"] = $"{siparisler.Count} طلب تم تحديثه إلى 'تم التسليم'.";
             TempData["Durum"] = "success";
 
             return RedirectToAction(nameof(Index), new
             {
                 durum = SiparisDurumHelper.KargoyaVerildi,
-                toast = Uri.EscapeDataString($"{siparisler.Count} siparis teslim edildi"),
+                toast = Uri.EscapeDataString($"{siparisler.Count} طلب تم تسليمها"),
                 toastType = "success"
             });
         }
@@ -474,7 +474,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!siparisIds.Any())
             {
-                TempData["Mesaj"] = "GÃ¼ncellemek iÃ§in en az bir sipariÅŸ seÃ§melisiniz.";
+                TempData["Mesaj"] = "يجب اختيار طلب واحد على الأقل للتحديث.";
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -509,10 +509,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{guncellenecekler.Count} sipariÅŸ '{durumAd}' durumuna gÃ¼ncellendi.";
+            TempData["Mesaj"] = $"تم تحديث {guncellenecekler.Count} طلب إلى حالة '{durumAd}'.";
             TempData["Durum"] = "success";
             
-            return RedirectToAction(nameof(Index), new { toast = Uri.EscapeDataString($"{guncellenecekler.Count} sipariÅŸ durumu gÃ¼ncellendi"), toastType = "success" });
+            return RedirectToAction(nameof(Index), new { toast = Uri.EscapeDataString($"تم تحديث حالة {guncellenecekler.Count} طلب"), toastType = "success" });
         }
 
         [HttpPost]
@@ -521,7 +521,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             if (string.IsNullOrWhiteSpace(siparisIds))
             {
-                TempData["Mesaj"] = "Ä°ptal etmek iÃ§in en az bir sipariÅŸ seÃ§melisiniz.";
+                TempData["Mesaj"] = "يجب اختيار طلب واحد على الأقل للإلغاء.";
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -530,7 +530,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!idList.Any())
             {
-                TempData["Mesaj"] = "Ä°ptal etmek iÃ§in en az bir sipariÅŸ seÃ§melisiniz.";
+                TempData["Mesaj"] = "يجب اختيار طلب واحد على الأقل للإلغاء.";
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -740,20 +740,20 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var yeniDurumText = System.Net.WebUtility.HtmlEncode(yeniDurum);
             var durumMesaji = durum switch
             {
-                SiparisDurumHelper.UretimHazirlaniyor => "SipariÅŸiniz Ã¼retim planÄ±na alÄ±ndÄ±. ÃœrÃ¼nleriniz Ã¶zenle hazÄ±rlanÄ±yor.",
-                SiparisDurumHelper.Paketleniyor => "ÃœrÃ¼nleriniz hazÄ±rlandÄ± ve korunaklÄ± paketleme aÅŸamasÄ±na geÃ§ti.",
-                SiparisDurumHelper.TeslimEdildi => "SipariÅŸiniz teslim edildi olarak gÃ¼ncellendi. GÃ¼le gÃ¼le kullanmanÄ±zÄ± dileriz.",
-                SiparisDurumHelper.IptalEdildi => "SipariÅŸiniz iptal edildi olarak gÃ¼ncellendi. Detaylar iÃ§in bizimle iletiÅŸime geÃ§ebilirsiniz.",
-                SiparisDurumHelper.IadeTalebi => "Ä°ade talebiniz alÄ±ndÄ± ve ekibimiz tarafÄ±ndan inceleniyor.",
-                SiparisDurumHelper.IadeOnaylandi => "Ä°ade talebiniz onaylandÄ±. Sonraki adÄ±mlar iÃ§in sizinle iletiÅŸime geÃ§eceÄŸiz.",
-                SiparisDurumHelper.IadeTamamlandi => "Ä°ade sÃ¼reciniz tamamlandÄ±.",
-                _ => "SipariÅŸinizin durumu gÃ¼ncellendi."
+                SiparisDurumHelper.UretimHazirlaniyor => "تم إدراج طلبك في خطة الإنتاج. سيتم تجهيز منتجاتك بعناية.",
+                SiparisDurumHelper.Paketleniyor => "تم تجهيز منتجاتك وانتقلت إلى مرحلة التغليف الآمن.",
+                SiparisDurumHelper.TeslimEdildi => "تم تحديث طلبك كمسلّم. نتمنى لك استخداماً ممتعاً.",
+                SiparisDurumHelper.IptalEdildi => "تم تحديث طلبك كملغي. يمكنك التواصل معنا للتفاصيل.",
+                SiparisDurumHelper.IadeTalebi => "تم استلام طلب الإرجاع الخاص بك وهو قيد المراجعة من قبل فريقنا.",
+                SiparisDurumHelper.IadeOnaylandi => "تمت الموافقة على طلب الإرجاع الخاص بك. سنتواصل معك للخطوات التالية.",
+                SiparisDurumHelper.IadeTamamlandi => "اكتملت عملية الإرجاع الخاصة بك.",
+                _ => "تم تحديث حالة طلبك."
             };
 
             return $@"
-                <p>SipariÅŸ numaranÄ±z <strong>{siparisNo}</strong> iÃ§in durum gÃ¼ncellemesi yapÄ±ldÄ±.</p>
-                <p><strong>Ã–nceki durum:</strong> {oncekiDurumText}<br>
-                <strong>Yeni durum:</strong> {yeniDurumText}</p>
+                <p>تم تحديث حالة طلبك رقم <strong>{siparisNo}</strong>.</p>
+                <p><strong>الحالة السابقة:</strong> {oncekiDurumText}<br>
+                <strong>الحالة الجديدة:</strong> {yeniDurumText}</p>
                 <p>{durumMesaji}</p>";
         }
 

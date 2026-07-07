@@ -256,12 +256,16 @@
                                 <input asp-for="GorselUrl" class="ca-input" id="categoryImageUrl" onchange="updateCategoryPreview()" />
                             </div>
                             <div class="col-lg-6">
-                                 <label class="ca-label">@Localizer["Admin_Kategori_Banner_URL"]</label>
+                                  <label class="ca-label">@Localizer["Admin_Kategori_Banner_URL"]</label>
 
                                 <input asp-for="BannerUrl" class="ca-input" />
                             </div>
                             <div class="col-lg-6">
-                                 <label class="ca-label">@Localizer["Admin_Ust_Metin"]</label>
+                                <label class="ca-label">Menü hover görsel URL</label>
+                                <input asp-for="MenuGorselUrl" class="ca-input" placeholder="Mega menüde gösterilecek özel görsel" />
+                            </div>
+                            <div class="col-lg-6">
+                                  <label class="ca-label">@Localizer["Admin_Ust_Metin"]</label>
                                  <textarea asp-for="UstMetin" class="ca-textarea" rows="4"></textarea>
                                  <label class="ca-label">@Localizer["Admin_Alt_Metin"]</label>
                                  <textarea asp-for="AltMetin" class="ca-textarea" rows="4"></textarea>

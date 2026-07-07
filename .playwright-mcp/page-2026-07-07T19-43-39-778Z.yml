@@ -1,0 +1,256 @@
+- generic [active] [ref=f36e1]:
+  - generic [ref=f36e3]:
+    - generic [ref=f36e4]:
+      - generic [ref=f36e5]:
+        - generic [ref=f36e6]: 
+        - text: شحن مجاني للطلبات فوق 200 ₪
+      - generic [ref=f36e7]:
+        - generic [ref=f36e8]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f36e9]:
+        - generic [ref=f36e10]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f36e11]:
+        - generic [ref=f36e12]: 
+        - text: إنتاج سريع
+      - generic [ref=f36e13]:
+        - generic [ref=f36e14]: 
+        - text: تغليف دقيق
+      - generic [ref=f36e15]:
+        - generic [ref=f36e16]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f36e17]:
+        - generic [ref=f36e18]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f36e19]:
+        - generic [ref=f36e20]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f36e21]:
+        - generic [ref=f36e22]: 
+        - text: دعم واتساب
+    - generic [ref=f36e23]:
+      - generic [ref=f36e24]:
+        - generic [ref=f36e25]: 
+        - text: شحن مجاني للطلبات فوق 200 ₪
+      - generic [ref=f36e26]:
+        - generic [ref=f36e27]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f36e28]:
+        - generic [ref=f36e29]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f36e30]:
+        - generic [ref=f36e31]: 
+        - text: إنتاج سريع
+      - generic [ref=f36e32]:
+        - generic [ref=f36e33]: 
+        - text: تغليف دقيق
+      - generic [ref=f36e34]:
+        - generic [ref=f36e35]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f36e36]:
+        - generic [ref=f36e37]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f36e38]:
+        - generic [ref=f36e39]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f36e40]:
+        - generic [ref=f36e41]: 
+        - text: دعم واتساب
+  - banner [ref=f36e42]:
+    - generic [ref=f36e43]:
+      - text: 
+      - link "7ANRPS48" [ref=f36e44] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f36e45]
+      - generic [ref=f36e46]:
+        - button "فتح القائمة" [ref=f36e47] [cursor=pointer]:
+          - img [ref=f36e48]
+        - button "بحث" [ref=f36e50] [cursor=pointer]:
+          - img [ref=f36e51]
+        - button "اللغة" [ref=f36e54] [cursor=pointer]:
+          - img [ref=f36e55]
+          - generic [ref=f36e57]: ar
+      - generic [ref=f36e58]:
+        - link "حسابي" [ref=f36e59] [cursor=pointer]:
+          - /url: /Profil
+          - img [ref=f36e60]
+        - link "المفضلة" [ref=f36e62] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=f36e63]
+        - link "السلة" [ref=f36e65] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=f36e66]
+          - generic [ref=f36e68]: "6"
+  - main [ref=f36e69]:
+    - generic [ref=f36e71]:
+      - link "الصفحة الرئيسية" [ref=f36e72] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f36e73]: /
+      - generic [ref=f36e74]: سلتي
+    - generic [ref=f36e75]:
+      - generic [ref=f36e76]:
+        - generic [ref=f36e77]:
+          - heading "سلتي" [level=1] [ref=f36e78]
+          - paragraph [ref=f36e79]: 1 منتج
+        - button " إفراغ السلة" [ref=f36e81] [cursor=pointer]:
+          - generic [ref=f36e82]: 
+          - text: إفراغ السلة
+      - generic [ref=f36e83]:
+        - generic [ref=f36e84]:
+          - article [ref=f36e85]:
+            - button "" [ref=f36e87] [cursor=pointer]:
+              - generic [ref=f36e88]: 
+            - link "طقم كنبات مودرن" [ref=f36e89] [cursor=pointer]:
+              - /url: /Urun/Detay/48
+              - img "طقم كنبات مودرن" [ref=f36e90]
+            - generic [ref=f36e91]:
+              - link "طقم كنبات مودرن" [ref=f36e92] [cursor=pointer]:
+                - /url: /Urun/Detay/48
+              - text: Varsayilan varyasyon
+              - generic [ref=f36e94]:
+                - generic [ref=f36e95]: ملاحظة طلب خاص
+                - textbox "ملاحظة حول طلبك" [ref=f36e96]
+                - generic [ref=f36e97]:
+                  - generic [ref=f36e98]: 500 حرف كحد أقصى
+                  - button " حفظ" [ref=f36e99] [cursor=pointer]:
+                    - generic [ref=f36e100]: 
+                    - text: حفظ
+              - generic [ref=f36e101]:
+                - generic [ref=f36e102]:
+                  - button "" [ref=f36e104] [cursor=pointer]:
+                    - generic [ref=f36e105]: 
+                  - generic [ref=f36e106]: "6"
+                  - button "+" [ref=f36e108] [cursor=pointer]:
+                    - generic [ref=f36e109]: +
+                - generic [ref=f36e110]: ₪29٬994٫00
+          - generic [ref=f36e111]:
+            - heading "اختيارات خاصة" [level=3] [ref=f36e112]
+            - generic [ref=f36e113]:
+              - generic [ref=f36e114]:
+                - generic [ref=f36e115]:
+                  - link "" [ref=f36e116] [cursor=pointer]:
+                    - /url: /Urun/Detay/-50
+                    - generic [ref=f36e118]: 
+                  - link "فستان سهرة أنيق" [ref=f36e119] [cursor=pointer]:
+                    - /url: /Urun/Detay/-50
+                    - heading "فستان سهرة أنيق" [level=4] [ref=f36e120]
+                  - paragraph [ref=f36e121]: 1٬299 ₪
+                - button "أضف إلى السلة" [ref=f36e122] [cursor=pointer]
+              - generic [ref=f36e123]:
+                - generic [ref=f36e124]:
+                  - link "" [ref=f36e125] [cursor=pointer]:
+                    - /url: /Urun/Detay/-51
+                    - generic [ref=f36e127]: 
+                  - link "حقيبة جلدية" [ref=f36e128] [cursor=pointer]:
+                    - /url: /Urun/Detay/-51
+                    - heading "حقيبة جلدية" [level=4] [ref=f36e129]
+                  - paragraph [ref=f36e130]: 899 ₪
+                - button "أضف إلى السلة" [ref=f36e131] [cursor=pointer]
+              - generic [ref=f36e132]:
+                - generic [ref=f36e133]:
+                  - link "" [ref=f36e134] [cursor=pointer]:
+                    - /url: /Urun/Detay/-49
+                    - generic [ref=f36e136]: 
+                  - link "ساعة ذكية" [ref=f36e137] [cursor=pointer]:
+                    - /url: /Urun/Detay/-49
+                    - heading "ساعة ذكية" [level=4] [ref=f36e138]
+                  - paragraph [ref=f36e139]: 799 ₪
+                - button "أضف إلى السلة" [ref=f36e140] [cursor=pointer]
+        - complementary [ref=f36e141]:
+          - generic [ref=f36e142]:
+            - heading "ملخص الطلب" [level=2] [ref=f36e143]
+            - generic [ref=f36e145]:
+              - generic [ref=f36e146]: 
+              - generic [ref=f36e147]: تم تحقيق الشحن المجاني!
+            - generic [ref=f36e148]:
+              - generic [ref=f36e149]:
+                - generic [ref=f36e150]: المجموع الفرعي
+                - generic [ref=f36e151]: ₪29٬994٫00
+              - generic [ref=f36e152]:
+                - generic [ref=f36e153]: الشحن
+                - generic [ref=f36e154]: مجاني
+              - generic [ref=f36e155]:
+                - generic [ref=f36e156]: المجموع
+                - generic [ref=f36e157]: ₪29٬994٫00
+            - generic [ref=f36e158]:
+              - textbox "كود الخصم" [ref=f36e159]
+              - button "تطبيق" [ref=f36e160] [cursor=pointer]
+            - link " المتابعة للدفع" [ref=f36e161] [cursor=pointer]:
+              - /url: /Siparis/Odeme
+              - generic [ref=f36e162]: 
+              - text: المتابعة للدفع
+            - paragraph [ref=f36e163]:
+              - generic [ref=f36e164]: 
+              - text: دفع آمن SSL
+      - generic [ref=f36e165]:
+        - generic [ref=f36e166]:
+          - generic [ref=f36e167]: المجموع
+          - generic [ref=f36e168]: ₪29٬994٫00
+        - link " المتابعة للدفع" [ref=f36e169] [cursor=pointer]:
+          - /url: /Siparis/Odeme
+          - generic [ref=f36e170]: 
+          - text: المتابعة للدفع
+  - contentinfo [ref=f36e171]:
+    - generic [ref=f36e173]:
+      - generic [ref=f36e174]:
+        - img [ref=f36e176]
+        - generic [ref=f36e178]:
+          - generic [ref=f36e179]: في جميع مناطق فلسطين
+          - generic [ref=f36e180]: شحن مجاني
+      - generic [ref=f36e181]:
+        - img [ref=f36e183]
+        - generic [ref=f36e185]:
+          - generic [ref=f36e186]: تحويل بنكي
+          - generic [ref=f36e187]: 256 Bit SSL
+      - generic [ref=f36e188]:
+        - img [ref=f36e190]
+        - generic [ref=f36e192]:
+          - generic [ref=f36e193]: تحويل بنكي
+          - generic [ref=f36e194]: دفع سهل عبر الآيبان
+    - generic [ref=f36e195]:
+      - generic [ref=f36e196]:
+        - generic [ref=f36e197]:
+          - heading "اشترك في النشرة البريدية" [level=3] [ref=f36e198]
+          - paragraph [ref=f36e199]: استقبل أحدث المنتجات المختارة من السوق الفلسطيني والعروض الخاصة على بريدك.
+          - generic [ref=f36e200]:
+            - textbox "عنوان البريد الإلكتروني" [ref=f36e201]
+            - button "اشتراك" [ref=f36e202] [cursor=pointer]
+        - generic [ref=f36e203]:
+          - heading "مؤسسي" [level=4] [ref=f36e204]
+          - list [ref=f36e205]:
+            - listitem [ref=f36e206]:
+              - link "من نحن" [ref=f36e207] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=f36e208]:
+              - link "اتصل بنا" [ref=f36e209] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=f36e210]:
+              - link "جميع المنتجات" [ref=f36e211] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=f36e212]:
+              - link "سياسة الخصوصية" [ref=f36e213] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f36e214]:
+              - link "عقد البيع عن بعد" [ref=f36e215] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=f36e217] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=f36e218]: 
+      - generic [ref=f36e219]:
+        - paragraph [ref=f36e221]: © 2026 7ANRPS48 — جميع الحقوق محفوظة.
+        - generic [ref=f36e222]:
+          - link "سياسة الخصوصية" [ref=f36e223] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "الإرجاع والاستبدال" [ref=f36e224] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+          - text: "|"
+          - link "من نحن" [ref=f36e225] [cursor=pointer]:
+            - /url: /Kurumsal/Hakkimizda
+  - link "اتصال واتساب" [ref=f36e226] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=f36e227]
+  - link "السلة" [ref=f36e229] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=f36e230]
+    - generic [ref=f36e232]: "6"

@@ -1,0 +1,202 @@
+@model FilistinProje.Core.Varliklar.Siparis
+@using FilistinProje.Core.Varliklar
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["SecurePayment"];
+    var siteSettings = SiteSettingsService.GetSettings();
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "â‚ª" : siteSettings.ParaBirimi;
+
+    decimal araToplam = ViewBag.AraToplam ?? 0;
+    decimal indirim = ViewBag.IndirimTutari ?? 0;
+    decimal genelToplam = ViewBag.ToplamTutar ?? 0;
+    string? kuponKodu = ViewBag.KuponKodu as string;
+    var sepetItems = ViewBag.SepetItems as List<FilistinProje.Core.Varliklar.SepetItem> ?? new List<FilistinProje.Core.Varliklar.SepetItem>();
+    var ucretsizKargoLimiti = (decimal)(ViewBag.UcretsizKargoLimiti ?? 500);
+    bool codAktif = ViewBag.KapidaOdemeAktifMi is bool codAccess && codAccess;
+    decimal codBedel = (decimal)(ViewBag.KapidaOdemeHizmetBedeli ?? 0);
+    decimal codLimit = (decimal)(ViewBag.KapidaOdemeLimiti ?? 2000);
+    bool receteZorunlu = ViewBag.ReceteZorunluMu is bool rxRequired && rxRequired;
+    bool isWholesale = User.IsInRole("Wholesale");
+    decimal toptanciMinTutar = (decimal)(ViewBag.ToptanciMinSiparisTutari ?? 500);
+
+    var kayitliAdresler = ViewBag.KayitliAdresler as List<FilistinProje.Core.Varliklar.Adres>;
+    bool girisYapmis = User.Identity?.IsAuthenticated == true;
+    // Åehir listesini veritabanÄ±ndaki KargoBolgeSehirler'den Ã§ek (controller ViewBag Ã¼zerinden gÃ¶nderir)
+    var sehirListesi = ViewBag.Sehirler as List<string> ?? new List<string>();
+    var sehirler = sehirListesi.Any() ? sehirListesi.ToArray() : new[]
+    {
+        "BeytÃ¼llahim", "Cenin (Jenin)", "Deyr el-Balah", "El-Halil (Hebron)",
+        "El-KudÃ¼s (Jerusalem)", "Eriha (Jericho)", "Gazze", "Han Yunus (Khan Yunis)",
+        "Kalkilya (Qalqilya)", "Kuzey Gazze", "Nablus", "Ramallah & El-Bireh",
+        "Refah (Rafah)", "Salfit", "Tubas", "Tulkarim"
+    };
+}
+
+<!-- Breadcrumb -->
+<div class="bg-brand-cream border-b border-brand-border py-4">
+    <div class="container mx-auto px-4 flex items-center justify-center gap-4 text-xs tracking-widest uppercase">
+        <a href="/Sepet" class="text-brand-mutedtext hover:text-brand-olive transition-colors flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-brand-border text-brand-mutedtext flex items-center justify-center font-bold">1</span> @Localizer["Cart"]
+        </a>
+        <span class="text-brand-border">/</span>
+        <span class="text-brand-olive font-bold flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-brand-olive text-white flex items-center justify-center font-bold">2</span> @Localizer["PaymentAndDelivery"]
+        </span>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-12 md:py-16">
+    <div class="text-center mb-12">
+        <h1 class="font-serif text-3xl md:text-5xl text-brand-olive mb-4">@Localizer["SecurePayment"]</h1>
+        <p class="text-sm text-brand-mutedtext max-w-2xl mx-auto">@Localizer["VerifyDeliveryInfo"]</p>
+    </div>
+
+
+                    @if (girisYapmis)
+                    {
+                        <input type="hidden" asp-for="Eposta" />
+                    }
+
+                    <!-- Teslimat Tipi SeÃ§imi -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                        <label class="relative border border-brand-border rounded-lg p-5 cursor-pointer transition-all hover:border-brand-gold has-[:checked]:border-brand-olive has-[:checked]:bg-brand-cream group">
+                            <input type="radio" asp-for="TeslimatTipi" value="AdreseTeslim" class="absolute opacity-0 w-0 h-0 peer" checked="@(Model.TeslimatTipi != "MagazadanTeslim")" onchange="toggleDeliveryType()">
+                            <div class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full border-2 border-brand-gold flex items-center justify-center bg-white transition-all peer-checked:border-brand-olive">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-brand-olive scale-0 transition-all peer-checked:scale-100"></span>
+                                </span>
+                                <div>
+                                    <div class="text-sm font-semibold text-brand-darktext">@Localizer["DeliverToAddress"]</div>
+                                    <div class="text-[11px] text-brand-mutedtext">@Localizer["DeliverToAddressDesc"]</div>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="relative border border-brand-border rounded-lg p-5 cursor-pointer transition-all hover:border-brand-gold has-[:checked]:border-brand-olive has-[:checked]:bg-brand-cream group">
+                            <input type="radio" asp-for="TeslimatTipi" value="MagazadanTeslim" class="absolute opacity-0 w-0 h-0 peer" onchange="toggleDeliveryType()">
+                            <div class="flex items-center gap-3">
+                                <span class="w-5 h-5 rounded-full border-2 border-brand-gold flex items-center justify-center bg-white transition-all peer-checked:border-brand-olive">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-brand-olive scale-0 transition-all peer-checked:scale-100"></span>
+                                </span>
+                                <div>
+                                    <div class="text-sm font-semibold text-brand-darktext">@Localizer["StorePickup"]</div>
+                                    <div class="text-[11px] text-brand-mutedtext">@Localizer["StorePickupDesc"]</div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- MaÄŸazadan Teslim Bilgisi -->
+                    <div id="storePickupInfo" class="hidden mb-6 bg-[#f7f8ed] border border-[#cbd3a3] rounded-lg p-5">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-store text-brand-gold mt-1"></i>
+                            <div>
+                                <h4 class="text-sm font-bold text-brand-olive mb-1">@Localizer["StorePickupInfo"]</h4>
+                                <p class="text-xs text-brand-mutedtext leading-relaxed">@Localizer["StorePickupAddressInfo"]</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Adres AlanlarÄ± -->
+                    <div id="adresAlanlari">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6">
+                            <div class="md:col-span-2">
+                                <label class="block text-xs uppercase tracking-widest text-brand-darktext font-medium mb-2" for="MusteriAdSoyad">@Localizer["FullName"]</label>
+                                <input asp-for="MusteriAdSoyad" id="MusteriAdSoyad" class="w-full bg-transparent border-0 border-b border-brand-border px-0 py-2 focus:ring-0 focus:border-brand-olive text-brand-darktext transition-colors" placeholder="@Localizer["FullNamePlaceholder"]" required>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase tracking-widest text-brand-darktext font-medium mb-2" for="Eposta">@Localizer["Email"]</label>
+                                @if (girisYapmis)
+                                {
+                                    <input value="@Model.Eposta" class="w-full bg-transparent border-0 border-b border-brand-border px-0 py-2 text-brand-mutedtext cursor-not-allowed" readonly>
+                                    <div class="mt-2 text-[10px] uppercase tracking-widest text-brand-gold">@Localizer["RegisteredEmailUsed"]</div>
+                                }
+                                else
+                                {
+                                    <input asp-for="Eposta" id="Eposta" type="email" class="w-full bg-transparent border-0 border-b border-brand-border px-0 py-2 focus:ring-0 focus:border-brand-olive text-brand-darktext transition-colors" placeholder="@Localizer["EmailPlaceholder"]" required>
+                                }
+                            </div>
+
+                            <div>
+                                <label class="block text-xs uppercase tracking-widest text-brand-darktext font-medium mb-2" for="Telefon">@Localizer["Phone"]</label>
+                                <input asp-for="Telefon" id="Telefon" class="w-full bg-transparent border-0 border-b border-brand-border px-0 py-2 focus:ring-0 focus:border-brand-olive text-brand-darktext transition-colors" placeholder="@Localizer["PhonePlaceholder"]" maxlength="13" required>
+                            </div>
+
+                            <div id="adresSehirAlani">
+                                <label class="block text-xs uppercase tracking-widest text-brand-darktext font-medium mb-2" for="Sehir">@Localizer["City"]</label>
+                                <select asp-for="Sehir" id="Sehir" class="w-full bg-transparent border-0 border-b border-brand-border px-0 py-2 focus:ring-0 focus:border-brand-olive text-brand-darktext transition-colors" required>
+                                    <option value="">@Localizer["SelectCity"]</option>
+                                    @foreach (var sehir in sehirler)
+                                    {
+                                        <option value="@sehir">@sehir</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div id="adresIlceAlani">
+                                <label class="block text-xs uppercase tracking-widest text-brand-darktext font-medium mb-2" for="Ilce">@Localizer["District"]</label>
+                                <input asp-for="Ilce" id="Ilce" class="w-full bg-transparent border-0 border-b border-brand-border px-0 py-2 focus:ring-0 focus:border-brand-olive text-brand-darktext transition-colors" placeholder="@Localizer["DistrictPlaceholder"]" required>
+                            </div>
+
+                            <div id="adresAcikAdresAlani" class="md:col-span-2">
+                                <label class="block text-xs uppercase tracking-widest text-brand-darktext font-medium mb-2" for="AcikAdres">@Localizer["FullAddress"]</label>
+                                <textarea asp-for="AcikAdres" id="AcikAdres" class="w-full bg-transparent border-0 border-b border-brand-border px-0 py-2 focus:ring-0 focus:border-brand-olive text-brand-darktext transition-colors resize-none h-24" placeholder="@Localizer["FullAddressPlaceholder"]" required></textarea>
+                            </div>
+
+                            @if (girisYapmis)
+                            {
+                                <div id="adresKaydetAlani" class="md:col-span-2 mt-4 bg-white border border-brand-border p-5 rounded-lg">
+                                    <label class="flex items-center gap-3 cursor-pointer group">
+                                        <input type="checkbox" id="AdresiKaydet" name="AdresiKaydet" value="true" class="w-4 h-4 text-brand-olive border-brand-border rounded focus:ring-[#313511]">
+                                        <span class="text-sm font-medium text-brand-darktext group-hover:text-brand-olive transition-colors">@Localizer["SaveAddressToAccount"]</span>
+                                    </label>
+                                    
+                                    <div id="adresBaslikWrapper" class="mt-4 hidden transition-all duration-300">
+                                        <label class="block text-xs uppercase tracking-widest text-brand-darktext font-medium mb-2" for="YeniAdresBasligi">@Localizer["AddressTitle"]</label>
+                                        <input type="text" id="YeniAdresBasligi" name="YeniAdresBasligi" class="w-full bg-transparent border-0 border-b border-brand-border px-0 py-2 focus:ring-0 focus:border-brand-olive text-brand-darktext transition-colors" placeholder="@Localizer["AddressTitlePlaceholder"]">
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Kargo Bilgisi -->
+                    <div id="kargoAlanlari" class="mt-12">
+                        <h2 class="font-serif text-2xl text-brand-olive mb-6 flex items-center gap-3 border-b border-brand-border pb-4">
+                            <i class="fas fa-truck-fast text-brand-gold"></i> @Localizer["ShippingFee"]
+                        </h2>
+
+                        <div class="bg-[#f7f8ed] border border-[#cbd3a3] rounded-lg p-5">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-truck text-brand-gold mt-1"></i>
+                                <div>
+                                    <p class="text-sm text-brand-mutedtext leading-relaxed">
+                                        Kargo Ã¼creti ÅŸehrinize gÃ¶re otomatik hesaplanacaktÄ±r<br>
+                                        Shipping fee will be calculated automatically based on your city<br>
+                                        Ø³ÙŠØªÙ… Ø­Ø³Ø§Ø¨ Ø±Ø³ÙˆÙ… Ø§Ù„Ø´Ø­Ù† ØªÙ„Ù‚Ø§Ø¦ÙŠÙ‹Ø§ Ø­Ø³Ø¨ Ù…Ø¯ÙŠÙ†ØªÙƒ
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-12">
+                        <h2 class="font-serif text-2xl text-brand-olive mb-6 flex items-center gap-3 border-b border-brand-border pb-4">
+                            <i class="fas fa-credit-card text-brand-gold"></i> @Localizer["PaymentMethod"]
+                        </h2>
+                        
+                        <div class="border border-brand-border rounded-lg p-6 bg-white relative overflow-hidden">
+                            <div class="absolute top-0 right-0 bg-brand-gold text-white text-[10px] uppercase tracking-widest px-3 py-1 font-bold rounded-bl-lg">@Localizer["256BitSSL"]</div>
+                            
+                            <div class="flex items-center gap-4 mb-4">
+                                <i class="fas fa-shield-alt text-brand-olive text-3xl"></i>
+                                <div>
+                                    <h6 class="text-base font-bold text-brand-darktext">@Localizer["OrderRequest"]</h6>
+                                    <p class="text-xs text-brand-mutedtext">@Localizer["OrderRequestInfo"]</p>
+                                </div>
+                            </div>
+
+                            <p class="text-sm text-brand-mutedtext mb-6 border-t border-brand-border pt-4">
+                                @Localizer["OrderCompleteDescription"]
+                            </p>

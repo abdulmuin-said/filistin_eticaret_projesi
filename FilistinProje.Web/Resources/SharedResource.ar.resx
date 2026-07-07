@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -652,7 +652,7 @@
     <value>IBAN (اختياري)</value>
   </data>
   <data name="IBANPlaceholder" xml:space="preserve">
-    <value>TR00 0000 0000 0000 0000 0000</value>
+    <value>PS00 0000 0000 0000 0000 0000</value>
   </data>
   <data name="Instagram" xml:space="preserve">
     <value>إنستغرام</value>
@@ -901,7 +901,7 @@
     <value>الهاتف</value>
   </data>
   <data name="PhonePlaceholder" xml:space="preserve">
-    <value>+90 5XX XXX XX XX</value>
+    <value>+970 5XX XXX XXX</value>
   </data>
   <data name="Pinterest" xml:space="preserve">
     <value>بينتريست</value>
@@ -1292,6 +1292,9 @@
   </data>
   <data name="SubscribeToNewsletter" xml:space="preserve">
     <value>اشترك في النشرة البريدية</value>
+  </data>
+  <data name="SubscribeToNewsletterDesc" xml:space="preserve">
+    <value>استقبل أحدث المنتجات المختارة من السوق الفلسطيني والعروض الخاصة على بريدك.</value>
   </data>
   <data name="Subtotal" xml:space="preserve">
     <value>المجموع الفرعي</value>
@@ -2722,6 +2725,7 @@
   <data name="TotalReviewCount" xml:space="preserve"><value>إجمالي {0} تقييم</value></data>
   <data name="ShippingInDays" xml:space="preserve"><value>يشحن خلال {0} أيام</value></data>
   <data name="ProductionInDays" xml:space="preserve"><value>يجهز خلال {0} أيام</value></data>
+    <data name="BankTransferPayment" xml:space="preserve"><value>تحويل بنكي</value></data>
   <data name="BankTransferFooter" xml:space="preserve"><value>دفع سهل عبر الآيبان</value></data>
   <data name="CashOnDeliveryFooter" xml:space="preserve"><value>خيار الدفع عند الاستلام</value></data>
   <data name="ProductCount" xml:space="preserve"><value>{0} منتج</value></data>
@@ -4923,4 +4927,136 @@
   <data name="Admin_RejectionReasonPlaceholder" xml:space="preserve"><value>اشرح سبب الرفض...</value></data>
   <data name="Admin_ViewPrescriptionFile" xml:space="preserve"><value>عرض ملف الوصفة</value></data>
   <data name="Admin_OpenInNewTab" xml:space="preserve"><value>فتح في تبويب جديد</value></data>
-</root>
+  <data name="FreeShippingAbove" xml:space="preserve">
+    <value>للشحن المجاني</value>
+  </data>
+  <data name="LowStockText" xml:space="preserve">
+    <value>تبقت {0} قطعة فقط من هذا الخيار</value>
+  </data>
+  <data name="LowStockBadge" xml:space="preserve">
+    <value>آخر {0}</value>
+  </data>
+  <data name="PriceOnRequest" xml:space="preserve">
+    <value>السعر عند الطلب</value>
+  </data>
+  <data name="QuickView" xml:space="preserve">
+    <value>عرض سريع</value>
+  </data>
+  <data name="TrustFreeShipping" xml:space="preserve">
+    <value>شحن مجاني فوق ₪200</value>
+  </data>
+  <data name="TrustSecurePayment" xml:space="preserve">
+    <value>دفع آمن ومضمون</value>
+  </data>
+  <data name="TrustOriginalProducts" xml:space="preserve">
+    <value>منتجات أصلية 100%</value>
+  </data>
+  <data name="TrustSupport" xml:space="preserve">
+    <value>دعم على مدار الساعة</value>
+  </data>
+  <data name="GridView" xml:space="preserve">
+    <value>عرض شبكي</value>
+  </data>
+  <data name="ListView" xml:space="preserve">
+    <value>عرض قائمة</value>
+  </data>
+  <data name="AddedToCart" xml:space="preserve">
+    <value>تمت الإضافة إلى السلة</value>
+  </data>
+  <data name="AddingToCart" xml:space="preserve">
+    <value>جاري الإضافة...</value>
+  </data>
+  <data name="CartError" xml:space="preserve">
+    <value>حدث خطأ، يرجى المحاولة مرة أخرى</value>
+  </data>
+  <data name="ViewCart" xml:space="preserve">
+    <value>عرض السلة</value>
+  </data>
+  <data name="HomeHeroTitle" xml:space="preserve">
+    <value>جلب الفن الفلسطيني إلى منزلك</value>
+  </data>
+  <data name="HomeHeroSubtitle" xml:space="preserve">
+    <value>تصاميم فريدة تجمع بين التراث والحداثة - منتجاتنا تُصنع بعناية لتعكس جمال فلسطين</value>
+  </data>
+  <data name="ShopNow" xml:space="preserve">
+    <value>تسوق الآن</value>
+  </data>
+  <data name="BrandName" xml:space="preserve">
+    <value>7ANRPS48</value>
+  </data>
+  <data name="QuickLinks" xml:space="preserve">
+    <value>روابط سريعة</value>
+  </data>
+  <data name="Admin_NotExists" xml:space="preserve">
+    <value>المسؤول غير موجود</value>
+  </data>
+  <data name="Admin_Rejected" xml:space="preserve">
+    <value>مرفوض</value>
+  </data>
+  <data name="Admin_Clear" xml:space="preserve">
+    <value>مسح</value>
+  </data>
+  <data name="Admin_Prescription" xml:space="preserve">
+    <value>وصفة طبية</value>
+  </data>
+  <data name="Admin_HeroBanner" xml:space="preserve">
+    <value>اللافتة الرئيسية</value>
+  </data>
+  <data name="Admin_HeroTitle_Ar" xml:space="preserve">
+    <value>عنوان اللافتة (عربي)</value>
+  </data>
+  <data name="Admin_HeroTitle_En" xml:space="preserve">
+    <value>عنوان اللافتة (إنجليزي)</value>
+  </data>
+  <data name="Admin_HeroTitle_Tr" xml:space="preserve">
+    <value>عنوان اللافتة (تركي)</value>
+  </data>
+  <data name="Admin_HeroSubtitle_Ar" xml:space="preserve">
+    <value>النص الفرعي للافتة (عربي)</value>
+  </data>
+  <data name="Admin_HeroSubtitle_En" xml:space="preserve">
+    <value>النص الفرعي للافتة (إنجليزي)</value>
+  </data>
+  <data name="SpinWheelManagement" xml:space="preserve">
+    <value>إدارة عجلة الحظ</value>
+  </data>
+  <data name="Admin_Back" xml:space="preserve"><value>رجوع</value></data>
+  <data name="Admin_Info" xml:space="preserve"><value>معلومات</value></data>
+  <data name="Admin_Brand" xml:space="preserve"><value>العلامة التجارية</value></data>
+  <data name="Admin_ShippingFee" xml:space="preserve"><value>رسوم الشحن</value></data>
+  <data name="Admin_ShortDescription" xml:space="preserve"><value>وصف قصير</value></data>
+  <data name="Admin_ParentCategories" xml:space="preserve"><value>التصنيفات الرئيسية</value></data>
+  <data name="Admin_ChildCategories" xml:space="preserve"><value>التصنيفات الفرعية</value></data>
+  <data name="Admin_Newest" xml:space="preserve"><value>الأحدث</value></data>
+  <data name="Admin_Popular" xml:space="preserve"><value>الأكثر شيوعاً</value></data>
+  <data name="Admin_PriceAsc" xml:space="preserve"><value>السعر من الأقل إلى الأعلى</value></data>
+  <data name="Admin_PriceDesc" xml:space="preserve"><value>السعر من الأعلى إلى الأقل</value></data>
+  <data name="Admin_Islemler" xml:space="preserve"><value>الإجراءات</value></data>
+  <data name="Admin_MultiLanguageFields" xml:space="preserve"><value>حقول متعددة اللغات</value></data>
+  <data name="Admin_SliderButton" xml:space="preserve"><value>زر السلايدر</value></data>
+  <data name="Admin_ButtonUrl" xml:space="preserve"><value>رابط الزر</value></data>
+  <data name="Admin_ButtonUrlHelp" xml:space="preserve"><value>أدخل رابطاً مثل /Urun أو رابط حملة.</value></data>
+  <data name="Admin_Active" xml:space="preserve"><value>نشط</value></data>
+  <data name="Admin_Passive" xml:space="preserve"><value>غير نشط</value></data>
+  <data name="Admin_Subscribers" xml:space="preserve"><value>المشتركون</value></data>
+  <data name="Admin_User" xml:space="preserve"><value>المستخدم</value></data>
+  <data name="Admin_Token" xml:space="preserve"><value>الرمز</value></data>
+  <data name="Admin_Browser" xml:space="preserve"><value>المتصفح</value></data>
+  <data name="Admin_Platform" xml:space="preserve"><value>المنصة</value></data>
+  <data name="Admin_Send" xml:space="preserve"><value>إرسال</value></data>
+  <data name="Admin_ContactMessages" xml:space="preserve"><value>رسائل التواصل</value></data>
+  <data name="Admin_ContactMessagesSubtitle" xml:space="preserve"><value>راجع رسائل العملاء الواردة من نموذج التواصل.</value></data>
+  <data name="Admin_AllMessages" xml:space="preserve"><value>كل الرسائل</value></data>
+  <data name="Admin_UnreadMessages" xml:space="preserve"><value>غير المقروءة</value></data>
+  <data name="Admin_TotalMessages" xml:space="preserve"><value>إجمالي الرسائل</value></data>
+  <data name="Admin_ReportsAndAnalytics" xml:space="preserve"><value>التقارير والتحليلات</value></data>
+  <data name="Admin_ReportSubtitle" xml:space="preserve"><value>تابع المبيعات والطلبات وحركة الزوار من لوحة واحدة.</value></data>
+  <data name="Admin_StartDate" xml:space="preserve"><value>تاريخ البداية</value></data>
+  <data name="Admin_Apply" xml:space="preserve"><value>تطبيق</value></data>
+  <data name="Admin_ExportExcel" xml:space="preserve"><value>تصدير Excel</value></data>
+  <data name="Admin_BankAccountsSubtitle" xml:space="preserve"><value>إدارة حسابات التحويل البنكي المعروضة في الدفع.</value></data>
+  <data name="Admin_NewBankAccount" xml:space="preserve"><value>حساب بنكي جديد</value></data>
+  <data name="Admin_AccountOwner" xml:space="preserve"><value>صاحب الحساب</value></data>
+  <data name="Admin_AccountNo" xml:space="preserve"><value>رقم الحساب</value></data>
+  <data name="Admin_SaveAccount" xml:space="preserve"><value>حفظ الحساب</value></data>
+  </root>

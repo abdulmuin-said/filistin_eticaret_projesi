@@ -1,0 +1,192 @@
+- generic [active] [ref=f12e1]:
+  - generic [ref=f12e3]:
+    - generic [ref=f12e4]:
+      - generic [ref=f12e5]: 
+      - text: شحن مجاني للطلبات فوق 200 ₪
+    - generic [ref=f12e6]:
+      - generic [ref=f12e7]: 
+      - text: دفع سهل عبر الآيبان
+    - generic [ref=f12e8]:
+      - generic [ref=f12e9]: 
+      - text: خيار الدفع عند الاستلام
+    - generic [ref=f12e10]:
+      - generic [ref=f12e11]: 
+      - text: إنتاج سريع
+    - generic [ref=f12e12]:
+      - generic [ref=f12e13]: 
+      - text: تغليف دقيق
+    - generic [ref=f12e14]:
+      - generic [ref=f12e15]: 
+      - text: توصيل إلى جميع مناطق فلسطين
+    - generic [ref=f12e16]:
+      - generic [ref=f12e17]: 
+      - text: إرجاع 14 يوم
+    - generic [ref=f12e18]:
+      - generic [ref=f12e19]: 
+      - text: ضمان الشركة المصنعة
+    - generic [ref=f12e20]:
+      - generic [ref=f12e21]: 
+      - text: دعم واتساب
+    - generic [ref=f12e22]:
+      - generic [ref=f12e23]: 
+      - text: شحن مجاني للطلبات فوق 200 ₪
+    - generic [ref=f12e24]:
+      - generic [ref=f12e25]: 
+      - text: دفع سهل عبر الآيبان
+    - generic [ref=f12e26]:
+      - generic [ref=f12e27]: 
+      - text: خيار الدفع عند الاستلام
+    - generic [ref=f12e28]:
+      - generic [ref=f12e29]: 
+      - text: إنتاج سريع
+    - generic [ref=f12e30]:
+      - generic [ref=f12e31]: 
+      - text: تغليف دقيق
+    - generic [ref=f12e32]:
+      - generic [ref=f12e33]: 
+      - text: توصيل إلى جميع مناطق فلسطين
+    - generic [ref=f12e34]:
+      - generic [ref=f12e35]: 
+      - text: إرجاع 14 يوم
+    - generic [ref=f12e36]:
+      - generic [ref=f12e37]: 
+      - text: ضمان الشركة المصنعة
+    - generic [ref=f12e38]:
+      - generic [ref=f12e39]: 
+      - text: دعم واتساب
+  - banner [ref=f12e40]:
+    - generic [ref=f12e41]:
+      - generic [ref=f12e42]:
+        - generic [ref=f12e44]: 
+        - link "AR" [ref=f12e45] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2F
+        - link "EN" [ref=f12e46] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2F
+      - link "7ANRPS48" [ref=f12e47] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f12e48]
+      - generic [ref=f12e49]:
+        - button "بحث" [ref=f12e50] [cursor=pointer]:
+          - img [ref=f12e51]
+        - link "حسابي" [ref=f12e53] [cursor=pointer]:
+          - /url: /Profil
+          - img [ref=f12e54]
+        - link "المفضلة" [ref=f12e56] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=f12e57]
+        - link "السلة" [ref=f12e59] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=f12e60]
+          - generic [ref=f12e62]: "0"
+      - navigation [ref=f12e63]:
+        - list [ref=f12e64]:
+          - listitem [ref=f12e65] [cursor=pointer]
+          - listitem [ref=f12e69] [cursor=pointer]
+          - listitem [ref=f12e73] [cursor=pointer]
+          - listitem [ref=f12e77] [cursor=pointer]
+  - main [ref=f12e79]:
+    - region "Hero Banner" [ref=f12e80]:
+      - generic [ref=f12e81]:
+        - img "7ANRPS48 Banner" [ref=f12e82]
+        - generic [ref=f12e84]:
+          - heading "جلب الفن الفلسطيني إلى منزلك" [level=1] [ref=f12e85]
+          - paragraph [ref=f12e86]: تصاميم فريدة تجمع بين التراث والحداثة
+          - generic [ref=f12e87]
+    - region "TrustBar" [ref=f12e90]:
+      - generic [ref=f12e92]:
+        - generic [ref=f12e93]:
+          - img [ref=f12e94]
+          - generic [ref=f12e96]: شحن مجاني فوق ₪200
+        - generic [ref=f12e97]:
+          - img [ref=f12e98]
+          - generic [ref=f12e100]: دفع آمن ومضمون
+        - generic [ref=f12e101]:
+          - img [ref=f12e102]
+          - generic [ref=f12e104]: منتجات أصلية 100%
+        - generic [ref=f12e105]:
+          - img [ref=f12e106]
+          - generic [ref=f12e108]: دعم على مدار الساعة
+    - generic [ref=f12e109]:
+      - generic [ref=f12e110]:
+        - separator [ref=f12e111]
+        - heading "أعمال مميزة" [level=2] [ref=f12e112]
+        - separator [ref=f12e113]
+      - generic [ref=f12e114]:
+        - generic [ref=f12e115] [cursor=pointer]:
+          - generic [ref=f12e116]
+          - heading "???? ????? ???????" [level=3] [ref=f12e123]
+          - paragraph [ref=f12e126]: 150 ₪
+        - generic [ref=f12e127] [cursor=pointer]:
+          - generic [ref=f12e128]
+          - heading "???? ???? ????" [level=3] [ref=f12e135]
+          - paragraph [ref=f12e138]: 75 ₪
+        - generic [ref=f12e139] [cursor=pointer]:
+          - generic [ref=f12e140]
+          - heading "???? ??? ?????" [level=3] [ref=f12e147]
+          - paragraph [ref=f12e150]: 100 ₪
+        - generic [ref=f12e151] [cursor=pointer]:
+          - generic [ref=f12e152]
+          - heading "????? ?????" [level=3] [ref=f12e159]
+          - paragraph [ref=f12e162]: 200 ₪
+      - link "عرض الكل" [ref=f12e164] [cursor=pointer]:
+        - /url: /Urun
+    - generic [ref=f12e167]:
+      - generic [ref=f12e168]:
+        - img [ref=f12e170]
+        - heading "تحويل بنكي" [level=4] [ref=f12e172]
+        - paragraph [ref=f12e173]: دفع سهل عبر بيانات الآيبان
+      - generic [ref=f12e174]:
+        - img [ref=f12e176]
+        - heading "توصيل سريع" [level=4] [ref=f12e178]
+        - paragraph [ref=f12e179]: تصل طلباتك بسرعة
+      - generic [ref=f12e180]:
+        - img [ref=f12e182]
+        - heading "رضا العملاء" [level=4] [ref=f12e184]
+        - paragraph [ref=f12e185]: خدمة تركز على رضا العملاء 100%
+  - contentinfo [ref=f12e186]:
+    - generic [ref=f12e188]:
+      - generic [ref=f12e189]:
+        - img [ref=f12e191]
+        - generic [ref=f12e193]:
+          - generic [ref=f12e194]: في جميع مناطق فلسطين
+          - generic [ref=f12e195]: شحن مجاني
+      - generic [ref=f12e196]:
+        - img [ref=f12e198]
+        - generic [ref=f12e200]:
+          - generic [ref=f12e201]: تحويل بنكي
+          - generic [ref=f12e202]: دفع سهل عبر الآيبان
+      - generic [ref=f12e203]:
+        - img [ref=f12e205]
+        - generic [ref=f12e207]:
+          - generic [ref=f12e208]: الدفع عند الاستلام
+          - generic [ref=f12e209]: خيار الدفع عند الاستلام
+    - generic [ref=f12e210]:
+      - generic [ref=f12e211]:
+        - generic [ref=f12e212]:
+          - link "7ANRPS48" [ref=f12e213] [cursor=pointer]:
+            - /url: /
+          - paragraph [ref=f12e216]: متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن
+          - link "واتساب" [ref=f12e218] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+        - generic [ref=f12e221]:
+          - heading "روابط سريعة" [level=5] [ref=f12e222]
+          - list [ref=f12e223]
+        - generic [ref=f12e240]:
+          - heading "مؤسسي" [level=5] [ref=f12e241]
+          - list [ref=f12e242]
+        - generic [ref=f12e259]:
+          - heading "اتصل بنا" [level=5] [ref=f12e260]
+          - list [ref=f12e261]
+          - generic [ref=f12e278]
+      - generic [ref=f12e285]:
+        - paragraph [ref=f12e287]: © 2026 7ANRPS48 — جميع الحقوق محفوظة.
+        - generic [ref=f12e288]:
+          - img [ref=f12e289]
+          - generic [ref=f12e291]: تحويل بنكي
+  - link "اتصال واتساب" [ref=f12e292] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=f12e293]
+    - generic [ref=f12e295]: WhatsApp
+  - link "السلة" [ref=f12e296] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=f12e297]

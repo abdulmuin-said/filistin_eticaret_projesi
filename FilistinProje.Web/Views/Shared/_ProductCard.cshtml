@@ -1,0 +1,195 @@
+@model FilistinProje.Web.Models.ProductCardViewModel
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
+@inject IStringLocalizer<SharedResource> Localizer
+
+@{
+    var siteSettings = SiteSettingsService.GetSettings();
+    var stoktaYokSatisIzni = siteSettings.StoktaYokSatisIzni;
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
+
+    var urunUrl = "/Urun/Detay/" + (string.IsNullOrEmpty(Model.Slug)
+        ? FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(Model.Baslik) + "-" + Model.Id
+        : Model.Slug + "-" + Model.Id);
+
+    // Fiyat mantığı
+    decimal gosterFiyat;
+    decimal? eskiFiyat = null;
+    if (Model.IsWholesale && Model.TopFiyat.HasValue && Model.TopFiyat.Value > 0)
+    {
+        gosterFiyat = Model.TopFiyat.Value;
+        eskiFiyat = Model.Fiyat > gosterFiyat ? Model.Fiyat : null;
+    }
+    else if (Model.IndirimVarMi && Model.IndirimliFiyat.HasValue)
+    {
+        gosterFiyat = Model.IndirimliFiyat.Value;
+        eskiFiyat = Model.Fiyat;
+    }
+    else
+    {
+        gosterFiyat = Model.Fiyat;
+    }
+
+    bool satisaAcik = stoktaYokSatisIzni || Model.StoktaVarMi;
+    bool azStok = Model.StoktaVarMi && Model.ToplamStok > 0 && Model.ToplamStok <= 5;
+
+    // Rozet önceliği: stok yok > az stok > özel > indirim > yeni
+    string? badgeBg = null;
+    string? badgeText = null;
+    if (!stoktaYokSatisIzni && !Model.StoktaVarMi)
+    {
+        badgeBg = "bg-gray-400";
+        badgeText = Localizer["OutOfStock"].Value;
+    }
+    else if (azStok)
+    {
+        badgeBg = "bg-red-500";
+        badgeText = string.Format(Localizer["LowStockBadge"].Value ?? "Son {0}", Model.ToplamStok);
+    }
+    else if (!string.IsNullOrWhiteSpace(Model.BadgeText))
+    {
+        badgeBg = "bg-brand-olive";
+        badgeText = Model.BadgeText;
+    }
+    else if (Model.IndirimVarMi)
+    {
+        badgeBg = "bg-brand-gold";
+        badgeText = "%" + Model.IndirimYuzdesi;
+    }
+    else if (Model.YeniUrunMu)
+    {
+        badgeBg = "bg-brand-olive";
+        badgeText = Localizer["New"].Value;
+    }
+
+    bool kampanyaAktif = Model.KampanyaBitisTarihi.HasValue && Model.KampanyaBitisTarihi.Value > DateTime.UtcNow;
+}
+
+<article class="group relative flex flex-col" data-motion-item>
+
+    @* ─── Görsel Alanı ─── *@
+    <div class="skeleton-container @(!string.IsNullOrWhiteSpace(Model.GorselUrl) ? "skeleton" : "") relative overflow-hidden aspect-square bg-[#f8f6f2] mb-3 rounded-sm">
+
+        @* Görsel *@
+        <a href="@urunUrl"
+           class="flex items-center justify-center w-full h-full p-3"
+           tabindex="-1" aria-hidden="true">
+            @if (!string.IsNullOrWhiteSpace(Model.GorselUrl))
+            {
+                <img src="@Model.GorselUrl"
+                     alt="@Model.Baslik"
+                     class="img-lazy-load max-h-full max-w-full object-contain
+                            transition-transform duration-500 group-hover:scale-105"
+                     loading="lazy"
+                     decoding="async"
+                     onload="this.classList.add('loaded'); this.closest('.skeleton-container')?.classList.remove('skeleton');" />
+            }
+            else
+            {
+                <div class="flex h-full w-full items-center justify-center text-brand-border">
+                    <i class="fas fa-box-open fa-2x opacity-30"></i>
+                </div>
+            }
+        </a>
+
+        @* Sol Üst Rozet (RTL: start-2) *@
+        @if (badgeText != null && badgeBg != null)
+        {
+            <span class="absolute top-2 start-2 z-10
+                         @badgeBg text-white
+                         text-[10px] font-semibold tracking-wide
+                         px-2 py-0.5 rounded-full shadow-sm pointer-events-none">
+                @badgeText
+            </span>
+        }
+
+        @* Sağ Üst Favori (RTL: end-2) *@
+        @if (Model.ShowFavori)
+        {
+            <button type="button"
+                    onclick="window.toggleFavori(this, @Model.Id)"
+                    aria-label="@Localizer["AddToFavorites"]"
+                    class="absolute top-2 end-2 z-30
+                           w-8 h-8 flex items-center justify-center
+                           bg-white/95 hover:bg-white rounded-full shadow-md
+                           transition-all duration-200 hover:scale-110 active:scale-90
+                           focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-1">
+                <i class="far fa-heart text-sm text-brand-mutedtext group-hover/fav:text-red-400 transition-colors"></i>
+            </button>
+        }
+
+        @* Hover Overlay — Hızlı Ekle + Hızlı Bakış *@
+        <div class="absolute inset-0 z-20
+                    flex flex-col items-center justify-end pb-3 gap-2
+                    bg-gradient-to-t from-black/45 via-black/10 to-transparent
+                    opacity-0 group-hover:opacity-100
+                    pointer-events-none group-hover:pointer-events-auto
+                    transition-opacity duration-200">
+
+            @if (Model.ShowQuickAdd && satisaAcik && !Model.FiyatGizliMi)
+            {
+                <button type="button"
+                        data-urun-id="@Model.Id"
+                        data-action="quick-add"
+                        aria-label="@Localizer["AddToCart"]"
+                        class="js-quick-add-btn
+                               inline-flex items-center gap-2
+                               bg-brand-olive hover:bg-[#1c2001] active:scale-95
+                               text-white text-xs font-semibold tracking-wide
+                               px-4 py-2 rounded-full shadow-lg
+                               transition-all duration-200
+                               focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-1">
+                    <i class="fas fa-cart-plus text-xs js-quick-add-icon"></i>
+                    <span class="js-quick-add-label">@Localizer["AddToCart"]</span>
+                </button>
+            }
+
+            <a href="@urunUrl"
+               class="inline-flex items-center gap-1.5
+                      bg-white/90 hover:bg-white active:scale-95
+                      text-brand-olive text-xs font-medium
+                      px-3 py-1.5 rounded-full shadow
+                      transition-all duration-200
+                      focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-1">
+                <i class="fas fa-eye text-[10px]"></i>
+                @Localizer["QuickView"]
+            </a>
+        </div>
+    </div>
+
+    @* ─── Metin Alanı ─── *@
+    <div class="flex flex-col gap-1 flex-1 px-0.5">
+
+        <h3 class="text-sm font-semibold text-brand-darktext line-clamp-2 leading-snug">
+            <a href="@urunUrl"
+               class="hover:text-brand-gold transition-colors duration-200
+                      focus-visible:outline-none focus-visible:text-brand-gold">
+                @Model.Baslik
+            </a>
+        </h3>
+
+        @if (!Model.FiyatGizliMi)
+        {
+            <div class="flex items-center gap-2 flex-wrap mt-0.5">
+                <span class="text-sm font-bold text-brand-gold">
+                    @gosterFiyat.ToString("N0") @currencySymbol
+                </span>
+                @if (eskiFiyat.HasValue)
+                {
+                    <span class="text-xs text-gray-400 line-through">
+                        @eskiFiyat.Value.ToString("N0") @currencySymbol
+                    </span>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-xs text-brand-mutedtext italic mt-0.5">@Localizer["PriceOnRequest"]</p>
+        }
+
+        @if (kampanyaAktif)
+        {
+            @await Html.PartialAsync("_CountdownPartial", Model.KampanyaBitisTarihi!.Value)
+        }
+    </div>
+
+</article>

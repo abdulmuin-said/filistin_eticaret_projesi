@@ -101,7 +101,7 @@ namespace FilistinProje.Service.Services
             await client.SendMailAsync(mailMessage).WaitAsync(TimeSpan.FromSeconds(30));
         }
 
-        public async Task SendTemplateMailAsync(string to, string baslik, string adSoyad, string icerik, string btnLink = "", string btnYazi = "", string culture = "tr")
+        public async Task SendTemplateMailAsync(string to, string baslik, string adSoyad, string icerik, string btnLink = "", string btnYazi = "", string culture = "ar")
         {
             var siteSettings = _siteSettingsService.GetSettings();
             var brandName = string.IsNullOrWhiteSpace(siteSettings.MarkaAdi) ? siteSettings.SiteAdi : siteSettings.MarkaAdi;
@@ -115,8 +115,7 @@ namespace FilistinProje.Service.Services
             var sablonDosyasi = culture switch
             {
                 "ar" => "Sablon.ar.html",
-                "en" => "Sablon.en.html",
-                _ => "Sablon.html"
+                _ => "Sablon.en.html"
             };
             var path = Path.Combine(_env.WebRootPath, "EmailTemplates", sablonDosyasi);
             var body = await File.ReadAllTextAsync(path);

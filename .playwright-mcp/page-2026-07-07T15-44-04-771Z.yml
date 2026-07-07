@@ -1,0 +1,180 @@
+- generic [ref=f18e2]:
+  - text:          +                 
+  - banner [ref=f18e3]:
+    - generic [ref=f18e4]:
+      - link "7ANRPS48 Admin Panel" [ref=f18e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f18e6]
+      - generic [ref=f18e7]: Seller Panel
+    - navigation "Admin main menu" [ref=f18e8]:
+      - link " Dashboard" [ref=f18e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f18e10]: 
+        - text: Dashboard
+      - generic [ref=f18e11]:
+        - button " Order Management" [ref=f18e12] [cursor=pointer]:
+          - generic [ref=f18e13]: 
+          - text: Order Management
+        - text:      
+      - generic [ref=f18e14]:
+        - button " Product Management" [ref=f18e15] [cursor=pointer]:
+          - generic [ref=f18e16]: 
+          - text: Product Management
+        - text:  +    
+      - generic [ref=f18e17]:
+        - button " Store Content" [ref=f18e18] [cursor=pointer]:
+          - generic [ref=f18e19]: 
+          - text: Store Content
+        - text:          
+      - link " Members" [ref=f18e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f18e21]: 
+        - text: Members
+      - link " Staff" [ref=f18e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f18e23]: 
+        - text: Staff
+      - link " Wholesalers" [ref=f18e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f18e25]: 
+        - text: Wholesalers
+      - link " Wholesale Groups" [ref=f18e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f18e27]: 
+        - text: Wholesale Groups
+      - generic [ref=f18e28]:
+        - button " Reports" [ref=f18e29] [cursor=pointer]:
+          - generic [ref=f18e30]: 
+          - text: Reports
+        - text:  
+      - link " Bank Accounts" [ref=f18e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f18e32]: 
+        - text: Bank Accounts
+      - link " Settings" [ref=f18e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f18e34]: 
+        - text: Settings
+    - generic [ref=f18e35]:
+      - text: 
+      - combobox "Language" [ref=f18e37]:
+        - option "AR"
+        - option "EN" [selected]
+      - generic [ref=f18e38]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f18e39] [cursor=pointer]:
+          - generic [ref=f18e40]:
+            - strong [ref=f18e41]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f18e42]: "7"
+        - text:  
+  - generic [ref=f18e43]:
+    - main [ref=f18e44]:
+      - generic [ref=f18e45]:
+        - generic [ref=f18e46]:
+          - generic [ref=f18e47]:
+            - heading "Add New Slide" [level=1] [ref=f18e48]
+            - paragraph [ref=f18e49]: Add a new image or video slide to the home page slider.
+          - link " Back to Slide List" [ref=f18e51] [cursor=pointer]:
+            - /url: /Admin/Slayt
+            - generic [ref=f18e52]: 
+            - text: Back to Slide List
+        - generic [ref=f18e54]:
+          - generic [ref=f18e55]: 
+          - generic [ref=f18e56]:
+            - strong [ref=f18e57]: "Slider Dimensions:"
+            - list [ref=f18e58]:
+              - listitem [ref=f18e59]:
+                - strong [ref=f18e60]: "الصورة:"
+                - text: At least 1920x700 px (3840x1400 px recommended for high quality). Upload JPG, PNG, or WEBP.
+              - listitem [ref=f18e61]:
+                - strong [ref=f18e62]: "Video:"
+                - text: "MP4 is recommended. Maximum file size: 50MB. Recommended resolution: 1920x700 or higher."
+              - listitem [ref=f18e63]:
+                - text: "Files are stored permanently on the server:"
+                - code [ref=f18e64]: /uploads/slider/
+        - generic [ref=f18e65]:
+          - generic [ref=f18e66]:
+            - generic [ref=f18e67]:
+              - generic [ref=f18e68]:
+                - heading " Slide Information" [level=3] [ref=f18e70]:
+                  - generic [ref=f18e71]: 
+                  - text: Slide Information
+                - generic [ref=f18e72]:
+                  - generic [ref=f18e73]:
+                    - generic [ref=f18e74]: العنوان *
+                    - textbox "Slide title" [ref=f18e75]
+                  - generic [ref=f18e76]:
+                    - generic [ref=f18e77]: العنوان الفرعي
+                    - textbox "Subtitle" [ref=f18e78]
+                  - generic [ref=f18e79]:
+                    - generic [ref=f18e80]: الوصف
+                    - textbox "Short description" [ref=f18e81]
+                  - heading " Admin_MultiLanguageFields" [level=2] [ref=f18e84]:
+                    - button " Admin_MultiLanguageFields" [ref=f18e85] [cursor=pointer]:
+                      - generic [ref=f18e86]: 
+                      - text: Admin_MultiLanguageFields
+                  - generic [ref=f18e87]:
+                    - heading " Admin_SliderButton" [level=6] [ref=f18e88]:
+                      - generic [ref=f18e89]: 
+                      - text: Admin_SliderButton
+                    - generic [ref=f18e90]:
+                      - generic [ref=f18e91]:
+                        - generic [ref=f18e92]: Buton Metni (EN)
+                        - textbox "Shop Now" [ref=f18e93]
+                      - generic [ref=f18e94]:
+                        - generic [ref=f18e95]: Buton Metni (AR)
+                        - textbox "تسوق الآن" [ref=f18e96]
+                    - generic [ref=f18e98]:
+                      - generic [ref=f18e99]: Admin_ButtonUrl
+                      - textbox "/Urun veya https://..." [ref=f18e100]
+                      - generic [ref=f18e101]: Admin_ButtonUrlHelp
+              - generic [ref=f18e102]:
+                - heading " Image / Video" [level=3] [ref=f18e104]:
+                  - generic [ref=f18e105]: 
+                  - text: Image / Video
+                - generic [ref=f18e106]:
+                  - generic [ref=f18e107]:
+                    - generic [ref=f18e108]: Slide Type *
+                    - combobox [ref=f18e109]:
+                      - option "الصورة" [selected]
+                      - option "Video"
+                  - generic [ref=f18e110]:
+                    - generic [ref=f18e111]: Upload Image
+                    - button "Choose File" [ref=f18e112] [cursor=pointer]
+                    - generic [ref=f18e113]: "Supported formats: JPG, PNG, WEBP. Maximum file size: 10MB."
+                  - generic [ref=f18e114]:
+                    - generic [ref=f18e115]:
+                      - generic [ref=f18e116]: or Image URL
+                      - textbox "https://..." [ref=f18e117]
+                    - generic [ref=f18e118]:
+                      - generic [ref=f18e119]: or Video URL
+                      - textbox "https://..." [ref=f18e120]
+            - generic [ref=f18e121]:
+              - generic [ref=f18e122]:
+                - heading " الإعدادات" [level=3] [ref=f18e124]:
+                  - generic [ref=f18e125]: 
+                  - text: الإعدادات
+                - generic [ref=f18e126]:
+                  - generic [ref=f18e127]:
+                    - generic [ref=f18e128]: الترتيب
+                    - spinbutton [ref=f18e129]: "1"
+                    - generic [ref=f18e130]: Smaller number = shown earlier.
+                  - generic [ref=f18e131]:
+                    - generic [ref=f18e132]:
+                      - checkbox "نشط" [checked] [ref=f18e133]
+                      - generic [ref=f18e134]: نشط
+                    - generic [ref=f18e135]: If made passive, it will not be shown in the slider.
+              - generic [ref=f18e136]:
+                - heading " Preview" [level=3] [ref=f18e138]:
+                  - generic [ref=f18e139]: 
+                  - text: Preview
+                - generic [ref=f18e142]:
+                  - generic [ref=f18e143]: 
+                  - generic [ref=f18e144]: The preview appears when an image or video is uploaded.
+          - generic [ref=f18e145]:
+            - button " حفظ" [ref=f18e146] [cursor=pointer]:
+              - generic [ref=f18e147]: 
+              - text: حفظ
+            - link "إلغاء" [ref=f18e148] [cursor=pointer]:
+              - /url: /Admin/Slayt
+    - contentinfo [ref=f18e149]: © 2026 7ANRPS48 Admin Panel. All rights reserved.

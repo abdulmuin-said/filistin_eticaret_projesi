@@ -1,0 +1,220 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e3]:
+    - generic [ref=f1e4]:
+      - generic [ref=f1e5]: 
+      - text: شحن مجاني للطلبات فوق 200 ₪
+    - generic [ref=f1e6]:
+      - generic [ref=f1e7]: 
+      - text: دفع سهل عبر الآيبان
+    - generic [ref=f1e8]:
+      - generic [ref=f1e9]: 
+      - text: خيار الدفع عند الاستلام
+    - generic [ref=f1e10]:
+      - generic [ref=f1e11]: 
+      - text: إنتاج سريع
+    - generic [ref=f1e12]:
+      - generic [ref=f1e13]: 
+      - text: تغليف دقيق
+    - generic [ref=f1e14]:
+      - generic [ref=f1e15]: 
+      - text: توصيل إلى جميع مناطق فلسطين
+    - generic [ref=f1e16]:
+      - generic [ref=f1e17]: 
+      - text: إرجاع 14 يوم
+    - generic [ref=f1e18]:
+      - generic [ref=f1e19]: 
+      - text: ضمان الشركة المصنعة
+    - generic [ref=f1e20]:
+      - generic [ref=f1e21]: 
+      - text: دعم واتساب
+    - generic [ref=f1e22]:
+      - generic [ref=f1e23]: 
+      - text: شحن مجاني للطلبات فوق 200 ₪
+    - generic [ref=f1e24]:
+      - generic [ref=f1e25]: 
+      - text: دفع سهل عبر الآيبان
+    - generic [ref=f1e26]:
+      - generic [ref=f1e27]: 
+      - text: خيار الدفع عند الاستلام
+    - generic [ref=f1e28]:
+      - generic [ref=f1e29]: 
+      - text: إنتاج سريع
+    - generic [ref=f1e30]:
+      - generic [ref=f1e31]: 
+      - text: تغليف دقيق
+    - generic [ref=f1e32]:
+      - generic [ref=f1e33]: 
+      - text: توصيل إلى جميع مناطق فلسطين
+    - generic [ref=f1e34]:
+      - generic [ref=f1e35]: 
+      - text: إرجاع 14 يوم
+    - generic [ref=f1e36]:
+      - generic [ref=f1e37]: 
+      - text: ضمان الشركة المصنعة
+    - generic [ref=f1e38]:
+      - generic [ref=f1e39]: 
+      - text: دعم واتساب
+  - banner [ref=f1e40]:
+    - generic [ref=f1e41]:
+      - generic [ref=f1e42]:
+        - generic [ref=f1e44]: 
+        - link "AR" [ref=f1e45] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2F
+        - link "EN" [ref=f1e46] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2F
+      - link "7ANRPS48" [ref=f1e47] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f1e48]
+      - generic [ref=f1e49]:
+        - button "بحث" [ref=f1e50] [cursor=pointer]:
+          - img [ref=f1e51]
+        - link "حسابي" [ref=f1e53] [cursor=pointer]:
+          - /url: /Profil
+          - img [ref=f1e54]
+        - link "المفضلة" [ref=f1e56] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=f1e57]
+        - link "السلة" [ref=f1e59] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=f1e60]
+          - generic [ref=f1e62]: "0"
+      - navigation [ref=f1e63]:
+        - list [ref=f1e64]:
+          - listitem [ref=f1e65] [cursor=pointer]:
+            - link "اتصل بنا" [ref=f1e66]:
+              - /url: /Kurumsal/Iletisim
+    - text:  
+  - main [ref=f1e67]:
+    - region "Hero Banner" [ref=f1e68]:
+      - img "7ANRPS48 Banner" [ref=f1e70]
+    - region "TrustBar" [ref=f1e71]:
+      - generic [ref=f1e73]:
+        - generic [ref=f1e74]:
+          - img [ref=f1e75]
+          - generic [ref=f1e77]: شحن مجاني فوق ₪200
+        - generic [ref=f1e78]:
+          - img [ref=f1e79]
+          - generic [ref=f1e81]: دفع آمن ومضمون
+        - generic [ref=f1e82]:
+          - img [ref=f1e83]
+          - generic [ref=f1e85]: منتجات أصلية 100%
+        - generic [ref=f1e86]:
+          - img [ref=f1e87]
+          - generic [ref=f1e89]: دعم على مدار الساعة
+    - generic [ref=f1e92]:
+      - generic [ref=f1e93]:
+        - generic [ref=f1e95]: 
+        - heading "تحويل بنكي" [level=4] [ref=f1e96]
+        - paragraph [ref=f1e97]: دفع سهل عبر بيانات الآيبان
+      - generic [ref=f1e98]:
+        - generic [ref=f1e100]: 
+        - heading "توصيل سريع" [level=4] [ref=f1e101]
+        - paragraph [ref=f1e102]: تصل طلباتك بسرعة
+      - generic [ref=f1e103]:
+        - generic [ref=f1e105]: 
+        - heading "رضا العملاء" [level=4] [ref=f1e106]
+        - paragraph [ref=f1e107]: خدمة تركز على رضا العملاء 100%
+  - contentinfo [ref=f1e108]:
+    - generic [ref=f1e110]:
+      - generic [ref=f1e111]:
+        - generic [ref=f1e113]: 
+        - generic [ref=f1e114]:
+          - generic [ref=f1e115]: في جميع مناطق فلسطين
+          - generic [ref=f1e116]: شحن مجاني
+      - generic [ref=f1e117]:
+        - generic [ref=f1e119]: 
+        - generic [ref=f1e120]:
+          - generic [ref=f1e121]: تحويل بنكي
+          - generic [ref=f1e122]: دفع سهل عبر الآيبان
+      - generic [ref=f1e123]:
+        - generic [ref=f1e125]: 
+        - generic [ref=f1e126]:
+          - generic [ref=f1e127]: الدفع عند الاستلام
+          - generic [ref=f1e128]: خيار الدفع عند الاستلام
+    - generic [ref=f1e129]:
+      - generic [ref=f1e130]:
+        - generic [ref=f1e131]:
+          - link "7ANRPS48" [ref=f1e132] [cursor=pointer]:
+            - /url: /
+            - img "7ANRPS48" [ref=f1e134]
+          - paragraph [ref=f1e135]: متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن
+          - link "واتساب" [ref=f1e137] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=f1e138]: 
+        - generic [ref=f1e139]:
+          - heading "QuickLinks" [level=5] [ref=f1e140]
+          - list [ref=f1e141]:
+            - listitem [ref=f1e142]:
+              - link " جميع المنتجات" [ref=f1e143] [cursor=pointer]:
+                - /url: /Urun
+                - generic [ref=f1e144]: 
+                - text: جميع المنتجات
+            - listitem [ref=f1e145]:
+              - link " السلة" [ref=f1e146] [cursor=pointer]:
+                - /url: /Sepet
+                - generic [ref=f1e147]: 
+                - text: السلة
+            - listitem [ref=f1e148]:
+              - link " مفضلتي" [ref=f1e149] [cursor=pointer]:
+                - /url: /Favori
+                - generic [ref=f1e150]: 
+                - text: مفضلتي
+            - listitem [ref=f1e151]:
+              - link " اتصل بنا" [ref=f1e152] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+                - generic [ref=f1e153]: 
+                - text: اتصل بنا
+        - generic [ref=f1e154]:
+          - heading "مؤسسي" [level=5] [ref=f1e155]
+          - list [ref=f1e156]:
+            - listitem [ref=f1e157]:
+              - link " من نحن" [ref=f1e158] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+                - generic [ref=f1e159]: 
+                - text: من نحن
+            - listitem [ref=f1e160]:
+              - link " سياسة الخصوصية" [ref=f1e161] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+                - generic [ref=f1e162]: 
+                - text: سياسة الخصوصية
+            - listitem [ref=f1e163]:
+              - link " عقد البيع عن بعد" [ref=f1e164] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+                - generic [ref=f1e165]: 
+                - text: عقد البيع عن بعد
+            - listitem [ref=f1e166]:
+              - link " الإرجاع والاستبدال" [ref=f1e167] [cursor=pointer]:
+                - /url: /Kurumsal/IadeKosullari
+                - generic [ref=f1e168]: 
+                - text: الإرجاع والاستبدال
+        - generic [ref=f1e169]:
+          - heading "اتصل بنا" [level=5] [ref=f1e170]
+          - list [ref=f1e171]:
+            - listitem [ref=f1e172]:
+              - generic [ref=f1e174]: 
+              - generic [ref=f1e175]: +970-599-000-000
+            - listitem [ref=f1e176]:
+              - generic [ref=f1e178]: 
+              - generic [ref=f1e179]: info@7anrps48.com
+            - listitem [ref=f1e180]:
+              - generic [ref=f1e182]: 
+              - generic [ref=f1e183]: فلسطين
+          - generic [ref=f1e184]:
+            - paragraph [ref=f1e185]: اشترك في النشرة البريدية
+            - generic [ref=f1e186]:
+              - textbox "عنوان البريد الإلكتروني" [ref=f1e187]
+              - button "" [ref=f1e188] [cursor=pointer]:
+                - generic [ref=f1e189]: 
+      - generic [ref=f1e190]:
+        - paragraph [ref=f1e192]: © 2026 7ANRPS48 — جميع الحقوق محفوظة.
+        - generic [ref=f1e193]:
+          - generic [ref=f1e194]: 
+          - generic [ref=f1e195]: 
+          - generic [ref=f1e196]: 
+  - link "اتصال واتساب" [ref=f1e197] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=f1e198]
+    - generic [ref=f1e200]: WhatsApp
+  - link "السلة" [ref=f1e201] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=f1e202]

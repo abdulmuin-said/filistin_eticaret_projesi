@@ -40,13 +40,13 @@ namespace FilistinProje.Core.Varliklar
         [NotMapped]
         public string LocalizedButonMetni => GetLocalized(ButonMetni, ButonMetniEn, ButonMetniAr);
 
-        private static string GetLocalized(string tr, string en, string ar)
+        private static string GetLocalized(string fallback, string en, string ar)
         {
             return CultureInfo.CurrentUICulture.TwoLetterISOLanguageName switch
             {
-                "ar" => !string.IsNullOrWhiteSpace(ar) ? ar : tr,
-                "en" => !string.IsNullOrWhiteSpace(en) ? en : tr,
-                _ => tr
+                "ar" => !string.IsNullOrWhiteSpace(ar) ? ar : en,
+                "en" => !string.IsNullOrWhiteSpace(en) ? en : ar,
+                _ => en
             };
         }
     }

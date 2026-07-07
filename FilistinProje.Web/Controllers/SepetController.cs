@@ -337,6 +337,15 @@ namespace FilistinProje.Web.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSepetSayisi()
+        {
+            var userId = User.Identity?.IsAuthenticated == true ? _userManager.GetUserId(User) : null;
+            var sessionId = HttpContext.Session.Id;
+            var count = await _sepetService.GetSepetUrunSayisiAsync(userId, sessionId);
+            return Json(new { count });
+        }
     }
 }
 // Trigger rebuild to clear cached settings

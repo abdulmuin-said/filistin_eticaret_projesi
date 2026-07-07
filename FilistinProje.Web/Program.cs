@@ -232,8 +232,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     var supportedCultures = new[]
     {
         new CultureInfo("ar"),
-        new CultureInfo("en"),
-        new CultureInfo("tr")
+        new CultureInfo("en")
     };
 
     options.DefaultRequestCulture = new RequestCulture("ar");
@@ -347,7 +346,7 @@ app.Use(async (context, next) =>
         .FirstOrDefault()?.Trim();
     var requestCulture = context.Features.Get<IRequestCultureFeature>()?.RequestCulture.Culture.TwoLetterISOLanguageName
         ?? (acceptLanguage?.Length >= 2 ? acceptLanguage[..2].ToLowerInvariant() : null)
-        ?? "tr";
+        ?? "en";
     var maintenanceText = requestCulture switch
     {
         "ar" => new
@@ -372,15 +371,13 @@ app.Use(async (context, next) =>
         },
         _ => new
         {
-            Lang = "tr",
+            Lang = "en",
             Dir = "ltr",
-            Title = "Bakım Modu",
-            Badge = "Bakım Modu",
-            Heading = $"{siteTitleText} kısa süreliğine hazırlanıyor",
-            Message = string.IsNullOrWhiteSpace(siteSettings.BakimModuMesaji)
-                ? "Size daha iyi bir alışveriş deneyimi sunmak için kısa bir bakım çalışması yapıyoruz. Çok yakında 7ANRPS48 mağazamızla yeniden yayında olacağız."
-                : siteSettings.BakimModuMesaji,
-            Note = "Siparişleriniz, üyelik bilgileriniz ve sepetiniz güvenle korunur."
+            Title = "Maintenance Mode",
+            Badge = "Maintenance Mode",
+            Heading = $"{siteTitleText} is getting ready for a short while",
+            Message = "We are making a short maintenance update to improve your shopping experience. 7ANRPS48 will be back online soon.",
+            Note = "Your orders, account details and cart are safely protected."
         }
     };
     var siteMessage = WebUtility.HtmlEncode(maintenanceText.Message);
@@ -854,6 +851,7 @@ BEGIN
     ALTER TABLE "Kategoriler" ADD COLUMN IF NOT EXISTS "AltMetin" text NOT NULL DEFAULT '';
     ALTER TABLE "Kategoriler" ADD COLUMN IF NOT EXISTS "ReceteGerekliMi" boolean NOT NULL DEFAULT false;
     ALTER TABLE "Kategoriler" ADD COLUMN IF NOT EXISTS "BannerUrl" text NULL;
+    ALTER TABLE "Kategoriler" ADD COLUMN IF NOT EXISTS "MenuGorselUrl" text NULL;
     ALTER TABLE "Kategoriler" ADD COLUMN IF NOT EXISTS "KampanyaEtiketi" text NOT NULL DEFAULT '';
     ALTER TABLE "Kategoriler" ADD COLUMN IF NOT EXISTS "KisaAciklama" text NOT NULL DEFAULT '';
     ALTER TABLE "Kategoriler" ADD COLUMN IF NOT EXISTS "ParentKategoriId" integer NULL;
@@ -1037,6 +1035,13 @@ BEGIN
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "FooterAciklamasiEn" text NOT NULL DEFAULT 'A Palestinian e-commerce site offering varied products at competitive prices with fast delivery to all cities.';
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "FooterAciklamasiAr" text NOT NULL DEFAULT 'متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن';
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "FooterAciklamasiTr" text NOT NULL DEFAULT 'Rekabetçi fiyatlarla çeşitli ürünler sunan ve tüm şehirlere hızlı teslimat yapan bir Filistin e-ticaret sitesi.';
+    ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "HeroBaslikAr" text NOT NULL DEFAULT 'جلب الفن الفلسطيني إلى منزلك';
+    ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "HeroBaslikEn" text NOT NULL DEFAULT 'Bring Palestinian Art to Your Home';
+    ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "HeroBaslikTr" text NOT NULL DEFAULT 'Filistin Sanatını Evinize Getirin';
+    ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "HeroAltBaslikAr" text NOT NULL DEFAULT 'تصاميم فريدة تجمع بين التراث والحداثة';
+    ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "HeroAltBaslikEn" text NOT NULL DEFAULT 'Unique designs blending heritage and modernity';
+    ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "HeroAltBaslikTr" text NOT NULL DEFAULT 'Mirasa modern bir dokunuş katan özel tasarımlar';
+    ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "HeroGorselUrl" text NOT NULL DEFAULT '/slider-demo.jpg';
 
     -- Filistin kargo bölgeleri: Ulke, Aciklama ve Fiyat alanları
     ALTER TABLE "KargoBolgeler" ADD COLUMN IF NOT EXISTS "Ulke" character varying(100) NULL;

@@ -125,51 +125,7 @@
                 nextFrame(function () {
                     drawer.classList.add('is-open');
                     backdrop.classList.add('is-open');
-            });
-            // Adjust dropdown position to stay within viewport
-            var parentLi = dropdown.closest('[data-category-menu-item]');
-            if (parentLi) {
-                parentLi.addEventListener('mouseenter', function () {
-                    requestAnimationFrame(() => {
-                        var vw = window.innerWidth;
-                        var rect = dropdown.getBoundingClientRect();
-                        var overflowLeft = rect.left < 0;
-                        var overflowRight = rect.right > vw;
-                        if (overflowLeft) {
-                            dropdown.style.left = '0';
-                            dropdown.style.right = '';
-                            dropdown.style.transform = 'translateX(0)';
-                        } else if (overflowRight) {
-                            dropdown.style.left = '';
-                            dropdown.style.right = '0';
-                            dropdown.style.transform = 'translateX(0)';
-                        } else {
-                            dropdown.style.left = '50%';
-                            dropdown.style.right = '';
-                            dropdown.style.transform = 'translateX(-50%)';
-                        }
-                    });
                 });
-                parentLi.addEventListener('focusin', function () {
-                    var vw = window.innerWidth;
-                    var rect = dropdown.getBoundingClientRect();
-                    var overflowLeft = rect.left < 0;
-                    var overflowRight = rect.right > vw;
-                    if (overflowLeft) {
-                        dropdown.style.left = '0';
-                        dropdown.style.right = '';
-                        dropdown.style.transform = 'translateX(0)';
-                    } else if (overflowRight) {
-                        dropdown.style.left = '';
-                        dropdown.style.right = '0';
-                        dropdown.style.transform = 'translateX(0)';
-                    } else {
-                        dropdown.style.left = '50%';
-                        dropdown.style.right = '';
-                        dropdown.style.transform = 'translateX(-50%)';
-                    }
-                });
-            }
                 return;
             }
 

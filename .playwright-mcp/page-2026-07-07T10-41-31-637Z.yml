@@ -1,0 +1,481 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: 
+      - text: شحن مجاني للطلبات فوق 200 ₪
+    - generic [ref=e6]:
+      - generic [ref=e7]: 
+      - text: دفع سهل عبر الآيبان
+    - generic [ref=e8]:
+      - generic [ref=e9]: 
+      - text: خيار الدفع عند الاستلام
+    - generic [ref=e10]:
+      - generic [ref=e11]: 
+      - text: إنتاج سريع
+    - generic [ref=e12]:
+      - generic [ref=e13]: 
+      - text: تغليف دقيق
+    - generic [ref=e14]:
+      - generic [ref=e15]: 
+      - text: توصيل إلى جميع مناطق فلسطين
+    - generic [ref=e16]:
+      - generic [ref=e17]: 
+      - text: إرجاع 14 يوم
+    - generic [ref=e18]:
+      - generic [ref=e19]: 
+      - text: ضمان الشركة المصنعة
+    - generic [ref=e20]:
+      - generic [ref=e21]: 
+      - text: دعم واتساب
+    - generic [ref=e22]:
+      - generic [ref=e23]: 
+      - text: شحن مجاني للطلبات فوق 200 ₪
+    - generic [ref=e24]:
+      - generic [ref=e25]: 
+      - text: دفع سهل عبر الآيبان
+    - generic [ref=e26]:
+      - generic [ref=e27]: 
+      - text: خيار الدفع عند الاستلام
+    - generic [ref=e28]:
+      - generic [ref=e29]: 
+      - text: إنتاج سريع
+    - generic [ref=e30]:
+      - generic [ref=e31]: 
+      - text: تغليف دقيق
+    - generic [ref=e32]:
+      - generic [ref=e33]: 
+      - text: توصيل إلى جميع مناطق فلسطين
+    - generic [ref=e34]:
+      - generic [ref=e35]: 
+      - text: إرجاع 14 يوم
+    - generic [ref=e36]:
+      - generic [ref=e37]: 
+      - text: ضمان الشركة المصنعة
+    - generic [ref=e38]:
+      - generic [ref=e39]: 
+      - text: دعم واتساب
+  - banner [ref=e40]:
+    - generic [ref=e41]:
+      - text: 
+      - link "7ANRPS48" [ref=e42] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=e43]
+      - generic [ref=e44]:
+        - button "فتح القائمة" [ref=e45] [cursor=pointer]:
+          - img [ref=e46]
+        - button "بحث" [ref=e48] [cursor=pointer]:
+          - img [ref=e49]
+        - button "اللغة" [ref=e52] [cursor=pointer]:
+          - img [ref=e53]
+          - generic [ref=e55]: ar
+      - generic [ref=e56]:
+        - link "حسابي" [ref=e57] [cursor=pointer]:
+          - /url: /Profil
+          - img [ref=e58]
+        - link "المفضلة" [ref=e60] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=e61]
+        - link "السلة" [ref=e63] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=e64]
+          - generic [ref=e66]: "0"
+      - text:   
+    - text:     
+  - main [ref=e67]:
+    - generic [ref=e68]:
+      - generic [ref=e70]:
+        - img "7ANRPS48" [ref=e71]
+        - generic [ref=e75]:
+          - paragraph [ref=e76]: مرحباً بكم في ٧ أنر ف٤٨
+          - heading "منتجات فلسطينية أصيلة" [level=2] [ref=e77]
+          - paragraph [ref=e78]: زيت الزيتون، الصابون، الحرف اليدوية – أفضل ما تنتجه أرض فلسطين
+          - link "تسوق الآن" [ref=e79] [cursor=pointer]:
+            - /url: /Urun
+            - text: تسوق الآن
+            - img [ref=e80]
+      - button "الشريحة السابقة" [ref=e82] [cursor=pointer]:
+        - img [ref=e83]
+      - button "الشريحة التالية" [ref=e85] [cursor=pointer]:
+        - img [ref=e86]
+      - generic [ref=e88]:
+        - button "Slide 1" [ref=e89] [cursor=pointer]
+        - button "Slide 2" [ref=e90] [cursor=pointer]
+        - button "Slide 3" [ref=e91] [cursor=pointer]
+    - region "TrustBar" [ref=e93]:
+      - generic [ref=e95]:
+        - generic [ref=e96]:
+          - img [ref=e97]
+          - generic [ref=e99]: شحن مجاني فوق ₪200
+        - generic [ref=e100]:
+          - img [ref=e101]
+          - generic [ref=e103]: دفع آمن ومضمون
+        - generic [ref=e104]:
+          - img [ref=e105]
+          - generic [ref=e107]: منتجات أصلية 100%
+        - generic [ref=e108]:
+          - img [ref=e109]
+          - generic [ref=e111]: دعم على مدار الساعة
+    - generic [ref=e112]:
+      - heading "أعمال مميزة" [level=2] [ref=e114]
+      - generic [ref=e115]:
+        - article [ref=e116]:
+          - generic [ref=e117]:
+            - link [ref=e118] [cursor=pointer]:
+              - /url: /Urun/Detay/vetplus-multivitamin-kedi-kopek-damlasi-50ml-26
+              - img [ref=e119]
+            - generic: "%19"
+            - button "أضف إلى المفضلة" [ref=e120] [cursor=pointer]:
+              - generic [ref=e121]: 
+            - generic:
+              - button "أضف إلى السلة":
+                - generic: 
+                - generic: أضف إلى السلة
+              - link " عرض سريع":
+                - /url: /Urun/Detay/vetplus-multivitamin-kedi-kopek-damlasi-50ml-26
+                - generic: 
+                - text: عرض سريع
+          - generic [ref=e122]:
+            - heading "قطرات فيتامين متعددة للقطط والكلاب 50 مل" [level=3] [ref=e123]:
+              - link "قطرات فيتامين متعددة للقطط والكلاب 50 مل" [ref=e124] [cursor=pointer]:
+                - /url: /Urun/Detay/vetplus-multivitamin-kedi-kopek-damlasi-50ml-26
+            - generic [ref=e125]:
+              - generic [ref=e126]: 149 ₪
+              - generic [ref=e127]: 185 ₪
+        - article [ref=e128]:
+          - generic [ref=e129]:
+            - link [ref=e130] [cursor=pointer]:
+              - /url: /Urun/Detay/dermacare-hassas-deri-pet-sampuani-250ml-27
+              - img [ref=e131]
+            - generic: "%21"
+            - button "أضف إلى المفضلة" [ref=e132] [cursor=pointer]:
+              - generic [ref=e133]: 
+            - generic:
+              - button "أضف إلى السلة":
+                - generic: 
+                - generic: أضف إلى السلة
+              - link " عرض سريع":
+                - /url: /Urun/Detay/dermacare-hassas-deri-pet-sampuani-250ml-27
+                - generic: 
+                - text: عرض سريع
+          - generic [ref=e134]:
+            - heading "شامبو للحيوانات الأليفة للبشرة الحساسة 250 مل" [level=3] [ref=e135]:
+              - link "شامبو للحيوانات الأليفة للبشرة الحساسة 250 مل" [ref=e136] [cursor=pointer]:
+                - /url: /Urun/Detay/dermacare-hassas-deri-pet-sampuani-250ml-27
+            - generic [ref=e137]:
+              - generic [ref=e138]: 99 ₪
+              - generic [ref=e139]: 125 ₪
+        - article [ref=e140]:
+          - generic [ref=e141]:
+            - link [ref=e142] [cursor=pointer]:
+              - /url: /Urun/Detay/probiovet-sindirim-destek-tozu-100g-28
+              - img [ref=e143]
+            - generic: "%15"
+            - button "أضف إلى المفضلة" [ref=e144] [cursor=pointer]:
+              - generic [ref=e145]: 
+            - generic:
+              - button "أضف إلى السلة":
+                - generic: 
+                - generic: أضف إلى السلة
+              - link " عرض سريع":
+                - /url: /Urun/Detay/probiovet-sindirim-destek-tozu-100g-28
+                - generic: 
+                - text: عرض سريع
+          - generic [ref=e146]:
+            - heading "مسحوق دعم الهضم بروبيوفيت 100 غ" [level=3] [ref=e147]:
+              - link "مسحوق دعم الهضم بروبيوفيت 100 غ" [ref=e148] [cursor=pointer]:
+                - /url: /Urun/Detay/probiovet-sindirim-destek-tozu-100g-28
+            - generic [ref=e149]:
+              - generic [ref=e150]: 179 ₪
+              - generic [ref=e151]: 210 ₪
+        - article [ref=e152]:
+          - generic [ref=e153]:
+            - link [ref=e154] [cursor=pointer]:
+              - /url: /Urun/Detay/klinik-yara-bakim-spreyi-100ml-29
+              - img [ref=e155]
+            - generic: "%16"
+            - button "أضف إلى المفضلة" [ref=e156] [cursor=pointer]:
+              - generic [ref=e157]: 
+            - generic:
+              - button "أضف إلى السلة":
+                - generic: 
+                - generic: أضف إلى السلة
+              - link " عرض سريع":
+                - /url: /Urun/Detay/klinik-yara-bakim-spreyi-100ml-29
+                - generic: 
+                - text: عرض سريع
+          - generic [ref=e158]:
+            - heading "بخاخ عناية بالجروح للعيادة 100 مل" [level=3] [ref=e159]:
+              - link "بخاخ عناية بالجروح للعيادة 100 مل" [ref=e160] [cursor=pointer]:
+                - /url: /Urun/Detay/klinik-yara-bakim-spreyi-100ml-29
+            - generic [ref=e161]:
+              - generic [ref=e162]: 135 ₪
+              - generic [ref=e163]: 160 ₪
+        - article [ref=e164]:
+          - generic [ref=e165]:
+            - link [ref=e166] [cursor=pointer]:
+              - /url: /Urun/Detay/otoclean-kulak-temizleme-solusyonu-120ml-30
+              - img [ref=e167]
+            - generic: "%18"
+            - button "أضف إلى المفضلة" [ref=e168] [cursor=pointer]:
+              - generic [ref=e169]: 
+            - generic:
+              - button "أضف إلى السلة":
+                - generic: 
+                - generic: أضف إلى السلة
+              - link " عرض سريع":
+                - /url: /Urun/Detay/otoclean-kulak-temizleme-solusyonu-120ml-30
+                - generic: 
+                - text: عرض سريع
+          - generic [ref=e170]:
+            - heading "محلول تنظيف الأذن أوتوكلين 120 مل" [level=3] [ref=e171]:
+              - link "محلول تنظيف الأذن أوتوكلين 120 مل" [ref=e172] [cursor=pointer]:
+                - /url: /Urun/Detay/otoclean-kulak-temizleme-solusyonu-120ml-30
+            - generic [ref=e173]:
+              - generic [ref=e174]: 119 ₪
+              - generic [ref=e175]: 145 ₪
+        - article [ref=e176]:
+          - generic [ref=e177]:
+            - link [ref=e178] [cursor=pointer]:
+              - /url: /Urun/Detay/mineralblock-buyukbas-kucukbas-mineral-blogu-2kg-31
+              - img [ref=e179]
+            - generic: "%16"
+            - button "أضف إلى المفضلة" [ref=e180] [cursor=pointer]:
+              - generic [ref=e181]: 
+            - generic:
+              - button "أضف إلى السلة":
+                - generic: 
+                - generic: أضف إلى السلة
+              - link " عرض سريع":
+                - /url: /Urun/Detay/mineralblock-buyukbas-kucukbas-mineral-blogu-2kg-31
+                - generic: 
+                - text: عرض سريع
+          - generic [ref=e182]:
+            - heading "قالب معادن للأبقار والأغنام 2 كغ" [level=3] [ref=e183]:
+              - link "قالب معادن للأبقار والأغنام 2 كغ" [ref=e184] [cursor=pointer]:
+                - /url: /Urun/Detay/mineralblock-buyukbas-kucukbas-mineral-blogu-2kg-31
+            - generic [ref=e185]:
+              - generic [ref=e186]: 219 ₪
+              - generic [ref=e187]: 260 ₪
+        - article [ref=e188]:
+          - generic [ref=e189]:
+            - link [ref=e190] [cursor=pointer]:
+              - /url: /Urun/Detay/poultrycare-kanatli-vitamin-premiksi-500g-32
+              - img [ref=e191]
+            - generic: "%16"
+            - button "أضف إلى المفضلة" [ref=e192] [cursor=pointer]:
+              - generic [ref=e193]: 
+            - generic:
+              - button "أضف إلى السلة":
+                - generic: 
+                - generic: أضف إلى السلة
+              - link " عرض سريع":
+                - /url: /Urun/Detay/poultrycare-kanatli-vitamin-premiksi-500g-32
+                - generic: 
+                - text: عرض سريع
+          - generic [ref=e194]:
+            - heading "بريمكس فيتامين للدواجن 500 غ" [level=3] [ref=e195]:
+              - link "بريمكس فيتامين للدواجن 500 غ" [ref=e196] [cursor=pointer]:
+                - /url: /Urun/Detay/poultrycare-kanatli-vitamin-premiksi-500g-32
+            - generic [ref=e197]:
+              - generic [ref=e198]: 159 ₪
+              - generic [ref=e199]: 190 ₪
+        - article [ref=e200]:
+          - generic [ref=e201]:
+            - link [ref=e202] [cursor=pointer]:
+              - /url: /Urun/Detay/calfstart-buzagi-baslangic-destek-paketi-33
+              - img [ref=e203]
+            - generic: "%15"
+            - button "أضف إلى المفضلة" [ref=e204] [cursor=pointer]:
+              - generic [ref=e205]: 
+            - generic:
+              - button "أضف إلى السلة":
+                - generic: 
+                - generic: أضف إلى السلة
+              - link " عرض سريع":
+                - /url: /Urun/Detay/calfstart-buzagi-baslangic-destek-paketi-33
+                - generic: 
+                - text: عرض سريع
+          - generic [ref=e206]:
+            - heading "حزمة دعم بداية للعجول" [level=3] [ref=e207]:
+              - link "حزمة دعم بداية للعجول" [ref=e208] [cursor=pointer]:
+                - /url: /Urun/Detay/calfstart-buzagi-baslangic-destek-paketi-33
+            - generic [ref=e209]:
+              - generic [ref=e210]: 289 ₪
+              - generic [ref=e211]: 340 ₪
+        - article [ref=e212]:
+          - generic [ref=e213]:
+            - link [ref=e214] [cursor=pointer]:
+              - /url: /Urun/Detay/veteriner-steteskop-cift-tambur-60cm-37
+              - img [ref=e215]
+            - generic: "%18"
+            - button "أضف إلى المفضلة" [ref=e216] [cursor=pointer]:
+              - generic [ref=e217]: 
+            - generic:
+              - button "أضف إلى السلة":
+                - generic: 
+                - generic: أضف إلى السلة
+              - link " عرض سريع":
+                - /url: /Urun/Detay/veteriner-steteskop-cift-tambur-60cm-37
+                - generic: 
+                - text: عرض سريع
+          - generic [ref=e218]:
+            - heading "سماعة طبية بيطرية مزدوجة 60 سم" [level=3] [ref=e219]:
+              - link "سماعة طبية بيطرية مزدوجة 60 سم" [ref=e220] [cursor=pointer]:
+                - /url: /Urun/Detay/veteriner-steteskop-cift-tambur-60cm-37
+            - generic [ref=e221]:
+              - generic [ref=e222]: 180 ₪
+              - generic [ref=e223]: 220 ₪
+        - article [ref=e224]:
+          - generic [ref=e225]:
+            - link [ref=e226] [cursor=pointer]:
+              - /url: /Urun/Detay/cerrahi-dikis-seti-7-parca-38
+              - img [ref=e227]
+            - generic: "%20"
+            - button "أضف إلى المفضلة" [ref=e228] [cursor=pointer]:
+              - generic [ref=e229]: 
+            - generic:
+              - button "أضف إلى السلة":
+                - generic: 
+                - generic: أضف إلى السلة
+              - link " عرض سريع":
+                - /url: /Urun/Detay/cerrahi-dikis-seti-7-parca-38
+                - generic: 
+                - text: عرض سريع
+          - generic [ref=e230]:
+            - heading "طقم خياطة جراحي 7 قطع ستانلس ستيل" [level=3] [ref=e231]:
+              - link "طقم خياطة جراحي 7 قطع ستانلس ستيل" [ref=e232] [cursor=pointer]:
+                - /url: /Urun/Detay/cerrahi-dikis-seti-7-parca-38
+            - generic [ref=e233]:
+              - generic [ref=e234]: 280 ₪
+              - generic [ref=e235]: 350 ₪
+      - link "عرض الكل" [ref=e237] [cursor=pointer]:
+        - /url: /Urun
+    - generic [ref=e238]:
+      - generic [ref=e239]:
+        - generic [ref=e240]:
+          - paragraph [ref=e241]: الأكثر مبيعاً
+          - heading "الأكثر تفضيلاً" [level=2] [ref=e242]
+        - link "عرض الكل " [ref=e243] [cursor=pointer]:
+          - /url: /Urun?sort=popularity
+          - text: عرض الكل
+          - generic [ref=e244]: 
+      - article [ref=e246]:
+        - link "الأكثر مبيعاً %15 حقنة نحاس + فيتامين ب12 20 مل حقنة نحاس + فيتامين ب12 20 مل 55 ₪ 65 ₪ -%15" [ref=e247] [cursor=pointer]:
+          - /url: /Urun/Detay/bakir-vitamin-b12-enjeksiyon-20ml-39
+          - generic [ref=e248]:
+            - generic [ref=e249]: الأكثر مبيعاً
+            - generic [ref=e250]: "%15"
+            - img "حقنة نحاس + فيتامين ب12 20 مل"
+          - heading "حقنة نحاس + فيتامين ب12 20 مل" [level=3] [ref=e251]
+          - generic [ref=e252]:
+            - paragraph [ref=e253]: 55 ₪
+            - paragraph [ref=e254]: 65 ₪
+            - generic [ref=e255]: "-%15"
+    - generic [ref=e258]:
+      - generic [ref=e259]:
+        - generic [ref=e261]: 
+        - heading "تحويل بنكي" [level=4] [ref=e262]
+        - paragraph [ref=e263]: دفع سهل عبر بيانات الآيبان
+      - generic [ref=e264]:
+        - generic [ref=e266]: 
+        - heading "توصيل سريع" [level=4] [ref=e267]
+        - paragraph [ref=e268]: تصل طلباتك بسرعة
+      - generic [ref=e269]:
+        - generic [ref=e271]: 
+        - heading "رضا العملاء" [level=4] [ref=e272]
+        - paragraph [ref=e273]: خدمة تركز على رضا العملاء 100%
+  - contentinfo [ref=e274]:
+    - generic [ref=e276]:
+      - generic [ref=e277]:
+        - generic [ref=e279]: 
+        - generic [ref=e280]:
+          - generic [ref=e281]: في جميع مناطق فلسطين
+          - generic [ref=e282]: شحن مجاني
+      - generic [ref=e283]:
+        - generic [ref=e285]: 
+        - generic [ref=e286]:
+          - generic [ref=e287]: تحويل بنكي
+          - generic [ref=e288]: دفع سهل عبر الآيبان
+      - generic [ref=e289]:
+        - generic [ref=e291]: 
+        - generic [ref=e292]:
+          - generic [ref=e293]: الدفع عند الاستلام
+          - generic [ref=e294]: خيار الدفع عند الاستلام
+    - generic [ref=e295]:
+      - generic [ref=e296]:
+        - generic [ref=e297]:
+          - link "7ANRPS48" [ref=e298] [cursor=pointer]:
+            - /url: /
+            - img "7ANRPS48" [ref=e300]
+          - paragraph [ref=e301]: متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن
+        - generic [ref=e302]:
+          - heading "QuickLinks" [level=5] [ref=e303]
+          - list [ref=e304]:
+            - listitem [ref=e305]:
+              - link "جميع المنتجات" [ref=e306] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=e307]:
+              - link "السلة" [ref=e308] [cursor=pointer]:
+                - /url: /Sepet
+            - listitem [ref=e309]:
+              - link "مفضلتي" [ref=e310] [cursor=pointer]:
+                - /url: /Favori
+            - listitem [ref=e311]:
+              - link "اتصل بنا" [ref=e312] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+        - generic [ref=e313]:
+          - heading "مؤسسي" [level=5] [ref=e314]
+          - list [ref=e315]:
+            - listitem [ref=e316]:
+              - link "من نحن" [ref=e317] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=e318]:
+              - link "اتصل بنا" [ref=e319] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=e320]:
+              - link "سياسة الخصوصية" [ref=e321] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=e322]:
+              - link "عقد البيع عن بعد" [ref=e323] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+        - generic [ref=e324]:
+          - heading "اتصل بنا" [level=5] [ref=e325]
+          - list [ref=e326]:
+            - listitem [ref=e327]:
+              - generic [ref=e328]: 
+              - generic [ref=e329]: +970-599-000-000
+            - listitem [ref=e330]:
+              - generic [ref=e331]: 
+              - generic [ref=e332]: info@7anrps48.com
+            - listitem [ref=e333]:
+              - generic [ref=e334]: 
+              - generic [ref=e335]: فلسطين
+            - listitem [ref=e336]:
+              - generic [ref=e337]: 
+              - generic [ref=e338]: "السبت - الخميس: 9:00 - 21:00"
+          - generic [ref=e339]:
+            - heading "اشترك في النشرة البريدية" [level=5] [ref=e340]
+            - generic [ref=e341]:
+              - textbox "عنوان البريد الإلكتروني" [ref=e342]
+              - button "اشتراك" [ref=e343] [cursor=pointer]
+          - link "واتساب" [ref=e345] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=e346]: 
+      - generic [ref=e347]:
+        - paragraph [ref=e349]: © 2026 7ANRPS48 جميع الحقوق محفوظة.
+        - generic [ref=e350]:
+          - link "سياسة الخصوصية" [ref=e351] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - generic [ref=e352]: "|"
+          - link "شروط الاستخدام" [ref=e353] [cursor=pointer]:
+            - /url: /Kurumsal/KullaniciSozlesmesi
+          - generic [ref=e354]: "|"
+          - link "الإرجاع والاستبدال" [ref=e355] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+  - link "اتصال واتساب" [ref=e356] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=e357]
+    - generic [ref=e359]: WhatsApp
+  - link "السلة" [ref=e360] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=e361]

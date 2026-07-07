@@ -200,6 +200,9 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return View(kategori);
             }
 
+            kategori.GorselUrl = string.IsNullOrWhiteSpace(kategori.GorselUrl) ? null : kategori.GorselUrl.Trim();
+            kategori.BannerUrl = string.IsNullOrWhiteSpace(kategori.BannerUrl) ? null : kategori.BannerUrl.Trim();
+            kategori.MenuGorselUrl = string.IsNullOrWhiteSpace(kategori.MenuGorselUrl) ? null : kategori.MenuGorselUrl.Trim();
             kategori.OlusturulmaTarihi = DateTime.UtcNow;
             kategori.Sira = await NormalizeCategoryOrderAsync(kategori.Sira);
             kategori.UrunSiralamaTipi = NormalizeSortType(kategori.UrunSiralamaTipi);
@@ -252,6 +255,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             kategori.Aciklama = model.Aciklama?.Trim() ?? string.Empty;
             kategori.GorselUrl = string.IsNullOrWhiteSpace(model.GorselUrl) ? null : model.GorselUrl.Trim();
             kategori.BannerUrl = string.IsNullOrWhiteSpace(model.BannerUrl) ? null : model.BannerUrl.Trim();
+            kategori.MenuGorselUrl = string.IsNullOrWhiteSpace(model.MenuGorselUrl) ? null : model.MenuGorselUrl.Trim();
             kategori.ParentKategoriId = model.ParentKategoriId;
             kategori.AktifMi = model.AktifMi;
             kategori.ReceteGerekliMi = model.ReceteGerekliMi;

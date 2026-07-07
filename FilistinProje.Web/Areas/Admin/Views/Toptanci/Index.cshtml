@@ -1,4 +1,4 @@
-@using FilistinProje.Core.Enums
+﻿@using FilistinProje.Core.Enums
 @model List<ToptanciViewModel>
 @{
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
@@ -33,7 +33,7 @@
     .ca-filter-bar .ca-search-box input:focus { border-color: var(--ca-accent); box-shadow: 0 0 0 3px rgba(49,53,17,.1); }
     .ca-filter-bar .ca-search-box i {
         position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
-        color: #9ca3af; font-size: .8rem;
+        color: ; font-size: .8rem;
     }
     .ca-filter-tabs { display: flex; gap: 4px; }
     .ca-filter-tab {
@@ -71,7 +71,7 @@
     .ca-ws-avatar.av-3 { background: #f59e0b; }
     .ca-ws-avatar.av-4 { background: #10b981; }
     .ca-ws-name { font-weight: 600; font-size: .88rem; }
-    .ca-ws-id { font-size: .7rem; color: #9ca3af; }
+    .ca-ws-id { font-size: .7rem; color: ; }
 
     .ca-ws-contact { font-size: .8rem; color: #6b7280; line-height: 1.5; }
     .ca-ws-contact i { width: 14px; text-align: center; margin-right: 4px; }
@@ -105,7 +105,7 @@
 
     .ca-ws-empty { text-align: center; padding: 60px 20px; }
     .ca-ws-empty i { font-size: 2.5rem; color: #d1d5db; margin-bottom: 12px; display: block; }
-    .ca-ws-empty p { color: #9ca3af; font-size: .9rem; }
+    .ca-ws-empty p { color: ; font-size: .9rem; }
 
     .ca-ws-date { font-size: .78rem; color: #6b7280; }
     .ca-ws-id-badge {
@@ -142,7 +142,7 @@
     .ca-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .ca-detail-item { }
     .ca-detail-item.full { grid-column: 1 / -1; }
-    .ca-detail-label { font-size: .7rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 3px; }
+    .ca-detail-label { font-size: .7rem; color: ; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 3px; }
     .ca-detail-value { font-size: .88rem; color: #374151; font-weight: 500; }
     .ca-detail-value.empty { color: #d1d5db; font-style: italic; }
 
@@ -165,7 +165,7 @@
         outline: none; transition: .18s; font-family: inherit;
     }
     .ca-reject-form textarea:focus { border-color: #fca5a5; box-shadow: 0 0 0 3px rgba(239,68,68,.1); }
-    .ca-reject-form .ca-reject-hint { font-size: .75rem; color: #9ca3af; margin-top: 4px; }
+    .ca-reject-form .ca-reject-hint { font-size: .75rem; color: ; margin-top: 4px; }
 
     .ca-toast {
         position: fixed; top: 20px; right: 20px; z-index: 99999;
@@ -377,7 +377,7 @@
         }
         else
         {
-            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="font-size:.78rem; color:#9ca3af;">
+            <div class="d-flex justify-content-between align-items-center px-3 py-2" style="font-size:.78rem; color:;">
                 <span>@string.Format(Localizer["Admin_ToplamKayitListeleniyor"].Value, Model.Count)</span>
                 @if (!string.IsNullOrWhiteSpace(aramaTerimi))
                 {
@@ -397,8 +397,8 @@
         </div>
         <div class="ca-modal-body" id="detailModalBody">
             <div class="text-center py-4">
-                <i class="fas fa-spinner fa-spin" style="font-size:1.5rem; color:#9ca3af;"></i>
-                <p class="mt-2" style="color:#9ca3af;">@Localizer["Admin_Yukleniyor"]</p>
+                <i class="fas fa-spinner fa-spin" style="font-size:1.5rem; color:;"></i>
+                <p class="mt-2" style="color:;">@Localizer["Admin_Yukleniyor"]</p>
             </div>
         </div>
         <div class="ca-modal-footer" id="detailModalFooter" style="display:none;">
@@ -444,7 +444,7 @@
         var body = document.getElementById('detailModalBody');
         var footer = document.getElementById('detailModalFooter');
         modal.classList.add('show');
-        body.innerHTML = '<div class="text-center py-4"><i class="fas fa-spinner fa-spin" style="font-size:1.5rem; color:#9ca3af;"></i><p class="mt-2" style="color:#9ca3af;">@Localizer["Admin_Yukleniyor"]</p></div>';
+        body.innerHTML = '<div class="text-center py-4"><i class="fas fa-spinner fa-spin" style="font-size:1.5rem; color:;"></i><p class="mt-2" style="color:;">@Localizer["Admin_Yukleniyor"]</p></div>';
         footer.style.display = 'none';
 
         fetch('/Admin/Toptanci/Detay?id=' + encodeURIComponent(userId))

@@ -400,7 +400,7 @@ namespace FilistinProje.Service
                 return false;
             }
 
-            if (urun.MaxSiparisAdedi.HasValue && toplamAdet > urun.MaxSiparisAdedi.Value)
+            if (urun.MaxSiparisAdedi.HasValue && urun.MaxSiparisAdedi.Value > 0 && toplamAdet > urun.MaxSiparisAdedi.Value)
             {
                 return false;
             }
@@ -463,7 +463,7 @@ namespace FilistinProje.Service
 
             if (string.IsNullOrWhiteSpace(baslik) && string.IsNullOrWhiteSpace(detay))
             {
-                return "Varsayilan varyasyon";
+                return string.Empty;
             }
 
             return string.Join(" | ", new[] { baslik, detay }.Where(x => !string.IsNullOrWhiteSpace(x)));

@@ -1,0 +1,264 @@
+@model FilistinProje.Core.Varliklar.Urun
+@using FilistinProje.Service.Helpers
+@using FilistinProje.Service.Services
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Model.LocalizedBaslik;
+    var siteSettings = SiteSettingsService.GetSettings();
+    var brandName = string.IsNullOrWhiteSpace(siteSettings.MarkaAdi) ? siteSettings.SiteAdi : siteSettings.MarkaAdi;
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "â‚ª" : siteSettings.ParaBirimi;
+
+    // --- VARYANT VE FÃƒâ€Ã‚Â°YAT HESAPLAMA ---
+    var secenekler = ViewBag.Secenekler as List<FilistinProje.Core.Varliklar.UrunSecenek> ?? new List<FilistinProje.Core.Varliklar.UrunSecenek>();
+    var stokBiteniGriGoster = siteSettings.StokBiteniGriGoster;
+    var stoktaYokSatisIzni = siteSettings.StoktaYokSatisIzni;
+    var varsayilanSecenek = secenekler
+        .OrderByDescending(x => x.VarsayilanMi)
+        .ThenBy(x => x.Sira)
+        .ThenBy(x => x.SatisFiyati)
+        .FirstOrDefault(x => stoktaYokSatisIzni || x.SatinAlinabilirMi)
+        ?? secenekler
+            .OrderByDescending(x => x.VarsayilanMi)
+            .ThenBy(x => x.Sira)
+            .ThenBy(x => x.SatisFiyati)
+            .FirstOrDefault();
+    var isWholesale = ViewBag.IsWholesale is bool ws && ws;
+    decimal gosterilecekFiyat;
+    if (isWholesale && Model.TopFiyat.HasValue && Model.TopFiyat.Value > 0)
+    {
+        gosterilecekFiyat = Model.TopFiyat.Value;
+    }
+    else
+    {
+        gosterilecekFiyat = varsayilanSecenek != null ? varsayilanSecenek.SatisFiyati : Model.EtkinFiyat;
+    }
+    decimal eskiFiyat = gosterilecekFiyat * 1.15m;
+
+    // --- YORUM VERÃƒâ€Ã‚Â°LERÃƒâ€Ã‚Â° ---
+    decimal? gosterilecekEskiFiyatEski = varsayilanSecenek == null && Model.IndirimVarMi ? Model.Fiyat : null;
+    decimal? gosterilecekEskiFiyat = varsayilanSecenek != null && Model.Fiyat > gosterilecekFiyat
+        ? Model.Fiyat
+        : gosterilecekEskiFiyatEski;
+    int? gosterilecekIndirimYuzdesi = gosterilecekEskiFiyat.HasValue && gosterilecekEskiFiyat.Value > gosterilecekFiyat
+        ? (int)Math.Round((1 - (gosterilecekFiyat / gosterilecekEskiFiyat.Value)) * 100)
+        : null;
+    int toplamStok = secenekler.Any() ? secenekler.Where(x => !x.SilindiMi && x.AktifMi).Sum(x => x.StokAdedi) : Model.ToplamStok;
+    bool stoktaVar = secenekler.Any()
+        ? secenekler.Any(x => stoktaYokSatisIzni || x.SatinAlinabilirMi)
+        : Model.StoktaVarMi;
+    string stokDurumuMetni = varsayilanSecenek != null
+        ? (stoktaYokSatisIzni || varsayilanSecenek.SatinAlinabilirMi ? Localizer["MadeToOrder"].Value : (varsayilanSecenek.OnSipariseAcikMi ? Localizer["PreOrderOpen"].Value : Localizer["OutOfStock"].Value))
+        : (stoktaVar
+            ? Localizer["MadeToOrder"].Value
+            : Localizer["OutOfStock"].Value);
+    var stokIkonClass = stoktaVar ? "fas fa-check-circle text-green-600" : "fas fa-times-circle text-red-600";
+    int minSiparisAdedi = Model.MinSiparisAdedi > 0 ? Model.MinSiparisAdedi : 1;
+    int varsayilanMax = varsayilanSecenek?.StokAdedi > 0
+        ? varsayilanSecenek.StokAdedi
+        : (varsayilanSecenek?.OnSipariseAcikMi == true ? Math.Max(minSiparisAdedi, 25) : Math.Max(minSiparisAdedi, 10));
+    int maxSiparisAdedi = Model.MaxSiparisAdedi ?? varsayilanMax;
+    if (maxSiparisAdedi < minSiparisAdedi)
+    {
+        maxSiparisAdedi = minSiparisAdedi;
+    }
+
+    var rawVaryantMetni = varsayilanSecenek != null 
+        ? (string.IsNullOrWhiteSpace(varsayilanSecenek.VaryantBasligi) ? (varsayilanSecenek.Olcu ?? "Standart") : varsayilanSecenek.VaryantBasligi) 
+        : string.Empty;
+    var seciliVaryantMetni = string.Join(" / ", rawVaryantMetni.Split(new[] { " / " }, StringSplitOptions.RemoveEmptyEntries).Where(x => !x.Contains("Standart", StringComparison.OrdinalIgnoreCase) && !x.Contains("Bask", StringComparison.OrdinalIgnoreCase)));
+    if (string.IsNullOrWhiteSpace(seciliVaryantMetni) && !string.IsNullOrWhiteSpace(rawVaryantMetni)) seciliVaryantMetni = rawVaryantMetni.Split('/')[0].Trim();
+    if (secenekler.Count <= 1)
+    {
+        seciliVaryantMetni = string.Empty;
+    }
+    var seciliVaryantDetayi = varsayilanSecenek?.VaryantOzeti ?? string.Empty;
+    int gosterilecekUretimSuresi = varsayilanSecenek?.UretimSuresiGun > 0
+        ? varsayilanSecenek.UretimSuresiGun
+        : Model.UretimSuresiGun;
+    int gosterilecekKargoSuresi = Model.KargoyaVerilisSuresiGun > 0 ? Model.KargoyaVerilisSuresiGun : 3;
+    int gosterilecekTeslimSuresi = Model.TahminiTeslimSuresiGun > 0
+        ? Model.TahminiTeslimSuresiGun
+        : siteSettings.SiparisTeslimSuresiGun;
+    int iadeSuresi = siteSettings.IadeHakkiGun > 0 ? siteSettings.IadeHakkiGun : 14;
+    bool cerceveSecimiGerekli = (Model.UrunTipi ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase)
+        || (Model.Kategori?.Ad ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase)
+        || (Model.Kategori?.ParentKategori?.Ad ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase);
+    var cerceveModelleri = new[] { "Ã‡erÃ§evesiz", "Siyah", "Beyaz", "Gold", "GÃ¼mÃ¼ÅŸ", "MeÅŸe", "Ceviz" };
+
+    var teknikSatirlari = (Model.TeknikOzellikler ?? string.Empty)
+        .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
+        .Select(x => x.Trim())
+        .Where(x => !string.IsNullOrWhiteSpace(x))
+        .ToList();
+
+    var dinamikOzellikler = (Model.UrunOzellikleri ?? Enumerable.Empty<FilistinProje.Core.Varliklar.UrunOzellikDegeri>())
+        .Where(x =>
+            !x.SilindiMi &&
+            x.UrunOzellikTanimi != null &&
+            x.UrunOzellikTanimi.AktifMi &&
+            x.UrunOzellikTanimi.DetaySayfasindaGoster &&
+            !string.IsNullOrWhiteSpace(x.Deger))
+        .OrderBy(x => x.UrunOzellikTanimi.Sira)
+        .ThenBy(x => x.UrunOzellikTanimi.Ad)
+        .ToList();
+
+    var teknikTabloSatirlari = new List<(string Baslik, string Deger)>();
+    teknikTabloSatirlari.AddRange(dinamikOzellikler
+        .Where(x => x.UrunOzellikTanimi.TeknikTablodaGoster)
+        .Select(x => (x.UrunOzellikTanimi.Ad, x.DegerGosterimi)));
+
+    foreach (var satir in teknikSatirlari)
+    {
+        var ayiriciIndex = satir.IndexOf(':');
+        if (ayiriciIndex > 0 && ayiriciIndex < satir.Length - 1)
+        {
+            teknikTabloSatirlari.Add((satir[..ayiriciIndex].Trim(), satir[(ayiriciIndex + 1)..].Trim()));
+        }
+        else
+        {
+            teknikTabloSatirlari.Add(("Detay", satir));
+        }
+    }
+
+    var tumMedya = ViewBag.TumMedya as List<FilistinProje.Core.Varliklar.UrunResim> ?? new List<FilistinProje.Core.Varliklar.UrunResim>();
+    var galeriMedyalari = ViewBag.Galeri as List<FilistinProje.Core.Varliklar.UrunResim> ?? tumMedya.Where(x => !x.VideoMu).ToList();
+    var videoMedyalari = ViewBag.VideoMedyalari as List<FilistinProje.Core.Varliklar.UrunResim> ?? new List<FilistinProje.Core.Varliklar.UrunResim>();
+    var yakinDetayMedyalari = ViewBag.YakinDetayMedyalari as List<FilistinProje.Core.Varliklar.UrunResim> ?? new List<FilistinProje.Core.Varliklar.UrunResim>();
+    var uretimMedyalari = ViewBag.UretimMedyalari as List<FilistinProje.Core.Varliklar.UrunResim> ?? new List<FilistinProje.Core.Varliklar.UrunResim>();
+    var kullanimMedyalari = ViewBag.KullanimMedyalari as List<FilistinProje.Core.Varliklar.UrunResim> ?? new List<FilistinProje.Core.Varliklar.UrunResim>();
+    var varsayilanMedya = galeriMedyalari
+        .OrderByDescending(x => x.VarsayilanMi)
+        .ThenBy(x => x.Sira)
+        .FirstOrDefault();
+    var varsayilanGaleriGorseli = !string.IsNullOrWhiteSpace(varsayilanSecenek?.GorselUrl)
+        ? varsayilanSecenek.GorselUrl
+        : (varsayilanMedya?.ResimYolu ?? Model.AnaGorselUrl);
+    var varsayilanGaleriAltMetni = !string.IsNullOrWhiteSpace(varsayilanMedya?.AltMetin)
+        ? varsayilanMedya.AltMetin
+        : Model.LocalizedBaslik;
+    var varyantMedyaHaritasi = tumMedya
+        .Where(x => x.UrunSecenekId.HasValue && !x.VideoMu && !string.IsNullOrWhiteSpace(x.ResimYolu))
+        .GroupBy(x => x.UrunSecenekId!.Value)
+        .ToDictionary(
+            x => x.Key,
+            x => x.OrderByDescending(y => y.VarsayilanMi).ThenBy(y => y.Sira).Select(y => y.ResimYolu).First());
+    bool medyaVitriniVar = videoMedyalari.Any() || yakinDetayMedyalari.Any() || uretimMedyalari.Any() || kullanimMedyalari.Any();
+
+    List<FilistinProje.Core.Varliklar.Yorum> yorumlar = ViewBag.Yorumlar ?? new List<FilistinProje.Core.Varliklar.Yorum>();
+    double ortalamaPuan = ViewBag.OrtalamaPuan != null ? (double)ViewBag.OrtalamaPuan : 0;
+    int yorumSayisi = ViewBag.YorumSayisi != null ? (int)ViewBag.YorumSayisi : 0;
+    
+    // YÃƒâ€Ã‚Â±ldÃƒâ€Ã‚Â±z Hesaplama
+    int tamYildiz = (int)ortalamaPuan;
+    bool yarimYildiz = (ortalamaPuan - tamYildiz) >= 0.5;
+    
+    // --- SCHEMA.ORG Ãƒâ€Ã‚Â°ÃƒÆ’Ã¢â‚¬Â¡Ãƒâ€Ã‚Â°N URL VE GÃƒÆ’Ã¢â‚¬â€œRSEL ---
+    var request = HttpContextAccessor.HttpContext?.Request;
+    string baseUrl = request != null ? SiteSettingsService.BuildAbsoluteUrl(string.Empty) : "";
+    string detaySlug = string.IsNullOrWhiteSpace(Model.Slug) ? $"{FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(Model.LocalizedBaslik)}-{Model.Id}" : $"{Model.Slug}-{Model.Id}";
+    string productUrl = $"{baseUrl}/Urun/Detay/{detaySlug}";
+    var encodedProductUrl = Uri.EscapeDataString(productUrl);
+    var encodedProductTitle = Uri.EscapeDataString(Model.LocalizedBaslik);
+    var schemaImagePath = !string.IsNullOrWhiteSpace(varsayilanMedya?.EtkinPosterYolu) ? varsayilanMedya.EtkinPosterYolu : varsayilanGaleriGorseli;
+    string productImage = schemaImagePath.StartsWith("http", StringComparison.OrdinalIgnoreCase) ? schemaImagePath : $"{baseUrl}{schemaImagePath}";
+    var seoDescriptionSource = !string.IsNullOrWhiteSpace(Model.LocalizedKisaAciklama) ? Model.LocalizedKisaAciklama : Model.LocalizedAciklama;
+    var seoDescription = System.Text.RegularExpressions.Regex.Replace(seoDescriptionSource ?? string.Empty, "<.*?>", " ");
+    seoDescription = System.Net.WebUtility.HtmlDecode(seoDescription);
+    seoDescription = System.Text.RegularExpressions.Regex.Replace(seoDescription, @"\s+", " ").Trim();
+    if (seoDescription.Length > 155)
+    {
+        var cut = seoDescription[..155].Trim();
+        var lastSpace = cut.LastIndexOf(' ');
+        seoDescription = (lastSpace > 80 ? cut[..lastSpace] : cut).TrimEnd('.', ',', ';', ':') + "...";
+    }
+    if (string.IsNullOrWhiteSpace(seoDescription))
+    {
+        seoDescription = $"{Model.LocalizedBaslik} {Localizer["MadeToOrder"].Value}. {brandName}.";
+    }
+
+    var keywordParts = new List<string?>
+    {
+        Model.LocalizedBaslik,
+        Model.Kategori?.Ad,
+        Model.UrunTipi,
+        Model.Marka,
+        "dekorasyon",
+        "premium dekorasyon",
+        "sipariÅŸe Ã¶zel Ã¼retim"
+    };
+    keywordParts.AddRange((Model.Etiketler ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
+
+    ViewData["SeoTitle"] = !string.IsNullOrWhiteSpace(Model.LocalizedSeoTitle) ? Model.LocalizedSeoTitle : $"{Model.LocalizedBaslik} | {brandName}";
+    ViewData["MetaDescription"] = !string.IsNullOrWhiteSpace(Model.LocalizedSeoDescription) ? Model.LocalizedSeoDescription : seoDescription;
+    ViewData["MetaKeywords"] = !string.IsNullOrWhiteSpace(Model.SeoKeywords) ? Model.SeoKeywords : string.Join(", ", keywordParts.Where(x => !string.IsNullOrWhiteSpace(x)).Distinct(StringComparer.OrdinalIgnoreCase));
+    ViewData["CanonicalUrl"] = productUrl;
+    ViewData["OgType"] = "product";
+    ViewData["OgImage"] = productImage;
+    
+    <!-- SCHEMA.ORG JSON-LD: Google Shopping Rich Snippets -->
+    var productSchema = SchemaGenerator.GenerateProductSchema(
+        Model, 
+        ortalamaPuan, 
+        yorumSayisi, 
+        productImage, 
+        productUrl,
+        brandName
+    );
+}
+
+            @await Html.PartialAsync("_ProductGallery")
+            @await Html.PartialAsync("_ProductInfo")
+
+            @await Html.PartialAsync("_Reviews")
+</div>
+
+@{
+    var benzerUrunler = ViewBag.BenzerUrunler as List<FilistinProje.Core.DTOs.BenzerUrunDto>;
+}
+@if (benzerUrunler != null && benzerUrunler.Count > 0)
+{
+    <section class="py-16 bg-[#fafaf8]">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-center mb-10">
+                <hr class="w-1/4 border-brand-border hidden md:block"/>
+                <h2 class="font-serif text-3xl mx-8 text-center text-brand-olive">@Localizer["SimilarProducts"]</h2>
+                <hr class="w-1/4 border-brand-border hidden md:block"/>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+                @foreach (var item in benzerUrunler)
+                {
+                    decimal itemFiyat = item.IndirimliFiyat ?? item.Fiyat;
+                    decimal? bEskiFiyat = (item.IndirimliFiyat != null && item.IndirimliFiyat < item.Fiyat) ? item.Fiyat : null;
+                    string bProductUrl = !string.IsNullOrEmpty(item.Slug) ? $"/Urun/Detay/{item.Slug}-{item.Id}" : $"/Urun/Detay/{FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.Baslik)}-{item.Id}";
+                    string gorsel = !string.IsNullOrEmpty(item.AnaGorselUrl) ? item.AnaGorselUrl : "/img/products/placeholder.webp";
+                    <a href="@bProductUrl" class="group block">
+                        <div class="relative overflow-hidden mb-3 aspect-square bg-brand-cream rounded">
+                            <img alt="@item.LocalizedBaslik" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="@gorsel" loading="lazy" decoding="async" />
+                        </div>
+                        <h3 class="text-xs font-semibold text-brand-darktext tracking-wide line-clamp-2 mb-1">@item.LocalizedBaslik</h3>
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm font-bold text-brand-olive">@itemFiyat.ToString("N2") @currencySymbol</span>
+                            @if (bEskiFiyat != null)
+                            {
+                                <span class="text-xs text-[#999] line-through">@bEskiFiyat?.ToString("N2") @currencySymbol</span>
+                            }
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+
+
+<script>
+const PRODUCT_CURRENCY = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(currencySymbol));
+
+// Modal event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    const desktopModal = document.getElementById('desktopLightboxModal');
+    const mobileModal = document.getElementById('mobileLightbox');
+    const closeBtn = document.getElementById('closeDesktopModalBtn');

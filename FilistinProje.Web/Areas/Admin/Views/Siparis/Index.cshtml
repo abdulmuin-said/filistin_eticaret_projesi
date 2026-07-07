@@ -1,6 +1,6 @@
 @model IEnumerable<FilistinProje.Core.Varliklar.Siparis>
 @functions {
-    private static TimeZoneInfo GetTurkeyTimeZone()
+    private static TimeZoneInfo GetPalestineTimeZone()
     {
         try
         {
@@ -12,13 +12,13 @@
         }
     }
 
-    private static string FormatTurkeyDateTime(DateTime value)
+    private static string FormatPalestineDateTime(DateTime value)
     {
         var utcValue = value.Kind == DateTimeKind.Utc
             ? value
             : DateTime.SpecifyKind(value, DateTimeKind.Utc);
 
-        return TimeZoneInfo.ConvertTimeFromUtc(utcValue, GetTurkeyTimeZone()).ToString("dd.MM.yyyy HH:mm");
+        return TimeZoneInfo.ConvertTimeFromUtc(utcValue, GetPalestineTimeZone()).ToString("dd.MM.yyyy HH:mm");
     }
 }
 @{
@@ -145,19 +145,19 @@
 
     <!-- Reçete Durumu Filtreleri -->
     <div class="d-flex gap-2 flex-wrap mb-3">
-        <span class="small text-muted me-1"><i class="fas fa-file-prescription"></i> Reçete:</span>
+        <span class="small text-muted me-1"><i class="fas fa-file-prescription"></i> @Localizer["Admin_Prescription"]:</span>
         <a href="/Admin/Siparis?receteDurum=0" class="ca-tab-sm @(currentReceteDurum == 0 ? "active" : "")" style="font-size:.8rem; padding:4px 12px;">
-            <i class="fas fa-clock text-warning me-1"></i> Bekleyen <span class="badge bg-warning text-dark ms-1">@ViewBag.ReceteBekleyenCount</span>
+            <i class="fas fa-clock text-warning me-1"></i> @Localizer["Admin_Pending"] <span class="badge bg-warning text-dark ms-1">@ViewBag.ReceteBekleyenCount</span>
         </a>
         <a href="/Admin/Siparis?receteDurum=1" class="ca-tab-sm @(currentReceteDurum == 1 ? "active" : "")" style="font-size:.8rem; padding:4px 12px;">
-            <i class="fas fa-check-circle text-success me-1"></i> Onaylı <span class="badge bg-success ms-1">@ViewBag.ReceteOnayliCount</span>
+            <i class="fas fa-check-circle text-success me-1"></i> @Localizer["Admin_Approved"] <span class="badge bg-success ms-1">@ViewBag.ReceteOnayliCount</span>
         </a>
         <a href="/Admin/Siparis?receteDurum=2" class="ca-tab-sm @(currentReceteDurum == 2 ? "active" : "")" style="font-size:.8rem; padding:4px 12px;">
-            <i class="fas fa-times-circle text-danger me-1"></i> Red <span class="badge bg-danger ms-1">@ViewBag.ReceteRedliCount</span>
+            <i class="fas fa-times-circle text-danger me-1"></i> @Localizer["Admin_Rejected"] <span class="badge bg-danger ms-1">@ViewBag.ReceteRedliCount</span>
         </a>
         @if (currentReceteDurum.HasValue)
         {
-            <a href="/Admin/Siparis" class="small text-muted ms-2" style="text-decoration:underline;">Temizle</a>
+            <a href="/Admin/Siparis" class="small text-muted ms-2" style="text-decoration:underline;">@Localizer["Admin_Clear"]</a>
         }
     </div>
 
@@ -263,7 +263,7 @@
                             <td class="ps-4">
                                 <span class="ca-order-id">@siparisNo</span>
                                 <div class="ca-text-muted" style="font-size:.75rem;">ID: #@item.Id</div>
-                                <div class="ca-text-muted" style="font-size:.75rem;">@FormatTurkeyDateTime(item.OlusturulmaTarihi)</div>
+                                <div class="ca-text-muted" style="font-size:.75rem;">@FormatPalestineDateTime(item.OlusturulmaTarihi)</div>
                             </td>
                             <td>
                                 <div class="d-flex align-items-center gap-2">

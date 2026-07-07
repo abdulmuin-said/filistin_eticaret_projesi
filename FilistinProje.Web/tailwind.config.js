@@ -18,11 +18,24 @@ module.exports = {
           sand: "#f4efe7",
           mist: "#e6ddd0",
           cream: "#fbf8f2"
+        },
+        brand: {
+          primary: '#1a2b1b',
+          gold: '#b58735',
+          cream: '#fcf9f3',
+          olive: '#313511',
+          lightgold: '#c6ca99',
+          warmcream: '#f7f1e6',
+          darktext: '#1c1c18',
+          mutedtext: '#47473d',
+          border: '#e5e2dc',
+          darkborder: '#d8c9aa',
         }
       },
       fontFamily: {
         heading: ["Cairo", "sans-serif"],
-        body: ["Cairo", "sans-serif"]
+        body: ["Cairo", "sans-serif"],
+        sans: ['IBM Plex Sans Arabic', 'Inter', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         soft: "0 18px 45px rgba(34, 33, 31, 0.08)",

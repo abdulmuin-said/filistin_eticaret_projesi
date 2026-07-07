@@ -424,11 +424,12 @@
 
 @section Scripts {
 <script>
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const gridColor = isDark ? 'rgba(255,255,255,.08)' : 'rgba(15,23,42,.08)';
+    const textColor = isDark ? '#94a3b8' : '#64748b';
+
     const chartCanvas = document.getElementById('revenueChart');
     if (chartCanvas) {
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        const gridColor = isDark ? 'rgba(255,255,255,.08)' : 'rgba(15,23,42,.08)';
-        const textColor = isDark ? '#94a3b8' : '#64748b';
         const chartLabels = @Html.Raw(chartLabelsJson);
         const chartData = @Html.Raw(chartDataJson);
 

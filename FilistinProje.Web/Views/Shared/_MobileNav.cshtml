@@ -1,0 +1,68 @@
+@using FilistinProje.Core.Helpers
+@using FilistinProje.Core.Varliklar
+@using FilistinProje.Web.Extensions
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<FilistinProje.Core.Varliklar.AppUser> SignInManager
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var brandName = ViewData["brandName"] as string ?? "";
+    var encodedLanguageReturnUrl = ViewData["encodedLanguageReturnUrl"] as string ?? "";
+    var tumKategoriler = ViewData["tumKategoriler"] as List<Kategori> ?? new List<Kategori>();
+}
+
+<!-- Mobile Navigation Drawer -->
+<div id="mobileNavBackdrop" class="mobile-nav-backdrop fixed inset-0 z-[80] hidden bg-brand-darktext/45 md:hidden" onclick="window.toggleMobileNav(false)"></div>
+<div id="mobileNav" class="mobile-nav-panel fixed left-0 top-0 z-[90] hidden h-dvh w-[88vw] max-w-[380px] overflow-y-auto overscroll-contain border-r border-brand-darkborder bg-brand-warmcream px-5 py-5 shadow-2xl md:hidden">
+    <div class="mb-5 flex items-center justify-between border-b border-brand-darkborder pb-4">
+        <a href="/" class="font-serif text-xl tracking-widest text-brand-olive">@brandName</a>
+        <button type="button" aria-label="@Localizer["CloseMenu"]" onclick="window.toggleMobileNav(false)" class="flex h-11 w-11 items-center justify-center rounded-full border border-[#c9b58a] text-brand-olive hover:bg-brand-warmcream transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+    </div>
+
+    <ul class="space-y-3 text-sm tracking-widest text-brand-mutedtext font-light uppercase" data-mobile-nav-list>
+        <li class="border-b border-brand-darkborder pb-3" data-mobile-nav-item><a href="/Urun" class="block w-full">@Localizer["AllProducts"]</a></li>
+        @foreach (var kategori in tumKategoriler.Where(x => x.ParentKategoriId == null).OrderBy(x => x.Sira).ThenBy(x => x.LocalizedAd))
+        {
+            var altKategoriler = tumKategoriler.Where(x => x.ParentKategoriId == kategori.Id).OrderBy(x => x.Sira).ToList();
+            <li class="border-b border-brand-darkborder pb-3" data-mobile-nav-item>
+                @if (altKategoriler.Any())
+                {
+                    <details class="group" data-mobile-category>
+                            <summary class="flex justify-between items-center cursor-pointer list-none w-full py-2 min-h-[44px]">
+                                <span class="hover:text-brand-olive">@kategori.LocalizedAd</span>
+                                <span class="transition group-open:rotate-180 p-1 text-brand-mutedtext">
+                                    <svg class="w-3 h-3 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19.5 8.25l-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </span>
+                            </summary>
+                        <ul class="mt-3 max-h-[52vh] space-y-1 overflow-y-auto border-l-2 border-[#c9b58a] pl-4 pr-1 text-xs normal-case tracking-normal">
+                            <li data-mobile-subitem>
+                                <a href="/Urun?k=@kategori.Id" class="mb-2 block rounded-sm bg-brand-olive px-3 py-2 text-center font-medium tracking-widest text-white">
+                                    @Localizer["ViewAll"]
+                                </a>
+                            </li>
+                            @foreach (var alt in altKategoriler)
+                            {
+                                <li data-mobile-subitem><a href="/Urun?k=@alt.Id" class="block w-full rounded-sm px-2 py-2 text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive">@alt.LocalizedAd</a></li>
+                            }
+                        </ul>
+                    </details>
+                }
+                else
+                {
+                    <a href="/Urun?k=@kategori.Id" class="block w-full">@kategori.LocalizedAd</a>
+                }
+            </li>
+        }
+        <li class="border-b border-brand-darkborder pb-3" data-mobile-nav-item><a href="/Kurumsal/Iletisim" class="block w-full">@Localizer["Contact"]</a></li>
+        <li class="border-b border-brand-darkborder pb-3" data-mobile-nav-item><a href="/Favori" class="block w-full flex items-center gap-2 py-1 min-h-[44px]"><svg class="w-4 h-4 text-red-400 shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg> @Localizer["MyFavorites"]</a></li>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <li data-mobile-nav-item><a href="/Profil" class="block w-full">@Localizer["MyAccount"]</a></li>
+        }
+        else
+        {
+            <li data-mobile-nav-item><a href="/Hesap/GirisYap" class="block w-full">@Localizer["LoginRegister"]</a></li>
+        }
+    </ul>
+</div>

@@ -1,0 +1,248 @@
+- generic [active] [ref=f35e1]:
+  - generic [ref=f35e3]:
+    - generic [ref=f35e4]:
+      - generic [ref=f35e5]:
+        - generic [ref=f35e6]: 
+        - text: شحن مجاني للطلبات فوق 200 ₪
+      - generic [ref=f35e7]:
+        - generic [ref=f35e8]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f35e9]:
+        - generic [ref=f35e10]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f35e11]:
+        - generic [ref=f35e12]: 
+        - text: إنتاج سريع
+      - generic [ref=f35e13]:
+        - generic [ref=f35e14]: 
+        - text: تغليف دقيق
+      - generic [ref=f35e15]:
+        - generic [ref=f35e16]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f35e17]:
+        - generic [ref=f35e18]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f35e19]:
+        - generic [ref=f35e20]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f35e21]:
+        - generic [ref=f35e22]: 
+        - text: دعم واتساب
+    - generic [ref=f35e23]:
+      - generic [ref=f35e24]:
+        - generic [ref=f35e25]: 
+        - text: شحن مجاني للطلبات فوق 200 ₪
+      - generic [ref=f35e26]:
+        - generic [ref=f35e27]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f35e28]:
+        - generic [ref=f35e29]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f35e30]:
+        - generic [ref=f35e31]: 
+        - text: إنتاج سريع
+      - generic [ref=f35e32]:
+        - generic [ref=f35e33]: 
+        - text: تغليف دقيق
+      - generic [ref=f35e34]:
+        - generic [ref=f35e35]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f35e36]:
+        - generic [ref=f35e37]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f35e38]:
+        - generic [ref=f35e39]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f35e40]:
+        - generic [ref=f35e41]: 
+        - text: دعم واتساب
+  - banner [ref=f35e42]:
+    - generic [ref=f35e43]:
+      - text: 
+      - link "7ANRPS48" [ref=f35e44] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f35e45]
+      - generic [ref=f35e46]:
+        - button "فتح القائمة" [ref=f35e47] [cursor=pointer]:
+          - img [ref=f35e48]
+        - button "بحث" [ref=f35e50] [cursor=pointer]:
+          - img [ref=f35e51]
+        - button "اللغة" [ref=f35e54] [cursor=pointer]:
+          - img [ref=f35e55]
+          - generic [ref=f35e57]: ar
+      - generic [ref=f35e58]:
+        - link "حسابي" [ref=f35e59] [cursor=pointer]:
+          - /url: /Profil
+          - img [ref=f35e60]
+        - link "المفضلة" [ref=f35e62] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=f35e63]
+        - link "السلة" [ref=f35e65] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=f35e66]
+          - generic [ref=f35e68]: "5"
+  - main [ref=f35e69]:
+    - region "Hero Banner" [ref=f35e70]:
+      - img "7ANRPS48 Banner" [ref=f35e72]
+    - region "TrustBar" [ref=f35e73]:
+      - generic [ref=f35e75]:
+        - generic [ref=f35e76]:
+          - img [ref=f35e77]
+          - generic [ref=f35e79]: شحن مجاني فوق ₪200
+        - generic [ref=f35e80]:
+          - img [ref=f35e81]
+          - generic [ref=f35e83]: دفع آمن ومضمون
+        - generic [ref=f35e84]:
+          - img [ref=f35e85]
+          - generic [ref=f35e87]: منتجات أصلية 100%
+        - generic [ref=f35e88]:
+          - img [ref=f35e89]
+          - generic [ref=f35e91]: دعم على مدار الساعة
+    - generic [ref=f35e92]:
+      - generic [ref=f35e93]:
+        - paragraph [ref=f35e94]: 7ANRPS48
+        - heading "منتجات مميزة" [level=2] [ref=f35e96]
+      - generic [ref=f35e97]:
+        - generic [ref=f35e98] [cursor=pointer]:
+          - generic [ref=f35e99]:
+            - link "جديد" [ref=f35e100]:
+              - /url: /Urun/Detay/-48
+              - generic [ref=f35e101]: جديد
+              - img [ref=f35e103]
+            - button "أضف إلى المفضلة" [ref=f35e105]:
+              - img [ref=f35e106]
+          - generic [ref=f35e108]:
+            - heading "طقم كنبات مودرن" [level=3] [ref=f35e109]:
+              - link "طقم كنبات مودرن" [ref=f35e110]:
+                - /url: /Urun/Detay/-48
+            - paragraph [ref=f35e112]: 4٬999 ₪
+            - button "أضف إلى السلة" [ref=f35e113]:
+              - generic [ref=f35e114]: 
+              - generic [ref=f35e115]: أضف إلى السلة
+        - generic [ref=f35e116] [cursor=pointer]:
+          - generic [ref=f35e117]:
+            - link "جديد" [ref=f35e118]:
+              - /url: /Urun/Detay/-49
+              - generic [ref=f35e119]: جديد
+              - img [ref=f35e121]
+            - button "أضف إلى المفضلة" [ref=f35e123]:
+              - img [ref=f35e124]
+          - generic [ref=f35e126]:
+            - heading "ساعة ذكية" [level=3] [ref=f35e127]:
+              - link "ساعة ذكية" [ref=f35e128]:
+                - /url: /Urun/Detay/-49
+            - paragraph [ref=f35e130]: 799 ₪
+            - button "أضف إلى السلة" [ref=f35e131]:
+              - generic [ref=f35e132]: 
+              - generic [ref=f35e133]: أضف إلى السلة
+        - generic [ref=f35e134] [cursor=pointer]:
+          - generic [ref=f35e135]:
+            - link "جديد" [ref=f35e136]:
+              - /url: /Urun/Detay/-50
+              - generic [ref=f35e137]: جديد
+              - img [ref=f35e139]
+            - button "أضف إلى المفضلة" [ref=f35e141]:
+              - img [ref=f35e142]
+          - generic [ref=f35e144]:
+            - heading "فستان سهرة أنيق" [level=3] [ref=f35e145]:
+              - link "فستان سهرة أنيق" [ref=f35e146]:
+                - /url: /Urun/Detay/-50
+            - paragraph [ref=f35e148]: 1٬299 ₪
+            - button "أضف إلى السلة" [ref=f35e149]:
+              - generic [ref=f35e150]: 
+              - generic [ref=f35e151]: أضف إلى السلة
+        - generic [ref=f35e152] [cursor=pointer]:
+          - generic [ref=f35e153]:
+            - link "جديد" [ref=f35e154]:
+              - /url: /Urun/Detay/-51
+              - generic [ref=f35e155]: جديد
+              - img [ref=f35e157]
+            - button "أضف إلى المفضلة" [ref=f35e159]:
+              - img [ref=f35e160]
+          - generic [ref=f35e162]:
+            - heading "حقيبة جلدية" [level=3] [ref=f35e163]:
+              - link "حقيبة جلدية" [ref=f35e164]:
+                - /url: /Urun/Detay/-51
+            - paragraph [ref=f35e166]: 899 ₪
+            - button "أضف إلى السلة" [ref=f35e167]:
+              - generic [ref=f35e168]: 
+              - generic [ref=f35e169]: أضف إلى السلة
+      - link "عرض الكل" [ref=f35e171] [cursor=pointer]:
+        - /url: /Urun
+    - generic [ref=f35e174]:
+      - generic [ref=f35e175]:
+        - img [ref=f35e177]
+        - heading "تحويل بنكي" [level=4] [ref=f35e179]
+        - paragraph [ref=f35e180]: دفع سهل عبر بيانات الآيبان
+      - generic [ref=f35e181]:
+        - img [ref=f35e183]
+        - heading "توصيل سريع" [level=4] [ref=f35e185]
+        - paragraph [ref=f35e186]: تصل طلباتك بسرعة
+      - generic [ref=f35e187]:
+        - img [ref=f35e189]
+        - heading "رضا العملاء" [level=4] [ref=f35e191]
+        - paragraph [ref=f35e192]: خدمة تركز على رضا العملاء 100%
+  - contentinfo [ref=f35e193]:
+    - generic [ref=f35e195]:
+      - generic [ref=f35e196]:
+        - img [ref=f35e198]
+        - generic [ref=f35e200]:
+          - generic [ref=f35e201]: في جميع مناطق فلسطين
+          - generic [ref=f35e202]: شحن مجاني
+      - generic [ref=f35e203]:
+        - img [ref=f35e205]
+        - generic [ref=f35e207]:
+          - generic [ref=f35e208]: تحويل بنكي
+          - generic [ref=f35e209]: 256 Bit SSL
+      - generic [ref=f35e210]:
+        - img [ref=f35e212]
+        - generic [ref=f35e214]:
+          - generic [ref=f35e215]: تحويل بنكي
+          - generic [ref=f35e216]: دفع سهل عبر الآيبان
+    - generic [ref=f35e217]:
+      - generic [ref=f35e218]:
+        - generic [ref=f35e219]:
+          - heading "اشترك في النشرة البريدية" [level=3] [ref=f35e220]
+          - paragraph [ref=f35e221]: استقبل أحدث المنتجات المختارة من السوق الفلسطيني والعروض الخاصة على بريدك.
+          - generic [ref=f35e222]:
+            - textbox "عنوان البريد الإلكتروني" [ref=f35e223]
+            - button "اشتراك" [ref=f35e224] [cursor=pointer]
+        - generic [ref=f35e225]:
+          - heading "مؤسسي" [level=4] [ref=f35e226]
+          - list [ref=f35e227]:
+            - listitem [ref=f35e228]:
+              - link "من نحن" [ref=f35e229] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=f35e230]:
+              - link "اتصل بنا" [ref=f35e231] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=f35e232]:
+              - link "جميع المنتجات" [ref=f35e233] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=f35e234]:
+              - link "سياسة الخصوصية" [ref=f35e235] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f35e236]:
+              - link "عقد البيع عن بعد" [ref=f35e237] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=f35e239] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=f35e240]: 
+      - generic [ref=f35e241]:
+        - paragraph [ref=f35e243]: © 2026 7ANRPS48 — جميع الحقوق محفوظة.
+        - generic [ref=f35e244]:
+          - link "سياسة الخصوصية" [ref=f35e245] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "الإرجاع والاستبدال" [ref=f35e246] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+          - text: "|"
+          - link "من نحن" [ref=f35e247] [cursor=pointer]:
+            - /url: /Kurumsal/Hakkimizda
+  - link "اتصال واتساب" [ref=f35e248] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=f35e249]
+  - link "السلة" [ref=f35e251] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=f35e252]
+    - generic [ref=f35e254]: "5"

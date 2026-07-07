@@ -1,4 +1,4 @@
-@inject IStringLocalizer<SharedResource> Localizer
+﻿@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["OrderReceived"];
     var siparisNo = ViewBag.SiparisNo as string ?? string.Empty;
@@ -17,8 +17,8 @@
                     @Localizer["PaymentApprovalPending"]
                 </span>
 
-                <h1 class="text-3xl md:text-4xl font-serif font-bold text-[#313511] mb-4">@Localizer["OrderReceivedTitle"]</h1>
-                <p class="text-[#6f6a5e] text-lg mb-8">
+                <h1 class="text-3xl md:text-4xl font-serif font-bold text-brand-olive mb-4">@Localizer["OrderReceivedTitle"]</h1>
+                <p class="text-brand-mutedtext text-lg mb-8">
                     @Localizer["OrderPendingInfo"]
                 </p>
 
@@ -26,16 +26,16 @@
                 {
                     <div class="bg-[#faf7ef] border border-[#e8dfd0] rounded-2xl p-5 mb-8">
                         <div class="text-sm uppercase tracking-[0.2em] text-[#9a8f78] mb-2">@Localizer["OrderNumber"]</div>
-                        <div class="text-2xl font-bold text-[#313511]">@siparisNo</div>
+                        <div class="text-2xl font-bold text-brand-olive">@siparisNo</div>
                     </div>
                 }
 
                 <div class="grid gap-3 sm:grid-cols-2">
-                    <a href="/Urun" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#313511] text-white font-semibold hover:bg-[#25280d] transition">
+                    <a href="/Urun" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-brand-olive text-white font-semibold hover:bg-[#25280d] transition">
                         <i class="fas fa-arrow-left"></i>
                         @Localizer["ContinueShopping"]
                     </a>
-                    <a href="/Kurumsal/Iletisim" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-[#313511] text-[#313511] font-semibold hover:bg-[#313511] hover:text-white transition">
+                    <a href="/Kurumsal/Iletisim" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-brand-olive text-brand-olive font-semibold hover:bg-brand-olive hover:text-white transition">
                         <i class="fas fa-headset"></i>
                         @Localizer["ContactUs"]
                     </a>

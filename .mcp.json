@@ -2,46 +2,149 @@
   "mcpServers": {
     "postgres": {
       "command": "npx",
-      "args": ["-y", "postgres-mcp-readonly"],
+      "args": [
+        "-y",
+        "postgres-mcp-readonly"
+      ],
       "env": {
         "DATABASE_URL": "postgresql://kanvasuser:changeme_in_production@localhost:5434/filistindb"
       }
     },
     "docker": {
       "command": "npx",
-      "args": ["-y", "@swartdraak/docker-mcp-server"]
+      "args": [
+        "-y",
+        "@swartdraak/docker-mcp-server"
+      ]
     },
     "playwright": {
       "command": "npx",
-      "args": ["-y", "@playwright/mcp@latest"]
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ]
     },
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "E:\\Projeler\\filistin_eticaret_projesi"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/path/to/allowed/files"
+      ]
     },
     "sequential-thinking": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
     },
     "memory": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-memory"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
     },
     "everything": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-everything"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-everything"
+      ]
     },
     "shadcn-ui": {
       "command": "npx",
-      "args": ["-y", "@jpisnice/shadcn-ui-mcp-server"]
+      "args": [
+        "-y",
+        "@jpisnice/shadcn-ui-mcp-server"
+      ]
     },
     "generative-ui": {
       "command": "npx",
-      "args": ["-y", "generative-ui-mcp"]
+      "args": [
+        "-y",
+        "generative-ui-mcp"
+      ]
     },
     "redis": {
       "command": "npx",
-      "args": ["-y", "mcp-redis"]
+      "args": [
+        "-y",
+        "mcp-redis"
+      ]
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ],
+      "env": {
+        "CONTEXT7_API_KEY": "<your-context7-api-key>"
+      }
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest"
+      ]
+    },
+    "postgresql": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres"
+      ],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "postgresql://user:password@localhost:5432/dbname"
+      }
+    },
+    "fetch": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-fetch"
+      ]
+    },
+    "elasticsearch-mcp-server": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "ES_URL",
+        "-e",
+        "ES_API_KEY",
+        "docker.elastic.co/mcp/elasticsearch",
+        "stdio"
+      ],
+      "env": {
+        "ES_URL": "<elasticsearch-cluster-url>",
+        "ES_API_KEY": "<elasticsearch-API-key>"
+      }
+    },
+    "sentry": {
+      "url": "https://mcp.sentry.dev/mcp"
+    },
+    "postgres-documentation": {
+      "url": "https://mcp.tigerdata.com/docs"
+    },
+    "tinyfish": {
+      "type": "http",
+      "url": "https://agent.tinyfish.ai/mcp"
+    },
+    "n8n-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "n8n-mcp"
+      ],
+      "env": {
+        "MCP_MODE": "stdio"
+      }
     }
   }
 }

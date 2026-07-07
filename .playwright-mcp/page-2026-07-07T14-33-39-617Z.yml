@@ -1,0 +1,218 @@
+- generic [active] [ref=f10e1]:
+  - generic [ref=f10e3]:
+    - generic [ref=f10e4]:
+      - generic [ref=f10e5]: 
+      - text: شحن مجاني للطلبات فوق 200 ₪
+    - generic [ref=f10e6]:
+      - generic [ref=f10e7]: 
+      - text: دفع سهل عبر الآيبان
+    - generic [ref=f10e8]:
+      - generic [ref=f10e9]: 
+      - text: خيار الدفع عند الاستلام
+    - generic [ref=f10e10]:
+      - generic [ref=f10e11]: 
+      - text: إنتاج سريع
+    - generic [ref=f10e12]:
+      - generic [ref=f10e13]: 
+      - text: تغليف دقيق
+    - generic [ref=f10e14]:
+      - generic [ref=f10e15]: 
+      - text: توصيل إلى جميع مناطق فلسطين
+    - generic [ref=f10e16]:
+      - generic [ref=f10e17]: 
+      - text: إرجاع 14 يوم
+    - generic [ref=f10e18]:
+      - generic [ref=f10e19]: 
+      - text: ضمان الشركة المصنعة
+    - generic [ref=f10e20]:
+      - generic [ref=f10e21]: 
+      - text: دعم واتساب
+    - generic [ref=f10e22]:
+      - generic [ref=f10e23]: 
+      - text: شحن مجاني للطلبات فوق 200 ₪
+    - generic [ref=f10e24]:
+      - generic [ref=f10e25]: 
+      - text: دفع سهل عبر الآيبان
+    - generic [ref=f10e26]:
+      - generic [ref=f10e27]: 
+      - text: خيار الدفع عند الاستلام
+    - generic [ref=f10e28]:
+      - generic [ref=f10e29]: 
+      - text: إنتاج سريع
+    - generic [ref=f10e30]:
+      - generic [ref=f10e31]: 
+      - text: تغليف دقيق
+    - generic [ref=f10e32]:
+      - generic [ref=f10e33]: 
+      - text: توصيل إلى جميع مناطق فلسطين
+    - generic [ref=f10e34]:
+      - generic [ref=f10e35]: 
+      - text: إرجاع 14 يوم
+    - generic [ref=f10e36]:
+      - generic [ref=f10e37]: 
+      - text: ضمان الشركة المصنعة
+    - generic [ref=f10e38]:
+      - generic [ref=f10e39]: 
+      - text: دعم واتساب
+  - banner [ref=f10e40]:
+    - generic [ref=f10e41]:
+      - generic [ref=f10e42]:
+        - generic [ref=f10e44]: 
+        - link "AR" [ref=f10e45] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FKurumsal%2FHakkimizda
+        - link "EN" [ref=f10e46] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FKurumsal%2FHakkimizda
+      - link "7ANRPS48" [ref=f10e47] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f10e48]
+      - generic [ref=f10e49]:
+        - button "بحث" [ref=f10e50] [cursor=pointer]:
+          - img [ref=f10e51]
+        - link "حسابي" [ref=f10e53] [cursor=pointer]:
+          - /url: /Profil
+          - img [ref=f10e54]
+        - link "المفضلة" [ref=f10e56] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=f10e57]
+        - link "السلة" [ref=f10e59] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=f10e60]
+          - generic [ref=f10e62]: "0"
+      - navigation [ref=f10e63]:
+        - list [ref=f10e64]:
+          - listitem [ref=f10e65] [cursor=pointer]:
+            - link "اتصل بنا" [ref=f10e66]:
+              - /url: /Kurumsal/Iletisim
+  - main [ref=f10e67]:
+    - generic [ref=f10e69]:
+      - link "الصفحة الرئيسية" [ref=f10e70] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f10e71]: /
+      - generic [ref=f10e72]: من نحن
+    - generic [ref=f10e73]:
+      - heading "من نحن" [level=1] [ref=f10e75]
+      - generic [ref=f10e77]:
+        - paragraph [ref=f10e79]: "\"أعمال مختارة بعناية لأماكن المعيشة، تشغيل نظيف وخدمة موثوقة.\""
+        - heading "قصتنا" [level=2] [ref=f10e80]
+        - paragraph [ref=f10e81]: 7ANRPS48 هي علامة تجارية فلسطينية للتجارة الإلكترونية تأسست لجلب الفن والجمالية إلى جدرانك. تم تصميم كل منتج وإنتاجه بعناية ليعكس التراث الثقافي للمنطقة.
+        - heading "رؤيتنا" [level=2] [ref=f10e82]
+        - paragraph [ref=f10e83]: ليس فقط بيع المنتجات؛ بل إضافة قيمة لأماكن معيشة عملائنا من خلال مواد عالية الجودة وتصاميم فريدة.
+        - heading "لماذا نحن؟" [level=2] [ref=f10e84]
+        - list [ref=f10e85]:
+          - listitem [ref=f10e86]:
+            - strong [ref=f10e87]: "جودة فاخرة:"
+            - text: طباعة عالية الدقة وقماش كانفاس قطني 100%.
+          - listitem [ref=f10e88]:
+            - strong [ref=f10e89]: "طويل الأمد:"
+            - text: أحبار أرشيفية مقاومة للبهتان.
+          - listitem [ref=f10e90]:
+            - strong [ref=f10e91]: "شحن آمن:"
+            - text: ضمان توصيل بدون تلف مع واقيات الزوايا وتغليف مقوّى.
+        - generic [ref=f10e92]:
+          - heading "اتصل بنا" [level=3] [ref=f10e93]
+          - paragraph [ref=f10e94]: يمكنك التواصل معنا لمشاريعك المخصصة أو مشتريات الجملة أو أي استفسارات.
+          - link "صفحة الاتصال" [ref=f10e95] [cursor=pointer]:
+            - /url: /Kurumsal/Iletisim
+  - contentinfo [ref=f10e96]:
+    - generic [ref=f10e98]:
+      - generic [ref=f10e99]:
+        - img [ref=f10e101]
+        - generic [ref=f10e103]:
+          - generic [ref=f10e104]: في جميع مناطق فلسطين
+          - generic [ref=f10e105]: شحن مجاني
+      - generic [ref=f10e106]:
+        - img [ref=f10e108]
+        - generic [ref=f10e110]:
+          - generic [ref=f10e111]: تحويل بنكي
+          - generic [ref=f10e112]: دفع سهل عبر الآيبان
+      - generic [ref=f10e113]:
+        - img [ref=f10e115]
+        - generic [ref=f10e117]:
+          - generic [ref=f10e118]: الدفع عند الاستلام
+          - generic [ref=f10e119]: خيار الدفع عند الاستلام
+    - generic [ref=f10e120]:
+      - generic [ref=f10e121]:
+        - generic [ref=f10e122]:
+          - link "7ANRPS48" [ref=f10e123] [cursor=pointer]:
+            - /url: /
+            - img "7ANRPS48" [ref=f10e125]
+          - paragraph [ref=f10e126]: متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن
+          - link "واتساب" [ref=f10e128] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - img [ref=f10e129]
+        - generic [ref=f10e131]:
+          - heading "QuickLinks" [level=5] [ref=f10e132]
+          - list [ref=f10e133]:
+            - listitem [ref=f10e134]:
+              - link "جميع المنتجات" [ref=f10e135] [cursor=pointer]:
+                - /url: /Urun
+                - img [ref=f10e136]
+                - text: جميع المنتجات
+            - listitem [ref=f10e138]:
+              - link "السلة" [ref=f10e139] [cursor=pointer]:
+                - /url: /Sepet
+                - img [ref=f10e140]
+                - text: السلة
+            - listitem [ref=f10e142]:
+              - link "مفضلتي" [ref=f10e143] [cursor=pointer]:
+                - /url: /Favori
+                - img [ref=f10e144]
+                - text: مفضلتي
+            - listitem [ref=f10e146]:
+              - link "اتصل بنا" [ref=f10e147] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+                - img [ref=f10e148]
+                - text: اتصل بنا
+        - generic [ref=f10e150]:
+          - heading "مؤسسي" [level=5] [ref=f10e151]
+          - list [ref=f10e152]:
+            - listitem [ref=f10e153]:
+              - link "من نحن" [ref=f10e154] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+                - img [ref=f10e155]
+                - text: من نحن
+            - listitem [ref=f10e157]:
+              - link "سياسة الخصوصية" [ref=f10e158] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+                - img [ref=f10e159]
+                - text: سياسة الخصوصية
+            - listitem [ref=f10e161]:
+              - link "عقد البيع عن بعد" [ref=f10e162] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+                - img [ref=f10e163]
+                - text: عقد البيع عن بعد
+            - listitem [ref=f10e165]:
+              - link "الإرجاع والاستبدال" [ref=f10e166] [cursor=pointer]:
+                - /url: /Kurumsal/IadeKosullari
+                - img [ref=f10e167]
+                - text: الإرجاع والاستبدال
+        - generic [ref=f10e169]:
+          - heading "اتصل بنا" [level=5] [ref=f10e170]
+          - list [ref=f10e171]:
+            - listitem [ref=f10e172]:
+              - img [ref=f10e174]
+              - generic [ref=f10e176]: +970-599-000-000
+            - listitem [ref=f10e177]:
+              - img [ref=f10e179]
+              - generic [ref=f10e181]: info@7anrps48.com
+            - listitem [ref=f10e182]:
+              - img [ref=f10e184]
+              - generic [ref=f10e187]: فلسطين
+          - generic [ref=f10e188]:
+            - paragraph [ref=f10e189]: اشترك في النشرة البريدية
+            - generic [ref=f10e190]:
+              - textbox "عنوان البريد الإلكتروني" [ref=f10e191]
+              - button "اشتراك" [ref=f10e192] [cursor=pointer]:
+                - img [ref=f10e193]
+      - generic [ref=f10e195]:
+        - paragraph [ref=f10e197]: © 2026 7ANRPS48 — جميع الحقوق محفوظة.
+        - generic [ref=f10e198]:
+          - img [ref=f10e199]
+          - generic [ref=f10e201]: BankTransferPayment
+  - link "اتصال واتساب" [ref=f10e202] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=f10e203]
+    - generic [ref=f10e205]: WhatsApp
+  - link "السلة" [ref=f10e206] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=f10e207]

@@ -69,14 +69,6 @@ namespace FilistinProje.Web.Security
                     AdminSecurityRoles.Yonetici,
                     AdminSecurityRoles.UrunYoneticisi
                 },
-                ["SlugTool"] = new[]
-                {
-                    AdminSecurityRoles.LegacyAdmin,
-                    AdminSecurityRoles.SuperAdmin,
-                    AdminSecurityRoles.Yonetici,
-                    AdminSecurityRoles.UrunYoneticisi,
-                    AdminSecurityRoles.IcerikYoneticisi
-                },
                 ["Kupon"] = new[]
                 {
                     AdminSecurityRoles.LegacyAdmin,
