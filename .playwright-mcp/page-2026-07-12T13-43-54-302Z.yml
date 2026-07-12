@@ -1,0 +1,377 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e3]:
+    - generic [ref=f2e4]:
+      - generic [ref=f2e5]:
+        - generic [ref=f2e6]: 
+        - text: Free shipping on orders over 200 ₪
+      - generic [ref=f2e7]:
+        - generic [ref=f2e8]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f2e9]:
+        - generic [ref=f2e10]: 
+        - text: Pay on delivery option
+      - generic [ref=f2e11]:
+        - generic [ref=f2e12]: 
+        - text: Fast Production
+      - generic [ref=f2e13]:
+        - generic [ref=f2e14]: 
+        - text: Careful Packaging
+      - generic [ref=f2e15]:
+        - generic [ref=f2e16]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f2e17]:
+        - generic [ref=f2e18]: 
+        - text: 14 Days Return
+      - generic [ref=f2e19]:
+        - generic [ref=f2e20]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f2e21]:
+        - generic [ref=f2e22]: 
+        - text: WhatsApp Support
+    - generic [ref=f2e23]:
+      - generic [ref=f2e24]:
+        - generic [ref=f2e25]: 
+        - text: Free shipping on orders over 200 ₪
+      - generic [ref=f2e26]:
+        - generic [ref=f2e27]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f2e28]:
+        - generic [ref=f2e29]: 
+        - text: Pay on delivery option
+      - generic [ref=f2e30]:
+        - generic [ref=f2e31]: 
+        - text: Fast Production
+      - generic [ref=f2e32]:
+        - generic [ref=f2e33]: 
+        - text: Careful Packaging
+      - generic [ref=f2e34]:
+        - generic [ref=f2e35]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f2e36]:
+        - generic [ref=f2e37]: 
+        - text: 14 Days Return
+      - generic [ref=f2e38]:
+        - generic [ref=f2e39]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f2e40]:
+        - generic [ref=f2e41]: 
+        - text: WhatsApp Support
+  - banner [ref=f2e42]:
+    - generic [ref=f2e43]:
+      - generic [ref=f2e44]:
+        - generic [ref=f2e45]: 
+        - link "العربية" [ref=f2e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FSiparis%2FOdeme
+        - link "English" [ref=f2e48] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FSiparis%2FOdeme
+      - link "7ANRPS48" [ref=f2e49] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f2e50]
+      - generic [ref=f2e51]:
+        - button "Search" [ref=f2e52] [cursor=pointer]
+        - link "My Account" [ref=f2e55] [cursor=pointer]:
+          - /url: /Profil
+        - link "My Favorites" [ref=f2e58] [cursor=pointer]:
+          - /url: /Favori
+        - link "Cart" [ref=f2e61] [cursor=pointer]:
+          - /url: /Sepet
+          - generic [ref=f2e64]: "13"
+      - navigation [ref=f2e65]:
+        - list [ref=f2e66]:
+          - listitem [ref=f2e67] [cursor=pointer]:
+            - link "Home Furniture" [ref=f2e68]:
+              - /url: /Urun?k=78
+          - listitem [ref=f2e71] [cursor=pointer]:
+            - link "Electronics" [ref=f2e72]:
+              - /url: /Urun?k=79
+          - listitem [ref=f2e75] [cursor=pointer]:
+            - link "Fashion" [ref=f2e76]:
+              - /url: /Urun?k=80
+          - listitem [ref=f2e79] [cursor=pointer]:
+            - link "Contact" [ref=f2e80]:
+              - /url: /Kurumsal/Iletisim
+  - main [ref=f2e81]:
+    - generic [ref=f2e83]:
+      - link "1 Cart" [ref=f2e84] [cursor=pointer]:
+        - /url: /Sepet
+        - generic [ref=f2e85]: "1"
+        - text: Cart
+      - generic [ref=f2e86]: /
+      - generic [ref=f2e87]:
+        - generic [ref=f2e88]: "2"
+        - text: Payment and Delivery
+    - generic [ref=f2e89]:
+      - generic [ref=f2e90]:
+        - heading "Bank Transfer" [level=1] [ref=f2e91]
+        - paragraph [ref=f2e92]: Verify delivery information
+      - generic [ref=f2e95]:
+        - generic [ref=f2e97]:
+          - link "1 Cart" [ref=f2e98] [cursor=pointer]:
+            - /url: /Sepet
+            - generic [ref=f2e99]: "1"
+            - text: Cart
+          - generic [ref=f2e100]: /
+          - generic [ref=f2e101]:
+            - generic [ref=f2e102]: "2"
+            - text: Payment and Delivery
+        - generic [ref=f2e103]:
+          - generic [ref=f2e104]:
+            - heading "Bank Transfer" [level=1] [ref=f2e105]
+            - paragraph [ref=f2e106]: Verify delivery information
+          - generic [ref=f2e107]:
+            - generic [ref=f2e108] [cursor=pointer]:
+              - radio "Deliver to Address Your order will be shipped to your address" [checked]
+              - generic [ref=f2e111]:
+                - generic [ref=f2e112]: Deliver to Address
+                - generic [ref=f2e113]: Your order will be shipped to your address
+            - generic [ref=f2e114] [cursor=pointer]:
+              - radio "Store Pickup Pick up your order from our store"
+              - generic [ref=f2e117]:
+                - generic [ref=f2e118]: Store Pickup
+                - generic [ref=f2e119]: Pick up your order from our store
+          - text: 
+          - generic [ref=f2e121]:
+            - generic [ref=f2e122]:
+              - generic [ref=f2e123]: Full Name
+              - textbox "Full Name" [ref=f2e124]:
+                - /placeholder: Your name and surname
+                - text: 7ANRPS48 Admin
+            - generic [ref=f2e125]:
+              - generic [ref=f2e126]: Email
+              - textbox [ref=f2e127]: admin@7anrps48.com
+              - generic [ref=f2e128]: This email is already registered
+            - generic [ref=f2e129]:
+              - generic [ref=f2e130]: Phone
+              - textbox "Phone" [ref=f2e131]:
+                - /placeholder: +970 5XX XXX XXX
+            - generic [ref=f2e132]:
+              - generic [ref=f2e133]: District
+              - combobox "District" [ref=f2e134]:
+                - option "Select City" [selected]
+                - option "Akka (Acre)"
+                - option "Beytüllahim (Bethlehem)"
+                - option "Cenin (Jenin)"
+                - option "El-Halil (Hebron)"
+                - option "El-Kudüs (Jerusalem)"
+                - option "Eriha (Jericho)"
+                - option "Hayfa (Haifa)"
+                - option "Kalkilya (Qalqilya)"
+                - option "Lydda"
+                - option "Nablus"
+                - option "Nasıra (Nazareth)"
+                - option "Ramallah & El-Bireh"
+                - option "Ramla"
+                - option "Salfit"
+                - option "Taybe"
+                - option "Tubas"
+                - option "Tulkarim"
+                - option "Yafa (Jaffa)"
+                - option "Ümmü'l-Fahm"
+            - generic [ref=f2e135]:
+              - generic [ref=f2e136]: Neighborhood
+              - textbox "Neighborhood" [ref=f2e137]:
+                - /placeholder: Neighborhood name
+            - generic [ref=f2e138]:
+              - generic [ref=f2e139]: Full Address
+              - textbox "Full Address" [ref=f2e140]:
+                - /placeholder: Street, avenue, building no, apartment no...
+            - generic [ref=f2e142] [cursor=pointer]:
+              - checkbox "Address will be saved to your account" [ref=f2e143]
+              - generic [ref=f2e144]: Address will be saved to your account
+          - generic [ref=f2e145]:
+            - heading " Shipping Fee" [level=2] [ref=f2e146]:
+              - generic [ref=f2e147]: 
+              - text: Shipping Fee
+            - generic [ref=f2e149]:
+              - generic [ref=f2e150]: 
+              - paragraph [ref=f2e152]: Kargo Ã¼creti ÅŸehrinize gÃ¶re otomatik hesaplanacaktÄ±r Shipping fee will be calculated automatically based on your city Ø³ÙŠØªÙ… ØØ³Ø§Ø¨ Ø±Ø³ÙˆÙ… Ø§Ù„Ø´ØÙ† ØªÙ„Ù‚Ø§Ø¦ÙŠÙ‹Ø§ ØØ³Ø¨ Ù…Ø¯ÙŠÙ†ØªÙƒ
+          - generic [ref=f2e153]:
+            - heading " Payment Method" [level=2] [ref=f2e154]:
+              - generic [ref=f2e155]: 
+              - text: Payment Method
+            - generic [ref=f2e156]:
+              - generic [ref=f2e157]: 256 Bit SSL
+              - generic [ref=f2e158]:
+                - generic [ref=f2e159]: 
+                - generic [ref=f2e160]:
+                  - heading "Order Request" [level=6] [ref=f2e161]
+                  - paragraph [ref=f2e162]: Your order request has been received
+              - paragraph [ref=f2e163]: Your order has been completed successfully
+              - generic [ref=f2e165] [cursor=pointer]:
+                - radio "Bank Transfer Pay using bank account details." [checked]
+                - generic [ref=f2e168]:
+                  - generic [ref=f2e169]: Bank Transfer
+                  - generic [ref=f2e170]: Pay using bank account details.
+              - generic [ref=f2e172]:
+                - generic [ref=f2e173]: 
+                - generic [ref=f2e174]:
+                  - paragraph [ref=f2e175]: Bank Transfer Temporarily Unavailable
+                  - paragraph [ref=f2e176]: Bank transfer is temporarily unavailable. No active bank account has been configured by the administrator. Please try again later or contact us.
+              - generic [ref=f2e177] [cursor=pointer]:
+                - checkbox "Privacy Policy and User Agreement I accept the terms" [ref=f2e178]
+                - generic [ref=f2e179]:
+                  - link "Privacy Policy" [ref=f2e180]:
+                    - /url: /Kurumsal/Gizlilik
+                  - text: and
+                  - link "User Agreement" [ref=f2e181]:
+                    - /url: /Kurumsal/KullaniciSozlesmesi
+                  - text: I accept the terms
+          - generic [ref=f2e182]:
+            - heading " Order Note" [level=2] [ref=f2e183]:
+              - generic [ref=f2e184]: 
+              - text: Order Note
+            - textbox "Write a note about your order..." [ref=f2e185]
+            - paragraph [ref=f2e186]: Max 1000 characters
+          - generic [ref=f2e188]:
+            - link "1 Cart" [ref=f2e189] [cursor=pointer]:
+              - /url: /Sepet
+              - generic [ref=f2e190]: "1"
+              - text: Cart
+            - generic [ref=f2e191]: /
+            - generic [ref=f2e192]:
+              - generic [ref=f2e193]: "2"
+              - text: Payment and Delivery
+          - generic [ref=f2e194]:
+            - generic [ref=f2e195]:
+              - heading "Bank Transfer" [level=1] [ref=f2e196]
+              - paragraph [ref=f2e197]: Verify delivery information
+            - generic [ref=f2e198]:
+              - heading " Identity Verification" [level=2] [ref=f2e199]:
+                - generic [ref=f2e200]: 
+                - text: Identity Verification
+              - paragraph [ref=f2e201]: Take or upload an identity photo for payment confirmation
+              - generic [ref=f2e202]:
+                - button " Open Camera" [ref=f2e203] [cursor=pointer]:
+                  - generic [ref=f2e204]: 
+                  - text: Open Camera
+                - button " Upload File" [ref=f2e205] [cursor=pointer]:
+                  - generic [ref=f2e206]: 
+                  - text: Upload File
+              - text:      
+            - button " Create Order - ₪44,987.00 ₪" [ref=f2e207] [cursor=pointer]:
+              - generic [ref=f2e208]: 
+              - text: Create Order -
+              - generic [ref=f2e209]: ₪44,987.00
+              - text: ₪
+          - generic [ref=f2e211]:
+            - generic [ref=f2e213]:
+              - link "1 Cart" [ref=f2e214] [cursor=pointer]:
+                - /url: /Sepet
+                - generic [ref=f2e215]: "1"
+                - text: Cart
+              - generic [ref=f2e216]: /
+              - generic [ref=f2e217]:
+                - generic [ref=f2e218]: "2"
+                - text: Payment and Delivery
+            - generic [ref=f2e219]:
+              - generic [ref=f2e220]:
+                - heading "Bank Transfer" [level=1] [ref=f2e221]
+                - paragraph [ref=f2e222]: Verify delivery information
+              - heading "Order Summary" [level=3] [ref=f2e223]
+              - generic [ref=f2e224]:
+                - generic [ref=f2e225]:
+                  - img "طقم كنبات مودرن" [ref=f2e227]
+                  - generic [ref=f2e228]:
+                    - generic [ref=f2e229]: طقم كنبات مودرن
+                    - generic [ref=f2e230]: Varsayilan varyasyon
+                    - generic [ref=f2e231]:
+                      - generic [ref=f2e232]: x 8
+                      - generic [ref=f2e233]: 39,992.00 ₪
+                - generic [ref=f2e234]:
+                  - img "فستان سهرة أنيق" [ref=f2e236]
+                  - generic [ref=f2e237]:
+                    - generic [ref=f2e238]: فستان سهرة أنيق
+                    - generic [ref=f2e239]:
+                      - generic [ref=f2e240]: x 2
+                      - generic [ref=f2e241]: 2,598.00 ₪
+                - generic [ref=f2e242]:
+                  - img "ساعة ذكية" [ref=f2e244]
+                  - generic [ref=f2e245]:
+                    - generic [ref=f2e246]: ساعة ذكية
+                    - generic [ref=f2e247]:
+                      - generic [ref=f2e248]: x 3
+                      - generic [ref=f2e249]: 2,397.00 ₪
+              - generic [ref=f2e251]:
+                - generic [ref=f2e252]: 
+                - generic [ref=f2e253]: Free shipping achieved!
+              - generic [ref=f2e254]:
+                - generic [ref=f2e255]:
+                  - generic [ref=f2e256]: Subtotal
+                  - generic [ref=f2e257]: 44,987.00 ₪
+                - generic [ref=f2e258]:
+                  - generic [ref=f2e259]: Shipping Fee
+                  - generic [ref=f2e260]: Free
+              - generic [ref=f2e261]:
+                - generic [ref=f2e262]: Grand Total
+                - generic [ref=f2e263]: ₪44,987.00 ₪
+              - generic [ref=f2e264]:
+                - generic [ref=f2e266]:
+                  - paragraph [ref=f2e267]: 256 Bit SSL Encryption
+                  - paragraph [ref=f2e268]: Secure shopping with 256 bit SSL certificate
+                - generic [ref=f2e269]:
+                  - generic [ref=f2e270]: 
+                  - generic [ref=f2e271]:
+                    - paragraph [ref=f2e272]: Undamaged Delivery
+                    - paragraph [ref=f2e273]: Undamaged delivery with careful packaging
+                - generic [ref=f2e274]:
+                  - generic [ref=f2e275]: 
+                  - generic [ref=f2e276]:
+                    - paragraph [ref=f2e277]: Easy Returns
+                    - paragraph [ref=f2e278]: No-questions-asked return within 14 days
+  - contentinfo [ref=f2e279]:
+    - generic [ref=f2e281]:
+      - generic [ref=f2e286]:
+        - generic [ref=f2e287]: Across Palestine
+        - generic [ref=f2e288]: Free Shipping
+      - generic [ref=f2e293]:
+        - generic [ref=f2e294]: Bank Transfer
+        - generic [ref=f2e295]: 256 Bit SSL
+      - generic [ref=f2e300]:
+        - generic [ref=f2e301]: Bank Transfer
+        - generic [ref=f2e302]: Easy payment by IBAN
+    - generic [ref=f2e303]:
+      - generic [ref=f2e304]:
+        - generic [ref=f2e305]:
+          - heading "Subscribe to newsletter" [level=3] [ref=f2e306]
+          - paragraph [ref=f2e307]: Get new arrivals, Palestinian market picks, and special offers in your inbox.
+          - generic [ref=f2e308]:
+            - textbox "Email Address" [ref=f2e309]
+            - button "Subscribe" [ref=f2e310] [cursor=pointer]
+        - generic [ref=f2e311]:
+          - heading "Corporate" [level=4] [ref=f2e312]
+          - list [ref=f2e313]:
+            - listitem [ref=f2e314]:
+              - link "About Us" [ref=f2e315] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=f2e316]:
+              - link "Contact" [ref=f2e317] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=f2e318]:
+              - link "All Products" [ref=f2e319] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=f2e320]:
+              - link "Privacy Policy" [ref=f2e321] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f2e322]:
+              - link "Distance Sales Contract" [ref=f2e323] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=f2e325] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=f2e326]: 
+      - generic [ref=f2e327]:
+        - paragraph [ref=f2e329]: © 2026 7ANRPS48 — All rights reserved.
+        - generic [ref=f2e330]:
+          - link "Privacy Policy" [ref=f2e331] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "Return and Exchange" [ref=f2e332] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+          - text: "|"
+          - link "About Us" [ref=f2e333] [cursor=pointer]:
+            - /url: /Kurumsal/Hakkimizda
+  - link "WhatsApp Contact" [ref=f2e334] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=f2e337]: WhatsApp
+  - link "Cart" [ref=f2e338] [cursor=pointer]:
+    - /url: /Sepet
+    - generic [ref=f2e341]: "13"

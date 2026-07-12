@@ -216,6 +216,7 @@ builder.Services.AddScoped<IHomePageSectionService, HomePageSectionService>();
 builder.Services.AddScoped<IFavoriService, FavoriService>();
 builder.Services.AddScoped<IKargoHesaplamaServisi, KargoHesaplamaServisi>();
 builder.Services.AddScoped<IOrderPricingService, OrderPricingService>();
+builder.Services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
 builder.Services.AddSingleton<IAdminSecurityAuditService, AdminSecurityAuditService>();
 builder.Services.AddScoped<IFirebaseNotificationService, FirebaseNotificationService>();
 builder.Services.AddHttpClient("FirebaseFCM");

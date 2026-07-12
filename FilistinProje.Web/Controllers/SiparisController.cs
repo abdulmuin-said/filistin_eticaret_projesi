@@ -30,7 +30,7 @@ namespace FilistinProje.Web.Controllers
         private readonly IStringLocalizer<SharedResource> _localizer;
         private readonly IKargoHesaplamaServisi _kargoHesaplama;
         private readonly IDosyaServisi _dosyaServisi;
-        private readonly IOrderPricingService _orderPricingService;
+        private readonly IPurchaseOrderService _purchaseOrderService;
 
         public SiparisController(
             UserManager<AppUser> userManager,
@@ -44,7 +44,7 @@ namespace FilistinProje.Web.Controllers
             IStringLocalizer<SharedResource> localizer,
             IKargoHesaplamaServisi kargoHesaplama,
             IDosyaServisi dosyaServisi,
-            IOrderPricingService orderPricingService)
+            IPurchaseOrderService purchaseOrderService)
         {
             _userManager = userManager;
             _adresService = adresService;
@@ -57,7 +57,7 @@ namespace FilistinProje.Web.Controllers
             _localizer = localizer;
             _kargoHesaplama = kargoHesaplama;
             _dosyaServisi = dosyaServisi;
-            _orderPricingService = orderPricingService;
+            _purchaseOrderService = purchaseOrderService;
         }
 
         [HttpGet]
@@ -146,221 +146,56 @@ namespace FilistinProje.Web.Controllers
                 return View(dto);
             }
 
-            var sehirForPricing = dto.TeslimatTipi == "MagazadanTeslim" ? null : dto.Sehir;
-            var odemeForPricing = dto.OdemeYontemi == "KapidaOdeme" ? "KapidaOdeme" : "BankaHavalesi";
-            var kuponFromSession = HttpContext.Session.GetString("UygulananKupon");
-
-            // === B3: Server-side fiyat hesaplaması. SepetItem.Fiyat snapshot'ına güvenilmez.
-            OrderPricingResult pricing;
-            try
+            var placeOrderResult = await _purchaseOrderService.PlaceOrderAsync(new PlaceOrderRequest
             {
-                pricing = await _orderPricingService.HesaplaAsync(
-                    sepetItems,
-                    sehirForPricing,
-                    odemeForPricing,
-                    User.IsInRole("Wholesale"),
-                    kuponFromSession);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "OrderPricingService.HesaplaAsync basarisiz");
-                await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
-                ViewBag.FormHata = _localizer["Siparis_FormValidationError"].Value;
-                return View(dto);
-            }
+                Checkout = dto,
+                SepetItems = sepetItems,
+                AppUserId = userId,
+                SessionId = sessionId,
+                IsWholesale = User.IsInRole("Wholesale"),
+                KuponKodu = HttpContext.Session.GetString("UygulananKupon"),
+                PaymentPendingMessage = _localizer["Siparis_PaymentPending"].Value,
+                PayOnDeliveryPendingMessage = _localizer["Siparis_PayOnDeliveryPending"].Value,
+                StorePickupCity = _localizer["StorePickupCity"].Value,
+                StorePickupDistrict = _localizer["StorePickupDistrict"].Value,
+                StorePickupAddress = _localizer["StorePickupAddress"].Value
+            });
 
-            // === B2: Stok yetersizse rollback öncesi formla geri dön.
-            if (pricing.StokSorunuVar)
+            if (!placeOrderResult.Succeeded)
             {
-                var ilk = pricing.StokYetersizlikleri[0];
-                var stockMsg = string.Format(
-                    _localizer["Siparis_StockShortage"].Value,
-                    ilk.UrunBaslik,
-                    ilk.IstenenAdet,
-                    ilk.MevcutStok);
-                ModelState.AddModelError("stock", stockMsg);
-                await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
-                ViewBag.FormHata = stockMsg;
-                return View(dto);
-            }
-
-            var settings = _siteSettingsService.GetSettings();
-            decimal sepetToplamiIndirimli = pricing.AraToplam - pricing.IndirimTutari;
-
-            // COD limiti aşımı
-            if (odemeForPricing == "KapidaOdeme" && sepetToplamiIndirimli > settings.KapidaOdemeLimiti)
-            {
-                var codMsg = string.Format(_localizer["Siparis_CODLimitExceeded"].Value,
-                    settings.KapidaOdemeLimiti.ToString("N0"), settings.ParaBirimi);
-                ModelState.AddModelError(nameof(dto.OdemeYontemi), codMsg);
-                await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
-                ViewBag.FormHata = codMsg;
-                return View(dto);
-            }
-
-            // Wholesale min kontrol
-            if (User.IsInRole("Wholesale")
-                && settings.ToptanciMinSiparisTutari > 0
-                && sepetToplamiIndirimli < settings.ToptanciMinSiparisTutari)
-            {
-                var minOrderMsg = string.Format(_localizer["Siparis_WholesaleMinOrder"].Value,
-                    settings.ToptanciMinSiparisTutari.ToString("N0"), settings.ParaBirimi);
-                ModelState.AddModelError("SepetToplami", minOrderMsg);
-                await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
-                ViewBag.FormHata = minOrderMsg;
-                return View(dto);
-            }
-
-            // Banka havalesi: aktif banka hesabı kontrolü (UI korunsun)
-            if (dto.OdemeYontemi == "BankaHavalesi")
-            {
-                var aktifBankaVarMi = await _context.BankaHesaplari
-                    .Where(x => !x.SilindiMi && x.AktifMi)
-                    .AnyAsync();
-                if (!aktifBankaVarMi)
+                if (placeOrderResult.Status == PlaceOrderStatus.InvalidCoupon)
                 {
-                    var noBankMsg = _localizer["Siparis_NoActiveBankAccount"].Value;
-                    ModelState.AddModelError(nameof(dto.OdemeYontemi), noBankMsg);
-                    await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
-                    ViewBag.FormHata = noBankMsg;
-                    return View(dto);
-                }
-            }
-
-            // === B27: Siparis entity server-owned alanlar burada set edilir.
-            var siparis = dto.ToSiparisEntity();
-            siparis.SiparisNo = await GenerateUniqueOrderNumberAsync();
-            siparis.EmailHashKodu = Guid.NewGuid().ToString("N")[..16];
-            siparis.OlusturulmaTarihi = DateTime.UtcNow;
-            siparis.Durum = 0;
-            siparis.SilindiMi = false;
-            siparis.AppUserId = userId;
-            siparis.KargoTakipNo ??= string.Empty;
-            siparis.OdemeYontemi = odemeForPricing;
-            siparis.KapidaOdemeHizmetBedeli = pricing.KapidaOdemeHizmetBedeli;
-
-            var kullaniciNotu = dto.Aciklama;
-            siparis.Aciklama = siparis.OdemeYontemi == "KapidaOdeme"
-                ? _localizer["Siparis_PayOnDeliveryPending"].Value
-                : _localizer["Siparis_PaymentPending"].Value;
-            if (!string.IsNullOrWhiteSpace(kullaniciNotu))
-            {
-                siparis.Aciklama += " | Not: " + TrimToMaxLength(kullaniciNotu, 1000);
-            }
-
-            // === B13: Hediye paketi bedeli pricing.AraToplam'a zaten dahil edildi.
-            // Çifte ekleme yok. siparis.ToplamTutar pricing.GenelToplam'dan geliyor.
-            siparis.IndirimTutari = pricing.IndirimTutari;
-            siparis.KuponKodu = pricing.UygulananKuponKodu;
-            siparis.ToplamTutar = pricing.GenelToplam;
-
-            if (dto.TeslimatTipi == "MagazadanTeslim")
-            {
-                siparis.KargoFirmasi = null;
-                siparis.KargoFirmasiId = null;
-                siparis.Sehir = _localizer["StorePickupCity"];
-                siparis.Ilce = _localizer["StorePickupDistrict"];
-                siparis.AcikAdres = _localizer["StorePickupAddress"];
-                siparis.KargoUcreti = 0;
-                dto.AdresiKaydet = false;
-            }
-            else
-            {
-                siparis.KargoFirmasi = string.Empty;
-                siparis.KargoFirmasiId = null;
-                siparis.KargoUcreti = Math.Max(0, pricing.KargoUcreti);
-            }
-
-            // === Transaction: Sipariş + Detaylar + Stok + Kupon aynı tx.
-            await using var transaction = await _context.Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
-
-            try
-            {
-                if (dto.AdresiKaydet && !string.IsNullOrEmpty(userId))
-                {
-                    _context.Adresler.Add(new Adres
-                    {
-                        AppUserId = userId,
-                        Baslik = string.IsNullOrWhiteSpace(dto.YeniAdresBasligi) ? "Yeni Adresim" : dto.YeniAdresBasligi.Trim(),
-                        AdSoyad = siparis.MusteriAdSoyad,
-                        Telefon = siparis.Telefon,
-                        Sehir = siparis.Sehir,
-                        Ilce = siparis.Ilce,
-                        AcikAdres = siparis.AcikAdres,
-                        OlusturulmaTarihi = DateTime.UtcNow,
-                        SilindiMi = false
-                    });
+                    HttpContext.Session.Remove("UygulananKupon");
                 }
 
-                _context.Siparisler.Add(siparis);
-                await _context.SaveChangesAsync();
-
-                // === B2: Atomik koşullu stok düşümü (read-modify-write race yok).
-                var stokSonuc = await _orderPricingService.StokDusAsync(pricing.Satirlar);
-                if (!stokSonuc.Basarili)
-                {
-                    _logger.LogWarning(
-                        "Sipariş stok düşümü başarısız — transaction rollback. SecenekId={SecenekId}, Mesaj={Mesaj}",
-                        stokSonuc.BasarisizUrunSecenekId, stokSonuc.HataMesaji);
-                    await transaction.RollbackAsync();
-                    ModelState.AddModelError("stock", _localizer["Siparis_StockShortageGeneric"].Value);
-                    await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
-                    ViewBag.FormHata = _localizer["Siparis_StockShortageGeneric"].Value;
-                    return View(dto);
-                }
-
-                // === B3 + B13: SiparisDetay eklerken server-side fiyatları yaz.
-                foreach (var line in pricing.Satirlar)
-                {
-                    var sourceItem = sepetItems.First(i => i.Id == line.SepetItemId);
-                    var gercekSecenekId = await ResolveOrderVariantIdAsync(sourceItem);
-                    _context.SiparisDetaylari.Add(new SiparisDetay
-                    {
-                        SiparisId = siparis.Id,
-                        UrunSecenekId = gercekSecenekId,
-                        Adet = line.Adet,
-                        BirimFiyat = line.BirimFiyat,
-                        OlusturulmaTarihi = DateTime.UtcNow,
-                        UrunId = line.UrunId,
-                        CerceveModeli = sourceItem.CerceveModeli,
-                        MusteriNotu = sourceItem.MusteriNotu,
-                        HediyePaketi = line.HediyePaketi,
-                        HediyePaketFiyati = line.HediyePaketBirim,
-                        SilindiMi = false
-                    });
-                }
-
-                if (!string.IsNullOrWhiteSpace(siparis.KuponKodu))
-                {
-                    var kupon = await _context.Kuponlar.FirstOrDefaultAsync(x => x.Kod == siparis.KuponKodu);
-                    if (kupon != null)
-                    {
-                        kupon.KullanilanMiktar++;
-                    }
-                }
-
-                await ClearOrderCartAsync(siparis);
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Sipariş transaction hatası — rollback");
-                await transaction.RollbackAsync();
-                ModelState.AddModelError(string.Empty, _localizer["Siparis_OrderFailed"].Value);
+                var errorMessage = BuildPlaceOrderErrorMessage(placeOrderResult);
+                ModelState.AddModelError(GetPlaceOrderModelStateKey(placeOrderResult.Status), errorMessage);
                 await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
-                ViewBag.FormHata = _localizer["Siparis_OrderFailed"].Value;
+                ViewBag.FormHata = errorMessage;
                 return View(dto);
             }
 
             HttpContext.Session.Remove("UygulananKupon");
 
             // Fiyat değişti ise kullanıcıya bildir (B3: sessizce farklı tahsil etmemek)
-            if (pricing.FiyatDegistiMi)
+            if (placeOrderResult.Pricing?.FiyatDegistiMi == true)
             {
                 TempData["Siparis_FiyatDegisti"] = string.Format(
                     _localizer["Siparis_PriceChangedNotice"].Value,
-                    pricing.FiyatDegisiklikleri.Count);
+                    placeOrderResult.Pricing.FiyatDegisiklikleri.Count);
+            }
+
+            var siparis = await _context.Siparisler
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == placeOrderResult.SiparisId);
+
+            if (siparis == null)
+            {
+                _logger.LogWarning(
+                    "Siparis commit edildi ancak commit sonrasi email icin tekrar okunamadi. SiparisId={SiparisId}, SiparisNo={SiparisNo}",
+                    placeOrderResult.SiparisId,
+                    placeOrderResult.SiparisNo);
+                return RedirectToAction(nameof(Beklemede), new { siparisNo = placeOrderResult.SiparisNo });
             }
 
             _logger.LogInformation(
@@ -716,46 +551,40 @@ namespace FilistinProje.Web.Controllers
             return allowedExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase);
         }
 
-        private static string TrimToMaxLength(string value, int maxLength)
+        private string BuildPlaceOrderErrorMessage(PlaceOrderResult result)
         {
-            var trimmed = value.Trim();
-            return trimmed.Length > maxLength ? trimmed[..maxLength] : trimmed;
-        }
-
-        private async Task<string> GenerateUniqueOrderNumberAsync()
-        {
-            for (var attempt = 0; attempt < 5; attempt++)
+            if (result.Status == PlaceOrderStatus.StockShortage && result.StockShortages.Count > 0)
             {
-                var candidate = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff") + Random.Shared.Next(100, 999);
-                if (!await _context.Siparisler.AnyAsync(x => x.SiparisNo == candidate))
-                {
-                    return candidate;
-                }
+                var ilk = result.StockShortages[0];
+                return string.Format(
+                    _localizer["Siparis_StockShortage"].Value,
+                    ilk.UrunBaslik,
+                    ilk.IstenenAdet,
+                    ilk.MevcutStok);
             }
 
-            return $"{DateTime.UtcNow:yyyyMMddHHmmssfff}{Guid.NewGuid():N}"[..24];
+            var key = string.IsNullOrWhiteSpace(result.MessageKey)
+                ? "Siparis_OrderFailed"
+                : result.MessageKey;
+
+            var localized = _localizer[key].Value;
+            return result.MessageArgs.Length > 0
+                ? string.Format(localized, result.MessageArgs)
+                : localized;
         }
 
-        private async Task<int?> ResolveOrderVariantIdAsync(SepetItem item)
+        private static string GetPlaceOrderModelStateKey(PlaceOrderStatus status)
         {
-            if (item.UrunSecenekId.HasValue)
+            return status switch
             {
-                return item.UrunSecenekId.Value;
-            }
-
-            var varsayilan = await _context.UrunSecenekleri
-                .AsNoTracking()
-                .Where(x =>
-                    x.UrunId == item.UrunId &&
-                    !x.SilindiMi &&
-                    x.AktifMi &&
-                    (!x.TukeninceGizle || x.StokAdedi > 0 || x.OnSipariseAcikMi))
-                .OrderByDescending(x => x.VarsayilanMi)
-                .ThenBy(x => x.Sira)
-                .ThenBy(x => x.SatisFiyati)
-                .FirstOrDefaultAsync();
-
-            return varsayilan?.Id;
+                PlaceOrderStatus.StockShortage => "stock",
+                PlaceOrderStatus.NoActiveBankAccount => nameof(CheckoutRequestDto.OdemeYontemi),
+                PlaceOrderStatus.CodLimitExceeded => nameof(CheckoutRequestDto.OdemeYontemi),
+                PlaceOrderStatus.WholesaleMinimumNotMet => "SepetToplami",
+                PlaceOrderStatus.ShippingNotConfigured => nameof(CheckoutRequestDto.Sehir),
+                PlaceOrderStatus.InvalidCoupon => "KuponKodu",
+                _ => string.Empty
+            };
         }
 
         private static decimal CalculateCouponDiscount(Kupon kupon, decimal sepetTutari)
@@ -997,40 +826,6 @@ namespace FilistinProje.Web.Controllers
             }
 
             return string.Join(" | ", details);
-        }
-
-        private async Task ClearOrderCartAsync(Siparis siparis)
-        {
-            Sepet? sepet = null;
-
-            if (!string.IsNullOrWhiteSpace(siparis.AppUserId))
-            {
-                sepet = await _context.Sepetler
-                    .Include(x => x.SepetItems.Where(i => !i.SilindiMi))
-                    .FirstOrDefaultAsync(x => x.AppUserId == siparis.AppUserId && !x.SilindiMi);
-            }
-            else
-            {
-                var sessionId = HttpContext.Session.Id;
-                sepet = await _context.Sepetler
-                    .Include(x => x.SepetItems.Where(i => !i.SilindiMi))
-                    .FirstOrDefaultAsync(x =>
-                        x.SessionId == sessionId &&
-                        string.IsNullOrEmpty(x.AppUserId) &&
-                        !x.SilindiMi);
-            }
-
-            if (sepet == null)
-            {
-                return;
-            }
-
-            foreach (var item in sepet.SepetItems.Where(x => !x.SilindiMi))
-            {
-                item.SilindiMi = true;
-            }
-
-            sepet.SonGuncellemeTarihi = DateTime.UtcNow;
         }
     }
 }
