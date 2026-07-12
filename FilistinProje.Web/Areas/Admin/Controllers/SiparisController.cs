@@ -60,24 +60,20 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 pageSize = 20;
             }
 
-            var siparisler = await _siparisService.GetAllAsync();
-            var siparisDetaylari = await _detayService.GetAllAsync();
-            var siparisDetayOzetleri = siparisDetaylari
-                .GroupBy(x => x.SiparisId)
-                .ToDictionary(
-                    x => x.Key,
-                    x => $"{x.Count()} Ã¼rÃ¼n / {x.Sum(v => v.Adet)} adet");
-            var sorgu = siparisler.AsQueryable();
+            var tumSiparisler = _context.Siparisler
+                .AsNoTracking()
+                .Where(x => !x.SilindiMi);
+            var sorgu = tumSiparisler;
 
             if (!string.IsNullOrWhiteSpace(search))
             {
                 search = search.Trim().ToLowerInvariant();
                 sorgu = sorgu.Where(x =>
                     x.Id.ToString().Contains(search) ||
-                    (!string.IsNullOrWhiteSpace(x.SiparisNo) && x.SiparisNo.ToLowerInvariant().Contains(search)) ||
-                    (!string.IsNullOrWhiteSpace(x.MusteriAdSoyad) && x.MusteriAdSoyad.ToLowerInvariant().Contains(search)) ||
+                    (!string.IsNullOrWhiteSpace(x.SiparisNo) && x.SiparisNo.ToLower().Contains(search)) ||
+                    (!string.IsNullOrWhiteSpace(x.MusteriAdSoyad) && x.MusteriAdSoyad.ToLower().Contains(search)) ||
                     (!string.IsNullOrWhiteSpace(x.Telefon) && x.Telefon.Contains(search)) ||
-                    (!string.IsNullOrWhiteSpace(x.Eposta) && x.Eposta.ToLowerInvariant().Contains(search)));
+                    (!string.IsNullOrWhiteSpace(x.Eposta) && x.Eposta.ToLower().Contains(search)));
             }
 
             if (durum.HasValue)
@@ -95,28 +91,51 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             ViewBag.CurrentSearch = search;
             ViewBag.CurrentDurum = durum;
             ViewBag.CurrentReceteDurum = receteDurum;
-            ViewBag.ReceteBekleyenCount = siparisler.Count(x => x.ReceteOnayDurumu == 0 && !string.IsNullOrWhiteSpace(x.ReceteDosyaYolu));
-            ViewBag.ReceteOnayliCount = siparisler.Count(x => x.ReceteOnayDurumu == 1);
-            ViewBag.ReceteRedliCount = siparisler.Count(x => x.ReceteOnayDurumu == 2);
-            ViewBag.TumuCount = siparisler.Count();
-            ViewBag.YeniCount = siparisler.Count(x => x.Durum == SiparisDurumHelper.SiparisAlindi);
-            ViewBag.HazirlaniyorCount = siparisler.Count(x => x.Durum == SiparisDurumHelper.UretimHazirlaniyor);
-            ViewBag.PaketleniyorCount = siparisler.Count(x => x.Durum == SiparisDurumHelper.Paketleniyor);
-            ViewBag.KargodaCount = siparisler.Count(x => x.Durum == SiparisDurumHelper.KargoyaVerildi);
-            ViewBag.TeslimCount = siparisler.Count(x => x.Durum == SiparisDurumHelper.TeslimEdildi);
-            ViewBag.FaturaYuklenmemiÅŸCount = siparisler.Count(x => !x.FaturaYuklendiMi);
-            ViewBag.SiparisDetayOzetleri = siparisDetayOzetleri;
+            ViewBag.ReceteBekleyenCount = await tumSiparisler.CountAsync(x => x.ReceteOnayDurumu == 0 && !string.IsNullOrWhiteSpace(x.ReceteDosyaYolu));
+            ViewBag.ReceteOnayliCount = await tumSiparisler.CountAsync(x => x.ReceteOnayDurumu == 1);
+            ViewBag.ReceteRedliCount = await tumSiparisler.CountAsync(x => x.ReceteOnayDurumu == 2);
+            ViewBag.TumuCount = await tumSiparisler.CountAsync();
+            ViewBag.YeniCount = await tumSiparisler.CountAsync(x => x.Durum == SiparisDurumHelper.SiparisAlindi);
+            ViewBag.HazirlaniyorCount = await tumSiparisler.CountAsync(x => x.Durum == SiparisDurumHelper.UretimHazirlaniyor);
+            ViewBag.PaketleniyorCount = await tumSiparisler.CountAsync(x => x.Durum == SiparisDurumHelper.Paketleniyor);
+            ViewBag.KargodaCount = await tumSiparisler.CountAsync(x => x.Durum == SiparisDurumHelper.KargoyaVerildi);
+            ViewBag.TeslimCount = await tumSiparisler.CountAsync(x => x.Durum == SiparisDurumHelper.TeslimEdildi);
+            ViewBag.FaturaYuklenmemiÅŸCount = await tumSiparisler.CountAsync(x => !x.FaturaYuklendiMi);
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
             ViewBag.PageSizeOptions = allowedPageSizes;
-            ViewBag.TotalCount = sorgu.Count();
+            ViewBag.TotalCount = await sorgu.CountAsync();
             ViewBag.TotalPages = (int)Math.Ceiling((double)ViewBag.TotalCount / pageSize);
+            if (ViewBag.TotalPages < 1)
+            {
+                ViewBag.TotalPages = 1;
+            }
 
-            return View(sorgu
+            page = Math.Min(page, (int)ViewBag.TotalPages);
+            ViewBag.Page = page;
+
+            var sayfaSiparisleri = await sorgu
                 .OrderByDescending(x => x.OlusturulmaTarihi)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .ToList());
+                .ToListAsync();
+
+            var sayfaSiparisIdleri = sayfaSiparisleri.Select(x => x.Id).ToList();
+            ViewBag.SiparisDetayOzetleri = await _context.SiparisDetaylari
+                .AsNoTracking()
+                .Where(x => sayfaSiparisIdleri.Contains(x.SiparisId))
+                .GroupBy(x => x.SiparisId)
+                .Select(x => new
+                {
+                    SiparisId = x.Key,
+                    UrunSayisi = x.Count(),
+                    Adet = x.Sum(v => v.Adet)
+                })
+                .ToDictionaryAsync(
+                    x => x.SiparisId,
+                    x => $"{x.UrunSayisi} Ã¼rÃ¼n / {x.Adet} adet");
+
+            return View(sayfaSiparisleri);
         }
 
         public async Task<IActionResult> Detay(int id)
@@ -209,7 +228,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return RedirectToAction("Detay", new { id });
             }
 
-            var mailSonucu = await SendStatusNotificationAsync(siparis, eskiDurum, durum, firma?.Ad ?? "Aras Kargo", temizKargoNo);
+            var mailSonucu = await SendStatusNotificationAsync(siparis, eskiDurum, durum, firma?.Ad ?? string.Empty, temizKargoNo);
             if (mailSonucu.Success)
             {
                 TempData["Mesaj"] = "تم تحديث حالة الطلب. تم إرسال بريد إلكتروني إعلامي للعميل.";
@@ -277,7 +296,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             worksheet.Column(7).Style.Numberformat.Format = "dd.mm.yyyy hh:mm";
-            worksheet.Column(8).Style.Numberformat.Format = "#,##0.00 TL";
+            worksheet.Column(8).Style.Numberformat.Format = "#,##0.00 ₪";
             worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
 
             return File(
@@ -786,7 +805,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                             {notSatiri}
                         </td>
                         <td style='padding:10px; border-top:1px solid #e5e2dc; text-align:center; color:#47473d;'>{item.Adet}</td>
-                        <td style='padding:10px; border-top:1px solid #e5e2dc; text-align:right; color:#313511; font-weight:600;'>{(item.BirimFiyat * item.Adet):N2} TL</td>
+                        <td style='padding:10px; border-top:1px solid #e5e2dc; text-align:right; color:#313511; font-weight:600;'>{(item.BirimFiyat * item.Adet):N2} ₪</td>
                     </tr>");
             }
 

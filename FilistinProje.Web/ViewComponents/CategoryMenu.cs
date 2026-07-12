@@ -19,7 +19,7 @@ namespace FilistinProje.Web.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var cacheKey = $"home_categories_{CultureInfo.CurrentUICulture.Name}";
+            var cacheKey = $"category-menu:v1:{CultureInfo.CurrentUICulture.Name}";
             var model = await _cacheService.GetOrAddAsync(cacheKey, async () =>
             {
                 var categories = await _context.Kategoriler
@@ -33,7 +33,7 @@ namespace FilistinProje.Web.ViewComponents
                 return categories
                     .Select(CategoryPresentationHelper.ToViewModel)
                     .ToList();
-            }, TimeSpan.FromHours(12));
+            }, TimeSpan.FromMinutes(10));
 
             return View(model);
         }

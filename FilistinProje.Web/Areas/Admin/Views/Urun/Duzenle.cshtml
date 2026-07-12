@@ -9,7 +9,7 @@
 
     if (!string.IsNullOrWhiteSpace(Model.AnaGorselUrl))
     {
-        previewItems.Add(("image", Model.AnaGorselUrl, Model.AnaGorselUrl, $"{Model.Baslik} ana gÃ¶rseli"));
+        previewItems.Add(("image", Model.AnaGorselUrl, Model.AnaGorselUrl, $"{Model.Baslik} ana gorseli"));
     }
 
     foreach (var media in (Model.UrunResimleri ?? Enumerable.Empty<FilistinProje.Core.Varliklar.UrunResim>())
@@ -304,15 +304,15 @@
 <div class="container-fluid ca-fade-in">
     <div class="ca-page-header">
         <div>
-            <h1 class="ca-page-title">ÃœrÃ¼n DÃ¼zenle</h1>
+            <h1 class="ca-page-title">Urun Duzenle</h1>
             <p class="ca-page-subtitle">@Model.Baslik</p>
         </div>
         <div class="d-flex gap-2 flex-wrap">
             <a href="/Admin/Urun" class="ca-btn ca-btn-outline">
-                <i class="fas fa-arrow-left"></i> ÃœrÃ¼nlere DÃ¶n
+                <i class="fas fa-arrow-left"></i> Urunlere Don
             </a>
             <a href="@detailUrl" target="_blank" class="ca-btn ca-btn-outline">
-                <i class="fas fa-arrow-up-right-from-square"></i> Sitede GÃ¶r
+                <i class="fas fa-arrow-up-right-from-square"></i> Sitede Gor
             </a>
         </div>
     </div>
@@ -353,29 +353,29 @@
                 <span class="small text-muted">ID: #@Model.Id</span>
             </div>
             <button type="submit" class="ca-btn ca-btn-primary">
-                <i class="fas fa-save"></i> DeÄŸiÅŸiklikleri Kaydet
+                <i class="fas fa-save"></i> Degisiklikleri Kaydet
             </button>
         </div>
 
         <div class="ca-product-editor">
             <div>
-                <div class="ca-editor-tabs" role="tablist" aria-label="ÃœrÃ¼n dÃ¼zenleme bÃ¶lÃ¼mleri">
+                <div class="ca-editor-tabs" role="tablist" aria-label="Urun duzenleme bolumleri">
                     <button type="button" class="ca-editor-tab active" data-product-tab="temel"><i class="fas fa-box-open"></i> Temel</button>
                     <button type="button" class="ca-editor-tab" data-product-tab="fiyat"><i class="fas fa-tags"></i> Fiyat & Operasyon</button>
-                    <button type="button" class="ca-editor-tab" data-product-tab="icerik"><i class="fas fa-align-left"></i> Ä°Ã§erik</button>
-                    <button type="button" class="ca-editor-tab" data-product-tab="ozellik"><i class="fas fa-sliders"></i> Ã–zellikler</button>
+                    <button type="button" class="ca-editor-tab" data-product-tab="icerik"><i class="fas fa-align-left"></i> Icerik</button>
+                    <button type="button" class="ca-editor-tab" data-product-tab="ozellik"><i class="fas fa-sliders"></i> Ozellikler</button>
                     <button type="button" class="ca-editor-tab" data-product-tab="varyasyon"><i class="fas fa-layer-group"></i> Varyasyonlar</button>
-                    <button type="button" class="ca-editor-tab" data-product-tab="medya"><i class="fas fa-images"></i> GÃ¶rseller</button>
+                    <button type="button" class="ca-editor-tab" data-product-tab="medya"><i class="fas fa-images"></i> Gorseller</button>
                 </div>
 
                 <section class="ca-editor-panel active" data-product-panel="temel">
                     <div class="ca-card">
                         <div class="ca-card-header">
-                            <span class="ca-card-title">Temel ÃœrÃ¼n Bilgisi</span>
+                            <span class="ca-card-title">Temel Urun Bilgisi</span>
                         </div>
                         <div class="ca-card-body">
                             <div class="ca-section-note">
-                                Bu bÃ¶lÃ¼m Ã¼rÃ¼nÃ¼n katalogda nasÄ±l gÃ¶rÃ¼neceÄŸini belirler. Zorunlu alanlar: Ã¼rÃ¼n adÄ±, kategori ve fiyat.
+                                Bu bolum urunun katalogda nasil gorunecegini belirler. Zorunlu alanlar: urun adi, kategori ve fiyat.
                             </div>
                             <div class="row g-3">
                                 <div class="col-lg-8">
@@ -383,8 +383,8 @@
                                     <input asp-for="Baslik" class="ca-input" />
                                 </div>
                                 <div class="col-lg-4">
-                                    <label class="ca-label">KÄ±sa Ad</label>
-                                    <input asp-for="KisaAd" class="ca-input" placeholder="Panel iÃ§inde kÄ±sa kullanÄ±m adÄ±" />
+                                    <label class="ca-label">Kisa Ad</label>
+                                    <input asp-for="KisaAd" class="ca-input" placeholder="Panel icinde kisa kullanim adi" />
                                 </div>
                                 <div class="col-lg-5">
                                     <label class="ca-label">@Localizer["Admin_Kategori"]</label>
@@ -426,16 +426,16 @@
                 <section class="ca-editor-panel" data-product-panel="fiyat">
                     <div class="ca-card">
                         <div class="ca-card-header">
-                            <span class="ca-card-title">Fiyat, Ãœretim ve Vitrin Durumu</span>
+                            <span class="ca-card-title">Fiyat, Uretim ve Vitrin Durumu</span>
                         </div>
                         <div class="ca-card-body">
                             <div class="row g-3">
                                 <div class="col-lg-3">
-                                    <label class="ca-label">SatÄ±ÅŸ FiyatÄ±</label>
+                                    <label class="ca-label">Satis Fiyati</label>
                                     <input asp-for="Fiyat" class="ca-input" type="number" step="0.01" min="0" />
                                 </div>
                                 <div class="col-lg-3">
-                                    <label class="ca-label">Ä°ndirimli Fiyat</label>
+                                    <label class="ca-label">Indirimli Fiyat</label>
                                     <input asp-for="IndirimliFiyat" class="ca-input" type="number" step="0.01" min="0" />
                                 </div>
                                 <div class="col-lg-3">
@@ -443,35 +443,35 @@
                                     <input asp-for="Maliyet" class="ca-input" type="number" step="0.01" min="0" />
                                 </div>
                                 <div class="col-lg-3">
-                                    <label class="ca-label">KDV OranÄ±</label>
+                                    <label class="ca-label">KDV Orani</label>
                                     <input asp-for="KdvOrani" class="ca-input" type="number" step="0.01" min="0" />
                                 </div>
                                 <div class="col-lg-3">
                                     <label class="ca-label">Stok Durumu</label>
                                     <select asp-for="StokDurumu" class="ca-select">
                                         <option value="Stokta">Stokta</option>
-                                        <option value="Tukendi">TÃ¼kendi</option>
-                                        <option value="OnSiparis">Ã–n SipariÅŸ</option>
+                                        <option value="Tukendi">Tukendi</option>
+                                        <option value="OnSiparis">On Siparis</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-3">
-                                    <label class="ca-label">Minimum SipariÅŸ</label>
+                                    <label class="ca-label">Minimum Siparis</label>
                                     <input asp-for="MinSiparisAdedi" class="ca-input" type="number" min="1" />
                                 </div>
                                 <div class="col-lg-3">
-                                    <label class="ca-label">Maksimum SipariÅŸ</label>
+                                    <label class="ca-label">Maksimum Siparis</label>
                                     <input asp-for="MaxSiparisAdedi" class="ca-input" type="number" min="1" />
                                 </div>
                                 <div class="col-lg-3">
-                                    <label class="ca-label">Ãœretim SÃ¼resi (GÃ¼n)</label>
+                                    <label class="ca-label">Uretim Suresi (Gun)</label>
                                     <input asp-for="UretimSuresiGun" class="ca-input" type="number" min="0" />
                                 </div>
                                 <div class="col-lg-3">
-                                    <label class="ca-label">Kargoya VeriliÅŸ (GÃ¼n)</label>
+                                    <label class="ca-label">Kargoya Verilis (Gun)</label>
                                     <input asp-for="KargoyaVerilisSuresiGun" class="ca-input" type="number" min="0" />
                                 </div>
                                 <div class="col-lg-3">
-                                    <label class="ca-label">Tahmini Teslim (GÃ¼n)</label>
+                                    <label class="ca-label">Tahmini Teslim (Gun)</label>
                                     <input asp-for="TahminiTeslimSuresiGun" class="ca-input" type="number" min="0" />
                                 </div>
                                 <div class="col-lg-3">
@@ -480,14 +480,14 @@
                                         <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
                                             <span>
                                                 <strong>Hediye paketi sun</strong><br>
-                                                <small class="text-muted">Sepette hediye paketi seÃ§eneÄŸi gÃ¶sterilir.</small>
+                                                <small class="text-muted">Sepette hediye paketi secenegi gosterilir.</small>
                                             </span>
                                             <input asp-for="HediyePaketiVarMi" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
-                                    <label class="ca-label">Hediye Paketi FiyatÄ±</label>
+                                    <label class="ca-label">Hediye Paketi Fiyati</label>
                                     <input asp-for="HediyePaketFiyati" class="ca-input" type="number" step="0.01" min="0" placeholder="â‚ª 0.00" />
                                 </div>
                             </div>
@@ -666,8 +666,8 @@
                                 @foreach (var r in Model.UrunResimleri ?? Enumerable.Empty<FilistinProje.Core.Varliklar.UrunResim>())
                                 {
                                     <div style="position:relative; aspect-ratio:1/1; border-radius:var(--ca-radius); overflow:hidden; border:1px solid var(--ca-border); background:#fff;">
-                                        <img src="@r.ResimYolu" alt="@Model.Baslik galeri gÃ¶rseli" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover;" />
-                                        <a href="/Admin/Urun/ResimSil/@r.Id" title="@Localizer["Admin_DeleteImage"]" style="position:absolute; top:6px; right:6px; width:24px; height:24px; border-radius:50%; background:rgba(239,68,68,.92); color:#fff; display:flex; align-items:center; justify-content:center; font-size:.72rem; text-decoration:none;">Ã—</a>
+                                        <img src="@r.ResimYolu" alt="@Model.Baslik galeri gorseli" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover;" />
+                                         <a href="/Admin/Urun/ResimSil/@r.Id" title="@Localizer["Admin_DeleteImage"]" style="position:absolute; top:6px; right:6px; width:24px; height:24px; border-radius:50%; background:rgba(239,68,68,.92); color:#fff; display:flex; align-items:center; justify-content:center; font-size:.72rem; text-decoration:none;">x</a>
                                     </div>
                                 }
                             </div>
@@ -721,7 +721,7 @@
                             }
                             else
                             {
-                                <img src="https://placehold.co/800x800/f1ede7/8a8880?text=Gorsel" id="mainImgPreview" alt="@Model.Baslik ana gÃ¶rseli" loading="lazy" decoding="async">
+                                <img src="https://placehold.co/800x800/f1ede7/8a8880?text=Gorsel" id="mainImgPreview" alt="@Model.Baslik ana gorseli" loading="lazy" decoding="async">
                             }
                         </div>
                         <div class="fw-bold">@Model.Baslik</div>
@@ -817,5 +817,3 @@
         }
     }
 </script>
-
-

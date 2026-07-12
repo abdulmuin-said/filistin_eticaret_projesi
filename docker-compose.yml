@@ -35,6 +35,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - DOTNET_RUNNING_IN_CONTAINER=true
+      - DATA_PROTECTION_KEYS_PATH=/app/secure-storage/dataprotection-keys
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=${POSTGRES_DB:-filistindb};Username=${POSTGRES_USER:-kanvasuser};Password=${POSTGRES_PASSWORD:-changeme_in_production}
       - EmailSettings__Host=${EMAIL_HOST:-smtp-relay.brevo.com}
       - EmailSettings__Port=${EMAIL_PORT:-587}
@@ -48,6 +49,7 @@ services:
       - filistin_app_media:/app/wwwroot/media/products
       - filistin_app_logs:/app/logs
       - filistin_app_data:/app/App_Data
+      - filistin_app_secure_storage:/app/secure-storage
     depends_on:
       db:
         condition: service_healthy
@@ -62,4 +64,6 @@ volumes:
   filistin_app_logs:
     driver: local
   filistin_app_data:
+    driver: local
+  filistin_app_secure_storage:
     driver: local

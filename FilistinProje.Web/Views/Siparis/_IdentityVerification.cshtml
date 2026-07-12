@@ -1,4 +1,4 @@
-@model FilistinProje.Core.Varliklar.Siparis
+@model FilistinProje.Core.DTOs.CheckoutRequestDto
 @using FilistinProje.Core.Varliklar
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @inject IStringLocalizer<SharedResource> Localizer
@@ -26,10 +26,10 @@
     var sehirListesi = ViewBag.Sehirler as List<string> ?? new List<string>();
     var sehirler = sehirListesi.Any() ? sehirListesi.ToArray() : new[]
     {
-        "BeytÃ¼llahim", "Cenin (Jenin)", "Deyr el-Balah", "El-Halil (Hebron)",
-        "El-KudÃ¼s (Jerusalem)", "Eriha (Jericho)", "Gazze", "Han Yunus (Khan Yunis)",
-        "Kalkilya (Qalqilya)", "Kuzey Gazze", "Nablus", "Ramallah & El-Bireh",
-        "Refah (Rafah)", "Salfit", "Tubas", "Tulkarim"
+        "Bethlehem", "Jenin", "Deir al-Balah", "Hebron",
+        "Jerusalem", "Jericho", "Gaza", "Khan Yunis",
+        "Qalqilya", "North Gaza", "Nablus", "Ramallah & El-Bireh",
+        "Rafah", "Salfit", "Tubas", "Tulkarm"
     };
 }
 
@@ -72,6 +72,7 @@
 
                         <!-- Camera Mode -->
                         <div id="identityCameraMode" class="hidden">
+                            <div id="identityCameraMessage" class="hidden mb-4 rounded border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-800"></div>
                             <div class="relative bg-black rounded-lg overflow-hidden mb-4 max-w-md mx-auto">
                                 <video id="identityVideo" playsinline class="w-full aspect-[4/3] object-cover"></video>
                                 <canvas id="identityCanvas" class="hidden"></canvas>

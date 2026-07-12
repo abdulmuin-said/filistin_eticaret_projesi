@@ -1,12 +1,17 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using FilistinProje.Data;
 using FilistinProje.Core.Varliklar;
+using System.Text.RegularExpressions;
 
 namespace FilistinProje.Web.Filters
 {
     public class ZiyaretciTakipFilter : IAsyncActionFilter
     {
         private readonly KanvasDbContext _context;
+
+        private static readonly Regex SensitiveQueryParamPattern = new(
+            @"\b(token|password|sifre|secret|key|code|auth|hash|signature|reset|confirm|verif|credential)\b",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         // Dependency Injection ile veritabanını alıyoruz
         public ZiyaretciTakipFilter(KanvasDbContext context)
@@ -19,7 +24,7 @@ namespace FilistinProje.Web.Filters
             // 1. İsteği Yakala
             var request = context.HttpContext.Request;
             var ip = context.HttpContext.Connection.RemoteIpAddress?.ToString();
-            var url = $"{request.Path}{request.QueryString}";
+            var url = SanitizeUrl(request);
             var userAgent = request.Headers["User-Agent"].ToString();
             var referer = request.Headers["Referer"].ToString(); // Nereden geldi?
             var method = request.Method; // GET/POST
@@ -51,6 +56,20 @@ namespace FilistinProje.Web.Filters
 
             // 4. İşlemi Devam Ettir (Sayfa açılsın)
             await next();
+        }
+
+        private static string SanitizeUrl(HttpRequest request)
+        {
+            var path = request.Path.Value ?? string.Empty;
+
+            if (!request.QueryString.HasValue)
+                return path;
+
+            var queryString = request.QueryString.Value ?? string.Empty;
+            if (SensitiveQueryParamPattern.IsMatch(queryString))
+                return path + "?[filtered]";
+
+            return path + queryString;
         }
     }
 }

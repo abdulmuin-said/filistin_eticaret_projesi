@@ -16,7 +16,7 @@
     <value>Admin Panel</value>
   </data>
   <data name="SellerPanel" xml:space="preserve">
-    <value>Seller Panel</value>
+    <value>Admin Panel</value>
   </data>
   <data name="Dashboard" xml:space="preserve">
     <value>Dashboard</value>
@@ -242,6 +242,9 @@
   </data>
   <data name="Bestseller" xml:space="preserve">
     <value>Best Seller</value>
+  </data>
+  <data name="BrandName" xml:space="preserve">
+    <value>7ANRPS48</value>
   </data>
   <data name="BrowseProducts" xml:space="preserve">
     <value>Browse Products</value>
@@ -1671,10 +1674,19 @@
     <value>A valid email address must be entered.</value>
   </data>
   <data name="Siparis_PhoneRequired" xml:space="preserve">
-    <value>Phone must be an 11-digit number starting with 0.</value>
+    <value>Enter a valid Palestinian phone number, for example +970 599 123 456 or 0599 123 456.</value>
   </data>
   <data name="Siparis_CityRequired" xml:space="preserve">
     <value>City is required.</value>
+  </data>
+  <data name="Siparis_NoShippingPrice" xml:space="preserve">
+    <value>Shipping is not configured for your city yet. Please contact us or choose store pickup. We will notify the administrator to complete the shipping setup.</value>
+  </data>
+  <data name="Siparis_NoActiveBankAccount" xml:space="preserve">
+    <value>Bank transfer is temporarily unavailable. No active bank account has been configured by the administrator. Please try again later or contact us.</value>
+  </data>
+  <data name="TemporarilyUnavailable" xml:space="preserve">
+    <value>Temporarily Unavailable</value>
   </data>
   <data name="Siparis_DistrictRequired" xml:space="preserve">
     <value>District is required.</value>
@@ -5084,4 +5096,18 @@
   <data name="Admin_AccountOwner" xml:space="preserve"><value>Account Owner</value></data>
   <data name="Admin_AccountNo" xml:space="preserve"><value>Account No</value></data>
   <data name="Admin_SaveAccount" xml:space="preserve"><value>Save Account</value></data>
+  <data name="ProductDetails" xml:space="preserve"><value>Product Details</value></data>
+  <data name="Days" xml:space="preserve"><value>days</value></data>
+  <data name="DaysReturn" xml:space="preserve"><value>days return</value></data>
+  <data name="Siparis_StockShortage" xml:space="preserve"><value>Insufficient stock: {0}. Requested {1}, available {2}.</value></data>
+  <data name="Siparis_StockShortageGeneric" xml:space="preserve"><value>Stock is no longer available for at least one item. Please review your cart and try again.</value></data>
+  <data name="Siparis_PriceChangedNotice" xml:space="preserve"><value>The price of {0} item(s) has been updated to the current retail value before completing your order.</value></data>
+  <data name="Siparis_OrderFailed" xml:space="preserve"><value>Your order could not be saved. Please try again or contact support.</value></data>
+  <data name="Brand" xml:space="preserve"><value>Brand</value></data>
+  <data name="AllBrands" xml:space="preserve"><value>All Brands</value></data>
+  <data name="Filters" xml:space="preserve"><value>Filters</value></data>
+  <data name="ClearAllFilters" xml:space="preserve"><value>Clear All Filters</value></data>
+  <data name="PreviousImage" xml:space="preserve"><value>Previous image</value></data>
+  <data name="NextImage" xml:space="preserve"><value>Next image</value></data>
+  <data name="VideoNotSupported" xml:space="preserve"><value>Your browser does not support video playback.</value></data>
   </root>

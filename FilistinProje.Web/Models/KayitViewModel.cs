@@ -19,8 +19,6 @@ namespace FilistinProje.Web.Models
         [Display(Name = "DogumTarihi")]
         public DateTime? DogumTarihi { get; set; }
 
-        [Required(ErrorMessage = "Telefon zorunludur")]
-        [Phone(ErrorMessage = "Geçerli bir telefon numarası giriniz")]
         [Display(Name = "Telefon")]
         public string Telefon { get; set; } = string.Empty;
 

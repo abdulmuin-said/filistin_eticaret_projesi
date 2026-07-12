@@ -209,7 +209,7 @@
 
             function money(input) {
                 const n = Number(String(input || '0').replace(',', '.'));
-                return n.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                return window.formatMoney(n);
             }
 
             function refreshPreview() {
@@ -220,7 +220,7 @@
                 if (type.value === '1') {
                     previewDiscount.textContent = `${money(value.value)} ₪ ${discountText}`;
                 } else {
-                    previewDiscount.textContent = `%${Number(value.value || 0).toLocaleString('tr-TR', { maximumFractionDigits: 0 })} ${discountText}`;
+                    previewDiscount.textContent = `%${window.formatMoney(Number(value.value || 0))} ${discountText}`;
                 }
 
                 const minValue = Number(String(min.value || '0').replace(',', '.'));

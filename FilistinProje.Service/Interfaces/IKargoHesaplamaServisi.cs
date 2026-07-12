@@ -5,5 +5,6 @@ namespace FilistinProje.Service.Interfaces
     public interface IKargoHesaplamaServisi
     {
         Task<decimal> HesaplaAsync(string sehir, decimal siparisToplami, decimal ucretsizKargoLimiti);
+        Task<bool> SehirdeAktifKargoVarMiAsync(string sehir);
     }
 }

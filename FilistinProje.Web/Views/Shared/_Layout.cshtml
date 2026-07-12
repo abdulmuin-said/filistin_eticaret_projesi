@@ -29,8 +29,8 @@
     }
     var metaKeywords = ViewData["MetaKeywords"]?.ToString();
     var logoUrl = string.IsNullOrWhiteSpace(siteSettings.SiteLogoUrl) ? "/74anrps48logo2.svg" : siteSettings.SiteLogoUrl;
-    var touchIconUrl = "/74anrps48logo2.svg";
-    var faviconUrl = string.IsNullOrWhiteSpace(siteSettings.FaviconUrl) ? "/74anrps48logo2.svg" : siteSettings.FaviconUrl;
+    var touchIconUrl = "/favicon.svg";
+    var faviconUrl = string.IsNullOrWhiteSpace(siteSettings.FaviconUrl) ? "/favicon.svg" : siteSettings.FaviconUrl;
     var viewOgImage = ViewData["OgImage"]?.ToString();
     var ogImage = !string.IsNullOrWhiteSpace(viewOgImage)
         ? SiteSettingsService.BuildAbsoluteUrl(viewOgImage)
@@ -348,6 +348,7 @@
         window.toggleMobileNav = function(open) {
             const drawer = document.getElementById('mobileNav');
             const backdrop = document.getElementById('mobileNavBackdrop');
+            const button = document.getElementById('mobileMenuBtn');
             if (!drawer || !backdrop) return;
 
             const shouldOpen = typeof open === 'boolean' ? open : drawer.classList.contains('hidden');
@@ -358,17 +359,48 @@
                     drawer.classList.add('is-open');
                     backdrop.classList.add('is-open');
                 });
+                if (button) button.setAttribute('aria-expanded', 'true');
+                const firstFocusable = drawer.querySelector('a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                if (firstFocusable) setTimeout(() => firstFocusable.focus(), 100);
             } else {
                 drawer.classList.remove('is-open');
                 backdrop.classList.remove('is-open');
+                if (button) button.setAttribute('aria-expanded', 'false');
                 setTimeout(() => {
                     drawer.classList.add('hidden');
                     backdrop.classList.add('hidden');
                 }, 430);
+                if (button) button.focus({ preventScroll: true });
             }
             document.documentElement.classList.toggle('overflow-hidden', shouldOpen);
             document.body.classList.toggle('overflow-hidden', shouldOpen);
         };
+
+        document.addEventListener('keydown', function(e) {
+            const mobileNav = document.getElementById('mobileNav');
+            if (!mobileNav || mobileNav.classList.contains('hidden')) return;
+
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                window.toggleMobileNav(false);
+                return;
+            }
+
+            if (e.key !== 'Tab') return;
+            const focusable = Array.from(mobileNav.querySelectorAll('a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+                .filter(el => !el.disabled && el.offsetParent !== null);
+            if (focusable.length === 0) return;
+
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        });
 
         window.toggleLangMenu = function() {
             const popover = document.getElementById('mobileLangPopover');
@@ -482,6 +514,23 @@ document.addEventListener('keydown', function(event) {
 
         });
 
+        window.formatMoney = function(amount, culture) {
+            if (typeof amount !== 'number' || !isFinite(amount)) return '\u20AA' + amount;
+            const lang = culture || document.documentElement.lang || 'ar';
+            const locale = lang === 'ar' ? 'ar-PS' : 'en-IL';
+            const currency = 'ILS';
+            try {
+                return new Intl.NumberFormat(locale, {
+                    style: 'currency',
+                    currency: currency,
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(amount).replace(/[\s]*ILS/i, '').trim();
+            } catch (e) {
+                return '\u20AA' + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+        };
+
         window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             if (!container) return;
@@ -542,6 +591,10 @@ document.addEventListener('keydown', function(event) {
         };
 
         // ─── AJAX Sepete Ekleme Sistemi (Event Delegation) ───
+        const quickAddAddingText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["AddingToCart"].Value));
+        const quickAddAddedText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["AddedToCart"].Value));
+        const quickAddCartErrorText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["CartError"].Value));
+
         document.body.addEventListener('click', function(e) {
             const btn = e.target.closest('.js-quick-add-btn');
             if (!btn) return;
@@ -562,7 +615,7 @@ document.addEventListener('keydown', function(event) {
             btn.disabled = true;
             btn.classList.add('cursor-wait', 'opacity-80');
             if (icon) icon.className = 'fas fa-spinner fa-spin text-xs';
-            if (label) label.textContent = '@Localizer["AddingToCart"]';
+            if (label) label.textContent = quickAddAddingText;
 
             // Anti-forgery token
             const tokenForm = document.getElementById('globalAntiForgeryForm');
@@ -586,13 +639,9 @@ document.addEventListener('keydown', function(event) {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    window.showToast(data.message || '@Localizer["AddedToCart"]', 'success');
-
-                    if (data.redirectUrl) {
-                        setTimeout(() => {
-                            window.location.href = data.redirectUrl;
-                        }, 2000);
-                    }
+                    if (icon) icon.className = 'fas fa-check text-xs';
+                    if (label) label.textContent = quickAddAddedText;
+                    window.showToast(quickAddAddedText, 'success');
 
                     // Sepet sayısını güncelle
                     fetch('/Sepet/GetSepetSayisi')
@@ -631,19 +680,20 @@ document.addEventListener('keydown', function(event) {
                         }
                     });
                 } else {
-                    window.showToast(data.message || '@Localizer["CartError"]', 'error');
+                    window.showToast(data.message || quickAddCartErrorText, 'error');
                 }
             })
             .catch(error => {
                 console.error('Cart error:', error);
-                window.showToast('@Localizer["CartError"]', 'error');
+                window.showToast(quickAddCartErrorText, 'error');
             })
             .finally(() => {
-                // Reset button state
-                btn.disabled = false;
-                btn.classList.remove('cursor-wait', 'opacity-80');
-                if (icon) icon.className = originalIconClass;
-                if (label) label.textContent = originalLabelText;
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.classList.remove('cursor-wait', 'opacity-80');
+                    if (icon) icon.className = originalIconClass;
+                    if (label) label.textContent = originalLabelText;
+                }, 1200);
             });
         });
     </script>
@@ -805,21 +855,32 @@ document.addEventListener('keydown', function(event) {
             function renderItemsHtml(items) {
                 return items.slice(0, 8).map((item, idx) => {
                     const title = escapeHtml(item.baslik || '');
+                    const brand = item.marka ? escapeHtml(item.marka) : '';
+                    const category = item.kategori ? escapeHtml(item.kategori) : '';
                     const price = item.fiyat ? escapeHtml(item.fiyat) : '';
-                    const image = item.gorsel ? `<img src="${escapeHtml(item.gorsel)}" alt="${title}" class="w-12 h-12 object-cover rounded" loading="lazy">` : `<div class="w-12 h-12 rounded flex items-center justify-center"><i class="fas fa-image text-brand-gold"></i></div>`;
+                    const image = item.gorsel ? `<img src="${escapeHtml(item.gorsel)}" alt="${title}" class="w-12 h-12 object-cover rounded" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.search-img-fallback').style.display='flex'">` : '';
+                    const fallbackIcon = `<div class="w-12 h-12 rounded flex items-center justify-center search-img-fallback" style="${image ? 'display:none' : 'display:flex'}"><i class="fas fa-image text-brand-gold"></i></div>`;
                     const url = item.slug ? '/Urun/Detay/' + encodeURIComponent(item.slug) + '-' + item.id : '/Urun/Detay/' + item.id;
+                    let metaHtml = '';
+                    if (brand) metaHtml += `<span class="text-[11px] text-brand-mutedtext px-1.5 py-0.5 rounded border border-brand-border">${brand}</span>`;
+                    if (category) metaHtml += `<span class="text-[11px] text-brand-mutedtext px-1.5 py-0.5 rounded border border-brand-border">${category}</span>`;
                     return `<a href="${url}" class="search-result-item flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors hover:bg-brand-warmcream group" data-index="${idx}" role="option" aria-selected="false">
-                        ${image}
+                        ${image}${fallbackIcon}
                         <div class="flex-1 min-w-0">
                             <div class="text-sm font-medium text-brand-darktext truncate group-hover:text-brand-gold transition-colors">${title}</div>
-                            ${price ? `<div class="text-xs text-brand-gold mt-0.5 font-semibold">${price}</div>` : ''}
+                            <div class="flex items-center gap-1.5 mt-0.5">
+                                ${price ? `<div class="text-xs text-brand-gold font-semibold">${price}</div>` : ''}
+                                ${metaHtml}
+                            </div>
                         </div>
                         <i class="fas fa-arrow-right text-[10px] text-brand-gold opacity-0 group-hover:opacity-100 transition-opacity"></i>
                     </a>`;
                 }).join('');
             }
 
-            function renderDropdown(items) {
+            function renderDropdown(data) {
+                const items = data && data.items ? data.items : (Array.isArray(data) ? data : []);
+                const total = data && typeof data.total === 'number' ? data.total : items.length;
                 currentResults = items;
                 selectedIndex = -1;
                 if (!items || items.length === 0) {
@@ -827,14 +888,12 @@ document.addEventListener('keydown', function(event) {
                     return;
                 }
                 const term = (getActiveInput()?.value || '').trim();
-                const visible = items.slice(0, 8);
-                const resultCountLabel = '<div class="text-[10px] uppercase tracking-widest text-brand-mutedtext px-2 pb-2">' + items.length + ' @Localizer["ResultsFound"]</div>';
+                const resultCountLabel = '<div class="text-[10px] uppercase tracking-widest text-brand-mutedtext px-2 pb-2">' + total + ' @Localizer["ResultsFound"]</div>';
                 const itemsHtml = renderItemsHtml(items);
-                const footer = items.length > 8
+                const footer = total > 8
                     ? `<a href="/Urun?s=${encodeURIComponent(term)}" class="block text-center text-xs text-brand-gold font-semibold py-2.5 border-t border-brand-border hover:bg-brand-warmcream transition-colors rounded-b-lg" role="option">@Localizer["ViewAllResults"] <i class="fas fa-arrow-right ml-1 text-[10px]"></i></a>`
                     : '';
                 showResults('<div class="p-2" role="listbox" aria-label="@Localizer["SearchResults"]">' + resultCountLabel + itemsHtml + footer + '</div>');
-                // Scroll to top on new results
                 if (resultsDropdown) resultsDropdown.scrollTop = 0;
             }
 
@@ -901,8 +960,8 @@ document.addEventListener('keydown', function(event) {
                 abortController = new AbortController();
                 showLoading();
                 fetch('/Urun/CanliAra?q=' + encodeURIComponent(term), { signal: abortController.signal })
-                    .then(r => r.ok ? r.json() : [])
-                    .then(items => { renderDropdown(items); })
+                    .then(r => r.ok ? r.json() : null)
+                    .then(data => { renderDropdown(data); })
                     .catch(error => {
                         if (error.name !== 'AbortError') {
                             showResults('<div class="px-4 py-5 text-center text-sm text-red-600"><i class="fas fa-exclamation-circle mr-1"></i>@Localizer["SearchUnavailable"]</div>');

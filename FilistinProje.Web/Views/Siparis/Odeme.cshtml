@@ -1,4 +1,4 @@
-﻿@model FilistinProje.Core.Varliklar.Siparis
+﻿@model FilistinProje.Core.DTOs.CheckoutRequestDto
 @using FilistinProje.Core.Varliklar
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @inject IStringLocalizer<SharedResource> Localizer
@@ -22,15 +22,9 @@
 
     var kayitliAdresler = ViewBag.KayitliAdresler as List<FilistinProje.Core.Varliklar.Adres>;
     bool girisYapmis = User.Identity?.IsAuthenticated == true;
-    // Åehir listesini veritabanÄ±ndaki KargoBolgeSehirler'den Ã§ek (controller ViewBag Ã¼zerinden gÃ¶nderir)
+    // Şehir listesi veritabanındaki KargoBolgeSehirler'den gelir
     var sehirListesi = ViewBag.Sehirler as List<string> ?? new List<string>();
-    var sehirler = sehirListesi.Any() ? sehirListesi.ToArray() : new[]
-    {
-        "BeytÃ¼llahim", "Cenin (Jenin)", "Deyr el-Balah", "El-Halil (Hebron)",
-        "El-KudÃ¼s (Jerusalem)", "Eriha (Jericho)", "Gazze", "Han Yunus (Khan Yunis)",
-        "Kalkilya (Qalqilya)", "Kuzey Gazze", "Nablus", "Ramallah & El-Bireh",
-        "Refah (Rafah)", "Salfit", "Tubas", "Tulkarim"
-    };
+    var sehirler = sehirListesi;
 }
 
 <!-- Breadcrumb -->
@@ -188,10 +182,10 @@
 
             var subtotal = parseFloat("@((araToplam - indirim).ToString(System.Globalization.CultureInfo.InvariantCulture))");
             if (totalDisplay) {
-                totalDisplay.innerHTML = subtotal.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' <span class="text-lg font-normal text-brand-mutedtext">' + currencySymbol + '</span>';
+                totalDisplay.innerHTML = window.formatMoney(subtotal) + ' <span class="text-lg font-normal text-brand-mutedtext">' + currencySymbol + '</span>';
             }
             if (btnTotalDisplay) {
-                btnTotalDisplay.textContent = subtotal.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                btnTotalDisplay.textContent = window.formatMoney(subtotal);
             }
         } else {
             if (adresAlanlari) adresAlanlari.classList.remove('hidden');
@@ -217,29 +211,6 @@
             } else {
                 target.classList.add('hidden');
             }
-        });
-    }
-
-    const telefonInput = document.getElementById('Telefon');
-    if (telefonInput) {
-        telefonInput.addEventListener('input', function (e) {
-            let value = e.target.value.replace(/\D/g, '');
-
-            if (value.startsWith('0')) {
-                value = value.substring(1);
-            }
-
-            if (value.length > 10) {
-                value = value.substring(0, 10);
-            }
-
-            if (value.length > 6) {
-                value = value.replace(/(\d{3})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4');
-            } else if (value.length > 3) {
-                value = value.replace(/(\d{3})(\d{3})/, '$1 $2');
-            }
-
-            e.target.value = value;
         });
     }
 
@@ -283,6 +254,27 @@
 
     // Identity Photo (WebRTC + Upload)
     var identityStream = null;
+    var identityPreviewObjectUrl = null;
+
+    var cameraMessages = (document.documentElement.lang || '').toLowerCase().startsWith('ar')
+        ? {
+            unsupported: 'الكاميرا غير مدعومة في هذا المتصفح. يرجى رفع صورة من الجهاز.',
+            insecure: 'يلزم اتصال آمن HTTPS لاستخدام الكاميرا. يرجى رفع صورة من الجهاز.',
+            denied: 'تم رفض إذن الكاميرا. يمكنك رفع صورة الهوية من الجهاز.',
+            notFound: 'لم يتم العثور على كاميرا. يرجى رفع صورة من الجهاز.',
+            busy: 'تعذر تشغيل الكاميرا. أغلق التطبيقات الأخرى أو ارفع صورة من الجهاز.',
+            failed: 'تعذر تشغيل الكاميرا. يرجى المحاولة مرة أخرى أو رفع صورة.',
+            uploadFailed: 'تعذر رفع الملف. تحقق من النوع والحجم ثم حاول مرة أخرى.'
+        }
+        : {
+            unsupported: 'Camera is not supported in this browser. Please upload a file instead.',
+            insecure: 'A secure HTTPS connection is required to use the camera. Please upload a file instead.',
+            denied: 'Camera permission was denied. You can upload the identity photo instead.',
+            notFound: 'No camera was found. Please upload a file instead.',
+            busy: 'The camera could not be started. Close other apps or upload a file instead.',
+            failed: 'The camera could not be started. Please try again or upload a file.',
+            uploadFailed: 'The file could not be uploaded. Check file type and size, then try again.'
+        };
 
     function switchIdentityMode(mode) {
         var camMode = document.getElementById('identityCameraMode');
@@ -304,33 +296,66 @@
         }
     }
 
+    function setIdentityCameraMessage(message) {
+        var messageEl = document.getElementById('identityCameraMessage');
+        if (messageEl) {
+            messageEl.textContent = message;
+            messageEl.classList.remove('hidden');
+        }
+        if (window.showToast) {
+            window.showToast(message, 'error');
+        }
+    }
+
+    function switchToIdentityUploadFallback(message) {
+        setIdentityCameraMessage(message);
+        switchIdentityMode('upload');
+    }
+
+    function getCameraErrorMessage(err) {
+        if (!err || !err.name) return cameraMessages.failed;
+        if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError' || err.name === 'SecurityError') return cameraMessages.denied;
+        if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') return cameraMessages.notFound;
+        if (err.name === 'NotReadableError' || err.name === 'TrackStartError' || err.name === 'AbortError') return cameraMessages.busy;
+        return cameraMessages.failed;
+    }
+
     function startIdentityCamera() {
         var video = document.getElementById('identityVideo');
         var placeholder = document.getElementById('identityCameraPlaceholder');
         var startBtn = document.getElementById('btnStartCamera');
         var captureBtn = document.getElementById('btnCapturePhoto');
+        var messageEl = document.getElementById('identityCameraMessage');
+        if (messageEl) messageEl.classList.add('hidden');
 
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 960 } } })
-                .then(function(stream) {
-                    identityStream = stream;
-                    video.srcObject = stream;
-                    video.play();
-                    placeholder.classList.add('hidden');
-                    startBtn.classList.add('hidden');
-                    captureBtn.classList.remove('hidden');
-                })
-                .catch(function(err) {
-                    if (window.showToast) {
-                        window.showToast('@Localizer["ConnectionErrorOccurred"]', 'error');
-                    }
-                    console.error('Camera error:', err);
-                });
-        } else {
-            if (window.showToast) {
-                window.showToast('@Localizer["ConnectionErrorOccurred"]', 'error');
-            }
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            switchToIdentityUploadFallback(cameraMessages.unsupported);
+            return;
         }
+
+        if (!window.isSecureContext && location.hostname !== 'localhost') {
+            switchToIdentityUploadFallback(cameraMessages.insecure);
+            return;
+        }
+
+        navigator.mediaDevices.getUserMedia({
+            video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 960 } },
+            audio: false
+        })
+            .then(function(stream) {
+                identityStream = stream;
+                video.srcObject = stream;
+                return video.play();
+            })
+            .then(function() {
+                placeholder.classList.add('hidden');
+                startBtn.classList.add('hidden');
+                captureBtn.classList.remove('hidden');
+            })
+            .catch(function(err) {
+                stopIdentityCamera();
+                switchToIdentityUploadFallback(getCameraErrorMessage(err));
+            });
     }
 
     function captureIdentityPhoto() {
@@ -343,16 +368,25 @@
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         canvas.toBlob(function(blob) {
-            uploadIdentityPhoto(blob, 'captured-id-' + Date.now() + '.jpg');
+            if (!blob) {
+                switchToIdentityUploadFallback(cameraMessages.failed);
+                return;
+            }
+            var previewUrl = URL.createObjectURL(blob);
+            uploadIdentityPhoto(blob, 'captured-id-' + Date.now() + '.jpg', previewUrl);
         }, 'image/jpeg', 0.92);
     }
 
-    function uploadIdentityPhoto(blob, fileName) {
+    function uploadIdentityPhoto(blob, fileName, previewUrl) {
         var formData = new FormData();
         formData.append('dosya', blob, fileName);
 
+        var token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/Siparis/YukleKimlikFoto', true);
+        if (token) {
+            xhr.setRequestHeader('RequestVerificationToken', token);
+        }
 
         xhr.onload = function() {
             if (xhr.status === 200) {
@@ -360,7 +394,7 @@
                     var response = JSON.parse(xhr.responseText);
                     if (response.success) {
                         document.getElementById('KimlikFotoYolu').value = response.url;
-                        showIdentityPreview(response.url);
+                        showIdentityPreview(previewUrl);
                         if (window.showToast) {
                             window.showToast('@Localizer["IdentityPhotoUploaded"]', 'success');
                         }
@@ -368,8 +402,28 @@
                         showIdentityControlsAfterCapture();
                     } else {
                         if (window.showToast) {
-                            window.showToast(response.message, 'error');
-        }
+                            window.showToast(response.message || cameraMessages.uploadFailed, 'error');
+                        }
+                    }
+                } catch(e) {
+                    if (window.showToast) {
+                        window.showToast(cameraMessages.uploadFailed, 'error');
+                    }
+                }
+            } else {
+                if (window.showToast) {
+                    window.showToast(cameraMessages.uploadFailed, 'error');
+                }
+            }
+        };
+
+        xhr.onerror = function() {
+            if (window.showToast) {
+                window.showToast(cameraMessages.uploadFailed, 'error');
+            }
+        };
+
+        xhr.send(formData);
     }
 
     function togglePaymentMethod(method) {
@@ -388,30 +442,17 @@
             sehirKargoHesapla();
         }
     }
-                } catch(e) {
-                    if (window.showToast) {
-                        window.showToast('@Localizer["Siparis_FileUploadError"]', 'error');
-                    }
-                }
-            } else {
-                if (window.showToast) {
-                    window.showToast('@Localizer["Siparis_FileUploadError"]', 'error');
-                }
-            }
-        };
-
-        xhr.onerror = function() {
-            if (window.showToast) {
-                window.showToast('@Localizer["ConnectionErrorOccurred"]', 'error');
-            }
-        };
-
-        xhr.send(formData);
-    }
 
     function showIdentityPreview(url) {
         var preview = document.getElementById('identityPreview');
         var container = document.getElementById('identityPreviewContainer');
+        if (identityPreviewObjectUrl) {
+            URL.revokeObjectURL(identityPreviewObjectUrl);
+            identityPreviewObjectUrl = null;
+        }
+        if (url && url.startsWith('blob:')) {
+            identityPreviewObjectUrl = url;
+        }
         preview.src = url;
         container.classList.remove('hidden');
     }
@@ -462,14 +503,8 @@
                 return;
             }
 
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                var preview = document.getElementById('identityPreview');
-                preview.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-
-            uploadIdentityPhoto(file, file.name);
+            var previewUrl = URL.createObjectURL(file);
+            uploadIdentityPhoto(file, file.name, previewUrl);
         }
     }
 
@@ -508,7 +543,7 @@
                             kargoDisplay.textContent = '@Localizer["Free"]';
                             kargoDisplay.className = "text-green-600 font-bold uppercase";
                         } else {
-                            kargoDisplay.textContent = currencySymbol + gecerliKargoUcreti.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            kargoDisplay.textContent = currencySymbol + window.formatMoney(gecerliKargoUcreti);
                             kargoDisplay.className = "text-brand-olive font-medium";
                         }
                     }
@@ -520,7 +555,7 @@
                             checkoutFreeShippingBanner.innerHTML =
                                 '<div class="flex items-center gap-2 text-xs text-amber-800 mb-3">' +
                                 '<i class="fas fa-truck text-brand-gold"></i>' +
-                                '<span>' + kalanTutar.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ' + currencySymbol + ' @Localizer["FreeShippingAbove"]</span></div>' +
+                                '<span>' + window.formatMoney(kalanTutar) + ' ' + currencySymbol + ' @Localizer["FreeShippingAbove"]</span></div>' +
                                 '<div class="w-full h-2 bg-amber-200 rounded-full overflow-hidden">' +
                                 '<div class="h-full bg-gradient-to-r from-[#b58735] to-[#d4a84b] rounded-full" style="width: ' + Math.min(100, Math.round((araToplam / data.ucretsizKargoLimiti) * 100)) + '%"></div></div>';
                             checkoutFreeShippingBanner.className = "mb-5 bg-amber-50 border border-amber-200 rounded-lg p-4";
@@ -537,10 +572,10 @@
                     // Total gÃ¼ncelle
                     const genelToplamVal = araToplam + gecerliKargoUcreti + codPrice;
                     if (totalDisplay) {
-                        totalDisplay.innerHTML = genelToplamVal.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' <span class="text-lg font-normal text-brand-mutedtext">' + currencySymbol + '</span>';
+totalDisplay.innerHTML = window.formatMoney(genelToplamVal) + ' <span class="text-lg font-normal text-brand-mutedtext">' + currencySymbol + '</span>';
                     }
                     if (btnTotalDisplay) {
-                        btnTotalDisplay.textContent = genelToplamVal.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        btnTotalDisplay.textContent = window.formatMoney(genelToplamVal);
                     }
                 }
             })
@@ -603,11 +638,11 @@
             }
 
             if (totalDisplay) {
-                totalDisplay.innerHTML = genelToplamVal.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' <span class="text-lg font-normal text-brand-mutedtext">' + currencySymbol + '</span>';
+                totalDisplay.innerHTML = window.formatMoney(genelToplamVal) + ' <span class="text-lg font-normal text-brand-mutedtext">' + currencySymbol + '</span>';
             }
 
             if (btnTotalDisplay) {
-                btnTotalDisplay.textContent = genelToplamVal.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                btnTotalDisplay.textContent = window.formatMoney(genelToplamVal);
             }
         }
 

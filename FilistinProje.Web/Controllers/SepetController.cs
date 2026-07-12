@@ -12,6 +12,7 @@ using FilistinProje.Core.Varliklar;
 using FilistinProje.Service.Interfaces;
 using FilistinProje.Service.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.RateLimiting;
 
 
 namespace FilistinProje.Web.Controllers
@@ -123,6 +124,13 @@ namespace FilistinProje.Web.Controllers
 
             ViewBag.TamamlayiciUrunler = tamamlayiciUrunler;
 
+            var sepettekiIds = sepetItems.Select(x => x.UrunId).Distinct().ToList();
+            var urunBaslikLookup = await _context.Urunler
+                .Where(u => sepettekiIds.Contains(u.Id))
+                .Select(u => new { u.Id, u.Baslik, u.BaslikEn, u.BaslikAr })
+                .ToDictionaryAsync(u => u.Id);
+            ViewBag.UrunBaslikLookup = urunBaslikLookup;
+
             return View(sepetItems);
         }
 
@@ -135,6 +143,7 @@ namespace FilistinProje.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [EnableRateLimiting("auth")]
         public async Task<IActionResult> KuponUygula(string kuponKodu)
         {
             if (string.IsNullOrEmpty(kuponKodu))

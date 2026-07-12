@@ -31,7 +31,7 @@ namespace FilistinProje.Core.Helpers
                 {
                     ["@type"] = "Offer",
                     ["url"] = detailUrl,
-                    ["priceCurrency"] = "TRY",
+                    ["priceCurrency"] = "ILS",
                     ["price"] = urun.EtkinFiyat.ToString("F2"),
                     ["availability"] = urun.StoktaVarMi ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
                     ["priceValidUntil"] = DateTime.UtcNow.AddYears(1).ToString("yyyy-MM-dd")

@@ -216,11 +216,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             return new List<KargoFirmasi>
             {
-                new() { Ad = "Aras Kargo", Kod = "aras", TakipUrl = "https://www.araskargo.com.tr/tr/online-islemler/kargo-takip" },
-                new() { Ad = "Yurtiçi Kargo", Kod = "yurtici", TakipUrl = "https://www.yurticikargo.com/tr/online-servisler/gonderi-sorgula" },
-                new() { Ad = "MNG Kargo", Kod = "mng", TakipUrl = "https://www.mngkargo.com.tr/gonderi-takip" },
-                new() { Ad = "PTT Kargo", Kod = "ptt", TakipUrl = "https://gonderitakip.ptt.gov.tr" },
-                new() { Ad = "Sürat Kargo", Kod = "surat", TakipUrl = "https://www.suratkargo.com.tr/KargoTakip" }
+                new() { Ad = "توصيل محلي", Kod = "local-delivery", TakipUrl = string.Empty }
             };
         }
 

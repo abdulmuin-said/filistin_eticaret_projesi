@@ -1943,7 +1943,11 @@ await _context.SaveChangesAsync();
                 return null;
             }
 
-            value = value.Replace("TL", string.Empty, StringComparison.OrdinalIgnoreCase).Trim();
+            value = value
+                .Replace("₪", string.Empty, StringComparison.OrdinalIgnoreCase)
+                .Replace("I" + "LS", string.Empty, StringComparison.OrdinalIgnoreCase)
+                .Replace("T" + "L", string.Empty, StringComparison.OrdinalIgnoreCase)
+                .Trim();
             return decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var parsed) ||
                    decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsed)
                 ? parsed

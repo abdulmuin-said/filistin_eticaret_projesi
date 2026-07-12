@@ -9,11 +9,11 @@ namespace FilistinProje.Core.Varliklar
         [StringLength(20)]
         public string Kod { get; set; } = string.Empty; // Örn: YAZ50
 
-        public int Tip { get; set; } // 0: Yüzde, 1: Tutar (TL)
+        public int Tip { get; set; } // 0: Yüzde, 1: Tutar (ILS)
         
-        public decimal Deger { get; set; } // %10 veya 100 TL
+        public decimal Deger { get; set; } // %10 veya 100 ILS
         
-        public decimal MinSepetTutari { get; set; } // Alt limit (Örn: 500 TL üzeri)
+        public decimal MinSepetTutari { get; set; } // Alt limit (Örn: 500 ILS üzeri)
         
         public DateTime SonKullanmaTarihi { get; set; }
         

@@ -9,6 +9,7 @@ using FilistinProje.Core.Interfaces;
 using FilistinProje.Data.Repositories;
 using FilistinProje.Service.Services;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using FilistinProje.Core.Varliklar;
 using System.Globalization;
@@ -16,10 +17,13 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using FilistinProje.Web.Attributes;
+using FilistinProje.Web.Diagnostics;
+using FilistinProje.Web.HealthChecks;
 using FilistinProje.Web.Security;
 using FilistinProje.Web.Services;
 using System.Net;
 using System.Threading.RateLimiting;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Hangfire;
 using Hangfire.PostgreSql;
@@ -45,13 +49,27 @@ if (!isDatabaseAvailableAtStartup && !string.IsNullOrWhiteSpace(databaseAvailabi
     startupWarnings.Add($"PostgreSQL baglantisi kurulamadi. Hangfire ve zamanlanmis isler kapatildi. Detay: {databaseAvailabilityError}");
 }
 
+var dataProtectionKeysPath = Environment.GetEnvironmentVariable("DATA_PROTECTION_KEYS_PATH");
+if (string.IsNullOrWhiteSpace(dataProtectionKeysPath))
+{
+    dataProtectionKeysPath = Path.Combine(builder.Environment.ContentRootPath, "App_Data", "DataProtectionKeys");
+}
+
 // 1. VeritabanÄ± BaÄŸlantÄ±sÄ±
-builder.Services.AddDbContext<KanvasDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddSingleton<RequestSqlProfiler>();
+builder.Services.AddDbContext<KanvasDbContext>((serviceProvider, options) =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+    if (builder.Environment.IsDevelopment())
+    {
+        options.AddInterceptors(serviceProvider.GetRequiredService<RequestSqlProfiler>());
+    }
+});
 
 builder.Services.AddDataProtection()
     .SetApplicationName("7ANRPS48")
-    .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(builder.Environment.ContentRootPath, "App_Data", "DataProtectionKeys")));
+    .PersistKeysToFileSystem(new DirectoryInfo(dataProtectionKeysPath));
 
 // 2. Identity (Ãœyelik) Servisi
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => 
@@ -197,13 +215,18 @@ builder.Services.AddScoped<IHomePageSettingsService, HomePageSettingsService>();
 builder.Services.AddScoped<IHomePageSectionService, HomePageSectionService>();
 builder.Services.AddScoped<IFavoriService, FavoriService>();
 builder.Services.AddScoped<IKargoHesaplamaServisi, KargoHesaplamaServisi>();
+builder.Services.AddScoped<IOrderPricingService, OrderPricingService>();
 builder.Services.AddSingleton<IAdminSecurityAuditService, AdminSecurityAuditService>();
 builder.Services.AddScoped<IFirebaseNotificationService, FirebaseNotificationService>();
 builder.Services.AddHttpClient("FirebaseFCM");
 builder.Services.AddSingleton<IAdminSessionStateService, AdminSessionStateService>();
 builder.Services.AddScoped<IFaturaPdfService, FilistinProje.Web.Services.FaturaPdfService>();
 // Health Checks (Docker / Load Balancer / Monitoring)
-builder.Services.AddHealthChecks();
+var startupReadinessState = new StartupReadinessState();
+builder.Services.AddSingleton(startupReadinessState);
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<KanvasDbContext>(name: "database", failureStatus: Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Unhealthy, tags: new[] { "ready" })
+    .AddCheck<StartupReadinessHealthCheck>("startup", failureStatus: Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Unhealthy, tags: new[] { "ready" });
 
 // Response SÄ±kÄ±ÅŸtÄ±rma (Gzip/Brotli)
 builder.Services.AddResponseCompression(options =>
@@ -298,6 +321,31 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts(); // HTTPS zorunluluÄŸu (production)
 }
 
+if (app.Environment.IsDevelopment())
+{
+    app.Use(async (context, next) =>
+    {
+        using var scope = RequestSqlProfiler.BeginScope();
+        context.Response.OnStarting(() =>
+        {
+            var sql = RequestSqlProfiler.Snapshot();
+            context.Response.Headers["X-Sql-Query-Count"] = sql.QueryCount.ToString(CultureInfo.InvariantCulture);
+            context.Response.Headers["X-Sql-Elapsed-Ms"] = sql.Elapsed.TotalMilliseconds.ToString("0.###", CultureInfo.InvariantCulture);
+            return Task.CompletedTask;
+        });
+
+        await next();
+
+        var sql = RequestSqlProfiler.Snapshot();
+        app.Logger.LogInformation(
+            "SQL profile {Method} {Path}: {QueryCount} queries in {SqlElapsedMs} ms",
+            context.Request.Method,
+            context.Request.Path.Value,
+            sql.QueryCount,
+            sql.Elapsed.TotalMilliseconds);
+    });
+}
+
 // GÃœVENLÄ°K HEADER'LARI
 app.Use(async (context, next) =>
 {
@@ -305,7 +353,9 @@ app.Use(async (context, next) =>
     context.Response.Headers["X-Frame-Options"] = "DENY";
     context.Response.Headers["X-XSS-Protection"] = "1; mode=block";
     context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
-    context.Response.Headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()";
+    context.Response.Headers["Permissions-Policy"] = IsCameraAllowedPath(context.Request.Path)
+        ? "camera=(self), microphone=(), geolocation=()"
+        : "camera=(), microphone=(), geolocation=()";
     await next();
 });
 
@@ -313,6 +363,18 @@ if (!runningInContainer)
 {
     app.UseHttpsRedirection();
 }
+
+app.Use(async (context, next) =>
+{
+    if (IsLegacySensitiveUploadPath(context.Request.Path))
+    {
+        context.Response.StatusCode = StatusCodes.Status404NotFound;
+        return;
+    }
+
+    await next();
+});
+
 app.UseStaticFiles();
 
 // Ozel Hata Sayfalari (404 vb.) - Guzel tasarimli sayfa gosterir
@@ -466,7 +528,24 @@ app.Use(async (context, next) =>
 
 // Controller route'larÄ±
 app.MapControllers();
-app.MapHealthChecks("/health");
+app.MapHealthChecks("/health/live", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    Predicate = _ => false,
+    ResponseWriter = HealthCheckResponseWriter.WriteLiveness,
+    AllowCachingResponses = false
+});
+app.MapHealthChecks("/health/ready", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("ready"),
+    ResponseWriter = HealthCheckResponseWriter.WriteReadiness,
+    AllowCachingResponses = false
+});
+app.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("ready"),
+    ResponseWriter = HealthCheckResponseWriter.WriteReadiness,
+    AllowCachingResponses = false
+});
 
 app.MapGet("/Admin", (HttpContext context) =>
 {
@@ -511,69 +590,80 @@ app.MapControllerRoute(
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    var isProduction = app.Environment.IsProduction();
+    var migrationFailure = false;
+
     try
     {
-        // 1. VeritabanÄ± Context'ini al
         var context = services.GetRequiredService<KanvasDbContext>();
 
-        if (isDatabaseAvailableAtStartup)
+        if (!isDatabaseAvailableAtStartup)
         {
-            var logger = services.GetRequiredService<ILogger<Program>>();
+            startupReadinessState.Transition(StartupReadinessPhase.DatabaseUnavailable);
+            logger.LogWarning("Veritabanina erisilemedigi icin migration ve seed adimlari atlandi. Phase=DatabaseUnavailable; /health/live=alive; /health/ready=503");
+            return;
+        }
+
+        try
+        {
             await EnsureKnownSchemaDriftAsync(context, logger);
-            
-            // 3. DbSeeder sÄ±nÄ±fÄ± iÃ§in eksik katalog ÅŸemasÄ±nÄ± Ã¶nceden ekle (EF Migrations'ın ihtiyaÃ§ duyduÄŸu Slug/CerceveModeli vb. kolonları garanti eder)
-            await EnsureMissingMarch2026SchemaAsync(
-                context,
-                logger);
+        }
+        catch (Exception ex)
+        {
+            startupReadinessState.Transition(StartupReadinessPhase.SchemaDriftFailed, ex);
+            logger.LogError(ex, "Schema drift kontrolu basarisiz oldu.");
+            migrationFailure = true;
+            throw;
+        }
 
-            // 2. OTOMATÄ°K MIGRATION (Sihirli Kod BurasÄ±) ğŸš€
-            // EÄŸer veritabanÄ± yoksa oluÅŸturur, varsa ve yeni migrationlar eklenmiÅŸse onlarÄ± uygular.
-            
-            // SeoDescription kolonu zaten varsa migration history'ye ekle (tekrar Ã§alÄ±ÅŸmasÄ±nÄ± engellemek iÃ§in)
-            try 
-            {
-                await context.Database.ExecuteSqlRawAsync(@"
-                    INSERT INTO ""__EFMigrationsHistory"" (""MigrationId"", ""ProductVersion"") 
-                    SELECT '20260504111249_AddProductSeoFields', '8.0.0' 
-                    WHERE NOT EXISTS (SELECT 1 FROM ""__EFMigrationsHistory"" WHERE ""MigrationId"" = '20260504111249_AddProductSeoFields')
-                    AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'Urunler' AND column_name = 'SeoDescription')
-                ");
-            }
-            catch { /* Kolon yoksa veya history zaten varsa Ã¶nemsiz */ }
-            
-            try
-            {
-                await context.Database.ExecuteSqlRawAsync(@"
-                    INSERT INTO ""__EFMigrationsHistory"" (""MigrationId"", ""ProductVersion"")
-                    SELECT m, v FROM (VALUES
-                        ('20260615140117_AddWhatsappSiparisFields', '8.0.0')
-                    ) AS t(m, v)
-                    WHERE NOT EXISTS (SELECT 1 FROM ""__EFMigrationsHistory"" WHERE ""MigrationId"" = t.m)
-                    AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'Urunler' AND column_name = 'FiyatGizliMi');
-                ");
-            }
-            catch { /* Kolon yoksa veya history zaten varsa önemsiz */ }
+        await EnsureMissingMarch2026SchemaAsync(context, logger);
 
-            try { context.Database.Migrate(); }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Migration sirasinda hata olustu. Schema zaten guncel oldugu icin devam ediliyor.");
-                // Migration hatasi kritik degil - schema drift zaten EnsureMissingMarch2026SchemaAsync ile kontrol edildi
-            }
+        await EnsureMigrationHistoryConsistencyAsync(context, logger);
 
+        try { await context.Database.MigrateAsync(); }
+        catch (Exception ex)
+        {
+            startupReadinessState.Transition(StartupReadinessPhase.MigrationFailed, ex);
+            logger.LogError(ex, "EF Migration sirasinda kritik hata olustu. Veritabanini uygulama semasina eslemek icin operasyon mudahalesi gerekiyor.");
+            migrationFailure = true;
+            throw;
+        }
+
+        try
+        {
+            await EnsureSensitiveUploadsMigratedAsync(context, app.Environment, logger);
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "Legacy hassas dosya migration tamamlanamadi; dosyalar public URL ile servis edilmiyor (route 404 guard).");
+        }
+
+        try
+        {
             await FilistinProje.Web.Data.DbSeeder.VerileriYukle(app);
         }
-        else
+        catch (Exception ex)
         {
-            var logger = services.GetRequiredService<ILogger<Program>>();
-            logger.LogWarning("VeritabanÄ±na eriÅŸilemediÄŸi iÃ§in migration ve seed adÄ±mlarÄ± atlandÄ±.");
+            startupReadinessState.Transition(StartupReadinessPhase.SeedFailed, ex);
+            logger.LogError(ex, "Seed verileri yuklenemedi.");
+            migrationFailure = true;
+            throw;
         }
+
+        startupReadinessState.Transition(StartupReadinessPhase.Ready);
+        logger.LogInformation("Startup readiness tamamlandi. Phase=Ready.");
     }
     catch (Exception ex)
     {
-        // OlasÄ± bir hatada konsola yazdÄ±ralÄ±m ki gÃ¶rebilelim
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "VeritabanÄ± migration iÅŸlemi sÄ±rasÄ±nda bir hata oluÅŸtu!");
+        if (migrationFailure && isProduction)
+        {
+            logger.LogCritical(ex, "PROD FAIL-FAST: Kritik migration veya seed hata nedeniyle uygulama baslatilmiyor. Veritabanini geri almak veya migrate'i manuel calistirmak gerekli.");
+            app.Lifetime.StopApplication();
+            return;
+        }
+
+        logger.LogError(ex, "Veritabani migration islemi sirasinda bir hata olustu. Development modunda uygulama calismaya devam ediyor.");
     }
 }
 
@@ -598,6 +688,153 @@ static bool IsLoginRequiredAllowedPath(PathString path)
         || value.StartsWith("/health", StringComparison.OrdinalIgnoreCase)
         || value == "/"
         || value == string.Empty;
+}
+
+static bool IsCameraAllowedPath(PathString path)
+{
+    var value = path.Value ?? string.Empty;
+    return value.Equals("/Siparis/Odeme", StringComparison.OrdinalIgnoreCase)
+        || value.Equals("/Hesap/KayitOl", StringComparison.OrdinalIgnoreCase);
+}
+
+static bool IsLegacySensitiveUploadPath(PathString path)
+{
+    var value = path.Value ?? string.Empty;
+    return value.StartsWith("/uploads/kimlikler", StringComparison.OrdinalIgnoreCase)
+        || value.StartsWith("/uploads/receteler", StringComparison.OrdinalIgnoreCase);
+}
+
+static async Task EnsureSensitiveUploadsMigratedAsync(KanvasDbContext context, IWebHostEnvironment env, Microsoft.Extensions.Logging.ILogger logger)
+{
+    var changed = false;
+    var deleteAfterSave = new List<string>();
+
+    var users = await context.Users
+        .Where(x => x.KimlikFotografYolu != null && x.KimlikFotografYolu.StartsWith("/uploads/kimlikler/"))
+        .ToListAsync();
+
+    foreach (var user in users)
+    {
+        var migrated = TryCopyLegacySensitiveFile(
+            env,
+            user.KimlikFotografYolu,
+            "uploads/kimlikler",
+            HassasBelgeKategorisi.Kimlik,
+            out var privateReference,
+            out var oldPath);
+
+        if (migrated)
+        {
+            user.KimlikFotografYolu = privateReference;
+            changed = true;
+            if (!string.IsNullOrWhiteSpace(oldPath)) deleteAfterSave.Add(oldPath);
+        }
+    }
+
+    var siparisler = await context.Siparisler
+        .Where(x =>
+            (x.KimlikFotoYolu != null && x.KimlikFotoYolu.StartsWith("/uploads/kimlikler/")) ||
+            (x.ReceteDosyaYolu != null && x.ReceteDosyaYolu.StartsWith("/uploads/receteler/")))
+        .ToListAsync();
+
+    foreach (var siparis in siparisler)
+    {
+        if (TryCopyLegacySensitiveFile(
+            env,
+            siparis.KimlikFotoYolu,
+            "uploads/kimlikler",
+            HassasBelgeKategorisi.Kimlik,
+            out var privateKimlikReference,
+            out var oldKimlikPath))
+        {
+            siparis.KimlikFotoYolu = privateKimlikReference;
+            changed = true;
+            if (!string.IsNullOrWhiteSpace(oldKimlikPath)) deleteAfterSave.Add(oldKimlikPath);
+        }
+
+        if (TryCopyLegacySensitiveFile(
+            env,
+            siparis.ReceteDosyaYolu,
+            "uploads/receteler",
+            HassasBelgeKategorisi.Recete,
+            out var privateReceteReference,
+            out var oldRecetePath))
+        {
+            siparis.ReceteDosyaYolu = privateReceteReference;
+            changed = true;
+            if (!string.IsNullOrWhiteSpace(oldRecetePath)) deleteAfterSave.Add(oldRecetePath);
+        }
+    }
+
+    if (!changed)
+    {
+        return;
+    }
+
+    await context.SaveChangesAsync();
+
+    foreach (var oldPath in deleteAfterSave.Distinct(StringComparer.OrdinalIgnoreCase))
+    {
+        try
+        {
+            if (File.Exists(oldPath))
+            {
+                File.Delete(oldPath);
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "Legacy hassas dosya silinemedi. Dosya public URL ile servis edilmeyecek.");
+        }
+    }
+
+    logger.LogInformation("Legacy hassas upload path migration tamamlandi. KayitSayisi={Count}", deleteAfterSave.Count);
+}
+
+static bool TryCopyLegacySensitiveFile(
+    IWebHostEnvironment env,
+    string? legacyReference,
+    string expectedFolder,
+    HassasBelgeKategorisi kategori,
+    out string privateReference,
+    out string? oldPath)
+{
+    privateReference = string.Empty;
+    oldPath = null;
+
+    if (string.IsNullOrWhiteSpace(legacyReference) || !legacyReference.StartsWith("/" + expectedFolder + "/", StringComparison.OrdinalIgnoreCase))
+    {
+        return false;
+    }
+
+    var fileName = Path.GetFileName(legacyReference.Replace('\\', '/'));
+    if (!DosyaServisi.IsSafeStoredFileName(fileName))
+    {
+        return false;
+    }
+
+    var legacyRoot = Path.GetFullPath(Path.Combine(env.WebRootPath, expectedFolder));
+    var legacyPath = Path.GetFullPath(Path.Combine(legacyRoot, fileName));
+    if (!legacyPath.StartsWith(legacyRoot, StringComparison.OrdinalIgnoreCase) || !File.Exists(legacyPath))
+    {
+        return false;
+    }
+
+    var extension = Path.GetExtension(fileName).ToLowerInvariant();
+    var secureRoot = Path.GetFullPath(Path.Combine(env.ContentRootPath, "secure-storage", "hassas", DosyaServisi.GetCategorySegment(kategori)));
+    Directory.CreateDirectory(secureRoot);
+
+    var newFileName = Guid.NewGuid().ToString("N") + extension;
+    var securePath = Path.GetFullPath(Path.Combine(secureRoot, newFileName));
+    if (!securePath.StartsWith(secureRoot, StringComparison.OrdinalIgnoreCase))
+    {
+        return false;
+    }
+
+    File.Copy(legacyPath, securePath, overwrite: false);
+    privateReference = DosyaServisi.BuildPrivateReference(kategori, newFileName);
+    oldPath = legacyPath;
+    return true;
 }
 
 static bool IsMaintenanceAllowedPath(PathString path)
@@ -738,6 +975,7 @@ BEGIN
             "GondericiTelefon" text NOT NULL DEFAULT '',
             "AktifMi" boolean NOT NULL DEFAULT true,
             "VarsayilanMi" boolean NOT NULL DEFAULT false,
+            "Fiyat" numeric NOT NULL DEFAULT 0,
             "OlusturulmaTarihi" timestamp with time zone NOT NULL DEFAULT NOW(),
             "SilindiMi" boolean NOT NULL DEFAULT false
         );
@@ -745,6 +983,7 @@ BEGIN
 
     IF to_regclass('public."KargoFirmalari"') IS NOT NULL THEN
         EXECUTE 'CREATE UNIQUE INDEX IF NOT EXISTS "IX_KargoFirmalari_Kod" ON "KargoFirmalari" ("Kod")';
+        ALTER TABLE "KargoFirmalari" ADD COLUMN IF NOT EXISTS "Fiyat" numeric NOT NULL DEFAULT 0;
     END IF;
 
     IF to_regclass('public."KargoBolgeler"') IS NULL THEN
@@ -766,6 +1005,11 @@ BEGIN
             "SilindiMi" boolean NOT NULL DEFAULT false
         );
         CREATE UNIQUE INDEX IF NOT EXISTS "IX_KargoBolgeSehirler_BolgeId_SehirAdi" ON "KargoBolgeSehirler" ("BolgeId", "SehirAdi");
+    END IF;
+
+    IF to_regclass('public."KargoBolgeSehirler"') IS NOT NULL THEN
+        ALTER TABLE "KargoBolgeSehirler" ADD COLUMN IF NOT EXISTS "SehirAdiEn" text NULL;
+        ALTER TABLE "KargoBolgeSehirler" ADD COLUMN IF NOT EXISTS "SehirAdiAr" text NULL;
     END IF;
 
     IF to_regclass('public."KargoBolgeFiyatlari"') IS NULL THEN
@@ -803,17 +1047,17 @@ END
 $$;
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-SELECT '20260131211352_BultenTablosu', '8.0.0'
+SELECT '20260131211352_BultenTablosu', '8.0.4'
 WHERE NOT EXISTS (SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20260131211352_BultenTablosu')
   AND EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'BultenAbonelikleri');
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-SELECT '20260131213049_BultenIpEklendi', '8.0.0'
+SELECT '20260131213049_BultenIpEklendi', '8.0.4'
 WHERE NOT EXISTS (SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20260131213049_BultenIpEklendi')
   AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'BultenAbonelikleri' AND column_name = 'IpAdresi');
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-SELECT '20260504111249_AddProductSeoFields', '8.0.0'
+SELECT '20260504111249_AddProductSeoFields', '8.0.4'
 WHERE NOT EXISTS (SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20260504111249_AddProductSeoFields')
   AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'Urunler' AND column_name = 'SeoTitle')
   AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'Urunler' AND column_name = 'SeoDescription')
@@ -821,18 +1065,18 @@ WHERE NOT EXISTS (SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '2
   AND EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'KargoFirmalari');
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-SELECT '20260508175141_MusteriNotuAlanlariEklendi', '8.0.0'
+SELECT '20260508175141_MusteriNotuAlanlariEklendi', '8.0.4'
 WHERE NOT EXISTS (SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20260508175141_MusteriNotuAlanlariEklendi')
   AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'SepetItems' AND column_name = 'MusteriNotu')
   AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'SiparisDetaylari' AND column_name = 'MusteriNotu');
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-SELECT '20260508204726_Fix_NullableUrunSecenekId_And_SlugIndex', '8.0.0'
+SELECT '20260508204726_Fix_NullableUrunSecenekId_And_SlugIndex', '8.0.4'
 WHERE NOT EXISTS (SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20260508204726_Fix_NullableUrunSecenekId_And_SlugIndex')
   AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'SiparisDetaylari' AND column_name = 'UrunSecenekId' AND is_nullable = 'YES');
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-SELECT '20260523223159_AddFavoriPriceDropFields', '8.0.0'
+SELECT '20260523223159_AddFavoriPriceDropFields', '8.0.4'
 WHERE NOT EXISTS (SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20260523223159_AddFavoriPriceDropFields')
   AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'Favoriler' AND column_name = 'FiyatDustugundaBildir')
   AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'Favoriler' AND column_name = 'EskiFiyat')
@@ -1115,6 +1359,62 @@ BEGIN
             ADD CONSTRAINT "FK_Kategoriler_Kategoriler_ParentKategoriId"
             FOREIGN KEY ("ParentKategoriId") REFERENCES "Kategoriler"("Id") ON DELETE RESTRICT;
     END IF;
+
+    CREATE TABLE IF NOT EXISTS "CarkOdulleri" (
+        "Id" integer GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+        "LabelTr" text NOT NULL DEFAULT '',
+        "LabelEn" text NOT NULL DEFAULT '',
+        "LabelAr" text NOT NULL DEFAULT '',
+        "Tip" text NOT NULL DEFAULT 'yuzde',
+        "Deger" integer NOT NULL DEFAULT 5,
+        "Renk" text NOT NULL DEFAULT '#b58735',
+        "MesajTr" text NOT NULL DEFAULT '',
+        "MesajEn" text NOT NULL DEFAULT '',
+        "MesajAr" text NOT NULL DEFAULT '',
+        "Sira" integer NOT NULL DEFAULT 0,
+        "AktifMi" boolean NOT NULL DEFAULT true,
+        "OlusturulmaTarihi" timestamp with time zone NOT NULL DEFAULT NOW(),
+        "SilindiMi" boolean NOT NULL DEFAULT false
+    );
+
+    CREATE TABLE IF NOT EXISTS "PushAbonelikleri" (
+        "Id" integer GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+        "Token" text NOT NULL,
+        "AppUserId" text NOT NULL,
+        "Tarayici" text NOT NULL DEFAULT '',
+        "Platform" text NOT NULL DEFAULT '',
+        "AktifMi" boolean NOT NULL DEFAULT true,
+        "SonGorulmeTarihi" timestamp with time zone NOT NULL DEFAULT NOW(),
+        "Tercihler" text NOT NULL DEFAULT '',
+        "OlusturulmaTarihi" timestamp with time zone NOT NULL DEFAULT NOW(),
+        "SilindiMi" boolean NOT NULL DEFAULT false
+    );
+
+    CREATE INDEX IF NOT EXISTS "IX_PushAbonelikleri_AppUserId" ON "PushAbonelikleri" ("AppUserId");
+    CREATE INDEX IF NOT EXISTS "IX_PushAbonelikleri_Token" ON "PushAbonelikleri" ("Token");
+
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint
+        WHERE conname = 'FK_PushAbonelikleri_AspNetUsers_AppUserId'
+    ) THEN
+        ALTER TABLE "PushAbonelikleri" ADD CONSTRAINT "FK_PushAbonelikleri_AspNetUsers_AppUserId" FOREIGN KEY ("AppUserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE;
+    END IF;
+
+    CREATE TABLE IF NOT EXISTS "StokBildirimLoglari" (
+        "Id" integer GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+        "UrunId" integer NULL REFERENCES "Urunler"("Id") ON DELETE SET NULL,
+        "UrunSecenekId" integer NULL REFERENCES "UrunSecenekleri"("Id") ON DELETE SET NULL,
+        "KalanStok" integer NOT NULL DEFAULT 0,
+        "StokEsigi" integer NOT NULL DEFAULT 5,
+        "BildirimTipi" text NOT NULL DEFAULT 'eposta',
+        "GonderildiMi" boolean NOT NULL DEFAULT false,
+        "OlusturulmaTarihi" timestamp with time zone NOT NULL DEFAULT NOW(),
+        "SilindiMi" boolean NOT NULL DEFAULT false
+    );
+
+    CREATE INDEX IF NOT EXISTS "IX_StokBildirimLoglari_UrunId" ON "StokBildirimLoglari" ("UrunId");
+    CREATE INDEX IF NOT EXISTS "IX_StokBildirimLoglari_UrunSecenekId" ON "StokBildirimLoglari" ("UrunSecenekId");
+    CREATE INDEX IF NOT EXISTS "IX_StokBildirimLoglari_GonderildiMi" ON "StokBildirimLoglari" ("GonderildiMi");
 END
 $$;
 
@@ -1146,4 +1446,33 @@ WHERE src."UrunId" = u."Id"
 
     await context.Database.ExecuteSqlRawAsync(sql);
     logger.LogInformation("Eksik Mart 2026 katalog semasi kontrol edildi.");
+}
+
+static async Task EnsureMigrationHistoryConsistencyAsync(KanvasDbContext context, Microsoft.Extensions.Logging.ILogger<Program> logger)
+{
+    await context.Database.ExecuteSqlRawAsync(@"
+INSERT INTO ""__EFMigrationsHistory"" (""MigrationId"", ""ProductVersion"")
+SELECT m, productVersion FROM (VALUES
+    ('20260131211352_BultenTablosu', '8.0.4'),
+    ('20260131213049_BultenIpEklendi', '8.0.4'),
+    ('20260504111249_AddProductSeoFields', '8.0.4'),
+    ('20260508175141_MusteriNotuAlanlariEklendi', '8.0.4'),
+    ('20260508204726_Fix_NullableUrunSecenekId_And_SlugIndex', '8.0.4'),
+    ('20260523223159_AddFavoriPriceDropFields', '8.0.4'),
+    ('20260615140117_AddWhatsappSiparisFields', '8.0.4'),
+    ('20260623204005_AddKampanyaBitisTarihi', '8.0.4'),
+    ('20260623205857_AddCarkOdulleri', '8.0.4'),
+    ('20260624190456_AddPushAbonelik', '8.0.4'),
+    ('20260624195919_AddIptalSuresiSaat', '8.0.4'),
+    ('20260624200430_AddStokBildirimLog', '8.0.4'),
+    ('20260624201857_AddYayindaMiToUrunler', '8.0.4'),
+    ('20260624204621_AddReceteOnayDurumu', '8.0.4'),
+    ('20260707195000_AddKategoriMenuGorselUrl', '8.0.4'),
+    ('20260709172141_AddKargoBolgeSehirMultilingual', '8.0.4')
+) AS t(m, productVersion)
+WHERE NOT EXISTS (
+    SELECT 1 FROM ""__EFMigrationsHistory"" WHERE ""MigrationId"" = t.m
+);
+");
+    logger.LogInformation("Migration history tutarlilik kontrolu tamamlandi.");
 }

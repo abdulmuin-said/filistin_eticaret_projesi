@@ -8,11 +8,12 @@
     var brandName = ViewData["brandName"] as string ?? "";
     var encodedLanguageReturnUrl = ViewData["encodedLanguageReturnUrl"] as string ?? "";
     var tumKategoriler = ViewData["tumKategoriler"] as List<Kategori> ?? new List<Kategori>();
+    var sepetCount = ViewData["sepetCount"] as int? ?? 0;
 }
 
 <!-- Mobile Navigation Drawer -->
 <div id="mobileNavBackdrop" class="mobile-nav-backdrop fixed inset-0 z-[80] hidden bg-brand-darktext/45 md:hidden" onclick="window.toggleMobileNav(false)"></div>
-<div id="mobileNav" class="mobile-nav-panel fixed left-0 top-0 z-[90] hidden h-dvh w-[88vw] max-w-[380px] overflow-y-auto overscroll-contain border-r border-brand-darkborder bg-brand-warmcream px-5 py-5 shadow-2xl md:hidden">
+<div id="mobileNav" class="mobile-nav-panel fixed left-0 top-0 z-[90] hidden h-dvh w-[88vw] max-w-[380px] overflow-y-auto overscroll-contain border-r border-brand-darkborder bg-brand-warmcream px-5 py-5 shadow-2xl md:hidden" role="dialog" aria-modal="true" aria-label="@Localizer["OpenMenu"]">
     <div class="mb-5 flex items-center justify-between border-b border-brand-darkborder pb-4">
         <a href="/" class="font-serif text-xl tracking-widest text-brand-olive">@brandName</a>
         <button type="button" aria-label="@Localizer["CloseMenu"]" onclick="window.toggleMobileNav(false)" class="flex h-11 w-11 items-center justify-center rounded-full border border-[#c9b58a] text-brand-olive hover:bg-brand-warmcream transition-colors">
@@ -56,6 +57,7 @@
         }
         <li class="border-b border-brand-darkborder pb-3" data-mobile-nav-item><a href="/Kurumsal/Iletisim" class="block w-full">@Localizer["Contact"]</a></li>
         <li class="border-b border-brand-darkborder pb-3" data-mobile-nav-item><a href="/Favori" class="block w-full flex items-center gap-2 py-1 min-h-[44px]"><svg class="w-4 h-4 text-red-400 shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg> @Localizer["MyFavorites"]</a></li>
+        <li class="border-b border-brand-darkborder pb-3" data-mobile-nav-item><a href="/Sepet" class="block w-full flex items-center justify-between gap-2 py-1 min-h-[44px]"><span class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-gold shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>@Localizer["Cart"]</span>@if (sepetCount > 0){<span class="bg-brand-gold text-white text-[11px] px-2 py-0.5 rounded-full font-bold">@sepetCount</span>}</a></li>
         @if (SignInManager.IsSignedIn(User))
         {
             <li data-mobile-nav-item><a href="/Profil" class="block w-full">@Localizer["MyAccount"]</a></li>

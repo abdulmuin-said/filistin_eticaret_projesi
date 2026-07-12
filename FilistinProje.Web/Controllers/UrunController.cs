@@ -9,6 +9,7 @@ using FilistinProje.Web.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
@@ -100,15 +101,44 @@ namespace FilistinProje.Web.Controllers
                 var aramaTerimi = s.Trim().ToLowerInvariant();
                 query = query.Where(x =>
                     (x.Baslik ?? string.Empty).ToLower().Contains(aramaTerimi) ||
+                    (x.BaslikEn ?? string.Empty).ToLower().Contains(aramaTerimi) ||
+                    (x.BaslikAr ?? string.Empty).ToLower().Contains(aramaTerimi) ||
                     (x.KisaAd ?? string.Empty).ToLower().Contains(aramaTerimi) ||
                     (x.SKU ?? string.Empty).ToLower().Contains(aramaTerimi) ||
                     (x.Barkod ?? string.Empty).ToLower().Contains(aramaTerimi) ||
                     (x.Marka ?? string.Empty).ToLower().Contains(aramaTerimi) ||
-                    (x.Etiketler ?? string.Empty).ToLower().Contains(aramaTerimi));
+                    (x.Etiketler ?? string.Empty).ToLower().Contains(aramaTerimi) ||
+                    (x.Kategori != null &&
+                     ((x.Kategori.Ad ?? string.Empty).ToLower().Contains(aramaTerimi) ||
+                      (x.Kategori.AdEn ?? string.Empty).ToLower().Contains(aramaTerimi) ||
+                      (x.Kategori.AdAr ?? string.Empty).ToLower().Contains(aramaTerimi))));
                 ViewBag.Search = s.Trim();
             }
 
-            var mevcutMarkalar = await query
+            var seciliOzellikler = ParseFeatureFilters(ozellik);
+            ViewBag.SeciliOzellikler = seciliOzellikler;
+
+            var markaFacetQuery = query;
+            foreach (var filter in seciliOzellikler)
+            {
+                var filterValue = filter.Value;
+                markaFacetQuery = markaFacetQuery.Where(x => x.UrunOzellikleri.Any(v =>
+                    !v.SilindiMi &&
+                    v.UrunOzellikTanimiId == filter.Key &&
+                    v.Deger == filterValue));
+            }
+
+            if (min.HasValue)
+            {
+                markaFacetQuery = markaFacetQuery.Where(x => (x.IndirimliFiyat ?? x.Fiyat) >= min.Value);
+            }
+
+            if (max.HasValue)
+            {
+                markaFacetQuery = markaFacetQuery.Where(x => (x.IndirimliFiyat ?? x.Fiyat) <= max.Value);
+            }
+
+            var mevcutMarkalar = await markaFacetQuery
                 .Where(x => !string.IsNullOrWhiteSpace(x.Marka))
                 .GroupBy(x => x.Marka)
                 .Select(x => new { Marka = x.Key, Count = x.Count() })
@@ -121,6 +151,15 @@ namespace FilistinProje.Web.Controllers
             {
                 query = query.Where(x => x.Marka != null && x.Marka.ToLower() == marka.ToLower());
                 ViewBag.Marka = marka.Trim();
+            }
+
+            foreach (var filter in seciliOzellikler)
+            {
+                var filterValue = filter.Value;
+                query = query.Where(x => x.UrunOzellikleri.Any(v =>
+                    !v.SilindiMi &&
+                    v.UrunOzellikTanimiId == filter.Key &&
+                    v.Deger == filterValue));
             }
 
             var minFiyat = await query.MinAsync(x => (decimal?)(x.IndirimliFiyat ?? x.Fiyat));
@@ -140,18 +179,7 @@ namespace FilistinProje.Web.Controllers
                 ViewBag.Max = max.Value;
             }
 
-            var seciliOzellikler = ParseFeatureFilters(ozellik);
-            ViewBag.SeciliOzellikler = seciliOzellikler;
             ViewBag.OzellikFiltreleri = await BuildFeatureFiltersAsync(query);
-
-            foreach (var filter in seciliOzellikler)
-            {
-                var filterValue = filter.Value;
-                query = query.Where(x => x.UrunOzellikleri.Any(v =>
-                    !v.SilindiMi &&
-                    v.UrunOzellikTanimiId == filter.Key &&
-                    v.Deger == filterValue));
-            }
 
             sort = sort switch
             {
@@ -239,6 +267,7 @@ namespace FilistinProje.Web.Controllers
         }
 
         [HttpGet]
+        [EnableRateLimiting("general")]
         public async Task<IActionResult> CanliAra(string? q)
         {
             if (string.IsNullOrWhiteSpace(q))
@@ -252,10 +281,16 @@ namespace FilistinProje.Web.Controllers
                 return Json(null);
             }
 
+            if (aramaTerimi.Length > 100)
+            {
+                aramaTerimi = aramaTerimi[..100];
+            }
+
+            var culture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
             var siteSettings = _siteSettingsService.GetSettings();
             var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
 
-            var sonuclar = await _context.Urunler
+            var baseQuery = _context.Urunler
                 .AsNoTracking()
                 .Where(x =>
                     x.AktifMi &&
@@ -267,7 +302,15 @@ namespace FilistinProje.Web.Controllers
                      (x.KisaAd ?? string.Empty).ToLower().Contains(aramaTerimi) ||
                      (x.SKU ?? string.Empty).ToLower().Contains(aramaTerimi) ||
                      (x.Marka ?? string.Empty).ToLower().Contains(aramaTerimi) ||
-                     (x.Etiketler ?? string.Empty).ToLower().Contains(aramaTerimi)))
+                     (x.Etiketler ?? string.Empty).ToLower().Contains(aramaTerimi) ||
+                     (x.Kategori != null &&
+                      ((x.Kategori.Ad ?? string.Empty).ToLower().Contains(aramaTerimi) ||
+                       (x.Kategori.AdEn ?? string.Empty).ToLower().Contains(aramaTerimi) ||
+                       (x.Kategori.AdAr ?? string.Empty).ToLower().Contains(aramaTerimi)))));
+
+            var totalCount = await baseQuery.CountAsync();
+
+            var sonuclar = await baseQuery
                 .OrderByDescending(x => x.GoruntulenmeSayisi)
                 .ThenByDescending(x => x.OlusturulmaTarihi)
                 .Take(8)
@@ -275,13 +318,19 @@ namespace FilistinProje.Web.Controllers
                 {
                     id = x.Id,
                     slug = x.Slug ?? string.Empty,
-                    baslik = x.Baslik,
-                    gorsel = x.AnaGorselUrl,
-                    fiyat = (x.IndirimliFiyat.HasValue && x.IndirimliFiyat > 0 && x.IndirimliFiyat < x.Fiyat ? x.IndirimliFiyat.Value : x.Fiyat).ToString("N2") + " " + currencySymbol
+                    baslik = culture == "ar" ? (x.BaslikAr ?? x.Baslik) :
+                             culture == "en" ? (x.BaslikEn ?? x.Baslik) :
+                             x.Baslik,
+                    marka = x.Marka ?? string.Empty,
+                    kategori = (x.Kategori != null ? (culture == "ar" ? (x.Kategori.AdAr ?? x.Kategori.Ad) : (x.Kategori.AdEn ?? x.Kategori.Ad)) : string.Empty) ?? string.Empty,
+                    gorsel = !string.IsNullOrWhiteSpace(x.AnaGorselUrl) ? x.AnaGorselUrl :
+                             x.UrunResimleri.OrderBy(r => r.Sira).Select(r => r.ResimYolu).FirstOrDefault() ?? string.Empty,
+                    fiyat = (x.IndirimliFiyat.HasValue && x.IndirimliFiyat > 0 && x.IndirimliFiyat < x.Fiyat ? x.IndirimliFiyat.Value : x.Fiyat).ToString("N2") + " " + currencySymbol,
+                    indirimVarMi = x.IndirimVarMi
                 })
                 .ToListAsync();
 
-            return Json(sonuclar);
+            return Json(new { items = sonuclar, total = totalCount });
         }
 
         [HttpGet]
@@ -376,6 +425,11 @@ namespace FilistinProje.Web.Controllers
             {
                 urun = await detaySorgusu.FirstOrDefaultAsync(x => x.Slug == id);
 
+                if (urun == null && int.TryParse(id.Trim('-'), out var trimmedId))
+                {
+                    urun = await detaySorgusu.FirstOrDefaultAsync(x => x.Id == trimmedId);
+                }
+
                 if (urun == null && id.Contains("-"))
                 {
                     var parcalar = id.Split('-');
@@ -451,13 +505,14 @@ namespace FilistinProje.Web.Controllers
             ViewBag.OrtalamaPuan = ortalamaPuan;
             ViewBag.YorumSayisi = yorumlar.Count;
 
-            // Benzer ürünler - aynı kategoriden
+            // Benzer ürünler - aynı kategoriden, fiyatı gizli olmayan, silinmemiş/pasif olmayan
             var benzerUrunler = await _context.Urunler
                 .AsNoTracking()
                 .Where(x =>
                     x.AktifMi &&
                     x.YayindaMi &&
                     !x.SilindiMi &&
+                    !x.FiyatGizliMi &&
                     x.KategoriId == urun.KategoriId &&
                     x.Id != urun.Id)
                 .OrderByDescending(x => x.SatisSayisi)
@@ -470,11 +525,34 @@ namespace FilistinProje.Web.Controllers
                     BaslikEn = x.BaslikEn,
                     BaslikAr = x.BaslikAr,
                     Slug = x.Slug,
-                    AnaGorselUrl = x.AnaGorselUrl,
+                    AnaGorselUrl = !string.IsNullOrWhiteSpace(x.AnaGorselUrl)
+                        ? x.AnaGorselUrl
+                        : x.UrunResimleri
+                            .Where(r => !r.SilindiMi && r.MedyaTipi != UrunMedyaCatalog.Video && !string.IsNullOrWhiteSpace(r.ResimYolu))
+                            .OrderByDescending(r => r.VarsayilanMi)
+                            .ThenBy(r => r.Sira)
+                            .Select(r => r.ResimYolu)
+                            .FirstOrDefault(),
                     Fiyat = x.Fiyat,
-                    IndirimliFiyat = x.IndirimliFiyat
+                    IndirimliFiyat = x.IndirimliFiyat,
+                    IndirimVarMi = x.IndirimVarMi,
+                    FiyatGizliMi = x.FiyatGizliMi,
+                    StoktaVarMi = x.StoktaVarMi
                 })
                 .ToListAsync();
+
+            // Sonradan client tarafı için stok politikası ayıklaması (StoktaYokSatisIzni=true ise
+            // stokta olmayan ürünler de satışa açık olabilir — bu durumda kart göstermeye devam ediyoruz).
+            // Controller zaten default olarak `StoktaVarMi` olmayanları düşürür; ancak
+            // StoktaYokSatisIzni açıksa kartı göstermek için sitede filtreyi geç.
+            if (siteSettings.StoktaYokSatisIzni)
+            {
+                // Tüm aktif ürünleri göster — kullanıcı kendi seçimiyle "Tükendi" rozeti görsün
+            }
+            else
+            {
+                benzerUrunler = benzerUrunler.Where(x => x.StoktaVarMi).ToList();
+            }
 
             ViewBag.BenzerUrunler = benzerUrunler;
 

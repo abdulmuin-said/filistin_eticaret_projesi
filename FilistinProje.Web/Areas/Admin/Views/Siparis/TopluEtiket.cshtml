@@ -238,7 +238,7 @@
                     </div>
                     <div class="label-box">
                         <strong>@Localizer["Admin_Shipping"]</strong><br />
-                        @(firma?.Ad ?? "Aras Kargo")<br />
+                        @(firma?.Ad ?? "-")<br />
                         @Localizer["Admin_TrackingNo"]: @(string.IsNullOrWhiteSpace(siparis.KargoTakipNo) ? Localizer["Admin_NotEnteredYet"] : siparis.KargoTakipNo)<br />
                         Tel: @(firma?.Telefon ?? "-")
                     </div>

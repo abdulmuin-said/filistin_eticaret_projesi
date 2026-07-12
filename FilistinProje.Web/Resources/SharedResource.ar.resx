@@ -16,7 +16,7 @@
     <value>لوحة التحكم</value>
   </data>
   <data name="SellerPanel" xml:space="preserve">
-    <value>لوحة البائع</value>
+    <value>لوحة التحكم</value>
   </data>
   <data name="Dashboard" xml:space="preserve">
     <value>لوحة البيانات</value>
@@ -1671,10 +1671,19 @@
     <value>يجب إدخال عنوان بريد إلكتروني صالح.</value>
   </data>
   <data name="Siparis_PhoneRequired" xml:space="preserve">
-    <value>يجب أن يكون رقم الهاتف 11 رقماً يبدأ بـ 0.</value>
+    <value>أدخل رقم هاتف فلسطيني صالحاً، مثل ‎+970 599 123 456 أو 0599 123 456.</value>
   </data>
-  <data name="Siparis_CityRequired" xml:space="preserve">
+<data name="Siparis_CityRequired" xml:space="preserve">
     <value>المدينة مطلوبة.</value>
+  </data>
+  <data name="Siparis_NoShippingPrice" xml:space="preserve">
+    <value>الشحن غير مهيأ لمدينتك بعد. يرجى الاتصال بنا أو اختيار الاستلام من المتجر. سنقوم بإبلاغ المسؤول لإكمال إعداد الشحن.</value>
+  </data>
+  <data name="Siparis_NoActiveBankAccount" xml:space="preserve">
+    <value>التحويل البنكي غير متاح مؤقتًا. لم يتم تكوين حساب بنكي نشط من قبل المسؤول. يرجى المحاولة لاحقًا أو الاتصال بنا.</value>
+  </data>
+  <data name="TemporarilyUnavailable" xml:space="preserve">
+    <value>غير متاح مؤقتًا</value>
   </data>
   <data name="Siparis_DistrictRequired" xml:space="preserve">
     <value>المنطقة مطلوبة.</value>
@@ -5059,4 +5068,18 @@
   <data name="Admin_AccountOwner" xml:space="preserve"><value>صاحب الحساب</value></data>
   <data name="Admin_AccountNo" xml:space="preserve"><value>رقم الحساب</value></data>
   <data name="Admin_SaveAccount" xml:space="preserve"><value>حفظ الحساب</value></data>
+  <data name="ProductDetails" xml:space="preserve"><value>تفاصيل المنتج</value></data>
+  <data name="Days" xml:space="preserve"><value>أيام</value></data>
+  <data name="DaysReturn" xml:space="preserve"><value>يوم للإرجاع</value></data>
+  <data name="Siparis_StockShortage" xml:space="preserve"><value>المخزون غير كافٍ: {0}. مطلوب {1}، متوفر {2}.</value></data>
+  <data name="Siparis_StockShortageGeneric" xml:space="preserve"><value>لم يعد المخزون متاحاً لواحد أو أكثر من المنتجات. يرجى مراجعة السلة والمحاولة مرة أخرى.</value></data>
+  <data name="Siparis_PriceChangedNotice" xml:space="preserve"><value>تم تحديث سعر {0} منتج/أو أكثر إلى القيمة الحالية قبل إتمام الطلب.</value></data>
+  <data name="Siparis_OrderFailed" xml:space="preserve"><value>تعذّر حفظ الطلب. يُرجى المحاولة مرة أخرى أو التواصل مع خدمة العملاء.</value></data>
+  <data name="Brand" xml:space="preserve"><value>العلامة التجارية</value></data>
+  <data name="AllBrands" xml:space="preserve"><value>جميع العلامات التجارية</value></data>
+  <data name="Filters" xml:space="preserve"><value>التصفية</value></data>
+  <data name="ClearAllFilters" xml:space="preserve"><value>مسح جميع عوامل التصفية</value></data>
+  <data name="PreviousImage" xml:space="preserve"><value>الصورة السابقة</value></data>
+  <data name="NextImage" xml:space="preserve"><value>الصورة التالية</value></data>
+  <data name="VideoNotSupported" xml:space="preserve"><value>متصفحك لا يدعم تشغيل الفيديو.</value></data>
   </root>

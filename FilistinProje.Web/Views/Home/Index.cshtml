@@ -25,7 +25,18 @@
     var siteUrl = SiteSettingsService.BuildAbsoluteUrl(string.Empty);
     var isWholesale = User.IsInRole("Wholesale");
     string BuildProductUrl(FilistinProje.Core.Varliklar.Urun urun)
-        => "/Urun/Detay/" + (string.IsNullOrEmpty(urun.Slug) ? (FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(urun.Baslik) + "-" + urun.Id) : urun.Slug + "-" + urun.Id);
+    {
+        var slug = !string.IsNullOrWhiteSpace(urun.Slug)
+            ? urun.Slug
+            : FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(urun.LocalizedBaslik);
+
+        if (string.IsNullOrWhiteSpace(slug))
+        {
+            slug = "urun";
+        }
+
+        return $"/Urun/Detay/{slug}-{urun.Id}";
+    }
 
     var websiteSchema = new Dictionary<string, object?>
     {
@@ -323,7 +334,7 @@
                                             else
                                             {
                                                 <div class="flex h-full w-full items-center justify-center bg-brand-cream">
-                                                    <img src="/74anrps48logo2.svg" alt="Placeholder" class="w-1/2 opacity-20 grayscale" />
+                                                    <img src="/img/products/placeholder.webp" alt="Placeholder" class="w-1/2 opacity-20 grayscale" loading="lazy" decoding="async" />
                                                 </div>
                                             }
                                         </div>
@@ -392,7 +403,7 @@
                                         else
                                         {
                                             <div class="flex h-full w-full items-center justify-center bg-brand-cream">
-                                                <img src="/74anrps48logo2.svg" alt="Placeholder" class="w-1/2 opacity-20 grayscale" />
+                                                <img src="/img/products/placeholder.webp" alt="Placeholder" class="w-1/2 opacity-20 grayscale" loading="lazy" decoding="async" />
                                             </div>
                                         }
                                     </div>
@@ -524,7 +535,7 @@
                                     else
                                     {
                                         <div class="flex h-full w-full items-center justify-center bg-brand-cream">
-                                            <img src="/74anrps48logo2.svg" alt="Placeholder" class="w-1/2 opacity-20 grayscale" />
+                                            <img src="/img/products/placeholder.webp" alt="Placeholder" class="w-1/2 opacity-20 grayscale" loading="lazy" decoding="async" />
                                         </div>
                                     }
                                 </div>
@@ -578,7 +589,7 @@
                                         else
                                         {
                                             <div class="flex h-full w-full items-center justify-center bg-brand-cream">
-                                                <img src="/74anrps48logo2.svg" alt="Placeholder" class="w-1/2 opacity-20 grayscale" />
+                                                <img src="/img/products/placeholder.webp" alt="Placeholder" class="w-1/2 opacity-20 grayscale" loading="lazy" decoding="async" />
                                             </div>
                                         }
                                     </div>

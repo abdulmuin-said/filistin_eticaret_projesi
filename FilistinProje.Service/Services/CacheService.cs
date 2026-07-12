@@ -1,6 +1,7 @@
 using FilistinProje.Service.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace FilistinProje.Service.Services
     {
         private readonly IMemoryCache _memoryCache;
         private readonly TimeSpan _defaultExpiration = TimeSpan.FromHours(1);
-        private readonly HashSet<string> _registeredKeys = new();
+        private static readonly ConcurrentDictionary<string, byte> RegisteredKeys = new(StringComparer.Ordinal);
 
         public CacheService(IMemoryCache memoryCache)
         {
@@ -31,12 +32,14 @@ namespace FilistinProje.Service.Services
             };
             
             _memoryCache.Set(key, value, cacheOptions);
+            RegisterInvalidationKey(key);
             return Task.CompletedTask;
         }
 
         public Task RemoveAsync(string key)
         {
             _memoryCache.Remove(key);
+            RegisteredKeys.TryRemove(key, out _);
             return Task.CompletedTask;
         }
 
@@ -56,21 +59,30 @@ namespace FilistinProje.Service.Services
 
         public Task RemoveByPrefixAsync(string prefix)
         {
+            foreach (var key in RegisteredKeys.Keys)
+            {
+                if (key.StartsWith(prefix, StringComparison.Ordinal))
+                {
+                    _memoryCache.Remove(key);
+                    RegisteredKeys.TryRemove(key, out _);
+                }
+            }
+
             return Task.CompletedTask;
         }
 
         public void RegisterInvalidationKey(string cacheKey)
         {
-            _registeredKeys.Add(cacheKey);
+            RegisteredKeys.TryAdd(cacheKey, 0);
         }
 
         public void ClearRegisteredKeys()
         {
-            foreach (var key in _registeredKeys)
+            foreach (var key in RegisteredKeys.Keys)
             {
                 _memoryCache.Remove(key);
+                RegisteredKeys.TryRemove(key, out _);
             }
-            _registeredKeys.Clear();
         }
     }
 }

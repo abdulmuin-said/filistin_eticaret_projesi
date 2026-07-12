@@ -127,7 +127,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             if (section == null) return NotFound();
 
             section.Enabled = !section.Enabled;
-            await _context.SaveChangesAsync();
+            await _sectionService.UpdateSectionAsync(section);
 
             return Json(new { success = true, enabled = section.Enabled });
         }

@@ -318,7 +318,7 @@ function kaydet(olcu, mevcutFiyat) {
             input.value = '';
             
             const mevcutSpan = input.closest('.tf-card').querySelector('.price-value');
-            mevcutSpan.textContent = yeniFiyat.toLocaleString('tr-TR', { minimumFractionDigits: 2 }) + ' â‚ª';
+            mevcutSpan.textContent = window.formatMoney(yeniFiyat) + ' â‚ª';
         } else {
             showToast(data.message || anErrorOccurred, true);
         }

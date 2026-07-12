@@ -7,9 +7,15 @@
     var stoktaYokSatisIzni = siteSettings.StoktaYokSatisIzni;
     var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
 
-    var urunUrl = "/Urun/Detay/" + (string.IsNullOrEmpty(Model.Slug)
-        ? FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(Model.Baslik) + "-" + Model.Id
-        : Model.Slug + "-" + Model.Id);
+    var urlSlug = !string.IsNullOrWhiteSpace(Model.Slug)
+        ? Model.Slug
+        : FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(Model.Baslik);
+    if (string.IsNullOrWhiteSpace(urlSlug))
+    {
+        urlSlug = "urun";
+    }
+
+    var urunUrl = $"/Urun/Detay/{urlSlug}-{Model.Id}";
 
     // Fiyat mantığı
     decimal gosterFiyat;
@@ -30,7 +36,7 @@
     }
 
     bool satisaAcik = stoktaYokSatisIzni || Model.StoktaVarMi;
-    bool azStok = Model.StoktaVarMi && Model.ToplamStok > 0 && Model.ToplamStok <= 5;
+    bool azStok = Model.StoktaVarMi && Model.ToplamStok >= 1 && Model.ToplamStok <= 4;
 
     // Rozet önceliği: stok yok > az stok > özel > indirim > yeni
     string? badgeBg = null;
@@ -67,7 +73,9 @@
 <article class="group relative flex flex-col" data-motion-item>
 
     @* ─── Görsel Alanı ─── *@
-    <div class="skeleton-container @(!string.IsNullOrWhiteSpace(Model.GorselUrl) ? "skeleton" : "") relative overflow-hidden aspect-square bg-[#f8f6f2] mb-3 rounded-sm">
+    @* aspect-square ensures CLS-safe fixed ratio. Skeleton removed on img.onload. If no
+       image exists we render an inline SVG placeholder (never a 404 request). *@
+    <div class="skeleton-container relative overflow-hidden aspect-square bg-[#f8f6f2] mb-3 rounded-sm">
 
         @* Görsel *@
         <a href="@urunUrl"
@@ -76,17 +84,24 @@
             @if (!string.IsNullOrWhiteSpace(Model.GorselUrl))
             {
                 <img src="@Model.GorselUrl"
-                     alt="@Model.Baslik"
+                     alt="@(!string.IsNullOrWhiteSpace(Model.Baslik) ? Model.Baslik : Localizer["ProductImage"].Value)"
+                     width="800"
+                     height="800"
                      class="img-lazy-load max-h-full max-w-full object-contain
                             transition-transform duration-500 group-hover:scale-105"
                      loading="lazy"
                      decoding="async"
-                     onload="this.classList.add('loaded'); this.closest('.skeleton-container')?.classList.remove('skeleton');" />
+                     onload="this.classList.add('loaded'); this.closest('.skeleton-container')?.classList.remove('skeleton');"
+                     onerror="if(!this.dataset.fallbackApplied){this.dataset.fallbackApplied='true';this.src='/img/products/placeholder.webp';}else{this.closest('.skeleton-container')?.classList.remove('skeleton');this.remove();}" />
             }
             else
             {
-                <div class="flex h-full w-full items-center justify-center text-brand-border">
-                    <i class="fas fa-box-open fa-2x opacity-30"></i>
+                <div class="flex h-full w-full items-center justify-center text-brand-border" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" class="opacity-30">
+                        <rect x="35" y="55" width="130" height="100" rx="8" />
+                        <path d="M35 85 L165 85" />
+                        <path d="M85 55 L85 35 L145 35 L145 55" />
+                    </svg>
                 </div>
             }
         </a>

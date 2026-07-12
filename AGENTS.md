@@ -230,9 +230,43 @@ cd FilistinProje.Web && npm run watch:storefront-css
 - [x] **Adım 100**: Session.Id null-safety düzeltildi (`ISessionFeature?.Session?.Id`)
 - [x] **Adım 101**: Eksik localizer key'leri eklendi (SpinWheelManagement, BankTransferPayment), `Admin_HeroSubtitle_Tr` temizlendi
 
+### Faz 11 (Hassas Belge Güvenliği + Kamera WebRTC — 9 Temmuz 2026)
+- [x] **Adım 102**: B25 kanıtı: `wwwroot/uploads/kimlikler/<guid>.png` dosyaları herkese açık anonim olarak servis ediliyordu; `AppUser.KimlikFotografYolu` DB kolonu `/uploads/kimlikler/...` web URL format'ında tutulmuştu.
+- [x] **Adım 103**: Private storage mimarisi: `ContentRoot/secure-storage/hassas/{kategori}/<guid>.{ext}` (wwwroot dışı). `wwwroot/uploads/kimlikler|receteler` URL'leri gizli middleware ile kontrollü 404.
+- [x] **Adım 104**: `IDosyaServisi.HassasBelgeKaydetAsync(IFormFile, HassasBelgeKategorisi)` (DosyaServisi.cs). Kategori bazlı MIME/uzantı/magic-byte + aktif içerik (`<script`, `<html`, `<!doctype`, `<svg`, `<?php`, `javascript:`) reddi. `MaksResimDosyaBoyutu` 8MB, `MaksDokumanDosyaBoyutu` 12MB. `BuildPrivateReference` → `private://kimlikler|receteler/<guid><.ext>`. `TryParsePrivateReference` ve `IsSafeStoredFileName` ile path injection/uzantı sızıntısı kapatıldı.
+- [x] **Adım 105**: `FilistinProje.Web/Controllers/BelgeController.cs` (3 endpoint):
+  - `GET /Belge/Kimlik?userId={guid}` → owner VEYA `Kullanici|Siparis|Toptanci` admin permission. Path değil, kullanıcı id kullanılıyor.
+  - `GET /Belge/SiparisKimlik?siparisId={id}` → sipariş sahibi VEYA `Siparis` admin permission.
+  - `GET /Belge/Recete?siparisId={id}` → sipariş sahibi VEYA `Siparis` admin permission.
+  - `Cache-Control: no-store, max-age=0`, `X-Content-Type-Options: nosniff`, `Content-Disposition` (inline/attachment) güvenli header'lar.
+  - Legacy eski public referans DB'de kaldıysa kontrollü 404 (dosya yoksa da 404, dosya varsa redirect etmeden okur).
+- [x] **Adım 106**: `Program.cs` — global `Permissions-Policy: camera=()` kaldırıldı, `IsCameraAllowedPath` route-bazlı `camera=(self)` (`/Siparis/Odeme` ve `/Hesap/KayitOl`). Diğer tüm sayfalar `microphone=(), geolocation=()` ile kapatıldı.
+- [x] **Adım 107**: `Views/Siparis/Odeme.cshtml` JS rewrite: `getUserMedia` Promise, secure-context kontrol (`isSecureContext` + localhost), hata sınıflandırma (`NotAllowedError`, `NotFoundError`, `NotReadableError`, `AbortError`, `SecurityError`) → AR + EN kullanıcı dostu toast; fallback upload moduna otomatik geçiş; canvas.toBlob null kontrolü; blob URL önizleme (`createObjectURL` + `revokeObjectURL`); antiforgery header eklendi.
+- [x] **Adım 108**: `Views/Siparis/_IdentityVerification.cshtml` — yeni AR/EN kimlik doğrulama mesaj kutusu + fallback upload CTA. `Views/Profil/Index.cshtml` kimlik fotoğrafı → `/Belge/Kimlik?userId=...` URL'sine çevrildi (anonim public URL kaldırıldı). `Areas/Admin/Views/Siparis/Detay.cshtml` reçete önizleme/görsel linki `BelgeController` üzerinden. `SiparisController.cs` `IsSafeUploadedPath` artık `private://` referansını da doğruluyor (geriye dönük uyumluluk korundu).
+- [x] **Adım 109**: `Program.cs` startup'ta `EnsureSensitiveUploadsMigratedAsync` — eski `/uploads/kimlikler|receteler` DB kayıtları `private://` referansa taşınır ve dosya secure-storage'a kopyalanır; eski public dosyalar migration sonrası silinir. Migration sonrası eski URL artık 404 döner (eski URL'leri zaten middleware blokajlı).
+- [x] **Adım 110**: `WebRTC blob → upload validation hattı`: canvas.toBlob → xhr → `YukleKimlikFoto` → aynı `IDosyaServisi.HassasBelgeKaydetAsync` (magic-byte, MIME, boyut, aktif içerik). Upload validation bypass yapılmadı.
+- [x] **Adım 111**: DI kaydı eklendi: `builder.Services.AddScoped<IOrderPricingService, OrderPricingService>()` (Ödeme controller DI fix; zaten Audit'te listelenen `OrderPricingService`).
+
+### Hassas dosya mimarisi (B25)
+- **Storage root**: `<ContentRoot>/secure-storage/hassas/{kategori}/` (wwwroot dışında).
+  - `kategori` ∈ `kimlikler` (jpg/jpeg/png/webp, max 8MB), `receteler` (jpg/jpeg/png/webp/pdf, max 12MB).
+  - Dosya adı: `Guid.NewGuid().ToString("N") + lowercase uzantı`.
+  - DB referansı: `private://<kategori>/<dosya-adı>` (sadece bu token kullanıcıya gösterilir).
+- **Okuma**: `BelgeController` (`/Belge/Kimlik`, `/Belge/SiparisKimlik`, `/Belge/Recete`) yalnızca owner veya yetkili admin için dosya akışı verir. Path parametresi olarak fiziksel yol KABUL EDILMEZ, sadece sahiplik id'si.
+- **Legacy uyumluluk**: DB'de eski `/uploads/kimlikler/...` veya `/uploads/receteler/...` referansı varsa `BelgeController` mevcut dosyayı okur, fakat middleware aynı URL için zaten 404 döndürür; yeni DB referansları `private://` ile taşınır.
+- **Public blokaj**: `Program.cs` route-bazlı 404 middleware (`/uploads/kimlikler/*` ve `/uploads/receteler/*`).
+
+### Kamera (WebRTC) politika (B9)
+- **Global**: `Permissions-Policy: camera=(), microphone=(), geolocation=()`.
+- **Ödeme + Kayıt sayfaları**: `camera=(self)` (yalnızca same-origin).
+- **JS davranışı** (`Odeme.cshtml`): Secure context ön-kontrolü, NotAllowed/NotFound/NotReadable/Security hata sınıflandırması, AR + EN mesaj, upload moduna otomatik geçiş. Hata durumunda sayfa bozulmaz.
+
 ### Program.cs (önemli satırlar)
 - `~satır 784-1060` — `EnsureMissingMarch2026SchemaAsync`: hand-rolled SQL, tüm ek kolonları/tabloları kapsar (ReceteGerekliMi, WhatsappSiparisVarMi, FiyatGizliMi, ToptanciMinSiparisTutari, ToptanciUrunGrubuId, ToptanciUrunGruplari, ToptanciIskontoOranlari, BasvuruTarihi, KargoBolge.Ulke/Aciklama, Slayt dil alanları)
 - `~satır 460-510` — Migration + Seed uygulama mantığı
+- `~satır 572-578` — `EnsureSensitiveUploadsMigratedAsync` (Faz 11)
+- `~satır 302-313` — Security header'lar (route-bazlı Permissions-Policy)
+- `~satır 320-330` — Legacy hassas upload path 404 middleware
 - `~satır 700+` — Login middleware (GirisZorunluMu kontrolü)
 - `~satır 40-45` — DB erişilebilirlik kontrolü
 
@@ -254,3 +288,165 @@ cd FilistinProje.Web && npm run watch:storefront-css
 14. **Slayt dil alanları** — `BaslikEn/Ar`, `AltBaslikEn/Ar`, `AciklamaEn/Ar`. Slayt entity'sinde `LocalizedBaslik`, `LocalizedAltBaslik`, `LocalizedAciklama` computed property'leri mevcut.
 15. **Tüm view'lar güncel** — `Detay.cshtml`, `Siparislerim.cshtml`, `Adreslerim.cshtml`, `Basarili.cshtml`, `Basarisiz.cshtml` modern, IStringLocalizer kullanır durumda.
 16. **Admin URL'leri**: `/Admin/Slayt`, `/Admin/Kargo`, `/Admin/Rapor`, `/Admin/Iletisim`, `/Admin/Iade`, `/Admin/Kupon`, `/Admin/HomeSections`, `/Admin/Bulten`, `/Admin/Sayfa`, `/Admin/UrunOzellik`, `/Admin/TopluFiyatGuncelle`, `/Admin/SlugTool`, `/Admin/Yorum`, `/Admin/Ziyaretci`, `/Admin/XyzSecretMonitor`
+17. **Hassas dosya referansı**: DB kolonlarında path değil `private://<kategori>/<guid><ext>` token bulunur. Dosya `ContentRoot/secure-storage/hassas/{kategori}/` altındadır. Okuma için `BelgeController` endpoint'leri. `DosyaServisi.HassasBelgeKaydetAsync` upload doğrulamayı zorunlu kılar. Yeni hassas alan eklenirse sadece bu servis ile yazılmalı.
+18. **Kamera (WebRTC) politika**: `Program.cs` global kamera iznini kapatır; sadece `/Siparis/Odeme` ve `/Hesap/KayitOl` için `camera=(self)` route-bazlı açılır. Yeni kamera kullanan sayfa eklenirse `IsCameraAllowedPath`'e path eklenmeli.
+19. **Belge endpoint'leri**: Yetkisiz isteklerde `[Authorize]` → 302 login, login sonrası ise `Forbid()`. Sahiplik kontrolü: kimlik için `AppUser.Id == currentUserId`, reçete/sipariş kimlik için sipariş sahipliği. Admin için matrix'te `Kullanici`, `Siparis`, `Toptanci` izinleri olmalı.
+20. **Migration startup (B17 + B21)**: `StartupReadinessState` singleton state machine. Production'da kritik migration/seed hata → `app.Lifetime.StopApplication()` fail-fast, container exit. Dev'te log + 503 readiness. `/health/live` her zaman "alive"; `/health/ready` DB + startup gate. `EnsureMigrationHistoryConsistencyAsync` sadece mevcut schema'ya karşılık gelen migration'ları history'ye yazar; uygulanmamış migration'ı "applied" olarak işaretlemez.
+21. **DataProtection key kalıcılığı**: Container'da `DATA_PROTECTION_KEYS_PATH=/app/secure-storage/dataprotection-keys` env ile volume mount altına yazılır. Yerel geliştirmede `App_Data/DataProtectionKeys`. Volume kaybı = tüm auth cookie'ler geçersiz, kullanıcı yeniden login olur.
+
+### Faz 12 (Sipariş Bütünlüğü — B2, B3, B13, B27 — 10 Temmuz 2026)
+- [x] **Adım 112**: `IOrderPricingService` interface'i (`FilistinProje.Core/Interfaces/IOrderPricingService.cs`) — server-side tek fiyat hesaplama yolu. `HesaplaAsync(sepetItems, sehir, odemeYontemi, isWholesale, kuponKodu)` → `OrderPricingResult`; `StokDusAsync(satirlar)` → `StockDeductionResult`; `CalculateCouponDiscount(Kupon, tutar)`.
+- [x] **Adım 113**: `FilistinProje.Core/DTOs/OrderPricingModels.cs` — `OrderLinePricing`, `OrderPricingResult`, `PriceChangedEntry`, `StockShortageEntry`, `StockDeductionResult`. DTO'larda sadece server tarafından hesaplanan güvenli property'ler.
+- [x] **Adım 114**: `FilistinProje.Core/DTOs/CheckoutRequestDto.cs` (B27) — checkout formundan bind edilen DTO. Server-owned alanlar (ToplamTutar, IndirimTutari, AppUserId, Durum, SiparisNo, KuponKodu) bind edilmez.
+- [x] **Adım 115**: `FilistinProje.Service/Services/OrderPricingService.cs` — implementasyon.
+  - B3: Her satır Urun.UrunSecenek DB'den yeniden okunur; SepetItem.Fiyat (snapshot) **hiçbir koşulda** SiparisDetay.BirimFiyat'a yazılmaz.
+  - wholesale: `Urun.EtkinTopFiyat` (TopFiyat > 0) + `ToptanciIskontoOrani` (adete göre en yüksek iskonto).
+  - hediye: server-side `Urun.HediyePaketFiyati` kullanılır (SepetItem'daki değil).
+  - kupon: kupon tarih, limit, min kontrol + `CalculateCouponDiscount` (Tip 0=yüzde, 1=tutar) yuvarlanmış.
+  - stok kontrolü: varyant varsa ve `OnSipariseAcikMi` değilse `StokAdedi >= Adet` zorunlu; yetersizse `StockShortageEntry` döner.
+- [x] **Adım 116**: `OrderPricingService.StokDusAsync` — transaction içinde `ExecuteSqlInterpolatedAsync` ile atomik koşullu UPDATE:
+  - `UPDATE "UrunSecenekleri" SET "StokAdedi" = "StokAdedi" - @adet WHERE "Id" = @id AND "StokAdedi" >= @adet`
+  - Read-then-write yarışı yok; birden fazla eşzamanlı checkout'ta yalnızca biri başarılı olur.
+- [x] **Adım 117**: `SiparisController.Odeme` POST komple yeniden yazıldı (B27 + B2 + B3 + B13):
+  - `[Bind]` attribute yerine doğrudan `CheckoutRequestDto dto` parametresi (overposting engeli).
+  - Transaction `ReadCommitted`; sipariş → stok düşümü → sipariş detayları → kupon.KullanilanMiktar++ → sepet temizleme aynı transaction.
+  - Stok düşümü başarısızsa veya transaction içinde exception olursa `transaction.RollbackAsync()` + form + anlaşılır hata.
+- [x] **Adım 118**: Kaynaklar (Resources): `Siparis_StockShortage`, `Siparis_StockShortageGeneric`, `Siparis_PriceChangedNotice`, `Siparis_OrderFailed` AR/EN eklendi.
+- [x] **Adım 119**: Views `Odeme.cshtml`, `_AddressForm.cshtml`, `_IdentityVerification.cshtml` → `@model FilistinProje.Core.DTOs.CheckoutRequestDto`. Bind edilen alanlar aynı.
+- [x] **Adım 120**: `scripts/siparis_butunluk_test.sql` — manuel doğrulama betiği (stok race sim, fiyat manipülasyon sim, hediye paketi tekil tutar).
+
+### Fiyat formülü (CheckoutPOST sonrası, B3/B13 doğrulanmış):
+```
+Her satır için (grouped by UrunId + UrunSecenekId + CerceveModeli + HediyePaketi):
+  BirimFiyat = (secenek?.SatisFiyati > 0) ? secenek.SatisFiyati
+            : isWholesale ? urun.EtkinTopFiyat
+            : urun.EtkinFiyat
+  + çerçeve_farkı (boyut × çevre × 250/m, varsa)
+  - toptancı_iskonto (wholesale ise ve adet eşik aşarsa)
+  HediyePaketBirim = urun.HediyePaketFiyati (eğer urun.HediyePaketiVarMi && dto.HediyePaketi)
+  SatirToplam = BirimFiyat × Adet + HediyePaketBirim × Adet
+
+AraToplam = Σ SatirToplam
+IndirimTutari = (kupon varsa ve geçerli) ? kupon_indirim(AraToplam) : 0
+SepetIndirimli = AraToplam - IndirimTutari
+KargoUcreti = (magazadan teslim) ? 0 : KargoHesapla(sehir, SepetIndirimli, UcretsizKargoLimiti)
+KapidaOdemeHizmetBedeli = (COD && sepet <= CODLimiti) ? settings.KapidaOdemeHizmetBedeli : 0
+
+siparis.ToplamTutar = GenelToplam
+                   = (AraToplam - IndirimTutari) + KargoUcreti + KapidaOdemeHizmetBedeli
+                   ≥ 0
+```
+
+### Transaction davranışı (B2 + rollback garantisi):
+```
+BEGIN (Isol: ReadCommitted)
+  INSERT Siparisler
+  WAIT sql_save → @Id
+  foreach (satır in satirlar):                              -- atomik, sıralı
+    affected = UPDATE UrunSecenekleri SET Stok -= adet
+                WHERE Id=@id AND StokAdedi >= adet
+    if affected != 1 → Rollback + FormHata (StokShortage)
+  INSERT SiparisDetaylari × n (server-side BirimFiyat + HediyePaketBirim)
+  if (kupon): kupon.KullanilanMiktar++
+  SepetItems.SilindiMi = true (cart clear)
+  COMMIT
+if ANY exception → ROLLBACK + FormHata (OrderFailed)
+```
+Hiçbir durumda sipariş, kupon veya stok tek başına commit etmez; ya hep birlikte ya hiçbiri.
+
+### Faz 13 (Migration & Production Startup Güvenliği — B17, B21, DataProtection — 10 Temmuz 2026)
+- [x] **Adım 121**: Package: `Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore` 8.0.10 (Web).
+- [x] **Adım 122**: `StartupReadinessState` singleton (HealthChecks/StartupReadinessState.cs) — phase machine: Booting → DatabaseUnavailable | SchemaDriftFailed | MigrationPending | MigrationFailed | SeedFailed | Ready. LastErrorType/Message/UpdatedAtUtc.
+- [x] **Adım 123**: `StartupReadinessHealthCheck` (IHealthCheck) + `HealthCheckResponseWriter` — liveness `"alive"` plain text; readiness `{status, results[{check, status, description, durationMs}]}` JSON. Hiçbir yerde connection string/exception stack/body expose edilmez.
+- [x] **Adım 124**: Program.cs — `/health/live` (predicate=false, no checks, "alive" body), `/health/ready` (tag:ready → DB + startup), `/health` (tag:ready alias).
+- [x] **Adım 125**: DB available + Production'da kritik migration/seed hata → `app.Lifetime.StopApplication()` fail-fast. Development'ta log + devam.
+- [x] **Adım 126**: DB unavailable → state=DatabaseUnavailable, `/health/live=200` "alive", `/health/ready=503`. Hangfire + hosted services disabled (mevcut).
+- [x] **Adım 127**: `EnsureMigrationHistoryConsistencyAsync` — tüm elle uygulanan schema drift'leri __EFMigrationsHistory'ye yalnız MEVCUT schema karşılığı varsa ekler; `ProductVersion="8.0.4"` (snapshot uyumlu). Uygulanmamış migration'ı applied gibi işaretlemez. WHERE NOT EXISTS + bilinen kolon/tablo koşulu.
+- [x] **Adım 128**: `EnsureMissingMarch2026SchemaAsync`'e 3 eksik tablo eklendi: `CarkOdulleri`, `PushAbonelikleri` (FK+2 index), `StokBildirimLoglari` (FK+3 index). Tümü `CREATE TABLE IF NOT EXISTS` + `ADD CONSTRAINT IF NOT EXISTS`. ProductVersion 8.0.0 → 8.0.4 normalleşti.
+- [x] **Adım 129**: docker-compose.yml — `DATA_PROTECTION_KEYS_PATH=/app/secure-storage/dataprotection-keys` env; `filistin_app_secure_storage:/app/secure-storage` named volume. `.env.example` DATA_PROTECTION_KEYS_PATH satırı + açıklama eklendi.
+- [x] **Adım 130**: docker-compose.yml — web servisi volumes'a `filistin_app_secure_storage:/app/secure-storage` satırı. Volume declaration: `filistin_app_secure_storage: driver: local`.
+
+### Startup davranış matrisi
+
+| Ortam | DB Available | Migration hatası | Sonuç |
+|---|---|---|---|
+| Production | Yes | Hayır | Phase=Ready; /health/live=200; /health/ready=200 ✅ |
+| Production | Yes | Evet | fail-fast: app.Lifetime.StopApplication(); container exit; /health/ready=503 |
+| Production | No | — | Phase=DatabaseUnavailable; /health/live=200 "alive"; /health/ready=503 |
+| Development | Yes | Hayır | Phase=Ready; 200/200 ✅ |
+| Development | Yes | Evet | Logged; Phase=SchemaDriftFailed|MigrationFailed|SeedFailed; /health/ready=503 |
+| Development | No | — | Log+warn; /health/ready=503; liveness=200 |
+
+### Production Deployment Sırası (PowerShell + Docker Desktop)
+
+```powershell
+# === 1) Yedek al ===
+docker exec filistinproje-db pg_dump -U kanvasuser filistindb | Out-File -Encoding utf8 backup_$(Get-Date -Format 'yyyyMMdd_HHmmss').sql
+
+# === 2) Image build ===
+docker-compose build --no-cache web
+
+# === 3) Yeni container'ı başlat (depends_on db healthy, Compose sırayla başlatır) ===
+docker-compose up -d web
+
+# === 4) Log'ları izle, migration başarılı mı ===
+docker logs -f --tail 200 filistinproje-web
+
+# === 5) Readiness'i doğrula (migration bitene kadar poll) ===
+$readyUrl = "http://localhost:8080/health/ready"
+while ((Invoke-WebRequest -UseBasicParsing -Uri $readyUrl -TimeoutSec 3).StatusCode -ne 200) { Start-Sleep 2 }
+# "alive" liveness ayrı:
+$liveUrl = "http://localhost:8080/health/live"
+Invoke-WebRequest -UseBasicParsing -Uri $liveUrl | Select-Object StatusCode,Content
+
+# === 6) Trafik aç ===
+```
+
+### Rollback koşulları ve komutları
+
+**Koşul 1: `/health/ready` 503 dönmeye başlarsa** (production monitor alarm):
+```powershell
+docker logs --tail 500 filistinproje-web | Select-String -Pattern "Migration|Schema|Seed|LogCritical" -Context 2
+docker exec filistinproje-db psql -U kanvasuser -d filistindb -c "SELECT ""MigrationId"" FROM ""__EFMigrationsHistory"" ORDER BY ""MigrationId"" DESC LIMIT 10;"
+```
+
+**Koşul 2: Önceki image'a dön (zero-downtime rollback)**
+```powershell
+# Önceki image zaten varsa (docker images ile bak):
+docker tag filistinproje-web:previous filistinproje-web:latest
+docker-compose up -d --no-deps web
+```
+
+**Koşul 3: Tam veritabanı geri alma (DROP SCHEMA + restore)**
+```powershell
+# BU KOMUT TÜM VERİYİ SİLER. Sadece tam yedek olduğunda çalıştır.
+docker exec filistinproje-db psql -U kanvasuser -d filistindb -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+Get-Content backup_YYYYMMDD_HHmmss.sql | docker exec -i filistinproje-db psql -U kanvasuser -d filistindb
+docker-compose restart web
+```
+
+**DataProtection key kaybı** (auth cookie'leri geçersiz olur; yeniden login gerek):
+```powershell
+docker run --rm -v filistin_app_secure_storage:/data -v ${PWD}\dataprotection-backup:/backup alpine cp -a /backup/. /data/
+docker-compose restart web
+```
+
+### Gizli değerler (secrets) kuralları
+- `secrets.json` gitignore'da; **production'da ASLA kullanılmaz**.
+- SMTP username/password, connection string → yalnız environment variable (docker-compose `environment:` veya `.env`).
+- DataProtection key dosyaları gizli değil ama kalıcı volume şart.
+- `.env` **commit edilmez**; sadece `.env.example` repoda.
+
+### Migration History consistency (B17 karar)
+
+Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni entity property eklenince **her ikisine de eklenmeli** (mevcut kural). Ek olarak:
+- `EnsureMigrationHistoryConsistencyAsync` tüm elle uygulanan schema'lere karşılık gelen EF migration ID'lerini history'ye ekler (ProductVersion 8.0.4).
+- Bu method **schema kolon/tablo MEVCUTSA** ekler; yoksa eklemez. Bu sayede uygulanmamış migration'ı "applied" gibi işaretleme riski yoktur.
+- EF `MigrateAsync()` kendi history insert'ini snapshot ProductVersion ile yapar; çift insert `WHERE NOT EXISTS` ile engellenir.
+- `EnsureMissingMarch2026SchemaAsync` içinde tüm kolon/tablo değişiklikleri `ADD COLUMN IF NOT EXISTS` / `CREATE TABLE IF NOT EXISTS` / `ADD CONSTRAINT IF NOT EXISTS` ile idempotent.
+
+### Health endpoint güvenliği
+
+- `/health/live` → body `"alive"` (plain text). Yalnız process alive kontrolü. Hiçbir DB/CONN/stack yok.
+- `/health/ready` → JSON `{status: "Healthy|Degraded|Unhealthy", results: {"database": {status, description, durationMs}, "startup": {status, description, durationMs}}}`. description'da sadece "ready" / "booting" / "db_unavailable" / "schema_drift_failed" / "migration_failed" / "seed_failed" gibi enum etiketleri. Exception message dahil DEĞİLDİR.
+- Hiçbir endpoint body'sinde connection string, exception stack trace, IP, port, password yoktur.

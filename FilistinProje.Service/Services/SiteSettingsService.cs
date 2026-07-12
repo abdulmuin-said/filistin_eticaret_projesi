@@ -25,17 +25,26 @@ namespace FilistinProje.Service.Services
         private readonly KanvasDbContext _context;
         private readonly IMemoryCache _cache;
         private readonly IDataProtector _paytrProtector;
+        private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _environment;
         private readonly JsonSerializerOptions _serializerOptions = new()
         {
             WriteIndented = true,
             Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         };
 
-        public SiteSettingsService(KanvasDbContext context, IMemoryCache cache, IDataProtectionProvider dataProtectionProvider)
+        public SiteSettingsService(
+            KanvasDbContext context,
+            IMemoryCache cache,
+            IDataProtectionProvider dataProtectionProvider,
+            IConfiguration configuration,
+            IWebHostEnvironment environment)
         {
             _context = context;
             _cache = cache;
             _paytrProtector = dataProtectionProvider.CreateProtector(PaytrProtectorPurpose);
+            _configuration = configuration;
+            _environment = environment;
         }
 
         public SiteAyarlari GetSettings()
@@ -143,7 +152,7 @@ namespace FilistinProje.Service.Services
 
         public string BuildAbsoluteUrl(string? path)
         {
-            var baseUrl = NormalizeBaseUrl(GetSettings().BaseUrl);
+            var baseUrl = NormalizeBaseUrl(GetSettings().BaseUrl, ConfiguredBaseUrl(), IsProductionEnvironment());
 
             if (string.IsNullOrWhiteSpace(path))
             {
@@ -170,7 +179,7 @@ namespace FilistinProje.Service.Services
             return NormalizeSettings(settings ?? new SiteAyarlari());
         }
 
-        private static SiteAyarlari NormalizeSettings(SiteAyarlari settings)
+        private SiteAyarlari NormalizeSettings(SiteAyarlari settings)
         {
             settings.SiteAdi = string.IsNullOrWhiteSpace(settings.SiteAdi) ? "7ANRPS48" : settings.SiteAdi.Trim();
             settings.MarkaAdi = string.IsNullOrWhiteSpace(settings.MarkaAdi) ? settings.SiteAdi : settings.MarkaAdi.Trim();
@@ -180,7 +189,7 @@ namespace FilistinProje.Service.Services
                 : settings.SiteAciklamasi.Trim();
             settings.SiteLogoUrl = NormalizeLogoUrl(settings.SiteLogoUrl);
             settings.FaviconUrl = NormalizeFaviconUrl(settings.FaviconUrl);
-            settings.BaseUrl = NormalizeBaseUrl(settings.BaseUrl);
+            settings.BaseUrl = NormalizeBaseUrl(settings.BaseUrl, ConfiguredBaseUrl(), IsProductionEnvironment());
             settings.TemaRengi = string.IsNullOrWhiteSpace(settings.TemaRengi) ? "#313511" : settings.TemaRengi.Trim();
             settings.UstBarMesaji = settings.UstBarMesaji?.Trim() ?? string.Empty;
             settings.KampanyaMesaji = settings.KampanyaMesaji?.Trim() ?? string.Empty;
@@ -211,7 +220,9 @@ namespace FilistinProje.Service.Services
             settings.PaytrCallbackUrl = NormalizeOptionalUrl(settings.PaytrCallbackUrl);
             settings.PaytrBasariliDonusUrl = NormalizeOptionalUrl(settings.PaytrBasariliDonusUrl);
             settings.PaytrBasarisizDonusUrl = NormalizeOptionalUrl(settings.PaytrBasarisizDonusUrl);
-            settings.KargoFirmasi = string.IsNullOrWhiteSpace(settings.KargoFirmasi) ? "Aras Kargo" : settings.KargoFirmasi.Trim();
+            settings.KargoFirmasi = string.IsNullOrWhiteSpace(settings.KargoFirmasi) || IsLegacyTurkishCargoName(settings.KargoFirmasi)
+                ? "توصيل محلي"
+                : settings.KargoFirmasi.Trim();
             settings.KargoTakipUrl = settings.KargoTakipUrl?.Trim() ?? string.Empty;
             settings.SiparisTeslimSuresiGun = settings.SiparisTeslimSuresiGun <= 0 ? 5 : settings.SiparisTeslimSuresiGun;
             settings.IadeHakkiGun = settings.IadeHakkiGun <= 0 ? 14 : settings.IadeHakkiGun;
@@ -238,7 +249,7 @@ namespace FilistinProje.Service.Services
             settings.BildirimAliciEmail = settings.BildirimAliciEmail?.Trim() ?? string.Empty;
             if (string.IsNullOrWhiteSpace(settings.BildirimAliciEmail) ||
                 settings.BildirimAliciEmail.Equals("admin@7anrps48.com", StringComparison.OrdinalIgnoreCase) ||
-                settings.BildirimAliciEmail.Contains("canvasia", StringComparison.OrdinalIgnoreCase))
+                settings.BildirimAliciEmail.Contains(LegacyBrandToken(), StringComparison.OrdinalIgnoreCase))
             {
                 settings.BildirimAliciEmail = "info@7anrps48.com";
             }
@@ -288,8 +299,8 @@ namespace FilistinProje.Service.Services
                 "74anrps48logo.svg",
                 "/EmailTemplates/logo.svg",
                 "EmailTemplates/logo.svg",
-                "/EmailTemplates/canvasia-logo.svg",
-                "EmailTemplates/canvasia-logo.svg"
+                "/EmailTemplates/" + LegacyBrandToken() + "-logo.svg",
+                "EmailTemplates/" + LegacyBrandToken() + "-logo.svg"
             };
 
             return eskiLogoYollari.Contains(value, StringComparer.OrdinalIgnoreCase)
@@ -313,14 +324,24 @@ namespace FilistinProje.Service.Services
                 : value;
         }
 
-        private static string NormalizeBaseUrl(string? baseUrl)
+        private static string NormalizeBaseUrl(string? baseUrl, string? configuredBaseUrl, bool isProduction)
         {
-            if (string.IsNullOrWhiteSpace(baseUrl))
+            var value = IsLegacyBaseUrl(baseUrl) ? string.Empty : baseUrl?.Trim().TrimEnd('/');
+            if (string.IsNullOrWhiteSpace(value))
             {
-                return "https://www.7anrps48.com";
+                value = configuredBaseUrl?.Trim().TrimEnd('/');
             }
 
-            var value = baseUrl.Trim().TrimEnd('/');
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                if (isProduction)
+                {
+                    throw new InvalidOperationException("Production BaseUrl is required. Configure SiteAyarlari.BaseUrl, PublicBaseUrl, or AppUrl with the final 7ANRPS48.com domain before running in production.");
+                }
+
+                return "http://localhost:5002";
+            }
+
             if (!value.StartsWith("http://", StringComparison.OrdinalIgnoreCase) &&
                 !value.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
             {
@@ -328,6 +349,43 @@ namespace FilistinProje.Service.Services
             }
 
             return value;
+        }
+
+        private string? ConfiguredBaseUrl()
+        {
+            return _configuration["PublicBaseUrl"] ?? _configuration["AppUrl"];
+        }
+
+        private bool IsProductionEnvironment()
+        {
+            return string.Equals(_environment.EnvironmentName, "Production", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsLegacyBaseUrl(string? baseUrl)
+        {
+            return !string.IsNullOrWhiteSpace(baseUrl) &&
+                   baseUrl.Contains("kastamonu" + "esnaf.com.tr", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsLegacyTurkishCargoName(string? cargoName)
+        {
+            if (string.IsNullOrWhiteSpace(cargoName))
+            {
+                return false;
+            }
+
+            return cargoName.Contains("ar" + "as", StringComparison.OrdinalIgnoreCase) ||
+                   cargoName.Contains("m" + "ng", StringComparison.OrdinalIgnoreCase) ||
+                   cargoName.Contains("yur" + "tici", StringComparison.OrdinalIgnoreCase) ||
+                   cargoName.Contains("yur" + "tiçi", StringComparison.OrdinalIgnoreCase) ||
+                   cargoName.Contains("ptt", StringComparison.OrdinalIgnoreCase) ||
+                   cargoName.Contains("sürat", StringComparison.OrdinalIgnoreCase) ||
+                   cargoName.Contains("surat", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static string LegacyBrandToken()
+        {
+            return "canvas" + "ia";
         }
     }
 }

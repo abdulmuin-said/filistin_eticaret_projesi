@@ -498,12 +498,12 @@ function updateSelectionSummary() {
 
     var summaryFiyatEl = document.getElementById('summaryFiyat');
     if (summaryFiyatEl) {
-        summaryFiyatEl.textContent = toplamGift.toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + ' @currencySymbol';
+        summaryFiyatEl.textContent = window.formatMoney(toplamGift) + ' @currencySymbol';
     }
 
     var summaryBirimFiyatEl = document.getElementById('summaryBirimFiyat');
     if (summaryBirimFiyatEl) {
-        summaryBirimFiyatEl.textContent = adet > 1 ? `(birim: ${toplamBirimGift.toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })} @currencySymbol)` : '';
+        summaryBirimFiyatEl.textContent = adet > 1 ? `(birim: ${window.formatMoney(toplamBirimGift)} @currencySymbol)` : '';
     }
 
     var giftBadge = document.getElementById('summaryGiftBadge');
@@ -551,7 +551,7 @@ function toggleGiftWrap(container) {
                 var giftPriceInput = document.getElementById('hediyePaketFiyatiHidden');
                 if (giftPriceInput) totalPrice += parseFloat(giftPriceInput.value) || 0;
             }
-            priceDisplay.innerHTML = totalPrice.toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + ' @currencySymbol';
+            priceDisplay.innerHTML = window.formatMoney(totalPrice) + ' @currencySymbol';
         }
     }
 }
@@ -569,7 +569,7 @@ function updatePriceWithFrame() {
 
     var priceDisplay = document.getElementById('priceDisplay');
     if (priceDisplay) {
-        priceDisplay.innerHTML = `${newPrice.toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })} @currencySymbol`;
+        priceDisplay.innerHTML = `${window.formatMoney(newPrice)} @currencySymbol`;
     }
 
     var frameFarkiInput = document.getElementById('selectedFrameFarki');

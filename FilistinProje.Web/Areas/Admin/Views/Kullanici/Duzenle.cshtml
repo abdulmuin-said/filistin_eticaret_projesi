@@ -303,7 +303,7 @@
 
                             <div class="col-md-6">
                                 <label class="ca-label" asp-for="PhoneNumber">@Localizer["Admin_Telefon"]</label>
-                                <input asp-for="PhoneNumber" class="ca-input" inputmode="tel" autocomplete="tel" placeholder="Örn: 05xx xxx xx xx" />
+                                <input asp-for="PhoneNumber" class="ca-input" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="Örn: +970 599 123 456" />
                                 <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
                             </div>
 

@@ -1,0 +1,340 @@
+- generic [ref=f8e2]:
+  - text:          +                 
+  - banner [ref=f8e3]:
+    - generic [ref=f8e4]:
+      - link "7ANRPS48 لوحة التحكم" [ref=f8e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f8e6]
+      - generic [ref=f8e7]: لوحة البائع
+    - navigation "القائمة الرئيسية للإدارة" [ref=f8e8]:
+      - link " لوحة البيانات" [ref=f8e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f8e10]: 
+        - text: لوحة البيانات
+      - generic [ref=f8e11]:
+        - button " إدارة الطلبات" [ref=f8e12] [cursor=pointer]:
+          - generic [ref=f8e13]: 
+          - text: إدارة الطلبات
+        - text:      
+      - generic [ref=f8e14]:
+        - button " إدارة المنتجات" [ref=f8e15] [cursor=pointer]:
+          - generic [ref=f8e16]: 
+          - text: إدارة المنتجات
+        - text:  +    
+      - generic [ref=f8e17]:
+        - button " محتوى المتجر" [ref=f8e18] [cursor=pointer]:
+          - generic [ref=f8e19]: 
+          - text: محتوى المتجر
+        - text:          
+      - link " الأعضاء" [ref=f8e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f8e21]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=f8e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f8e23]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=f8e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f8e25]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=f8e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f8e27]: 
+        - text: مجموعات الجملة
+      - generic [ref=f8e28]:
+        - button " التقارير" [ref=f8e29] [cursor=pointer]:
+          - generic [ref=f8e30]: 
+          - text: التقارير
+        - text:  
+      - link " الحسابات البنكية" [ref=f8e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f8e32]: 
+        - text: الحسابات البنكية
+      - link " الإعدادات" [ref=f8e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f8e34]: 
+        - text: الإعدادات
+    - generic [ref=f8e35]:
+      - text: 
+      - combobox "اللغة" [ref=f8e37]:
+        - option "AR" [selected]
+        - option "EN"
+      - generic [ref=f8e38]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f8e39] [cursor=pointer]:
+          - generic [ref=f8e40]:
+            - strong [ref=f8e41]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f8e42]: "7"
+        - text:  
+  - generic [ref=f8e43]:
+    - main [ref=f8e44]:
+      - generic [ref=f8e45]:
+        - generic [ref=f8e46]:
+          - generic [ref=f8e47]:
+            - heading "لوحة التحكم" [level=1] [ref=f8e48]
+            - paragraph [ref=f8e49]: ملخص الطلبات والمخزون والزيارات في شاشة واحدة.
+          - generic [ref=f8e50]:
+            - generic [ref=f8e51]: 
+            - text: 09 يوليو 2026, الخميس
+        - generic [ref=f8e52]:
+          - generic [ref=f8e54]:
+            - generic [ref=f8e55]: إجمالي الإيرادات
+            - generic [ref=f8e56]: 1٬350٫00 ₪
+            - generic [ref=f8e57]: "شهرياً: 0٫00 ₪"
+          - generic [ref=f8e59]:
+            - generic [ref=f8e60]: إيرادات اليوم
+            - generic [ref=f8e61]: 0٫00 ₪
+            - generic [ref=f8e62]: "أسبوعياً: 0٫00 ₪"
+          - generic [ref=f8e64]:
+            - generic [ref=f8e65]: إجمالي الطلبات
+            - generic [ref=f8e66]: "5"
+            - generic [ref=f8e67]: "اليوم: 0 طلب"
+          - generic [ref=f8e69]:
+            - generic [ref=f8e70]: قيد الانتظار
+            - generic [ref=f8e71]: "0"
+            - generic [ref=f8e72]: "جاهز للشحن: 1"
+          - generic [ref=f8e74]:
+            - generic [ref=f8e75]: الشحن / المرتجعات
+            - generic [ref=f8e76]: 1 / 2
+            - generic [ref=f8e77]: ملخص العمليات
+          - generic [ref=f8e79]:
+            - generic [ref=f8e80]: الرسائل / المنتجات النشطة
+            - generic [ref=f8e81]: 0 / 4
+            - generic [ref=f8e82]: متابعة العمليات
+        - generic [ref=f8e83]:
+          - generic [ref=f8e84]:
+            - heading " مخطط إيرادات آخر 7 أيام" [level=3] [ref=f8e87]:
+              - generic [ref=f8e88]: 
+              - text: مخطط إيرادات آخر 7 أيام
+            - heading " اتجاه الإيرادات لـ12 شهرًا" [level=3] [ref=f8e94]:
+              - generic [ref=f8e95]: 
+              - text: اتجاه الإيرادات لـ12 شهرًا
+            - generic [ref=f8e99]:
+              - heading " إجراءات سريعة" [level=3] [ref=f8e101]:
+                - generic [ref=f8e102]: 
+                - text: إجراءات سريعة
+              - generic [ref=f8e104]:
+                - link " إضافة منتج" [ref=f8e106] [cursor=pointer]:
+                  - /url: /Admin/Urun/Ekle
+                  - generic [ref=f8e107]:
+                    - generic [ref=f8e109]: 
+                    - generic [ref=f8e110]: إضافة منتج
+                - link " الطلبات" [ref=f8e112] [cursor=pointer]:
+                  - /url: /Admin/Siparis
+                  - generic [ref=f8e113]:
+                    - generic [ref=f8e115]: 
+                    - generic [ref=f8e116]: الطلبات
+                - link " حقول الخصائص" [ref=f8e118] [cursor=pointer]:
+                  - /url: /Admin/UrunOzellik
+                  - generic [ref=f8e119]:
+                    - generic [ref=f8e121]: 
+                    - generic [ref=f8e122]: حقول الخصائص
+                - link " صندوق الرسائل" [ref=f8e124] [cursor=pointer]:
+                  - /url: /Admin/Iletisim
+                  - generic [ref=f8e125]:
+                    - generic [ref=f8e127]: 
+                    - generic [ref=f8e128]: صندوق الرسائل
+            - generic [ref=f8e129]:
+              - generic [ref=f8e131]:
+                - heading " الأكثر مبيعاً" [level=3] [ref=f8e133]:
+                  - generic [ref=f8e134]: 
+                  - text: الأكثر مبيعاً
+                - generic [ref=f8e136]:
+                  - generic [ref=f8e137]: 
+                  - paragraph [ref=f8e138]: لا توجد بيانات مبيعات بعد.
+              - generic [ref=f8e140]:
+                - heading " الأكثر مشاهدة" [level=3] [ref=f8e142]:
+                  - generic [ref=f8e143]: 
+                  - text: الأكثر مشاهدة
+                - generic [ref=f8e145]:
+                  - link "ساعة ذكية ساعة ذكية 12 görüntülenme " [ref=f8e146] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/49
+                    - img "ساعة ذكية" [ref=f8e147]
+                    - generic [ref=f8e148]:
+                      - generic [ref=f8e149]: ساعة ذكية
+                      - generic [ref=f8e150]: 12 görüntülenme
+                    - generic [ref=f8e151]: 
+                  - link "طقم كنبات مودرن طقم كنبات مودرن 1 görüntülenme " [ref=f8e152] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/48
+                    - img "طقم كنبات مودرن" [ref=f8e153]
+                    - generic [ref=f8e154]:
+                      - generic [ref=f8e155]: طقم كنبات مودرن
+                      - generic [ref=f8e156]: 1 görüntülenme
+                    - generic [ref=f8e157]: 
+                  - link "فستان سهرة أنيق فستان سهرة أنيق 0 görüntülenme " [ref=f8e158] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/50
+                    - img "فستان سهرة أنيق" [ref=f8e159]
+                    - generic [ref=f8e160]:
+                      - generic [ref=f8e161]: فستان سهرة أنيق
+                      - generic [ref=f8e162]: 0 görüntülenme
+                    - generic [ref=f8e163]: 
+                  - link "حقيبة جلدية حقيبة جلدية 0 görüntülenme " [ref=f8e164] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/51
+                    - img "حقيبة جلدية" [ref=f8e165]
+                    - generic [ref=f8e166]:
+                      - generic [ref=f8e167]: حقيبة جلدية
+                      - generic [ref=f8e168]: 0 görüntülenme
+                    - generic [ref=f8e169]: 
+            - generic [ref=f8e170]:
+              - generic [ref=f8e172]:
+                - heading " المنتجات المضافة حديثاً" [level=3] [ref=f8e174]:
+                  - generic [ref=f8e175]: 
+                  - text: المنتجات المضافة حديثاً
+                - generic [ref=f8e177]:
+                  - link "فستان سهرة أنيق SKU yok | 1٬299٫00 TL 07.07.2026 15:58" [ref=f8e178] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/50
+                    - generic [ref=f8e179]: فستان سهرة أنيق
+                    - generic [ref=f8e180]: SKU yok | 1٬299٫00 TL
+                    - generic [ref=f8e181]: 07.07.2026 15:58
+                  - link "حقيبة جلدية SKU yok | 899٫00 TL 07.07.2026 15:58" [ref=f8e182] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/51
+                    - generic [ref=f8e183]: حقيبة جلدية
+                    - generic [ref=f8e184]: SKU yok | 899٫00 TL
+                    - generic [ref=f8e185]: 07.07.2026 15:58
+                  - link "ساعة ذكية SKU yok | 799٫00 TL 07.07.2026 15:58" [ref=f8e186] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/49
+                    - generic [ref=f8e187]: ساعة ذكية
+                    - generic [ref=f8e188]: SKU yok | 799٫00 TL
+                    - generic [ref=f8e189]: 07.07.2026 15:58
+                  - link "طقم كنبات مودرن SKU yok | 4٬999٫00 TL 07.07.2026 15:58" [ref=f8e190] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/48
+                    - generic [ref=f8e191]: طقم كنبات مودرن
+                    - generic [ref=f8e192]: SKU yok | 4٬999٫00 TL
+                    - generic [ref=f8e193]: 07.07.2026 15:58
+              - generic [ref=f8e195]:
+                - heading " أحدث تقييمات العملاء" [level=3] [ref=f8e197]:
+                  - generic [ref=f8e198]: 
+                  - text: أحدث تقييمات العملاء
+                - generic [ref=f8e200]:
+                  - generic [ref=f8e201]: 
+                  - paragraph [ref=f8e202]: لا توجد تقييمات بعد.
+          - generic [ref=f8e203]:
+            - generic [ref=f8e204]:
+              - heading " تنبيهات النظام" [level=3] [ref=f8e206]:
+                - generic [ref=f8e207]: 
+                - text: تنبيهات النظام
+              - generic [ref=f8e209]:
+                - generic [ref=f8e210]: Eksik ürün verisi
+                - generic [ref=f8e211]: 4 aktif üründe ana görsel eksik.
+                - link "الذهاب إلى التفاصيل" [ref=f8e212] [cursor=pointer]:
+                  - /url: /Admin/Urun
+            - generic [ref=f8e213]:
+              - heading " ملخص العمليات" [level=3] [ref=f8e215]:
+                - generic [ref=f8e216]: 
+                - text: ملخص العمليات
+              - generic [ref=f8e217]:
+                - generic [ref=f8e218]:
+                  - generic [ref=f8e219]: الطلبات المعلقة
+                  - strong [ref=f8e220]: "0"
+                - generic [ref=f8e221]:
+                  - generic [ref=f8e222]: جاهز للشحن
+                  - strong [ref=f8e223]: "1"
+                - generic [ref=f8e224]:
+                  - generic [ref=f8e225]: تم الشحن
+                  - strong [ref=f8e226]: "1"
+                - generic [ref=f8e227]:
+                  - generic [ref=f8e228]: إلغاء / إرجاع
+                  - strong [ref=f8e229]: "2"
+            - generic [ref=f8e230]:
+              - heading " المبيعات حسب المدينة" [level=3] [ref=f8e232]:
+                - generic [ref=f8e233]: 
+                - text: المبيعات حسب المدينة
+              - generic [ref=f8e235]:
+                - generic [ref=f8e236]:
+                  - generic [ref=f8e237]: "1"
+                  - generic [ref=f8e238]:
+                    - generic [ref=f8e239]: Nablus
+                    - generic [ref=f8e240]: 620٫00 ₪
+                - generic [ref=f8e241]:
+                  - generic [ref=f8e242]: "1"
+                  - generic [ref=f8e243]:
+                    - generic [ref=f8e244]: Ramallah
+                    - generic [ref=f8e245]: 450٫00 ₪
+                - generic [ref=f8e246]:
+                  - generic [ref=f8e247]: "1"
+                  - generic [ref=f8e248]:
+                    - generic [ref=f8e249]: Hebron
+                    - generic [ref=f8e250]: 280٫00 ₪
+                - generic [ref=f8e251]:
+                  - generic [ref=f8e252]: "1"
+                  - generic [ref=f8e253]:
+                    - generic [ref=f8e254]: Gaza
+                    - generic [ref=f8e255]: 0٫00 ₪
+                - generic [ref=f8e256]:
+                  - generic [ref=f8e257]: "1"
+                  - generic [ref=f8e258]:
+                    - generic [ref=f8e259]: Jenin
+                    - generic [ref=f8e260]: 0٫00 ₪
+            - generic [ref=f8e261]:
+              - heading " منطقة الزيارات" [level=3] [ref=f8e263]:
+                - generic [ref=f8e264]: 
+                - text: منطقة الزيارات
+              - generic [ref=f8e265]:
+                - generic [ref=f8e266]:
+                  - generic [ref=f8e267]: زيارات آخر 7 أيام
+                  - strong [ref=f8e268]: "253"
+                - generic [ref=f8e269]:
+                  - generic [ref=f8e270]: زوار فريدون
+                  - strong [ref=f8e271]: "2"
+            - generic [ref=f8e272]:
+              - heading " أداء الفئات" [level=3] [ref=f8e274]:
+                - generic [ref=f8e275]: 
+                - text: أداء الفئات
+              - generic [ref=f8e277]:
+                - generic [ref=f8e278]: 
+                - paragraph [ref=f8e279]: لا توجد بيانات مبيعات للفئات بعد.
+            - generic [ref=f8e280]:
+              - heading " أحدث الأنشطة" [level=3] [ref=f8e282]:
+                - generic [ref=f8e283]: 
+                - text: أحدث الأنشطة
+              - generic [ref=f8e284]:
+                - generic [ref=f8e285]:
+                  - generic [ref=f8e287]: 
+                  - generic [ref=f8e288]:
+                    - generic [ref=f8e289]: تمت إضافة منتج جديد
+                    - generic [ref=f8e290]: فستان سهرة أنيق
+                  - generic [ref=f8e291]: 15:58
+                - generic [ref=f8e292]:
+                  - generic [ref=f8e294]: 
+                  - generic [ref=f8e295]:
+                    - generic [ref=f8e296]: تمت إضافة منتج جديد
+                    - generic [ref=f8e297]: حقيبة جلدية
+                  - generic [ref=f8e298]: 15:58
+                - generic [ref=f8e299]:
+                  - generic [ref=f8e301]: 
+                  - generic [ref=f8e302]:
+                    - generic [ref=f8e303]: تمت إضافة منتج جديد
+                    - generic [ref=f8e304]: ساعة ذكية
+                  - generic [ref=f8e305]: 15:58
+                - generic [ref=f8e306]:
+                  - generic [ref=f8e308]: 
+                  - generic [ref=f8e309]:
+                    - generic [ref=f8e310]: تمت إضافة منتج جديد
+                    - generic [ref=f8e311]: طقم كنبات مودرن
+                  - generic [ref=f8e312]: 15:58
+                - generic [ref=f8e313]:
+                  - generic [ref=f8e315]: 
+                  - generic [ref=f8e316]:
+                    - generic [ref=f8e317]: "طلب جديد #7"
+                    - generic [ref=f8e318]: Ahmet El-Filistini - 450٫00 ₪
+                  - generic [ref=f8e319]: 07:40
+                - generic [ref=f8e320]:
+                  - generic [ref=f8e322]: 
+                  - generic [ref=f8e323]:
+                    - generic [ref=f8e324]: "طلب جديد #8"
+                    - generic [ref=f8e325]: Fatima Hassan - 280٫00 ₪
+                  - generic [ref=f8e326]: 07:40
+                - generic [ref=f8e327]:
+                  - generic [ref=f8e329]: 
+                  - generic [ref=f8e330]:
+                    - generic [ref=f8e331]: "طلب جديد #9"
+                    - generic [ref=f8e332]: Mahmoud Abbas - 620٫00 ₪
+                  - generic [ref=f8e333]: 07:40
+                - generic [ref=f8e334]:
+                  - generic [ref=f8e336]: 
+                  - generic [ref=f8e337]:
+                    - generic [ref=f8e338]: "طلب جديد #10"
+                    - generic [ref=f8e339]: Layla Khoury - 195٫00 ₪
+                  - generic [ref=f8e340]: 07:40
+    - contentinfo [ref=f8e341]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

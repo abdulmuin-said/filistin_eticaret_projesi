@@ -2,24 +2,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["MyAddresses"];
-    var sehirler = new[] {
-        "BeytÃ¼llahim",
-        "Cenin (Jenin)",
-        "Deyr el-Balah",
-        "El-Halil (Hebron)",
-        "El-KudÃ¼s (Jerusalem)",
-        "Eriha (Jericho)",
-        "Gazze (Gaza)",
-        "Han Yunus (Khan Yunis)",
-        "Kalkilya (Qalqilya)",
-        "Kuzey Gazze",
-        "Nablus",
-        "Ramallah & El-Bireh",
-        "Refah (Rafah)",
-        "Salfit",
-        "Tubas",
-        "Tulkarim"
-    };
+    var sehirListesi = ViewBag.Sehirler as List<string> ?? new List<string>();
 }
 
 <!-- Breadcrumb -->
@@ -83,6 +66,12 @@
             {
                 <div class="bg-green-50 border border-green-200 text-green-700 text-sm px-4 py-3 rounded mb-6">
                     <i class="fas fa-circle-check mr-2"></i>@TempData["Mesaj"]
+                </div>
+            }
+            @if (TempData["Hata"] != null)
+            {
+                <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded mb-6">
+                    <i class="fas fa-circle-exclamation mr-2"></i>@TempData["Hata"]
                 </div>
             }
 
@@ -163,7 +152,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-brand-darktext tracking-wide uppercase mb-1.5">@Localizer["Phone"]</label>
-                    <input type="text" name="Telefon" required placeholder="0555 123 45 67"
+                    <input type="tel" inputmode="tel" name="Telefon" required maxlength="20" placeholder="@Localizer["PhonePlaceholder"]"
                            class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream" />
                 </div>
                 <div>
@@ -176,7 +165,7 @@
                     <select name="Sehir" required
                             class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream">
                         <option value="">@Localizer["SelectCity"]</option>
-                        @foreach (var sehir in sehirler)
+                        @foreach (var sehir in sehirListesi)
                         {
                             <option value="@sehir">@sehir</option>
                         }

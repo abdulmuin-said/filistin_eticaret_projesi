@@ -86,7 +86,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     Kullanci = e.AppUserId?.Length > 8 ? e.AppUserId[..8] + "..." : e.MusteriAdSoyad,
                     Ip = "-",
                     Islem = $"#{e.SiparisNo}",
-                    Detay = $"{e.ToplamTutar:N2} TL - {e.Durum}"
+                    Detay = $"{e.ToplamTutar:N2} ₪ - {e.Durum}"
                 }));
             }
 

@@ -7,7 +7,8 @@
     ViewData["Title"] = Model.LocalizedBaslik;
     var siteSettings = SiteSettingsService.GetSettings();
     var brandName = string.IsNullOrWhiteSpace(siteSettings.MarkaAdi) ? siteSettings.SiteAdi : siteSettings.MarkaAdi;
-    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "â‚ª" : siteSettings.ParaBirimi;
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
+    var isRtlDetay = System.Threading.Thread.CurrentThread.CurrentUICulture.TextInfo.IsRightToLeft;
 
     // --- VARYANT VE FÃƒâ€Ã‚Â°YAT HESAPLAMA ---
     var secenekler = ViewBag.Secenekler as List<FilistinProje.Core.Varliklar.UrunSecenek> ?? new List<FilistinProje.Core.Varliklar.UrunSecenek>();
@@ -31,7 +32,7 @@
     }
     else
     {
-        gosterilecekFiyat = varsayilanSecenek != null ? varsayilanSecenek.SatisFiyati : Model.EtkinFiyat;
+        gosterilecekFiyat = varsayilanSecenek != null && varsayilanSecenek.SatisFiyati > 0 ? varsayilanSecenek.SatisFiyati : Model.EtkinFiyat;
     }
     decimal eskiFiyat = gosterilecekFiyat * 1.15m;
 
@@ -215,7 +216,7 @@
 
 
 <!-- Mobile Lightbox -->
-<div id="mobileLightbox" class="fixed inset-0 z-[99990] hidden bg-black/95 items-center justify-center" role="dialog" aria-modal="true" aria-label="@Localizer["ProductImage"]">
+<div id="mobileLightbox" class="fixed inset-0 z-[99990] hidden bg-black/95 items-center justify-center" role="dialog" aria-modal="true" aria-hidden="true" aria-label="@Localizer["ProductImage"]">
     <button type="button" class="absolute top-4 right-4 z-[100000] text-white bg-black/50 hover:bg-black/70 rounded-full w-12 h-12 flex items-center justify-center" onclick="closeMobileLightbox()" aria-label="@Localizer["CloseImage"]">
         <i class="fas fa-times text-2xl"></i>
     </button>
@@ -231,7 +232,7 @@
 </div>
 
 <!-- Desktop Lightbox Modal -->
-<div class="fixed inset-0 z-[99990] hidden bg-black/95 items-center justify-center" id="desktopLightboxModal" role="dialog" aria-modal="true" aria-label="@Localizer["ProductImage"]">
+<div class="fixed inset-0 z-[99990] hidden bg-black/95 items-center justify-center" id="desktopLightboxModal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="@Localizer["ProductImage"]">
     <button type="button" class="absolute top-4 right-4 z-[100000] text-white bg-black/50 hover:bg-black/70 rounded-full w-12 h-12 flex items-center justify-center" id="closeDesktopModalBtn" aria-label="@Localizer["CloseImage"]">
         <i class="fas fa-times text-2xl"></i>
     </button>
@@ -247,7 +248,7 @@
 
 
 <!-- Yorum Yapma Modal -->
-<div class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 items-center justify-center" id="commentModal">
+<div class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 items-center justify-center" id="commentModal" aria-hidden="true">
     <div class="bg-white rounded-lg w-full max-w-md p-6 relative">
         <button class="absolute top-4 right-4 text-gray-400 hover:text-black" id="closeCommentModalBtn"><i class="fas fa-times"></i></button>
         <h5 class="font-serif text-2xl text-brand-olive mb-6">@Localizer["RateProduct"]</h5>
@@ -303,35 +304,270 @@
 
 <div class="container mx-auto px-4 py-12">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-        
-            @await Html.PartialAsync("_ProductGallery")
-            @await Html.PartialAsync("_ProductInfo")
+        <div class="space-y-4">
+            @* ─── ANA MEDYA ALANI ───
+                Galeri + Video karışık medya listesi. width/height CLS için explicit.
+                Keyboard ve touch swipe _Layout/globalmedia.js içinde delegated. *@
+            <div id="mainProductImageContainer"
+                 class="product-media relative aspect-square overflow-hidden rounded-2xl border border-brand-border bg-[#f8f6f2] shadow-sm"
+                 role="region"
+                 aria-roledescription="image"
+                 aria-label="@Localizer["ProductImage"]"
+                 tabindex="0">
+                @{
+                    var anaMedya = !string.IsNullOrWhiteSpace(varsayilanGaleriGorseli)
+                        ? Url.Content(varsayilanGaleriGorseli)
+                        : Url.Content("/img/products/placeholder.webp");
+                }
+                @if (!string.IsNullOrWhiteSpace(varsayilanGaleriGorseli))
+                {
+                    <img id="mainProductImage"
+                         src="@anaMedya"
+                         alt="@varsayilanGaleriAltMetni"
+                         data-product-name="@Model.LocalizedBaslik"
+                         width="800" height="800"
+                         class="h-full w-full cursor-zoom-in object-contain p-6 transition-opacity duration-200"
+                         onclick="openProductLightbox()"
+                         loading="eager"
+                         decoding="async"
+                         onerror="if(!this.dataset.fallbackApplied){this.dataset.fallbackApplied='true';this.src='/img/products/placeholder.webp';}" />
+                }
+                else
+                {
+                    <div class="flex h-full w-full flex-col items-center justify-center gap-3 text-brand-border" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" class="opacity-40">
+                            <rect x="40" y="60" width="120" height="90" rx="10" />
+                            <path d="M40 90 L160 90" />
+                            <path d="M85 60 L85 40 L145 40 L145 60" />
+                            <circle cx="135" cy="120" r="6" />
+                        </svg>
+                        <p class="text-xs text-brand-mutedtext">@Model.LocalizedBaslik</p>
+                    </div>
+                }
 
-            @await Html.PartialAsync("_Reviews")
-</div>
+                @* Galeri ok tuşları — RTL/LTR uyumlu (mantıksal prev/next; start/end always visual)
+                   Mantıksal olarak prev/next tipleri için ui ikonu locale göre ters çevrilir. *@
+                @if (galeriMedyalari.Count > 1)
+                {
+                    var prevIcon = isRtlDetay ? "fa-chevron-right" : "fa-chevron-left";
+                    var nextIcon = isRtlDetay ? "fa-chevron-left" : "fa-chevron-right";
+                    <button type="button" onclick="navigateGallery('prev', event)" aria-label="@Localizer["PreviousImage"]"
+                            class="gallery-nav-btn gallery-nav-prev absolute top-1/2 start-2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/85 hover:bg-white backdrop-blur flex items-center justify-center shadow-md focus-visible:ring-2 focus-visible:ring-brand-gold">
+                        <i class="fas @prevIcon text-sm text-brand-darktext"></i>
+                    </button>
+                    <button type="button" onclick="navigateGallery('next', event)" aria-label="@Localizer["NextImage"]"
+                            class="gallery-nav-btn gallery-nav-next absolute top-1/2 end-2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/85 hover:bg-white backdrop-blur flex items-center justify-center shadow-md focus-visible:ring-2 focus-visible:ring-brand-gold">
+                        <i class="fas @nextIcon text-sm text-brand-darktext"></i>
+                    </button>
+                }
+            </div>
+
+            @* ─── THUMBNAIL STRIP — klavye/swipe friendly tab list ─── *@
+            @if (galeriMedyalari.Count > 1)
+            {
+                <div class="product-thumbs flex gap-3 overflow-x-auto pb-2 px-1"
+                     role="tablist"
+                     aria-label="@Localizer["ProductImage"]"
+                     data-thumb-strip>
+                    @foreach (var medya in galeriMedyalari.Where(x => !string.IsNullOrWhiteSpace(x.ResimYolu)))
+                    {
+                        var thumbAlt = !string.IsNullOrWhiteSpace(medya.AltMetin) ? medya.AltMetin : Model.LocalizedBaslik;
+                        var isActive = medya == varsayilanMedya;
+                        <button type="button"
+                                class="thumbnail-item h-20 w-20 shrink-0 overflow-hidden rounded-xl border @(isActive ? "border-brand-olive ring-2 ring-brand-olive/40" : "border-transparent") bg-white p-1 transition-colors hover:border-brand-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
+                                data-image="@Url.Content(medya.ResimYolu)"
+                                data-thumb-alt="@thumbAlt"
+                                role="tab"
+                                aria-selected="@(isActive ? "true" : "false")"
+                                tabindex="@(isActive ? "0" : "-1")"
+                                onclick="changeProductImage('@Url.Content(medya.ResimYolu)', this, '@thumbAlt')">
+                            <img src="@Url.Content(medya.ResimYolu)" alt="@thumbAlt" width="80" height="80" class="h-full w-full object-cover pointer-events-none" loading="lazy" decoding="async" />
+                        </button>
+                    }
+                </div>
+            }
+
+            @* ─── VIDEO BLOKLARI —autoplay kapalı, poster = image, playsinline ─── *@
+            @if (videoMedyalari.Any())
+            {
+                <div class="grid grid-cols-1 gap-3">
+                    @foreach (var vid in videoMedyalari)
+                    {
+                        var kaynak = !string.IsNullOrWhiteSpace(vid.VideoUrl) ? vid.VideoUrl : vid.ResimYolu;
+                        if (string.IsNullOrWhiteSpace(kaynak)) { continue; }
+                        var guvenliVideoKaynak = kaynak.StartsWith("/media/products/videos/", StringComparison.OrdinalIgnoreCase)
+                            || kaynak.StartsWith("https://", StringComparison.OrdinalIgnoreCase)
+                            || kaynak.StartsWith("http://", StringComparison.OrdinalIgnoreCase);
+                        if (!guvenliVideoKaynak) { continue; }
+                        var poster = !string.IsNullOrWhiteSpace(vid.EtkinPosterYolu) ? vid.EtkinPosterYolu : anaMedya;
+                        var videoAlt = !string.IsNullOrWhiteSpace(vid.AltMetin) ? vid.AltMetin : Model.LocalizedBaslik;
+                        <figure class="rounded-2xl overflow-hidden border border-brand-border bg-black/5">
+                            <video controls preload="metadata" playsinline crossorigin="anonymous"
+                                   poster="@poster"
+                                   aria-label="@videoAlt"
+                                   class="w-full h-auto object-cover max-h-[420px]">
+                                <source src="@kaynak" type="video/mp4" />
+                                @Localizer["VideoNotSupported"]
+                            </video>
+                            @if (!string.IsNullOrWhiteSpace(vid.Baslik))
+                            {
+                                <figcaption class="px-3 py-2 text-xs text-brand-mutedtext bg-white/80 border-t border-brand-border">@vid.Baslik</figcaption>
+                            }
+                        </figure>
+                    }
+                </div>
+            }
+        </div>
+
+        <div class="space-y-8">
+            <div>
+                @if (!string.IsNullOrWhiteSpace(Model.Kategori?.LocalizedAd))
+                {
+                    <a href="/Urun?k=@Model.KategoriId" class="mb-3 inline-flex text-xs font-semibold uppercase tracking-[0.22em] text-brand-gold hover:text-brand-olive">@Model.Kategori.LocalizedAd</a>
+                }
+                <h1 class="font-serif text-3xl leading-tight text-brand-olive md:text-4xl">@Model.LocalizedBaslik</h1>
+                @if (!string.IsNullOrWhiteSpace(Model.LocalizedKisaAciklama))
+                {
+                    <p class="mt-4 text-sm leading-7 text-brand-mutedtext">@Model.LocalizedKisaAciklama</p>
+                }
+            </div>
+
+            @if (!Model.FiyatGizliMi)
+            {
+                <div class="flex flex-wrap items-end gap-3">
+                    <span class="text-3xl font-bold text-brand-gold">@gosterilecekFiyat.ToString("N2") @currencySymbol</span>
+                    @if (gosterilecekEskiFiyat.HasValue)
+                    {
+                        <span class="pb-1 text-sm text-gray-400 line-through">@gosterilecekEskiFiyat.Value.ToString("N2") @currencySymbol</span>
+                    }
+                    @if (gosterilecekIndirimYuzdesi.HasValue)
+                    {
+                        <span class="rounded-full bg-brand-olive px-3 py-1 text-xs font-semibold text-white">%@gosterilecekIndirimYuzdesi</span>
+                    }
+                </div>
+            }
+
+            <div class="grid gap-3 rounded-2xl border border-brand-border bg-white/80 p-4 text-sm text-brand-mutedtext shadow-sm sm:grid-cols-2">
+                <div class="flex items-center gap-2"><i class="@stokIkonClass"></i><span>@stokDurumuMetni</span></div>
+                <div class="flex items-center gap-2"><i class="fas fa-truck text-brand-gold"></i><span>@gosterilecekKargoSuresi @Localizer["Days"]</span></div>
+                <div class="flex items-center gap-2"><i class="fas fa-undo text-brand-gold"></i><span>@iadeSuresi @Localizer["DaysReturn"]</span></div>
+                <div class="flex items-center gap-2"><i class="fas fa-shield-alt text-brand-gold"></i><span>@Localizer["ManufacturerGuarantee"]</span></div>
+            </div>
+
+            @{
+                var varsayilanStok = varsayilanSecenek?.StokAdedi ?? toplamStok;
+                var varsayilanAzStok = !stoktaYokSatisIzni && varsayilanStok >= 1 && varsayilanStok <= 4;
+            }
+            <div id="lowStockWarning"
+                 class="@(varsayilanAzStok ? "" : "hidden") rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-700"
+                 role="status"
+                 aria-live="polite">
+                <i class="fas fa-hourglass-half me-2"></i>
+                <span id="lowStockText">@string.Format(Localizer["LowStockText"].Value, varsayilanStok)</span>
+            </div>
+
+            <form id="addToCartForm" class="space-y-5">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="UrunId" value="@Model.Id" />
+                <input type="hidden" id="selectedVariantId" value="@varsayilanSecenek?.Id" />
+                <input type="hidden" id="selectedQuantity" name="Adet" value="@minSiparisAdedi" />
+                <input type="hidden" id="selectedFrameFarki" value="0" />
+
+                <div class="flex items-center gap-3">
+                    <button type="button" class="flex h-11 w-11 items-center justify-center rounded-full border border-brand-border bg-white text-brand-olive" onclick="decreaseQuantity()">-</button>
+                    <input id="productQuantity" type="number" min="@minSiparisAdedi" max="@maxSiparisAdedi" value="@minSiparisAdedi" class="h-11 w-20 rounded-full border border-brand-border bg-white text-center text-sm font-semibold text-brand-darktext" />
+                    <button type="button" class="flex h-11 w-11 items-center justify-center rounded-full border border-brand-border bg-white text-brand-olive" onclick="increaseQuantity()">+</button>
+                </div>
+
+                <button id="ajaxSepetBtn" type="button" class="inline-flex w-full items-center justify-center gap-3 rounded-full bg-brand-olive px-6 py-4 text-sm font-bold uppercase tracking-[0.18em] text-white shadow-lg transition-colors hover:bg-[#1c2001] disabled:cursor-wait disabled:opacity-70">
+                    <i class="fas fa-shopping-bag add-to-cart-icon"></i>
+                    <span class="add-to-cart-text">@Localizer["AddToCart"]</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <section class="mt-14 rounded-2xl border border-brand-border bg-white/80 p-6 shadow-sm">
+        <h2 class="font-serif text-2xl text-brand-olive">@Localizer["ProductDetails"]</h2>
+        <div class="prose mt-4 max-w-none text-brand-mutedtext">
+            @if (!string.IsNullOrWhiteSpace(Model.LocalizedAciklama))
+            {
+                @Html.SanitizeHtml(Model.LocalizedAciklama)
+            }
+            else
+            {
+                <p>@Model.LocalizedKisaAciklama</p>
+            }
+        </div>
+    </section>
+
+    <section class="mt-8 rounded-2xl border border-brand-border bg-white/80 p-6 shadow-sm">
+        <div class="mb-5 flex items-center justify-between gap-4">
+            <h2 class="font-serif text-2xl text-brand-olive">@Localizer["Reviews"]</h2>
+            <button type="button" id="openCommentModalBtn" class="rounded-full border border-brand-olive px-4 py-2 text-xs font-semibold uppercase tracking-widest text-brand-olive transition-colors hover:bg-brand-olive hover:text-white">@Localizer["WriteReview"]</button>
+        </div>
+        @if (yorumlar.Any())
+        {
+            <div id="reviewsList" class="space-y-4">
+                @foreach (var yorum in yorumlar.Take(6))
+                {
+                    <article class="rounded-xl bg-brand-cream p-4">
+                        <div class="mb-2 flex items-center justify-between gap-3">
+                            <strong class="text-sm text-brand-darktext">@yorum.AdSoyad</strong>
+                            <span class="text-xs text-brand-gold">@string.Concat(Enumerable.Repeat("★", yorum.Puan))</span>
+                        </div>
+                        <p class="text-sm leading-6 text-brand-mutedtext">@yorum.YorumMetni</p>
+                    </article>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-sm text-brand-mutedtext">@Localizer["NoReviewsYet"]</p>
+        }
+    </section>
 
 @{
     var benzerUrunler = ViewBag.BenzerUrunler as List<FilistinProje.Core.DTOs.BenzerUrunDto>;
 }
 @if (benzerUrunler != null && benzerUrunler.Count > 0)
 {
-    <section class="py-16 bg-[#fafaf8]">
+    <section class="py-16 bg-[#fafaf8]" aria-labelledby="relatedProductsTitle">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-center mb-10">
                 <hr class="w-1/4 border-brand-border hidden md:block"/>
-                <h2 class="font-serif text-3xl mx-8 text-center text-brand-olive">@Localizer["SimilarProducts"]</h2>
+                <h2 id="relatedProductsTitle" class="font-serif text-3xl mx-8 text-center text-brand-olive">@Localizer["SimilarProducts"]</h2>
                 <hr class="w-1/4 border-brand-border hidden md:block"/>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
                 @foreach (var item in benzerUrunler)
                 {
-                    decimal itemFiyat = item.IndirimliFiyat ?? item.Fiyat;
+                    decimal itemFiyat = item.GosterFiyat;
                     decimal? bEskiFiyat = (item.IndirimliFiyat != null && item.IndirimliFiyat < item.Fiyat) ? item.Fiyat : null;
-                    string bProductUrl = !string.IsNullOrEmpty(item.Slug) ? $"/Urun/Detay/{item.Slug}-{item.Id}" : $"/Urun/Detay/{FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.Baslik)}-{item.Id}";
-                    string gorsel = !string.IsNullOrEmpty(item.AnaGorselUrl) ? item.AnaGorselUrl : "/img/products/placeholder.webp";
-                    <a href="@bProductUrl" class="group block">
-                        <div class="relative overflow-hidden mb-3 aspect-square bg-brand-cream rounded">
-                            <img alt="@item.LocalizedBaslik" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="@gorsel" loading="lazy" decoding="async" />
+                    var benzerUrlSlug = !string.IsNullOrEmpty(item.Slug) ? item.Slug : FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.LocalizedBaslik);
+                    if (string.IsNullOrWhiteSpace(benzerUrlSlug)) { benzerUrlSlug = "urun"; }
+                    string bProductUrl = $"/Urun/Detay/{benzerUrlSlug}-{item.Id}";
+                    bool benzerResimVar = !string.IsNullOrWhiteSpace(item.AnaGorselUrl);
+                    <a href="@bProductUrl" class="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 rounded">
+                        <div class="related-image-container relative overflow-hidden mb-3 aspect-square bg-[#f8f6f2] rounded">
+                            @if (benzerResimVar)
+                            {
+                                <img alt="@item.LocalizedBaslik"
+                                     src="@item.AnaGorselUrl"
+                                     width="400" height="400"
+                                     class="related-product-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                     loading="lazy" decoding="async" />
+                            }
+                            else
+                            {
+                                <div class="flex h-full w-full items-center justify-center text-brand-border" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="80" height="80" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" class="opacity-30">
+                                        <rect x="35" y="55" width="130" height="100" rx="8" />
+                                        <path d="M35 85 L165 85" />
+                                        <path d="M85 55 L85 35 L145 35 L145 55" />
+                                    </svg>
+                                </div>
+                            }
                         </div>
                         <h3 class="text-xs font-semibold text-brand-darktext tracking-wide line-clamp-2 mb-1">@item.LocalizedBaslik</h3>
                         <div class="flex items-center gap-2">
@@ -352,6 +588,10 @@
 
 <script>
 const PRODUCT_CURRENCY = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(currencySymbol));
+const PRODUCT_ADDED_TEXT = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Added"].Value));
+const PRODUCT_ADDED_TO_CART_TEXT = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["AddedToCartSuccess"].Value));
+const PRODUCT_ADD_TO_CART_TEXT = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["AddToCart"].Value));
+const PRODUCT_STOKTA_YOK_SATIS_IZNI = @Json.Serialize(stoktaYokSatisIzni);
 
 // Modal event listeners
 document.addEventListener('DOMContentLoaded', function() {
@@ -383,7 +623,31 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.key === 'Escape' || event.code === 'Escape') {
             closeProductLightbox();
         }
+
+        const activeInGallery = document.activeElement?.closest?.('#mainProductImageContainer, [data-thumb-strip], #desktopLightboxModal, #mobileLightbox');
+        if (activeInGallery && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
+            event.preventDefault();
+            const isRtl = document.documentElement.dir === 'rtl';
+            const logicalNext = event.key === 'ArrowRight' ? !isRtl : isRtl;
+            navigateGallery(logicalNext ? 'next' : 'prev', event);
+        }
     }, true);
+
+    const mediaContainer = document.getElementById('mainProductImageContainer');
+    let touchStartX = 0;
+    if (mediaContainer) {
+        mediaContainer.addEventListener('touchstart', event => {
+            touchStartX = event.changedTouches?.[0]?.clientX || 0;
+        }, { passive: true });
+        mediaContainer.addEventListener('touchend', event => {
+            const endX = event.changedTouches?.[0]?.clientX || 0;
+            const delta = endX - touchStartX;
+            if (Math.abs(delta) < 40) return;
+            const isRtl = document.documentElement.dir === 'rtl';
+            const logicalNext = delta < 0 ? !isRtl : isRtl;
+            navigateGallery(logicalNext ? 'next' : 'prev', event);
+        }, { passive: true });
+    }
 
     const commentModal = document.getElementById('commentModal');
     if (commentModal) {
@@ -391,6 +655,7 @@ document.addEventListener('DOMContentLoaded', function() {
         openBtns.forEach(btn => btn && btn.addEventListener('click', () => {
             commentModal.classList.remove('hidden');
             commentModal.classList.add('flex');
+            commentModal.setAttribute('aria-hidden', 'false');
         }));
 
         const closeCommentBtn = document.getElementById('closeCommentModalBtn');
@@ -398,6 +663,7 @@ document.addEventListener('DOMContentLoaded', function() {
             closeCommentBtn.addEventListener('click', () => {
                 commentModal.classList.add('hidden');
                 commentModal.classList.remove('flex');
+                commentModal.setAttribute('aria-hidden', 'true');
             });
         }
     }
@@ -461,6 +727,7 @@ function openProductLightbox() {
         if (dm) {
             dm.classList.remove('hidden');
             dm.classList.add('flex');
+            dm.setAttribute('aria-hidden', 'false');
             resetDesktopZoom();
         }
     } else {
@@ -468,6 +735,7 @@ function openProductLightbox() {
         if (mm) {
             mm.classList.remove('hidden');
             mm.classList.add('flex');
+            mm.setAttribute('aria-hidden', 'false');
             resetMobileZoom();
         }
     }
@@ -496,6 +764,7 @@ function closeDesktopLightbox() {
     if (dm) {
         dm.classList.add('hidden');
         dm.classList.remove('flex');
+        dm.setAttribute('aria-hidden', 'true');
         resetDesktopZoom();
     }
     unlockLightboxScroll();
@@ -506,6 +775,7 @@ function closeMobileLightbox() {
     if (mm) {
         mm.classList.add('hidden');
         mm.classList.remove('flex');
+        mm.setAttribute('aria-hidden', 'true');
         resetMobileZoom();
     }
     unlockLightboxScroll();
@@ -564,6 +834,11 @@ function updateDesktopTransform() {
 }
 
 function changeProductImage(imageUrl, thumbnailElement, altText) {
+    if (!thumbnailElement && imageUrl) {
+        thumbnailElement = Array.from(document.querySelectorAll('.thumbnail-item'))
+            .find(item => item.getAttribute('data-image') === imageUrl) || null;
+    }
+
     const mainImage = document.getElementById('mainProductImage');
     if (mainImage) {
         mainImage.src = imageUrl;
@@ -571,22 +846,35 @@ function changeProductImage(imageUrl, thumbnailElement, altText) {
     }
     
     const deskImg = document.getElementById('desktopLightboxImage');
-    if (deskImg) deskImg.src = imageUrl;
+    if (deskImg) {
+        deskImg.src = imageUrl;
+        if (altText) deskImg.alt = altText;
+    }
     
     const mobImg = document.getElementById('mobileLightboxImage');
-    if (mobImg) mobImg.src = imageUrl;
+    if (mobImg) {
+        mobImg.src = imageUrl;
+        if (altText) mobImg.alt = altText;
+    }
     
     const thumbnails = document.querySelectorAll('.thumbnail-item');
     thumbnails.forEach(item => {
         if (item) {
             item.classList.remove('border-brand-olive');
+            item.classList.remove('ring-2', 'ring-brand-olive/40');
             item.classList.add('border-transparent');
+            item.setAttribute('aria-selected', 'false');
+            item.setAttribute('tabindex', '-1');
         }
     });
     if (thumbnailElement) {
         thumbnailElement.classList.remove('border-transparent');
         thumbnailElement.classList.add('border-brand-olive');
+        thumbnailElement.classList.add('ring-2', 'ring-brand-olive/40');
+        thumbnailElement.setAttribute('aria-selected', 'true');
+        thumbnailElement.setAttribute('tabindex', '0');
         thumbnailElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        thumbnailElement.focus({ preventScroll: true });
     }
 
 }
@@ -649,12 +937,12 @@ function updateSelectionSummary() {
 
     var summaryFiyatEl = document.getElementById('summaryFiyat');
     if (summaryFiyatEl) {
-        summaryFiyatEl.textContent = toplamGift.toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + ' @currencySymbol';
+        summaryFiyatEl.textContent = window.formatMoney(toplamGift) + ' @currencySymbol';
     }
 
     var summaryBirimFiyatEl = document.getElementById('summaryBirimFiyat');
     if (summaryBirimFiyatEl) {
-        summaryBirimFiyatEl.textContent = adet > 1 ? `(birim: ${toplamBirimGift.toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })} @currencySymbol)` : '';
+        summaryBirimFiyatEl.textContent = adet > 1 ? `(birim: ${window.formatMoney(toplamBirimGift)} @currencySymbol)` : '';
     }
 
     var giftBadge = document.getElementById('summaryGiftBadge');
@@ -702,7 +990,7 @@ function toggleGiftWrap(container) {
                 var giftPriceInput = document.getElementById('hediyePaketFiyatiHidden');
                 if (giftPriceInput) totalPrice += parseFloat(giftPriceInput.value) || 0;
             }
-            priceDisplay.innerHTML = totalPrice.toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + ' @currencySymbol';
+            priceDisplay.innerHTML = window.formatMoney(totalPrice) + ' @currencySymbol';
         }
     }
 }
@@ -720,7 +1008,7 @@ function updatePriceWithFrame() {
 
     var priceDisplay = document.getElementById('priceDisplay');
     if (priceDisplay) {
-        priceDisplay.innerHTML = `${newPrice.toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })} @currencySymbol`;
+        priceDisplay.innerHTML = `${window.formatMoney(newPrice)} @currencySymbol`;
     }
 
     var frameFarkiInput = document.getElementById('selectedFrameFarki');
@@ -790,7 +1078,7 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
             
             if (effectiveOldPrice > effectivePrice) {
                 if (oldPriceDisplay) {
-                    oldPriceDisplay.innerHTML = effectiveOldPrice.toLocaleString('tr-TR', {minimumFractionDigits: 2}) + ' ' + PRODUCT_CURRENCY;
+                    oldPriceDisplay.innerHTML = window.formatMoney(effectiveOldPrice) + ' ' + PRODUCT_CURRENCY;
                     oldPriceDisplay.classList.remove('hidden');
                 }
                 if (discountBadge) {
@@ -816,7 +1104,7 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
             var lowStockWarning = document.getElementById('lowStockWarning');
             var lowStockText = document.getElementById('lowStockText');
             if (lowStockWarning) {
-                if (stock > 0 && stock <= 5) {
+                if (!PRODUCT_STOKTA_YOK_SATIS_IZNI && stock >= 1 && stock <= 4) {
                     if (lowStockText) {
                         var tpl = '@Html.Raw(Localizer["LowStockText"])';
                         lowStockText.textContent = tpl.replace('{0}', stock);
@@ -949,7 +1237,7 @@ if (ajaxSepetBtn) {
         }
         
         const originalHtml = this.innerHTML;
-        this.innerHTML = '<i class="fas fa-check"></i> @Localizer["Added"]';
+        this.innerHTML = '<i class="fas fa-check"></i> ' + PRODUCT_ADDED_TEXT;
         this.disabled = true;
 
         fetch(url + '?' + params.toString(), {
@@ -970,7 +1258,7 @@ if (ajaxSepetBtn) {
                     icon.classList.add('fa-check');
                 }
                 if (text) {
-                    text.textContent = '@Localizer["Added"]';
+                    text.textContent = PRODUCT_ADDED_TEXT;
                 }
                 btn.classList.add('bg-green-600');
 
@@ -992,7 +1280,7 @@ if (ajaxSepetBtn) {
                 });
 
                 if (window.showToast) {
-                    window.showToast('@Localizer["AddedToCartSuccess"]', 'success');
+                    window.showToast(PRODUCT_ADDED_TO_CART_TEXT, 'success');
                 }
                 
                 // 1 saniye sonra butonu sÄ±fÄ±rla (tekrar tÄ±klanabilir olsun)
@@ -1001,15 +1289,11 @@ if (ajaxSepetBtn) {
                         icon.classList.remove('fa-check');
                         icon.classList.add('fa-shopping-bag');
                     }
-                    if (text) text.textContent = '@Localizer["AddToCart"]';
+                    if (text) text.textContent = PRODUCT_ADD_TO_CART_TEXT;
                     btn.classList.remove('bg-green-600');
                     btn.disabled = false;
                 }, 1000);
                 
-                // 2 saniye sonra sepete yÃ¶nlendir
-                setTimeout(() => {
-                    window.location.href = '/Sepet';
-                }, 2000);
             } else {
                 if (window.showToast) {
                     window.showToast(data.message || '@Localizer["ErrorOccurred"]', 'error');
@@ -1040,9 +1324,12 @@ function navigateGallery(direction, event) {
     if (thumbnails.length <= 1) return;
     
     const mainImage = document.getElementById('mainProductImage');
-    const currentSrc = mainImage.getAttribute('src');
+    const currentSrc = mainImage?.getAttribute('src') || '';
     
-    let currentIndex = thumbnails.findIndex(item => item.getAttribute('data-image') === currentSrc);
+    let currentIndex = thumbnails.findIndex(item => {
+        const dataImage = item.getAttribute('data-image') || '';
+        return dataImage === currentSrc || currentSrc.endsWith(dataImage);
+    });
     if (currentIndex === -1) currentIndex = 0;
     
     let nextIndex;

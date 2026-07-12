@@ -1,8 +1,10 @@
 using System.Text;
 using FilistinProje.Core.Models;
 using FilistinProje.Core.Varliklar;
+using FilistinProje.Data;
 using FilistinProje.Service.Services;
 using FilistinProje.Web.Security;
+using FilistinProje.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,19 +17,25 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IAdminSessionStateService _adminSessionStateService;
         private readonly IAdminSecurityAuditService _auditService;
+        private readonly KanvasDbContext _context;
 
         public KullaniciController(
             UserManager<AppUser> userManager,
             IAdminSessionStateService adminSessionStateService,
-            IAdminSecurityAuditService auditService)
+            IAdminSecurityAuditService auditService,
+            KanvasDbContext context)
         {
             _userManager = userManager;
             _adminSessionStateService = adminSessionStateService;
             _auditService = auditService;
+            _context = context;
         }
 
-        public async Task<IActionResult> Index(string? search)
+        public async Task<IActionResult> Index(string? search, int page = 1, int pageSize = 20)
         {
+            page = Math.Max(page, 1);
+            pageSize = pageSize is 20 or 50 or 100 ? pageSize : 20;
+
             var query = _userManager.Users.AsQueryable();
             var term = search?.Trim();
 
@@ -40,17 +48,49 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     (u.PhoneNumber ?? string.Empty).Contains(normalized));
             }
 
+            var totalCount = await query.CountAsync();
+            var totalPages = Math.Max(1, (int)Math.Ceiling(totalCount / (double)pageSize));
+            page = Math.Min(page, totalPages);
+
+            var adminRoleIds = await _context.Roles
+                .AsNoTracking()
+                .Where(x => x.Name != null && AdminSecurityRoles.AllAdminRoles.Contains(x.Name))
+                .Select(x => x.Id)
+                .ToListAsync();
+
+            var adminCount = adminRoleIds.Count == 0
+                ? 0
+                : await _context.UserRoles
+                    .AsNoTracking()
+                    .Where(ur => adminRoleIds.Contains(ur.RoleId) && query.Any(u => u.Id == ur.UserId))
+                    .Select(ur => ur.UserId)
+                    .Distinct()
+                    .CountAsync();
+
             var users = await query
                 .OrderByDescending(u => u.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
 
             var states = await _adminSessionStateService.GetStatesAsync(users.Select(x => x.Id));
             var currentUserId = _userManager.GetUserId(User);
             var items = new List<KullaniciListItemViewModel>(users.Count);
+            var userIds = users.Select(x => x.Id).ToList();
+            var userRoles = await (from userRole in _context.UserRoles.AsNoTracking()
+                                   join role in _context.Roles.AsNoTracking() on userRole.RoleId equals role.Id
+                                   where userIds.Contains(userRole.UserId) && role.Name != null
+                                   select new { userRole.UserId, RoleName = role.Name! })
+                .ToListAsync();
+
+            var roleLookup = userRoles
+                .GroupBy(x => x.UserId)
+                .ToDictionary(x => x.Key, x => (ICollection<string>)x.Select(v => v.RoleName).ToList());
 
             foreach (var user in users)
             {
-                var roles = await _userManager.GetRolesAsync(user);
+                roleLookup.TryGetValue(user.Id, out var roles);
+                roles ??= Array.Empty<string>();
                 var primaryRole = roles.Count == 0
                     ? AdminSecurityRoles.Uye
                     : AdminSecurityRoles.GetPrimaryRole(roles);
@@ -77,9 +117,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var model = new KullaniciIndexViewModel
             {
                 Search = term ?? string.Empty,
-                TotalCount = items.Count,
-                AdminCount = items.Count(x => x.IsAdmin),
-                CustomerCount = items.Count(x => !x.IsAdmin),
+                TotalCount = totalCount,
+                AdminCount = adminCount,
+                CustomerCount = totalCount - adminCount,
+                Page = page,
+                PageSize = pageSize,
+                TotalPages = totalPages,
                 Kullanicilar = items
                     .OrderByDescending(x => x.IsAdmin)
                     .ThenBy(x => x.AdSoyad)
@@ -251,8 +294,20 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Duzenle), new { id = user.Id });
             }
 
+            string? normalizedPhone = null;
+            if (!string.IsNullOrWhiteSpace(model.PhoneNumber) && !PhoneNumberNormalizer.TryNormalize(model.PhoneNumber, out normalizedPhone))
+            {
+                ModelState.AddModelError(nameof(model.PhoneNumber), "Geçerli bir Filistin telefon numarası giriniz. Örn: +970 599 123 456");
+                var invalidPhoneModel = await BuildEditModelAsync(user);
+                invalidPhoneModel.AdSoyad = model.AdSoyad;
+                invalidPhoneModel.PhoneNumber = model.PhoneNumber;
+                invalidPhoneModel.Sehir = model.Sehir;
+                invalidPhoneModel.SelectedRole = selectedRole;
+                return View(invalidPhoneModel);
+            }
+
             user.AdSoyad = model.AdSoyad?.Trim() ?? string.Empty;
-            user.PhoneNumber = model.PhoneNumber?.Trim();
+            user.PhoneNumber = string.IsNullOrWhiteSpace(model.PhoneNumber) ? null : normalizedPhone;
             user.Sehir = model.Sehir?.Trim() ?? string.Empty;
 
             var updateResult = await _userManager.UpdateAsync(user);

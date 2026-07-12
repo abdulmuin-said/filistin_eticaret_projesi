@@ -25,6 +25,8 @@
     var currentQuery = HttpContextAccessor.HttpContext?.Request.QueryString.Value ?? string.Empty;
     var languageReturnUrl = $"{currentPath}{currentQuery}";
     var encodedLanguageReturnUrl = Uri.EscapeDataString(languageReturnUrl);
+    var arActive = currentCulture == "ar";
+    var enActive = currentCulture == "en";
 
     var topBarPrimary = string.Format(Localizer["FreeShippingLimit"], siteSettings.UcretsizKargoLimiti.ToString("N0"), siteSettings.ParaBirimi);
     var trustMessages = new List<string>
@@ -97,10 +99,20 @@
 <!-- BEGIN: MainHeader -->
     <header class="sticky top-0 bg-brand-cream z-[9999] border-b border-brand-border">
         <div class="w-full max-w-[1360px] mx-auto px-4 py-1.5 md:py-2 flex min-h-[62px] flex-col items-center justify-center relative md:min-h-0 md:justify-start">
-            <div class="absolute left-4 top-1/2 -translate-y-1/2 hidden lg:flex items-center rounded-full border border-brand-darkborder bg-white/80 p-1 shadow-sm">
-                <span class="px-2 text-brand-gold"><i class="fas fa-globe"></i></span>
-                <a href="/Dil/Degistir?culture=ar&returnUrl=@encodedLanguageReturnUrl" class="rounded-full px-2.5 py-1 text-xs font-semibold tracking-widest text-brand-mutedtext transition-colors hover:bg-brand-warmcream hover:text-brand-olive">AR</a>
-                <a href="/Dil/Degistir?culture=en&returnUrl=@encodedLanguageReturnUrl" class="rounded-full px-2.5 py-1 text-xs font-semibold tracking-widest text-brand-mutedtext transition-colors hover:bg-brand-warmcream hover:text-brand-olive">EN</a>
+            <div class="absolute left-4 top-1/2 -translate-y-1/2 hidden lg:flex items-center gap-1 rounded-full border border-[#c9b58a]/70 bg-[#fffaf0]/95 p-1 shadow-sm ring-1 ring-white/70" style="box-shadow: 0 10px 28px rgba(49, 53, 17, 0.10);">
+                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-brand-gold shadow-sm" aria-hidden="true">
+                    <i class="fas fa-globe text-xs"></i>
+                </span>
+                <a href="/Dil/Degistir?culture=ar&returnUrl=@encodedLanguageReturnUrl"
+                   lang="ar" dir="rtl"
+                   class="rounded-full px-3 py-1.5 text-xs font-semibold tracking-normal transition-all @(arActive ? "bg-brand-olive text-white shadow-md" : "text-brand-mutedtext hover:bg-white hover:text-brand-olive")">
+                    العربية
+                </a>
+                <a href="/Dil/Degistir?culture=en&returnUrl=@encodedLanguageReturnUrl"
+                   lang="en" dir="ltr"
+                   class="rounded-full px-3 py-1.5 text-xs font-semibold tracking-wide transition-all @(enActive ? "bg-brand-olive text-white shadow-md" : "text-brand-mutedtext hover:bg-white hover:text-brand-olive")">
+                    English
+                </a>
             </div>
 
             <!-- Logo -->
@@ -142,9 +154,9 @@
                         </svg>
                     </button>
                     <!-- Desktop Popover (md only) -->
-                    <div id="desktopLangPopover" class="absolute right-0 top-full mt-2 hidden z-[9999] min-w-[110px] rounded-lg border border-brand-darkborder bg-white p-1.5 shadow-xl">
-                        <a href="/Dil/Degistir?culture=ar&returnUrl=@encodedLanguageReturnUrl" class="block rounded-md px-3 py-2 text-center text-xs font-semibold tracking-widest text-brand-olive hover:bg-brand-warmcream transition-colors @(currentCulture == "ar" ? "bg-brand-warmcream" : "")">العربية</a>
-                        <a href="/Dil/Degistir?culture=en&returnUrl=@encodedLanguageReturnUrl" class="block rounded-md px-3 py-2 text-center text-xs font-semibold tracking-widest text-brand-mutedtext hover:bg-brand-warmcream transition-colors @(currentCulture == "en" ? "bg-brand-warmcream" : "")">English</a>
+                    <div id="desktopLangPopover" class="absolute right-0 top-full mt-2 hidden z-[9999] min-w-[150px] rounded-2xl border border-[#c9b58a]/70 bg-[#fffaf0] p-1.5 shadow-xl ring-1 ring-white/70">
+                        <a href="/Dil/Degistir?culture=ar&returnUrl=@encodedLanguageReturnUrl" lang="ar" dir="rtl" class="block rounded-xl px-3 py-2 text-center text-xs font-semibold transition-colors @(arActive ? "bg-brand-olive text-white" : "text-brand-olive hover:bg-white")">العربية</a>
+                        <a href="/Dil/Degistir?culture=en&returnUrl=@encodedLanguageReturnUrl" lang="en" dir="ltr" class="mt-1 block rounded-xl px-3 py-2 text-center text-xs font-semibold tracking-wide transition-colors @(enActive ? "bg-brand-olive text-white" : "text-brand-mutedtext hover:bg-white hover:text-brand-olive")">English</a>
                     </div>
                 </div>
 
@@ -177,7 +189,7 @@
             <!-- Mobile Left: Hamburger + Search Toggle -->
             <div class="absolute left-3 top-[calc(50%+3px)] -translate-y-1/2 flex md:hidden items-center gap-1 text-brand-darktext sm:left-4 sm:gap-1.5" dir="ltr">
                 <!-- Hamburger (ilk sirada — her dilde en solda) -->
-                <button aria-label="@Localizer["OpenMenu"]" onclick="window.toggleMobileNav(true)" class="flex h-11 w-11 items-center justify-center hover:text-brand-gold rounded-lg transition-colors" id="mobileMenuBtn">
+                <button aria-label="@Localizer["OpenMenu"]" onclick="window.toggleMobileNav(true)" class="flex h-11 w-11 items-center justify-center hover:text-brand-gold rounded-lg transition-colors" id="mobileMenuBtn" aria-expanded="false" aria-controls="mobileNav">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M3.75 6h16.5m-16.5 6h16.5m-16.5 6h16.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                 </button>
                 <button type="button" aria-label="@Localizer["Search"]" onclick="window.toggleSearchBar()" class="flex h-11 w-11 items-center justify-center hover:text-brand-gold rounded-lg transition-colors" id="mobileSearchBtn">
@@ -189,12 +201,12 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                             <path d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                        <span id="mobileLangCode" class="ml-0.5 text-[10px] font-bold uppercase text-brand-mutedtext">@currentCulture</span>
+                        <span id="mobileLangCode" class="ml-0.5 text-[10px] font-bold text-brand-mutedtext">@(arActive ? "العربية" : "English")</span>
                     </button>
                     <!-- Popover -->
-                    <div id="mobileLangPopover" class="absolute left-1/2 -translate-x-1/2 top-full mt-2 hidden z-[9999] min-w-[110px] rounded-lg border border-brand-darkborder bg-white p-1.5 shadow-xl">
-                        <a href="/Dil/Degistir?culture=ar&returnUrl=@encodedLanguageReturnUrl" class="block rounded-md px-3 py-2 text-center text-xs font-semibold tracking-widest text-brand-olive hover:bg-brand-warmcream transition-colors @(currentCulture == "ar" ? "bg-brand-warmcream" : "")">العربية</a>
-                        <a href="/Dil/Degistir?culture=en&returnUrl=@encodedLanguageReturnUrl" class="block rounded-md px-3 py-2 text-center text-xs font-semibold tracking-widest text-brand-mutedtext hover:bg-brand-warmcream transition-colors @(currentCulture == "en" ? "bg-brand-warmcream" : "")">English</a>
+                    <div id="mobileLangPopover" class="absolute left-1/2 -translate-x-1/2 top-full mt-2 hidden z-[9999] min-w-[150px] rounded-2xl border border-[#c9b58a]/70 bg-[#fffaf0] p-1.5 shadow-xl ring-1 ring-white/70">
+                        <a href="/Dil/Degistir?culture=ar&returnUrl=@encodedLanguageReturnUrl" lang="ar" dir="rtl" class="block rounded-xl px-3 py-2 text-center text-xs font-semibold transition-colors @(arActive ? "bg-brand-olive text-white" : "text-brand-olive hover:bg-white")">العربية</a>
+                        <a href="/Dil/Degistir?culture=en&returnUrl=@encodedLanguageReturnUrl" lang="en" dir="ltr" class="mt-1 block rounded-xl px-3 py-2 text-center text-xs font-semibold tracking-wide transition-colors @(enActive ? "bg-brand-olive text-white" : "text-brand-mutedtext hover:bg-white hover:text-brand-olive")">English</a>
                     </div>
                 </div>
             </div>
@@ -230,8 +242,8 @@
                     {
                         var altKategoriler = tumKategoriler.Where(x => x.ParentKategoriId == kategori.Id).OrderBy(x => x.Sira).ToList();
                         var kategoriPreviewGorsel = GetCategoryMenuImage(kategori);
-                        var kategoriPreviewMetin = !string.IsNullOrWhiteSpace(kategori.KisaAciklama)
-                            ? kategori.KisaAciklama
+                        var kategoriPreviewMetin = !string.IsNullOrWhiteSpace(kategori.LocalizedKisaAciklama)
+                            ? kategori.LocalizedKisaAciklama
                             : Localizer["ExploreCollectionProducts"];
 
                         <li class="relative group cursor-pointer hover:text-brand-darktext transition-colors py-2" data-category-menu-item>
@@ -330,7 +342,8 @@
         @await Html.PartialAsync("_MobileNav", new ViewDataDictionary(ViewData) {
             { "brandName", brandName },
             { "encodedLanguageReturnUrl", encodedLanguageReturnUrl },
-            { "tumKategoriler", tumKategoriler }
+            { "tumKategoriler", tumKategoriler },
+            { "sepetCount", sepetCount }
         })
 
         <!-- Mobile Search Bar (full width overlay) -->

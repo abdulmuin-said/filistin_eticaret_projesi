@@ -1,9 +1,11 @@
+using FilistinProje.Core.DTOs;
 using FilistinProje.Core.Interfaces;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Service.Interfaces;
 using FilistinProje.Service.Services;
 using FilistinProje.Web.Resources;
+using FilistinProje.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -28,6 +30,7 @@ namespace FilistinProje.Web.Controllers
         private readonly IStringLocalizer<SharedResource> _localizer;
         private readonly IKargoHesaplamaServisi _kargoHesaplama;
         private readonly IDosyaServisi _dosyaServisi;
+        private readonly IOrderPricingService _orderPricingService;
 
         public SiparisController(
             UserManager<AppUser> userManager,
@@ -40,7 +43,8 @@ namespace FilistinProje.Web.Controllers
             IWebHostEnvironment env,
             IStringLocalizer<SharedResource> localizer,
             IKargoHesaplamaServisi kargoHesaplama,
-            IDosyaServisi dosyaServisi)
+            IDosyaServisi dosyaServisi,
+            IOrderPricingService orderPricingService)
         {
             _userManager = userManager;
             _adresService = adresService;
@@ -53,6 +57,7 @@ namespace FilistinProje.Web.Controllers
             _localizer = localizer;
             _kargoHesaplama = kargoHesaplama;
             _dosyaServisi = dosyaServisi;
+            _orderPricingService = orderPricingService;
         }
 
         [HttpGet]
@@ -69,9 +74,7 @@ namespace FilistinProje.Web.Controllers
 
             await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
 
-            var model = new Siparis();
-            
-            // Kargo firmasi secimi kaldirildi - kargo hesaplama simdilik sehre gore yapilacak
+            var dto = new CheckoutRequestDto();
 
             if (User.Identity?.IsAuthenticated == true)
             {
@@ -81,19 +84,19 @@ namespace FilistinProje.Web.Controllers
                     var tumAdresler = await _adresService.GetAllAsync();
                     ViewBag.KayitliAdresler = tumAdresler.Where(x => x.AppUserId == user.Id).ToList();
 
-                    model.MusteriAdSoyad = user.AdSoyad;
-                    model.Eposta = user.Email ?? string.Empty;
-                    model.Telefon = user.PhoneNumber ?? string.Empty;
-                    model.Sehir = user.Sehir;
+                    dto.MusteriAdSoyad = user.AdSoyad;
+                    dto.Eposta = user.Email ?? string.Empty;
+                    dto.Telefon = user.PhoneNumber ?? string.Empty;
+                    dto.Sehir = user.Sehir;
                 }
             }
 
-            return View(model);
+            return View(dto);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Odeme(Siparis siparis, string? yeniAdresBasligi, bool adresiKaydet, bool sozlesmeOnaylandi, string odemeYontemi)
+        public async Task<IActionResult> Odeme(CheckoutRequestDto dto)
         {
             var userId = User.Identity?.IsAuthenticated == true ? _userManager.GetUserId(User) : null;
             var sessionId = HttpContext.Session.Id;
@@ -104,47 +107,128 @@ namespace FilistinProje.Web.Controllers
                 return RedirectToAction("Index", "Sepet");
             }
 
-            NormalizeCheckoutInput(siparis);
-
-            if (!string.IsNullOrWhiteSpace(userId))
+            // === B27: Bind attribute ile sadece güvenli alanlar alındı (DTO).
+            if (!dto.SozlesmeOnaylandi)
             {
-                var currentUser = await _userManager.GetUserAsync(User);
-                if (currentUser != null)
-                {
-                    siparis.Eposta = currentUser.Email ?? siparis.Eposta;
-                }
+                ModelState.AddModelError(nameof(dto.SozlesmeOnaylandi), _localizer["Siparis_TermsRequired"].Value);
             }
 
-            if (!sozlesmeOnaylandi)
-            {
-                ModelState.AddModelError("sozlesmeOnaylandi", _localizer["Siparis_TermsRequired"].Value);
-            }
-
-            var urunIds = sepetItems.Select(x => x.UrunId).ToList();
+            var urunIds = sepetItems.Select(x => x.UrunId).Distinct().ToList();
             var receteZorunluMu = await _context.Urunler
                 .Where(u => urunIds.Contains(u.Id) && !u.SilindiMi)
                 .AnyAsync(u => u.Kategori != null && u.Kategori.ReceteGerekliMi);
 
-            if (receteZorunluMu && !IsSafeUploadedPath(siparis.ReceteDosyaYolu, "uploads/receteler", allowPdf: true))
+            if (receteZorunluMu && !IsSafeUploadedPath(dto.ReceteDosyaYolu, "uploads/receteler", allowPdf: true))
             {
-                ModelState.AddModelError("ReceteDosyaYolu", _localizer["Siparis_PrescriptionRequired"].Value);
+                ModelState.AddModelError(nameof(dto.ReceteDosyaYolu), _localizer["Siparis_PrescriptionRequired"].Value);
             }
 
-            if (!string.IsNullOrWhiteSpace(siparis.KimlikFotoYolu) && !IsSafeUploadedPath(siparis.KimlikFotoYolu, "uploads/kimlikler", allowPdf: false))
+            if (!string.IsNullOrWhiteSpace(dto.KimlikFotoYolu) && !IsSafeUploadedPath(dto.KimlikFotoYolu, "uploads/kimlikler", allowPdf: false))
             {
-                ModelState.AddModelError(nameof(Siparis.KimlikFotoYolu), _localizer["Siparis_FileUploadError"].Value);
+                ModelState.AddModelError(nameof(dto.KimlikFotoYolu), _localizer["Siparis_FileUploadError"].Value);
             }
 
-            if (!ValidateCheckoutInput(siparis) || !ModelState.IsValid)
+            NormalizeCheckoutInput(dto);
+
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                var currentUser = await _userManager.GetUserAsync(User);
+                if (currentUser != null)
+                {
+                    dto.Eposta = currentUser.Email ?? dto.Eposta;
+                }
+            }
+
+            if (!ValidateCheckoutInput(dto) || !ModelState.IsValid)
             {
                 await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
                 ViewBag.FormHata = _localizer["Siparis_FormValidationError"].Value;
-                return View(siparis);
+                return View(dto);
             }
 
-            decimal hamTutar = await _sepetService.GetSepetToplamiAsync(userId, sessionId);
-            var settings = _siteSettingsService.GetSettings();
+            var sehirForPricing = dto.TeslimatTipi == "MagazadanTeslim" ? null : dto.Sehir;
+            var odemeForPricing = dto.OdemeYontemi == "KapidaOdeme" ? "KapidaOdeme" : "BankaHavalesi";
+            var kuponFromSession = HttpContext.Session.GetString("UygulananKupon");
 
+            // === B3: Server-side fiyat hesaplaması. SepetItem.Fiyat snapshot'ına güvenilmez.
+            OrderPricingResult pricing;
+            try
+            {
+                pricing = await _orderPricingService.HesaplaAsync(
+                    sepetItems,
+                    sehirForPricing,
+                    odemeForPricing,
+                    User.IsInRole("Wholesale"),
+                    kuponFromSession);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "OrderPricingService.HesaplaAsync basarisiz");
+                await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
+                ViewBag.FormHata = _localizer["Siparis_FormValidationError"].Value;
+                return View(dto);
+            }
+
+            // === B2: Stok yetersizse rollback öncesi formla geri dön.
+            if (pricing.StokSorunuVar)
+            {
+                var ilk = pricing.StokYetersizlikleri[0];
+                var stockMsg = string.Format(
+                    _localizer["Siparis_StockShortage"].Value,
+                    ilk.UrunBaslik,
+                    ilk.IstenenAdet,
+                    ilk.MevcutStok);
+                ModelState.AddModelError("stock", stockMsg);
+                await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
+                ViewBag.FormHata = stockMsg;
+                return View(dto);
+            }
+
+            var settings = _siteSettingsService.GetSettings();
+            decimal sepetToplamiIndirimli = pricing.AraToplam - pricing.IndirimTutari;
+
+            // COD limiti aşımı
+            if (odemeForPricing == "KapidaOdeme" && sepetToplamiIndirimli > settings.KapidaOdemeLimiti)
+            {
+                var codMsg = string.Format(_localizer["Siparis_CODLimitExceeded"].Value,
+                    settings.KapidaOdemeLimiti.ToString("N0"), settings.ParaBirimi);
+                ModelState.AddModelError(nameof(dto.OdemeYontemi), codMsg);
+                await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
+                ViewBag.FormHata = codMsg;
+                return View(dto);
+            }
+
+            // Wholesale min kontrol
+            if (User.IsInRole("Wholesale")
+                && settings.ToptanciMinSiparisTutari > 0
+                && sepetToplamiIndirimli < settings.ToptanciMinSiparisTutari)
+            {
+                var minOrderMsg = string.Format(_localizer["Siparis_WholesaleMinOrder"].Value,
+                    settings.ToptanciMinSiparisTutari.ToString("N0"), settings.ParaBirimi);
+                ModelState.AddModelError("SepetToplami", minOrderMsg);
+                await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
+                ViewBag.FormHata = minOrderMsg;
+                return View(dto);
+            }
+
+            // Banka havalesi: aktif banka hesabı kontrolü (UI korunsun)
+            if (dto.OdemeYontemi == "BankaHavalesi")
+            {
+                var aktifBankaVarMi = await _context.BankaHesaplari
+                    .Where(x => !x.SilindiMi && x.AktifMi)
+                    .AnyAsync();
+                if (!aktifBankaVarMi)
+                {
+                    var noBankMsg = _localizer["Siparis_NoActiveBankAccount"].Value;
+                    ModelState.AddModelError(nameof(dto.OdemeYontemi), noBankMsg);
+                    await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
+                    ViewBag.FormHata = noBankMsg;
+                    return View(dto);
+                }
+            }
+
+            // === B27: Siparis entity server-owned alanlar burada set edilir.
+            var siparis = dto.ToSiparisEntity();
             siparis.SiparisNo = await GenerateUniqueOrderNumberAsync();
             siparis.EmailHashKodu = Guid.NewGuid().ToString("N")[..16];
             siparis.OlusturulmaTarihi = DateTime.UtcNow;
@@ -152,104 +236,52 @@ namespace FilistinProje.Web.Controllers
             siparis.SilindiMi = false;
             siparis.AppUserId = userId;
             siparis.KargoTakipNo ??= string.Empty;
+            siparis.OdemeYontemi = odemeForPricing;
+            siparis.KapidaOdemeHizmetBedeli = pricing.KapidaOdemeHizmetBedeli;
 
-            if (odemeYontemi == "KapidaOdeme" && settings.KapidaOdemeAktifMi)
-            {
-                siparis.OdemeYontemi = "KapidaOdeme";
-                siparis.KapidaOdemeHizmetBedeli = settings.KapidaOdemeHizmetBedeli;
-            }
-            else
-            {
-                siparis.OdemeYontemi = "BankaHavalesi";
-                siparis.KapidaOdemeHizmetBedeli = 0;
-            }
-
-            var kullaniciNotu = siparis.Aciklama;
+            var kullaniciNotu = dto.Aciklama;
             siparis.Aciklama = siparis.OdemeYontemi == "KapidaOdeme"
                 ? _localizer["Siparis_PayOnDeliveryPending"].Value
                 : _localizer["Siparis_PaymentPending"].Value;
-
             if (!string.IsNullOrWhiteSpace(kullaniciNotu))
             {
                 siparis.Aciklama += " | Not: " + TrimToMaxLength(kullaniciNotu, 1000);
             }
-            siparis.ToplamTutar = hamTutar;
-            siparis.IndirimTutari = 0;
-            siparis.KuponKodu = null;
 
-            string? kuponKodu = HttpContext.Session.GetString("UygulananKupon");
-            if (!string.IsNullOrEmpty(kuponKodu))
+            // === B13: Hediye paketi bedeli pricing.AraToplam'a zaten dahil edildi.
+            // Çifte ekleme yok. siparis.ToplamTutar pricing.GenelToplam'dan geliyor.
+            siparis.IndirimTutari = pricing.IndirimTutari;
+            siparis.KuponKodu = pricing.UygulananKuponKodu;
+            siparis.ToplamTutar = pricing.GenelToplam;
+
+            if (dto.TeslimatTipi == "MagazadanTeslim")
             {
-                var kupon = await _context.Kuponlar.FirstOrDefaultAsync(x => x.Kod == kuponKodu && !x.SilindiMi);
-                if (kupon != null &&
-                    kupon.AktifMi &&
-                    kupon.SonKullanmaTarihi > DateTime.UtcNow &&
-                    (kupon.KullanimLimiti <= 0 || kupon.KullanilanMiktar < kupon.KullanimLimiti) &&
-                    hamTutar >= kupon.MinSepetTutari)
-                {
-                    var indirim = CalculateCouponDiscount(kupon, hamTutar);
-                    siparis.IndirimTutari = indirim;
-                    siparis.KuponKodu = kupon.Kod;
-                    siparis.ToplamTutar = Math.Max(0, siparis.ToplamTutar - indirim);
-                }
-            }
-
-            decimal sepetToplamiIndirimli = hamTutar - siparis.IndirimTutari;
-            if (siparis.OdemeYontemi == "KapidaOdeme" && sepetToplamiIndirimli > settings.KapidaOdemeLimiti)
-            {
-                ModelState.AddModelError("odemeYontemi", string.Format(_localizer["Siparis_CODLimitExceeded"].Value, settings.KapidaOdemeLimiti.ToString("N0"), settings.ParaBirimi));
-                await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
-                ViewBag.FormHata = string.Format(_localizer["Siparis_CODLimitExceeded"].Value, settings.KapidaOdemeLimiti.ToString("N0"), settings.ParaBirimi);
-                return View(siparis);
-            }
-
-            // --- TOPTANCI MINIMUM SİPARİŞ KONTROLÜ ---
-            if (User.IsInRole("Wholesale") && settings.ToptanciMinSiparisTutari > 0 && sepetToplamiIndirimli < settings.ToptanciMinSiparisTutari)
-            {
-                var minOrderMsg = string.Format(_localizer["Siparis_WholesaleMinOrder"].Value, settings.ToptanciMinSiparisTutari.ToString("N0"), settings.ParaBirimi);
-                ModelState.AddModelError("SepetToplami", minOrderMsg);
-                await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
-                ViewBag.FormHata = minOrderMsg;
-                return View(siparis);
-            }
-
-            // --- KARGO HESAPLAMA VE KAYDETME ---
-            decimal kargoUcreti = 0;
-
-            if (siparis.TeslimatTipi == "MagazadanTeslim")
-            {
-                siparis.KargoFirmasiId = null;
                 siparis.KargoFirmasi = null;
+                siparis.KargoFirmasiId = null;
                 siparis.Sehir = _localizer["StorePickupCity"];
                 siparis.Ilce = _localizer["StorePickupDistrict"];
                 siparis.AcikAdres = _localizer["StorePickupAddress"];
                 siparis.KargoUcreti = 0;
-                adresiKaydet = false;
+                dto.AdresiKaydet = false;
             }
             else
             {
-                kargoUcreti = await _kargoHesaplama.HesaplaAsync(
-                    siparis.Sehir,
-                    siparis.ToplamTutar,
-                    settings.UcretsizKargoLimiti);
-
-                siparis.KargoFirmasi = "";
+                siparis.KargoFirmasi = string.Empty;
                 siparis.KargoFirmasiId = null;
-                siparis.KargoUcreti = kargoUcreti;
+                siparis.KargoUcreti = Math.Max(0, pricing.KargoUcreti);
             }
 
-            siparis.ToplamTutar = siparis.ToplamTutar + kargoUcreti + siparis.KapidaOdemeHizmetBedeli;
-
-            await using var transaction = await _context.Database.BeginTransactionAsync();
+            // === Transaction: Sipariş + Detaylar + Stok + Kupon aynı tx.
+            await using var transaction = await _context.Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
 
             try
             {
-                if (adresiKaydet && !string.IsNullOrEmpty(userId))
+                if (dto.AdresiKaydet && !string.IsNullOrEmpty(userId))
                 {
                     _context.Adresler.Add(new Adres
                     {
                         AppUserId = userId,
-                        Baslik = string.IsNullOrWhiteSpace(yeniAdresBasligi) ? "Yeni Adresim" : yeniAdresBasligi.Trim(),
+                        Baslik = string.IsNullOrWhiteSpace(dto.YeniAdresBasligi) ? "Yeni Adresim" : dto.YeniAdresBasligi.Trim(),
                         AdSoyad = siparis.MusteriAdSoyad,
                         Telefon = siparis.Telefon,
                         Sehir = siparis.Sehir,
@@ -263,22 +295,37 @@ namespace FilistinProje.Web.Controllers
                 _context.Siparisler.Add(siparis);
                 await _context.SaveChangesAsync();
 
-                foreach (var item in sepetItems)
+                // === B2: Atomik koşullu stok düşümü (read-modify-write race yok).
+                var stokSonuc = await _orderPricingService.StokDusAsync(pricing.Satirlar);
+                if (!stokSonuc.Basarili)
                 {
-                    var gercekSecenekId = await ResolveOrderVariantIdAsync(item);
+                    _logger.LogWarning(
+                        "Sipariş stok düşümü başarısız — transaction rollback. SecenekId={SecenekId}, Mesaj={Mesaj}",
+                        stokSonuc.BasarisizUrunSecenekId, stokSonuc.HataMesaji);
+                    await transaction.RollbackAsync();
+                    ModelState.AddModelError("stock", _localizer["Siparis_StockShortageGeneric"].Value);
+                    await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
+                    ViewBag.FormHata = _localizer["Siparis_StockShortageGeneric"].Value;
+                    return View(dto);
+                }
 
+                // === B3 + B13: SiparisDetay eklerken server-side fiyatları yaz.
+                foreach (var line in pricing.Satirlar)
+                {
+                    var sourceItem = sepetItems.First(i => i.Id == line.SepetItemId);
+                    var gercekSecenekId = await ResolveOrderVariantIdAsync(sourceItem);
                     _context.SiparisDetaylari.Add(new SiparisDetay
                     {
                         SiparisId = siparis.Id,
                         UrunSecenekId = gercekSecenekId,
-                        Adet = item.Adet,
-                        BirimFiyat = item.Fiyat,
+                        Adet = line.Adet,
+                        BirimFiyat = line.BirimFiyat,
                         OlusturulmaTarihi = DateTime.UtcNow,
-                        UrunId = item.UrunId,
-                        CerceveModeli = item.CerceveModeli,
-                        MusteriNotu = item.MusteriNotu,
-                        HediyePaketi = item.HediyePaketi,
-                        HediyePaketFiyati = item.HediyePaketFiyati,
+                        UrunId = line.UrunId,
+                        CerceveModeli = sourceItem.CerceveModeli,
+                        MusteriNotu = sourceItem.MusteriNotu,
+                        HediyePaketi = line.HediyePaketi,
+                        HediyePaketFiyati = line.HediyePaketBirim,
                         SilindiMi = false
                     });
                 }
@@ -296,18 +343,29 @@ namespace FilistinProje.Web.Controllers
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Sipariş transaction hatası — rollback");
                 await transaction.RollbackAsync();
-                throw;
+                ModelState.AddModelError(string.Empty, _localizer["Siparis_OrderFailed"].Value);
+                await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
+                ViewBag.FormHata = _localizer["Siparis_OrderFailed"].Value;
+                return View(dto);
             }
 
             HttpContext.Session.Remove("UygulananKupon");
 
+            // Fiyat değişti ise kullanıcıya bildir (B3: sessizce farklı tahsil etmemek)
+            if (pricing.FiyatDegistiMi)
+            {
+                TempData["Siparis_FiyatDegisti"] = string.Format(
+                    _localizer["Siparis_PriceChangedNotice"].Value,
+                    pricing.FiyatDegisiklikleri.Count);
+            }
+
             _logger.LogInformation(
                 "Siparis odeme bekliyor durumunda olusturuldu. SiparisNo={SiparisNo}, Tutar={Tutar}",
-                siparis.SiparisNo,
-                siparis.ToplamTutar);
+                siparis.SiparisNo, siparis.ToplamTutar);
 
             await SendAdminOrderNotificationEmailAsync(siparis);
             await SendCustomerOrderConfirmationEmailAsync(siparis);
@@ -512,16 +570,6 @@ namespace FilistinProje.Web.Controllers
             ViewBag.ToplamTutar = Math.Max(0, sepetToplamiIndirimli + gosterilecekKargoBedeli);
             ViewBag.SepetItems = sepetItems;
 
-            // Şehir listesini KargoBolgeSehirler'den çek
-            ViewBag.Sehirler = await _context.KargoBolgeSehirler
-                .IgnoreQueryFilters()
-                .Where(s => !s.SilindiMi)
-                .Select(s => s.SehirAdi)
-                .Distinct()
-                .OrderBy(s => s)
-                .ToListAsync();
-
-            // Şehir listesini KargoBolgeSehirler'den çek
             ViewBag.Sehirler = await _context.KargoBolgeSehirler
                 .IgnoreQueryFilters()
                 .Where(s => !s.SilindiMi)
@@ -536,6 +584,8 @@ namespace FilistinProje.Web.Controllers
                 .ThenBy(x => x.BankaAdi)
                 .ToListAsync();
 
+            ViewBag.BankaHavaleAktifMi = ViewBag.BankaHesaplari is List<BankaHesap> hesaplar && hesaplar.Any();
+
             ViewBag.KapidaOdemeLimiti = settings.KapidaOdemeLimiti;
             ViewBag.KapidaOdemeAktifMi = settings.KapidaOdemeAktifMi && (sepetToplamiIndirimli <= settings.KapidaOdemeLimiti);
             ViewBag.KapidaOdemeHizmetBedeli = settings.KapidaOdemeHizmetBedeli;
@@ -548,62 +598,62 @@ namespace FilistinProje.Web.Controllers
             }
         }
 
-        private static void NormalizeCheckoutInput(Siparis siparis)
+        private static void NormalizeCheckoutInput(CheckoutRequestDto dto)
         {
-            siparis.MusteriAdSoyad = siparis.MusteriAdSoyad?.Trim() ?? string.Empty;
-            siparis.Eposta = siparis.Eposta?.Trim() ?? string.Empty;
-            siparis.Sehir = siparis.Sehir?.Trim() ?? string.Empty;
-            siparis.Ilce = siparis.Ilce?.Trim() ?? string.Empty;
-            siparis.AcikAdres = siparis.AcikAdres?.Trim() ?? string.Empty;
-
-            var temizTel = new string((siparis.Telefon ?? string.Empty).Where(char.IsDigit).ToArray());
-            if (!temizTel.StartsWith("0") && temizTel.Length == 10)
-            {
-                temizTel = "0" + temizTel;
-            }
-
-            siparis.Telefon = temizTel;
+            dto.MusteriAdSoyad = dto.MusteriAdSoyad?.Trim() ?? string.Empty;
+            dto.Eposta = dto.Eposta?.Trim() ?? string.Empty;
+            dto.Sehir = dto.Sehir?.Trim() ?? string.Empty;
+            dto.Ilce = dto.Ilce?.Trim() ?? string.Empty;
+            dto.AcikAdres = dto.AcikAdres?.Trim() ?? string.Empty;
+            dto.Telefon = dto.Telefon?.Trim() ?? string.Empty;
+            dto.Aciklama = dto.Aciklama?.Trim();
+            dto.ReceteDosyaYolu = dto.ReceteDosyaYolu?.Trim();
+            dto.KimlikFotoYolu = dto.KimlikFotoYolu?.Trim();
         }
 
-        private bool ValidateCheckoutInput(Siparis siparis)
+        private bool ValidateCheckoutInput(CheckoutRequestDto dto)
         {
-            siparis.TeslimatTipi = siparis.TeslimatTipi == "MagazadanTeslim" ? "MagazadanTeslim" : "AdreseTeslim";
+            dto.TeslimatTipi = dto.TeslimatTipi == "MagazadanTeslim" ? "MagazadanTeslim" : "AdreseTeslim";
 
-            if (string.IsNullOrWhiteSpace(siparis.MusteriAdSoyad))
+            if (string.IsNullOrWhiteSpace(dto.MusteriAdSoyad))
             {
-                ModelState.AddModelError(nameof(Siparis.MusteriAdSoyad), _localizer["Siparis_NameRequired"].Value);
+                ModelState.AddModelError(nameof(dto.MusteriAdSoyad), _localizer["Siparis_NameRequired"].Value);
             }
 
-            if (string.IsNullOrWhiteSpace(siparis.Eposta) || !IsValidEmail(siparis.Eposta))
+            if (string.IsNullOrWhiteSpace(dto.Eposta) || !IsValidEmail(dto.Eposta))
             {
-                ModelState.AddModelError(nameof(Siparis.Eposta), _localizer["Siparis_EmailRequired"].Value);
+                ModelState.AddModelError(nameof(dto.Eposta), _localizer["Siparis_EmailRequired"].Value);
             }
 
-            if (siparis.Telefon.Length != 11 || !siparis.Telefon.StartsWith("0"))
+            if (PhoneNumberNormalizer.TryNormalize(dto.Telefon, out var normalizedPhone))
             {
-                ModelState.AddModelError(nameof(Siparis.Telefon), _localizer["Siparis_PhoneRequired"].Value);
+                dto.Telefon = normalizedPhone;
+            }
+            else
+            {
+                ModelState.AddModelError(nameof(dto.Telefon), _localizer["Siparis_PhoneRequired"].Value);
             }
 
-            if (siparis.MusteriAdSoyad.Length > 150 || siparis.Ilce.Length > 100 || siparis.AcikAdres.Length > 500)
+            if (dto.MusteriAdSoyad.Length > 150 || dto.Ilce.Length > 100 || dto.AcikAdres.Length > 500)
             {
                 ModelState.AddModelError(string.Empty, _localizer["Siparis_FormValidationError"].Value);
             }
 
-            if (siparis.TeslimatTipi != "MagazadanTeslim")
+            if (dto.TeslimatTipi != "MagazadanTeslim")
             {
-                if (string.IsNullOrWhiteSpace(siparis.Sehir))
+                if (string.IsNullOrWhiteSpace(dto.Sehir))
                 {
-                    ModelState.AddModelError(nameof(Siparis.Sehir), _localizer["Siparis_CityRequired"].Value);
+                    ModelState.AddModelError(nameof(dto.Sehir), _localizer["Siparis_CityRequired"].Value);
                 }
 
-                if (string.IsNullOrWhiteSpace(siparis.Ilce))
+                if (string.IsNullOrWhiteSpace(dto.Ilce))
                 {
-                    ModelState.AddModelError(nameof(Siparis.Ilce), _localizer["Siparis_DistrictRequired"].Value);
+                    ModelState.AddModelError(nameof(dto.Ilce), _localizer["Siparis_DistrictRequired"].Value);
                 }
 
-                if (string.IsNullOrWhiteSpace(siparis.AcikAdres) || siparis.AcikAdres.Length < 10)
+                if (string.IsNullOrWhiteSpace(dto.AcikAdres) || dto.AcikAdres.Length < 10)
                 {
-                    ModelState.AddModelError(nameof(Siparis.AcikAdres), _localizer["Siparis_AddressRequired"].Value);
+                    ModelState.AddModelError(nameof(dto.AcikAdres), _localizer["Siparis_AddressRequired"].Value);
                 }
             }
 
@@ -628,6 +678,25 @@ namespace FilistinProje.Web.Controllers
             if (string.IsNullOrWhiteSpace(path))
             {
                 return false;
+            }
+
+            if (DosyaServisi.TryParsePrivateReference(path, out var kategori, out var belgeAdi))
+            {
+                var expectedKategori = expectedFolder.Contains("recete", StringComparison.OrdinalIgnoreCase)
+                    ? HassasBelgeKategorisi.Recete
+                    : HassasBelgeKategorisi.Kimlik;
+
+                if (kategori != expectedKategori || !DosyaServisi.IsSafeStoredFileName(belgeAdi))
+                {
+                    return false;
+                }
+
+                var privateExtension = Path.GetExtension(belgeAdi);
+                var allowedPrivateExtensions = allowPdf
+                    ? new[] { ".jpg", ".jpeg", ".png", ".webp", ".pdf" }
+                    : new[] { ".jpg", ".jpeg", ".png", ".webp" };
+
+                return allowedPrivateExtensions.Contains(privateExtension, StringComparer.OrdinalIgnoreCase);
             }
 
             var normalizedPath = path.Trim().Replace('\\', '/');

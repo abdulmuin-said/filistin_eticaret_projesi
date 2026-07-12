@@ -3,6 +3,7 @@ using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Service.Services;
 using FilistinProje.Web.Resources;
+using FilistinProje.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -272,6 +273,14 @@ namespace FilistinProje.Web.Controllers
                 .OrderByDescending(x => x.OlusturulmaTarihi)
                 .ToListAsync();
 
+            ViewBag.Sehirler = await _context.KargoBolgeSehirler
+                .IgnoreQueryFilters()
+                .Where(s => !s.SilindiMi)
+                .Select(s => s.SehirAdi)
+                .Distinct()
+                .OrderBy(s => s)
+                .ToListAsync();
+
             return View(adreslerim);
         }
 
@@ -288,7 +297,15 @@ namespace FilistinProje.Web.Controllers
             adres.AppUserId = user.Id;
             adres.Baslik = adres.Baslik?.Trim() ?? string.Empty;
             adres.AdSoyad = adres.AdSoyad?.Trim() ?? string.Empty;
-            adres.Telefon = adres.Telefon?.Trim() ?? string.Empty;
+            if (PhoneNumberNormalizer.TryNormalize(adres.Telefon, out var normalizedPhone))
+            {
+                adres.Telefon = normalizedPhone;
+            }
+            else
+            {
+                TempData["Hata"] = _localizer["Siparis_PhoneRequired"].Value;
+                return RedirectToAction(nameof(Adreslerim));
+            }
             adres.Sehir = adres.Sehir?.Trim() ?? string.Empty;
             adres.Ilce = adres.Ilce?.Trim() ?? string.Empty;
             adres.AcikAdres = adres.AcikAdres?.Trim() ?? string.Empty;

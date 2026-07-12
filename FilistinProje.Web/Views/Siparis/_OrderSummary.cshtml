@@ -22,15 +22,9 @@
 
     var kayitliAdresler = ViewBag.KayitliAdresler as List<FilistinProje.Core.Varliklar.Adres>;
     bool girisYapmis = User.Identity?.IsAuthenticated == true;
-    // Åehir listesini veritabanÄ±ndaki KargoBolgeSehirler'den Ã§ek (controller ViewBag Ã¼zerinden gÃ¶nderir)
+    // Şehir listesi veritabanındaki KargoBolgeSehirler'den gelir
     var sehirListesi = ViewBag.Sehirler as List<string> ?? new List<string>();
-    var sehirler = sehirListesi.Any() ? sehirListesi.ToArray() : new[]
-    {
-        "BeytÃ¼llahim", "Cenin (Jenin)", "Deyr el-Balah", "El-Halil (Hebron)",
-        "El-KudÃ¼s (Jerusalem)", "Eriha (Jericho)", "Gazze", "Han Yunus (Khan Yunis)",
-        "Kalkilya (Qalqilya)", "Kuzey Gazze", "Nablus", "Ramallah & El-Bireh",
-        "Refah (Rafah)", "Salfit", "Tubas", "Tulkarim"
-    };
+    var sehirler = sehirListesi;
 }
 
 <!-- Breadcrumb -->

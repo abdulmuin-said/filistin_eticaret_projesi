@@ -554,7 +554,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     .OrderByDescending(x => x.Adet)
                     .ToList(),
                 KargoPerformansi = orders
-                    .GroupBy(x => string.IsNullOrWhiteSpace(x.KargoFirmasi) ? "Aras Kargo" : x.KargoFirmasi.Trim())
+                    .GroupBy(x => string.IsNullOrWhiteSpace(x.KargoFirmasi) ? "Kargo firması seçilmedi" : x.KargoFirmasi.Trim())
                     .Select(g => new RaporKargoMetric
                     {
                         Firma = g.Key,
@@ -638,7 +638,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 {
                     Seviye = "info",
                     Baslik = "Terk edilen sepet fÄ±rsatÄ±",
-                    Aciklama = $"{model.TerkEdilenSepetSayisi} terk edilen sepette yaklaÅŸÄ±k {model.TerkEdilenSepetTutari:N2} TL potansiyel gelir var.",
+                    Aciklama = $"{model.TerkEdilenSepetSayisi} terk edilen sepette yaklaÅŸÄ±k {model.TerkEdilenSepetTutari:N2} ₪ potansiyel gelir var.",
                     Link = "/Admin/Rapor"
                 });
             }
@@ -760,7 +760,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         private static string Money(decimal value)
         {
-            return $"{value:N2} TL";
+            return $"{value:N2} ₪";
         }
 
         private static void AddSummarySheet(ExcelPackage package, RaporIndexViewModel model)

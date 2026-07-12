@@ -5,6 +5,7 @@
 @{
     ViewData["Title"] = Localizer["MyCart"];
     var siteSettings = SiteSettingsService.GetSettings();
+    var toplamAdet = Model.Sum(x => x.Adet);
     var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "â‚ª" : siteSettings.ParaBirimi;
     decimal sepetToplami = Model.Sum(x => x.Toplam);
     decimal indirimTutari = (decimal)(ViewBag.IndirimTutari ?? 0);
@@ -13,7 +14,19 @@
     decimal genelToplam = (decimal)(ViewBag.GenelToplam ?? (sepetToplami - indirimTutari));
 }
 
+@using System.Globalization
 @functions {
+    private static string GetLocalizedTitle(string baslik, string? baslikEn, string? baslikAr)
+    {
+        var culture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+        return culture switch
+        {
+            "ar" => !string.IsNullOrWhiteSpace(baslikAr) ? baslikAr : (!string.IsNullOrWhiteSpace(baslikEn) ? baslikEn! : baslik),
+            "en" => !string.IsNullOrWhiteSpace(baslikEn) ? baslikEn! : (!string.IsNullOrWhiteSpace(baslikAr) ? baslikAr! : baslik),
+            _ => !string.IsNullOrWhiteSpace(baslikAr) ? baslikAr! : (!string.IsNullOrWhiteSpace(baslikEn) ? baslikEn! : baslik)
+        };
+    }
+
     private static string FormatCartOptionLabel(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))
@@ -72,7 +85,7 @@
     <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
             <h1 class="font-serif text-3xl text-brand-olive mb-1">@Localizer["MyCart"]</h1>
-            <p class="text-xs text-brand-mutedtext">@Localizer["ProductCount", Model.Count]</p>
+            <p class="text-xs text-brand-mutedtext">@Localizer["ProductCount", toplamAdet]</p>
         </div>
         @if (Model.Any())
         {
@@ -117,9 +130,17 @@
         <div class="flex flex-col lg:flex-row gap-8">
             <!-- ÃœrÃ¼n Listesi -->
             <div class="flex-1 space-y-4">
+                @{
+    var urunBaslikLookup = ViewBag.UrunBaslikLookup as Dictionary<int, dynamic>;
+}
                 @foreach (var item in Model)
                 {
                     var optionLabel = FormatCartOptionLabel(item.SecenekAdi);
+                    string localizedUrunBaslik = item.UrunBaslik;
+                    if (urunBaslikLookup != null && urunBaslikLookup.TryGetValue(item.UrunId, out var ub))
+                    {
+                        localizedUrunBaslik = GetLocalizedTitle(ub.Baslik, ub.BaslikEn, ub.BaslikAr);
+                    }
 
                     <article class="bg-white border border-brand-border rounded-lg p-4 flex gap-4 relative">
                         <!-- Sil Butonu -->
@@ -133,13 +154,13 @@
 
                         <!-- ÃœrÃ¼n GÃ¶rseli -->
                         <a href="/Urun/Detay/@item.UrunId" class="flex-shrink-0 w-24 h-24 bg-brand-warmcream rounded overflow-hidden block">
-                            <img src="@item.UrunResimUrl" class="w-full h-full object-cover" alt="@item.UrunBaslik" loading="lazy" decoding="async" />
+                            <img src="@item.UrunResimUrl" class="w-full h-full object-cover" alt="@localizedUrunBaslik" loading="lazy" decoding="async" />
                         </a>
 
                         <!-- ÃœrÃ¼n Bilgisi -->
                         <div class="flex-1 min-w-0 pe-6">
                             <a href="/Urun/Detay/@item.UrunId" class="font-medium text-sm text-brand-darktext hover:text-brand-gold transition-colors line-clamp-2 block mb-1">
-                                @item.UrunBaslik
+                                @localizedUrunBaslik
                             </a>
                             @if (!string.IsNullOrWhiteSpace(optionLabel))
                             {

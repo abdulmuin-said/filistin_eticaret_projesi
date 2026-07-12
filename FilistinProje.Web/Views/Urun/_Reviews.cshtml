@@ -268,7 +268,7 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
             
             if (effectiveOldPrice > effectivePrice) {
                 if (oldPriceDisplay) {
-                    oldPriceDisplay.innerHTML = effectiveOldPrice.toLocaleString('tr-TR', {minimumFractionDigits: 2}) + ' ' + PRODUCT_CURRENCY;
+                    oldPriceDisplay.innerHTML = window.formatMoney(effectiveOldPrice) + ' ' + PRODUCT_CURRENCY;
                     oldPriceDisplay.classList.remove('hidden');
                 }
                 if (discountBadge) {
@@ -294,7 +294,7 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
             var lowStockWarning = document.getElementById('lowStockWarning');
             var lowStockText = document.getElementById('lowStockText');
             if (lowStockWarning) {
-                if (stock > 0 && stock <= 5) {
+                if (!@Json.Serialize(stoktaYokSatisIzni) && stock >= 1 && stock <= 4) {
                     if (lowStockText) {
                         var tpl = '@Html.Raw(Localizer["LowStockText"])';
                         lowStockText.textContent = tpl.replace('{0}', stock);

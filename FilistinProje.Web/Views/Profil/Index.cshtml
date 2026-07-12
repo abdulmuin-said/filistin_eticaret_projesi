@@ -204,9 +204,9 @@
                             @if (!string.IsNullOrEmpty(Model.KimlikFotografYolu))
                             {
                                 <div class="mt-2">
-                                    <img src="@Model.KimlikFotografYolu" alt="Kimlik FotoÄŸrafÄ±"
+                                    <img src="@Url.Action("Kimlik", "Belge", new { userId = Model.Id })" alt="Kimlik Fotoğrafı"
                                          class="w-48 h-32 object-cover rounded border border-brand-border cursor-pointer hover:opacity-90 transition-opacity"
-                                         onclick="window.open(this.src, '_blank')" />
+                                         onclick="window.open('@Url.Action("Kimlik", "Belge", new { userId = Model.Id })', '_blank')" />
                                     <p class="text-xs text-brand-mutedtext mt-1">@Localizer["ClickToViewFull"]</p>
                                 </div>
                             }

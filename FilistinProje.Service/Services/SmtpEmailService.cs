@@ -148,6 +148,10 @@ namespace FilistinProje.Service.Services
                 var safeSiparisNo = WebUtility.HtmlEncode(siparisNo);
                 var safeKargoFirmasi = WebUtility.HtmlEncode(kargoFirmasi);
                 var safeKargoTakipNo = WebUtility.HtmlEncode(kargoTakipNo);
+                var trackingLinkHtml = GetKargoTrackingLink(kargoTakipNo);
+                var trackingLinkBlock = string.IsNullOrWhiteSpace(trackingLinkHtml)
+                    ? string.Empty
+                    : $"<p>Kargonuzu a&#351;a&#287;&#305;daki ba&#287;lant&#305;dan takip edebilirsiniz.</p><div style='text-align:center; margin:24px 0;'>{trackingLinkHtml}</div>";
                 var content = $@"
                     <p>Sipari&#351; numaran&#305;z <strong>{safeSiparisNo}</strong> olan &uuml;r&uuml;n&uuml;n&uuml;z kargoya verildi.</p>
                     <table role='presentation' width='100%' cellpadding='0' cellspacing='0' style='border:1px solid #e5e2dc; border-radius:12px; background:#fffaf0; margin:18px 0;'>
@@ -162,8 +166,7 @@ namespace FilistinProje.Service.Services
                             </td>
                         </tr>
                     </table>
-                    <p>Kargonuzu a&#351;a&#287;&#305;daki ba&#287;lant&#305;dan takip edebilirsiniz.</p>
-                    <div style='text-align:center; margin:24px 0;'>{GetKargoTrackingLink(kargoFirmasi, kargoTakipNo)}</div>";
+                    {trackingLinkBlock}";
 
                 await SendTemplateMailAsync(toEmail, subject, musteriAdi, content, "", "");
                 return true;
@@ -175,33 +178,35 @@ namespace FilistinProje.Service.Services
             }
         }
 
-        private string GetKargoTrackingLink(string kargoFirmasi, string takipNo)
+        private string GetKargoTrackingLink(string takipNo)
         {
-            var firma = (kargoFirmasi ?? string.Empty).ToLowerInvariant();
+            var siteSettings = _siteSettingsService.GetSettings();
+            var trackingUrlTemplate = siteSettings.KargoTakipUrl?.Trim();
+            if (string.IsNullOrWhiteSpace(trackingUrlTemplate) || string.IsNullOrWhiteSpace(takipNo))
+            {
+                return string.Empty;
+            }
+
             var encodedTakipNo = Uri.EscapeDataString(takipNo ?? string.Empty);
-            var safeTakipNo = WebUtility.HtmlEncode(takipNo);
-
-            if (firma.Contains("aras"))
+            var trackingUrl = trackingUrlTemplate
+                .Replace("{TRACKING_NO}", encodedTakipNo, StringComparison.OrdinalIgnoreCase)
+                .Replace("{takipNo}", encodedTakipNo, StringComparison.OrdinalIgnoreCase)
+                .Replace("{code}", encodedTakipNo, StringComparison.OrdinalIgnoreCase);
+            if (trackingUrl == trackingUrlTemplate)
             {
-                return $"<a href='https://kargotakip.araskargo.com.tr/mainpage.aspx?code={encodedTakipNo}' style='display:inline-block; background:#313511; color:#ffffff; padding:13px 24px; text-decoration:none; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;'>Aras Kargo'da Takip Et</a>";
+                var separator = trackingUrl.Contains("?", StringComparison.Ordinal) ? "&" : "?";
+                trackingUrl = $"{trackingUrl}{separator}trackingNo={encodedTakipNo}";
             }
 
-            if (firma.Contains("yurtici") || firma.Contains("yurti\u00E7i"))
+            if (!Uri.TryCreate(trackingUrl, UriKind.Absolute, out var trackingUri) ||
+                (trackingUri.Scheme != Uri.UriSchemeHttps && trackingUri.Scheme != Uri.UriSchemeHttp))
             {
-                return $"<a href='https://www.yurticikargo.com/tr/online-servisler/gonderi-sorgula?code={encodedTakipNo}' style='display:inline-block; background:#313511; color:#ffffff; padding:13px 24px; text-decoration:none; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;'>Yurti\u00E7i Kargo'da Takip Et</a>";
+                _logger.LogWarning("Gecersiz kargo takip URL sablonu nedeniyle takip linki gosterilmedi. Template={Template}", trackingUrlTemplate);
+                return string.Empty;
             }
 
-            if (firma.Contains("mng"))
-            {
-                return $"<a href='https://www.mngkargo.com.tr/tracking?q={encodedTakipNo}' style='display:inline-block; background:#313511; color:#ffffff; padding:13px 24px; text-decoration:none; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;'>MNG Kargo'da Takip Et</a>";
-            }
-
-            if (firma.Contains("ptt"))
-            {
-                return $"<a href='https://gonderitakip.ptt.gov.tr/Track/Verify?q={encodedTakipNo}' style='display:inline-block; background:#313511; color:#ffffff; padding:13px 24px; text-decoration:none; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;'>PTT Kargo'da Takip Et</a>";
-            }
-
-            return $"<div style='background:#fffaf0; border:1px solid #e5e2dc; padding:15px; border-radius:12px; text-align:center;'><strong>Takip No:</strong> {safeTakipNo}</div>";
+            var safeTrackingUrl = WebUtility.HtmlEncode(trackingUri.ToString());
+            return $"<a href='{safeTrackingUrl}' style='display:inline-block; background:#313511; color:#ffffff; padding:13px 24px; text-decoration:none; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;'>Kargoyu takip et</a>";
         }
 
         private static bool TryCreateMailAddress(string? address, string? displayName, out MailAddress mailAddress)

@@ -9,6 +9,22 @@
     {
         return value.HasValue ? value.Value.ToLocalTime().ToString("dd.MM.yyyy HH:mm") : "-";
     }
+
+    private string PageUrl(int page, int? pageSize = null)
+    {
+        var query = new List<string>
+        {
+            $"page={page}",
+            $"pageSize={pageSize ?? Model.PageSize}"
+        };
+
+        if (!string.IsNullOrWhiteSpace(Model.Search))
+        {
+            query.Add($"search={Uri.EscapeDataString(Model.Search)}");
+        }
+
+        return $"/Admin/Kullanici?{string.Join("&", query)}";
+    }
 }
 
 <style>
@@ -128,6 +144,7 @@
     <div class="ca-card">
         <div class="ca-filter-bar d-flex flex-wrap justify-content-between gap-3">
             <form asp-action="Index" method="get" class="d-flex" style="max-width:340px; width:100%;">
+                <input type="hidden" name="pageSize" value="@Model.PageSize" />
                 <div class="ca-input-icon-group" style="flex:1;">
                     <i class="fas fa-search ca-icon-left"></i>
                     <input type="text" name="search" value="@Model.Search" class="ca-input" placeholder="İsim, e-posta veya telefon ara">
@@ -135,7 +152,7 @@
             </form>
 
             <div class="small text-muted d-flex align-items-center">
-                Toplam @Model.TotalCount kayıt listeleniyor.
+                Toplam @Model.TotalCount kayıt, sayfa @Model.Page / @Model.TotalPages.
             </div>
         </div>
 
@@ -286,5 +303,24 @@
                 </tbody>
             </table>
         </div>
+
+        @if (Model.TotalPages > 1)
+        {
+            <div class="ca-pagination mt-3 d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="small text-muted">Sayfa boyutu</span>
+                    <select class="ca-input" style="width:90px;" onchange="location.href='@PageUrl(1, 0)'.replace('pageSize=0', 'pageSize=' + this.value)">
+                        <option value="20" selected="@(Model.PageSize == 20)">20</option>
+                        <option value="50" selected="@(Model.PageSize == 50)">50</option>
+                        <option value="100" selected="@(Model.PageSize == 100)">100</option>
+                    </select>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <a class="ca-btn ca-btn-outline ca-btn-sm @(Model.Page <= 1 ? "disabled" : string.Empty)" href="@(Model.Page <= 1 ? "#" : PageUrl(Model.Page - 1))">Önceki</a>
+                    <span class="small text-muted">@Model.Page / @Model.TotalPages</span>
+                    <a class="ca-btn ca-btn-outline ca-btn-sm @(Model.Page >= Model.TotalPages ? "disabled" : string.Empty)" href="@(Model.Page >= Model.TotalPages ? "#" : PageUrl(Model.Page + 1))">Sonraki</a>
+                </div>
+            </div>
+        }
     </div>
 </div>

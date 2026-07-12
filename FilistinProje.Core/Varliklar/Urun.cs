@@ -124,9 +124,9 @@ namespace FilistinProje.Core.Varliklar
             var culture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
             return culture switch
             {
-                "ar" => !string.IsNullOrWhiteSpace(ar) ? ar : tr,
-                "en" => !string.IsNullOrWhiteSpace(en) ? en : tr,
-                _ => tr
+                "ar" => !string.IsNullOrWhiteSpace(ar) ? ar : (!string.IsNullOrWhiteSpace(en) ? en : tr),
+                "en" => !string.IsNullOrWhiteSpace(en) ? en : (!string.IsNullOrWhiteSpace(ar) ? ar : tr),
+                _ => !string.IsNullOrWhiteSpace(ar) ? ar : (!string.IsNullOrWhiteSpace(en) ? en : tr)
             };
         }
     }

@@ -1,6 +1,7 @@
 ﻿using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Core.Helpers;
+using FilistinProje.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +17,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
     public class KategoriController : AdminBaseController
     {
         private readonly KanvasDbContext _context;
+        private readonly ICacheService _cacheService;
 
-        public KategoriController(KanvasDbContext context)
+        public KategoriController(KanvasDbContext context, ICacheService cacheService)
         {
             _context = context;
+            _cacheService = cacheService;
         }
 
         public async Task<IActionResult> Index(string? arama, string? durum, string? tip)
@@ -210,6 +213,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             _context.Kategoriler.Add(kategori);
             await _context.SaveChangesAsync();
+            await InvalidateCategoryCachesAsync();
 
             TempData["Basari"] = "Kategori baÅŸarÄ±yla oluÅŸturuldu.";
             return RedirectToAction(nameof(Index));
@@ -269,6 +273,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             kategori.Slug = await GenerateUniqueCategorySlugAsync(model.Slug, model.Ad, model.Id);
 
             await _context.SaveChangesAsync();
+            await InvalidateCategoryCachesAsync();
 
             TempData["Basari"] = "Kategori gÃ¼ncellendi.";
             return RedirectToAction(nameof(Index));
@@ -297,8 +302,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             kategori.SilindiMi = true;
 
             await _context.SaveChangesAsync();
+            await InvalidateCategoryCachesAsync();
             TempData["Basari"] = "Kategori arÅŸive alÄ±ndÄ±.";
             return RedirectToAction(nameof(Index));
+        }
+
+        private Task InvalidateCategoryCachesAsync()
+        {
+            return _cacheService.RemoveByPrefixAsync("category-menu:v1:");
         }
 
         private IQueryable<Kategori> BuildCategoryListQuery(string? arama, string? durum, string? tip)

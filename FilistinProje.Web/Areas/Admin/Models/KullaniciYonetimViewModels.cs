@@ -8,6 +8,9 @@ namespace FilistinProje.Core.Models
         public int TotalCount { get; set; }
         public int AdminCount { get; set; }
         public int CustomerCount { get; set; }
+        public int Page { get; set; } = 1;
+        public int PageSize { get; set; } = 20;
+        public int TotalPages { get; set; } = 1;
         public List<KullaniciListItemViewModel> Kullanicilar { get; set; } = new();
     }
 

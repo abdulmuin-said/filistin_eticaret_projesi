@@ -1,0 +1,297 @@
+- generic [active] [ref=f5e1]:
+  - generic [ref=f5e3]:
+    - generic [ref=f5e4]:
+      - generic [ref=f5e5]:
+        - generic [ref=f5e6]: 
+        - text: شحن مجاني للطلبات فوق 200 ₪
+      - generic [ref=f5e7]:
+        - generic [ref=f5e8]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f5e9]:
+        - generic [ref=f5e10]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f5e11]:
+        - generic [ref=f5e12]: 
+        - text: إنتاج سريع
+      - generic [ref=f5e13]:
+        - generic [ref=f5e14]: 
+        - text: تغليف دقيق
+      - generic [ref=f5e15]:
+        - generic [ref=f5e16]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f5e17]:
+        - generic [ref=f5e18]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f5e19]:
+        - generic [ref=f5e20]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f5e21]:
+        - generic [ref=f5e22]: 
+        - text: دعم واتساب
+    - generic [ref=f5e23]:
+      - generic [ref=f5e24]:
+        - generic [ref=f5e25]: 
+        - text: شحن مجاني للطلبات فوق 200 ₪
+      - generic [ref=f5e26]:
+        - generic [ref=f5e27]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f5e28]:
+        - generic [ref=f5e29]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f5e30]:
+        - generic [ref=f5e31]: 
+        - text: إنتاج سريع
+      - generic [ref=f5e32]:
+        - generic [ref=f5e33]: 
+        - text: تغليف دقيق
+      - generic [ref=f5e34]:
+        - generic [ref=f5e35]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f5e36]:
+        - generic [ref=f5e37]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f5e38]:
+        - generic [ref=f5e39]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f5e40]:
+        - generic [ref=f5e41]: 
+        - text: دعم واتساب
+  - banner [ref=f5e42]:
+    - generic [ref=f5e43]:
+      - generic [ref=f5e44]:
+        - generic [ref=f5e46]: 
+        - link "العربية" [ref=f5e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FSepet
+        - link "English" [ref=f5e48] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FSepet
+      - link "7ANRPS48" [ref=f5e49] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f5e50]
+      - generic [ref=f5e51]:
+        - button "بحث" [ref=f5e52] [cursor=pointer]:
+          - img [ref=f5e53]
+        - link "حسابي" [ref=f5e55] [cursor=pointer]:
+          - /url: /Profil
+          - img [ref=f5e56]
+        - link "المفضلة" [ref=f5e58] [cursor=pointer]:
+          - /url: /Favori
+          - img [ref=f5e59]
+        - link "السلة" [ref=f5e61] [cursor=pointer]:
+          - /url: /Sepet
+          - img [ref=f5e62]
+          - generic [ref=f5e64]: "13"
+      - navigation [ref=f5e65]:
+        - list [ref=f5e66]:
+          - listitem [ref=f5e67] [cursor=pointer]:
+            - link "أثاث منزلي" [ref=f5e68]:
+              - /url: /Urun?k=78
+              - text: أثاث منزلي
+              - img [ref=f5e69]
+          - listitem [ref=f5e71] [cursor=pointer]:
+            - link "إلكترونيات" [ref=f5e72]:
+              - /url: /Urun?k=79
+              - text: إلكترونيات
+              - img [ref=f5e73]
+          - listitem [ref=f5e75] [cursor=pointer]:
+            - link "أزياء" [ref=f5e76]:
+              - /url: /Urun?k=80
+              - text: أزياء
+              - img [ref=f5e77]
+          - listitem [ref=f5e79] [cursor=pointer]:
+            - link "اتصل بنا" [ref=f5e80]:
+              - /url: /Kurumsal/Iletisim
+  - main [ref=f5e81]:
+    - generic [ref=f5e83]:
+      - link "الصفحة الرئيسية" [ref=f5e84] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f5e85]: /
+      - generic [ref=f5e86]: سلتي
+    - generic [ref=f5e87]:
+      - generic [ref=f5e88]:
+        - generic [ref=f5e89]:
+          - heading "سلتي" [level=1] [ref=f5e90]
+          - paragraph [ref=f5e91]: 3 منتج
+        - button " إفراغ السلة" [ref=f5e93] [cursor=pointer]:
+          - generic [ref=f5e94]: 
+          - text: إفراغ السلة
+      - generic [ref=f5e95]:
+        - generic [ref=f5e96]:
+          - article [ref=f5e97]:
+            - button "" [ref=f5e99] [cursor=pointer]:
+              - generic [ref=f5e100]: 
+            - link "طقم كنبات مودرن" [ref=f5e101] [cursor=pointer]:
+              - /url: /Urun/Detay/48
+              - img "طقم كنبات مودرن" [ref=f5e102]
+            - generic [ref=f5e103]:
+              - link "طقم كنبات مودرن" [ref=f5e104] [cursor=pointer]:
+                - /url: /Urun/Detay/48
+              - generic [ref=f5e106]:
+                - generic [ref=f5e107]: ملاحظة طلب خاص
+                - textbox "ملاحظة حول طلبك" [ref=f5e108]
+                - generic [ref=f5e109]:
+                  - generic [ref=f5e110]: 500 حرف كحد أقصى
+                  - button " حفظ" [ref=f5e111] [cursor=pointer]:
+                    - generic [ref=f5e112]: 
+                    - text: حفظ
+              - generic [ref=f5e113]:
+                - generic [ref=f5e114]:
+                  - button "" [ref=f5e116] [cursor=pointer]:
+                    - generic [ref=f5e117]: 
+                  - generic [ref=f5e118]: "8"
+                  - button "+" [ref=f5e120] [cursor=pointer]:
+                    - generic [ref=f5e121]: +
+                - generic [ref=f5e122]: ₪39٬992٫00
+          - article [ref=f5e123]:
+            - button "" [ref=f5e125] [cursor=pointer]:
+              - generic [ref=f5e126]: 
+            - link "فستان سهرة أنيق" [ref=f5e127] [cursor=pointer]:
+              - /url: /Urun/Detay/50
+              - img "فستان سهرة أنيق" [ref=f5e128]
+            - generic [ref=f5e129]:
+              - link "فستان سهرة أنيق" [ref=f5e130] [cursor=pointer]:
+                - /url: /Urun/Detay/50
+              - generic [ref=f5e132]:
+                - generic [ref=f5e133]: ملاحظة طلب خاص
+                - textbox "ملاحظة حول طلبك" [ref=f5e134]
+                - generic [ref=f5e135]:
+                  - generic [ref=f5e136]: 500 حرف كحد أقصى
+                  - button " حفظ" [ref=f5e137] [cursor=pointer]:
+                    - generic [ref=f5e138]: 
+                    - text: حفظ
+              - generic [ref=f5e139]:
+                - generic [ref=f5e140]:
+                  - button "" [ref=f5e142] [cursor=pointer]:
+                    - generic [ref=f5e143]: 
+                  - generic [ref=f5e144]: "2"
+                  - button "+" [ref=f5e146] [cursor=pointer]:
+                    - generic [ref=f5e147]: +
+                - generic [ref=f5e148]: ₪2٬598٫00
+          - article [ref=f5e149]:
+            - button "" [ref=f5e151] [cursor=pointer]:
+              - generic [ref=f5e152]: 
+            - link "ساعة ذكية" [ref=f5e153] [cursor=pointer]:
+              - /url: /Urun/Detay/49
+              - img "ساعة ذكية" [ref=f5e154]
+            - generic [ref=f5e155]:
+              - link "ساعة ذكية" [ref=f5e156] [cursor=pointer]:
+                - /url: /Urun/Detay/49
+              - generic [ref=f5e158]:
+                - generic [ref=f5e159]: ملاحظة طلب خاص
+                - textbox "ملاحظة حول طلبك" [ref=f5e160]
+                - generic [ref=f5e161]:
+                  - generic [ref=f5e162]: 500 حرف كحد أقصى
+                  - button " حفظ" [ref=f5e163] [cursor=pointer]:
+                    - generic [ref=f5e164]: 
+                    - text: حفظ
+              - generic [ref=f5e165]:
+                - generic [ref=f5e166]:
+                  - button "" [ref=f5e168] [cursor=pointer]:
+                    - generic [ref=f5e169]: 
+                  - generic [ref=f5e170]: "3"
+                  - button "+" [ref=f5e172] [cursor=pointer]:
+                    - generic [ref=f5e173]: +
+                - generic [ref=f5e174]: ₪2٬397٫00
+          - generic [ref=f5e175]:
+            - heading "اختيارات خاصة" [level=3] [ref=f5e176]
+            - generic [ref=f5e178]:
+              - generic [ref=f5e179]:
+                - link "" [ref=f5e180] [cursor=pointer]:
+                  - /url: /Urun/Detay/leather-handbag-51
+                  - generic [ref=f5e182]: 
+                - link "حقيبة جلدية" [ref=f5e183] [cursor=pointer]:
+                  - /url: /Urun/Detay/leather-handbag-51
+                  - heading "حقيبة جلدية" [level=4] [ref=f5e184]
+                - paragraph [ref=f5e185]: 899 ₪
+              - button "أضف إلى السلة" [ref=f5e186] [cursor=pointer]
+        - complementary [ref=f5e187]:
+          - generic [ref=f5e188]:
+            - heading "ملخص الطلب" [level=2] [ref=f5e189]
+            - generic [ref=f5e191]:
+              - generic [ref=f5e192]: 
+              - generic [ref=f5e193]: تم تحقيق الشحن المجاني!
+            - generic [ref=f5e194]:
+              - generic [ref=f5e195]:
+                - generic [ref=f5e196]: المجموع الفرعي
+                - generic [ref=f5e197]: ₪44٬987٫00
+              - generic [ref=f5e198]:
+                - generic [ref=f5e199]: الشحن
+                - generic [ref=f5e200]: مجاني
+              - generic [ref=f5e201]:
+                - generic [ref=f5e202]: المجموع
+                - generic [ref=f5e203]: ₪44٬987٫00
+            - generic [ref=f5e204]:
+              - textbox "كود الخصم" [ref=f5e205]
+              - button "تطبيق" [ref=f5e206] [cursor=pointer]
+            - link " المتابعة للدفع" [ref=f5e207] [cursor=pointer]:
+              - /url: /Siparis/Odeme
+              - generic [ref=f5e208]: 
+              - text: المتابعة للدفع
+            - paragraph [ref=f5e209]:
+              - generic [ref=f5e210]: 
+              - text: دفع آمن SSL
+      - text: 
+  - contentinfo [ref=f5e211]:
+    - generic [ref=f5e213]:
+      - generic [ref=f5e214]:
+        - img [ref=f5e216]
+        - generic [ref=f5e218]:
+          - generic [ref=f5e219]: في جميع مناطق فلسطين
+          - generic [ref=f5e220]: شحن مجاني
+      - generic [ref=f5e221]:
+        - img [ref=f5e223]
+        - generic [ref=f5e225]:
+          - generic [ref=f5e226]: تحويل بنكي
+          - generic [ref=f5e227]: 256 Bit SSL
+      - generic [ref=f5e228]:
+        - img [ref=f5e230]
+        - generic [ref=f5e232]:
+          - generic [ref=f5e233]: تحويل بنكي
+          - generic [ref=f5e234]: دفع سهل عبر الآيبان
+    - generic [ref=f5e235]:
+      - generic [ref=f5e236]:
+        - generic [ref=f5e237]:
+          - heading "اشترك في النشرة البريدية" [level=3] [ref=f5e238]
+          - paragraph [ref=f5e239]: استقبل أحدث المنتجات المختارة من السوق الفلسطيني والعروض الخاصة على بريدك.
+          - generic [ref=f5e240]:
+            - textbox "عنوان البريد الإلكتروني" [ref=f5e241]
+            - button "اشتراك" [ref=f5e242] [cursor=pointer]
+        - generic [ref=f5e243]:
+          - heading "مؤسسي" [level=4] [ref=f5e244]
+          - list [ref=f5e245]:
+            - listitem [ref=f5e246]:
+              - link "من نحن" [ref=f5e247] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=f5e248]:
+              - link "اتصل بنا" [ref=f5e249] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=f5e250]:
+              - link "جميع المنتجات" [ref=f5e251] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=f5e252]:
+              - link "سياسة الخصوصية" [ref=f5e253] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f5e254]:
+              - link "عقد البيع عن بعد" [ref=f5e255] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=f5e257] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=f5e258]: 
+      - generic [ref=f5e259]:
+        - paragraph [ref=f5e261]: © 2026 7ANRPS48 — جميع الحقوق محفوظة.
+        - generic [ref=f5e262]:
+          - link "سياسة الخصوصية" [ref=f5e263] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "الإرجاع والاستبدال" [ref=f5e264] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+          - text: "|"
+          - link "من نحن" [ref=f5e265] [cursor=pointer]:
+            - /url: /Kurumsal/Hakkimizda
+  - link "اتصال واتساب" [ref=f5e266] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - img [ref=f5e267]
+    - generic [ref=f5e269]: WhatsApp
+  - link "السلة" [ref=f5e270] [cursor=pointer]:
+    - /url: /Sepet
+    - img [ref=f5e271]
+    - generic [ref=f5e273]: "13"

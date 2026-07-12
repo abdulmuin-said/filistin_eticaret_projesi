@@ -1,4 +1,4 @@
-@model FilistinProje.Core.Varliklar.Siparis
+@model FilistinProje.Core.DTOs.CheckoutRequestDto
 @using FilistinProje.Core.Varliklar
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @inject IStringLocalizer<SharedResource> Localizer
@@ -22,15 +22,9 @@
 
     var kayitliAdresler = ViewBag.KayitliAdresler as List<FilistinProje.Core.Varliklar.Adres>;
     bool girisYapmis = User.Identity?.IsAuthenticated == true;
-    // Åehir listesini veritabanÄ±ndaki KargoBolgeSehirler'den Ã§ek (controller ViewBag Ã¼zerinden gÃ¶nderir)
+    // Şehir listesi veritabanındaki KargoBolgeSehirler'den gelir
     var sehirListesi = ViewBag.Sehirler as List<string> ?? new List<string>();
-    var sehirler = sehirListesi.Any() ? sehirListesi.ToArray() : new[]
-    {
-        "BeytÃ¼llahim", "Cenin (Jenin)", "Deyr el-Balah", "El-Halil (Hebron)",
-        "El-KudÃ¼s (Jerusalem)", "Eriha (Jericho)", "Gazze", "Han Yunus (Khan Yunis)",
-        "Kalkilya (Qalqilya)", "Kuzey Gazze", "Nablus", "Ramallah & El-Bireh",
-        "Refah (Rafah)", "Salfit", "Tubas", "Tulkarim"
-    };
+    var sehirler = sehirListesi;
 }
 
 <!-- Breadcrumb -->
@@ -120,7 +114,7 @@
 
                             <div>
                                 <label class="block text-xs uppercase tracking-widest text-brand-darktext font-medium mb-2" for="Telefon">@Localizer["Phone"]</label>
-                                <input asp-for="Telefon" id="Telefon" class="w-full bg-transparent border-0 border-b border-brand-border px-0 py-2 focus:ring-0 focus:border-brand-olive text-brand-darktext transition-colors" placeholder="@Localizer["PhonePlaceholder"]" maxlength="13" required>
+                                <input asp-for="Telefon" id="Telefon" type="tel" inputmode="tel" autocomplete="tel" class="w-full bg-transparent border-0 border-b border-brand-border px-0 py-2 focus:ring-0 focus:border-brand-olive text-brand-darktext transition-colors" placeholder="@Localizer["PhonePlaceholder"]" maxlength="20" required>
                             </div>
 
                             <div id="adresSehirAlani">

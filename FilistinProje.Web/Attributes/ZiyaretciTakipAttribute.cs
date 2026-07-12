@@ -10,6 +10,10 @@ namespace FilistinProje.Web.Attributes
     {
         private readonly KanvasDbContext _context;
 
+        private static readonly Regex SensitiveQueryParamPattern = new(
+            @"\b(token|password|sifre|secret|key|code|auth|hash|signature|reset|confirm|verif|credential)\b",
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         public ZiyaretciTakipAttribute(KanvasDbContext context)
         {
             _context = context;
@@ -30,10 +34,12 @@ namespace FilistinProje.Web.Attributes
             var ulke = request.Headers["CF-IPCountry"].FirstOrDefault();
             var sehir = request.Headers["CF-IPCity"].FirstOrDefault();
 
+            var sanitizedPath = SanitizeLogPath(request);
+
             _context.ZiyaretciLoglari.Add(new ZiyaretciLog
             {
                 IpAdresi = ipAdresi,
-                Url = request.Path.Value ?? string.Empty,
+                Url = sanitizedPath,
                 Metod = request.Method,
                 ReferansUrl = request.Headers.Referer.ToString(),
                 CihazBilgisi = userAgent,
@@ -50,6 +56,20 @@ namespace FilistinProje.Web.Attributes
 
             await _context.SaveChangesAsync();
             await next();
+        }
+
+        private static string SanitizeLogPath(HttpRequest request)
+        {
+            var path = request.Path.Value ?? string.Empty;
+
+            if (!request.QueryString.HasValue)
+                return path;
+
+            var queryString = request.QueryString.Value ?? string.Empty;
+            if (SensitiveQueryParamPattern.IsMatch(queryString))
+                return path + "?[filtered]";
+
+            return path + queryString;
         }
 
         private static bool ShouldSkip(HttpRequest request)

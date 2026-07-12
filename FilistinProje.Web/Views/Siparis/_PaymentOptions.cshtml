@@ -19,6 +19,8 @@
     bool codAktif = ViewBag.KapidaOdemeAktifMi is bool codAccess && codAccess;
     decimal codBedel = (decimal)(ViewBag.KapidaOdemelHizmetBedeli ?? 0);
     bool receteZorunlu = ViewBag.ReceteZorunluMu is bool rxRequired && rxRequired;
+    bool bankaHavaleAktifMi = ViewBag.BankaHavaleAktifMi as bool? ?? false;
+    var bankaHesaplari = ViewBag.BankaHesaplari as List<BankaHesap>;
 }
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -55,9 +57,6 @@
                                 }
                             </div>
 
-                            @{
-                                var bankaHesaplari = ViewBag.BankaHesaplari as List<BankaHesap>;
-                            }
                             @if (bankaHesaplari != null && bankaHesaplari.Any())
                             {
                                 <div id="bankAccountsSection" class="mb-6">
@@ -100,6 +99,18 @@
                                      </div>
                                  </div>
                              }
+                            else
+                            {
+                                <div id="bankAccountsSection" class="mb-6 bg-amber-50 border border-amber-200 rounded-lg p-5">
+                                    <div class="flex items-start gap-3">
+                                        <i class="fas fa-exclamation-triangle text-amber-600 mt-0.5"></i>
+                                        <div>
+                                            <p class="text-sm font-bold text-amber-800 mb-1">@Localizer["BankTransferPayment"] @Localizer["TemporarilyUnavailable"]</p>
+                                            <p class="text-xs text-amber-700 leading-relaxed">@Localizer["Siparis_NoActiveBankAccount"]</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
 
 
                               <!-- Reçete Yükle -->

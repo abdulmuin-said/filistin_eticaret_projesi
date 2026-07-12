@@ -299,7 +299,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     {
                         Id = x.Id,
                         Title = x.Baslik,
-                        Subtitle = $"{(string.IsNullOrWhiteSpace(x.SKU) ? "SKU yok" : x.SKU)} | {x.EtkinFiyat:N2} TL",
+                        Subtitle = $"{(string.IsNullOrWhiteSpace(x.SKU) ? "SKU yok" : x.SKU)} | {x.EtkinFiyat:N2} ₪",
                         CreatedAt = x.OlusturulmaTarihi
                     })
                     .ToList(),

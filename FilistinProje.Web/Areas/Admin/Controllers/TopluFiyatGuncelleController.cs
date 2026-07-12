@@ -35,6 +35,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> FiyatGuncelle(string olcu, decimal yeniFiyat)
         {
             try
@@ -112,6 +113,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> NormalizeOlcu()
         {
             try

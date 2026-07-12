@@ -8,14 +8,15 @@ using FilistinProje.Service.Services;
 using FilistinProje.Web.Models;
 using FilistinProje.Web.Resources;
 using FilistinProje.Web.Security;
+using FilistinProje.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
 namespace FilistinProje.Web.Controllers
 {
-    [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")]
     public class HesapController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
@@ -58,12 +59,20 @@ namespace FilistinProje.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [EnableRateLimiting("auth")]
         public async Task<IActionResult> KayitOl(KayitViewModel model)
         {
+            if (!PhoneNumberNormalizer.TryNormalize(model.Telefon, out var normalizedPhone))
+            {
+                ModelState.AddModelError(nameof(model.Telefon), _localizer["Siparis_PhoneRequired"].Value);
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+
+            model.Telefon = normalizedPhone;
 
             var kimlikFotoSonuc = await _dosyaServisi.KaydetAsync(model.KimlikFoto!, "uploads/kimlikler");
             if (!kimlikFotoSonuc.Success)
@@ -190,6 +199,7 @@ namespace FilistinProje.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [EnableRateLimiting("auth")]
         public async Task<IActionResult> GirisYap(string eposta, string sifre, string? returnUrl = null)
         {
             var user = await _userManager.FindByEmailAsync(eposta);
@@ -210,6 +220,9 @@ namespace FilistinProje.Web.Controllers
                         var sessionId = HttpContext.Session.Id;
                         var sepetService = HttpContext.RequestServices.GetRequiredService<ISepetService>();
                         await sepetService.MergeSepetlerAsync(sessionId, user.Id);
+
+                        HttpContext.Session.Clear();
+                        Response.Cookies.Delete(".AspNetCore.Session");
                     }
                     catch
                     {
@@ -289,6 +302,7 @@ namespace FilistinProje.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [EnableRateLimiting("auth")]
         public async Task<IActionResult> SifremiUnuttum(string eposta)
         {
             ViewBag.Eposta = eposta;
@@ -377,6 +391,7 @@ namespace FilistinProje.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [EnableRateLimiting("auth")]
         public async Task<IActionResult> SifreSifirla(SifreSifirlaViewModel model)
         {
             if (!ModelState.IsValid)

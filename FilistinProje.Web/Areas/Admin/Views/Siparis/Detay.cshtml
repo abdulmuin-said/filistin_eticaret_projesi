@@ -240,7 +240,7 @@
         </div>
         <div class="ca-label-box">
             <strong>@Localizer["Admin_Shipping"]</strong><br>
-            @(seciliKargo?.Ad ?? "Aras Kargo")<br>
+            @(seciliKargo?.Ad ?? "-")<br>
             @Localizer["Admin_TrackingNo"]: @(string.IsNullOrWhiteSpace(Model.KargoTakipNo) ? Localizer["Admin_NotEnteredYet"] : Model.KargoTakipNo)<br>
             Tel: @(seciliKargo?.Telefon ?? "-")
         </div>
@@ -592,7 +592,7 @@
                             <img src="@seciliKargo.LogoUrl" alt="@seciliKargo.Ad" width="86" height="38" loading="lazy" decoding="async" style="object-fit:contain;">
                         }
                         <div>
-                            <div class="ca-fw-bold">@(seciliKargo?.Ad ?? "Aras Kargo")</div>
+                            <div class="ca-fw-bold">@(seciliKargo?.Ad ?? "-")</div>
                             <div class="small text-muted">@Localizer["Admin_DefaultShippingCompany"]</div>
                         </div>
                     </div>
@@ -678,8 +678,10 @@
                 var receteStatusClass = receteDurumu == 1 ? "var(--ca-success)" : (receteDurumu == 2 ? "#dc3545" : "var(--ca-warning)");
                 var receteStatusText = receteDurumu == 1 ? "Onaylandı" : (receteDurumu == 2 ? "Reddedildi" : "Beklemede");
                 var receteIcon = receteDurumu == 1 ? "fa-check-circle" : (receteDurumu == 2 ? "fa-times-circle" : "fa-clock");
-                var receteDosyaYolu = Model.ReceteDosyaYolu ?? string.Empty;
-                var recetePdfMi = receteDosyaYolu.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase);
+                var receteDosyaYolu = Url.Action("Recete", "Belge", new { area = "", siparisId = Model.Id }) ?? string.Empty;
+                var receteIndirYolu = Url.Action("Recete", "Belge", new { area = "", siparisId = Model.Id, indir = true }) ?? string.Empty;
+                var receteDosyaAdi = Model.ReceteDosyaYolu ?? string.Empty;
+                var recetePdfMi = receteDosyaAdi.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase);
 
                 <div class="ca-card mb-4" style="border-left:4px solid @receteStatusClass;">
                     <div class="ca-card-header d-flex justify-content-between align-items-center">
@@ -709,7 +711,7 @@
                                 }
                             </a>
                             <div class="mt-2 text-center">
-                                <a href="@receteDosyaYolu" target="_blank" class="small text-primary">
+                                <a href="@receteIndirYolu" target="_blank" class="small text-primary">
                                     <i class="fas fa-external-link-alt me-1"></i> @Localizer["Admin_OpenInNewTab"]
                                 </a>
                             </div>

@@ -20,7 +20,7 @@ git push origin main
 
 SSH ile sunucuya bağlan:
 ```bash
-ssh abdulmuin@canvasia-server
+ssh <production-user>@<production-host>
 ```
 
 Sonra sırayla:

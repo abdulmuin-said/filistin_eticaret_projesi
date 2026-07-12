@@ -15,7 +15,7 @@ namespace FilistinProje.Core.Varliklar
 
 
         public string? KuponKodu { get; set; } // Kullanılan kupon (Opsiyonel)
-        public decimal IndirimTutari { get; set; } // Kaç TL düştü?
+        public decimal IndirimTutari { get; set; } // Kaç ILS düştü?
 
 
 

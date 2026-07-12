@@ -172,6 +172,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // =============================================
+// GLOBAL: MONEY FORMATTING
+// =============================================
+function formatMoney(amount, culture) {
+    if (typeof amount !== 'number' || !isFinite(amount)) return '\u20AA' + amount;
+    var lang = culture || document.documentElement.lang || 'ar';
+    var locale = lang === 'ar' ? 'ar-PS' : 'en-IL';
+    var currency = 'ILS';
+    try {
+        return new Intl.NumberFormat(locale, {
+            style: 'currency',
+            currency: currency,
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(amount).replace(/[\s]*ILS/i, '').trim();
+    } catch (e) {
+        return '\u20AA' + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+}
+
+// =============================================
 // GLOBAL: TOAST NOTIFICATION
 // =============================================
 function showToast(message, type) {

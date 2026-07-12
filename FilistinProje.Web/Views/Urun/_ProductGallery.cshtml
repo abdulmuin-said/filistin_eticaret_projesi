@@ -219,23 +219,42 @@
 }
 @if (benzerUrunler != null && benzerUrunler.Count > 0)
 {
-    <section class="py-16 bg-[#fafaf8]">
+    <section class="py-16 bg-[#fafaf8]" aria-labelledby="relatedProductsTitle">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-center mb-10">
                 <hr class="w-1/4 border-brand-border hidden md:block"/>
-                <h2 class="font-serif text-3xl mx-8 text-center text-brand-olive">@Localizer["SimilarProducts"]</h2>
+                <h2 id="relatedProductsTitle" class="font-serif text-3xl mx-8 text-center text-brand-olive">@Localizer["SimilarProducts"]</h2>
                 <hr class="w-1/4 border-brand-border hidden md:block"/>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
                 @foreach (var item in benzerUrunler)
                 {
-                    decimal itemFiyat = item.IndirimliFiyat ?? item.Fiyat;
+                    decimal itemFiyat = item.GosterFiyat;
                     decimal? bEskiFiyat = (item.IndirimliFiyat != null && item.IndirimliFiyat < item.Fiyat) ? item.Fiyat : null;
-                    string bProductUrl = !string.IsNullOrEmpty(item.Slug) ? $"/Urun/Detay/{item.Slug}-{item.Id}" : $"/Urun/Detay/{FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.Baslik)}-{item.Id}";
-                    string gorsel = !string.IsNullOrEmpty(item.AnaGorselUrl) ? item.AnaGorselUrl : "/img/products/placeholder.webp";
-                    <a href="@bProductUrl" class="group block">
-                        <div class="relative overflow-hidden mb-3 aspect-square bg-brand-cream rounded">
-                            <img alt="@item.LocalizedBaslik" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="@gorsel" loading="lazy" decoding="async" />
+                    var benzerUrlSlug = !string.IsNullOrEmpty(item.Slug) ? item.Slug : FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.LocalizedBaslik);
+                    if (string.IsNullOrWhiteSpace(benzerUrlSlug)) { benzerUrlSlug = "urun"; }
+                    string bProductUrl = $"/Urun/Detay/{benzerUrlSlug}-{item.Id}";
+                    bool benzerResimVar = !string.IsNullOrWhiteSpace(item.AnaGorselUrl);
+                    <a href="@bProductUrl" class="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 rounded">
+                        <div class="related-image-container relative overflow-hidden mb-3 aspect-square bg-[#f8f6f2] rounded">
+                            @if (benzerResimVar)
+                            {
+                                <img alt="@item.LocalizedBaslik"
+                                     src="@item.AnaGorselUrl"
+                                     width="400" height="400"
+                                     class="related-product-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                     loading="lazy" decoding="async" />
+                            }
+                            else
+                            {
+                                <div class="flex h-full w-full items-center justify-center text-brand-border" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="80" height="80" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" class="opacity-30">
+                                        <rect x="35" y="55" width="130" height="100" rx="8" />
+                                        <path d="M35 85 L165 85" />
+                                        <path d="M85 55 L85 35 L145 35 L145 55" />
+                                    </svg>
+                                </div>
+                            }
                         </div>
                         <h3 class="text-xs font-semibold text-brand-darktext tracking-wide line-clamp-2 mb-1">@item.LocalizedBaslik</h3>
                         <div class="flex items-center gap-2">

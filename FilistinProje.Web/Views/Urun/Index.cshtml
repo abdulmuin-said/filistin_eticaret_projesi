@@ -20,9 +20,10 @@
     decimal? aktifMin = ViewBag.Min;
     decimal? aktifMax = ViewBag.Max;
     string aktifMarka = ViewBag.Marka ?? "";
-    var markaListesi = ViewBag.MarkaListesi as List<dynamic> ?? new List<dynamic>();
+    var markaListesi = (ViewBag.MarkaListesi as System.Collections.IEnumerable)?.Cast<dynamic>().ToList() ?? new List<dynamic>();
     var ozellikFiltreleri = ViewBag.OzellikFiltreleri as List<FilistinProje.Web.Models.ProductFeatureFilterViewModel> ?? new List<FilistinProje.Web.Models.ProductFeatureFilterViewModel>();
     var seciliOzellikler = ViewBag.SeciliOzellikler as Dictionary<int, string> ?? new Dictionary<int, string>();
+    var activeFilterCount = (string.IsNullOrWhiteSpace(aktifMarka) ? 0 : 1) + (aktifMin.HasValue || aktifMax.HasValue ? 1 : 0) + seciliOzellikler.Count;
 
     var kategoriler = ViewBag.Kategoriler as List<FilistinProje.Core.Varliklar.Kategori>;
     var kategoriUrunSayilari = ViewBag.KategoriUrunSayilari as Dictionary<int, int> ?? new Dictionary<int, int>();
@@ -81,8 +82,19 @@
         return parts.Count == 0 ? "/Urun" : "/Urun?" + string.Join("&", parts);
     }
 
-    string BuildProductUrl(FilistinProje.Core.Varliklar.Urun urun)
-        => "/Urun/Detay/" + (string.IsNullOrEmpty(urun.Slug) ? (FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(urun.Baslik) + "-" + urun.Id) : urun.Slug + "-" + urun.Id);
+    string BuildProductSlug(FilistinProje.Core.Varliklar.Urun urun)
+    {
+        var slug = !string.IsNullOrWhiteSpace(urun.Slug)
+            ? urun.Slug
+            : FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(urun.LocalizedBaslik);
+
+        if (string.IsNullOrWhiteSpace(slug))
+        {
+            slug = "urun";
+        }
+
+        return slug;
+    }
 
     int GetKategoriUrunSayisi(int kategoriId)
         => kategoriUrunSayilari.TryGetValue(kategoriId, out var count) ? count : 0;
@@ -105,6 +117,7 @@
 
     string BuildFilterUrl(string key, string val)
     {
+        var normalizedKey = key ?? string.Empty;
         var values = new List<(string Key, string Value)>();
 
         void AddQueryValue(string queryKey, string? queryValue)
@@ -115,14 +128,14 @@
             }
         }
 
-        if (aktifKategori.HasValue) AddQueryValue("k", aktifKategori.Value.ToString());
-        AddQueryValue("s", aktifArama);
-        AddQueryValue("marka", aktifMarka);
-        if (aktifMin.HasValue) AddQueryValue("min", aktifMin.Value.ToString());
-        if (aktifMax.HasValue) AddQueryValue("max", aktifMax.Value.ToString());
-        if (!string.Equals(key, "sort", StringComparison.OrdinalIgnoreCase)) AddQueryValue("sort", aktifSort);
+        if (!string.Equals(normalizedKey, "k", StringComparison.OrdinalIgnoreCase) && aktifKategori.HasValue) AddQueryValue("k", aktifKategori.Value.ToString());
+        if (!string.Equals(normalizedKey, "s", StringComparison.OrdinalIgnoreCase)) AddQueryValue("s", aktifArama);
+        if (!string.Equals(normalizedKey, "marka", StringComparison.OrdinalIgnoreCase)) AddQueryValue("marka", aktifMarka);
+        if (!string.Equals(normalizedKey, "min", StringComparison.OrdinalIgnoreCase) && aktifMin.HasValue) AddQueryValue("min", aktifMin.Value.ToString());
+        if (!string.Equals(normalizedKey, "max", StringComparison.OrdinalIgnoreCase) && aktifMax.HasValue) AddQueryValue("max", aktifMax.Value.ToString());
+        if (!string.Equals(normalizedKey, "sort", StringComparison.OrdinalIgnoreCase)) AddQueryValue("sort", aktifSort);
 
-        if (!key.StartsWith("ozellik"))
+        if (!normalizedKey.StartsWith("ozellik", StringComparison.OrdinalIgnoreCase))
         {
             foreach (var secili in seciliOzellikler)
             {
@@ -130,7 +143,29 @@
             }
         }
 
-        AddQueryValue(key, val);
+        AddQueryValue(normalizedKey, val);
+
+        var parts = values
+            .Select(x => $"{System.Uri.EscapeDataString(x.Key)}={System.Uri.EscapeDataString(x.Value)}")
+            .ToList();
+
+        return parts.Count == 0 ? "/Urun" : "/Urun?" + string.Join("&", parts);
+    }
+
+    string BuildClearFiltersUrl()
+    {
+        var values = new List<(string Key, string Value)>();
+        void AddQueryValue(string queryKey, string? queryValue)
+        {
+            if (!string.IsNullOrWhiteSpace(queryValue))
+            {
+                values.Add((queryKey, queryValue));
+            }
+        }
+
+        if (aktifKategori.HasValue) AddQueryValue("k", aktifKategori.Value.ToString());
+        AddQueryValue("s", aktifArama);
+        AddQueryValue("sort", aktifSort);
 
         var parts = values
             .Select(x => $"{System.Uri.EscapeDataString(x.Key)}={System.Uri.EscapeDataString(x.Value)}")
@@ -204,6 +239,22 @@
             padding-top: 0.6rem !important;
             padding-bottom: 0.6rem !important;
         }
+
+        /* ─── Filter Drawer Animation ─── */
+        .filter-drawer {
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .filter-drawer.is-open {
+            transform: translateX(0) !important;
+        }
+        #filterDrawerBackdrop {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        #filterDrawerBackdrop.is-open {
+            opacity: 1;
+        }
     </style>
 }
 
@@ -221,10 +272,16 @@
 
         <!-- Sidebar Filtreler -->
         <aside class="hidden lg:block w-56 flex-shrink-0">
+            @if (activeFilterCount > 0)
+            {
+                <a href="@BuildClearFiltersUrl()" class="mb-5 inline-block w-full rounded border border-red-200 bg-red-50 px-3 py-2 text-center text-xs text-red-700 transition-colors hover:bg-red-100">
+                    <i class="fas fa-times mr-1"></i>@Localizer["ClearAllFilters"] (@activeFilterCount)
+                </a>
+            }
             <h3 class="font-serif text-lg text-brand-olive mb-4 border-b border-brand-border pb-2">@Localizer["Categories"]</h3>
             <ul class="space-y-2 text-sm mb-8">
                 <li>
-                    <a href="/Urun" class="flex items-center justify-between rounded-lg px-3 py-2 @(!aktifKategori.HasValue ? "bg-brand-olive text-white font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors">
+                    <a href="@BuildFilterUrl("k", "")" class="flex items-center justify-between rounded-lg px-3 py-2 @(!aktifKategori.HasValue ? "bg-brand-olive text-white font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors">
                         <span>@Localizer["AllCollections"]</span>
                         <span class="text-xs @(!aktifKategori.HasValue ? "text-white/75" : "text-[#9a958c]")">(@toplamAktifUrunSayisi)</span>
                     </a>
@@ -243,7 +300,7 @@
                     <li>
                     @if (altKategoriler.Count == 0)
                     {
-                            <a href="/Urun?k=@anaKategori.Id" class="flex items-center justify-between rounded-lg px-3 py-2 @(anaAktif ? "bg-[#f6efe3] text-brand-gold font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors">
+                            <a href="@BuildFilterUrl("k", anaKategori.Id.ToString())" class="flex items-center justify-between rounded-lg px-3 py-2 @(anaAktif ? "bg-[#f6efe3] text-brand-gold font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors">
                                 <span>@anaKategori.LocalizedAd</span>
                                 <span class="text-xs @(anaUrunSayisi == 0 ? "text-red-400" : "text-[#9a958c]")">(@anaUrunSayisi)</span>
                             </a>
@@ -259,7 +316,7 @@
                                     </span>
                                 </summary>
                                 <div class="space-y-1 px-2 py-2">
-                                    <a href="/Urun?k=@anaKategori.Id" class="flex items-center justify-between rounded-lg px-2 py-1.5 text-xs @(anaAktif ? "bg-brand-olive text-white font-semibold" : "text-[#6a665e] hover:bg-brand-warmcream hover:text-brand-olive") transition-colors">
+                                    <a href="@BuildFilterUrl("k", anaKategori.Id.ToString())" class="flex items-center justify-between rounded-lg px-2 py-1.5 text-xs @(anaAktif ? "bg-brand-olive text-white font-semibold" : "text-[#6a665e] hover:bg-brand-warmcream hover:text-brand-olive") transition-colors">
                                         <span>@Localizer["AllCategoryPrefix"] @anaKategori.LocalizedAd</span>
                                         <span class="@(anaAktif ? "text-white/75" : "text-[#9a958c]")">(@anaUrunSayisi)</span>
                                     </a>
@@ -267,7 +324,7 @@
                                     {
                                         var altAktif = aktifKategori.HasValue && aktifKategori.Value == altKategori.Id;
                                         var altUrunSayisi = GetKategoriUrunSayisi(altKategori.Id);
-                                        <a href="/Urun?k=@altKategori.Id" class="flex items-center justify-between gap-3 rounded-lg px-2 py-1.5 text-xs @(altAktif ? "bg-[#f6efe3] text-brand-gold font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors">
+                                        <a href="@BuildFilterUrl("k", altKategori.Id.ToString())" class="flex items-center justify-between gap-3 rounded-lg px-2 py-1.5 text-xs @(altAktif ? "bg-[#f6efe3] text-brand-gold font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors">
                                             <span class="truncate">@altKategori.LocalizedAd</span>
                                             <span class="shrink-0 @(altUrunSayisi == 0 ? "text-red-400" : "text-[#9a958c]")">(@altUrunSayisi)</span>
                                         </a>
@@ -289,6 +346,14 @@
                 @if (!string.IsNullOrWhiteSpace(aktifArama))
                 {
                     <input type="hidden" name="s" value="@aktifArama" />
+                }
+                @if (!string.IsNullOrWhiteSpace(aktifMarka))
+                {
+                    <input type="hidden" name="marka" value="@aktifMarka" />
+                }
+                @foreach (var secili in seciliOzellikler)
+                {
+                    <input type="hidden" name="ozellik" value="@($"{secili.Key}:{secili.Value}")" />
                 }
                 <input type="hidden" name="sort" value="@aktifSort" />
 
@@ -363,14 +428,23 @@
                     <h1 class="font-serif text-3xl text-brand-olive">@aktifKategoriAd</h1>
                     <p class="text-xs text-brand-mutedtext mt-1">@Localizer["ProductCountListing", totalItems]</p>
                 </div>
-                <div class="flex items-center gap-3">
+<div class="flex items-center gap-3">
                     @if (!string.IsNullOrWhiteSpace(aktifArama))
                     {
                         <span class="bg-brand-olive text-white text-xs px-3 py-1 rounded-full flex items-center gap-1">
                             "<span>@aktifArama</span>"
-                            <a href="/Urun@(aktifKategori.HasValue ? "?k=" + aktifKategori : "")" class="ml-1 opacity-70 hover:opacity-100">Ã—</a>
+                            <a href="/Urun@(aktifKategori.HasValue ? "?k=" + aktifKategori : "")" class="ml-1 opacity-70 hover:opacity-100">×</a>
                         </span>
                     }
+                    <!-- Mobile Filter Toggle Button -->
+                    <button type="button" onclick="window.toggleFilterDrawer(true)" id="mobileFilterBtn" class="lg:hidden flex items-center gap-1.5 border border-brand-border text-xs rounded px-3 py-2 focus:ring-1 focus:ring-[#b58735] bg-white text-brand-mutedtext hover:bg-brand-warmcream transition-colors" aria-label="@Localizer["Filters"]" aria-expanded="false" aria-controls="filterDrawer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3.75 6h16.5M6.75 12h10.5m-8.25 6h6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <span>@Localizer["Filters"]</span>
+                        @if (activeFilterCount > 0)
+                        {
+                            <span class="bg-brand-gold text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">@activeFilterCount</span>
+                        }
+                    </button>
                     <select id="sortSelect" onchange="window.location.href=this.value" class="border border-brand-border text-xs rounded px-3 py-2 focus:ring-1 focus:ring-[#b58735] bg-white text-brand-mutedtext">
                         @foreach (var opt in sortOptions)
                         {
@@ -394,13 +468,13 @@
 
             <!-- Mobile Kategori Chips -->
             <div class="hidden md:flex lg:hidden flex gap-2 overflow-x-auto pb-3 mb-6 custom-scrollbar">
-                <a href="/Urun" class="whitespace-nowrap text-xs border @(!aktifKategori.HasValue ? "bg-brand-olive text-white border-brand-olive" : "border-brand-border text-brand-mutedtext") rounded-full px-3 py-1.5">@Localizer["All"]</a>
+                <a href="@BuildFilterUrl("k", "")" class="whitespace-nowrap text-xs border @(!aktifKategori.HasValue ? "bg-brand-olive text-white border-brand-olive" : "border-brand-border text-brand-mutedtext") rounded-full px-3 py-1.5">@Localizer["All"]</a>
                 @if (kategoriler != null)
                 {
                     foreach (var kat in kategoriler.Where(x => !x.SilindiMi && x.AktifMi))
                     {
                         bool isActive = aktifKategori.HasValue && aktifKategori.Value == kat.Id;
-                        <a href="/Urun?k=@kat.Id" class="whitespace-nowrap text-xs border @(isActive ? "bg-brand-olive text-white border-brand-olive" : "border-brand-border text-brand-mutedtext") rounded-full px-3 py-1.5">@kat.LocalizedAd</a>
+                        <a href="@BuildFilterUrl("k", kat.Id.ToString())" class="whitespace-nowrap text-xs border @(isActive ? "bg-brand-olive text-white border-brand-olive" : "border-brand-border text-brand-mutedtext") rounded-full px-3 py-1.5">@kat.LocalizedAd</a>
                     }
                 }
             </div>
@@ -415,7 +489,7 @@
                         {
                             Id = urun.Id,
                             Baslik = urun.LocalizedBaslik,
-                            Slug = urun.Slug ?? "",
+                            Slug = BuildProductSlug(urun),
                             GorselUrl = !string.IsNullOrWhiteSpace(urun.AnaGorselUrl)
                                 ? urun.AnaGorselUrl
                                 : urun.UrunResimleri?.OrderBy(r => r.Sira).FirstOrDefault()?.ResimYolu ?? "",
@@ -477,9 +551,209 @@
     </div>
 </div>
 
+<!-- Mobile Filter Drawer -->
+<div id="filterDrawerBackdrop" class="fixed inset-0 z-[80] hidden bg-brand-darktext/45 lg:hidden" onclick="window.toggleFilterDrawer(false)" aria-hidden="true"></div>
+<div id="filterDrawer" class="filter-drawer fixed right-0 top-0 z-[90] hidden h-dvh w-[88vw] max-w-[380px] overflow-y-auto overscroll-contain border-l border-brand-darkborder bg-brand-warmcream px-5 py-5 shadow-2xl lg:hidden" role="dialog" aria-modal="true" aria-label="@Localizer["Filters"]" dir="@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "rtl" : "ltr")">
+    <div class="flex items-center justify-between border-b border-brand-darkborder pb-4 mb-5">
+        <h3 class="font-serif text-lg text-brand-olive">@Localizer["Filters"]</h3>
+        <button type="button" aria-label="@Localizer["CloseMenu"]" onclick="window.toggleFilterDrawer(false)" class="flex h-11 w-11 items-center justify-center rounded-full border border-[#c9b58a] text-brand-olive hover:bg-brand-warmcream transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+    </div>
+
+    @if (activeFilterCount > 0)
+    {
+        <a href="@BuildClearFiltersUrl()" class="inline-block w-full text-center bg-red-50 text-red-700 text-xs py-2 rounded mb-5 border border-red-200 hover:bg-red-100 transition-colors">
+            <i class="fas fa-times mr-1"></i>@Localizer["ClearAllFilters"] (@activeFilterCount)
+        </a>
+    }
+
+    <!-- Categories -->
+    <h3 class="font-serif text-sm text-brand-olive mb-3 border-b border-brand-border pb-2">@Localizer["Categories"]</h3>
+    <ul class="space-y-1 text-sm mb-6">
+        <li>
+            <a href="@BuildFilterUrl("k", "")" class="flex items-center justify-between rounded-lg px-3 py-2 @(!aktifKategori.HasValue ? "bg-brand-olive text-white font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors text-xs">
+                <span>@Localizer["AllCollections"]</span>
+                <span class="@(!aktifKategori.HasValue ? "text-white/75" : "text-[#9a958c]")">(@toplamAktifUrunSayisi)</span>
+            </a>
+        </li>
+        @foreach (var anaKategori in anaKategoriler)
+        {
+            var altKategoriler = kategoriler?
+                .Where(x => !x.SilindiMi && x.AktifMi && x.ParentKategoriId == anaKategori.Id)
+                .OrderBy(x => x.Sira)
+                .ThenBy(x => x.LocalizedAd)
+                .ToList() ?? new List<FilistinProje.Core.Varliklar.Kategori>();
+            var anaAktif = aktifKategori.HasValue && aktifKategori.Value == anaKategori.Id;
+            var anaUrunSayisi = GetKategoriUrunSayisi(anaKategori.Id);
+
+            <li>
+            @if (altKategoriler.Count == 0)
+            {
+                <a href="@BuildFilterUrl("k", anaKategori.Id.ToString())" class="flex items-center justify-between rounded-lg px-3 py-2 @(anaAktif ? "bg-[#f6efe3] text-brand-gold font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors text-xs">
+                    <span>@anaKategori.LocalizedAd</span>
+                    <span class="text-xs @(anaUrunSayisi == 0 ? "text-red-400" : "text-[#9a958c]")">(@anaUrunSayisi)</span>
+                </a>
+            }
+            else
+            {
+                <details class="group rounded-xl border border-brand-border bg-white/70">
+                    <summary class="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2 text-brand-olive transition-colors group-open:border-b group-open:border-[#eee8df] [&::-webkit-details-marker]:hidden text-xs">
+                        <span class="font-medium">@anaKategori.LocalizedAd</span>
+                        <span class="flex items-center gap-2 text-[10px] text-[#9a958c]">(@anaUrunSayisi) <i class="fas fa-chevron-down text-[10px] transition-transform group-open:rotate-180"></i></span>
+                    </summary>
+                    <div class="space-y-1 px-2 py-2">
+                        <a href="@BuildFilterUrl("k", anaKategori.Id.ToString())" class="flex items-center justify-between rounded-lg px-2 py-1.5 text-xs @(anaAktif ? "bg-brand-olive text-white font-semibold" : "text-[#6a665e] hover:bg-brand-warmcream hover:text-brand-olive") transition-colors">
+                            <span>@Localizer["AllCategoryPrefix"] @anaKategori.LocalizedAd</span>
+                            <span class="@(anaAktif ? "text-white/75" : "text-[#9a958c]")">(@anaUrunSayisi)</span>
+                        </a>
+                        @foreach (var altKategori in altKategoriler)
+                        {
+                            var altAktif = aktifKategori.HasValue && aktifKategori.Value == altKategori.Id;
+                            var altUrunSayisi = GetKategoriUrunSayisi(altKategori.Id);
+                            <a href="@BuildFilterUrl("k", altKategori.Id.ToString())" class="flex items-center justify-between gap-3 rounded-lg px-2 py-1.5 text-xs @(altAktif ? "bg-[#f6efe3] text-brand-gold font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors">
+                                <span class="truncate">@altKategori.LocalizedAd</span>
+                                <span class="shrink-0 @(altUrunSayisi == 0 ? "text-red-400" : "text-[#9a958c]")">(@altUrunSayisi)</span>
+                            </a>
+                        }
+                    </div>
+                </details>
+            }
+            </li>
+        }
+    </ul>
+
+    <!-- Price Filter -->
+    <h3 class="font-serif text-sm text-brand-olive mb-3 mt-6 border-b border-brand-border pb-2">@Localizer["PriceRange"]</h3>
+    <form method="get" action="/Urun" class="space-y-3 mb-6" id="mobilePriceFilterForm">
+        @if (aktifKategori.HasValue){<input type="hidden" name="k" value="@aktifKategori"/>}
+        @if (!string.IsNullOrWhiteSpace(aktifArama)){<input type="hidden" name="s" value="@aktifArama"/>}
+        @if (!string.IsNullOrWhiteSpace(aktifMarka)){<input type="hidden" name="marka" value="@aktifMarka"/>}
+        @foreach (var secili in seciliOzellikler)
+        {
+            <input type="hidden" name="ozellik" value="@($"{secili.Key}:{secili.Value}")"/>
+        }
+        <input type="hidden" name="sort" value="@aktifSort"/>
+        <div class="flex items-center justify-between text-xs font-medium text-brand-olive">
+            <span id="mobileMinPriceDisplay">@currencySymbol@((aktifMin ?? ViewBag.AvailableMinFiyat ?? 0).ToString("N0"))</span>
+            <span id="mobileMaxPriceDisplay">@currencySymbol@((aktifMax ?? ViewBag.AvailableMaxFiyat ?? 10000).ToString("N0"))</span>
+        </div>
+        <div id="mobilePriceSlider" class="mx-1"></div>
+        <input type="hidden" name="min" id="mobileMinInput" value="@aktifMin"/>
+        <input type="hidden" name="max" id="mobileMaxInput" value="@aktifMax"/>
+        <button type="submit" class="w-full bg-brand-olive text-white text-xs py-2 rounded hover:bg-[#1c2001] transition-colors tracking-widest uppercase">@Localizer["Apply"]</button>
+    </form>
+
+    <!-- Brand Filter -->
+    @if (markaListesi.Count > 0)
+    {
+        <h3 class="font-serif text-sm text-brand-olive mb-3 mt-6 border-b border-brand-border pb-2">@Localizer["Brand"]</h3>
+        <ul class="space-y-1 text-sm mb-6">
+            <li>
+                <a href="@BuildFilterUrl("marka", "")" class="flex items-center justify-between rounded-lg px-3 py-1.5 @(string.IsNullOrWhiteSpace(aktifMarka) ? "bg-brand-olive text-white font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors text-xs">
+                    <span>@Localizer["AllBrands"]</span>
+                </a>
+            </li>
+            @foreach (var m in markaListesi)
+            {
+                var markaAdi = (string)m.Marka;
+                var markaCount = (int)m.Count;
+                var markaAktif = string.Equals(aktifMarka, markaAdi, StringComparison.OrdinalIgnoreCase);
+                <li>
+                    <a href="@BuildFilterUrl("marka", markaAdi)" class="flex items-center justify-between rounded-lg px-3 py-1.5 @(markaAktif ? "bg-[#f6efe3] text-brand-gold font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors text-xs">
+                        <span>@markaAdi</span>
+                        <span class="text-[#9a958c] text-[10px]">(@markaCount)</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+
+    <!-- Feature Filters -->
+    @if (ozellikFiltreleri.Count > 0)
+    {
+        foreach (var filtre in ozellikFiltreleri)
+        {
+            var seciliDeger = seciliOzellikler.ContainsKey(filtre.DefinitionId) ? seciliOzellikler[filtre.DefinitionId] : null;
+            <h3 class="font-serif text-sm text-brand-olive mb-3 mt-6 border-b border-brand-border pb-2">@filtre.Title</h3>
+            <ul class="space-y-1 text-sm mb-6">
+                @foreach (var opt in filtre.Options)
+                {
+                    var optAktif = seciliDeger == opt.Value;
+                    <li>
+                        <a href="@BuildOzellikFilterUrl(filtre.DefinitionId, opt.Value)" class="flex items-center justify-between rounded-lg px-3 py-1.5 @(optAktif ? "bg-[#f6efe3] text-brand-gold font-semibold" : "text-brand-mutedtext hover:bg-brand-warmcream hover:text-brand-olive") transition-colors text-xs">
+                            <span>@opt.DisplayValue</span>
+                            <span class="text-[#9a958c] text-[10px]">(@opt.Count)</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+    }
+</div>
+
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
     <script>
+        window.toggleFilterDrawer = function(open) {
+            const drawer = document.getElementById('filterDrawer');
+            const backdrop = document.getElementById('filterDrawerBackdrop');
+            const btn = document.getElementById('mobileFilterBtn');
+            if (!drawer || !backdrop) return;
+
+            const shouldOpen = typeof open === 'boolean' ? open : drawer.classList.contains('hidden');
+            if (shouldOpen) {
+                drawer.classList.remove('hidden');
+                backdrop.classList.remove('hidden');
+                requestAnimationFrame(function() {
+                    drawer.classList.add('is-open');
+                    backdrop.classList.add('is-open');
+                });
+                if (btn) btn.setAttribute('aria-expanded', 'true');
+                document.documentElement.classList.add('overflow-hidden');
+                document.body.classList.add('overflow-hidden');
+                var firstFocusable = drawer.querySelector('a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                if (firstFocusable) setTimeout(function() { firstFocusable.focus(); }, 100);
+            } else {
+                drawer.classList.remove('is-open');
+                backdrop.classList.remove('is-open');
+                if (btn) btn.setAttribute('aria-expanded', 'false');
+                document.documentElement.classList.remove('overflow-hidden');
+                document.body.classList.remove('overflow-hidden');
+                setTimeout(function() {
+                    drawer.classList.add('hidden');
+                    backdrop.classList.add('hidden');
+                }, 430);
+            }
+        };
+
+        document.addEventListener('keydown', function(e) {
+            var drawer = document.getElementById('filterDrawer');
+            if (!drawer || drawer.classList.contains('hidden')) return;
+
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                window.toggleFilterDrawer(false);
+                return;
+            }
+
+            if (e.key !== 'Tab') return;
+            var focusable = Array.from(drawer.querySelectorAll('a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+                .filter(function(el) { return !el.disabled && el.offsetParent !== null; });
+            if (focusable.length === 0) return;
+
+            var first = focusable[0];
+            var last = focusable[focusable.length - 1];
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        });
+
+        // ─── Desktop Price Slider ───
         (function () {
             var slider = document.getElementById('priceSlider');
             var minInput = document.getElementById('minInput');
@@ -498,35 +772,55 @@
                     start: [currentMin, currentMax],
                     connect: true,
                     step: 1,
-                    range: {
-                        'min': availableMin,
-                        'max': availableMax
-                    },
-                    format: {
-                        to: function (value) { return Math.round(value); },
-                        from: function (value) { return Number(value); }
-                    }
+                    range: { 'min': availableMin, 'max': availableMax },
+                    format: { to: function (v) { return Math.round(v); }, from: function (v) { return Number(v); } }
                 });
-
                 slider.noUiSlider.on('update', function (values, handle) {
                     var value = values[handle];
-                    if (handle === 0) {
-                        minDisplay.textContent = '\u20AA' + Number(value).toLocaleString('tr-TR');
-                        minInput.value = value;
-                    } else {
-                        maxDisplay.textContent = '\u20AA' + Number(value).toLocaleString('tr-TR');
-                        maxInput.value = value;
-                    }
+                    if (handle === 0) { minDisplay.textContent = '\u20AA' + window.formatMoney(Number(value)); minInput.value = value; }
+                    else { maxDisplay.textContent = '\u20AA' + window.formatMoney(Number(value)); maxInput.value = value; }
                 });
-
                 var timeout = null;
                 slider.noUiSlider.on('change', function () {
                     if (timeout) clearTimeout(timeout);
-                    timeout = setTimeout(function () {
-                        form.requestSubmit();
-                    }, 300);
+                    timeout = setTimeout(function () { form.requestSubmit(); }, 300);
                 });
             }
+        })();
+
+        // ─── Mobile Price Slider ───
+        (function () {
+            var slider = document.getElementById('mobilePriceSlider');
+            var minInput = document.getElementById('mobileMinInput');
+            var maxInput = document.getElementById('mobileMaxInput');
+            var minDisplay = document.getElementById('mobileMinPriceDisplay');
+            var maxDisplay = document.getElementById('mobileMaxPriceDisplay');
+            var form = document.getElementById('mobilePriceFilterForm');
+
+            if (!slider || !form) return;
+            var availableMin = @(ViewBag.AvailableMinFiyat ?? 0);
+            var availableMax = @(ViewBag.AvailableMaxFiyat ?? 10000);
+            var currentMin = @(aktifMin ?? ViewBag.AvailableMinFiyat ?? 0);
+            var currentMax = @(aktifMax ?? ViewBag.AvailableMaxFiyat ?? 10000);
+
+            if (availableMax <= availableMin) return;
+            noUiSlider.create(slider, {
+                start: [currentMin, currentMax],
+                connect: true,
+                step: 1,
+                range: { 'min': availableMin, 'max': availableMax },
+                format: { to: function (v) { return Math.round(v); }, from: function (v) { return Number(v); } }
+            });
+            slider.noUiSlider.on('update', function (values, handle) {
+                var value = values[handle];
+                if (handle === 0) { minDisplay.textContent = '\u20AA' + window.formatMoney(Number(value)); minInput.value = value; }
+                else { maxDisplay.textContent = '\u20AA' + window.formatMoney(Number(value)); maxInput.value = value; }
+            });
+            var mtimeout = null;
+            slider.noUiSlider.on('change', function () {
+                if (mtimeout) clearTimeout(mtimeout);
+                mtimeout = setTimeout(function () { form.requestSubmit(); }, 300);
+            });
         })();
 
         // ─── Grid / List Layout Toggle ───

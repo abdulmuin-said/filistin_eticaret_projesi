@@ -150,7 +150,7 @@ namespace FilistinProje.Service.Helpers
             ["G??kt??rk"] = "Göktürk",
             ["T??rk"] = "Türk",
             ["Muhte??em"] = "Muhteşem",
-            ["??stanbul"] = "İstanbul",
+            ["??stanbul"] = "Ramallah",
             ["R??zgar"] = "Rüzgar",
             ["Gül??"] = "Gülü"
         };

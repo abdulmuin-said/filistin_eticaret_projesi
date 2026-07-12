@@ -77,10 +77,50 @@ namespace FilistinProje.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("FooterAciklamasiAr")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FooterAciklamasiEn")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FooterAciklamasiTr")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<bool>("GirisZorunluMu")
                         .HasColumnType("boolean");
 
                     b.Property<string>("GoogleAnalyticsId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("HeroAltBaslikAr")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("HeroAltBaslikEn")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("HeroAltBaslikTr")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("HeroBaslikAr")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("HeroBaslikEn")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("HeroBaslikTr")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("HeroGorselUrl")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -751,6 +791,9 @@ namespace FilistinProje.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<decimal>("Fiyat")
+                        .HasColumnType("numeric");
+
                     b.Property<DateTime>("OlusturulmaTarihi")
                         .HasColumnType("timestamp with time zone");
 
@@ -818,6 +861,12 @@ namespace FilistinProje.Data.Migrations
 
                     b.Property<string>("SehirAdi")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SehirAdiAr")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SehirAdiEn")
                         .HasColumnType("text");
 
                     b.Property<bool>("SilindiMi")
@@ -1579,6 +1628,9 @@ namespace FilistinProje.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("BaglantiUrl")
+                        .HasColumnType("text");
+
                     b.Property<string>("Baslik")
                         .IsRequired()
                         .HasColumnType("text");
@@ -1588,6 +1640,18 @@ namespace FilistinProje.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("BaslikEn")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ButonMetni")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ButonMetniAr")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ButonMetniEn")
                         .IsRequired()
                         .HasColumnType("text");
 

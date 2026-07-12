@@ -95,15 +95,13 @@ namespace FilistinProje.Service.Services
                 settings.Hero.DesktopSlides,
                 new[]
                 {
-                    ("/slider2.png", string.Empty, "أهلاً بك في", "7ANRPS48", "تسوق آمن وسريع في فلسطين", "تسوق الآن", "/Urun"),
-                    ("/slider3.png", string.Empty, "تخفيضات", "عروض موسمية", "أفضل المنتجات بأسعار لا تقبل المنافسة", "اكتشف العروض", "/Urun")
+                    ("/slider-demo.jpg", string.Empty, "أهلاً بك في", "7ANRPS48", "منتجات طبيعية أصلية من فلسطين إلى العالم", "تسوق الآن", "/Urun")
                 });
             settings.Hero.MobileSlides = NormalizeSlides(
                 settings.Hero.MobileSlides,
                 new[]
                 {
-                    ("/slider4.png", string.Empty, "أهلاً بك في", "7ANRPS48", "تسوق آمن وسريع في فلسطين", "تسوق الآن", "/Urun"),
-                    ("/slider5.png", string.Empty, "تخفيضات", "عروض موسمية", "أفضل المنتجات بأسعار لا تقبل المنافسة", "اكتشف العروض", "/Urun")
+                    ("/slider-demo.jpg", string.Empty, "أهلاً بك في", "7ANRPS48", "منتجات طبيعية أصلية من فلسطين إلى العالم", "تسوق الآن", "/Urun")
                 });
 
             settings.Categories.Enabled = settings.Categories.Enabled;

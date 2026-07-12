@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "_AdminLayout";
-    ViewData["Title"] = "Operasyon Ä°zleme";
+    ViewData["Title"] = "Operasyon Izleme";
 
     var logs = ViewBag.Logs as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
     var ipStats = ViewBag.IpStats as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
@@ -315,26 +315,26 @@
 <div class="monitor-shell">
     <section class="monitor-hero">
         <div>
-            <div class="monitor-kicker">CanlÄ± operasyon takibi</div>
-            <h1 class="monitor-title">Operasyon Ä°zleme Merkezi</h1>
-            <p class="monitor-subtitle">ZiyaretÃ§i hareketleri, admin gÃ¼venlik olaylarÄ± ve son sipariÅŸ kayÄ±tlarÄ±nÄ± tek ekranda takip edin.</p>
+            <div class="monitor-kicker">Canli operasyon takibi</div>
+            <h1 class="monitor-title">Operasyon Izleme Merkezi</h1>
+            <p class="monitor-subtitle">Ziyaretci hareketleri, admin guvenlik olaylari ve son siparis kayitlarini tek ekranda takip edin.</p>
         </div>
         <a class="monitor-refresh" href="@refreshUrl">
             <i class="fas fa-rotate-right"></i> Yenile
         </a>
     </section>
 
-    <section class="monitor-stats" aria-label="Ã–zet metrikler">
+    <section class="monitor-stats" aria-label="Ozet metrikler">
         <div class="monitor-stat">
-            <span><i class="fas fa-stream"></i> Toplam kayÄ±t</span>
+            <span><i class="fas fa-stream"></i> Toplam kayit</span>
             <strong>@totalCount</strong>
         </div>
         <div class="monitor-stat">
-            <span><i class="fas fa-user-clock"></i> ZiyaretÃ§i</span>
+            <span><i class="fas fa-user-clock"></i> Ziyaretci</span>
             <strong>@ipLogCount</strong>
         </div>
         <div class="monitor-stat">
-            <span><i class="fas fa-bag-shopping"></i> SipariÅŸ</span>
+            <span><i class="fas fa-bag-shopping"></i> Siparis</span>
             <strong>@siparisLogCount</strong>
         </div>
         <div class="monitor-stat">
@@ -348,13 +348,13 @@
             <h2>Filtreler</h2>
             <div class="monitor-tabs">
                 <a href="/admin/xyzsecretmonitor?type=all&pageSize=@pageSize" class="monitor-tab @(allActive ? "active" : "")">
-                    <i class="fas fa-layer-group"></i> TÃ¼mÃ¼
+                    <i class="fas fa-layer-group"></i> Tumu
                 </a>
                 <a href="/admin/xyzsecretmonitor?type=ip&pageSize=@pageSize" class="monitor-tab @(type == "ip" ? "active" : "")">
-                    <i class="fas fa-user-clock"></i> ZiyaretÃ§i
+                    <i class="fas fa-user-clock"></i> Ziyaretci
                 </a>
                 <a href="/admin/xyzsecretmonitor?type=siparis&pageSize=@pageSize" class="monitor-tab @(type == "siparis" ? "active" : "")">
-                    <i class="fas fa-bag-shopping"></i> SipariÅŸ
+                    <i class="fas fa-bag-shopping"></i> Siparis
                 </a>
                 <a href="/admin/xyzsecretmonitor?type=audit&pageSize=@pageSize" class="monitor-tab @(type == "audit" ? "active" : "")">
                     <i class="fas fa-shield-halved"></i> Audit
@@ -366,7 +366,7 @@
     <section class="monitor-grid">
         <div class="monitor-card">
             <div class="monitor-card-head">
-                <h2>Olay AkÄ±ÅŸÄ±</h2>
+                <h2>Olay Akisi</h2>
                 <span class="text-muted small">Sayfa @currentPage / @totalPages</span>
             </div>
 
@@ -409,7 +409,7 @@
                             <tr>
                                 <td colspan="6">
                                     <div class="monitor-empty">
-                                        Bu filtre iÃ§in kayÄ±t bulunamadÄ±.
+                                        Bu filtre icin kayit bulunamadi.
                                     </div>
                                 </td>
                             </tr>
@@ -419,10 +419,10 @@
             </div>
 
             <div class="monitor-pagination">
-                <span class="text-muted small">@totalCount kayÄ±t iÃ§inde sayfa @currentPage gÃ¶steriliyor</span>
+                <span class="text-muted small">@totalCount kayit icinde sayfa @currentPage gosteriliyor</span>
                 <div class="monitor-page-actions">
                     <a class="@(currentPage <= 1 ? "disabled" : "")" href="@previousUrl">
-                        <i class="fas fa-chevron-left"></i> Ã–nceki
+                        <i class="fas fa-chevron-left"></i> Onceki
                     </a>
                     <a class="@(currentPage >= totalPages ? "disabled" : "")" href="@nextUrl">
                         Sonraki <i class="fas fa-chevron-right"></i>
@@ -433,7 +433,7 @@
 
         <aside class="monitor-card">
             <div class="monitor-card-head">
-                <h2>IP YoÄŸunluÄŸu</h2>
+                <h2>IP Yogunlugu</h2>
                 <span class="text-muted small">@topIp IP / @topHit hit</span>
             </div>
             <div class="monitor-ip-list">
@@ -444,7 +444,7 @@
                         <div class="monitor-ip-row">
                             <div>
                                 <strong class="monitor-mono">@stat.Ip</strong>
-                                <small>ZiyaretÃ§i hareketi</small>
+                                <small>Ziyaretci hareketi</small>
                             </div>
                             <span class="monitor-badge ip">@stat.Count</span>
                         </div>
@@ -453,7 +453,7 @@
                 else
                 {
                     <div class="monitor-empty">
-                        IP istatistiÄŸi yok.
+                        IP istatistigi yok.
                     </div>
                 }
             </div>

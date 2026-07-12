@@ -9,8 +9,8 @@ namespace FilistinProje.Core.Models
         public string SiteAciklamasi { get; set; } = "منتجات متنوعة بأفضل الأسعار مع خدمة توصيل سريعة";
         public string SiteLogoUrl { get; set; } = "/74anrps48logo2.svg";
         public string FaviconUrl { get; set; } = "/74anrps48logo2.svg";
-        public string BaseUrl { get; set; } = "https://www.7anrps48.com";
-        public string TemaRengi { get; set; } = "#1a5632";
+        public string BaseUrl { get; set; } = string.Empty;
+        public string TemaRengi { get; set; } = "#313511";
         public string UstBarMesaji { get; set; } = "توصيل مجاني للطلبات فوق 200 ₪";
         public string KampanyaMesaji { get; set; } = "الدفع عند الاستلام متاح";
         public bool UstBarEtkin { get; set; } = true;
