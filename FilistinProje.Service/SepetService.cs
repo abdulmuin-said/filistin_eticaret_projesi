@@ -76,6 +76,12 @@ namespace FilistinProje.Service
                     return false;
                 }
 
+                // WhatsApp-only and hidden-price products must never enter normal checkout.
+                if (urun.WhatsappSiparisVarMi || urun.FiyatGizliMi)
+                {
+                    return false;
+                }
+
                 var secenek = ResolveSelectedVariant(urun, urunSecenekId);
                 if (urunSecenekId.HasValue && secenek == null)
                 {
@@ -114,7 +120,7 @@ namespace FilistinProje.Service
                 }
                 else
                 {
-                    var fiyat = (secenek?.SatisFiyati > 0 ? secenek.SatisFiyati : urun.EtkinFiyat) + guvenliCerceveFarki;
+                    var fiyat = await CalculateCurrentUnitPriceAsync(urun, secenek, userId, adet) + guvenliCerceveFarki;
                     var secenekAdi = secenek != null ? BuildVariantLabel(secenek) : null;
                     var gorsel = secenek != null && !string.IsNullOrWhiteSpace(secenek.GorselUrl)
                         ? secenek.GorselUrl
@@ -217,7 +223,57 @@ namespace FilistinProje.Service
         public async Task<List<SepetItem>> GetSepetItemsAsync(string? userId, string sessionId)
         {
             var sepet = await GetOrCreateSepetAsync(userId, sessionId);
-            return sepet.SepetItems.Where(i => !i.SilindiMi).ToList();
+            var items = sepet.SepetItems.Where(i => !i.SilindiMi).ToList();
+            var changed = false;
+            foreach (var item in items)
+            {
+                if (item.Urun == null)
+                {
+                    continue;
+                }
+
+                var currentPrice = await CalculateCurrentUnitPriceAsync(item.Urun, item.UrunSecenek, userId, item.Adet)
+                    + CalculateFramePrice(item.UrunSecenek, item.CerceveModeli);
+                if (item.Fiyat != currentPrice)
+                {
+                    item.Fiyat = currentPrice;
+                    changed = true;
+                }
+            }
+
+            if (changed)
+            {
+                await _context.SaveChangesAsync();
+            }
+
+            return items;
+        }
+
+        private async Task<decimal> CalculateCurrentUnitPriceAsync(Urun urun, UrunSecenek? secenek, string? userId, int adet)
+        {
+            var isWholesale = !string.IsNullOrWhiteSpace(userId) && await (
+                from userRole in _context.UserRoles
+                join role in _context.Roles on userRole.RoleId equals role.Id
+                where userRole.UserId == userId && role.Name == "Wholesale"
+                select userRole.UserId).AnyAsync();
+
+            var price = secenek is { SatisFiyati: > 0 }
+                ? secenek.SatisFiyati
+                : isWholesale ? urun.EtkinTopFiyat : urun.EtkinFiyat;
+
+            if (isWholesale && urun.ToptanciUrunGrubuId.HasValue)
+            {
+                var discount = await _context.ToptanciIskontoOranlari
+                    .AsNoTracking()
+                    .Where(x => !x.SilindiMi && x.ToptanciUrunGrubuId == urun.ToptanciUrunGrubuId && adet >= x.MinAdet)
+                    .MaxAsync(x => (decimal?)x.IskontoYuzdesi) ?? 0;
+                if (discount > 0)
+                {
+                    price *= 1m - discount / 100m;
+                }
+            }
+
+            return Math.Round(price, 2);
         }
 
         public async Task<decimal> GetSepetToplamiAsync(string? userId, string sessionId)

@@ -1,0 +1,26 @@
+- generic [active] [ref=f16e1]:
+  - generic [ref=f16e2]:
+    - heading "تقييمات الموقع" [level=1] [ref=f16e3]
+    - generic [ref=f16e4]: "Total: 1 Pending: 1"
+  - table [ref=f16e6]:
+    - rowgroup [ref=f16e7]:
+      - row [ref=f16e8]:
+        - columnheader "الاسم الكامل" [ref=f16e9]
+        - columnheader "Rating" [ref=f16e10]
+        - columnheader "Title" [ref=f16e11]
+        - columnheader "Review" [ref=f16e12]
+        - columnheader "الحالة" [ref=f16e13]
+        - columnheader "التاريخ" [ref=f16e14]
+        - columnheader "Action" [ref=f16e15]
+    - rowgroup [ref=f16e16]:
+      - row [ref=f16e17]:
+        - cell "E2E Tester" [ref=f16e18]
+        - cell [ref=f16e19]
+        - cell "E2E site review" [ref=f16e21]
+        - cell "Site review approval flow test" [ref=f16e22]
+        - cell "Pending" [ref=f16e23]
+        - cell "12.07.2026 15:08" [ref=f16e24]
+        - cell [ref=f16e25]:
+          - generic [ref=f16e26]:
+            - button "Approve" [ref=f16e28]
+            - button "حذف" [ref=f16e30]

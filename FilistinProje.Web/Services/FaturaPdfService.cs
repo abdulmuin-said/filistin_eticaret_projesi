@@ -229,7 +229,7 @@ namespace FilistinProje.Web.Services
 
                     foreach (var item in detaylar)
                     {
-                        var urunAdi = item.Urun?.Baslik ?? "Ürün";
+                        var urunAdi = item.Urun?.LocalizedBaslik ?? "Ürün";
                         var varyant = item.UrunSecenek?.VaryantBasligi
                                       ?? item.UrunSecenek?.Olcu
                                       ?? "Standart";
@@ -277,6 +277,27 @@ namespace FilistinProje.Web.Services
                         {
                             r.RelativeItem().Text("Kargo:").FontSize(9).FontColor(Colors.Grey.Darken2);
                             r.ConstantItem(90).AlignRight().Text($"{siparis.KargoUcreti:N2} ₪").FontSize(9);
+                        });
+                    }
+
+                    var hediyeToplami = siparis.SiparisDetaylari
+                        .Where(d => !d.SilindiMi && d.HediyePaketi)
+                        .Sum(d => d.HediyePaketFiyati * d.Adet);
+                    if (hediyeToplami > 0)
+                    {
+                        summary.Item().PaddingTop(4).Row(r =>
+                        {
+                            r.RelativeItem().Text("Hediye Paketi:").FontSize(9).FontColor(Colors.Grey.Darken2);
+                            r.ConstantItem(90).AlignRight().Text($"{hediyeToplami:N2} ₪").FontSize(9);
+                        });
+                    }
+
+                    if (siparis.KapidaOdemeHizmetBedeli > 0)
+                    {
+                        summary.Item().PaddingTop(4).Row(r =>
+                        {
+                            r.RelativeItem().Text("Kapıda Ödeme Bedeli:").FontSize(9).FontColor(Colors.Grey.Darken2);
+                            r.ConstantItem(90).AlignRight().Text($"{siparis.KapidaOdemeHizmetBedeli:N2} ₪").FontSize(9);
                         });
                     }
 

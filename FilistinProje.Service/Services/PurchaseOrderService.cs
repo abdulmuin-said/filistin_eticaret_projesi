@@ -76,6 +76,11 @@ namespace FilistinProje.Service.Services
             var settings = _siteSettingsService.GetSettings();
             var sepetToplamiIndirimli = pricing.AraToplam - pricing.IndirimTutari;
 
+            if (odemeForPricing == "KapidaOdeme" && !settings.KapidaOdemeAktifMi)
+            {
+                return BusinessError("Siparis_OrderFailed", pricing);
+            }
+
             if (odemeForPricing == "KapidaOdeme" && sepetToplamiIndirimli > settings.KapidaOdemeLimiti)
             {
                 return new PlaceOrderResult

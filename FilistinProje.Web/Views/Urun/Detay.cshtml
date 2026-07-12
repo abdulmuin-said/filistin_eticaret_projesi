@@ -466,12 +466,41 @@
                 <span id="lowStockText">@string.Format(Localizer["LowStockText"].Value, varsayilanStok)</span>
             </div>
 
+            @if (Model.WhatsappSiparisVarMi || Model.FiyatGizliMi)
+            {
+                var whatsappNumber = new string((siteSettings.WhatsappNumarasi ?? string.Empty).Where(char.IsDigit).ToArray());
+                var whatsappText = Uri.EscapeDataString($"{Model.LocalizedBaslik} - {productUrl}");
+                <a href="https://wa.me/@whatsappNumber?text=@whatsappText"
+                   rel="noopener noreferrer"
+                   target="_blank"
+                   class="inline-flex w-full items-center justify-center gap-3 rounded-full bg-[#25D366] px-6 py-4 text-sm font-bold uppercase tracking-[0.12em] text-white shadow-lg hover:bg-[#1da851]">
+                    <i class="fab fa-whatsapp text-xl"></i>
+                    <span>@Localizer["WhatsApp"]</span>
+                </a>
+            }
+            else
+            {
             <form id="addToCartForm" class="space-y-5">
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="UrunId" value="@Model.Id" />
                 <input type="hidden" id="selectedVariantId" value="@varsayilanSecenek?.Id" />
                 <input type="hidden" id="selectedQuantity" name="Adet" value="@minSiparisAdedi" />
                 <input type="hidden" id="selectedFrameFarki" value="0" />
+
+                @if (Model.HediyePaketiVarMi)
+                {
+                    <div class="rounded-2xl border border-brand-border bg-brand-cream p-4">
+                        <label class="flex cursor-pointer items-start gap-3">
+                            <input id="giftWrapCheckbox" type="checkbox" class="mt-1 h-4 w-4 accent-brand-gold" onchange="document.getElementById('giftNoteText')?.classList.toggle('hidden', !this.checked); updateSelectionSummary();" />
+                            <span class="flex-1">
+                                <span class="block text-sm font-semibold text-brand-olive">@Localizer["GiftWrap"] (+@Model.HediyePaketFiyati.ToString("N2") @currencySymbol)</span>
+                                <span class="mt-1 block text-xs text-brand-mutedtext">@Localizer["GiftWrapDesc"]</span>
+                            </span>
+                        </label>
+                        <input id="hediyePaketFiyatiHidden" type="hidden" value="@Model.HediyePaketFiyati.ToString(System.Globalization.CultureInfo.InvariantCulture)" />
+                        <textarea id="giftNoteText" maxlength="500" rows="2" class="mt-3 hidden w-full rounded-xl border border-brand-border bg-white p-3 text-sm" placeholder="@Localizer["GiftWrapDesc"]"></textarea>
+                    </div>
+                }
 
                 <div class="flex items-center gap-3">
                     <button type="button" class="flex h-11 w-11 items-center justify-center rounded-full border border-brand-border bg-white text-brand-olive" onclick="decreaseQuantity()">-</button>
@@ -484,6 +513,7 @@
                     <span class="add-to-cart-text">@Localizer["AddToCart"]</span>
                 </button>
             </form>
+            }
         </div>
     </div>
 

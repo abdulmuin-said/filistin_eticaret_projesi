@@ -388,8 +388,23 @@ namespace FilistinProje.Web.Controllers
                 return RedirectToAction(nameof(SiparisDetay), new { id });
             }
 
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            var stokSatirlari = await _context.SiparisDetaylari
+                .AsNoTracking()
+                .Where(x => x.SiparisId == siparis.Id && !x.SilindiMi && x.UrunSecenekId.HasValue)
+                .GroupBy(x => x.UrunSecenekId!.Value)
+                .Select(x => new { UrunSecenekId = x.Key, Adet = x.Sum(d => d.Adet) })
+                .ToListAsync();
+
+            foreach (var satir in stokSatirlari)
+            {
+                await _context.Database.ExecuteSqlInterpolatedAsync(
+                    $"UPDATE \"UrunSecenekleri\" SET \"StokAdedi\" = \"StokAdedi\" + {satir.Adet} WHERE \"Id\" = {satir.UrunSecenekId}");
+            }
+
             siparis.Durum = SiparisDurumHelper.IptalEdildi;
             await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
 
             TempData["Basari"] = _localizer["Profil_OrderCancelled"].Value;
             return RedirectToAction(nameof(SiparisDetay), new { id });

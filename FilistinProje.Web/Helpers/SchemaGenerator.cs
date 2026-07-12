@@ -26,8 +26,12 @@ namespace FilistinProje.Core.Helpers
                 {
                     ["@type"] = "Brand",
                     ["name"] = string.IsNullOrWhiteSpace(urun.Marka) ? brandName : urun.Marka
-                },
-                ["offers"] = new Dictionary<string, object?>
+                }
+            };
+
+            if (!urun.FiyatGizliMi)
+            {
+                schema["offers"] = new Dictionary<string, object?>
                 {
                     ["@type"] = "Offer",
                     ["url"] = detailUrl,
@@ -35,8 +39,8 @@ namespace FilistinProje.Core.Helpers
                     ["price"] = urun.EtkinFiyat.ToString("F2"),
                     ["availability"] = urun.StoktaVarMi ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
                     ["priceValidUntil"] = DateTime.UtcNow.AddYears(1).ToString("yyyy-MM-dd")
-                }
-            };
+                };
+            }
 
             if (reviewCount > 0)
             {

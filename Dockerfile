@@ -34,7 +34,7 @@ RUN apt-get update \
     && useradd -r -g appgroup -d /app -s /sbin/nologin appuser
 
 # Gerekli klasörleri oluştur
-RUN mkdir -p /app/logs /app/App_Data /app/wwwroot/img/products /app/wwwroot/media/products/videos \
+RUN mkdir -p /app/logs /app/App_Data /app/secure-storage/dataprotection-keys /app/wwwroot/img/products /app/wwwroot/media/products/videos \
     && chown -R appuser:appgroup /app
 
 # Publish çıktısını kopyala

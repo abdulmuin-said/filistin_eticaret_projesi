@@ -233,7 +233,7 @@ window.SpinWheel = (function () {
       if (actionBtn2) actionBtn2.classList.add('hidden');
       actionBtn.textContent = t.useCoupon;
       actionBtn.className = 'sw-claim-btn w-full bg-[#b58735] hover:bg-[#9a6d24] text-white font-semibold text-sm tracking-widest uppercase py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed';
-      actionBtn.onclick = function () { claimCoupon(lastCouponCode, prize); };
+      actionBtn.onclick = function () { claimCoupon(); };
     } else {
       if (copyBtn) copyBtn.classList.add('hidden');
       actionBtn.textContent = t.loginToUse;
@@ -273,14 +273,13 @@ window.SpinWheel = (function () {
     document.body.removeChild(ta); if (cb) cb();
   }
 
-  function claimCoupon(code, prize) {
-    if (!code) return;
+  function claimCoupon() {
     var btn = document.querySelector('.sw-claim-btn');
     if (btn) { btn.disabled = true; btn.textContent = t.copied + '...'; }
     fetch('/api/wheel/claim', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': getAntiForgeryToken() },
-      body: JSON.stringify({ code: code, discountType: prize.type, discountValue: prize.value })
+      body: '{}'
     }).then(function (r) { return r.json(); }).then(function (data) {
       if (data.redirect) window.location.href = data.redirect;
       else if (data.error) { if (btn) { btn.disabled = false; btn.textContent = t.useCoupon; } alert(data.error); }

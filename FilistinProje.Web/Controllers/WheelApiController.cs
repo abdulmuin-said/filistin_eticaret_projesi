@@ -3,6 +3,7 @@ using FilistinProje.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace FilistinProje.Web.Controllers
 {
@@ -19,13 +20,9 @@ namespace FilistinProje.Web.Controllers
 
         [HttpPost("claim")]
         [Authorize]
-        public async Task<IActionResult> ClaimCoupon([FromBody] WheelClaimRequest request)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ClaimCoupon()
         {
-            if (string.IsNullOrWhiteSpace(request.Code))
-            {
-                return Ok(new { error = "Kupon kodu gerekli." });
-            }
-
             var userName = HttpContext.User.Identity?.Name ?? string.Empty;
             if (string.IsNullOrWhiteSpace(userName))
             {
@@ -38,31 +35,70 @@ namespace FilistinProje.Web.Controllers
                 return Ok(new { error = "Kullanıcı bulunamadı." });
             }
 
-            var existingClaim = await _context.Kuponlar
-                .AnyAsync(k => k.Kod == request.Code && !k.SilindiMi);
-            if (existingClaim)
+            var existingClaim = await _context.CarkKazanimlari
+                .AsNoTracking()
+                .Include(x => x.Kupon)
+                .FirstOrDefaultAsync(x => x.AppUserId == appUser.Id && !x.SilindiMi);
+            if (existingClaim != null)
             {
-                HttpContext.Session.SetString("UygulananKupon", request.Code);
+                if (existingClaim.Kupon is { AktifMi: true, SilindiMi: false })
+                {
+                    HttpContext.Session.SetString("UygulananKupon", existingClaim.Kupon.Kod);
+                }
                 return Ok(new { redirect = "/Sepet" });
             }
 
-            var kupon = new Kupon
+            var prizes = await _context.CarkOdulleri
+                .Where(x => x.AktifMi && !x.SilindiMi)
+                .OrderBy(x => x.Id)
+                .ToListAsync();
+            if (prizes.Count == 0)
             {
-                Kod = request.Code,
-                Tip = 0,
-                Deger = request.DiscountType == "freeship" ? 0 : request.DiscountValue,
-                MinSepetTutari = 0,
-                SonKullanmaTarihi = DateTime.UtcNow.AddDays(30),
-                KullanimLimiti = 1,
-                KullanilanMiktar = 0,
-                AktifMi = true
-            };
+                return Ok(new { error = "Aktif ödül bulunamadı." });
+            }
 
-            _context.Kuponlar.Add(kupon);
-            await _context.SaveChangesAsync();
-            HttpContext.Session.SetString("UygulananKupon", request.Code);
+            var prize = prizes[Random.Shared.Next(prizes.Count)];
+            await using var transaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+            try
+            {
+                Kupon? kupon = null;
+                if (prize.Tip != "none")
+                {
+                    kupon = new Kupon
+                    {
+                        Kod = $"7ANRPS48-{Guid.NewGuid():N}"[..16].ToUpperInvariant(),
+                        Tip = prize.Tip == "freeship" ? 1 : 0,
+                        Deger = prize.Tip == "freeship" ? 25 : Math.Clamp(prize.Deger, 1, 50),
+                        MinSepetTutari = 0,
+                        SonKullanmaTarihi = DateTime.UtcNow.AddDays(30),
+                        KullanimLimiti = 1,
+                        KullanilanMiktar = 0,
+                        AktifMi = true
+                    };
+                    _context.Kuponlar.Add(kupon);
+                    await _context.SaveChangesAsync();
+                }
 
-            return Ok(new { redirect = "/Sepet" });
+                _context.CarkKazanimlari.Add(new CarkKazanimi
+                {
+                    AppUserId = appUser.Id,
+                    CarkOdulId = prize.Id,
+                    KuponId = kupon?.Id
+                });
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                if (kupon != null)
+                {
+                    HttpContext.Session.SetString("UygulananKupon", kupon.Kod);
+                }
+                return Ok(new { redirect = "/Sepet" });
+            }
+            catch (DbUpdateException)
+            {
+                await transaction.RollbackAsync();
+                return Ok(new { error = "Çark hakkınız daha önce kullanılmış." });
+            }
         }
 
         [HttpGet("prizes")]
@@ -89,10 +125,4 @@ namespace FilistinProje.Web.Controllers
         }
     }
 
-    public class WheelClaimRequest
-    {
-        public string Code { get; set; } = string.Empty;
-        public string DiscountType { get; set; } = "discount";
-        public int DiscountValue { get; set; }
-    }
 }

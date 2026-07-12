@@ -1,0 +1,135 @@
+- generic [active] [ref=f12e1]:
+  - generic [ref=f12e2]:
+    - text:          +                 
+    - banner [ref=f12e3]:
+      - generic [ref=f12e4]:
+        - link "7ANRPS48 Admin Panel" [ref=f12e5] [cursor=pointer]:
+          - /url: /Admin/Home
+          - img "7ANRPS48" [ref=f12e6]
+        - generic [ref=f12e7]: Admin Panel
+      - navigation "Admin main menu" [ref=f12e8]:
+        - link " Dashboard" [ref=f12e9] [cursor=pointer]:
+          - /url: /Admin/Home
+          - generic [ref=f12e10]: 
+          - text: Dashboard
+        - generic [ref=f12e11]:
+          - button " Order Management" [ref=f12e12] [cursor=pointer]:
+            - generic [ref=f12e13]: 
+            - text: Order Management
+          - text:      
+        - generic [ref=f12e14]:
+          - button " Product Management" [ref=f12e15] [cursor=pointer]:
+            - generic [ref=f12e16]: 
+            - text: Product Management
+          - text:  +    
+        - generic [ref=f12e17]:
+          - button " Store Content" [ref=f12e18] [cursor=pointer]:
+            - generic [ref=f12e19]: 
+            - text: Store Content
+          - text:          
+        - link " Members" [ref=f12e20] [cursor=pointer]:
+          - /url: /Admin/Kullanici
+          - generic [ref=f12e21]: 
+          - text: Members
+        - link " Staff" [ref=f12e22] [cursor=pointer]:
+          - /url: /Admin/Personel
+          - generic [ref=f12e23]: 
+          - text: Staff
+        - link " Wholesalers" [ref=f12e24] [cursor=pointer]:
+          - /url: /Admin/Toptanci
+          - generic [ref=f12e25]: 
+          - text: Wholesalers
+        - link " Wholesale Groups" [ref=f12e26] [cursor=pointer]:
+          - /url: /Admin/Toptanci/UrunGruplari
+          - generic [ref=f12e27]: 
+          - text: Wholesale Groups
+        - generic [ref=f12e28]:
+          - button " Reports" [ref=f12e29] [cursor=pointer]:
+            - generic [ref=f12e30]: 
+            - text: Reports
+          - text:  
+        - link " Bank Accounts" [ref=f12e31] [cursor=pointer]:
+          - /url: /Admin/Bankalar
+          - generic [ref=f12e32]: 
+          - text: Bank Accounts
+        - link " Settings" [ref=f12e33] [cursor=pointer]:
+          - /url: /Admin/Ayarlar
+          - generic [ref=f12e34]: 
+          - text: Settings
+      - generic [ref=f12e35]:
+        - text: 
+        - combobox "Language" [ref=f12e37]:
+          - option "AR"
+          - option "EN" [selected]
+        - generic [ref=f12e38]:
+          - button "7ANRPS48 Admin Admin 7" [ref=f12e39] [cursor=pointer]:
+            - generic [ref=f12e40]:
+              - strong [ref=f12e41]: 7ANRPS48 Admin
+              - text: Admin
+            - generic [ref=f12e42]: "7"
+          - text:  
+    - generic [ref=f12e43]:
+      - main [ref=f12e44]:
+        - generic [ref=f12e45]:
+          - generic [ref=f12e46]:
+            - generic [ref=f12e47]:
+              - heading "Yorum Yönetimi" [level=1] [ref=f12e48]
+              - paragraph [ref=f12e49]: Müşteri yorumlarını inceleyin, onaylayın, arşivleyin ve Excel olarak dışa aktarın.
+            - generic [ref=f12e50]:
+              - link " Bekleyenler (0)" [ref=f12e51] [cursor=pointer]:
+                - /url: /Admin/Yorum?durum=0&pageSize=20
+                - generic [ref=f12e52]: 
+                - text: Bekleyenler (0)
+              - link " Onaylananlar (1)" [ref=f12e53] [cursor=pointer]:
+                - /url: /Admin/Yorum?durum=1&pageSize=20
+                - generic [ref=f12e54]: 
+                - text: Onaylananlar (1)
+              - link " Tümü" [ref=f12e55] [cursor=pointer]:
+                - /url: /Admin/Yorum?durum=2&pageSize=20
+                - generic [ref=f12e56]: 
+                - text: Tümü
+          - generic [ref=f12e57]:
+            - generic [ref=f12e58]:
+              - generic [ref=f12e59]:
+                - generic [ref=f12e60]: Bekleyen
+                - strong [ref=f12e61]: "0"
+              - generic [ref=f12e62]: 
+            - generic [ref=f12e63]:
+              - generic [ref=f12e64]:
+                - generic [ref=f12e65]: Onaylanan
+                - strong [ref=f12e66]: "1"
+              - generic [ref=f12e67]: 
+            - generic [ref=f12e68]:
+              - generic [ref=f12e69]:
+                - generic [ref=f12e70]: Listelenen
+                - strong [ref=f12e71]: "0"
+              - generic [ref=f12e72]: 
+            - generic [ref=f12e73]:
+              - generic [ref=f12e74]:
+                - generic [ref=f12e75]: Ortalama Puan
+                - strong [ref=f12e76]: "2.0"
+              - generic [ref=f12e77]: 
+          - generic [ref=f12e78]:
+            - generic [ref=f12e79]:
+              - generic [ref=f12e80]:
+                - generic [ref=f12e81]: 
+                - searchbox "Ürün, müşteri veya yorum içinde ara" [ref=f12e82]
+              - generic [ref=f12e83]:
+                - combobox [ref=f12e84]:
+                  - option "20" [selected]
+                  - option "50"
+                  - option "100"
+                - link " Excel'e Aktar" [ref=f12e85] [cursor=pointer]:
+                  - /url: /Admin/Yorum/Export?durum=0&q=
+                  - generic [ref=f12e86]: 
+                  - text: Excel'e Aktar
+                - button " Seçilenleri Onayla" [disabled] [ref=f12e87] [cursor=pointer]:
+                  - generic [ref=f12e88]: 
+                  - text: Seçilenleri Onayla
+            - generic [ref=f12e89]:
+              - generic [ref=f12e90]: 
+              - paragraph [ref=f12e91]: Bu filtreye uygun yorum bulunmuyor.
+      - contentinfo [ref=f12e92]: © 2026 7ANRPS48 Admin Panel. All rights reserved.
+  - generic [ref=f12e94]:
+    - generic [ref=f12e95]: 
+    - generic [ref=f12e96]: Yorum onaylandÄ± ve Ã¼rÃ¼n sayfasÄ±nda yayÄ±nlanabilir hale geldi.

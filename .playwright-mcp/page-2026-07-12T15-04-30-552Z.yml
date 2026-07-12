@@ -1,0 +1,249 @@
+- generic [ref=f6e2]:
+  - text:          +                 
+  - banner [ref=f6e3]:
+    - generic [ref=f6e4]:
+      - link "7ANRPS48 Admin Panel" [ref=f6e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f6e6]
+      - generic [ref=f6e7]: Admin Panel
+    - navigation "Admin main menu" [ref=f6e8]:
+      - link " Dashboard" [ref=f6e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f6e10]: 
+        - text: Dashboard
+      - generic [ref=f6e11]:
+        - button " Order Management" [ref=f6e12] [cursor=pointer]:
+          - generic [ref=f6e13]: 
+          - text: Order Management
+        - text:      
+      - generic [ref=f6e14]:
+        - button " Product Management" [ref=f6e15] [cursor=pointer]:
+          - generic [ref=f6e16]: 
+          - text: Product Management
+        - text:  +    
+      - generic [ref=f6e17]:
+        - button " Store Content" [ref=f6e18] [cursor=pointer]:
+          - generic [ref=f6e19]: 
+          - text: Store Content
+        - text:          
+      - link " Members" [ref=f6e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f6e21]: 
+        - text: Members
+      - link " Staff" [ref=f6e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f6e23]: 
+        - text: Staff
+      - link " Wholesalers" [ref=f6e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f6e25]: 
+        - text: Wholesalers
+      - link " Wholesale Groups" [ref=f6e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f6e27]: 
+        - text: Wholesale Groups
+      - generic [ref=f6e28]:
+        - button " Reports" [ref=f6e29] [cursor=pointer]:
+          - generic [ref=f6e30]: 
+          - text: Reports
+        - text:  
+      - link " Bank Accounts" [ref=f6e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f6e32]: 
+        - text: Bank Accounts
+      - link " Settings" [ref=f6e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f6e34]: 
+        - text: Settings
+    - generic [ref=f6e35]:
+      - text: 
+      - combobox "Language" [ref=f6e37]:
+        - option "AR"
+        - option "EN" [selected]
+      - generic [ref=f6e38]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f6e39] [cursor=pointer]:
+          - generic [ref=f6e40]:
+            - strong [ref=f6e41]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f6e42]: "7"
+        - text:  
+  - generic [ref=f6e43]:
+    - main [ref=f6e44]:
+      - generic [ref=f6e45]:
+        - generic [ref=f6e46]:
+          - generic [ref=f6e47]:
+            - heading "Urun Duzenle" [level=1] [ref=f6e48]
+            - paragraph [ref=f6e49]: طقم كنبات مودرن
+          - generic [ref=f6e50]:
+            - link " Urunlere Don" [ref=f6e51] [cursor=pointer]:
+              - /url: /Admin/Urun
+              - generic [ref=f6e52]: 
+              - text: Urunlere Don
+            - link " Sitede Gor" [ref=f6e53] [cursor=pointer]:
+              - /url: /Urun/Detay/modern-sofa-set-48
+              - generic [ref=f6e54]: 
+              - text: Sitede Gor
+        - generic [ref=f6e55]:
+          - generic [ref=f6e56]:
+            - generic [ref=f6e57]:
+              - generic [ref=f6e58]:
+                - generic [ref=f6e59]: 
+                - text: System Active
+              - generic [ref=f6e60]: New Product
+              - generic [ref=f6e61]: "ID: #48"
+            - button " Degisiklikleri Kaydet" [ref=f6e62] [cursor=pointer]:
+              - generic [ref=f6e63]: 
+              - text: Degisiklikleri Kaydet
+          - generic [ref=f6e64]:
+            - generic [ref=f6e65]:
+              - tablist "Urun duzenleme bolumleri" [ref=f6e66]:
+                - button " Temel" [ref=f6e67] [cursor=pointer]:
+                  - generic [ref=f6e68]: 
+                  - text: Temel
+                - button " Fiyat & Operasyon" [ref=f6e69] [cursor=pointer]:
+                  - generic [ref=f6e70]: 
+                  - text: Fiyat & Operasyon
+                - button " Icerik" [ref=f6e71] [cursor=pointer]:
+                  - generic [ref=f6e72]: 
+                  - text: Icerik
+                - button " Ozellikler" [ref=f6e73] [cursor=pointer]:
+                  - generic [ref=f6e74]: 
+                  - text: Ozellikler
+                - button " Varyasyonlar" [ref=f6e75] [cursor=pointer]:
+                  - generic [ref=f6e76]: 
+                  - text: Varyasyonlar
+                - button " Gorseller" [ref=f6e77] [cursor=pointer]:
+                  - generic [ref=f6e78]: 
+                  - text: Gorseller
+              - generic [ref=f6e149]:
+                - generic [ref=f6e150]:
+                  - generic [ref=f6e151]: Fiyat, Uretim ve Vitrin Durumu
+                  - generic [ref=f6e153]:
+                    - generic [ref=f6e154]:
+                      - generic [ref=f6e155]:
+                        - generic [ref=f6e156]: Satis Fiyati
+                        - spinbutton [ref=f6e157]: "4999.00"
+                      - generic [ref=f6e158]:
+                        - generic [ref=f6e159]: Indirimli Fiyat
+                        - spinbutton [ref=f6e160]
+                      - generic [ref=f6e161]:
+                        - generic [ref=f6e162]: Maliyet
+                        - spinbutton [ref=f6e163]: "0"
+                      - generic [ref=f6e164]:
+                        - generic [ref=f6e165]: KDV Orani
+                        - spinbutton [ref=f6e166]: "0"
+                      - generic [ref=f6e167]:
+                        - generic [ref=f6e168]: Stok Durumu
+                        - combobox [ref=f6e169]:
+                          - option "Stokta" [selected]
+                          - option "Tukendi"
+                          - option "On Siparis"
+                      - generic [ref=f6e170]:
+                        - generic [ref=f6e171]: Minimum Siparis
+                        - spinbutton [ref=f6e172]: "1"
+                      - generic [ref=f6e173]:
+                        - generic [ref=f6e174]: Maksimum Siparis
+                        - spinbutton [active] [ref=f6e175]: "0"
+                      - generic [ref=f6e176]:
+                        - generic [ref=f6e177]: Uretim Suresi (Gun)
+                        - spinbutton [ref=f6e178]: "1"
+                      - generic [ref=f6e179]:
+                        - generic [ref=f6e180]: Kargoya Verilis (Gun)
+                        - spinbutton [ref=f6e181]: "1"
+                      - generic [ref=f6e182]:
+                        - generic [ref=f6e183]: Tahmini Teslim (Gun)
+                        - spinbutton [ref=f6e184]: "1"
+                      - generic [ref=f6e185]:
+                        - generic [ref=f6e186]: Hediye Paketi
+                        - generic [ref=f6e188]:
+                          - generic [ref=f6e189]:
+                            - strong [ref=f6e190]: Hediye paketi sun
+                            - text: Sepette hediye paketi secenegi gosterilir.
+                          - checkbox [checked] [ref=f6e191]
+                      - generic [ref=f6e192]:
+                        - generic [ref=f6e193]: Hediye Paketi Fiyati
+                        - spinbutton "â‚ª 0.00" [ref=f6e194]: "12.50"
+                    - separator [ref=f6e195]
+                    - generic [ref=f6e196]:
+                      - generic [ref=f6e197]:
+                        - checkbox "System Active Product can be managed in admin panel." [checked] [ref=f6e198]
+                        - text: System Active
+                        - generic [ref=f6e199]: Product can be managed in admin panel.
+                      - generic [ref=f6e200]:
+                        - checkbox "Show in Storefront Product is visible to customers." [checked] [ref=f6e201]
+                        - text: Show in Storefront
+                        - generic [ref=f6e202]: Product is visible to customers.
+                      - generic [ref=f6e203]:
+                        - checkbox "Featured Highlights in showcase areas." [ref=f6e204]
+                        - text: Featured
+                        - generic [ref=f6e205]: Highlights in showcase areas.
+                      - generic [ref=f6e206]:
+                        - checkbox "New Product Receives a new product label." [checked] [ref=f6e207]
+                        - text: New Product
+                        - generic [ref=f6e208]: Receives a new product label.
+                      - generic [ref=f6e209]:
+                        - checkbox "Campaign Shows campaign highlight." [ref=f6e210]
+                        - text: Campaign
+                        - generic [ref=f6e211]: Shows campaign highlight.
+                      - generic [ref=f6e212]:
+                        - generic [ref=f6e213]: Admin_CampaignEndDate
+                        - textbox "Admin_CampaignEndDate" [ref=f6e214]
+                        - generic [ref=f6e215]: Admin_CampaignEndDateHelp
+                      - generic [ref=f6e216]:
+                        - checkbox "Ana Sayfa Included in home page lists." [ref=f6e217]
+                        - text: Ana Sayfa
+                        - generic [ref=f6e218]: Included in home page lists.
+                      - generic [ref=f6e219]:
+                        - checkbox "WhatsApp Order Shows WhatsApp button instead of cart." [ref=f6e220]
+                        - text: WhatsApp Order
+                        - generic [ref=f6e221]: Shows WhatsApp button instead of cart.
+                      - generic [ref=f6e222]:
+                        - checkbox "Hidden Price Price is hidden and quote is requested." [ref=f6e223]
+                        - text: Hidden Price
+                        - generic [ref=f6e224]: Price is hidden and quote is requested.
+                - generic [ref=f6e225]:
+                  - generic [ref=f6e226]: Wholesale Settings
+                  - generic [ref=f6e229]:
+                    - generic [ref=f6e230]:
+                      - generic [ref=f6e231]: Wholesale Product Group
+                      - combobox [ref=f6e232]:
+                        - option "-- No Group --" [selected]
+                      - generic [ref=f6e233]: Select which wholesale group the product belongs to.
+                    - generic [ref=f6e234]:
+                      - generic [ref=f6e235]: Wholesale Price (â‚ª)
+                      - spinbutton "Wholesale sale price" [ref=f6e236]
+                      - generic [ref=f6e237]: Special price shown to wholesalers. If left empty, it is calculated automatically.
+              - text:  + 
+              - generic [ref=f6e116]:
+                - link "إلغاء" [ref=f6e117] [cursor=pointer]:
+                  - /url: /Admin/Urun
+                - button " حفظ" [ref=f6e118] [cursor=pointer]:
+                  - generic [ref=f6e119]: 
+                  - text: حفظ
+            - complementary [ref=f6e120]:
+              - generic [ref=f6e121]:
+                - generic [ref=f6e122]: Product Summary
+                - generic [ref=f6e124]:
+                  - img "طقم كنبات مودرن ana gorseli" [ref=f6e126]
+                  - generic [ref=f6e127]: طقم كنبات مودرن
+                  - generic [ref=f6e128]: "SKU: -"
+                  - generic [ref=f6e129]:
+                    - generic [ref=f6e130]:
+                      - generic [ref=f6e131]: Effective Price
+                      - strong [ref=f6e132]: 4,999.00 â‚ª
+                    - generic [ref=f6e133]:
+                      - generic [ref=f6e134]: Admin_Sales
+                      - strong [ref=f6e135]: "0"
+                    - generic [ref=f6e136]:
+                      - generic [ref=f6e137]: Views
+                      - strong [ref=f6e138]: "9"
+                    - generic [ref=f6e139]:
+                      - generic [ref=f6e140]: Favorite
+                      - strong [ref=f6e141]: "0"
+                    - generic [ref=f6e142]:
+                      - generic [ref=f6e143]: Admin_Variation
+                      - strong [ref=f6e144]: "1"
+                    - generic [ref=f6e145]:
+                      - generic [ref=f6e146]: Media
+                      - strong [ref=f6e147]: "0"
+    - contentinfo [ref=f6e148]: © 2026 7ANRPS48 Admin Panel. All rights reserved.

@@ -1,0 +1,205 @@
+- generic [active] [ref=f13e1]:
+  - generic [ref=f13e3]:
+    - generic [ref=f13e4]:
+      - generic [ref=f13e5]:
+        - generic [ref=f13e6]: 
+        - text: Free shipping on orders over 200 ₪
+      - generic [ref=f13e7]:
+        - generic [ref=f13e8]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f13e9]:
+        - generic [ref=f13e10]: 
+        - text: Pay on delivery option
+      - generic [ref=f13e11]:
+        - generic [ref=f13e12]: 
+        - text: Fast Production
+      - generic [ref=f13e13]:
+        - generic [ref=f13e14]: 
+        - text: Careful Packaging
+      - generic [ref=f13e15]:
+        - generic [ref=f13e16]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f13e17]:
+        - generic [ref=f13e18]: 
+        - text: 14 Days Return
+      - generic [ref=f13e19]:
+        - generic [ref=f13e20]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f13e21]:
+        - generic [ref=f13e22]: 
+        - text: WhatsApp Support
+    - generic [ref=f13e23]:
+      - generic [ref=f13e24]:
+        - generic [ref=f13e25]: 
+        - text: Free shipping on orders over 200 ₪
+      - generic [ref=f13e26]:
+        - generic [ref=f13e27]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f13e28]:
+        - generic [ref=f13e29]: 
+        - text: Pay on delivery option
+      - generic [ref=f13e30]:
+        - generic [ref=f13e31]: 
+        - text: Fast Production
+      - generic [ref=f13e32]:
+        - generic [ref=f13e33]: 
+        - text: Careful Packaging
+      - generic [ref=f13e34]:
+        - generic [ref=f13e35]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f13e36]:
+        - generic [ref=f13e37]: 
+        - text: 14 Days Return
+      - generic [ref=f13e38]:
+        - generic [ref=f13e39]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f13e40]:
+        - generic [ref=f13e41]: 
+        - text: WhatsApp Support
+  - banner [ref=f13e42]:
+    - generic [ref=f13e43]:
+      - generic [ref=f13e44]:
+        - generic [ref=f13e45]: 
+        - link "العربية" [ref=f13e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FUrun%2FDetay%2F48
+        - link "English" [ref=f13e48] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FUrun%2FDetay%2F48
+      - link "7ANRPS48" [ref=f13e49] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f13e50]
+      - generic [ref=f13e51]:
+        - button "Search" [ref=f13e52] [cursor=pointer]
+        - link "My Account" [ref=f13e55] [cursor=pointer]:
+          - /url: /Profil
+        - link "My Favorites" [ref=f13e58] [cursor=pointer]:
+          - /url: /Favori
+        - link "Cart" [ref=f13e61] [cursor=pointer]:
+          - /url: /Sepet
+          - generic [ref=f13e64]: "13"
+      - navigation [ref=f13e65]:
+        - list [ref=f13e66]:
+          - listitem [ref=f13e67] [cursor=pointer]:
+            - link "Home Furniture" [ref=f13e68]:
+              - /url: /Urun?k=78
+          - listitem [ref=f13e71] [cursor=pointer]:
+            - link "Electronics" [ref=f13e72]:
+              - /url: /Urun?k=79
+          - listitem [ref=f13e75] [cursor=pointer]:
+            - link "Fashion" [ref=f13e76]:
+              - /url: /Urun?k=80
+          - listitem [ref=f13e79] [cursor=pointer]:
+            - link "Contact" [ref=f13e80]:
+              - /url: /Kurumsal/Iletisim
+  - main [ref=f13e81]:
+    - text:      
+    - generic [ref=f13e83]:
+      - link "Home Page" [ref=f13e84] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f13e85]: /
+      - link "Collection" [ref=f13e86] [cursor=pointer]:
+        - /url: /Urun
+      - generic [ref=f13e87]: /
+      - generic [ref=f13e88]: Modern Sofa Set
+    - generic [ref=f13e89]:
+      - generic [ref=f13e90]:
+        - region "Product Image" [ref=f13e92]:
+          - paragraph [ref=f13e98]: Modern Sofa Set
+        - generic [ref=f13e99]:
+          - generic [ref=f13e100]:
+            - link "Home Furniture" [ref=f13e101] [cursor=pointer]:
+              - /url: /Urun?k=78
+            - heading "Modern Sofa Set" [level=1] [ref=f13e102]
+            - paragraph [ref=f13e103]: Modern sofa set
+          - generic [ref=f13e104]: 4,999.00 ₪
+          - generic [ref=f13e106]:
+            - generic [ref=f13e107]:
+              - generic [ref=f13e108]: 
+              - generic [ref=f13e109]: Made to Order
+            - generic [ref=f13e110]:
+              - generic [ref=f13e111]: 
+              - generic [ref=f13e112]: 1 days
+            - generic [ref=f13e113]:
+              - generic [ref=f13e114]: 
+              - generic [ref=f13e115]: 7 days return
+            - generic [ref=f13e116]:
+              - generic [ref=f13e117]: 
+              - generic [ref=f13e118]: Manufacturer Guarantee
+          - text: 
+          - generic [ref=f13e119]:
+            - generic [ref=f13e120]:
+              - button "-" [ref=f13e121] [cursor=pointer]
+              - spinbutton [ref=f13e122]: "1"
+              - button "+" [ref=f13e123] [cursor=pointer]
+            - button " Add to Cart" [ref=f13e124] [cursor=pointer]:
+              - generic [ref=f13e125]: 
+              - generic [ref=f13e126]: Add to Cart
+      - generic [ref=f13e127]:
+        - heading "Product Details" [level=2] [ref=f13e128]
+        - generic [ref=f13e129]: Luxury five-piece modern sofa set for elegant living rooms.
+      - generic [ref=f13e130]:
+        - generic [ref=f13e131]:
+          - heading "Reviews" [level=2] [ref=f13e132]
+          - button "Write Review" [ref=f13e133] [cursor=pointer]
+        - article [ref=f13e135]:
+          - generic [ref=f13e136]:
+            - strong [ref=f13e137]: 7ANRPS48 Admin
+            - generic [ref=f13e138]: ★★
+          - paragraph [ref=f13e139]: E2E review 2026-07-12
+  - contentinfo [ref=f13e140]:
+    - generic [ref=f13e142]:
+      - generic [ref=f13e147]:
+        - generic [ref=f13e148]: Across Palestine
+        - generic [ref=f13e149]: Free Shipping
+      - generic [ref=f13e154]:
+        - generic [ref=f13e155]: Bank Transfer
+        - generic [ref=f13e156]: 256 Bit SSL
+      - generic [ref=f13e161]:
+        - generic [ref=f13e162]: Bank Transfer
+        - generic [ref=f13e163]: Easy payment by IBAN
+    - generic [ref=f13e164]:
+      - generic [ref=f13e165]:
+        - generic [ref=f13e166]:
+          - heading "Subscribe to newsletter" [level=3] [ref=f13e167]
+          - paragraph [ref=f13e168]: Get new arrivals, Palestinian market picks, and special offers in your inbox.
+          - generic [ref=f13e169]:
+            - textbox "Email Address" [ref=f13e170]
+            - button "Subscribe" [ref=f13e171] [cursor=pointer]
+        - generic [ref=f13e172]:
+          - heading "Corporate" [level=4] [ref=f13e173]
+          - list [ref=f13e174]:
+            - listitem [ref=f13e175]:
+              - link "About Us" [ref=f13e176] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=f13e177]:
+              - link "Contact" [ref=f13e178] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=f13e179]:
+              - link "All Products" [ref=f13e180] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=f13e181]:
+              - link "Privacy Policy" [ref=f13e182] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f13e183]:
+              - link "Distance Sales Contract" [ref=f13e184] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=f13e186] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=f13e187]: 
+      - generic [ref=f13e188]:
+        - paragraph [ref=f13e190]: © 2026 7ANRPS48 — All rights reserved.
+        - generic [ref=f13e191]:
+          - link "Privacy Policy" [ref=f13e192] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "Return and Exchange" [ref=f13e193] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+          - text: "|"
+          - link "About Us" [ref=f13e194] [cursor=pointer]:
+            - /url: /Kurumsal/Hakkimizda
+  - link "WhatsApp Contact" [ref=f13e195] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=f13e198]: WhatsApp
+  - link "Cart" [ref=f13e199] [cursor=pointer]:
+    - /url: /Sepet
+    - generic [ref=f13e202]: "13"
+  - text:        

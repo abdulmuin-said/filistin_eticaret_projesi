@@ -1,0 +1,190 @@
+- generic [active] [ref=f15e1]:
+  - generic [ref=f15e3]:
+    - generic [ref=f15e4]:
+      - generic [ref=f15e5]:
+        - generic [ref=f15e6]: 
+        - text: Free shipping on orders over 200 ₪
+      - generic [ref=f15e7]:
+        - generic [ref=f15e8]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f15e9]:
+        - generic [ref=f15e10]: 
+        - text: Pay on delivery option
+      - generic [ref=f15e11]:
+        - generic [ref=f15e12]: 
+        - text: Fast Production
+      - generic [ref=f15e13]:
+        - generic [ref=f15e14]: 
+        - text: Careful Packaging
+      - generic [ref=f15e15]:
+        - generic [ref=f15e16]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f15e17]:
+        - generic [ref=f15e18]: 
+        - text: 14 Days Return
+      - generic [ref=f15e19]:
+        - generic [ref=f15e20]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f15e21]:
+        - generic [ref=f15e22]: 
+        - text: WhatsApp Support
+    - generic [ref=f15e23]:
+      - generic [ref=f15e24]:
+        - generic [ref=f15e25]: 
+        - text: Free shipping on orders over 200 ₪
+      - generic [ref=f15e26]:
+        - generic [ref=f15e27]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f15e28]:
+        - generic [ref=f15e29]: 
+        - text: Pay on delivery option
+      - generic [ref=f15e30]:
+        - generic [ref=f15e31]: 
+        - text: Fast Production
+      - generic [ref=f15e32]:
+        - generic [ref=f15e33]: 
+        - text: Careful Packaging
+      - generic [ref=f15e34]:
+        - generic [ref=f15e35]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f15e36]:
+        - generic [ref=f15e37]: 
+        - text: 14 Days Return
+      - generic [ref=f15e38]:
+        - generic [ref=f15e39]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f15e40]:
+        - generic [ref=f15e41]: 
+        - text: WhatsApp Support
+  - banner [ref=f15e42]:
+    - generic [ref=f15e43]:
+      - generic [ref=f15e44]:
+        - generic [ref=f15e45]: 
+        - link "العربية" [ref=f15e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FHome%2FSiteDegerlendir
+        - link "English" [ref=f15e48] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FHome%2FSiteDegerlendir
+      - link "7ANRPS48" [ref=f15e49] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f15e50]
+      - generic [ref=f15e51]:
+        - button "Search" [ref=f15e52] [cursor=pointer]
+        - link "My Account" [ref=f15e55] [cursor=pointer]:
+          - /url: /Profil
+        - link "My Favorites" [ref=f15e58] [cursor=pointer]:
+          - /url: /Favori
+        - link "Cart" [ref=f15e61] [cursor=pointer]:
+          - /url: /Sepet
+          - generic [ref=f15e64]: "13"
+      - navigation [ref=f15e65]:
+        - list [ref=f15e66]:
+          - listitem [ref=f15e67] [cursor=pointer]:
+            - link "Home Furniture" [ref=f15e68]:
+              - /url: /Urun?k=78
+          - listitem [ref=f15e71] [cursor=pointer]:
+            - link "Electronics" [ref=f15e72]:
+              - /url: /Urun?k=79
+          - listitem [ref=f15e75] [cursor=pointer]:
+            - link "Fashion" [ref=f15e76]:
+              - /url: /Urun?k=80
+          - listitem [ref=f15e79] [cursor=pointer]:
+            - link "Contact" [ref=f15e80]:
+              - /url: /Kurumsal/Iletisim
+  - main [ref=f15e81]:
+    - generic [ref=f15e83]:
+      - generic [ref=f15e84]: Your review has been received. It will be published after approval.
+      - generic [ref=f15e85]:
+        - generic [ref=f15e86]:
+          - heading "Site Review" [level=1] [ref=f15e87]
+          - paragraph [ref=f15e88]: Rate your 7ANRPS48.com experience. Your opinions are valuable to us.
+          - generic [ref=f15e89]:
+            - heading "Review Form" [level=2] [ref=f15e90]
+            - generic [ref=f15e91]:
+              - generic [ref=f15e92]:
+                - generic [ref=f15e93]: Full Name *
+                - textbox [ref=f15e94]
+              - generic [ref=f15e95]:
+                - generic [ref=f15e96]: Email (optional)
+                - textbox [ref=f15e97]
+              - generic [ref=f15e98]:
+                - generic [ref=f15e99]: Your Rating *
+                - generic [ref=f15e100]:
+                  - generic [ref=f15e101] [cursor=pointer]: 
+                  - generic [ref=f15e103] [cursor=pointer]: 
+                  - generic [ref=f15e105] [cursor=pointer]: 
+                  - generic [ref=f15e107] [cursor=pointer]: 
+                  - generic [ref=f15e109] [cursor=pointer]: 
+              - generic [ref=f15e111]:
+                - generic [ref=f15e112]: Title (optional)
+                - textbox [ref=f15e113]
+              - generic [ref=f15e114]:
+                - generic [ref=f15e115]: Your Comment *
+                - textbox [ref=f15e116]
+              - button "Submit" [ref=f15e117] [cursor=pointer]
+        - generic [ref=f15e118]:
+          - heading "Reviews" [level=2] [ref=f15e119]
+          - generic [ref=f15e120]:
+            - generic [ref=f15e121]: 
+            - heading "No reviews yet" [level=5] [ref=f15e122]
+            - paragraph [ref=f15e123]: Be the first to review
+  - contentinfo [ref=f15e124]:
+    - generic [ref=f15e126]:
+      - generic [ref=f15e131]:
+        - generic [ref=f15e132]: Across Palestine
+        - generic [ref=f15e133]: Free Shipping
+      - generic [ref=f15e138]:
+        - generic [ref=f15e139]: Bank Transfer
+        - generic [ref=f15e140]: 256 Bit SSL
+      - generic [ref=f15e145]:
+        - generic [ref=f15e146]: Bank Transfer
+        - generic [ref=f15e147]: Easy payment by IBAN
+    - generic [ref=f15e148]:
+      - generic [ref=f15e149]:
+        - generic [ref=f15e150]:
+          - heading "Subscribe to newsletter" [level=3] [ref=f15e151]
+          - paragraph [ref=f15e152]: Get new arrivals, Palestinian market picks, and special offers in your inbox.
+          - generic [ref=f15e153]:
+            - textbox "Email Address" [ref=f15e154]
+            - button "Subscribe" [ref=f15e155] [cursor=pointer]
+        - generic [ref=f15e156]:
+          - heading "Corporate" [level=4] [ref=f15e157]
+          - list [ref=f15e158]:
+            - listitem [ref=f15e159]:
+              - link "About Us" [ref=f15e160] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=f15e161]:
+              - link "Contact" [ref=f15e162] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=f15e163]:
+              - link "All Products" [ref=f15e164] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=f15e165]:
+              - link "Privacy Policy" [ref=f15e166] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f15e167]:
+              - link "Distance Sales Contract" [ref=f15e168] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=f15e170] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=f15e171]: 
+      - generic [ref=f15e172]:
+        - paragraph [ref=f15e174]: © 2026 7ANRPS48 — All rights reserved.
+        - generic [ref=f15e175]:
+          - link "Privacy Policy" [ref=f15e176] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "Return and Exchange" [ref=f15e177] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+          - text: "|"
+          - link "About Us" [ref=f15e178] [cursor=pointer]:
+            - /url: /Kurumsal/Hakkimizda
+  - generic [ref=f15e180]:
+    - generic [ref=f15e181]: 
+    - paragraph [ref=f15e183]: Your review has been received. It will be published after approval.
+    - button "" [ref=f15e184] [cursor=pointer]
+  - link "WhatsApp Contact" [ref=f15e186] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=f15e189]: WhatsApp
+  - link "Cart" [ref=f15e190] [cursor=pointer]:
+    - /url: /Sepet
+    - generic [ref=f15e193]: "13"

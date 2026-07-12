@@ -325,7 +325,7 @@ namespace FilistinProje.Web.Controllers
                     kategori = (x.Kategori != null ? (culture == "ar" ? (x.Kategori.AdAr ?? x.Kategori.Ad) : (x.Kategori.AdEn ?? x.Kategori.Ad)) : string.Empty) ?? string.Empty,
                     gorsel = !string.IsNullOrWhiteSpace(x.AnaGorselUrl) ? x.AnaGorselUrl :
                              x.UrunResimleri.OrderBy(r => r.Sira).Select(r => r.ResimYolu).FirstOrDefault() ?? string.Empty,
-                    fiyat = (x.IndirimliFiyat.HasValue && x.IndirimliFiyat > 0 && x.IndirimliFiyat < x.Fiyat ? x.IndirimliFiyat.Value : x.Fiyat).ToString("N2") + " " + currencySymbol,
+                     fiyat = x.FiyatGizliMi ? null : (x.IndirimliFiyat.HasValue && x.IndirimliFiyat > 0 && x.IndirimliFiyat < x.Fiyat ? x.IndirimliFiyat.Value : x.Fiyat).ToString("N2") + " " + currencySymbol,
                     indirimVarMi = x.IndirimVarMi
                 })
                 .ToListAsync();
@@ -341,6 +341,11 @@ namespace FilistinProje.Web.Controllers
                 .FirstOrDefaultAsync(x => x.Id == id && x.AktifMi && x.YayindaMi && !x.SilindiMi);
 
             if (urun == null)
+            {
+                return NotFound();
+            }
+
+            if (urun.FiyatGizliMi || urun.WhatsappSiparisVarMi)
             {
                 return NotFound();
             }
