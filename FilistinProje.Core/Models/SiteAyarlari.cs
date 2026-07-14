@@ -40,15 +40,6 @@ namespace FilistinProje.Core.Models
         public bool StoktaYokSatisIzni { get; set; } = false;
         public bool StokBiteniGriGoster { get; set; } = true;
 
-        public bool PaytrAktifMi { get; set; } = false;
-        public bool PaytrTestModu { get; set; } = false;
-        public string PaytrMerchantId { get; set; } = string.Empty;
-        public string PaytrMerchantKeyProtected { get; set; } = string.Empty;
-        public string PaytrMerchantSaltProtected { get; set; } = string.Empty;
-        public string PaytrCallbackUrl { get; set; } = string.Empty;
-        public string PaytrBasariliDonusUrl { get; set; } = string.Empty;
-        public string PaytrBasarisizDonusUrl { get; set; } = string.Empty;
-
         public string KargoFirmasi { get; set; } = "توصيل محلي";
         public string KargoTakipUrl { get; set; } = string.Empty;
         public int SiparisTeslimSuresiGun { get; set; } = 3;

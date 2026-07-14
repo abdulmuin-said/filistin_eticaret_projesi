@@ -1,6 +1,6 @@
 ﻿@{
-    Layout = "_AdminLayout";
-    ViewData["Title"] = "Operasyon Izleme";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Localizer["Admin_MonitorTitle"];
 
     var logs = ViewBag.Logs as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
     var ipStats = ViewBag.IpStats as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
@@ -59,7 +59,7 @@
     .monitor-subtitle {
         max-width: 760px;
         margin: 0;
-        color: ;
+        color: #6b665d;
         font-size: 14px;
     }
 
@@ -227,7 +227,7 @@
 
     .monitor-detail {
         max-width: 460px;
-        color: ;
+        color: #4b4b43;
         white-space: normal;
     }
 
@@ -315,26 +315,26 @@
 <div class="monitor-shell">
     <section class="monitor-hero">
         <div>
-            <div class="monitor-kicker">Canli operasyon takibi</div>
-            <h1 class="monitor-title">Operasyon Izleme Merkezi</h1>
-            <p class="monitor-subtitle">Ziyaretci hareketleri, admin guvenlik olaylari ve son siparis kayitlarini tek ekranda takip edin.</p>
+            <div class="monitor-kicker">@Localizer["Admin_MonitorKicker"]</div>
+            <h1 class="monitor-title">@Localizer["Admin_MonitorTitle"]</h1>
+            <p class="monitor-subtitle">@Localizer["Admin_MonitorSubtitle"]</p>
         </div>
         <a class="monitor-refresh" href="@refreshUrl">
-            <i class="fas fa-rotate-right"></i> Yenile
+            <i class="fas fa-rotate-right"></i> @Localizer["Admin_MonitorRefresh"]
         </a>
     </section>
 
-    <section class="monitor-stats" aria-label="Ozet metrikler">
+    <section class="monitor-stats" aria-label="@Localizer["Admin_MonitorSummary"]">
         <div class="monitor-stat">
-            <span><i class="fas fa-stream"></i> Toplam kayit</span>
+            <span><i class="fas fa-stream"></i> @Localizer["Admin_MonitorTotalRecords"]</span>
             <strong>@totalCount</strong>
         </div>
         <div class="monitor-stat">
-            <span><i class="fas fa-user-clock"></i> Ziyaretci</span>
+            <span><i class="fas fa-user-clock"></i> @Localizer["Admin_MonitorVisitors"]</span>
             <strong>@ipLogCount</strong>
         </div>
         <div class="monitor-stat">
-            <span><i class="fas fa-bag-shopping"></i> Siparis</span>
+            <span><i class="fas fa-bag-shopping"></i> @Localizer["Admin_MonitorOrders"]</span>
             <strong>@siparisLogCount</strong>
         </div>
         <div class="monitor-stat">
@@ -345,16 +345,16 @@
 
     <section class="monitor-card">
         <div class="monitor-card-head">
-            <h2>Filtreler</h2>
+            <h2>@Localizer["Admin_MonitorFilters"]</h2>
             <div class="monitor-tabs">
                 <a href="/admin/xyzsecretmonitor?type=all&pageSize=@pageSize" class="monitor-tab @(allActive ? "active" : "")">
-                    <i class="fas fa-layer-group"></i> Tumu
+                    <i class="fas fa-layer-group"></i> @Localizer["Admin_MonitorAll"]
                 </a>
                 <a href="/admin/xyzsecretmonitor?type=ip&pageSize=@pageSize" class="monitor-tab @(type == "ip" ? "active" : "")">
-                    <i class="fas fa-user-clock"></i> Ziyaretci
+                    <i class="fas fa-user-clock"></i> @Localizer["Admin_MonitorVisitors"]
                 </a>
                 <a href="/admin/xyzsecretmonitor?type=siparis&pageSize=@pageSize" class="monitor-tab @(type == "siparis" ? "active" : "")">
-                    <i class="fas fa-bag-shopping"></i> Siparis
+                    <i class="fas fa-bag-shopping"></i> @Localizer["Admin_MonitorOrders"]
                 </a>
                 <a href="/admin/xyzsecretmonitor?type=audit&pageSize=@pageSize" class="monitor-tab @(type == "audit" ? "active" : "")">
                     <i class="fas fa-shield-halved"></i> Audit
@@ -366,8 +366,8 @@
     <section class="monitor-grid">
         <div class="monitor-card">
             <div class="monitor-card-head">
-                <h2>Olay Akisi</h2>
-                <span class="text-muted small">Sayfa @currentPage / @totalPages</span>
+                <h2>@Localizer["Admin_MonitorEventFeed"]</h2>
+                <span class="text-muted small">@Localizer["Admin_MonitorPage", currentPage, totalPages]</span>
             </div>
 
             <div class="monitor-table-wrap">
@@ -375,7 +375,7 @@
                     <thead>
                         <tr>
                             <th>@Localizer["Admin_Tarih"]</th>
-                            <th>Kaynak</th>
+                            <th>@Localizer["Admin_MonitorSource"]</th>
                             <th>@Localizer["Admin_Kullanici"]</th>
                             <th>IP</th>
                             <th>@Localizer["Admin_Islem"]</th>
@@ -409,7 +409,7 @@
                             <tr>
                                 <td colspan="6">
                                     <div class="monitor-empty">
-                                        Bu filtre icin kayit bulunamadi.
+                                        @Localizer["Admin_MonitorNoRecords"]
                                     </div>
                                 </td>
                             </tr>
@@ -419,13 +419,13 @@
             </div>
 
             <div class="monitor-pagination">
-                <span class="text-muted small">@totalCount kayit icinde sayfa @currentPage gosteriliyor</span>
+                <span class="text-muted small">@Localizer["Admin_MonitorPagination", totalCount, currentPage]</span>
                 <div class="monitor-page-actions">
                     <a class="@(currentPage <= 1 ? "disabled" : "")" href="@previousUrl">
-                        <i class="fas fa-chevron-left"></i> Onceki
+                        <i class="fas fa-chevron-left"></i> @Localizer["Admin_MonitorPrevious"]
                     </a>
                     <a class="@(currentPage >= totalPages ? "disabled" : "")" href="@nextUrl">
-                        Sonraki <i class="fas fa-chevron-right"></i>
+                        @Localizer["Admin_MonitorNext"] <i class="fas fa-chevron-right"></i>
                     </a>
                 </div>
             </div>
@@ -433,8 +433,8 @@
 
         <aside class="monitor-card">
             <div class="monitor-card-head">
-                <h2>IP Yogunlugu</h2>
-                <span class="text-muted small">@topIp IP / @topHit hit</span>
+                <h2>@Localizer["Admin_MonitorIpDensity"]</h2>
+                <span class="text-muted small">@Localizer["Admin_MonitorIpHits", topIp, topHit]</span>
             </div>
             <div class="monitor-ip-list">
                 @if (ipStats.Any())
@@ -444,7 +444,7 @@
                         <div class="monitor-ip-row">
                             <div>
                                 <strong class="monitor-mono">@stat.Ip</strong>
-                                <small>Ziyaretci hareketi</small>
+                                <small>@Localizer["Admin_MonitorVisitorActivity"]</small>
                             </div>
                             <span class="monitor-badge ip">@stat.Count</span>
                         </div>
@@ -453,7 +453,7 @@
                 else
                 {
                     <div class="monitor-empty">
-                        IP istatistigi yok.
+                        @Localizer["Admin_MonitorNoIpStats"]
                     </div>
                 }
             </div>

@@ -1,7 +1,9 @@
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
+using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using System.Text.Json;
 
 namespace FilistinProje.Web.Areas.Admin.Controllers
@@ -10,10 +12,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
     public class KargoController : AdminBaseController
     {
         private readonly KanvasDbContext _context;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public KargoController(KanvasDbContext context)
+        public KargoController(KanvasDbContext context, IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index()
@@ -87,9 +91,9 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 TempData["Durum"] = "success";
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                TempData["Mesaj"] = "Hata: " + ex.Message;
+                TempData["Mesaj"] = _localizer["OperationFailed"];
                 TempData["Durum"] = "danger";
                 return RedirectToAction(nameof(Index));
             }
@@ -177,9 +181,9 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return Json(new { success = true, message = id == 0 ? "Bölge eklendi." : "Bölge güncellendi." });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return Json(new { success = false, message = "Hata: " + ex.Message });
+                return Json(new { success = false, message = _localizer["OperationFailed"].Value });
             }
         }
 
@@ -197,9 +201,9 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return Json(new { success = true, message = "Bölge silindi." });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return Json(new { success = false, message = "Hata: " + ex.Message });
+                return Json(new { success = false, message = _localizer["OperationFailed"].Value });
             }
         }
 
@@ -242,9 +246,9 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return Json(new { success = true, message = id == 0 ? "Şehir eklendi." : "Şehir güncellendi." });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return Json(new { success = false, message = "Hata: " + ex.Message });
+                return Json(new { success = false, message = _localizer["OperationFailed"].Value });
             }
         }
 
@@ -262,9 +266,9 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return Json(new { success = true, message = "Şehir silindi." });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return Json(new { success = false, message = "Hata: " + ex.Message });
+                return Json(new { success = false, message = _localizer["OperationFailed"].Value });
             }
         }
 
@@ -336,9 +340,9 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return Json(new { success = true, message = "Bölge kargo fiyatı güncellendi." });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return Json(new { success = false, message = "Hata: " + ex.Message });
+                return Json(new { success = false, message = _localizer["OperationFailed"].Value });
             }
         }
     }

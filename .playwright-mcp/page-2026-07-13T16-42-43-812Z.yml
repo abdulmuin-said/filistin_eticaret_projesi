@@ -1,0 +1,800 @@
+- generic [ref=f92e2]:
+  - navigation "Admin main menu" [ref=f92e3]:
+    - generic [ref=f92e4]:
+      - link [ref=f92e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f92e6]
+      - button "Kapat" [ref=f92e7] [cursor=pointer]:
+        - generic [ref=f92e8]: 
+    - generic [ref=f92e9]:
+      - link " Dashboard" [ref=f92e10] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f92e11]: 
+        - text: Dashboard
+      - generic [ref=f92e12]:
+        - generic [ref=f92e13]:
+          - generic [ref=f92e14]: 
+          - text: Order Management
+        - link " Orders" [ref=f92e15] [cursor=pointer]:
+          - /url: /Admin/Siparis
+          - generic [ref=f92e16]: 
+          - text: Orders
+        - link " New Orders" [ref=f92e17] [cursor=pointer]:
+          - /url: /Admin/Siparis?durum=0
+          - generic [ref=f92e18]: 
+          - text: New Orders
+        - link " Shipping Companies" [ref=f92e19] [cursor=pointer]:
+          - /url: /Admin/Kargo
+          - generic [ref=f92e20]: 
+          - text: Shipping Companies
+        - link " Return Requests" [ref=f92e21] [cursor=pointer]:
+          - /url: /Admin/Iade
+          - generic [ref=f92e22]: 
+          - text: Return Requests
+      - generic [ref=f92e23]:
+        - generic [ref=f92e24]:
+          - generic [ref=f92e25]: 
+          - text: Product Management
+        - link " Products" [ref=f92e26] [cursor=pointer]:
+          - /url: /Admin/Urun
+          - generic [ref=f92e27]: 
+          - text: Products
+        - link "+ Add New Product" [ref=f92e28] [cursor=pointer]:
+          - /url: /Admin/Urun/Ekle
+          - generic [ref=f92e29]: +
+          - text: Add New Product
+        - link " Categories" [ref=f92e30] [cursor=pointer]:
+          - /url: /Admin/Kategori
+          - generic [ref=f92e31]: 
+          - text: Categories
+        - link " Product Attributes" [ref=f92e32] [cursor=pointer]:
+          - /url: /Admin/UrunOzellik
+          - generic [ref=f92e33]: 
+          - text: Product Attributes
+        - link " Excel Operations" [ref=f92e34] [cursor=pointer]:
+          - /url: /Admin/UrunImport
+          - generic [ref=f92e35]: 
+          - text: Excel Operations
+        - link " Bulk Price Update" [ref=f92e36] [cursor=pointer]:
+          - /url: /Admin/TopluFiyatGuncelle
+          - generic [ref=f92e37]: 
+          - text: Bulk Price Update
+      - generic [ref=f92e38]:
+        - generic [ref=f92e39]:
+          - generic [ref=f92e40]: 
+          - text: Store Content
+        - link " Slider Management" [ref=f92e41] [cursor=pointer]:
+          - /url: /Admin/Slayt
+          - generic [ref=f92e42]: 
+          - text: Slider Management
+        - link " Home Page Content" [ref=f92e43] [cursor=pointer]:
+          - /url: /Admin/AnaSayfa
+          - generic [ref=f92e44]: 
+          - text: Home Page Content
+        - link " Home Page Sections" [ref=f92e45] [cursor=pointer]:
+          - /url: /Admin/HomeSections
+          - generic [ref=f92e46]: 
+          - text: Home Page Sections
+        - link " Spin Wheel Management" [ref=f92e47] [cursor=pointer]:
+          - /url: /Admin/CarkOdul
+          - generic [ref=f92e48]: 
+          - text: Spin Wheel Management
+        - link " Push Notifications" [ref=f92e49] [cursor=pointer]:
+          - /url: /Admin/PushBildirim
+          - generic [ref=f92e50]: 
+          - text: Push Notifications
+        - link " Coupons" [ref=f92e51] [cursor=pointer]:
+          - /url: /Admin/Kupon
+          - generic [ref=f92e52]: 
+          - text: Coupons
+        - link " Messages" [ref=f92e53] [cursor=pointer]:
+          - /url: /Admin/Iletisim
+          - generic [ref=f92e54]: 
+          - text: Messages
+        - link " Product Reviews" [ref=f92e55] [cursor=pointer]:
+          - /url: /Admin/Yorum
+          - generic [ref=f92e56]: 
+          - text: Product Reviews
+        - link " Newsletter Subscribers" [ref=f92e57] [cursor=pointer]:
+          - /url: /Admin/Bulten
+          - generic [ref=f92e58]: 
+          - text: Newsletter Subscribers
+        - link " Corporate Pages" [ref=f92e59] [cursor=pointer]:
+          - /url: /Admin/Sayfa
+          - generic [ref=f92e60]: 
+          - text: Corporate Pages
+      - link " Members" [ref=f92e61] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f92e62]: 
+        - text: Members
+      - link " Staff" [ref=f92e63] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f92e64]: 
+        - text: Staff
+      - link " Wholesalers" [ref=f92e65] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f92e66]: 
+        - text: Wholesalers
+      - link " Wholesale Groups" [ref=f92e67] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f92e68]: 
+        - text: Wholesale Groups
+      - link " Reports" [ref=f92e69] [cursor=pointer]:
+        - /url: /Admin/Rapor
+        - generic [ref=f92e70]: 
+        - text: Reports
+      - link " Bank Accounts" [ref=f92e71] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f92e72]: 
+        - text: Bank Accounts
+      - link " Settings" [ref=f92e73] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f92e74]: 
+        - text: Settings
+      - generic [ref=f92e75]:
+        - link " View Live Site" [ref=f92e76] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f92e77]: 
+          - text: View Live Site
+        - button " Logout" [ref=f92e79] [cursor=pointer]:
+          - generic [ref=f92e80]: 
+          - text: Logout
+  - banner [ref=f92e81]:
+    - generic [ref=f92e82]:
+      - button "Menü" [ref=f92e83] [cursor=pointer]
+      - link "7ANRPS48 Admin Panel" [ref=f92e87] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f92e88]
+    - text:           +                         
+    - generic [ref=f92e89]:
+      - text: 
+      - combobox "Language" [ref=f92e91]:
+        - option "AR"
+        - option "EN" [selected]
+      - generic [ref=f92e92]:
+        - button "7" [ref=f92e93] [cursor=pointer]
+        - text:  
+  - generic [ref=f92e95]:
+    - main [ref=f92e96]:
+      - generic [ref=f92e97]:
+        - generic [ref=f92e98]:
+          - generic [ref=f92e99]:
+            - generic [ref=f92e100]: Canli operasyon takibi
+            - heading "Operasyon Izleme Merkezi" [level=1] [ref=f92e101]
+            - paragraph [ref=f92e102]: Ziyaretci hareketleri, admin guvenlik olaylari ve son siparis kayitlarini tek ekranda takip edin.
+          - link " Yenile" [ref=f92e103] [cursor=pointer]:
+            - /url: /admin/xyzsecretmonitor?type=all&page=1&pageSize=50
+            - generic [ref=f92e104]: 
+            - text: Yenile
+        - region "Ozet metrikler" [ref=f92e105]:
+          - generic [ref=f92e106]:
+            - generic [ref=f92e107]:
+              - generic [ref=f92e108]: 
+              - text: Toplam kayit
+            - strong [ref=f92e109]: "1550"
+          - generic [ref=f92e110]:
+            - generic [ref=f92e111]:
+              - generic [ref=f92e112]: 
+              - text: Ziyaretci
+            - strong [ref=f92e113]: "1486"
+          - generic [ref=f92e114]:
+            - generic [ref=f92e115]:
+              - generic [ref=f92e116]: 
+              - text: Siparis
+            - strong [ref=f92e117]: "5"
+          - generic [ref=f92e118]:
+            - generic [ref=f92e119]:
+              - generic [ref=f92e120]: 
+              - text: Audit
+            - strong [ref=f92e121]: "59"
+        - generic [ref=f92e123]:
+          - heading "Filtreler" [level=2] [ref=f92e124]
+          - generic [ref=f92e125]:
+            - link " Tumu" [ref=f92e126] [cursor=pointer]:
+              - /url: /admin/xyzsecretmonitor?type=all&pageSize=50
+              - generic [ref=f92e127]: 
+              - text: Tumu
+            - link " Ziyaretci" [ref=f92e128] [cursor=pointer]:
+              - /url: /admin/xyzsecretmonitor?type=ip&pageSize=50
+              - generic [ref=f92e129]: 
+              - text: Ziyaretci
+            - link " Siparis" [ref=f92e130] [cursor=pointer]:
+              - /url: /admin/xyzsecretmonitor?type=siparis&pageSize=50
+              - generic [ref=f92e131]: 
+              - text: Siparis
+            - link " Audit" [ref=f92e132] [cursor=pointer]:
+              - /url: /admin/xyzsecretmonitor?type=audit&pageSize=50
+              - generic [ref=f92e133]: 
+              - text: Audit
+        - generic [ref=f92e134]:
+          - generic [ref=f92e135]:
+            - generic [ref=f92e136]:
+              - heading "Olay Akisi" [level=2] [ref=f92e137]
+              - generic [ref=f92e138]: Sayfa 1 / 31
+            - table [ref=f92e140]:
+              - rowgroup [ref=f92e141]:
+                - row [ref=f92e142]:
+                  - columnheader "التاريخ" [ref=f92e143]
+                  - columnheader "Kaynak" [ref=f92e144]
+                  - columnheader "Kullanıcı" [ref=f92e145]
+                  - columnheader "IP" [ref=f92e146]
+                  - columnheader "الإجراء" [ref=f92e147]
+                  - columnheader "التفاصيل" [ref=f92e148]
+              - rowgroup [ref=f92e149]:
+                - row [ref=f92e150]:
+                  - cell "2026-07-13 16:37:52" [ref=f92e151]
+                  - cell " IP" [ref=f92e152]:
+                    - generic [ref=f92e153]:
+                      - generic [ref=f92e154]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e155]
+                  - cell "127.0.0.1" [ref=f92e156]
+                  - cell [ref=f92e157]:
+                    - strong [ref=f92e158]: "404"
+                  - cell "Chrome | Windows" [ref=f92e159]
+                - row [ref=f92e160]:
+                  - cell "2026-07-13 16:37:52" [ref=f92e161]
+                  - cell " IP" [ref=f92e162]:
+                    - generic [ref=f92e163]:
+                      - generic [ref=f92e164]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e165]
+                  - cell "::1" [ref=f92e166]
+                  - cell [ref=f92e167]:
+                    - strong [ref=f92e168]: "404"
+                  - cell "Chrome | Windows" [ref=f92e169]
+                - row [ref=f92e170]:
+                  - cell "2026-07-13 16:37:48" [ref=f92e171]
+                  - cell " IP" [ref=f92e172]:
+                    - generic [ref=f92e173]:
+                      - generic [ref=f92e174]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e175]
+                  - cell "::1" [ref=f92e176]
+                  - cell [ref=f92e177]:
+                    - strong [ref=f92e178]: "404"
+                  - cell "Chrome | Windows" [ref=f92e179]
+                - row [ref=f92e180]:
+                  - cell "2026-07-13 16:37:48" [ref=f92e181]
+                  - cell " IP" [ref=f92e182]:
+                    - generic [ref=f92e183]:
+                      - generic [ref=f92e184]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e185]
+                  - cell "127.0.0.1" [ref=f92e186]
+                  - cell [ref=f92e187]:
+                    - strong [ref=f92e188]: "404"
+                  - cell "Chrome | Windows" [ref=f92e189]
+                - row [ref=f92e190]:
+                  - cell "2026-07-13 16:37:17" [ref=f92e191]
+                  - cell " IP" [ref=f92e192]:
+                    - generic [ref=f92e193]:
+                      - generic [ref=f92e194]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e195]
+                  - cell "127.0.0.1" [ref=f92e196]
+                  - cell [ref=f92e197]:
+                    - strong [ref=f92e198]: "404"
+                  - cell "Chrome | Windows" [ref=f92e199]
+                - row [ref=f92e200]:
+                  - cell "2026-07-13 16:37:17" [ref=f92e201]
+                  - cell " IP" [ref=f92e202]:
+                    - generic [ref=f92e203]:
+                      - generic [ref=f92e204]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e205]
+                  - cell "127.0.0.1" [ref=f92e206]
+                  - cell [ref=f92e207]:
+                    - strong [ref=f92e208]: "404"
+                  - cell "Chrome | Windows" [ref=f92e209]
+                - row [ref=f92e210]:
+                  - cell "2026-07-13 16:36:30" [ref=f92e211]
+                  - cell " AUDIT" [ref=f92e212]:
+                    - generic [ref=f92e213]:
+                      - generic [ref=f92e214]: 
+                      - text: AUDIT
+                  - cell "admin@7anrps48.com" [ref=f92e215]
+                  - cell "127.0.0.1" [ref=f92e216]
+                  - cell [ref=f92e217]:
+                    - strong [ref=f92e218]: admin_session_started
+                  - cell "Admin panel oturumu baslatildi. → Home" [ref=f92e219]
+                - row [ref=f92e220]:
+                  - cell "2026-07-12 15:09:39" [ref=f92e221]
+                  - cell " IP" [ref=f92e222]:
+                    - generic [ref=f92e223]:
+                      - generic [ref=f92e224]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e225]
+                  - cell "::1" [ref=f92e226]
+                  - cell [ref=f92e227]:
+                    - strong
+                  - cell "Chrome | Windows" [ref=f92e228]
+                - row [ref=f92e229]:
+                  - cell "2026-07-12 15:08:54" [ref=f92e230]
+                  - cell " IP" [ref=f92e231]:
+                    - generic [ref=f92e232]:
+                      - generic [ref=f92e233]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e234]
+                  - cell "::1" [ref=f92e235]
+                  - cell [ref=f92e236]:
+                    - strong [ref=f92e237]: SiteDegerlendir
+                  - cell "Chrome | Windows" [ref=f92e238]
+                - row [ref=f92e239]:
+                  - cell "2026-07-12 15:08:15" [ref=f92e240]
+                  - cell " IP" [ref=f92e241]:
+                    - generic [ref=f92e242]:
+                      - generic [ref=f92e243]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e244]
+                  - cell "::1" [ref=f92e245]
+                  - cell [ref=f92e246]:
+                    - strong [ref=f92e247]: SiteDegerlendir
+                  - cell "Chrome | Windows" [ref=f92e248]
+                - row [ref=f92e249]:
+                  - cell "2026-07-12 15:08:03" [ref=f92e250]
+                  - cell " IP" [ref=f92e251]:
+                    - generic [ref=f92e252]:
+                      - generic [ref=f92e253]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e254]
+                  - cell "::1" [ref=f92e255]
+                  - cell [ref=f92e256]:
+                    - strong [ref=f92e257]: "48"
+                  - cell "Chrome | Windows" [ref=f92e258]
+                - row [ref=f92e259]:
+                  - cell "2026-07-12 15:07:33" [ref=f92e260]
+                  - cell " AUDIT" [ref=f92e261]:
+                    - generic [ref=f92e262]:
+                      - generic [ref=f92e263]: 
+                      - text: AUDIT
+                  - cell "admin@7anrps48.com" [ref=f92e264]
+                  - cell "::1" [ref=f92e265]
+                  - cell [ref=f92e266]:
+                    - strong [ref=f92e267]: admin_session_started
+                  - cell "Admin panel oturumu baslatildi. → Yorum" [ref=f92e268]
+                - row [ref=f92e269]:
+                  - cell "2026-07-12 15:07:14" [ref=f92e270]
+                  - cell " IP" [ref=f92e271]:
+                    - generic [ref=f92e272]:
+                      - generic [ref=f92e273]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e274]
+                  - cell "::1" [ref=f92e275]
+                  - cell [ref=f92e276]:
+                    - strong [ref=f92e277]: "48"
+                  - cell "Chrome | Windows" [ref=f92e278]
+                - row [ref=f92e279]:
+                  - cell "2026-07-12 15:06:26" [ref=f92e280]
+                  - cell " IP" [ref=f92e281]:
+                    - generic [ref=f92e282]:
+                      - generic [ref=f92e283]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e284]
+                  - cell "::1" [ref=f92e285]
+                  - cell [ref=f92e286]:
+                    - strong [ref=f92e287]: modern-sofa-set-48
+                  - cell "Chrome | Windows" [ref=f92e288]
+                - row [ref=f92e289]:
+                  - cell "2026-07-12 15:06:22" [ref=f92e290]
+                  - cell " IP" [ref=f92e291]:
+                    - generic [ref=f92e292]:
+                      - generic [ref=f92e293]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e294]
+                  - cell "::1" [ref=f92e295]
+                  - cell [ref=f92e296]:
+                    - strong [ref=f92e297]: modern-sofa-set-48
+                  - cell "Chrome | Windows" [ref=f92e298]
+                - row [ref=f92e299]:
+                  - cell "2026-07-12 15:03:47" [ref=f92e300]
+                  - cell " AUDIT" [ref=f92e301]:
+                    - generic [ref=f92e302]:
+                      - generic [ref=f92e303]: 
+                      - text: AUDIT
+                  - cell "admin@7anrps48.com" [ref=f92e304]
+                  - cell "::1" [ref=f92e305]
+                  - cell [ref=f92e306]:
+                    - strong [ref=f92e307]: admin_session_started
+                  - cell "Admin panel oturumu baslatildi. → Urun" [ref=f92e308]
+                - row [ref=f92e309]:
+                  - cell "2026-07-12 14:57:23" [ref=f92e310]
+                  - cell " IP" [ref=f92e311]:
+                    - generic [ref=f92e312]:
+                      - generic [ref=f92e313]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e314]
+                  - cell "::1" [ref=f92e315]
+                  - cell [ref=f92e316]:
+                    - strong
+                  - cell "Chrome | Windows" [ref=f92e317]
+                - row [ref=f92e318]:
+                  - cell "2026-07-12 14:57:23" [ref=f92e319]
+                  - cell " AUDIT" [ref=f92e320]:
+                    - generic [ref=f92e321]:
+                      - generic [ref=f92e322]: 
+                      - text: AUDIT
+                  - cell "admin@7anrps48.com" [ref=f92e323]
+                  - cell "::1" [ref=f92e324]
+                  - cell [ref=f92e325]:
+                    - strong [ref=f92e326]: admin_login_success
+                  - cell "Admin hesabi basariyla giris yapti. → /Admin" [ref=f92e327]
+                - row [ref=f92e328]:
+                  - cell "2026-07-12 14:56:51" [ref=f92e329]
+                  - cell " IP" [ref=f92e330]:
+                    - generic [ref=f92e331]:
+                      - generic [ref=f92e332]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e333]
+                  - cell "::1" [ref=f92e334]
+                  - cell [ref=f92e335]:
+                    - strong [ref=f92e336]: GirisYap
+                  - cell "Chrome | Windows" [ref=f92e337]
+                - row [ref=f92e338]:
+                  - cell "2026-07-12 13:43:52" [ref=f92e339]
+                  - cell " IP" [ref=f92e340]:
+                    - generic [ref=f92e341]:
+                      - generic [ref=f92e342]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e343]
+                  - cell "::1" [ref=f92e344]
+                  - cell [ref=f92e345]:
+                    - strong [ref=f92e346]: Odeme
+                  - cell "Chrome | Windows" [ref=f92e347]
+                - row [ref=f92e348]:
+                  - cell "2026-07-12 13:41:19" [ref=f92e349]
+                  - cell " IP" [ref=f92e350]:
+                    - generic [ref=f92e351]:
+                      - generic [ref=f92e352]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e353]
+                  - cell "::1" [ref=f92e354]
+                  - cell [ref=f92e355]:
+                    - strong [ref=f92e356]: Odeme
+                  - cell "Chrome | Windows" [ref=f92e357]
+                - row [ref=f92e358]:
+                  - cell "2026-07-12 13:40:44" [ref=f92e359]
+                  - cell " IP" [ref=f92e360]:
+                    - generic [ref=f92e361]:
+                      - generic [ref=f92e362]: 
+                      - text: IP
+                  - cell "Misafir" [ref=f92e363]
+                  - cell "::1" [ref=f92e364]
+                  - cell [ref=f92e365]:
+                    - strong
+                  - cell "Chrome | Windows" [ref=f92e366]
+                - row [ref=f92e367]:
+                  - cell "2026-07-10 17:33:09" [ref=f92e368]
+                  - cell " IP" [ref=f92e369]:
+                    - generic [ref=f92e370]:
+                      - generic [ref=f92e371]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e372]
+                  - cell "::1" [ref=f92e373]
+                  - cell [ref=f92e374]:
+                    - strong
+                  - cell "Chrome | Windows" [ref=f92e375]
+                - row [ref=f92e376]:
+                  - cell "2026-07-10 17:33:09" [ref=f92e377]
+                  - cell " IP" [ref=f92e378]:
+                    - generic [ref=f92e379]:
+                      - generic [ref=f92e380]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e381]
+                  - cell "::1" [ref=f92e382]
+                  - cell [ref=f92e383]:
+                    - strong [ref=f92e384]: Degistir?culture=en&returnUrl=%2F
+                  - cell "Chrome | Windows" [ref=f92e385]
+                - row [ref=f92e386]:
+                  - cell "2026-07-10 17:32:17" [ref=f92e387]
+                  - cell " IP" [ref=f92e388]:
+                    - generic [ref=f92e389]:
+                      - generic [ref=f92e390]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e391]
+                  - cell "::1" [ref=f92e392]
+                  - cell [ref=f92e393]:
+                    - strong
+                  - cell "Chrome | Windows" [ref=f92e394]
+                - row [ref=f92e395]:
+                  - cell "2026-07-10 17:32:17" [ref=f92e396]
+                  - cell " IP" [ref=f92e397]:
+                    - generic [ref=f92e398]:
+                      - generic [ref=f92e399]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e400]
+                  - cell "::1" [ref=f92e401]
+                  - cell [ref=f92e402]:
+                    - strong [ref=f92e403]: Degistir?culture=ar&returnUrl=%2F
+                  - cell "Chrome | Windows" [ref=f92e404]
+                - row [ref=f92e405]:
+                  - cell "2026-07-10 17:31:57" [ref=f92e406]
+                  - cell " IP" [ref=f92e407]:
+                    - generic [ref=f92e408]:
+                      - generic [ref=f92e409]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e410]
+                  - cell "::1" [ref=f92e411]
+                  - cell [ref=f92e412]:
+                    - strong
+                  - cell "Chrome | Windows" [ref=f92e413]
+                - row [ref=f92e414]:
+                  - cell "2026-07-10 17:30:39" [ref=f92e415]
+                  - cell " IP" [ref=f92e416]:
+                    - generic [ref=f92e417]:
+                      - generic [ref=f92e418]: 
+                      - text: IP
+                  - cell "admin@7anrps48.com" [ref=f92e419]
+                  - cell "::1" [ref=f92e420]
+                  - cell [ref=f92e421]:
+                    - strong
+                  - cell "Chrome | Windows" [ref=f92e422]
+                - row [ref=f92e423]:
+                  - cell "2026-07-10 17:30:23" [ref=f92e424]
+                  - cell " IP" [ref=f92e425]:
+                    - generic [ref=f92e426]:
+                      - generic [ref=f92e427]: 
+                      - text: IP
+                  - cell "Misafir" [ref=f92e428]
+                  - cell "::1" [ref=f92e429]
+                  - cell [ref=f92e430]:
+                    - strong [ref=f92e431]: GirisYap
+                  - cell "Bilinmiyor | Windows" [ref=f92e432]
+                - row [ref=f92e433]:
+                  - cell "2026-07-10 17:30:23" [ref=f92e434]
+                  - cell " AUDIT" [ref=f92e435]:
+                    - generic [ref=f92e436]:
+                      - generic [ref=f92e437]: 
+                      - text: AUDIT
+                  - cell "admin@7anrps48.com" [ref=f92e438]
+                  - cell "::1" [ref=f92e439]
+                  - cell [ref=f92e440]:
+                    - strong [ref=f92e441]: admin_login_success
+                  - cell "Admin hesabi basariyla giris yapti. → /Admin" [ref=f92e442]
+                - row [ref=f92e443]:
+                  - cell "2026-07-10 17:30:06" [ref=f92e444]
+                  - cell " IP" [ref=f92e445]:
+                    - generic [ref=f92e446]:
+                      - generic [ref=f92e447]: 
+                      - text: IP
+                  - cell "Misafir" [ref=f92e448]
+                  - cell "::1" [ref=f92e449]
+                  - cell [ref=f92e450]:
+                    - strong [ref=f92e451]: GirisYap
+                  - cell "Bilinmiyor | Windows" [ref=f92e452]
+                - row [ref=f92e453]:
+                  - cell "2026-07-10 17:30:06" [ref=f92e454]
+                  - cell " AUDIT" [ref=f92e455]:
+                    - generic [ref=f92e456]:
+                      - generic [ref=f92e457]: 
+                      - text: AUDIT
+                  - cell "admin@7anrps48.com" [ref=f92e458]
+                  - cell "::1" [ref=f92e459]
+                  - cell [ref=f92e460]:
+                    - strong [ref=f92e461]: admin_login_success
+                  - cell "Admin hesabi basariyla giris yapti. → /Admin" [ref=f92e462]
+                - row [ref=f92e463]:
+                  - cell "2026-07-10 17:29:37" [ref=f92e464]
+                  - cell " IP" [ref=f92e465]:
+                    - generic [ref=f92e466]:
+                      - generic [ref=f92e467]: 
+                      - text: IP
+                  - cell "Misafir" [ref=f92e468]
+                  - cell "::1" [ref=f92e469]
+                  - cell [ref=f92e470]:
+                    - strong [ref=f92e471]: GirisYap?ReturnUrl=%2FAdmin%2FSiparis%3Fpage%3D1%26pageSize%3D20
+                  - cell "Bilinmiyor | Windows" [ref=f92e472]
+                - row [ref=f92e473]:
+                  - cell "2026-07-10 17:29:37" [ref=f92e474]
+                  - cell " IP" [ref=f92e475]:
+                    - generic [ref=f92e476]:
+                      - generic [ref=f92e477]: 
+                      - text: IP
+                  - cell "Misafir" [ref=f92e478]
+                  - cell "::1" [ref=f92e479]
+                  - cell [ref=f92e480]:
+                    - strong [ref=f92e481]: GirisYap?ReturnUrl=%2FAdmin%2FKullanici%3Fpage%3D1%26pageSize%3D20
+                  - cell "Bilinmiyor | Windows" [ref=f92e482]
+                - row [ref=f92e483]:
+                  - cell "2026-07-10 17:29:37" [ref=f92e484]
+                  - cell " IP" [ref=f92e485]:
+                    - generic [ref=f92e486]:
+                      - generic [ref=f92e487]: 
+                      - text: IP
+                  - cell "Misafir" [ref=f92e488]
+                  - cell "::1" [ref=f92e489]
+                  - cell [ref=f92e490]:
+                    - strong [ref=f92e491]: GirisYap?ReturnUrl=%2FAdmin%2FKategori
+                  - cell "Bilinmiyor | Windows" [ref=f92e492]
+                - row [ref=f92e493]:
+                  - cell "2026-07-10 17:29:37" [ref=f92e494]
+                  - cell " AUDIT" [ref=f92e495]:
+                    - generic [ref=f92e496]:
+                      - generic [ref=f92e497]: 
+                      - text: AUDIT
+                  - cell "-" [ref=f92e498]
+                  - cell "::1" [ref=f92e499]
+                  - cell [ref=f92e500]:
+                    - strong [ref=f92e501]: admin_auth_required
+                  - cell "Admin paneline erismek icin giris yapilmasi gerekiyor. → /Admin/Kategori" [ref=f92e502]
+                - row [ref=f92e503]:
+                  - cell "2026-07-10 17:29:37" [ref=f92e504]
+                  - cell " AUDIT" [ref=f92e505]:
+                    - generic [ref=f92e506]:
+                      - generic [ref=f92e507]: 
+                      - text: AUDIT
+                  - cell "-" [ref=f92e508]
+                  - cell "::1" [ref=f92e509]
+                  - cell [ref=f92e510]:
+                    - strong [ref=f92e511]: admin_auth_required
+                  - cell "Admin paneline erismek icin giris yapilmasi gerekiyor. → /Admin/Kullanici" [ref=f92e512]
+                - row [ref=f92e513]:
+                  - cell "2026-07-10 17:29:37" [ref=f92e514]
+                  - cell " AUDIT" [ref=f92e515]:
+                    - generic [ref=f92e516]:
+                      - generic [ref=f92e517]: 
+                      - text: AUDIT
+                  - cell "-" [ref=f92e518]
+                  - cell "::1" [ref=f92e519]
+                  - cell [ref=f92e520]:
+                    - strong [ref=f92e521]: admin_auth_required
+                  - cell "Admin paneline erismek icin giris yapilmasi gerekiyor. → /Admin/Siparis" [ref=f92e522]
+                - row [ref=f92e523]:
+                  - cell "2026-07-10 17:29:36" [ref=f92e524]
+                  - cell " IP" [ref=f92e525]:
+                    - generic [ref=f92e526]:
+                      - generic [ref=f92e527]: 
+                      - text: IP
+                  - cell "Misafir" [ref=f92e528]
+                  - cell "::1" [ref=f92e529]
+                  - cell [ref=f92e530]:
+                    - strong [ref=f92e531]: GirisYap?ReturnUrl=%2FAdmin%2FUrun
+                  - cell "Bilinmiyor | Windows" [ref=f92e532]
+                - row [ref=f92e533]:
+                  - cell "2026-07-10 17:29:36" [ref=f92e534]
+                  - cell " IP" [ref=f92e535]:
+                    - generic [ref=f92e536]:
+                      - generic [ref=f92e537]: 
+                      - text: IP
+                  - cell "Misafir" [ref=f92e538]
+                  - cell "::1" [ref=f92e539]
+                  - cell [ref=f92e540]:
+                    - strong [ref=f92e541]: GirisYap?ReturnUrl=%2FAdmin%2FKullanici
+                  - cell "Bilinmiyor | Windows" [ref=f92e542]
+                - row [ref=f92e543]:
+                  - cell "2026-07-10 17:29:36" [ref=f92e544]
+                  - cell " IP" [ref=f92e545]:
+                    - generic [ref=f92e546]:
+                      - generic [ref=f92e547]: 
+                      - text: IP
+                  - cell "Misafir" [ref=f92e548]
+                  - cell "::1" [ref=f92e549]
+                  - cell [ref=f92e550]:
+                    - strong [ref=f92e551]: GirisYap?ReturnUrl=%2FAdmin%2FSiparis
+                  - cell "Bilinmiyor | Windows" [ref=f92e552]
+                - row [ref=f92e553]:
+                  - cell "2026-07-10 17:29:36" [ref=f92e554]
+                  - cell " AUDIT" [ref=f92e555]:
+                    - generic [ref=f92e556]:
+                      - generic [ref=f92e557]: 
+                      - text: AUDIT
+                  - cell "-" [ref=f92e558]
+                  - cell "::1" [ref=f92e559]
+                  - cell [ref=f92e560]:
+                    - strong [ref=f92e561]: admin_auth_required
+                  - cell "Admin paneline erismek icin giris yapilmasi gerekiyor. → /Admin/Siparis" [ref=f92e562]
+                - row [ref=f92e563]:
+                  - cell "2026-07-10 17:29:36" [ref=f92e564]
+                  - cell " AUDIT" [ref=f92e565]:
+                    - generic [ref=f92e566]:
+                      - generic [ref=f92e567]: 
+                      - text: AUDIT
+                  - cell "-" [ref=f92e568]
+                  - cell "::1" [ref=f92e569]
+                  - cell [ref=f92e570]:
+                    - strong [ref=f92e571]: admin_auth_required
+                  - cell "Admin paneline erismek icin giris yapilmasi gerekiyor. → /Admin/Kullanici" [ref=f92e572]
+                - row [ref=f92e573]:
+                  - cell "2026-07-10 17:29:36" [ref=f92e574]
+                  - cell " AUDIT" [ref=f92e575]:
+                    - generic [ref=f92e576]:
+                      - generic [ref=f92e577]: 
+                      - text: AUDIT
+                  - cell "-" [ref=f92e578]
+                  - cell "::1" [ref=f92e579]
+                  - cell [ref=f92e580]:
+                    - strong [ref=f92e581]: admin_auth_required
+                  - cell "Admin paneline erismek icin giris yapilmasi gerekiyor. → /Admin/Urun" [ref=f92e582]
+                - row [ref=f92e583]:
+                  - cell "2026-07-10 17:29:35" [ref=f92e584]
+                  - cell " IP" [ref=f92e585]:
+                    - generic [ref=f92e586]:
+                      - generic [ref=f92e587]: 
+                      - text: IP
+                  - cell "Misafir" [ref=f92e588]
+                  - cell "::1" [ref=f92e589]
+                  - cell [ref=f92e590]:
+                    - strong [ref=f92e591]: GirisYap?ReturnUrl=%2FAdmin%2FHome
+                  - cell "Bilinmiyor | Windows" [ref=f92e592]
+                - row [ref=f92e593]:
+                  - cell "2026-07-10 17:29:35" [ref=f92e594]
+                  - cell " IP" [ref=f92e595]:
+                    - generic [ref=f92e596]:
+                      - generic [ref=f92e597]: 
+                      - text: IP
+                  - cell "Misafir" [ref=f92e598]
+                  - cell "::1" [ref=f92e599]
+                  - cell [ref=f92e600]:
+                    - strong [ref=f92e601]: GirisYap
+                  - cell "Bilinmiyor | Windows" [ref=f92e602]
+                - row [ref=f92e603]:
+                  - cell "2026-07-10 17:29:35" [ref=f92e604]
+                  - cell " AUDIT" [ref=f92e605]:
+                    - generic [ref=f92e606]:
+                      - generic [ref=f92e607]: 
+                      - text: AUDIT
+                  - cell "-" [ref=f92e608]
+                  - cell "::1" [ref=f92e609]
+                  - cell [ref=f92e610]:
+                    - strong [ref=f92e611]: admin_auth_required
+                  - cell "Admin paneline erismek icin giris yapilmasi gerekiyor. → /Admin/Home" [ref=f92e612]
+                - row [ref=f92e613]:
+                  - cell "2026-07-10 17:29:15" [ref=f92e614]
+                  - cell " IP" [ref=f92e615]:
+                    - generic [ref=f92e616]:
+                      - generic [ref=f92e617]: 
+                      - text: IP
+                  - cell "Misafir" [ref=f92e618]
+                  - cell "::1" [ref=f92e619]
+                  - cell [ref=f92e620]:
+                    - strong
+                  - cell "Bilinmiyor | Windows" [ref=f92e621]
+                - row [ref=f92e622]:
+                  - cell "2026-07-10 17:29:14" [ref=f92e623]
+                  - cell " IP" [ref=f92e624]:
+                    - generic [ref=f92e625]:
+                      - generic [ref=f92e626]: 
+                      - text: IP
+                  - cell "Misafir" [ref=f92e627]
+                  - cell "::1" [ref=f92e628]
+                  - cell [ref=f92e629]:
+                    - strong
+                  - cell "Bilinmiyor | Windows" [ref=f92e630]
+                - row [ref=f92e631]:
+                  - cell "2026-07-10 17:29:01" [ref=f92e632]
+                  - cell " IP" [ref=f92e633]:
+                    - generic [ref=f92e634]:
+                      - generic [ref=f92e635]: 
+                      - text: IP
+                  - cell "Misafir" [ref=f92e636]
+                  - cell "::1" [ref=f92e637]
+                  - cell [ref=f92e638]:
+                    - strong [ref=f92e639]: Sepet
+                  - cell "Bilinmiyor | Windows" [ref=f92e640]
+            - generic [ref=f92e641]:
+              - generic [ref=f92e642]: 1550 kayit icinde sayfa 1 gosteriliyor
+              - generic [ref=f92e643]:
+                - link " Onceki":
+                  - /url: /admin/xyzsecretmonitor?type=all&page=1&pageSize=50
+                  - generic: 
+                  - text: Onceki
+                - link "Sonraki " [ref=f92e644] [cursor=pointer]:
+                  - /url: /admin/xyzsecretmonitor?type=all&page=2&pageSize=50
+                  - text: Sonraki
+                  - generic [ref=f92e645]: 
+          - complementary [ref=f92e646]:
+            - generic [ref=f92e647]:
+              - heading "IP Yogunlugu" [level=2] [ref=f92e648]
+              - generic [ref=f92e649]: 2 IP / 1486 hit
+            - generic [ref=f92e650]:
+              - generic [ref=f92e651]:
+                - generic [ref=f92e652]:
+                  - strong [ref=f92e653]: ::1
+                  - generic [ref=f92e654]: Ziyaretci hareketi
+                - generic [ref=f92e655]: "1411"
+              - generic [ref=f92e656]:
+                - generic [ref=f92e657]:
+                  - strong [ref=f92e658]: 127.0.0.1
+                  - generic [ref=f92e659]: Ziyaretci hareketi
+                - generic [ref=f92e660]: "75"
+    - contentinfo [ref=f92e661]: © 2026 7ANRPS48 Admin Panel. All rights reserved.

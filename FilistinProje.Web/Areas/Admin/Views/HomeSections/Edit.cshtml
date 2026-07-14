@@ -146,11 +146,12 @@
                                 <i class="fas fa-save"></i> @Localizer["Admin_SaveChanges"]
                             </button>
                             <a href="@Url.Action("Index", "HomeSections")" class="ca-btn ca-btn-outline">@Localizer["Admin_Iptal"]</a>
-                            <a href="@Url.Action("Delete", "HomeSections", new { id = Model.Id })"
-                               class="ca-btn ca-btn-danger mt-2"
-                               onclick='return confirm("@Localizer["Admin_DeleteSectionConfirm"]");'>
-                                <i class="fas fa-trash"></i> @Localizer["Admin_DeleteSection"]
-                            </a>
+                            <form asp-action="Delete" asp-route-id="@Model.Id" method="post" onsubmit='return confirm("@Localizer["Admin_DeleteSectionConfirm"]");'>
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="ca-btn ca-btn-danger mt-2 w-100">
+                                    <i class="fas fa-trash"></i> @Localizer["Admin_DeleteSection"]
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

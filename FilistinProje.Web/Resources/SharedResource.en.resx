@@ -2792,46 +2792,46 @@
   <data name="ProductCount" xml:space="preserve"><value>{0} products</value></data>
   <data name="ProductCountListing" xml:space="preserve"><value>{0} products listed</value></data>
   <data name="Admin_Yonetim_Paneli" xml:space="preserve">
-    <value>لوحة التحكم</value>
+    <value>Dashboard</value>
   </data>
   <data name="Admin_Siparis_stok_ve_trafik_gorunumunun_tek_ekrandaki_ozeti" xml:space="preserve">
-    <value>ملخص الطلبات والمخزون والزيارات في شاشة واحدة.</value>
+    <value>A single view of orders, stock and traffic.</value>
   </data>
   <data name="Admin_Bugunku_Ciro" xml:space="preserve">
-    <value>إيرادات اليوم</value>
+    <value>Today's Revenue</value>
   </data>
   <data name="Admin_Toplam_Siparis" xml:space="preserve">
-    <value>إجمالي الطلبات</value>
+    <value>Total Orders</value>
   </data>
   <data name="Admin_Kargoda_Iade" xml:space="preserve">
-    <value>الشحن / المرتجعات</value>
+    <value>Shipped / Returned</value>
   </data>
   <data name="Admin_Mesaj_Aktif_Urun" xml:space="preserve">
-    <value>الرسائل / المنتجات النشطة</value>
+    <value>Messages / Active Products</value>
   </data>
   <data name="Admin_Aylik" xml:space="preserve">
-    <value>شهرياً</value>
+    <value>Monthly</value>
   </data>
   <data name="Admin_Haftalik" xml:space="preserve">
-    <value>أسبوعياً</value>
+    <value>Weekly</value>
   </data>
   <data name="Admin_Bugun" xml:space="preserve">
-    <value>اليوم</value>
+    <value>Today</value>
   </data>
   <data name="Admin_siparis" xml:space="preserve">
-    <value>طلب</value>
+    <value>orders</value>
   </data>
   <data name="Admin_Kargoya_hazir" xml:space="preserve">
-    <value>جاهز للشحن</value>
+    <value>Ready to ship</value>
   </data>
   <data name="Admin_Operasyon_ozet_durumu" xml:space="preserve">
-    <value>ملخص العمليات</value>
+    <value>Operations summary</value>
   </data>
   <data name="Admin_Son_7_Gun_Gelir_Grafigi" xml:space="preserve">
-    <value>مخطط إيرادات آخر 7 أيام</value>
+    <value>Revenue for the last 7 days</value>
   </data>
   <data name="Admin_Hizli_Islemler" xml:space="preserve">
-    <value>إجراءات سريعة</value>
+    <value>Quick actions</value>
   </data>
   <data name="Admin_Yeni_Urun_Ekle" xml:space="preserve">
     <value>إضافة منتج جديد</value>
@@ -2843,7 +2843,7 @@
     <value>المنتجات</value>
   </data>
   <data name="Admin_Siparisler" xml:space="preserve">
-    <value>الطلبات</value>
+    <value>Orders</value>
   </data>
   <data name="Admin_Kargo_Yonetimi" xml:space="preserve">
     <value>إدارة الشحن</value>
@@ -2939,7 +2939,7 @@
     <value>آخر دخول</value>
   </data>
   <data name="Admin_Site_Ayarlari" xml:space="preserve">
-    <value>إعدادات الموقع</value>
+    <value>Site Settings</value>
   </data>
   <data name="Admin_Banka_Hesaplari" xml:space="preserve">
     <value>الحسابات البنكية</value>
@@ -2984,13 +2984,13 @@
     <value>العميل</value>
   </data>
   <data name="Admin_Odeme" xml:space="preserve">
-    <value>الدفع</value>
+    <value>Payment</value>
   </data>
   <data name="Admin_Odeme_Yontemi" xml:space="preserve">
     <value>طريقة الدفع</value>
   </data>
   <data name="Admin_Kapida_Odeme" xml:space="preserve">
-    <value>الدفع عند الاستلام</value>
+    <value>Cash on Delivery</value>
   </data>
   <data name="Admin_Kargo_Bolgeleri" xml:space="preserve">
     <value>مناطق الشحن</value>
@@ -3020,22 +3020,22 @@
     <value>حالة الطلب</value>
   </data>
   <data name="Admin_Urun_Ekle" xml:space="preserve">
-    <value>إضافة منتج</value>
+    <value>Add product</value>
   </data>
   <data name="Admin_Urun" xml:space="preserve">
     <value>منتج</value>
   </data>
   <data name="Admin_Ozellik_Alanlari" xml:space="preserve">
-    <value>حقول الخصائص</value>
+    <value>Attribute fields</value>
   </data>
   <data name="Admin_Iletisim_Kutusu" xml:space="preserve">
-    <value>صندوق الرسائل</value>
+    <value>Message inbox</value>
   </data>
   <data name="Admin_En_Cok_Satanlar" xml:space="preserve">
-    <value>الأكثر مبيعاً</value>
+    <value>Best Sellers</value>
   </data>
   <data name="Admin_Henuz_satis_verisi_yok" xml:space="preserve">
-    <value>لا توجد بيانات مبيعات بعد.</value>
+    <value>No sales data yet.</value>
   </data>
   <data name="Admin_Kaydet" xml:space="preserve">
     <value>حفظ</value>
@@ -3086,13 +3086,13 @@
     <value>الصورة</value>
   </data>
   <data name="Admin_Telefon" xml:space="preserve">
-    <value>الهاتف</value>
+    <value>Phone</value>
   </data>
   <data name="Admin_Adres" xml:space="preserve">
-    <value>العنوان</value>
+    <value>Address</value>
   </data>
   <data name="Admin_E_posta" xml:space="preserve">
-    <value>البريد الإلكتروني</value>
+    <value>Email</value>
   </data>
   <data name="Admin_Ad_Soyad" xml:space="preserve">
     <value>الاسم الكامل</value>
@@ -4475,8 +4475,24 @@
     <value>SEO fields feed search engines and social sharing information.</value>
   </data>
   <data name="Admin_HelpItem4" xml:space="preserve">
-    <value>PayTR settings are used in payment infrastructure configuration.</value>
+    <value>Payment and delivery settings determine the available checkout options.</value>
   </data>
+  <data name="Admin_SettingsTabs" xml:space="preserve">
+    <value>Settings sections</value>
+  </data>
+  <data name="Admin_QuantityLabel" xml:space="preserve"><value>{0} units</value></data>
+  <data name="Admin_ViewCount" xml:space="preserve"><value>{0} views</value></data>
+  <data name="Admin_UnreadContactAlerts" xml:space="preserve"><value>Unread contact requests</value></data>
+  <data name="Admin_UnreadContactAlertsDesc" xml:space="preserve"><value>{0} messages are awaiting a response.</value></data>
+  <data name="Admin_PendingOrderAlerts" xml:space="preserve"><value>Pending orders</value></data>
+  <data name="Admin_PendingOrderAlertsDesc" xml:space="preserve"><value>{0} orders are awaiting processing.</value></data>
+  <data name="Admin_MissingProductData" xml:space="preserve"><value>Missing product data</value></data>
+  <data name="Admin_MissingProductImageAlert" xml:space="preserve"><value>{0} active products have no main image.</value></data>
+  <data name="Admin_NewOrderActivity" xml:space="preserve"><value>New order #{0}</value></data>
+  <data name="Admin_NewProductActivity" xml:space="preserve"><value>New product added</value></data>
+  <data name="Admin_NewContactActivity" xml:space="preserve"><value>New contact message</value></data>
+  <data name="Admin_SkuMissing" xml:space="preserve"><value>SKU unavailable</value></data>
+  <data name="Admin_ProductFallback" xml:space="preserve"><value>Product</value></data>
   <data name="Admin_HelpItem5" xml:space="preserve">
     <value>Cash on delivery status and service fee are reflected in the order total on the payment page.</value>
   </data>
@@ -5110,4 +5126,39 @@
   <data name="PreviousImage" xml:space="preserve"><value>Previous image</value></data>
   <data name="NextImage" xml:space="preserve"><value>Next image</value></data>
   <data name="VideoNotSupported" xml:space="preserve"><value>Your browser does not support video playback.</value></data>
-  </root>
+  <data name="Admin_InvalidSliderUpload" xml:space="preserve">
+    <value>The selected file type or size is not allowed.</value>
+  </data>
+  <data name="Admin_SiteReviewTotal" xml:space="preserve"><value>Total: {0}</value></data>
+  <data name="Admin_SiteReviewPending" xml:space="preserve"><value>Pending: {0}</value></data>
+  <data name="Admin_SiteReviewRating" xml:space="preserve"><value>Rating</value></data>
+  <data name="Admin_SiteReviewTitle" xml:space="preserve"><value>Title</value></data>
+  <data name="Admin_SiteReviewText" xml:space="preserve"><value>Review</value></data>
+  <data name="Admin_SiteReviewActions" xml:space="preserve"><value>Actions</value></data>
+  <data name="Admin_SiteReviewEmpty" xml:space="preserve"><value>No site reviews yet.</value></data>
+  <data name="Admin_SiteReviewApproved" xml:space="preserve"><value>Approved</value></data>
+  <data name="Admin_SiteReviewPendingLabel" xml:space="preserve"><value>Pending</value></data>
+  <data name="Admin_SiteReviewApprove" xml:space="preserve"><value>Approve</value></data>
+  <data name="Admin_SiteReviewDeleteConfirm" xml:space="preserve"><value>Are you sure you want to delete this review?</value></data>
+  <data name="Admin_MonitorTitle" xml:space="preserve"><value>Operations Monitor</value></data>
+  <data name="Admin_MonitorKicker" xml:space="preserve"><value>Live operations monitoring</value></data>
+  <data name="Admin_MonitorSubtitle" xml:space="preserve"><value>Review visitor activity, security events, and recent orders in one place.</value></data>
+  <data name="Admin_MonitorRefresh" xml:space="preserve"><value>Refresh</value></data>
+  <data name="Admin_MonitorSummary" xml:space="preserve"><value>Summary metrics</value></data>
+  <data name="Admin_MonitorTotalRecords" xml:space="preserve"><value>Total records</value></data>
+  <data name="Admin_MonitorVisitors" xml:space="preserve"><value>Visitors</value></data>
+  <data name="Admin_MonitorOrders" xml:space="preserve"><value>Orders</value></data>
+  <data name="Admin_MonitorFilters" xml:space="preserve"><value>Filters</value></data>
+  <data name="Admin_MonitorAll" xml:space="preserve"><value>All</value></data>
+  <data name="Admin_MonitorEventFeed" xml:space="preserve"><value>Event feed</value></data>
+  <data name="Admin_MonitorPage" xml:space="preserve"><value>Page {0} / {1}</value></data>
+  <data name="Admin_MonitorSource" xml:space="preserve"><value>Source</value></data>
+  <data name="Admin_MonitorNoRecords" xml:space="preserve"><value>No records match this filter.</value></data>
+  <data name="Admin_MonitorPagination" xml:space="preserve"><value>Showing page {1} of {0} records</value></data>
+  <data name="Admin_MonitorPrevious" xml:space="preserve"><value>Previous</value></data>
+  <data name="Admin_MonitorNext" xml:space="preserve"><value>Next</value></data>
+  <data name="Admin_MonitorIpDensity" xml:space="preserve"><value>IP activity</value></data>
+  <data name="Admin_MonitorIpHits" xml:space="preserve"><value>{0} IPs / {1} hits</value></data>
+  <data name="Admin_MonitorVisitorActivity" xml:space="preserve"><value>Visitor activity</value></data>
+  <data name="Admin_MonitorNoIpStats" xml:space="preserve"><value>No IP statistics available.</value></data>
+</root>

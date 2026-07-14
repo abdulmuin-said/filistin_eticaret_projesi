@@ -1,8 +1,10 @@
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Service.Services;
+using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace FilistinProje.Web.Areas.Admin.Controllers
 {
@@ -11,11 +13,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
     {
         private readonly IHomePageSectionService _sectionService;
         private readonly KanvasDbContext _context;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public HomeSectionsController(IHomePageSectionService sectionService, KanvasDbContext context)
+        public HomeSectionsController(IHomePageSectionService sectionService, KanvasDbContext context, IStringLocalizer<SharedResource> localizer)
         {
             _sectionService = sectionService;
             _context = context;
+            _localizer = localizer;
         }
 
         // GET: /admin/homesections
@@ -47,6 +51,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(HomePageSection model)
         {
+            if (string.IsNullOrWhiteSpace(model.Title))
+            {
+                ModelState.AddModelError(nameof(model.Title), _localizer["FillRequiredFields"]);
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -110,10 +119,17 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: /admin/homesections/delete/5
-        [HttpGet]
+        // Destructive operations are POST-only so links and crawlers cannot delete content.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
+            var section = await _context.HomePageSections.FindAsync(id);
+            if (section == null)
+            {
+                return NotFound();
+            }
+
             await _sectionService.DeleteSectionAsync(id);
             TempData["Basari"] = "Bölüm silindi.";
             return RedirectToAction(nameof(Index));
@@ -121,6 +137,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         // POST: /admin/homesections/toggleenabled
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ToggleEnabled(int id)
         {
             var section = await _context.HomePageSections.FindAsync(id);

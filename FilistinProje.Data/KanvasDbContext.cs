@@ -44,8 +44,6 @@ namespace FilistinProje.Data
         public DbSet<BankaHesap> BankaHesaplari { get; set; }
         public DbSet<ToptanciUrunGrubu> ToptanciUrunGruplari { get; set; }
         public DbSet<ToptanciIskontoOrani> ToptanciIskontoOranlari { get; set; }
-        public DbSet<CarkOdul> CarkOdulleri { get; set; }
-        public DbSet<CarkKazanimi> CarkKazanimlari { get; set; }
         public DbSet<PushAbonelik> PushAbonelikleri { get; set; }
         public DbSet<StokBildirimLog> StokBildirimLoglari { get; set; }
 
@@ -87,15 +85,6 @@ namespace FilistinProje.Data
                     .WithMany(e => e.Urunler)
                     .HasForeignKey(e => e.ToptanciUrunGrubuId)
                     .OnDelete(DeleteBehavior.SetNull);
-            });
-
-            modelBuilder.Entity<CarkKazanimi>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.HasIndex(e => e.AppUserId).IsUnique();
-                entity.HasOne(e => e.AppUser).WithMany().HasForeignKey(e => e.AppUserId).OnDelete(DeleteBehavior.Cascade);
-                entity.HasOne(e => e.CarkOdul).WithMany().HasForeignKey(e => e.CarkOdulId).OnDelete(DeleteBehavior.Restrict);
-                entity.HasOne(e => e.Kupon).WithMany().HasForeignKey(e => e.KuponId).OnDelete(DeleteBehavior.SetNull);
             });
 
             modelBuilder.Entity<UrunSecenek>(entity =>

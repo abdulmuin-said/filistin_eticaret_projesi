@@ -1,0 +1,292 @@
+- generic [ref=f11e2]:
+  - navigation "القائمة الرئيسية للإدارة" [ref=f11e4]:
+    - generic [ref=f11e5]:
+      - link [ref=f11e6] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f11e7]
+      - button "Kapat" [ref=f11e8] [cursor=pointer]:
+        - generic [ref=f11e9]: 
+    - generic [ref=f11e10]:
+      - link " لوحة البيانات" [ref=f11e11] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f11e12]: 
+        - text: لوحة البيانات
+      - generic [ref=f11e13]:
+        - generic [ref=f11e14]:
+          - generic [ref=f11e15]: 
+          - text: إدارة الطلبات
+        - link " الطلبات" [ref=f11e16] [cursor=pointer]:
+          - /url: /Admin/Siparis
+          - generic [ref=f11e17]: 
+          - text: الطلبات
+        - link " طلبات جديدة" [ref=f11e18] [cursor=pointer]:
+          - /url: /Admin/Siparis?durum=0
+          - generic [ref=f11e19]: 
+          - text: طلبات جديدة
+        - link " شركات الشحن" [ref=f11e20] [cursor=pointer]:
+          - /url: /Admin/Kargo
+          - generic [ref=f11e21]: 
+          - text: شركات الشحن
+        - link " طلبات الإرجاع" [ref=f11e22] [cursor=pointer]:
+          - /url: /Admin/Iade
+          - generic [ref=f11e23]: 
+          - text: طلبات الإرجاع
+      - generic [ref=f11e24]:
+        - generic [ref=f11e25]:
+          - generic [ref=f11e26]: 
+          - text: إدارة المنتجات
+        - link " المنتجات" [ref=f11e27] [cursor=pointer]:
+          - /url: /Admin/Urun
+          - generic [ref=f11e28]: 
+          - text: المنتجات
+        - link "+ إضافة منتج جديد" [ref=f11e29] [cursor=pointer]:
+          - /url: /Admin/Urun/Ekle
+          - generic [ref=f11e30]: +
+          - text: إضافة منتج جديد
+        - link " التصنيفات" [ref=f11e31] [cursor=pointer]:
+          - /url: /Admin/Kategori
+          - generic [ref=f11e32]: 
+          - text: التصنيفات
+        - link " خصائص المنتج" [ref=f11e33] [cursor=pointer]:
+          - /url: /Admin/UrunOzellik
+          - generic [ref=f11e34]: 
+          - text: خصائص المنتج
+      - generic [ref=f11e35]:
+        - generic [ref=f11e36]:
+          - generic [ref=f11e37]: 
+          - text: محتوى المتجر
+        - link " إدارة الشرائح" [ref=f11e38] [cursor=pointer]:
+          - /url: /Admin/Slayt
+          - generic [ref=f11e39]: 
+          - text: إدارة الشرائح
+        - link " محتوى الصفحة الرئيسية" [ref=f11e40] [cursor=pointer]:
+          - /url: /Admin/AnaSayfa
+          - generic [ref=f11e41]: 
+          - text: محتوى الصفحة الرئيسية
+        - link " أقسام الصفحة الرئيسية" [ref=f11e42] [cursor=pointer]:
+          - /url: /Admin/HomeSections
+          - generic [ref=f11e43]: 
+          - text: أقسام الصفحة الرئيسية
+        - link " إشعارات الدفع" [ref=f11e44] [cursor=pointer]:
+          - /url: /Admin/PushBildirim
+          - generic [ref=f11e45]: 
+          - text: إشعارات الدفع
+        - link " كوبونات الخصم" [ref=f11e46] [cursor=pointer]:
+          - /url: /Admin/Kupon
+          - generic [ref=f11e47]: 
+          - text: كوبونات الخصم
+        - link " الرسائل" [ref=f11e48] [cursor=pointer]:
+          - /url: /Admin/Iletisim
+          - generic [ref=f11e49]: 
+          - text: الرسائل
+        - link " تقييمات المنتجات" [ref=f11e50] [cursor=pointer]:
+          - /url: /Admin/Yorum
+          - generic [ref=f11e51]: 
+          - text: تقييمات المنتجات
+        - link " مشتركي النشرة البريدية" [ref=f11e52] [cursor=pointer]:
+          - /url: /Admin/Bulten
+          - generic [ref=f11e53]: 
+          - text: مشتركي النشرة البريدية
+        - link " الصفحات المؤسسية" [ref=f11e54] [cursor=pointer]:
+          - /url: /Admin/Sayfa
+          - generic [ref=f11e55]: 
+          - text: الصفحات المؤسسية
+      - link " الأعضاء" [ref=f11e56] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f11e57]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=f11e58] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f11e59]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=f11e60] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f11e61]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=f11e62] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f11e63]: 
+        - text: مجموعات الجملة
+      - link " التقارير" [ref=f11e64] [cursor=pointer]:
+        - /url: /Admin/Rapor
+        - generic [ref=f11e65]: 
+        - text: التقارير
+      - link " الحسابات البنكية" [ref=f11e66] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f11e67]: 
+        - text: الحسابات البنكية
+      - link " الإعدادات" [ref=f11e68] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f11e69]: 
+        - text: الإعدادات
+      - generic [ref=f11e70]:
+        - link " عرض الموقع المباشر" [ref=f11e71] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f11e72]: 
+          - text: عرض الموقع المباشر
+        - button " تسجيل الخروج" [ref=f11e74] [cursor=pointer]:
+          - generic [ref=f11e75]: 
+          - text: تسجيل الخروج
+  - banner [ref=f11e76]:
+    - generic [ref=f11e77]:
+      - button "Menü" [ref=f11e78] [cursor=pointer]
+      - link "7ANRPS48 لوحة التحكم" [ref=f11e82] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f11e83]
+    - text:           +                      
+    - generic [ref=f11e84]:
+      - text: 
+      - combobox "اللغة" [ref=f11e86]:
+        - option "AR" [selected]
+        - option "EN"
+      - generic [ref=f11e87]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f11e88] [cursor=pointer]:
+          - generic [ref=f11e89]:
+            - strong [ref=f11e90]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f11e91]: "7"
+        - text:  
+  - generic [ref=f11e92]:
+    - main [ref=f11e93]:
+      - generic [ref=f11e95]:
+        - generic [ref=f11e96]:
+          - generic [ref=f11e97]:
+            - generic [ref=f11e98]: إعدادات المتجر
+            - heading "إعدادات الموقع" [level=1] [ref=f11e99]
+            - paragraph [ref=f11e100]: إدارة واجهة المتجر والاتصال ووسائل التواصل الاجتماعي وSEO والشحن وإشعارات البريد من مكان واحد.
+          - generic [ref=f11e101]:
+            - link " عرض الموقع" [ref=f11e102] [cursor=pointer]:
+              - /url: /
+              - generic [ref=f11e103]: 
+              - text: عرض الموقع
+            - link " إعدادات الصفحة الرئيسية" [ref=f11e104] [cursor=pointer]:
+              - /url: /Admin/AnaSayfa
+              - generic [ref=f11e105]: 
+              - text: إعدادات الصفحة الرئيسية
+        - generic [ref=f11e106]:
+          - tablist "Admin_SettingsTabs" [ref=f11e107]:
+            - button " العلامة التجارية" [ref=f11e108] [cursor=pointer]:
+              - generic [ref=f11e109]: 
+              - text: العلامة التجارية
+            - button " الاتصال" [ref=f11e110] [cursor=pointer]:
+              - generic [ref=f11e111]: 
+              - text: الاتصال
+            - button " اجتماعي" [ref=f11e112] [cursor=pointer]:
+              - generic [ref=f11e113]: 
+              - text: اجتماعي
+            - button " Admin_Sales" [ref=f11e114] [cursor=pointer]:
+              - generic [ref=f11e115]: 
+              - text: Admin_Sales
+            - button " الدفع" [ref=f11e116] [cursor=pointer]:
+              - generic [ref=f11e117]: 
+              - text: الدفع
+            - button " الدفع عند الاستلام" [ref=f11e118] [cursor=pointer]:
+              - generic [ref=f11e119]: 
+              - text: الدفع عند الاستلام
+            - button " SEO" [ref=f11e120] [cursor=pointer]:
+              - generic [ref=f11e121]: 
+              - text: SEO
+            - button " البريد" [ref=f11e122] [cursor=pointer]:
+              - generic [ref=f11e123]: 
+              - text: البريد
+            - button " الصيانة" [ref=f11e124] [cursor=pointer]:
+              - generic [ref=f11e125]: 
+              - text: الصيانة
+          - generic [ref=f11e126]:
+            - main [ref=f11e127]:
+              - generic [ref=f11e130]:
+                - generic [ref=f11e131]:
+                  - generic [ref=f11e132]: 
+                  - generic [ref=f11e133]:
+                    - heading "معلومات العلامة التجارية وواجهة المتجر" [level=2] [ref=f11e134]
+                    - paragraph [ref=f11e135]: المناطق الأساسية التي يراها العميل مثل الشعار والعنوان والشريط العلوي والتذييل.
+                - generic [ref=f11e136]:
+                  - generic [ref=f11e137]:
+                    - generic [ref=f11e138]: اسم الموقع *
+                    - textbox [ref=f11e139]: 7ANRPS48
+                  - generic [ref=f11e140]:
+                    - generic [ref=f11e141]: اسم العلامة التجارية
+                    - textbox [ref=f11e142]: 7ANRPS48
+                  - generic [ref=f11e143]:
+                    - generic [ref=f11e144]: عنوان الموقع
+                    - textbox [ref=f11e145]: 7ANRPS48 - متجرك الإلكتروني
+                  - generic [ref=f11e146]:
+                    - generic [ref=f11e147]: رابط الموقع
+                    - textbox "https://7anrps48.com" [ref=f11e148]: http://localhost:5000
+                  - generic [ref=f11e149]:
+                    - generic [ref=f11e150]: وصف الموقع
+                    - textbox [ref=f11e151]: منتجات متنوعة بأفضل الأسعار مع خدمة توصيل سريعة
+                  - generic [ref=f11e152]:
+                    - generic [ref=f11e153]: وصف التذييل
+                    - textbox [ref=f11e154]: متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن
+                  - generic [ref=f11e155]:
+                    - generic [ref=f11e156]: رابط الشعار
+                    - textbox "/74anrps48logo2.svg" [ref=f11e157]
+                  - generic [ref=f11e158]:
+                    - generic [ref=f11e159]: رابط Favicon
+                    - textbox "/74anrps48logo2.svg" [ref=f11e160]
+                  - generic [ref=f11e161]:
+                    - generic [ref=f11e162]: لون السمة
+                    - textbox "#313511" [ref=f11e163]: "#1a5632"
+                  - heading "اللافتة الرئيسية" [level=3] [ref=f11e166]
+                  - generic [ref=f11e167]:
+                    - generic [ref=f11e168]: عنوان اللافتة (عربي)
+                    - textbox [ref=f11e169]: جلب الفن الفلسطيني إلى منزلك
+                  - generic [ref=f11e170]:
+                    - generic [ref=f11e171]: عنوان اللافتة (إنجليزي)
+                    - textbox [ref=f11e172]: Bring Palestinian Art to Your Home
+                  - generic [ref=f11e173]:
+                    - generic [ref=f11e174]: النص الفرعي للافتة (عربي)
+                    - textbox [ref=f11e175]: تصاميم فريدة تجمع بين التراث والحداثة
+                  - generic [ref=f11e176]:
+                    - generic [ref=f11e177]: النص الفرعي للافتة (إنجليزي)
+                    - textbox [ref=f11e178]: Unique designs blending heritage and modernity
+                  - generic [ref=f11e179]:
+                    - generic [ref=f11e180]: Admin_HeroImage
+                    - textbox "/slider-demo.jpg" [ref=f11e181]
+                  - generic [ref=f11e182]:
+                    - generic [ref=f11e183]: رسالة الشريط العلوي
+                    - textbox "شحن مجاني فوق 500 ₪" [ref=f11e184]: توصيل مجاني للطلبات فوق 200 ₪
+                  - generic [ref=f11e185]:
+                    - generic [ref=f11e186]: رسالة الحملة
+                    - textbox "الدفع عند الاستلام والتحويل البنكي" [ref=f11e187]: الدفع عند الاستلام متاح
+                  - generic [ref=f11e188]:
+                    - generic [ref=f11e189]: الشريط العلوي مفعل
+                    - combobox [ref=f11e190]:
+                      - option "نشط" [selected]
+                      - option "غير نشط"
+                  - generic [ref=f11e191]:
+                    - generic [ref=f11e192]: سرعة التمرير (ثانية)
+                    - spinbutton "34" [ref=f11e193]
+                    - text: مدة الرسوم المتحركة (نطاق 10-100)
+              - text:         
+            - complementary [ref=f11e194]:
+              - generic [ref=f11e195]:
+                - heading "ماذا تؤثر هذه الصفحة؟" [level=2] [ref=f11e197]
+                - list [ref=f11e199]:
+                  - listitem [ref=f11e200]:
+                    - generic [ref=f11e201]: 
+                    - generic [ref=f11e202]: الشعار واسم العلامة التجارية والشريط العلوي والتذييل يظهرون في واجهة المتجر.
+                  - listitem [ref=f11e203]:
+                    - generic [ref=f11e204]: 
+                    - generic [ref=f11e205]: تُستخدم معلومات الاتصال ووسائل التواصل الاجتماعي في التذييل والبريد ومناطق الاتصال.
+                  - listitem [ref=f11e206]:
+                    - generic [ref=f11e207]: 
+                    - generic [ref=f11e208]: تغذي حقول SEO محركات البحث ومعلومات المشاركة الاجتماعية.
+                  - listitem [ref=f11e209]:
+                    - generic [ref=f11e210]: 
+                    - generic [ref=f11e211]: تُستخدم إعدادات PayTR في تكوين البنية التحتية للدفع.
+                  - listitem [ref=f11e212]:
+                    - generic [ref=f11e213]: 
+                    - generic [ref=f11e214]: تنعكس حالة الدفع عند الاستلام ورسوم الخدمة في إجمالي الطلب على صفحة الدفع.
+                  - listitem [ref=f11e215]:
+                    - generic [ref=f11e216]: 
+                    - generic [ref=f11e217]: تُستخدم إشعارات البريد في عمليات الطلبات والتشغيل.
+          - generic [ref=f11e219]:
+            - generic [ref=f11e220]:
+              - generic [ref=f11e221]: 
+              - text: تصبح التغييرات سارية على الموقع بعد الحفظ.
+            - button " حفظ جميع الإعدادات" [ref=f11e222] [cursor=pointer]:
+              - generic [ref=f11e223]: 
+              - text: حفظ جميع الإعدادات
+    - contentinfo [ref=f11e224]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

@@ -715,13 +715,13 @@ await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Duzenle), new { id = urunId });
         }
 
-        [HttpGet]
+        [NonAction]
         public IActionResult XmlImport()
         {
             return RedirectToAction(nameof(Excel));
         }
 
-        [HttpPost]
+        [NonAction]
         [ActionName("XmlImport")]
         [ValidateAntiForgeryToken]
         public IActionResult XmlImportPost()
@@ -729,14 +729,14 @@ await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Excel));
         }
 
-        [HttpGet]
+        [NonAction]
         public async Task<IActionResult> Excel()
         {
             ViewBag.ImportHistory = await GetProductExcelImportHistoryAsync();
             return View("Excel");
         }
 
-        [HttpPost]
+        [NonAction]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Excel(IFormFile excelDosyasi, string islemTipi)
         {
@@ -805,6 +805,7 @@ await _context.SaveChangesAsync();
             return View("Excel");
         }
 
+        [NonAction]
         public async Task<IActionResult> ExcelSablon(string tip)
         {
             var operation = NormalizeExcelOperation(tip);
@@ -1023,6 +1024,7 @@ await _context.SaveChangesAsync();
             sheet.Cells[$"A1:B{row}"].Style.Border.Right.Color.SetColor(System.Drawing.Color.FromArgb(180, 175, 160));
         }
 
+        [NonAction]
         public async Task<IActionResult> UrunExcelExport()
         {
             ExcelPackage.License.SetNonCommercialOrganization("7ANRPS48");

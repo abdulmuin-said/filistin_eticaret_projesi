@@ -2,6 +2,8 @@ using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Core.Helpers;
 using FilistinProje.Core.Models;
+using FilistinProje.Web.Resources;
+using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,10 +13,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
     public class HomeController : AdminBaseController
     {
         private readonly KanvasDbContext _context;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public HomeController(KanvasDbContext context)
+        public HomeController(KanvasDbContext context, IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index()
@@ -103,7 +107,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     ProductName = x.Key.Baslik,
                     ProductImageUrl = x.Key.AnaGorselUrl,
                     Amount = x.Sum(v => v.Adet),
-                    AmountLabel = $"{x.Sum(v => v.Adet)} adet"
+                    AmountLabel = _localizer["Admin_QuantityLabel", x.Sum(v => v.Adet)]
                 })
                 .OrderByDescending(x => x.Amount)
                 .ThenBy(x => x.ProductName)
@@ -120,7 +124,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     ProductName = x.Baslik,
                     ProductImageUrl = x.AnaGorselUrl,
                     Amount = x.GoruntulenmeSayisi,
-                    AmountLabel = $"{x.GoruntulenmeSayisi} görüntülenme"
+                    AmountLabel = _localizer["Admin_ViewCount", x.GoruntulenmeSayisi]
                 })
                 .ToList();
 
@@ -205,8 +209,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 alerts.Add(new DashboardAlertItem
                 {
                     Severity = "warning",
-                    Title = "Okunmamış iletişim talepleri",
-                    Description = $"{okunmamisMesajSayisi} mesaj yanıtlanmayı bekliyor.",
+                    Title = _localizer["Admin_UnreadContactAlerts"],
+                    Description = _localizer["Admin_UnreadContactAlertsDesc", okunmamisMesajSayisi],
                     Link = "/Admin/Iletisim"
                 });
             }
@@ -216,8 +220,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 alerts.Add(new DashboardAlertItem
                 {
                     Severity = "danger",
-                    Title = "Bekleyen siparişler var",
-                    Description = $"{bekleyenSiparisSayisi} sipariş işleme alınmayı bekliyor.",
+                    Title = _localizer["Admin_PendingOrderAlerts"],
+                    Description = _localizer["Admin_PendingOrderAlertsDesc", bekleyenSiparisSayisi],
                     Link = "/Admin/Siparis?durum=0"
                 });
             }
@@ -228,8 +232,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 alerts.Add(new DashboardAlertItem
                 {
                     Severity = "secondary",
-                    Title = "Eksik ürün verisi",
-                    Description = $"{eksikGorselliUrunSayisi} aktif üründe ana görsel eksik.",
+                    Title = _localizer["Admin_MissingProductData"],
+                    Description = _localizer["Admin_MissingProductImageAlert", eksikGorselliUrunSayisi],
                     Link = "/Admin/Urun"
                 });
             }
@@ -241,7 +245,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .Select(x => new DashboardActivityItem
                 {
                     Type = "Siparis",
-                    Title = $"طلب جديد #{x.Id}",
+                    Title = _localizer["Admin_NewOrderActivity", x.Id],
                     Detail = $"{x.MusteriAdSoyad} - {x.ToplamTutar:N2} ₪",
                     OccurredAt = x.OlusturulmaTarihi
                 }));
@@ -251,7 +255,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .Select(x => new DashboardActivityItem
                 {
                     Type = "Urun",
-                    Title = "تمت إضافة منتج جديد",
+                    Title = _localizer["Admin_NewProductActivity"],
                     Detail = x.Baslik,
                     OccurredAt = x.OlusturulmaTarihi
                 }));
@@ -261,7 +265,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .Select(x => new DashboardActivityItem
                 {
                     Type = "Mesaj",
-                    Title = "Yeni iletişim mesajı",
+                    Title = _localizer["Admin_NewContactActivity"],
                     Detail = $"{x.AdSoyad} - {x.Konu}",
                     OccurredAt = x.Tarih
                 }));
@@ -299,7 +303,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     {
                         Id = x.Id,
                         Title = x.Baslik,
-                        Subtitle = $"{(string.IsNullOrWhiteSpace(x.SKU) ? "SKU yok" : x.SKU)} | {x.EtkinFiyat:N2} ₪",
+                        Subtitle = $"{(string.IsNullOrWhiteSpace(x.SKU) ? _localizer["Admin_SkuMissing"].Value : x.SKU)} | {x.EtkinFiyat:N2} ₪",
                         CreatedAt = x.OlusturulmaTarihi
                     })
                     .ToList(),
@@ -307,7 +311,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     .Select(x => new DashboardReviewItem
                     {
                         ReviewId = x.Id,
-                        ProductName = x.Urun?.Baslik ?? "Ürün",
+                        ProductName = x.Urun?.Baslik ?? _localizer["Admin_ProductFallback"],
                         CustomerName = x.AdSoyad,
                         Rating = x.Puan,
                         Comment = x.YorumMetni,

@@ -171,7 +171,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 new() { ControllerAdi = "AnaSayfa", DisplayAdi = "Anasayfa", Grup = "İçerik", Ikon = "fa-palette" },
                 new() { ControllerAdi = "Bulten", DisplayAdi = "Bülten", Grup = "İçerik", Ikon = "fa-envelope-open-text" },
                 new() { ControllerAdi = "Iletisim", DisplayAdi = "İletişim Mesajları", Grup = "İçerik", Ikon = "fa-inbox" },
-                new() { ControllerAdi = "CarkOdul", DisplayAdi = "Çark Ödülleri", Grup = "İçerik", Ikon = "fa-spinner" },
                 new() { ControllerAdi = "PushBildirim", DisplayAdi = "Bildirimler", Grup = "İçerik", Ikon = "fa-bell" },
                 new() { ControllerAdi = "HomeSections", DisplayAdi = "Anasayfa Bölümleri", Grup = "İçerik", Ikon = "fa-layer-group" },
                 new() { ControllerAdi = "Toptanci", DisplayAdi = "Toptancı Yönetimi", Grup = "Yönetim", Ikon = "fa-warehouse" },

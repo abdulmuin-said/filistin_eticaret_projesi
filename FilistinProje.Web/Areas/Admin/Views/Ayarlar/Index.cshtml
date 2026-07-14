@@ -4,8 +4,6 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = Localizer["Admin_Site_Ayarlari"];
     var kargoFirmalari = ViewBag.KargoFirmalari as List<KargoFirmasi> ?? new List<KargoFirmasi>();
-    var paytrMerchantKeyKayitli = ViewBag.PaytrMerchantKeyKayitli as bool? ?? false;
-    var paytrMerchantSaltKayitli = ViewBag.PaytrMerchantSaltKayitli as bool? ?? false;
 }
 
 <style>
@@ -212,7 +210,7 @@
         </div>
 
         <form method="post" asp-antiforgery="true">
-            <div class="ca-settings-tabs" role="tablist" aria-label="Ayar sekmeleri">
+            <div class="ca-settings-tabs" role="tablist" aria-label="@Localizer["Admin_SettingsTabs"]">
                 <button type="button" class="ca-settings-tab active" data-target="genel"><i class="fas fa-store"></i> @Localizer["Admin_Brand"]</button>
                 <button type="button" class="ca-settings-tab" data-target="iletisim"><i class="fas fa-address-card"></i> @Localizer["Admin_Contact"]</button>
                 <button type="button" class="ca-settings-tab" data-target="sosyal"><i class="fas fa-share-nodes"></i> @Localizer["Admin_Social"]</button>
@@ -479,80 +477,6 @@
                                                  <input asp-for="GirisZorunluMu" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
                                              </div>
                                          </div>
-                                     </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section class="ca-settings-panel" id="panel-odeme">
-                        <div class="ca-card">
-                            <div class="ca-card-body">
-                                <div class="ca-section-heading">
-                                    <i class="fas fa-credit-card"></i>
-                                    <div>
-                                         <h2>@Localizer["Admin_PayTRSettings"]</h2>
-                                         <p>@Localizer["Admin_PayTRSettingsDesc"]</p>
-
-                                    </div>
-                                </div>
-                                <div class="ca-alert ca-alert-warning mb-3">
-                                    <i class="fas fa-shield-halved"></i>
-                                     <span>@Localizer["Admin_PayTRSecurityNotice"]</span>
-
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                         <label class="ca-label">@Localizer["Admin_PayTRStatus"]</label>
-                                         <div class="ca-toggle-box">
-                                             <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
-                                                 <span>
-                                                     <strong>@Localizer["Admin_ReceivePaymentWithPayTR"]</strong><br>
-                                                     <small class="text-muted">@Localizer["Admin_ReceivePaymentWithPayTRHint"]</small>
-                                                 </span>
-                                                 <input asp-for="PaytrAktifMi" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
-                                             </div>
-                                         </div>
-                                     </div>
-                                     <div class="col-md-6">
-                                         <label class="ca-label">@Localizer["Admin_TestMode"]</label>
-                                         <div class="ca-toggle-box">
-                                             <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
-                                                 <span>
-                                                     <strong>@Localizer["Admin_PayTRTestMode"]</strong><br>
-                                                     <small class="text-muted">@Localizer["Admin_PayTRTestModeHint"]</small>
-                                                 </span>
-                                                 <input asp-for="PaytrTestModu" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
-                                             </div>
-                                         </div>
-                                     </div>
-                                     <div class="col-md-6">
-                                         <label class="ca-label">@Localizer["Admin_MerchantID"]</label>
-                                         <input asp-for="PaytrMerchantId" class="ca-input" autocomplete="off" placeholder="@Localizer["Admin_PayTRStoreNumberPlaceholder"]" />
-                                     </div>
-                                     <div class="col-md-6">
-                                         <label class="ca-label">@Localizer["Admin_MerchantKey"]</label>
-                                         <input name="paytrMerchantKey" class="ca-input" type="password" autocomplete="new-password" placeholder="@(paytrMerchantKeyKayitli ? Localizer["Admin_KeepExistingValuePlaceholder"].Value : Localizer["Admin_PayTRMerchantKeyPlaceholder"].Value)" />
-                                         <small class="text-muted">@(paytrMerchantKeyKayitli ? Localizer["Admin_MerchantKeyRegistered"].Value : Localizer["Admin_MerchantKeyNotRegistered"].Value)</small>
-                                     </div>
-                                     <div class="col-md-6">
-                                         <label class="ca-label">@Localizer["Admin_MerchantSalt"]</label>
-                                         <input name="paytrMerchantSalt" class="ca-input" type="password" autocomplete="new-password" placeholder="@(paytrMerchantSaltKayitli ? Localizer["Admin_KeepExistingValuePlaceholder"].Value : Localizer["Admin_PayTRMerchantSaltPlaceholder"].Value)" />
-                                         <small class="text-muted">@(paytrMerchantSaltKayitli ? Localizer["Admin_MerchantSaltRegistered"].Value : Localizer["Admin_MerchantSaltNotRegistered"].Value)</small>
-                                     </div>
-                                     <div class="col-md-6">
-                                         <label class="ca-label">@Localizer["Admin_CallbackURL"]</label>
-                                         <input asp-for="PaytrCallbackUrl" class="ca-input" placeholder="https://7anrps48.com/Siparis/PaytrCallback" />
-                                         <small class="text-muted">@Localizer["Admin_PayTRCallbackURLHint"]</small>
-                                     </div>
-                                     <div class="col-md-6">
-                                         <label class="ca-label">@Localizer["Admin_SuccessReturnURL"]</label>
-                                         <input asp-for="PaytrBasariliDonusUrl" class="ca-input" placeholder="https://7anrps48.com/Siparis/Basarili" />
-                                     </div>
-                                     <div class="col-md-6">
-                                         <label class="ca-label">@Localizer["Admin_FailReturnURL"]</label>
-                                         <input asp-for="PaytrBasarisizDonusUrl" class="ca-input" placeholder="https://7anrps48.com/Siparis/OdemeBasarisiz" />
                                      </div>
 
                                 </div>

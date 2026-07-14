@@ -141,16 +141,16 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             foreach (var item in kayitlar)
             {
                 worksheet.Cells[row, 1].Value = item.OlusturulmaTarihi;
-                worksheet.Cells[row, 2].Value = item.IpAdresi;
-                worksheet.Cells[row, 3].Value = item.Ulke;
-                worksheet.Cells[row, 4].Value = item.Sehir;
-                worksheet.Cells[row, 5].Value = item.Metod;
-                worksheet.Cells[row, 6].Value = item.Url;
-                worksheet.Cells[row, 7].Value = item.ReferansUrl;
-                worksheet.Cells[row, 8].Value = item.KullaniciAdi;
-                worksheet.Cells[row, 9].Value = item.CihazModeli;
-                worksheet.Cells[row, 10].Value = item.Tarayici;
-                worksheet.Cells[row, 11].Value = item.IsletimSistemi;
+                worksheet.Cells[row, 2].Value = SafeSpreadsheetText(item.IpAdresi);
+                worksheet.Cells[row, 3].Value = SafeSpreadsheetText(item.Ulke);
+                worksheet.Cells[row, 4].Value = SafeSpreadsheetText(item.Sehir);
+                worksheet.Cells[row, 5].Value = SafeSpreadsheetText(item.Metod);
+                worksheet.Cells[row, 6].Value = SafeSpreadsheetText(item.Url);
+                worksheet.Cells[row, 7].Value = SafeSpreadsheetText(item.ReferansUrl);
+                worksheet.Cells[row, 8].Value = SafeSpreadsheetText(item.KullaniciAdi);
+                worksheet.Cells[row, 9].Value = SafeSpreadsheetText(item.CihazModeli);
+                worksheet.Cells[row, 10].Value = SafeSpreadsheetText(item.Tarayici);
+                worksheet.Cells[row, 11].Value = SafeSpreadsheetText(item.IsletimSistemi);
                 row++;
             }
 
@@ -177,6 +177,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         public Task<IActionResult> Indir(string? q, string? metod, string? cihaz, DateTime? baslangic, DateTime? bitis)
         {
             return Task.FromResult<IActionResult>(RedirectToAction(nameof(Export), new { q, metod, cihaz, baslangic, bitis }));
+        }
+
+        private static string SafeSpreadsheetText(string? value)
+        {
+            var text = value ?? string.Empty;
+            return text.Length > 0 && "=+-@".Contains(text[0]) ? "'" + text : text;
         }
 
         [HttpPost]

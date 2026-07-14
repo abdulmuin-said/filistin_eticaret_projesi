@@ -1,6 +1,7 @@
 ﻿@using FilistinProje.Core.Varliklar
 @model List<SiteDegerlendirme>
 @{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = Localizer["Admin_Site_Degerlendirmeleri"];
     var page = ViewBag.Page ?? 1;
     var totalPages = ViewBag.TotalPages ?? 1;
@@ -11,10 +12,10 @@
 <div class="flex items-center justify-between mb-6">
     <h1 class="text-xl font-semibold text-brand-darktext">@Localizer["Admin_Site_Degerlendirmeleri"]</h1>
     <div class="flex items-center gap-3">
-        <span class="text-xs bg-gray-50 text-brand-mutedtext px-3 py-1.5 rounded-full">Total: @totalCount</span>
+        <span class="text-xs bg-gray-50 text-brand-mutedtext px-3 py-1.5 rounded-full">@Localizer["Admin_SiteReviewTotal", totalCount]</span>
         @if (pendingCount > 0)
         {
-            <span class="text-xs bg-amber-50 text-amber-700 px-3 py-1.5 rounded-full">Pending: @pendingCount</span>
+            <span class="text-xs bg-amber-50 text-amber-700 px-3 py-1.5 rounded-full">@Localizer["Admin_SiteReviewPending", pendingCount]</span>
         }
     </div>
 </div>
@@ -29,18 +30,18 @@
         <thead>
             <tr class="bg-gray-50 text-left">
                 <th class="px-4 py-3 font-semibold text-brand-darktext">@Localizer["Admin_Ad_Soyad"]</th>
-                <th class="px-4 py-3 font-semibold text-brand-darktext">Rating</th>
-                <th class="px-4 py-3 font-semibold text-brand-darktext">Title</th>
-                <th class="px-4 py-3 font-semibold text-brand-darktext">Review</th>
+                <th class="px-4 py-3 font-semibold text-brand-darktext">@Localizer["Admin_SiteReviewRating"]</th>
+                <th class="px-4 py-3 font-semibold text-brand-darktext">@Localizer["Admin_SiteReviewTitle"]</th>
+                <th class="px-4 py-3 font-semibold text-brand-darktext">@Localizer["Admin_SiteReviewText"]</th>
                 <th class="px-4 py-3 font-semibold text-brand-darktext">@Localizer["Admin_Durum"]</th>
                 <th class="px-4 py-3 font-semibold text-brand-darktext">@Localizer["Admin_Tarih"]</th>
-                <th class="px-4 py-3 font-semibold text-brand-darktext">Action</th>
+                <th class="px-4 py-3 font-semibold text-brand-darktext">@Localizer["Admin_SiteReviewActions"]</th>
             </tr>
         </thead>
         <tbody>
             @if (Model.Count == 0)
             {
-                <tr><td colspan="7" class="px-4 py-8 text-center text-brand-mutedtext">No site reviews yet.</td></tr>
+                <tr><td colspan="7" class="px-4 py-8 text-center text-brand-mutedtext">@Localizer["Admin_SiteReviewEmpty"]</td></tr>
             }
             @foreach (var item in Model)
             {
@@ -54,11 +55,11 @@
                     <td class="px-4 py-3">
                         @if (item.OnayliMi)
                         {
-                            <span class="bg-green-50 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-medium">Approved</span>
+                            <span class="bg-green-50 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-medium">@Localizer["Admin_SiteReviewApproved"]</span>
                         }
                         else
                         {
-                            <span class="bg-amber-50 text-amber-700 text-[10px] px-2 py-0.5 rounded-full font-medium">Pending</span>
+                            <span class="bg-amber-50 text-amber-700 text-[10px] px-2 py-0.5 rounded-full font-medium">@Localizer["Admin_SiteReviewPendingLabel"]</span>
                         }
                     </td>
                     <td class="px-4 py-3 text-xs text-brand-mutedtext">@item.OlusturulmaTarihi.ToString("dd.MM.yyyy HH:mm")</td>
@@ -69,13 +70,13 @@
                                 <form method="post" action="/Admin/Yorum/SiteOnayla" style="display:inline">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@item.Id" />
-                                    <button type="submit" class="text-xs bg-brand-olive text-white px-3 py-1.5 rounded hover:bg-[#1c2001] transition-colors">Approve</button>
+                                    <button type="submit" class="text-xs bg-brand-olive text-white px-3 py-1.5 rounded hover:bg-[#1c2001] transition-colors">@Localizer["Admin_SiteReviewApprove"]</button>
                                 </form>
                             }
                             <form method="post" action="/Admin/Yorum/SiteSil" style="display:inline">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="@item.Id" />
-                                <button type="submit" class="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded hover:bg-red-100 transition-colors" onclick="return confirm('Are you sure you want to delete it?')">@Localizer["Admin_Sil"]</button>
+                                <button type="submit" class="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded hover:bg-red-100 transition-colors" onclick="return confirm('@Localizer["Admin_SiteReviewDeleteConfirm"]')">@Localizer["Admin_Sil"]</button>
                             </form>
                         </div>
                     </td>

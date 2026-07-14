@@ -176,7 +176,7 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" />
+    <link rel="stylesheet" href="~/vendor/nouislider/nouislider.min.css" asp-append-version="true" />
     <style>
         #priceSlider { height: 6px; margin: 8px 4px 4px; }
         #priceSlider .noUi-connect { background: #b58735; }
@@ -693,7 +693,7 @@
 </div>
 
 @section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
+    <script src="~/vendor/nouislider/nouislider.min.js" asp-append-version="true"></script>
     <script>
         window.toggleFilterDrawer = function(open) {
             const drawer = document.getElementById('filterDrawer');

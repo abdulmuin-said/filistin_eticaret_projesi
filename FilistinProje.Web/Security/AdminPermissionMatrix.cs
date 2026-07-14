@@ -62,6 +62,13 @@ namespace FilistinProje.Web.Security
                     AdminSecurityRoles.Yonetici,
                     AdminSecurityRoles.UrunYoneticisi
                 },
+                ["UrunOzellik"] = new[]
+                {
+                    AdminSecurityRoles.LegacyAdmin,
+                    AdminSecurityRoles.SuperAdmin,
+                    AdminSecurityRoles.Yonetici,
+                    AdminSecurityRoles.UrunYoneticisi
+                },
                 ["Kategori"] = new[]
                 {
                     AdminSecurityRoles.LegacyAdmin,
@@ -98,6 +105,13 @@ namespace FilistinProje.Web.Security
                     AdminSecurityRoles.IcerikYoneticisi
                 },
                 ["AnaSayfa"] = new[]
+                {
+                    AdminSecurityRoles.LegacyAdmin,
+                    AdminSecurityRoles.SuperAdmin,
+                    AdminSecurityRoles.Yonetici,
+                    AdminSecurityRoles.IcerikYoneticisi
+                },
+                ["HomeSections"] = new[]
                 {
                     AdminSecurityRoles.LegacyAdmin,
                     AdminSecurityRoles.SuperAdmin,
@@ -154,12 +168,11 @@ namespace FilistinProje.Web.Security
                     AdminSecurityRoles.SuperAdmin,
                     AdminSecurityRoles.Yonetici
                 },
-                ["CarkOdul"] = new[]
+                ["XyzSecretMonitor"] = new[]
                 {
                     AdminSecurityRoles.LegacyAdmin,
                     AdminSecurityRoles.SuperAdmin,
-                    AdminSecurityRoles.Yonetici,
-                    AdminSecurityRoles.IcerikYoneticisi
+                    AdminSecurityRoles.Yonetici
                 }
             };
 

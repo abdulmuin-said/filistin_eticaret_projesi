@@ -75,16 +75,14 @@
     <meta name="twitter:image" content="@ogImage">
 
     <link rel="stylesheet" href="~/css/storefront.css" asp-append-version="true" />
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"
+    <script src="~/vendor/firebase/firebase-app-compat.js" asp-append-version="true"
             crossorigin="anonymous"
             async defer></script>
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js"
+    <script src="~/vendor/firebase/firebase-messaging-compat.js" asp-append-version="true"
             crossorigin="anonymous"
             async defer></script>
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/vendor/fonts/local-fonts.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/vendor/fontawesome/css/all.min.css" asp-append-version="true" />
 
     <style data-purpose="custom-fonts">
         body { font-family: 'IBM Plex Sans Arabic', 'Inter', -apple-system, sans-serif; color: var(--color-text-dark); padding: 0 !important; margin: 0 !important; background: var(--color-cream) !important; font-size: 14px; line-height: 1.6; }
@@ -1091,6 +1089,5 @@ document.addEventListener('keydown', function(event) {
     @await Html.PartialAsync("_FloatingButtons")
 
     <!-- Spin the Wheel -->
-    @await Html.PartialAsync("_SpinWheelPartial")
 </body>
 </html>

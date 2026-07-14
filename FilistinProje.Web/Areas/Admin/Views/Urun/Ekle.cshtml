@@ -4,7 +4,7 @@
     ViewData["Title"] = Localizer["Admin_Yeni_Urun_Ekle"];
 
     var previewUrl = string.IsNullOrWhiteSpace(Model.AnaGorselUrl)
-        ? "https://placehold.co/800x800/f1ede7/8a8880?text=New+Product"
+        ? "/img/products/placeholder.webp"
         : Model.AnaGorselUrl;
 
     var validationErrors = ViewData.ModelState.Values
@@ -290,7 +290,7 @@
                     </div>
                     <div class="ca-card-body">
                         <div class="ca-product-preview mb-3">
-                            <img src="@previewUrl" id="mainImgPreview" alt="@Localizer["Admin_NewProductImageAlt"]" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='https://placehold.co/800x800/f1ede7/8a8880?text=Gorsel';">
+                            <img src="@previewUrl" id="mainImgPreview" alt="@Localizer["Admin_NewProductImageAlt"]" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='/img/products/placeholder.webp';">
                         </div>
                         <div id="liveTitle" class="fw-bold">@(string.IsNullOrWhiteSpace(Model.Baslik) ? Localizer["Admin_ProductNameEmpty"].Value : Model.Baslik)</div>
                         <div class="small text-muted">@Localizer["Admin_AfterSaveDetails"]</div>

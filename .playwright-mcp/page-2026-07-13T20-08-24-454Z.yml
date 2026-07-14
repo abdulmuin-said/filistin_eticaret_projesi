@@ -1,0 +1,213 @@
+- generic [ref=f1e2]:
+  - text:          +                     
+  - banner [ref=f1e3]:
+    - generic [ref=f1e4]:
+      - link "7ANRPS48 Admin Panel" [ref=f1e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f1e6]
+      - generic [ref=f1e7]: Admin Panel
+    - navigation "Admin main menu" [ref=f1e8]:
+      - link " Dashboard" [ref=f1e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f1e10]: 
+        - text: Dashboard
+      - generic [ref=f1e11]:
+        - button " Order Management" [ref=f1e12] [cursor=pointer]:
+          - generic [ref=f1e13]: 
+          - text: Order Management
+        - text:      
+      - generic [ref=f1e14]:
+        - button " Product Management" [ref=f1e15] [cursor=pointer]:
+          - generic [ref=f1e16]: 
+          - text: Product Management
+        - text:  +  
+      - generic [ref=f1e17]:
+        - button " Store Content" [ref=f1e18] [cursor=pointer]:
+          - generic [ref=f1e19]: 
+          - text: Store Content
+        - text:          
+      - link " Members" [ref=f1e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f1e21]: 
+        - text: Members
+      - link " Staff" [ref=f1e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f1e23]: 
+        - text: Staff
+      - link " Wholesalers" [ref=f1e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f1e25]: 
+        - text: Wholesalers
+      - link " Wholesale Groups" [ref=f1e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f1e27]: 
+        - text: Wholesale Groups
+      - generic [ref=f1e28]:
+        - button " Reports" [ref=f1e29] [cursor=pointer]:
+          - generic [ref=f1e30]: 
+          - text: Reports
+        - text:  
+      - link " Bank Accounts" [ref=f1e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f1e32]: 
+        - text: Bank Accounts
+      - link " Settings" [ref=f1e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f1e34]: 
+        - text: Settings
+    - generic [ref=f1e35]:
+      - text: 
+      - combobox "Language" [ref=f1e37]:
+        - option "AR"
+        - option "EN" [selected]
+      - generic [ref=f1e38]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f1e39] [cursor=pointer]:
+          - generic [ref=f1e40]:
+            - strong [ref=f1e41]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f1e42]: "7"
+        - text:  
+  - generic [ref=f1e43]:
+    - main [ref=f1e44]:
+      - generic [ref=f1e46]:
+        - generic [ref=f1e47]:
+          - generic [ref=f1e48]:
+            - generic [ref=f1e49]: STORE CONFIGURATION
+            - heading "إعدادات الموقع" [level=1] [ref=f1e50]
+            - paragraph [ref=f1e51]: Manage storefront, contact, social media, SEO, shipping and mail notifications from one place.
+          - generic [ref=f1e52]:
+            - link " View Site" [ref=f1e53] [cursor=pointer]:
+              - /url: /
+              - generic [ref=f1e54]: 
+              - text: View Site
+            - link " Home Page Settings" [ref=f1e55] [cursor=pointer]:
+              - /url: /Admin/AnaSayfa
+              - generic [ref=f1e56]: 
+              - text: Home Page Settings
+        - generic [ref=f1e57]:
+          - tablist "Ayar sekmeleri" [ref=f1e58]:
+            - button " Brand" [ref=f1e59] [cursor=pointer]:
+              - generic [ref=f1e60]: 
+              - text: Brand
+            - button " Contact" [ref=f1e61] [cursor=pointer]:
+              - generic [ref=f1e62]: 
+              - text: Contact
+            - button " Social" [ref=f1e63] [cursor=pointer]:
+              - generic [ref=f1e64]: 
+              - text: Social
+            - button " Admin_Sales" [ref=f1e65] [cursor=pointer]:
+              - generic [ref=f1e66]: 
+              - text: Admin_Sales
+            - button " الدفع" [ref=f1e67] [cursor=pointer]:
+              - generic [ref=f1e68]: 
+              - text: الدفع
+            - button " الدفع عند الاستلام" [ref=f1e69] [cursor=pointer]:
+              - generic [ref=f1e70]: 
+              - text: الدفع عند الاستلام
+            - button " SEO" [ref=f1e71] [cursor=pointer]:
+              - generic [ref=f1e72]: 
+              - text: SEO
+            - button " Mail" [ref=f1e73] [cursor=pointer]:
+              - generic [ref=f1e74]: 
+              - text: Mail
+            - button " Maintenance" [ref=f1e75] [cursor=pointer]:
+              - generic [ref=f1e76]: 
+              - text: Maintenance
+          - generic [ref=f1e77]:
+            - main [ref=f1e78]:
+              - generic [ref=f1e81]:
+                - generic [ref=f1e82]:
+                  - generic [ref=f1e83]: 
+                  - generic [ref=f1e84]:
+                    - heading "Brand and Storefront Information" [level=2] [ref=f1e85]
+                    - paragraph [ref=f1e86]: Core areas seen by customers such as logo, title, top bar and footer.
+                - generic [ref=f1e87]:
+                  - generic [ref=f1e88]:
+                    - generic [ref=f1e89]: Site Name *
+                    - textbox [ref=f1e90]: 7ANRPS48
+                  - generic [ref=f1e91]:
+                    - generic [ref=f1e92]: Brand Name
+                    - textbox [ref=f1e93]: 7ANRPS48
+                  - generic [ref=f1e94]:
+                    - generic [ref=f1e95]: Site Title
+                    - textbox [ref=f1e96]: 7ANRPS48 - متجرك الإلكتروني
+                  - generic [ref=f1e97]:
+                    - generic [ref=f1e98]: Site URL
+                    - textbox "https://7anrps48.com" [ref=f1e99]: http://localhost:5000
+                  - generic [ref=f1e100]:
+                    - generic [ref=f1e101]: Site Description
+                    - textbox [ref=f1e102]: منتجات متنوعة بأفضل الأسعار مع خدمة توصيل سريعة
+                  - generic [ref=f1e103]:
+                    - generic [ref=f1e104]: Footer Description
+                    - textbox [ref=f1e105]: متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن
+                  - generic [ref=f1e106]:
+                    - generic [ref=f1e107]: Logo URL
+                    - textbox "/74anrps48logo2.svg" [ref=f1e108]
+                  - generic [ref=f1e109]:
+                    - generic [ref=f1e110]: Favicon URL
+                    - textbox "/74anrps48logo2.svg" [ref=f1e111]
+                  - generic [ref=f1e112]:
+                    - generic [ref=f1e113]: Theme Color
+                    - textbox "#313511" [ref=f1e114]: "#1a5632"
+                  - heading "Hero Banner" [level=3] [ref=f1e117]
+                  - generic [ref=f1e118]:
+                    - generic [ref=f1e119]: Hero Title (Arabic)
+                    - textbox [ref=f1e120]: جلب الفن الفلسطيني إلى منزلك
+                  - generic [ref=f1e121]:
+                    - generic [ref=f1e122]: Hero Title (English)
+                    - textbox [ref=f1e123]: Bring Palestinian Art to Your Home
+                  - generic [ref=f1e124]:
+                    - generic [ref=f1e125]: Hero Subtitle (Arabic)
+                    - textbox [ref=f1e126]: تصاميم فريدة تجمع بين التراث والحداثة
+                  - generic [ref=f1e127]:
+                    - generic [ref=f1e128]: Hero Subtitle (English)
+                    - textbox [ref=f1e129]: Unique designs blending heritage and modernity
+                  - generic [ref=f1e130]:
+                    - generic [ref=f1e131]: Hero Image URL
+                    - textbox "/slider-demo.jpg" [ref=f1e132]
+                  - generic [ref=f1e133]:
+                    - generic [ref=f1e134]: Top Bar Message
+                    - textbox "Free shipping over 500 ₪" [ref=f1e135]: توصيل مجاني للطلبات فوق 200 ₪
+                  - generic [ref=f1e136]:
+                    - generic [ref=f1e137]: Campaign Message
+                    - textbox "Cash on delivery and bank transfer" [ref=f1e138]: الدفع عند الاستلام متاح
+                  - generic [ref=f1e139]:
+                    - generic [ref=f1e140]: Top Bar Enabled
+                    - combobox [ref=f1e141]:
+                      - option "Active" [selected]
+                      - option "Passive"
+                  - generic [ref=f1e142]:
+                    - generic [ref=f1e143]: Scroll Speed (seconds)
+                    - spinbutton "34" [ref=f1e144]
+                    - text: Animation duration (10-100 range)
+              - text:         
+            - complementary [ref=f1e145]:
+              - generic [ref=f1e146]:
+                - heading "What Does This Page Affect?" [level=2] [ref=f1e148]
+                - list [ref=f1e150]:
+                  - listitem [ref=f1e151]:
+                    - generic [ref=f1e152]: 
+                    - generic [ref=f1e153]: Logo, brand name, top bar and footer are visible in the storefront.
+                  - listitem [ref=f1e154]:
+                    - generic [ref=f1e155]: 
+                    - generic [ref=f1e156]: Contact and social media information is used in footer, mail and contact areas.
+                  - listitem [ref=f1e157]:
+                    - generic [ref=f1e158]: 
+                    - generic [ref=f1e159]: SEO fields feed search engines and social sharing information.
+                  - listitem [ref=f1e160]:
+                    - generic [ref=f1e161]: 
+                    - generic [ref=f1e162]: PayTR settings are used in payment infrastructure configuration.
+                  - listitem [ref=f1e163]:
+                    - generic [ref=f1e164]: 
+                    - generic [ref=f1e165]: Cash on delivery status and service fee are reflected in the order total on the payment page.
+                  - listitem [ref=f1e166]:
+                    - generic [ref=f1e167]: 
+                    - generic [ref=f1e168]: Mail notifications are used in order and operation processes.
+          - generic [ref=f1e170]:
+            - generic [ref=f1e171]:
+              - generic [ref=f1e172]: 
+              - text: Changes take effect on the site after saving.
+            - button " Save All Settings" [ref=f1e173] [cursor=pointer]:
+              - generic [ref=f1e174]: 
+              - text: Save All Settings
+    - contentinfo [ref=f1e175]: © 2026 7ANRPS48 Admin Panel. All rights reserved.

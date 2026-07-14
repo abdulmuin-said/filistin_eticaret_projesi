@@ -1,0 +1,423 @@
+- generic [ref=f19e2]:
+  - navigation "Admin main menu" [ref=f19e3]:
+    - generic [ref=f19e4]:
+      - link [ref=f19e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f19e6]
+      - button "Kapat" [ref=f19e7] [cursor=pointer]:
+        - generic [ref=f19e8]: 
+    - generic [ref=f19e9]:
+      - link " Dashboard" [ref=f19e10] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f19e11]: 
+        - text: Dashboard
+      - generic [ref=f19e12]:
+        - generic [ref=f19e13]:
+          - generic [ref=f19e14]: 
+          - text: Order Management
+        - link " Orders" [ref=f19e15] [cursor=pointer]:
+          - /url: /Admin/Siparis
+          - generic [ref=f19e16]: 
+          - text: Orders
+        - link " New Orders" [ref=f19e17] [cursor=pointer]:
+          - /url: /Admin/Siparis?durum=0
+          - generic [ref=f19e18]: 
+          - text: New Orders
+        - link " Shipping Companies" [ref=f19e19] [cursor=pointer]:
+          - /url: /Admin/Kargo
+          - generic [ref=f19e20]: 
+          - text: Shipping Companies
+        - link " Return Requests" [ref=f19e21] [cursor=pointer]:
+          - /url: /Admin/Iade
+          - generic [ref=f19e22]: 
+          - text: Return Requests
+      - generic [ref=f19e23]:
+        - generic [ref=f19e24]:
+          - generic [ref=f19e25]: 
+          - text: Product Management
+        - link " Products" [ref=f19e26] [cursor=pointer]:
+          - /url: /Admin/Urun
+          - generic [ref=f19e27]: 
+          - text: Products
+        - link "+ Add New Product" [ref=f19e28] [cursor=pointer]:
+          - /url: /Admin/Urun/Ekle
+          - generic [ref=f19e29]: +
+          - text: Add New Product
+        - link " Categories" [ref=f19e30] [cursor=pointer]:
+          - /url: /Admin/Kategori
+          - generic [ref=f19e31]: 
+          - text: Categories
+        - link " Product Attributes" [ref=f19e32] [cursor=pointer]:
+          - /url: /Admin/UrunOzellik
+          - generic [ref=f19e33]: 
+          - text: Product Attributes
+      - generic [ref=f19e34]:
+        - generic [ref=f19e35]:
+          - generic [ref=f19e36]: 
+          - text: Store Content
+        - link " Slider Management" [ref=f19e37] [cursor=pointer]:
+          - /url: /Admin/Slayt
+          - generic [ref=f19e38]: 
+          - text: Slider Management
+        - link " Home Page Content" [ref=f19e39] [cursor=pointer]:
+          - /url: /Admin/AnaSayfa
+          - generic [ref=f19e40]: 
+          - text: Home Page Content
+        - link " Home Page Sections" [ref=f19e41] [cursor=pointer]:
+          - /url: /Admin/HomeSections
+          - generic [ref=f19e42]: 
+          - text: Home Page Sections
+        - link " Push Notifications" [ref=f19e43] [cursor=pointer]:
+          - /url: /Admin/PushBildirim
+          - generic [ref=f19e44]: 
+          - text: Push Notifications
+        - link " Coupons" [ref=f19e45] [cursor=pointer]:
+          - /url: /Admin/Kupon
+          - generic [ref=f19e46]: 
+          - text: Coupons
+        - link " Messages" [ref=f19e47] [cursor=pointer]:
+          - /url: /Admin/Iletisim
+          - generic [ref=f19e48]: 
+          - text: Messages
+        - link " Product Reviews" [ref=f19e49] [cursor=pointer]:
+          - /url: /Admin/Yorum
+          - generic [ref=f19e50]: 
+          - text: Product Reviews
+        - link " Newsletter Subscribers" [ref=f19e51] [cursor=pointer]:
+          - /url: /Admin/Bulten
+          - generic [ref=f19e52]: 
+          - text: Newsletter Subscribers
+        - link " Corporate Pages" [ref=f19e53] [cursor=pointer]:
+          - /url: /Admin/Sayfa
+          - generic [ref=f19e54]: 
+          - text: Corporate Pages
+      - link " Members" [ref=f19e55] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f19e56]: 
+        - text: Members
+      - link " Staff" [ref=f19e57] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f19e58]: 
+        - text: Staff
+      - link " Wholesalers" [ref=f19e59] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f19e60]: 
+        - text: Wholesalers
+      - link " Wholesale Groups" [ref=f19e61] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f19e62]: 
+        - text: Wholesale Groups
+      - link " Reports" [ref=f19e63] [cursor=pointer]:
+        - /url: /Admin/Rapor
+        - generic [ref=f19e64]: 
+        - text: Reports
+      - link " Bank Accounts" [ref=f19e65] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f19e66]: 
+        - text: Bank Accounts
+      - link " Settings" [ref=f19e67] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f19e68]: 
+        - text: Settings
+      - generic [ref=f19e69]:
+        - link " View Live Site" [ref=f19e70] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f19e71]: 
+          - text: View Live Site
+        - button " Logout" [ref=f19e73] [cursor=pointer]:
+          - generic [ref=f19e74]: 
+          - text: Logout
+  - banner [ref=f19e75]:
+    - generic [ref=f19e76]:
+      - button "Menü" [ref=f19e77] [cursor=pointer]
+      - link "7ANRPS48 Admin Panel" [ref=f19e81] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f19e82]
+    - text:           +                      
+    - generic [ref=f19e83]:
+      - text: 
+      - combobox "Language" [ref=f19e85]:
+        - option "AR"
+        - option "EN" [selected]
+      - generic [ref=f19e86]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f19e87] [cursor=pointer]:
+          - generic [ref=f19e88]:
+            - strong [ref=f19e89]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f19e90]: "7"
+        - text:  
+  - generic [ref=f19e91]:
+    - main [ref=f19e92]:
+      - generic [ref=f19e93]:
+        - generic [ref=f19e94]:
+          - generic [ref=f19e95]:
+            - heading "لوحة التحكم" [level=1] [ref=f19e96]
+            - paragraph [ref=f19e97]: ملخص الطلبات والمخزون والزيارات في شاشة واحدة.
+          - generic [ref=f19e98]:
+            - generic [ref=f19e99]: 
+            - text: 13 July 2026, Monday
+        - generic [ref=f19e100]:
+          - generic [ref=f19e102]:
+            - generic [ref=f19e103]: Total Revenue
+            - generic [ref=f19e104]: 1,350.00 ₪
+            - generic [ref=f19e105]: "Monthly: 0.00 ₪"
+          - generic [ref=f19e107]:
+            - generic [ref=f19e108]: إيرادات اليوم
+            - generic [ref=f19e109]: 0.00 ₪
+            - generic [ref=f19e110]: "Weekly: 0.00 ₪"
+          - generic [ref=f19e112]:
+            - generic [ref=f19e113]: إجمالي الطلبات
+            - generic [ref=f19e114]: "5"
+            - generic [ref=f19e115]: "Today: 0 orders"
+          - generic [ref=f19e117]:
+            - generic [ref=f19e118]: Pending
+            - generic [ref=f19e119]: "0"
+            - generic [ref=f19e120]: "Ready to ship: 1"
+          - generic [ref=f19e122]:
+            - generic [ref=f19e123]: الشحن / المرتجعات
+            - generic [ref=f19e124]: 1 / 2
+            - generic [ref=f19e125]: ملخص العمليات
+          - generic [ref=f19e127]:
+            - generic [ref=f19e128]: الرسائل / المنتجات النشطة
+            - generic [ref=f19e129]: 0 / 4
+            - generic [ref=f19e130]: Operation tracking
+        - generic [ref=f19e131]:
+          - generic [ref=f19e132]:
+            - heading " مخطط إيرادات آخر 7 أيام" [level=3] [ref=f19e135]:
+              - generic [ref=f19e136]: 
+              - text: مخطط إيرادات آخر 7 أيام
+            - heading " 12-Month Revenue Trend" [level=3] [ref=f19e142]:
+              - generic [ref=f19e143]: 
+              - text: 12-Month Revenue Trend
+            - generic [ref=f19e147]:
+              - heading " إجراءات سريعة" [level=3] [ref=f19e149]:
+                - generic [ref=f19e150]: 
+                - text: إجراءات سريعة
+              - generic [ref=f19e152]:
+                - link " إضافة منتج" [ref=f19e154] [cursor=pointer]:
+                  - /url: /Admin/Urun/Ekle
+                  - generic [ref=f19e155]:
+                    - generic [ref=f19e156]: 
+                    - generic [ref=f19e158]: إضافة منتج
+                - link " الطلبات" [ref=f19e160] [cursor=pointer]:
+                  - /url: /Admin/Siparis
+                  - generic [ref=f19e161]:
+                    - generic [ref=f19e162]: 
+                    - generic [ref=f19e164]: الطلبات
+                - link " حقول الخصائص" [ref=f19e166] [cursor=pointer]:
+                  - /url: /Admin/UrunOzellik
+                  - generic [ref=f19e167]:
+                    - generic [ref=f19e168]: 
+                    - generic [ref=f19e170]: حقول الخصائص
+                - link " صندوق الرسائل" [ref=f19e172] [cursor=pointer]:
+                  - /url: /Admin/Iletisim
+                  - generic [ref=f19e173]:
+                    - generic [ref=f19e174]: 
+                    - generic [ref=f19e176]: صندوق الرسائل
+            - generic [ref=f19e177]:
+              - generic [ref=f19e179]:
+                - heading " الأكثر مبيعاً" [level=3] [ref=f19e181]:
+                  - generic [ref=f19e182]: 
+                  - text: الأكثر مبيعاً
+                - generic [ref=f19e184]:
+                  - generic [ref=f19e185]: 
+                  - paragraph [ref=f19e186]: لا توجد بيانات مبيعات بعد.
+              - generic [ref=f19e188]:
+                - heading " Most Viewed" [level=3] [ref=f19e190]:
+                  - generic [ref=f19e191]: 
+                  - text: Most Viewed
+                - generic [ref=f19e193]:
+                  - link "ساعة ذكية ساعة ذكية 14 views " [ref=f19e194] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/49
+                    - img "ساعة ذكية" [ref=f19e195]
+                    - generic [ref=f19e196]:
+                      - generic [ref=f19e197]: ساعة ذكية
+                      - generic [ref=f19e198]: 14 views
+                    - generic [ref=f19e199]: 
+                  - link "طقم كنبات مودرن طقم كنبات مودرن 13 views " [ref=f19e200] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/48
+                    - img "طقم كنبات مودرن" [ref=f19e201]
+                    - generic [ref=f19e202]:
+                      - generic [ref=f19e203]: طقم كنبات مودرن
+                      - generic [ref=f19e204]: 13 views
+                    - generic [ref=f19e205]: 
+                  - link "حقيبة جلدية حقيبة جلدية 1 views " [ref=f19e206] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/51
+                    - img "حقيبة جلدية" [ref=f19e207]
+                    - generic [ref=f19e208]:
+                      - generic [ref=f19e209]: حقيبة جلدية
+                      - generic [ref=f19e210]: 1 views
+                    - generic [ref=f19e211]: 
+                  - link "فستان سهرة أنيق فستان سهرة أنيق 0 views " [ref=f19e212] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/50
+                    - img "فستان سهرة أنيق" [ref=f19e213]
+                    - generic [ref=f19e214]:
+                      - generic [ref=f19e215]: فستان سهرة أنيق
+                      - generic [ref=f19e216]: 0 views
+                    - generic [ref=f19e217]: 
+            - generic [ref=f19e218]:
+              - generic [ref=f19e220]:
+                - heading " Recently Added Products" [level=3] [ref=f19e222]:
+                  - generic [ref=f19e223]: 
+                  - text: Recently Added Products
+                - generic [ref=f19e225]:
+                  - link "فستان سهرة أنيق SKU unavailable | 1,299.00 ₪ 07.07.2026 15:58" [ref=f19e226] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/50
+                    - generic [ref=f19e227]: فستان سهرة أنيق
+                    - generic [ref=f19e228]: SKU unavailable | 1,299.00 ₪
+                    - generic [ref=f19e229]: 07.07.2026 15:58
+                  - link "ساعة ذكية SKU unavailable | 799.00 ₪ 07.07.2026 15:58" [ref=f19e230] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/49
+                    - generic [ref=f19e231]: ساعة ذكية
+                    - generic [ref=f19e232]: SKU unavailable | 799.00 ₪
+                    - generic [ref=f19e233]: 07.07.2026 15:58
+                  - link "طقم كنبات مودرن SKU unavailable | 4,999.00 ₪ 07.07.2026 15:58" [ref=f19e234] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/48
+                    - generic [ref=f19e235]: طقم كنبات مودرن
+                    - generic [ref=f19e236]: SKU unavailable | 4,999.00 ₪
+                    - generic [ref=f19e237]: 07.07.2026 15:58
+                  - link "حقيبة جلدية SKU unavailable | 899.00 ₪ 07.07.2026 15:58" [ref=f19e238] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/51
+                    - generic [ref=f19e239]: حقيبة جلدية
+                    - generic [ref=f19e240]: SKU unavailable | 899.00 ₪
+                    - generic [ref=f19e241]: 07.07.2026 15:58
+              - generic [ref=f19e243]:
+                - heading " Recent Customer Reviews" [level=3] [ref=f19e245]:
+                  - generic [ref=f19e246]: 
+                  - text: Recent Customer Reviews
+                - link "7ANRPS48 Admin Approved طقم كنبات مودرن | 2 / 5 E2E review 2026-07-12" [ref=f19e249] [cursor=pointer]:
+                  - /url: /Admin/Yorum
+                  - generic [ref=f19e250]:
+                    - generic [ref=f19e251]: 7ANRPS48 Admin
+                    - generic [ref=f19e252]: Approved
+                  - generic [ref=f19e253]: طقم كنبات مودرن | 2 / 5
+                  - generic [ref=f19e254]: E2E review 2026-07-12
+          - generic [ref=f19e255]:
+            - generic [ref=f19e256]:
+              - heading " System Alerts" [level=3] [ref=f19e258]:
+                - generic [ref=f19e259]: 
+                - text: System Alerts
+              - generic [ref=f19e261]:
+                - generic [ref=f19e262]: Missing product data
+                - generic [ref=f19e263]: 4 active products have no main image.
+                - link "Go to Detail" [ref=f19e264] [cursor=pointer]:
+                  - /url: /Admin/Urun
+            - generic [ref=f19e265]:
+              - heading " Operation Summary" [level=3] [ref=f19e267]:
+                - generic [ref=f19e268]: 
+                - text: Operation Summary
+              - generic [ref=f19e269]:
+                - generic [ref=f19e270]:
+                  - generic [ref=f19e271]: Pending orders
+                  - strong [ref=f19e272]: "0"
+                - generic [ref=f19e273]:
+                  - generic [ref=f19e274]: جاهز للشحن
+                  - strong [ref=f19e275]: "1"
+                - generic [ref=f19e276]:
+                  - generic [ref=f19e277]: Shipped
+                  - strong [ref=f19e278]: "1"
+                - generic [ref=f19e279]:
+                  - generic [ref=f19e280]: Cancel / Return
+                  - strong [ref=f19e281]: "2"
+            - generic [ref=f19e282]:
+              - heading " City-Based Sales" [level=3] [ref=f19e284]:
+                - generic [ref=f19e285]: 
+                - text: City-Based Sales
+              - generic [ref=f19e287]:
+                - generic [ref=f19e288]:
+                  - generic [ref=f19e289]: "1"
+                  - generic [ref=f19e290]:
+                    - generic [ref=f19e291]: Nablus
+                    - generic [ref=f19e292]: 620.00 ₪
+                - generic [ref=f19e293]:
+                  - generic [ref=f19e294]: "1"
+                  - generic [ref=f19e295]:
+                    - generic [ref=f19e296]: Ramallah
+                    - generic [ref=f19e297]: 450.00 ₪
+                - generic [ref=f19e298]:
+                  - generic [ref=f19e299]: "1"
+                  - generic [ref=f19e300]:
+                    - generic [ref=f19e301]: Hebron
+                    - generic [ref=f19e302]: 280.00 ₪
+                - generic [ref=f19e303]:
+                  - generic [ref=f19e304]: "1"
+                  - generic [ref=f19e305]:
+                    - generic [ref=f19e306]: Gaza
+                    - generic [ref=f19e307]: 0.00 ₪
+                - generic [ref=f19e308]:
+                  - generic [ref=f19e309]: "1"
+                  - generic [ref=f19e310]:
+                    - generic [ref=f19e311]: Jenin
+                    - generic [ref=f19e312]: 0.00 ₪
+            - generic [ref=f19e313]:
+              - heading " Traffic Area" [level=3] [ref=f19e315]:
+                - generic [ref=f19e316]: 
+                - text: Traffic Area
+              - generic [ref=f19e317]:
+                - generic [ref=f19e318]:
+                  - generic [ref=f19e319]: Last 7 days visits
+                  - strong [ref=f19e320]: "373"
+                - generic [ref=f19e321]:
+                  - generic [ref=f19e322]: Unique visitors
+                  - strong [ref=f19e323]: "2"
+            - generic [ref=f19e324]:
+              - heading " Category Performance" [level=3] [ref=f19e326]:
+                - generic [ref=f19e327]: 
+                - text: Category Performance
+              - generic [ref=f19e329]:
+                - generic [ref=f19e330]: 
+                - paragraph [ref=f19e331]: No category sales data yet.
+            - generic [ref=f19e332]:
+              - heading " Recent Activities" [level=3] [ref=f19e334]:
+                - generic [ref=f19e335]: 
+                - text: Recent Activities
+              - generic [ref=f19e336]:
+                - generic [ref=f19e337]:
+                  - generic [ref=f19e338]: 
+                  - generic [ref=f19e340]:
+                    - generic [ref=f19e341]: New product added
+                    - generic [ref=f19e342]: فستان سهرة أنيق
+                  - generic [ref=f19e343]: 15:58
+                - generic [ref=f19e344]:
+                  - generic [ref=f19e345]: 
+                  - generic [ref=f19e347]:
+                    - generic [ref=f19e348]: New product added
+                    - generic [ref=f19e349]: ساعة ذكية
+                  - generic [ref=f19e350]: 15:58
+                - generic [ref=f19e351]:
+                  - generic [ref=f19e352]: 
+                  - generic [ref=f19e354]:
+                    - generic [ref=f19e355]: New product added
+                    - generic [ref=f19e356]: طقم كنبات مودرن
+                  - generic [ref=f19e357]: 15:58
+                - generic [ref=f19e358]:
+                  - generic [ref=f19e359]: 
+                  - generic [ref=f19e361]:
+                    - generic [ref=f19e362]: New product added
+                    - generic [ref=f19e363]: حقيبة جلدية
+                  - generic [ref=f19e364]: 15:58
+                - generic [ref=f19e365]:
+                  - generic [ref=f19e366]: 
+                  - generic [ref=f19e368]:
+                    - generic [ref=f19e369]: "New order #7"
+                    - generic [ref=f19e370]: Ahmet El-Filistini - 450.00 ₪
+                  - generic [ref=f19e371]: 07:40
+                - generic [ref=f19e372]:
+                  - generic [ref=f19e373]: 
+                  - generic [ref=f19e375]:
+                    - generic [ref=f19e376]: "New order #8"
+                    - generic [ref=f19e377]: Fatima Hassan - 280.00 ₪
+                  - generic [ref=f19e378]: 07:40
+                - generic [ref=f19e379]:
+                  - generic [ref=f19e380]: 
+                  - generic [ref=f19e382]:
+                    - generic [ref=f19e383]: "New order #9"
+                    - generic [ref=f19e384]: Mahmoud Abbas - 620.00 ₪
+                  - generic [ref=f19e385]: 07:40
+                - generic [ref=f19e386]:
+                  - generic [ref=f19e387]: 
+                  - generic [ref=f19e389]:
+                    - generic [ref=f19e390]: "New order #10"
+                    - generic [ref=f19e391]: Layla Khoury - 195.00 ₪
+                  - generic [ref=f19e392]: 07:40
+    - contentinfo [ref=f19e393]: © 2026 7ANRPS48 Admin Panel. All rights reserved.

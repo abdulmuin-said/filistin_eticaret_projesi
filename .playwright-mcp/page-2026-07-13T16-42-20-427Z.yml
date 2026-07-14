@@ -1,0 +1,216 @@
+- generic [ref=f89e2]:
+  - navigation "Admin main menu" [ref=f89e3]:
+    - generic [ref=f89e4]:
+      - link [ref=f89e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f89e6]
+      - button "Kapat" [ref=f89e7] [cursor=pointer]:
+        - generic [ref=f89e8]: 
+    - generic [ref=f89e9]:
+      - link " Dashboard" [ref=f89e10] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f89e11]: 
+        - text: Dashboard
+      - generic [ref=f89e12]:
+        - generic [ref=f89e13]:
+          - generic [ref=f89e14]: 
+          - text: Order Management
+        - link " Orders" [ref=f89e15] [cursor=pointer]:
+          - /url: /Admin/Siparis
+          - generic [ref=f89e16]: 
+          - text: Orders
+        - link " New Orders" [ref=f89e17] [cursor=pointer]:
+          - /url: /Admin/Siparis?durum=0
+          - generic [ref=f89e18]: 
+          - text: New Orders
+        - link " Shipping Companies" [ref=f89e19] [cursor=pointer]:
+          - /url: /Admin/Kargo
+          - generic [ref=f89e20]: 
+          - text: Shipping Companies
+        - link " Return Requests" [ref=f89e21] [cursor=pointer]:
+          - /url: /Admin/Iade
+          - generic [ref=f89e22]: 
+          - text: Return Requests
+      - generic [ref=f89e23]:
+        - generic [ref=f89e24]:
+          - generic [ref=f89e25]: 
+          - text: Product Management
+        - link " Products" [ref=f89e26] [cursor=pointer]:
+          - /url: /Admin/Urun
+          - generic [ref=f89e27]: 
+          - text: Products
+        - link "+ Add New Product" [ref=f89e28] [cursor=pointer]:
+          - /url: /Admin/Urun/Ekle
+          - generic [ref=f89e29]: +
+          - text: Add New Product
+        - link " Categories" [ref=f89e30] [cursor=pointer]:
+          - /url: /Admin/Kategori
+          - generic [ref=f89e31]: 
+          - text: Categories
+        - link " Product Attributes" [ref=f89e32] [cursor=pointer]:
+          - /url: /Admin/UrunOzellik
+          - generic [ref=f89e33]: 
+          - text: Product Attributes
+        - link " Excel Operations" [ref=f89e34] [cursor=pointer]:
+          - /url: /Admin/UrunImport
+          - generic [ref=f89e35]: 
+          - text: Excel Operations
+        - link " Bulk Price Update" [ref=f89e36] [cursor=pointer]:
+          - /url: /Admin/TopluFiyatGuncelle
+          - generic [ref=f89e37]: 
+          - text: Bulk Price Update
+      - generic [ref=f89e38]:
+        - generic [ref=f89e39]:
+          - generic [ref=f89e40]: 
+          - text: Store Content
+        - link " Slider Management" [ref=f89e41] [cursor=pointer]:
+          - /url: /Admin/Slayt
+          - generic [ref=f89e42]: 
+          - text: Slider Management
+        - link " Home Page Content" [ref=f89e43] [cursor=pointer]:
+          - /url: /Admin/AnaSayfa
+          - generic [ref=f89e44]: 
+          - text: Home Page Content
+        - link " Home Page Sections" [ref=f89e45] [cursor=pointer]:
+          - /url: /Admin/HomeSections
+          - generic [ref=f89e46]: 
+          - text: Home Page Sections
+        - link " Spin Wheel Management" [ref=f89e47] [cursor=pointer]:
+          - /url: /Admin/CarkOdul
+          - generic [ref=f89e48]: 
+          - text: Spin Wheel Management
+        - link " Push Notifications" [ref=f89e49] [cursor=pointer]:
+          - /url: /Admin/PushBildirim
+          - generic [ref=f89e50]: 
+          - text: Push Notifications
+        - link " Coupons" [ref=f89e51] [cursor=pointer]:
+          - /url: /Admin/Kupon
+          - generic [ref=f89e52]: 
+          - text: Coupons
+        - link " Messages" [ref=f89e53] [cursor=pointer]:
+          - /url: /Admin/Iletisim
+          - generic [ref=f89e54]: 
+          - text: Messages
+        - link " Product Reviews" [ref=f89e55] [cursor=pointer]:
+          - /url: /Admin/Yorum
+          - generic [ref=f89e56]: 
+          - text: Product Reviews
+        - link " Newsletter Subscribers" [ref=f89e57] [cursor=pointer]:
+          - /url: /Admin/Bulten
+          - generic [ref=f89e58]: 
+          - text: Newsletter Subscribers
+        - link " Corporate Pages" [ref=f89e59] [cursor=pointer]:
+          - /url: /Admin/Sayfa
+          - generic [ref=f89e60]: 
+          - text: Corporate Pages
+      - link " Members" [ref=f89e61] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f89e62]: 
+        - text: Members
+      - link " Staff" [ref=f89e63] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f89e64]: 
+        - text: Staff
+      - link " Wholesalers" [ref=f89e65] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f89e66]: 
+        - text: Wholesalers
+      - link " Wholesale Groups" [ref=f89e67] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f89e68]: 
+        - text: Wholesale Groups
+      - link " Reports" [ref=f89e69] [cursor=pointer]:
+        - /url: /Admin/Rapor
+        - generic [ref=f89e70]: 
+        - text: Reports
+      - link " Bank Accounts" [ref=f89e71] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f89e72]: 
+        - text: Bank Accounts
+      - link " Settings" [ref=f89e73] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f89e74]: 
+        - text: Settings
+      - generic [ref=f89e75]:
+        - link " View Live Site" [ref=f89e76] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f89e77]: 
+          - text: View Live Site
+        - button " Logout" [ref=f89e79] [cursor=pointer]:
+          - generic [ref=f89e80]: 
+          - text: Logout
+  - banner [ref=f89e81]:
+    - generic [ref=f89e82]:
+      - button "Menü" [ref=f89e83] [cursor=pointer]
+      - link "7ANRPS48 Admin Panel" [ref=f89e87] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f89e88]
+    - text:           +                         
+    - generic [ref=f89e89]:
+      - text: 
+      - combobox "Language" [ref=f89e91]:
+        - option "AR"
+        - option "EN" [selected]
+      - generic [ref=f89e92]:
+        - button "7" [ref=f89e93] [cursor=pointer]
+        - text:  
+  - generic [ref=f89e95]:
+    - main [ref=f89e96]:
+      - generic [ref=f89e97]:
+        - generic [ref=f89e98]:
+          - heading "Home Page Section Management" [level=1] [ref=f89e99]
+          - link "+ Add New Section" [ref=f89e100] [cursor=pointer]:
+            - /url: /Admin/HomeSections/Create
+            - generic [ref=f89e101]: +
+            - text: Add New Section
+        - table [ref=f89e103]:
+          - rowgroup [ref=f89e104]:
+            - row [ref=f89e105]:
+              - columnheader "#" [ref=f89e106]
+              - columnheader "Type" [ref=f89e107]
+              - columnheader "العنوان" [ref=f89e108]
+              - columnheader "العنوان الفرعي" [ref=f89e109]
+              - columnheader "نشط" [ref=f89e110]
+              - columnheader "الترتيب" [ref=f89e111]
+              - columnheader "Actions" [ref=f89e112]
+          - rowgroup [ref=f89e113]:
+            - row [ref=f89e114]:
+              - cell "1" [ref=f89e115]
+              - cell "AutoVitrin" [ref=f89e116]
+              - cell [ref=f89e117]
+              - cell [ref=f89e118]
+              - cell [ref=f89e119]:
+                - checkbox [checked] [disabled]
+              - cell "10" [ref=f89e120]
+              - cell [ref=f89e121]:
+                - link "" [ref=f89e122] [cursor=pointer]:
+                  - /url: /Admin/HomeSections/Edit/1
+                - button "Delete Section" [ref=f89e125] [cursor=pointer]:
+                  - generic [ref=f89e126]: 
+            - row [ref=f89e127]:
+              - cell "2" [ref=f89e128]
+              - cell "AutoCokSatanlar" [ref=f89e129]
+              - cell [ref=f89e130]
+              - cell [ref=f89e131]
+              - cell [ref=f89e132]:
+                - checkbox [checked] [disabled]
+              - cell "20" [ref=f89e133]
+              - cell [ref=f89e134]:
+                - link "" [ref=f89e135] [cursor=pointer]:
+                  - /url: /Admin/HomeSections/Edit/2
+                - button "Delete Section" [ref=f89e138] [cursor=pointer]:
+                  - generic [ref=f89e139]: 
+            - row [ref=f89e140]:
+              - cell "3" [ref=f89e141]
+              - cell "AutoFirsatUrunleri" [ref=f89e142]
+              - cell [ref=f89e143]
+              - cell [ref=f89e144]
+              - cell [ref=f89e145]:
+                - checkbox [checked] [disabled]
+              - cell "30" [ref=f89e146]
+              - cell [ref=f89e147]:
+                - link "" [ref=f89e148] [cursor=pointer]:
+                  - /url: /Admin/HomeSections/Edit/3
+                - button "Delete Section" [ref=f89e151] [cursor=pointer]:
+                  - generic [ref=f89e152]: 
+    - contentinfo [ref=f89e153]: © 2026 7ANRPS48 Admin Panel. All rights reserved.

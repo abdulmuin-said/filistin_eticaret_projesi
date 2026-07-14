@@ -9,8 +9,8 @@
 
 // Firebase SDK'sını yükle
 try {
-    importScripts('https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js');
-    importScripts('https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js');
+    importScripts('/vendor/firebase/firebase-app-compat.js');
+    importScripts('/vendor/firebase/firebase-messaging-compat.js');
 } catch (e) {
     console.warn('[FirebaseSW] SDK yüklenemedi:', e);
 }

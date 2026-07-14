@@ -4423,8 +4423,24 @@
     <value>تغذي حقول SEO محركات البحث ومعلومات المشاركة الاجتماعية.</value>
   </data>
   <data name="Admin_HelpItem4" xml:space="preserve">
-    <value>تُستخدم إعدادات PayTR في تكوين البنية التحتية للدفع.</value>
+    <value>تحدد إعدادات الدفع والتسليم خيارات إتمام الطلب المتاحة.</value>
   </data>
+  <data name="Admin_SettingsTabs" xml:space="preserve">
+    <value>أقسام الإعدادات</value>
+  </data>
+  <data name="Admin_QuantityLabel" xml:space="preserve"><value>{0} قطعة</value></data>
+  <data name="Admin_ViewCount" xml:space="preserve"><value>{0} مشاهدة</value></data>
+  <data name="Admin_UnreadContactAlerts" xml:space="preserve"><value>طلبات تواصل غير مقروءة</value></data>
+  <data name="Admin_UnreadContactAlertsDesc" xml:space="preserve"><value>هناك {0} رسائل بانتظار الرد.</value></data>
+  <data name="Admin_PendingOrderAlerts" xml:space="preserve"><value>طلبات معلقة</value></data>
+  <data name="Admin_PendingOrderAlertsDesc" xml:space="preserve"><value>هناك {0} طلبات بانتظار المعالجة.</value></data>
+  <data name="Admin_MissingProductData" xml:space="preserve"><value>بيانات منتج ناقصة</value></data>
+  <data name="Admin_MissingProductImageAlert" xml:space="preserve"><value>لا توجد صورة رئيسية لـ {0} من المنتجات النشطة.</value></data>
+  <data name="Admin_NewOrderActivity" xml:space="preserve"><value>طلب جديد #{0}</value></data>
+  <data name="Admin_NewProductActivity" xml:space="preserve"><value>تمت إضافة منتج جديد</value></data>
+  <data name="Admin_NewContactActivity" xml:space="preserve"><value>رسالة تواصل جديدة</value></data>
+  <data name="Admin_SkuMissing" xml:space="preserve"><value>SKU غير متوفر</value></data>
+  <data name="Admin_ProductFallback" xml:space="preserve"><value>منتج</value></data>
   <data name="Admin_HelpItem5" xml:space="preserve">
     <value>تنعكس حالة الدفع عند الاستلام ورسوم الخدمة في إجمالي الطلب على صفحة الدفع.</value>
   </data>
@@ -5082,4 +5098,39 @@
   <data name="PreviousImage" xml:space="preserve"><value>الصورة السابقة</value></data>
   <data name="NextImage" xml:space="preserve"><value>الصورة التالية</value></data>
   <data name="VideoNotSupported" xml:space="preserve"><value>متصفحك لا يدعم تشغيل الفيديو.</value></data>
-  </root>
+  <data name="Admin_InvalidSliderUpload" xml:space="preserve">
+    <value>نوع الملف المحدد أو حجمه غير مسموح به.</value>
+  </data>
+  <data name="Admin_SiteReviewTotal" xml:space="preserve"><value>الإجمالي: {0}</value></data>
+  <data name="Admin_SiteReviewPending" xml:space="preserve"><value>قيد الانتظار: {0}</value></data>
+  <data name="Admin_SiteReviewRating" xml:space="preserve"><value>التقييم</value></data>
+  <data name="Admin_SiteReviewTitle" xml:space="preserve"><value>العنوان</value></data>
+  <data name="Admin_SiteReviewText" xml:space="preserve"><value>المراجعة</value></data>
+  <data name="Admin_SiteReviewActions" xml:space="preserve"><value>الإجراءات</value></data>
+  <data name="Admin_SiteReviewEmpty" xml:space="preserve"><value>لا توجد تقييمات للموقع بعد.</value></data>
+  <data name="Admin_SiteReviewApproved" xml:space="preserve"><value>تمت الموافقة</value></data>
+  <data name="Admin_SiteReviewPendingLabel" xml:space="preserve"><value>قيد الانتظار</value></data>
+  <data name="Admin_SiteReviewApprove" xml:space="preserve"><value>موافقة</value></data>
+  <data name="Admin_SiteReviewDeleteConfirm" xml:space="preserve"><value>هل أنت متأكد من حذف هذا التقييم؟</value></data>
+  <data name="Admin_MonitorTitle" xml:space="preserve"><value>مراقبة العمليات</value></data>
+  <data name="Admin_MonitorKicker" xml:space="preserve"><value>مراقبة العمليات المباشرة</value></data>
+  <data name="Admin_MonitorSubtitle" xml:space="preserve"><value>تابع حركة الزوار وأحداث الأمان والطلبات الأخيرة من شاشة واحدة.</value></data>
+  <data name="Admin_MonitorRefresh" xml:space="preserve"><value>تحديث</value></data>
+  <data name="Admin_MonitorSummary" xml:space="preserve"><value>ملخص المؤشرات</value></data>
+  <data name="Admin_MonitorTotalRecords" xml:space="preserve"><value>إجمالي السجلات</value></data>
+  <data name="Admin_MonitorVisitors" xml:space="preserve"><value>الزوار</value></data>
+  <data name="Admin_MonitorOrders" xml:space="preserve"><value>الطلبات</value></data>
+  <data name="Admin_MonitorFilters" xml:space="preserve"><value>التصفية</value></data>
+  <data name="Admin_MonitorAll" xml:space="preserve"><value>الكل</value></data>
+  <data name="Admin_MonitorEventFeed" xml:space="preserve"><value>سجل الأحداث</value></data>
+  <data name="Admin_MonitorPage" xml:space="preserve"><value>الصفحة {0} / {1}</value></data>
+  <data name="Admin_MonitorSource" xml:space="preserve"><value>المصدر</value></data>
+  <data name="Admin_MonitorNoRecords" xml:space="preserve"><value>لا توجد سجلات مطابقة لهذا الفلتر.</value></data>
+  <data name="Admin_MonitorPagination" xml:space="preserve"><value>عرض الصفحة {1} من إجمالي {0} سجل</value></data>
+  <data name="Admin_MonitorPrevious" xml:space="preserve"><value>السابق</value></data>
+  <data name="Admin_MonitorNext" xml:space="preserve"><value>التالي</value></data>
+  <data name="Admin_MonitorIpDensity" xml:space="preserve"><value>نشاط عناوين IP</value></data>
+  <data name="Admin_MonitorIpHits" xml:space="preserve"><value>{0} عنوان IP / {1} زيارة</value></data>
+  <data name="Admin_MonitorVisitorActivity" xml:space="preserve"><value>نشاط الزوار</value></data>
+  <data name="Admin_MonitorNoIpStats" xml:space="preserve"><value>لا توجد إحصاءات لعناوين IP.</value></data>
+</root>

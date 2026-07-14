@@ -492,6 +492,44 @@
     }
 }
 
+/* The full desktop menu needs more room than compact laptops provide.
+   Use the same complete drawer navigation rather than hiding overflow links. */
+@media (min-width: 769px) and (max-width: 1535px) {
+    .ca-hamburger {
+        display: flex !important;
+    }
+
+    .ca-mobile-drawer {
+        display: flex !important;
+    }
+
+    .ca-partner-header {
+        grid-template-columns: 1fr auto;
+        grid-template-areas: "brand actions";
+        min-height: 64px;
+        padding: 0 18px;
+    }
+
+    .ca-partner-nav {
+        display: none !important;
+    }
+
+    .ca-partner-brand {
+        min-width: 0;
+        padding-right: 0;
+        border-right: none;
+    }
+
+    .ca-partner-logo img {
+        width: 108px;
+    }
+
+    .ca-admin-mode,
+    .ca-partner-search {
+        display: none;
+    }
+}
+
 /* ============================================================
    MOBILE DRAWER NAV
    ============================================================ */
@@ -708,7 +746,7 @@
     padding-top: 8px;
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1536px) {
     .ca-hamburger {
         display: none !important;
     }

@@ -302,14 +302,14 @@
     </div>
 </div>
 
-<div class="container mx-auto px-4 py-12">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+<div class="container mx-auto px-4 py-10 lg:py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
         <div class="space-y-4">
             @* ─── ANA MEDYA ALANI ───
                 Galeri + Video karışık medya listesi. width/height CLS için explicit.
                 Keyboard ve touch swipe _Layout/globalmedia.js içinde delegated. *@
             <div id="mainProductImageContainer"
-                 class="product-media relative aspect-square overflow-hidden rounded-2xl border border-brand-border bg-[#f8f6f2] shadow-sm"
+                 class="product-media group relative aspect-square overflow-hidden rounded-lg bg-brand-cream"
                  role="region"
                  aria-roledescription="image"
                  aria-label="@Localizer["ProductImage"]"
@@ -326,7 +326,7 @@
                          alt="@varsayilanGaleriAltMetni"
                          data-product-name="@Model.LocalizedBaslik"
                          width="800" height="800"
-                         class="h-full w-full cursor-zoom-in object-contain p-6 transition-opacity duration-200"
+                          class="main-product-image h-full w-full cursor-zoom-in object-contain p-4 transition-transform duration-700 ease-out group-hover:scale-[1.65]"
                          onclick="openProductLightbox()"
                          loading="eager"
                          decoding="async"
@@ -352,11 +352,11 @@
                     var prevIcon = isRtlDetay ? "fa-chevron-right" : "fa-chevron-left";
                     var nextIcon = isRtlDetay ? "fa-chevron-left" : "fa-chevron-right";
                     <button type="button" onclick="navigateGallery('prev', event)" aria-label="@Localizer["PreviousImage"]"
-                            class="gallery-nav-btn gallery-nav-prev absolute top-1/2 start-2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/85 hover:bg-white backdrop-blur flex items-center justify-center shadow-md focus-visible:ring-2 focus-visible:ring-brand-gold">
+                            class="gallery-nav-btn gallery-nav-prev absolute top-1/2 start-4 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/85 text-brand-olive opacity-0 shadow-sm backdrop-blur transition-opacity hover:bg-white group-hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-brand-gold">
                         <i class="fas @prevIcon text-sm text-brand-darktext"></i>
                     </button>
                     <button type="button" onclick="navigateGallery('next', event)" aria-label="@Localizer["NextImage"]"
-                            class="gallery-nav-btn gallery-nav-next absolute top-1/2 end-2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/85 hover:bg-white backdrop-blur flex items-center justify-center shadow-md focus-visible:ring-2 focus-visible:ring-brand-gold">
+                            class="gallery-nav-btn gallery-nav-next absolute top-1/2 end-4 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/85 text-brand-olive opacity-0 shadow-sm backdrop-blur transition-opacity hover:bg-white group-hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-brand-gold">
                         <i class="fas @nextIcon text-sm text-brand-darktext"></i>
                     </button>
                 }
@@ -419,13 +419,24 @@
             }
         </div>
 
-        <div class="space-y-8">
-            <div>
+        <div class="flex flex-col">
+            <div class="border-b border-brand-border pb-6">
                 @if (!string.IsNullOrWhiteSpace(Model.Kategori?.LocalizedAd))
                 {
                     <a href="/Urun?k=@Model.KategoriId" class="mb-3 inline-flex text-xs font-semibold uppercase tracking-[0.22em] text-brand-gold hover:text-brand-olive">@Model.Kategori.LocalizedAd</a>
                 }
-                <h1 class="font-serif text-3xl leading-tight text-brand-olive md:text-4xl">@Model.LocalizedBaslik</h1>
+                <h1 class="font-serif text-3xl leading-tight text-brand-olive md:text-4xl lg:text-5xl">@Model.LocalizedBaslik</h1>
+                <div class="mt-4 flex items-center gap-3">
+                    <div class="flex text-sm text-brand-gold" aria-label="@ortalamaPuan.ToString("0.0")">
+                        @for (var yildiz = 1; yildiz <= 5; yildiz++)
+                        {
+                            if (yildiz <= tamYildiz) { <i class="fas fa-star"></i> }
+                            else if (yildiz == tamYildiz + 1 && yarimYildiz) { <i class="fas fa-star-half-alt"></i> }
+                            else { <i class="far fa-star"></i> }
+                        }
+                    </div>
+                    <a href="#reviews" class="text-xs text-brand-mutedtext underline-offset-4 hover:text-brand-olive hover:underline">@string.Format(Localizer["ReviewCount"].Value, yorumSayisi)</a>
+                </div>
                 @if (!string.IsNullOrWhiteSpace(Model.LocalizedKisaAciklama))
                 {
                     <p class="mt-4 text-sm leading-7 text-brand-mutedtext">@Model.LocalizedKisaAciklama</p>
@@ -434,24 +445,25 @@
 
             @if (!Model.FiyatGizliMi)
             {
-                <div class="flex flex-wrap items-end gap-3">
-                    <span class="text-3xl font-bold text-brand-gold">@gosterilecekFiyat.ToString("N2") @currencySymbol</span>
+                <div class="flex flex-wrap items-end gap-3 border-b border-brand-border py-6">
+                    <span id="priceDisplay" class="text-3xl font-medium tracking-tight text-brand-darktext">@gosterilecekFiyat.ToString("N2") @currencySymbol</span>
                     @if (gosterilecekEskiFiyat.HasValue)
                     {
-                        <span class="pb-1 text-sm text-gray-400 line-through">@gosterilecekEskiFiyat.Value.ToString("N2") @currencySymbol</span>
+                        <span id="oldPriceDisplay" class="pb-1 text-lg text-brand-mutedtext line-through">@gosterilecekEskiFiyat.Value.ToString("N2") @currencySymbol</span>
                     }
+                    else { <span id="oldPriceDisplay" class="hidden"></span> }
                     @if (gosterilecekIndirimYuzdesi.HasValue)
                     {
-                        <span class="rounded-full bg-brand-olive px-3 py-1 text-xs font-semibold text-white">%@gosterilecekIndirimYuzdesi</span>
+                        <span id="discountBadge" class="mb-1 rounded bg-brand-gold px-2 py-1 text-xs font-semibold text-white">%@gosterilecekIndirimYuzdesi @Localizer["Discount"]</span>
                     }
+                    else { <span id="discountBadge" class="hidden"></span> }
                 </div>
             }
 
-            <div class="grid gap-3 rounded-2xl border border-brand-border bg-white/80 p-4 text-sm text-brand-mutedtext shadow-sm sm:grid-cols-2">
-                <div class="flex items-center gap-2"><i class="@stokIkonClass"></i><span>@stokDurumuMetni</span></div>
-                <div class="flex items-center gap-2"><i class="fas fa-truck text-brand-gold"></i><span>@gosterilecekKargoSuresi @Localizer["Days"]</span></div>
-                <div class="flex items-center gap-2"><i class="fas fa-undo text-brand-gold"></i><span>@iadeSuresi @Localizer["DaysReturn"]</span></div>
-                <div class="flex items-center gap-2"><i class="fas fa-shield-alt text-brand-gold"></i><span>@Localizer["ManufacturerGuarantee"]</span></div>
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-brand-border py-4 text-xs text-brand-mutedtext">
+                <span id="stockStatusText" class="flex items-center gap-2"><i class="@stokIkonClass"></i>@stokDurumuMetni</span>
+                <span class="flex items-center gap-2"><i class="fas fa-truck text-brand-gold"></i>@gosterilecekKargoSuresi @Localizer["Days"]</span>
+                @if (gosterilecekUretimSuresi > 0) { <span id="productionTimeText" class="flex items-center gap-2"><i class="fas fa-hammer text-brand-gold"></i>@string.Format(Localizer["ProductionInDaysJS"].Value, gosterilecekUretimSuresi)</span> }
             </div>
 
             @{
@@ -480,12 +492,49 @@
             }
             else
             {
-            <form id="addToCartForm" class="space-y-5">
+            <form id="addToCartForm" class="space-y-6 pt-6">
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="UrunId" value="@Model.Id" />
                 <input type="hidden" id="selectedVariantId" value="@varsayilanSecenek?.Id" />
                 <input type="hidden" id="selectedQuantity" name="Adet" value="@minSiparisAdedi" />
+                <input type="hidden" id="selectedFrameModel" value="" />
                 <input type="hidden" id="selectedFrameFarki" value="0" />
+
+                @if (secenekler.Any())
+                {
+                    <div>
+                        <div id="variantSummaryText" class="mb-3 text-xs font-medium uppercase tracking-widest text-brand-darktext @(string.IsNullOrWhiteSpace(seciliVaryantMetni) ? "hidden" : "")"><i class="fas fa-layer-group me-1.5"></i>@seciliVaryantMetni</div>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach (var varyant in secenekler)
+                            {
+                                var varyantSatinAlinabilir = stoktaYokSatisIzni || varyant.SatinAlinabilirMi;
+                                var varyantEtiket = string.IsNullOrWhiteSpace(varyant.VaryantBasligi) ? (varyant.Olcu ?? "Standard") : varyant.VaryantBasligi;
+                                var varyantGorseli = !string.IsNullOrWhiteSpace(varyant.GorselUrl) ? varyant.GorselUrl : (varyantMedyaHaritasi.TryGetValue(varyant.Id, out var eslesen) ? eslesen : string.Empty);
+                                var varyantEskiFiyat = Model.Fiyat > varyant.SatisFiyati ? Model.Fiyat : 0;
+                                <label class="relative cursor-pointer rounded border border-brand-border px-4 py-2 text-sm transition-colors hover:border-brand-gold has-[:checked]:border-brand-olive has-[:checked]:bg-brand-olive has-[:checked]:text-white @(!varyantSatinAlinabilir ? "cursor-not-allowed opacity-45" : "")">
+                                    <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" disabled="@(!varyantSatinAlinabilir ? "disabled" : null)" data-price="@varyant.SatisFiyati.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
+                                    @varyantEtiket
+                                </label>
+                            }
+                        </div>
+                    </div>
+                }
+
+                @if (cerceveSecimiGerekli)
+                {
+                    <div id="frameSelectionBlock">
+                        <label class="mb-3 block text-xs font-medium uppercase tracking-widest text-brand-darktext">@Localizer["SelectFrame"]</label>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach (var cerceve in cerceveModelleri)
+                            {
+                                <label class="cursor-pointer rounded border border-brand-border px-3 py-2 text-xs transition-colors hover:border-brand-gold has-[:checked]:border-brand-gold has-[:checked]:bg-brand-cream">
+                                    <input type="radio" class="frame-radio me-1 accent-brand-gold" name="CerceveModeli" value="@cerceve" />@cerceve
+                                </label>
+                            }
+                        </div>
+                        <p id="frameSelectionError" class="mt-2 hidden text-xs font-medium text-red-600">@Localizer["FrameSelectionRequired"]</p>
+                    </div>
+                }
 
                 @if (Model.HediyePaketiVarMi)
                 {
@@ -502,59 +551,100 @@
                     </div>
                 }
 
-                <div class="flex items-center gap-3">
-                    <button type="button" class="flex h-11 w-11 items-center justify-center rounded-full border border-brand-border bg-white text-brand-olive" onclick="decreaseQuantity()">-</button>
-                    <input id="productQuantity" type="number" min="@minSiparisAdedi" max="@maxSiparisAdedi" value="@minSiparisAdedi" class="h-11 w-20 rounded-full border border-brand-border bg-white text-center text-sm font-semibold text-brand-darktext" />
-                    <button type="button" class="flex h-11 w-11 items-center justify-center rounded-full border border-brand-border bg-white text-brand-olive" onclick="increaseQuantity()">+</button>
+                <div class="flex items-end gap-3">
+                    <div><label class="mb-2 block text-xs font-medium uppercase tracking-widest text-brand-darktext">@Localizer["Quantity"]</label><div class="flex h-12 items-center border border-brand-border bg-white"><button type="button" class="flex h-full w-10 items-center justify-center hover:bg-brand-cream" onclick="decreaseQuantity()">-</button><input id="productQuantity" type="number" min="@minSiparisAdedi" max="@maxSiparisAdedi" value="@minSiparisAdedi" class="h-full w-12 border-0 bg-transparent p-0 text-center text-sm font-semibold focus:ring-0" readonly /><button type="button" class="flex h-full w-10 items-center justify-center hover:bg-brand-cream" onclick="increaseQuantity()">+</button></div></div>
+                    <button id="ajaxSepetBtn" type="button" class="flex h-12 min-w-0 flex-1 items-center justify-center gap-2 bg-brand-olive px-4 text-xs font-bold uppercase tracking-widest text-white transition-colors hover:bg-[#1c2001] disabled:cursor-wait disabled:opacity-70"><i class="fas fa-shopping-bag add-to-cart-icon"></i><span class="add-to-cart-text">@Localizer["AddToCart"]</span></button>
+                    <a href="/Sepet" class="flex h-12 w-12 items-center justify-center bg-brand-gold text-white transition-colors hover:bg-[#8e6a28]" aria-label="@Localizer["Cart"]"><i class="fas fa-shopping-cart"></i></a>
                 </div>
-
-                <button id="ajaxSepetBtn" type="button" class="inline-flex w-full items-center justify-center gap-3 rounded-full bg-brand-olive px-6 py-4 text-sm font-bold uppercase tracking-[0.18em] text-white shadow-lg transition-colors hover:bg-[#1c2001] disabled:cursor-wait disabled:opacity-70">
-                    <i class="fas fa-shopping-bag add-to-cart-icon"></i>
-                    <span class="add-to-cart-text">@Localizer["AddToCart"]</span>
-                </button>
             </form>
             }
+            <div class="mt-7 grid grid-cols-3 border-y border-brand-border py-5 text-center">
+                <div><i class="fas fa-shield-alt mb-2 text-brand-gold"></i><p class="text-xs font-semibold text-brand-darktext">@Localizer["SecurePayment"]</p></div>
+                <div><i class="fas fa-truck mb-2 text-brand-gold"></i><p class="text-xs font-semibold text-brand-darktext">@Localizer["FreeShipping"]</p></div>
+                <div><i class="fas fa-undo-alt mb-2 text-brand-gold"></i><p class="text-xs font-semibold text-brand-darktext">@Localizer["ReturnGuarantee"]</p></div>
+            </div>
         </div>
     </div>
 
-    <section class="mt-14 rounded-2xl border border-brand-border bg-white/80 p-6 shadow-sm">
-        <h2 class="font-serif text-2xl text-brand-olive">@Localizer["ProductDetails"]</h2>
-        <div class="prose mt-4 max-w-none text-brand-mutedtext">
-            @if (!string.IsNullOrWhiteSpace(Model.LocalizedAciklama))
-            {
-                @Html.SanitizeHtml(Model.LocalizedAciklama)
-            }
-            else
-            {
-                <p>@Model.LocalizedKisaAciklama</p>
-            }
-        </div>
-    </section>
+    <section id="reviews" class="mt-20 border-t border-brand-border pt-12">
+        <div class="flex flex-col gap-12 lg:flex-row">
+            <div class="space-y-12 lg:w-2/3">
+                <div>
+                    <h2 class="mb-6 flex items-center gap-3 font-serif text-2xl text-brand-olive"><i class="fas fa-file-alt text-brand-gold"></i>@Localizer["ProductDescription"]</h2>
+                    <div class="prose prose-sm max-w-none leading-relaxed text-brand-mutedtext">
+                        @if (!string.IsNullOrWhiteSpace(Model.LocalizedAciklama))
+                        {
+                            @Html.SanitizeHtml(Model.LocalizedAciklama)
+                        }
+                        else
+                        {
+                            <p>@Model.LocalizedKisaAciklama</p>
+                        }
+                    </div>
+                </div>
 
-    <section class="mt-8 rounded-2xl border border-brand-border bg-white/80 p-6 shadow-sm">
-        <div class="mb-5 flex items-center justify-between gap-4">
-            <h2 class="font-serif text-2xl text-brand-olive">@Localizer["Reviews"]</h2>
-            <button type="button" id="openCommentModalBtn" class="rounded-full border border-brand-olive px-4 py-2 text-xs font-semibold uppercase tracking-widest text-brand-olive transition-colors hover:bg-brand-olive hover:text-white">@Localizer["WriteReview"]</button>
-        </div>
-        @if (yorumlar.Any())
-        {
-            <div id="reviewsList" class="space-y-4">
-                @foreach (var yorum in yorumlar.Take(6))
+                @if (teknikTabloSatirlari.Any())
                 {
-                    <article class="rounded-xl bg-brand-cream p-4">
-                        <div class="mb-2 flex items-center justify-between gap-3">
-                            <strong class="text-sm text-brand-darktext">@yorum.AdSoyad</strong>
-                            <span class="text-xs text-brand-gold">@string.Concat(Enumerable.Repeat("★", yorum.Puan))</span>
+                    <div>
+                        <h2 class="mb-6 flex items-center gap-3 font-serif text-2xl text-brand-olive"><i class="fas fa-cogs text-brand-gold"></i>@Localizer["ProductDetails"]</h2>
+                        <div class="overflow-hidden rounded-lg border border-brand-border bg-white">
+                            <table class="w-full text-sm">
+                                <tbody class="divide-y divide-brand-border">
+                                    @foreach (var satir in teknikTabloSatirlari)
+                                    {
+                                        <tr class="transition-colors hover:bg-[#fcf9f3]">
+                                            <th scope="row" class="w-1/3 bg-brand-cream px-5 py-4 text-start font-semibold text-brand-darktext">@satir.Baslik</th>
+                                            <td class="px-5 py-4 text-brand-mutedtext">@satir.Deger</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
-                        <p class="text-sm leading-6 text-brand-mutedtext">@yorum.YorumMetni</p>
-                    </article>
+                    </div>
                 }
             </div>
-        }
-        else
-        {
-            <p class="text-sm text-brand-mutedtext">@Localizer["NoReviewsYet"]</p>
-        }
+
+            <aside class="lg:w-1/3">
+                <h2 class="mb-6 flex items-center gap-3 font-serif text-2xl text-brand-olive"><i class="fas fa-comments text-brand-gold"></i>@Localizer["Reviews"]</h2>
+                @if (yorumlar.Any())
+                {
+                    <div class="mb-7 rounded-lg border border-brand-border bg-white p-6 text-center">
+                        <p class="font-serif text-5xl text-brand-olive">@ortalamaPuan.ToString("0.0")</p>
+                        <div class="my-3 text-brand-gold">
+                            @for (var yildiz = 1; yildiz <= 5; yildiz++)
+                            {
+                                if (yildiz <= tamYildiz) { <i class="fas fa-star"></i> }
+                                else if (yildiz == tamYildiz + 1 && yarimYildiz) { <i class="fas fa-star-half-alt"></i> }
+                                else { <i class="far fa-star"></i> }
+                            }
+                        </div>
+                        <p class="mb-5 text-sm text-brand-mutedtext">@string.Format(Localizer["ReviewCount"].Value, yorumSayisi)</p>
+                        <button type="button" id="openCommentModalBtn" class="w-full rounded border border-brand-olive py-2.5 text-xs font-semibold uppercase tracking-widest text-brand-olive transition-colors hover:bg-brand-olive hover:text-white">@Localizer["WriteReview"]</button>
+                    </div>
+                    <div id="reviewsList" class="space-y-4">
+                        @foreach (var yorum in yorumlar.Take(3))
+                        {
+                            var adParcalari = (yorum.AdSoyad ?? string.Empty).Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                            var basHarfler = adParcalari.Length == 0 ? "?" : string.Concat(adParcalari.Take(1).Select(x => x[0]), adParcalari.Skip(1).TakeLast(1).Select(x => x[0]));
+                            <article class="rounded-lg border border-brand-border bg-white p-4">
+                                <div class="mb-3 flex items-start justify-between gap-3">
+                                    <div class="flex items-center gap-3">
+                                        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-cream text-sm font-semibold text-brand-olive">@basHarfler</span>
+                                        <div><strong class="block text-sm text-brand-darktext">@yorum.AdSoyad</strong><span class="text-[10px] text-brand-gold">@string.Concat(Enumerable.Repeat("★", yorum.Puan))</span></div>
+                                    </div>
+                                    <time class="text-[10px] text-brand-mutedtext">@yorum.OlusturulmaTarihi.ToString("dd MMM yyyy")</time>
+                                </div>
+                                <p class="text-sm leading-6 text-brand-mutedtext">@yorum.YorumMetni</p>
+                            </article>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="rounded-lg border border-brand-border bg-white px-6 py-12 text-center"><i class="far fa-comments mb-4 text-4xl text-brand-border"></i><p class="mb-5 text-sm text-brand-mutedtext">@Localizer["NoReviewsYet"]</p><button type="button" id="openCommentModalBtnEmpty" class="rounded bg-brand-olive px-6 py-2.5 text-xs font-semibold uppercase tracking-widest text-white transition-colors hover:bg-[#1c2001]">@Localizer["WriteReview"]</button></div>
+                }
+            </aside>
+        </div>
     </section>
 
 @{

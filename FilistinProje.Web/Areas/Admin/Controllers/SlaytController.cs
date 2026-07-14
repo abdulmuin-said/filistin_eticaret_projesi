@@ -1,8 +1,10 @@
 using System.IO;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
+using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace FilistinProje.Web.Areas.Admin.Controllers
 {
@@ -11,11 +13,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
     {
         private readonly KanvasDbContext _db;
         private readonly IWebHostEnvironment _env;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public SlaytController(KanvasDbContext db, IWebHostEnvironment env)
+        public SlaytController(KanvasDbContext db, IWebHostEnvironment env, IStringLocalizer<SharedResource> localizer)
         {
             _db = db;
             _env = env;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index()
@@ -35,8 +39,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [RequestSizeLimit(209_715_200)]
-        [RequestFormLimits(MultipartBodyLengthLimit = 209_715_200)]
+        [RequestSizeLimit(52_428_800)]
+        [RequestFormLimits(MultipartBodyLengthLimit = 52_428_800)]
         public async Task<IActionResult> Ekle(Slayt model, IFormFile? Resim, IFormFile? Video)
         {
             if (!ModelState.IsValid)
@@ -90,8 +94,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [RequestSizeLimit(209_715_200)]
-        [RequestFormLimits(MultipartBodyLengthLimit = 209_715_200)]
+        [RequestSizeLimit(52_428_800)]
+        [RequestFormLimits(MultipartBodyLengthLimit = 52_428_800)]
         public async Task<IActionResult> Duzenle(int id, Slayt model, IFormFile? Resim, IFormFile? Video, bool? ResimSil, bool? VideoSil)
         {
             var slayt = await _db.Slaytlar.FindAsync(id);
@@ -276,11 +280,23 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         private async Task<string> SaveFileAsync(IFormFile file, string subFolder)
         {
+            var isVideo = file.ContentType.StartsWith("video/", StringComparison.OrdinalIgnoreCase);
+            var allowedExtensions = isVideo
+                ? new[] { ".mp4", ".webm" }
+                : new[] { ".jpg", ".jpeg", ".png", ".webp" };
+            var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+            if (file.Length <= 0 || file.Length > (isVideo ? 50L * 1024 * 1024 : 10L * 1024 * 1024) ||
+                !allowedExtensions.Contains(extension))
+            {
+                throw new InvalidOperationException(_localizer["Admin_InvalidSliderUpload"].Value);
+            }
+
             var uploadsFolder = Path.Combine(_env.WebRootPath, subFolder);
             if (!Directory.Exists(uploadsFolder))
                 Directory.CreateDirectory(uploadsFolder);
 
-            var uniqueFileName = Guid.NewGuid().ToString("N") + "_" + Path.GetFileName(file.FileName);
+            var uniqueFileName = Guid.NewGuid().ToString("N") + extension;
             var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
             using var stream = new FileStream(filePath, FileMode.Create);
@@ -291,9 +307,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         private void DeleteFile(string? url)
         {
-            if (string.IsNullOrEmpty(url)) return;
+            if (string.IsNullOrEmpty(url) || !url.StartsWith("/uploads/slider/", StringComparison.Ordinal)) return;
             var relativePath = url.TrimStart('/').Replace("/", "\\");
             var fullPath = System.IO.Path.Combine(_env.WebRootPath, relativePath);
+            var uploadRoot = Path.GetFullPath(Path.Combine(_env.WebRootPath, "uploads", "slider"));
+            if (!Path.GetFullPath(fullPath).StartsWith(uploadRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)) return;
             if (System.IO.File.Exists(fullPath))
             {
                 try { System.IO.File.Delete(fullPath); } catch { }

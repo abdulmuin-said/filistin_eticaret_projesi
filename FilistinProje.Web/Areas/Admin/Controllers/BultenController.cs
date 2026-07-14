@@ -91,14 +91,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 var row = i + 2;
                 worksheet.Cells[row, 1].Value = item.Id;
                 worksheet.Cells[row, 2].Value = item.AktifMi ? "Aktif" : "Pasif";
-                worksheet.Cells[row, 3].Value = item.Email;
+                worksheet.Cells[row, 3].Value = SafeSpreadsheetText(item.Email);
                 worksheet.Cells[row, 4].Value = item.KayitTarihi.ToString("dd.MM.yyyy HH:mm");
-                worksheet.Cells[row, 5].Value = item.IpAdresi;
-                worksheet.Cells[row, 6].Value = item.Sehir;
-                worksheet.Cells[row, 7].Value = item.Ulke;
-                worksheet.Cells[row, 8].Value = item.Cihaz;
-                worksheet.Cells[row, 9].Value = item.Tarayici;
-                worksheet.Cells[row, 10].Value = item.IsletimSistemi;
+                worksheet.Cells[row, 5].Value = SafeSpreadsheetText(item.IpAdresi);
+                worksheet.Cells[row, 6].Value = SafeSpreadsheetText(item.Sehir);
+                worksheet.Cells[row, 7].Value = SafeSpreadsheetText(item.Ulke);
+                worksheet.Cells[row, 8].Value = SafeSpreadsheetText(item.Cihaz);
+                worksheet.Cells[row, 9].Value = SafeSpreadsheetText(item.Tarayici);
+                worksheet.Cells[row, 10].Value = SafeSpreadsheetText(item.IsletimSistemi);
             }
 
             if (worksheet.Dimension != null)
@@ -324,6 +324,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
         }
 
+        private static string SafeSpreadsheetText(string? value)
+        {
+            var text = value ?? string.Empty;
+            return text.Length > 0 && "=+-@".Contains(text[0]) ? "'" + text : text;
+        }
+
         private async Task<List<BultenListViewModel>> BuildSubscriberListAsync(List<BultenAboneligi> aboneler)
         {
             var ips = aboneler
@@ -363,4 +369,3 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 }
-

@@ -1,13 +1,12 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FilistinProje.Data;
+using System.Text.RegularExpressions;
 
 namespace FilistinProje.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
-    public class XyzSecretMonitorController : Controller
+    public class XyzSecretMonitorController : AdminBaseController
     {
         private readonly IWebHostEnvironment _env;
         private readonly KanvasDbContext _db;
@@ -20,8 +19,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(string type, int page = 1, int pageSize = 50)
         {
-            if (!IsAuthorizedAdmin()) return Forbid();
-
             page = Math.Max(1, page);
             pageSize = Math.Clamp(pageSize, 25, 200);
             type = (type ?? string.Empty).Trim().ToLowerInvariant();
@@ -67,7 +64,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                         Kullanci = e.UserName,
                         Ip = e.IpAddress,
                         Islem = e.EventType,
-                        Detay = $"{e.Message} → {e.Target}"
+                        Detay = MaskSensitiveText($"{e.Message} → {e.Target}")
                     }));
             }
 
@@ -115,11 +112,18 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             return View();
         }
 
-        private bool IsAuthorizedAdmin()
+        private static string MaskSensitiveText(string? value)
         {
-            if (!User.Identity?.IsAuthenticated ?? false) return false;
-            var roller = User.Claims.Where(c => c.Type.Contains("role")).Select(c => c.Value).ToList();
-            return roller.Contains("Admin") || roller.Contains("SuperAdmin") || roller.Contains("Yonetici");
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return "-";
+            }
+
+            // Audit payloads may include configuration fragments. Never render credentials in the monitor.
+            return Regex.Replace(
+                value,
+                @"(?i)(password|pwd|secret|token|apikey|api[_-]?key|connection\s*string)\s*([:=])\s*([^\s;,]+)",
+                "$1$2***");
         }
 
         public class LogEntry
