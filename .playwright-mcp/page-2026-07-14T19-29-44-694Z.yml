@@ -1,0 +1,310 @@
+- generic [active] [ref=f13e1]:
+  - generic [ref=f13e3]:
+    - generic [ref=f13e4]:
+      - generic [ref=f13e5]:
+        - generic [ref=f13e6]: 
+        - text: شحن مجاني للطلبات فوق 200 ₪
+      - generic [ref=f13e7]:
+        - generic [ref=f13e8]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f13e9]:
+        - generic [ref=f13e10]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f13e11]:
+        - generic [ref=f13e12]: 
+        - text: إنتاج سريع
+      - generic [ref=f13e13]:
+        - generic [ref=f13e14]: 
+        - text: تغليف دقيق
+      - generic [ref=f13e15]:
+        - generic [ref=f13e16]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f13e17]:
+        - generic [ref=f13e18]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f13e19]:
+        - generic [ref=f13e20]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f13e21]:
+        - generic [ref=f13e22]: 
+        - text: دعم واتساب
+    - generic [ref=f13e23]:
+      - generic [ref=f13e24]:
+        - generic [ref=f13e25]: 
+        - text: شحن مجاني للطلبات فوق 200 ₪
+      - generic [ref=f13e26]:
+        - generic [ref=f13e27]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f13e28]:
+        - generic [ref=f13e29]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f13e30]:
+        - generic [ref=f13e31]: 
+        - text: إنتاج سريع
+      - generic [ref=f13e32]:
+        - generic [ref=f13e33]: 
+        - text: تغليف دقيق
+      - generic [ref=f13e34]:
+        - generic [ref=f13e35]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f13e36]:
+        - generic [ref=f13e37]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f13e38]:
+        - generic [ref=f13e39]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f13e40]:
+        - generic [ref=f13e41]: 
+        - text: دعم واتساب
+  - banner [ref=f13e42]:
+    - generic [ref=f13e43]:
+      - text: 
+      - link "7ANRPS48" [ref=f13e44] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f13e45]
+      - generic [ref=f13e46]:
+        - button "فتح القائمة" [ref=f13e47] [cursor=pointer]
+        - button "بحث" [ref=f13e50] [cursor=pointer]
+        - button "اللغة" [ref=f13e54] [cursor=pointer]:
+          - generic [ref=f13e57]: العربية
+      - generic [ref=f13e58]:
+        - link "حسابي" [ref=f13e59] [cursor=pointer]:
+          - /url: /Profil
+        - link "المفضلة" [ref=f13e62] [cursor=pointer]:
+          - /url: /Favori
+        - link "السلة" [ref=f13e65] [cursor=pointer]:
+          - /url: /Sepet
+          - generic [ref=f13e68]: "1"
+  - main [ref=f13e69]:
+    - text:      
+    - generic [ref=f13e71]:
+      - link "الصفحة الرئيسية" [ref=f13e72] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f13e73]: /
+      - link "مجموعة" [ref=f13e74] [cursor=pointer]:
+        - /url: /Urun
+      - generic [ref=f13e75]: /
+      - generic [ref=f13e76]: ايسنس ماسكارا لاش برينسيس
+    - generic [ref=f13e77]:
+      - generic [ref=f13e78]:
+        - region "صورة المنتج" [ref=f13e80]:
+          - img "ايسنس ماسكارا لاش برينسيس" [ref=f13e81]
+        - generic [ref=f13e82]:
+          - generic [ref=f13e83]:
+            - link "جمال" [ref=f13e84] [cursor=pointer]:
+              - /url: /Urun?k=85
+            - heading "ايسنس ماسكارا لاش برينسيس" [level=1] [ref=f13e85]
+            - generic [ref=f13e86]:
+              - generic "5٫0" [ref=f13e87]:
+                - generic [ref=f13e88]: 
+                - generic [ref=f13e89]: 
+                - generic [ref=f13e90]: 
+                - generic [ref=f13e91]: 
+                - generic [ref=f13e92]: 
+              - link "0 تقييم" [ref=f13e93] [cursor=pointer]:
+                - /url: "#reviews"
+            - paragraph [ref=f13e94]: ايسنس ماسكارا لاش برينسيس. منتج ضمن فئة جمال.
+          - generic [ref=f13e96]:
+            - generic [ref=f13e97]: 
+            - generic [ref=f13e99]:
+              - paragraph [ref=f13e100]: تقدير التسليم
+              - paragraph [ref=f13e101]: التسليم المتوقع خلال 6 أيام عمل.
+              - generic [ref=f13e102]: المنطقة
+              - combobox "المنطقة" [ref=f13e103]:
+                - option "اختر مدينتك لتقدير مخصص" [selected]
+                - option "Akka (Acre)"
+                - option "Beytüllahim (Bethlehem)"
+                - option "Cenin (Jenin)"
+                - option "El-Halil (Hebron)"
+                - option "El-Kudüs (Jerusalem)"
+                - option "Eriha (Jericho)"
+                - option "Hayfa (Haifa)"
+                - option "Kalkilya (Qalqilya)"
+                - option "Lydda"
+                - option "Nablus"
+                - option "Nasıra (Nazareth)"
+                - option "Ramallah & El-Bireh"
+                - option "Ramla"
+                - option "Salfit"
+                - option "Taybe"
+                - option "Tubas"
+                - option "Tulkarim"
+                - option "Yafa (Jaffa)"
+                - option "Ümmü'l-Fahm"
+          - generic [ref=f13e104]:
+            - generic [ref=f13e105]: 8٫94 ₪
+            - generic [ref=f13e106]: 9٫99 ₪
+            - generic [ref=f13e107]: "%11 خصم"
+          - generic [ref=f13e108]:
+            - generic [ref=f13e109]:
+              - generic [ref=f13e110]: 
+              - text: مصنوع حسب الطلب
+            - generic [ref=f13e111]:
+              - generic [ref=f13e112]: 
+              - text: 3 أيام
+          - text: 
+          - generic [ref=f13e113]:
+            - generic [ref=f13e114]:
+              - text: 
+              - generic [ref=f13e116] [cursor=pointer]:
+                - radio "Standard" [checked]
+                - text: Standard
+            - generic [ref=f13e120]:
+              - generic [ref=f13e121]:
+                - generic [ref=f13e122]: الكمية
+                - generic [ref=f13e123]:
+                  - button "-" [ref=f13e124] [cursor=pointer]
+                  - spinbutton [ref=f13e125]: "1"
+                  - button "+" [ref=f13e126] [cursor=pointer]
+              - button " أضف إلى السلة" [ref=f13e127] [cursor=pointer]:
+                - generic [ref=f13e128]: 
+                - generic [ref=f13e129]: أضف إلى السلة
+              - link "السلة" [ref=f13e130] [cursor=pointer]:
+                - /url: /Sepet
+                - generic [ref=f13e131]: 
+          - generic [ref=f13e132]:
+            - generic [ref=f13e133]:
+              - generic [ref=f13e134]: 
+              - paragraph [ref=f13e135]: تحويل بنكي
+            - generic [ref=f13e136]:
+              - generic [ref=f13e137]: 
+              - paragraph [ref=f13e138]: شحن مجاني
+            - generic [ref=f13e139]:
+              - generic [ref=f13e140]: 
+              - paragraph [ref=f13e141]: ضمان الإرجاع
+          - generic [ref=f13e142]:
+            - generic [ref=f13e143]: 
+            - text: دفع آمن ودعم محمي للطلبات
+      - generic [ref=f13e145]:
+        - generic [ref=f13e147]:
+          - heading " وصف المنتج" [level=2] [ref=f13e148]:
+            - generic [ref=f13e149]: 
+            - text: وصف المنتج
+          - generic [ref=f13e150]: ايسنس ماسكارا لاش برينسيس. منتج ضمن فئة جمال.
+        - complementary [ref=f13e151]:
+          - heading " التقييمات" [level=2] [ref=f13e152]:
+            - generic [ref=f13e153]: 
+            - text: التقييمات
+          - generic [ref=f13e154]:
+            - generic [ref=f13e155]: 
+            - paragraph [ref=f13e156]: لا توجد تقييمات بعد
+            - button "كتابة تقييم" [ref=f13e157] [cursor=pointer]
+      - region [ref=f13e158]:
+        - generic [ref=f13e159]:
+          - generic [ref=f13e160]:
+            - paragraph [ref=f13e161]: أكمل اختيارك
+            - heading "يُختار معها غالباً" [level=2] [ref=f13e162]
+          - link "مجموعة" [ref=f13e163] [cursor=pointer]:
+            - /url: /Urun?k=85
+        - generic [ref=f13e164]:
+          - link [ref=f13e165] [cursor=pointer]:
+            - /url: /Urun/Detay/test-2-eyeshadow-palette-with-mirror-83
+            - img "لوحة ظلال العيون مع مرآة" [ref=f13e166]
+            - heading "لوحة ظلال العيون مع مرآة" [level=3] [ref=f13e167]
+            - paragraph [ref=f13e168]: 16٫35 ₪
+          - link [ref=f13e169] [cursor=pointer]:
+            - /url: /Urun/Detay/test-4-red-lipstick-85
+            - img "أحمر الشفاه" [ref=f13e170]
+            - heading "أحمر الشفاه" [level=3] [ref=f13e171]
+            - paragraph [ref=f13e172]: 11٫41 ₪
+          - link [ref=f13e173] [cursor=pointer]:
+            - /url: /Urun/Detay/test-3-powder-canister-84
+            - img "علبة مسحوق" [ref=f13e174]
+            - heading "علبة مسحوق" [level=3] [ref=f13e175]
+            - paragraph [ref=f13e176]: 13٫51 ₪
+      - region [ref=f13e177]:
+        - generic [ref=f13e178]:
+          - heading "منتجات مشابهة" [level=2] [ref=f13e180]
+          - generic [ref=f13e181]:
+            - link "لوحة ظلال العيون مع مرآة لوحة ظلال العيون مع مرآة 16٫35 ₪ 19٫99 ₪" [ref=f13e182] [cursor=pointer]:
+              - /url: /Urun/Detay/test-2-eyeshadow-palette-with-mirror-83
+              - img "لوحة ظلال العيون مع مرآة" [ref=f13e184]
+              - heading "لوحة ظلال العيون مع مرآة" [level=3] [ref=f13e185]
+              - generic [ref=f13e186]:
+                - generic [ref=f13e187]: 16٫35 ₪
+                - generic [ref=f13e188]: 19٫99 ₪
+            - link "أحمر الشفاه أحمر الشفاه 11٫41 ₪ 12٫99 ₪" [ref=f13e189] [cursor=pointer]:
+              - /url: /Urun/Detay/test-4-red-lipstick-85
+              - img "أحمر الشفاه" [ref=f13e191]
+              - heading "أحمر الشفاه" [level=3] [ref=f13e192]
+              - generic [ref=f13e193]:
+                - generic [ref=f13e194]: 11٫41 ₪
+                - generic [ref=f13e195]: 12٫99 ₪
+            - link "علبة مسحوق علبة مسحوق 13٫51 ₪ 14٫99 ₪" [ref=f13e196] [cursor=pointer]:
+              - /url: /Urun/Detay/test-3-powder-canister-84
+              - img "علبة مسحوق" [ref=f13e198]
+              - heading "علبة مسحوق" [level=3] [ref=f13e199]
+              - generic [ref=f13e200]:
+                - generic [ref=f13e201]: 13٫51 ₪
+                - generic [ref=f13e202]: 14٫99 ₪
+            - link "طلاء الأظافر باللون الأحمر طلاء الأظافر باللون الأحمر 7٫96 ₪ 8٫99 ₪" [ref=f13e203] [cursor=pointer]:
+              - /url: /Urun/Detay/test-5-red-nail-polish-86
+              - img "طلاء الأظافر باللون الأحمر" [ref=f13e205]
+              - heading "طلاء الأظافر باللون الأحمر" [level=3] [ref=f13e206]
+              - generic [ref=f13e207]:
+                - generic [ref=f13e208]: 7٫96 ₪
+                - generic [ref=f13e209]: 8٫99 ₪
+      - region "أضف إلى السلة" [ref=f13e210]:
+        - generic [ref=f13e211]:
+          - generic [ref=f13e212]: جاهز للطلب
+          - strong [ref=f13e213]: 8٫94 ₪
+        - button " أضف إلى السلة" [ref=f13e214] [cursor=pointer]:
+          - generic [ref=f13e215]: 
+          - text: أضف إلى السلة
+  - contentinfo [ref=f13e216]:
+    - generic [ref=f13e218]:
+      - generic [ref=f13e223]:
+        - generic [ref=f13e224]: في جميع مناطق فلسطين
+        - generic [ref=f13e225]: شحن مجاني
+      - generic [ref=f13e230]:
+        - generic [ref=f13e231]: تحويل بنكي
+        - generic [ref=f13e232]: 256 Bit SSL
+      - generic [ref=f13e237]:
+        - generic [ref=f13e238]: تحويل بنكي
+        - generic [ref=f13e239]: دفع سهل عبر الآيبان
+    - generic [ref=f13e240]:
+      - generic [ref=f13e241]:
+        - generic [ref=f13e242]:
+          - heading "اشترك في النشرة البريدية" [level=3] [ref=f13e243]
+          - paragraph [ref=f13e244]: استقبل أحدث المنتجات المختارة من السوق الفلسطيني والعروض الخاصة على بريدك.
+          - generic [ref=f13e245]:
+            - textbox "عنوان البريد الإلكتروني" [ref=f13e246]
+            - button "اشتراك" [ref=f13e247] [cursor=pointer]
+        - generic [ref=f13e248]:
+          - heading "مؤسسي" [level=4] [ref=f13e249]
+          - list [ref=f13e250]:
+            - listitem [ref=f13e251]:
+              - link "من نحن" [ref=f13e252] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=f13e253]:
+              - link "اتصل بنا" [ref=f13e254] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=f13e255]:
+              - link "جميع المنتجات" [ref=f13e256] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=f13e257]:
+              - link "سياسة الخصوصية" [ref=f13e258] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f13e259]:
+              - link "عقد البيع عن بعد" [ref=f13e260] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=f13e262] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=f13e263]: 
+      - generic [ref=f13e264]:
+        - paragraph [ref=f13e266]: © 2026 7ANRPS48 — جميع الحقوق محفوظة.
+        - generic [ref=f13e267]:
+          - link "سياسة الخصوصية" [ref=f13e268] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "الإرجاع والاستبدال" [ref=f13e269] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+          - text: "|"
+          - link "من نحن" [ref=f13e270] [cursor=pointer]:
+            - /url: /Kurumsal/Hakkimizda
+  - link "اتصال واتساب" [ref=f13e271] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+  - link "السلة" [ref=f13e274] [cursor=pointer]:
+    - /url: /Sepet
+    - generic [ref=f13e277]: "1"
+  - text:        

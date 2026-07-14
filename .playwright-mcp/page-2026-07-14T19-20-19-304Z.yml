@@ -1,0 +1,334 @@
+- generic [active] [ref=f11e1]:
+  - generic [ref=f11e3]:
+    - generic [ref=f11e4]:
+      - generic [ref=f11e5]:
+        - generic [ref=f11e6]: 
+        - text: شحن مجاني للطلبات فوق 200 ₪
+      - generic [ref=f11e7]:
+        - generic [ref=f11e8]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f11e9]:
+        - generic [ref=f11e10]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f11e11]:
+        - generic [ref=f11e12]: 
+        - text: إنتاج سريع
+      - generic [ref=f11e13]:
+        - generic [ref=f11e14]: 
+        - text: تغليف دقيق
+      - generic [ref=f11e15]:
+        - generic [ref=f11e16]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f11e17]:
+        - generic [ref=f11e18]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f11e19]:
+        - generic [ref=f11e20]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f11e21]:
+        - generic [ref=f11e22]: 
+        - text: دعم واتساب
+    - generic [ref=f11e23]:
+      - generic [ref=f11e24]:
+        - generic [ref=f11e25]: 
+        - text: شحن مجاني للطلبات فوق 200 ₪
+      - generic [ref=f11e26]:
+        - generic [ref=f11e27]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f11e28]:
+        - generic [ref=f11e29]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f11e30]:
+        - generic [ref=f11e31]: 
+        - text: إنتاج سريع
+      - generic [ref=f11e32]:
+        - generic [ref=f11e33]: 
+        - text: تغليف دقيق
+      - generic [ref=f11e34]:
+        - generic [ref=f11e35]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f11e36]:
+        - generic [ref=f11e37]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f11e38]:
+        - generic [ref=f11e39]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f11e40]:
+        - generic [ref=f11e41]: 
+        - text: دعم واتساب
+  - banner [ref=f11e42]:
+    - generic [ref=f11e43]:
+      - generic [ref=f11e44]:
+        - generic [ref=f11e45]: 
+        - link "العربية" [ref=f11e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FUrun%2FDetay%2Ftest-1-essence-mascara-lash-princess-82
+        - link "English" [ref=f11e48] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FUrun%2FDetay%2Ftest-1-essence-mascara-lash-princess-82
+      - link "7ANRPS48" [ref=f11e49] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f11e50]
+      - generic [ref=f11e51]:
+        - button "بحث" [ref=f11e52] [cursor=pointer]
+        - link "حسابي" [ref=f11e55] [cursor=pointer]:
+          - /url: /Profil
+        - link "المفضلة" [ref=f11e58] [cursor=pointer]:
+          - /url: /Favori
+        - link "السلة" [ref=f11e61] [cursor=pointer]:
+          - /url: /Sepet
+          - generic [ref=f11e64]: "1"
+      - navigation [ref=f11e65]:
+        - list [ref=f11e66]:
+          - listitem [ref=f11e67] [cursor=pointer]:
+            - link "أثاث" [ref=f11e68]:
+              - /url: /Urun?k=87
+          - listitem [ref=f11e71] [cursor=pointer]:
+            - link "العطور" [ref=f11e72]:
+              - /url: /Urun?k=86
+          - listitem [ref=f11e75] [cursor=pointer]:
+            - link "بقالة" [ref=f11e76]:
+              - /url: /Urun?k=88
+          - listitem [ref=f11e79] [cursor=pointer]:
+            - link "جمال" [ref=f11e80]:
+              - /url: /Urun?k=85
+          - listitem [ref=f11e83] [cursor=pointer]:
+            - link "أثاث منزلي" [ref=f11e84]:
+              - /url: /Urun?k=78
+          - listitem [ref=f11e87] [cursor=pointer]:
+            - link "إلكترونيات" [ref=f11e88]:
+              - /url: /Urun?k=79
+          - listitem [ref=f11e91] [cursor=pointer]:
+            - link "أزياء" [ref=f11e92]:
+              - /url: /Urun?k=80
+          - listitem [ref=f11e95] [cursor=pointer]:
+            - link "اتصل بنا" [ref=f11e96]:
+              - /url: /Kurumsal/Iletisim
+  - main [ref=f11e97]:
+    - text:      
+    - generic [ref=f11e99]:
+      - link "الصفحة الرئيسية" [ref=f11e100] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f11e101]: /
+      - link "مجموعة" [ref=f11e102] [cursor=pointer]:
+        - /url: /Urun
+      - generic [ref=f11e103]: /
+      - generic [ref=f11e104]: ايسنس ماسكارا لاش برينسيس
+    - generic [ref=f11e105]:
+      - generic [ref=f11e106]:
+        - region "صورة المنتج" [ref=f11e108]:
+          - img "ايسنس ماسكارا لاش برينسيس" [ref=f11e109]
+        - generic [ref=f11e110]:
+          - generic [ref=f11e111]:
+            - link "جمال" [ref=f11e112] [cursor=pointer]:
+              - /url: /Urun?k=85
+            - heading "ايسنس ماسكارا لاش برينسيس" [level=1] [ref=f11e113]
+            - generic [ref=f11e114]:
+              - generic "5٫0" [ref=f11e115]:
+                - generic [ref=f11e116]: 
+                - generic [ref=f11e117]: 
+                - generic [ref=f11e118]: 
+                - generic [ref=f11e119]: 
+                - generic [ref=f11e120]: 
+              - link "0 تقييم" [ref=f11e121] [cursor=pointer]:
+                - /url: "#reviews"
+            - paragraph [ref=f11e122]: ايسنس ماسكارا لاش برينسيس. منتج ضمن فئة جمال.
+          - generic [ref=f11e124]:
+            - generic [ref=f11e125]: 
+            - generic [ref=f11e127]:
+              - paragraph [ref=f11e128]: تقدير التسليم
+              - paragraph [ref=f11e129]: التسليم المتوقع خلال 6 أيام عمل.
+              - generic [ref=f11e130]: المنطقة
+              - combobox "المنطقة" [ref=f11e131]:
+                - option "اختر مدينتك لتقدير مخصص" [selected]
+                - option "Akka (Acre)"
+                - option "Beytüllahim (Bethlehem)"
+                - option "Cenin (Jenin)"
+                - option "El-Halil (Hebron)"
+                - option "El-Kudüs (Jerusalem)"
+                - option "Eriha (Jericho)"
+                - option "Hayfa (Haifa)"
+                - option "Kalkilya (Qalqilya)"
+                - option "Lydda"
+                - option "Nablus"
+                - option "Nasıra (Nazareth)"
+                - option "Ramallah & El-Bireh"
+                - option "Ramla"
+                - option "Salfit"
+                - option "Taybe"
+                - option "Tubas"
+                - option "Tulkarim"
+                - option "Yafa (Jaffa)"
+                - option "Ümmü'l-Fahm"
+          - generic [ref=f11e132]:
+            - generic [ref=f11e133]: 8٫94 ₪
+            - generic [ref=f11e134]: 9٫99 ₪
+            - generic [ref=f11e135]: "%11 خصم"
+          - generic [ref=f11e136]:
+            - generic [ref=f11e137]:
+              - generic [ref=f11e138]: 
+              - text: مصنوع حسب الطلب
+            - generic [ref=f11e139]:
+              - generic [ref=f11e140]: 
+              - text: 3 أيام
+          - text: 
+          - generic [ref=f11e141]:
+            - generic [ref=f11e142]:
+              - text: 
+              - generic [ref=f11e144] [cursor=pointer]:
+                - radio "Standard" [checked]
+                - text: Standard
+            - generic [ref=f11e145]:
+              - generic [ref=f11e146]:
+                - generic [ref=f11e147]: الكمية
+                - generic [ref=f11e148]:
+                  - button "-" [ref=f11e149] [cursor=pointer]
+                  - spinbutton [ref=f11e150]: "1"
+                  - button "+" [ref=f11e151] [cursor=pointer]
+              - button " أضف إلى السلة" [ref=f11e152] [cursor=pointer]:
+                - generic [ref=f11e153]: 
+                - generic [ref=f11e154]: أضف إلى السلة
+              - link "السلة" [ref=f11e155] [cursor=pointer]:
+                - /url: /Sepet
+                - generic [ref=f11e156]: 
+          - generic [ref=f11e157]:
+            - generic [ref=f11e158]:
+              - generic [ref=f11e159]: 
+              - paragraph [ref=f11e160]: تحويل بنكي
+            - generic [ref=f11e161]:
+              - generic [ref=f11e162]: 
+              - paragraph [ref=f11e163]: شحن مجاني
+            - generic [ref=f11e164]:
+              - generic [ref=f11e165]: 
+              - paragraph [ref=f11e166]: ضمان الإرجاع
+          - generic [ref=f11e167]:
+            - generic [ref=f11e168]: 
+            - text: دفع آمن ودعم محمي للطلبات
+      - generic [ref=f11e170]:
+        - generic [ref=f11e172]:
+          - heading " وصف المنتج" [level=2] [ref=f11e173]:
+            - generic [ref=f11e174]: 
+            - text: وصف المنتج
+          - generic [ref=f11e175]: ايسنس ماسكارا لاش برينسيس. منتج ضمن فئة جمال.
+        - complementary [ref=f11e176]:
+          - heading " التقييمات" [level=2] [ref=f11e177]:
+            - generic [ref=f11e178]: 
+            - text: التقييمات
+          - generic [ref=f11e179]:
+            - generic [ref=f11e180]: 
+            - paragraph [ref=f11e181]: لا توجد تقييمات بعد
+            - button "كتابة تقييم" [ref=f11e182] [cursor=pointer]
+      - region [ref=f11e183]:
+        - generic [ref=f11e184]:
+          - generic [ref=f11e185]:
+            - paragraph [ref=f11e186]: أكمل اختيارك
+            - heading "يُختار معها غالباً" [level=2] [ref=f11e187]
+          - link "مجموعة" [ref=f11e188] [cursor=pointer]:
+            - /url: /Urun?k=85
+        - generic [ref=f11e189]:
+          - link [ref=f11e190] [cursor=pointer]:
+            - /url: /Urun/Detay/test-2-eyeshadow-palette-with-mirror-83
+            - img "لوحة ظلال العيون مع مرآة" [ref=f11e191]
+            - heading "لوحة ظلال العيون مع مرآة" [level=3] [ref=f11e192]
+            - paragraph [ref=f11e193]: 16٫35 ₪
+          - link [ref=f11e194] [cursor=pointer]:
+            - /url: /Urun/Detay/test-4-red-lipstick-85
+            - img "أحمر الشفاه" [ref=f11e195]
+            - heading "أحمر الشفاه" [level=3] [ref=f11e196]
+            - paragraph [ref=f11e197]: 11٫41 ₪
+          - link [ref=f11e198] [cursor=pointer]:
+            - /url: /Urun/Detay/test-3-powder-canister-84
+            - img "علبة مسحوق" [ref=f11e199]
+            - heading "علبة مسحوق" [level=3] [ref=f11e200]
+            - paragraph [ref=f11e201]: 13٫51 ₪
+      - region [ref=f11e202]:
+        - generic [ref=f11e203]:
+          - generic [ref=f11e204]:
+            - separator [ref=f11e205]
+            - heading "منتجات مشابهة" [level=2] [ref=f11e206]
+            - separator [ref=f11e207]
+          - generic [ref=f11e208]:
+            - link "لوحة ظلال العيون مع مرآة لوحة ظلال العيون مع مرآة 16٫35 ₪ 19٫99 ₪" [ref=f11e209] [cursor=pointer]:
+              - /url: /Urun/Detay/test-2-eyeshadow-palette-with-mirror-83
+              - img "لوحة ظلال العيون مع مرآة" [ref=f11e211]
+              - heading "لوحة ظلال العيون مع مرآة" [level=3] [ref=f11e212]
+              - generic [ref=f11e213]:
+                - generic [ref=f11e214]: 16٫35 ₪
+                - generic [ref=f11e215]: 19٫99 ₪
+            - link "أحمر الشفاه أحمر الشفاه 11٫41 ₪ 12٫99 ₪" [ref=f11e216] [cursor=pointer]:
+              - /url: /Urun/Detay/test-4-red-lipstick-85
+              - img "أحمر الشفاه" [ref=f11e218]
+              - heading "أحمر الشفاه" [level=3] [ref=f11e219]
+              - generic [ref=f11e220]:
+                - generic [ref=f11e221]: 11٫41 ₪
+                - generic [ref=f11e222]: 12٫99 ₪
+            - link "علبة مسحوق علبة مسحوق 13٫51 ₪ 14٫99 ₪" [ref=f11e223] [cursor=pointer]:
+              - /url: /Urun/Detay/test-3-powder-canister-84
+              - img "علبة مسحوق" [ref=f11e225]
+              - heading "علبة مسحوق" [level=3] [ref=f11e226]
+              - generic [ref=f11e227]:
+                - generic [ref=f11e228]: 13٫51 ₪
+                - generic [ref=f11e229]: 14٫99 ₪
+            - link "طلاء الأظافر باللون الأحمر طلاء الأظافر باللون الأحمر 7٫96 ₪ 8٫99 ₪" [ref=f11e230] [cursor=pointer]:
+              - /url: /Urun/Detay/test-5-red-nail-polish-86
+              - img "طلاء الأظافر باللون الأحمر" [ref=f11e232]
+              - heading "طلاء الأظافر باللون الأحمر" [level=3] [ref=f11e233]
+              - generic [ref=f11e234]:
+                - generic [ref=f11e235]: 7٫96 ₪
+                - generic [ref=f11e236]: 8٫99 ₪
+  - contentinfo [ref=f11e237]:
+    - generic [ref=f11e239]:
+      - generic [ref=f11e244]:
+        - generic [ref=f11e245]: في جميع مناطق فلسطين
+        - generic [ref=f11e246]: شحن مجاني
+      - generic [ref=f11e251]:
+        - generic [ref=f11e252]: تحويل بنكي
+        - generic [ref=f11e253]: 256 Bit SSL
+      - generic [ref=f11e258]:
+        - generic [ref=f11e259]: تحويل بنكي
+        - generic [ref=f11e260]: دفع سهل عبر الآيبان
+    - generic [ref=f11e261]:
+      - generic [ref=f11e262]:
+        - generic [ref=f11e263]:
+          - heading "اشترك في النشرة البريدية" [level=3] [ref=f11e264]
+          - paragraph [ref=f11e265]: استقبل أحدث المنتجات المختارة من السوق الفلسطيني والعروض الخاصة على بريدك.
+          - generic [ref=f11e266]:
+            - textbox "عنوان البريد الإلكتروني" [ref=f11e267]
+            - button "اشتراك" [ref=f11e268] [cursor=pointer]
+        - generic [ref=f11e269]:
+          - heading "مؤسسي" [level=4] [ref=f11e270]
+          - list [ref=f11e271]:
+            - listitem [ref=f11e272]:
+              - link "من نحن" [ref=f11e273] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=f11e274]:
+              - link "اتصل بنا" [ref=f11e275] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=f11e276]:
+              - link "جميع المنتجات" [ref=f11e277] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=f11e278]:
+              - link "سياسة الخصوصية" [ref=f11e279] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f11e280]:
+              - link "عقد البيع عن بعد" [ref=f11e281] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=f11e283] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=f11e284]: 
+      - generic [ref=f11e285]:
+        - paragraph [ref=f11e287]: © 2026 7ANRPS48 — جميع الحقوق محفوظة.
+        - generic [ref=f11e288]:
+          - link "سياسة الخصوصية" [ref=f11e289] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "الإرجاع والاستبدال" [ref=f11e290] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+          - text: "|"
+          - link "من نحن" [ref=f11e291] [cursor=pointer]:
+            - /url: /Kurumsal/Hakkimizda
+  - link "اتصال واتساب" [ref=f11e292] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=f11e295]: WhatsApp
+  - link "السلة" [ref=f11e296] [cursor=pointer]:
+    - /url: /Sepet
+    - generic [ref=f11e299]: "1"
+  - text:        

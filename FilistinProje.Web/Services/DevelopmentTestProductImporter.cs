@@ -121,7 +121,11 @@ public sealed class DevelopmentTestProductImporter
         {
             var titleArabic = await TranslateToArabicAsync(item.Title, cancellationToken);
             var categoryArabic = categories[item.Category].AdAr;
-            var descriptionArabic = $"{titleArabic}. منتج ضمن فئة {categoryArabic}.";
+            var descriptionEn = BuildDescription(item.Title, item.Description, item.Category, item.Brand);
+            var descriptionArabic = await TranslateToArabicAsync(descriptionEn, cancellationToken);
+            var shortDescriptionEn = $"✨ {item.Title} - carefully selected for your everyday routine.";
+            var shortDescriptionArabic = await TranslateToArabicAsync(shortDescriptionEn, cancellationToken);
+            var productDetails = BuildProductDetails(item, categoryArabic);
             var salePrice = Math.Round(item.Price * (1m - item.DiscountPercentage / 100m), 2, MidpointRounding.AwayFromZero);
             var slug = $"test-{item.Id}-{SlugHelper.GenerateSlug(item.Title)}";
             var localImages = new List<string>();
@@ -145,18 +149,24 @@ public sealed class DevelopmentTestProductImporter
                 Marka = item.Brand ?? string.Empty,
                 UrunTipi = "Genel",
                 Etiketler = string.Join(',', item.Tags ?? []),
-                KisaAciklama = descriptionArabic,
-                KisaAciklamaEn = item.Description,
-                KisaAciklamaAr = descriptionArabic,
+                KisaAciklama = shortDescriptionArabic,
+                KisaAciklamaEn = shortDescriptionEn,
+                KisaAciklamaAr = shortDescriptionArabic,
                 Aciklama = descriptionArabic,
-                AciklamaEn = item.Description,
+                AciklamaEn = descriptionEn,
                 AciklamaAr = descriptionArabic,
+                TeknikOzellikler = productDetails.Technical,
+                MalzemeBilgisi = productDetails.Material,
+                PaketlemeBilgisi = productDetails.Packaging,
+                BakimTalimati = productDetails.Care,
                 AnaGorselUrl = mainImage,
                 StokDurumu = item.Stock > 0 ? "Stokta" : "Tukendi",
                 Fiyat = item.Price,
                 IndirimliFiyat = salePrice < item.Price ? salePrice : null,
                 Maliyet = Math.Round(item.Price * .6m, 2),
                 KdvOrani = 0,
+                KargoyaVerilisSuresiGun = 1,
+                TahminiTeslimSuresiGun = 2,
                 AktifMi = true,
                 YayindaMi = true,
                 OneCikanMi = item.Rating >= 4,
@@ -230,6 +240,21 @@ public sealed class DevelopmentTestProductImporter
 
         _translations[text] = translated;
         return translated;
+    }
+
+    private static string BuildDescription(string title, string sourceDescription, string category, string? brand)
+    {
+        var brandLine = string.IsNullOrWhiteSpace(brand) ? string.Empty : $" from {brand}";
+        return $"✨ {title}{brandLine}\n\n{sourceDescription}\n\n✅ Carefully selected for a dependable everyday experience.\n📦 Packed with care to help your product arrive in great condition.\n💡 Browse the product images and details to choose with confidence.\n🏷️ Category: {category}.";
+    }
+
+    private static (string Technical, string Material, string Packaging, string Care) BuildProductDetails(TestProduct item, string categoryArabic)
+    {
+        var technical = $"🏷️ Brand: {item.Brand ?? "Selected"} | العلامة: {item.Brand ?? "مختارة"}\n🔖 SKU: {item.Sku ?? $"TEST-{item.Id:D3}"}\n📦 Category: {item.Category} | الفئة: {categoryArabic}\n✅ Availability: {Math.Max(item.Stock, 0)} units | المتوفر: {Math.Max(item.Stock, 0)} قطعة";
+        const string material = "✨ Quality-selected product | ✨ منتج مختار بعناية";
+        const string packaging = "📦 Carefully packed for safe handling | 📦 تغليف بعناية لحماية المنتج";
+        const string care = "💡 Follow the product label instructions | 💡 اتبع تعليمات ملصق المنتج";
+        return (technical, material, packaging, care);
     }
 
     private async Task<string> DownloadProductImageAsync(string sourceUrl, int productSourceId, int imageOrder, CancellationToken cancellationToken)

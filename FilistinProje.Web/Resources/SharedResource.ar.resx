@@ -4377,10 +4377,7 @@
   <data name="Admin_MailInfrastructureTest" xml:space="preserve">
     <value>اختبار البنية التحتية للبريد</value>
   </data>
-  <data name="Admin_BrevoSMTPTest" xml:space="preserve">
-    <value>اختبار Brevo SMTP</value>
-  </data>
-  <data name="Admin_BrevoSMTPTestHint" xml:space="preserve">
+  <data name="Admin_MailInfrastructureTestHint" xml:space="preserve">
     <value>يرسل بريدًا تجريبيًا إلى المستلم المحدد.</value>
   </data>
   <data name="Admin_Test" xml:space="preserve">
@@ -5133,4 +5130,14 @@
   <data name="Admin_MonitorIpHits" xml:space="preserve"><value>{0} عنوان IP / {1} زيارة</value></data>
   <data name="Admin_MonitorVisitorActivity" xml:space="preserve"><value>نشاط الزوار</value></data>
   <data name="Admin_MonitorNoIpStats" xml:space="preserve"><value>لا توجد إحصاءات لعناوين IP.</value></data>
+  <data name="Product_DeliveryTitle" xml:space="preserve"><value>تقدير التسليم</value></data>
+  <data name="Product_EstimatedArrival" xml:space="preserve"><value>التسليم المتوقع خلال {0} أيام عمل.</value></data>
+  <data name="Product_SelectCityHint" xml:space="preserve"><value>اختر مدينتك لتقدير مخصص</value></data>
+  <data name="Product_DeliveryTo" xml:space="preserve"><value>التسليم إلى {0}: خلال {1} أيام عمل تقريباً.</value></data>
+  <data name="Product_TrustNote" xml:space="preserve"><value>دفع آمن ودعم محمي للطلبات</value></data>
+  <data name="Product_Material" xml:space="preserve"><value>المادة</value></data>
+  <data name="Product_Care" xml:space="preserve"><value>العناية</value></data>
+  <data name="Product_WhyYouWillLove" xml:space="preserve"><value>أكمل اختيارك</value></data>
+  <data name="Product_Together" xml:space="preserve"><value>يُختار معها غالباً</value></data>
+  <data name="Product_ReadyToOrder" xml:space="preserve"><value>جاهز للطلب</value></data>
 </root>

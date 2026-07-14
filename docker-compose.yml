@@ -32,12 +32,14 @@ services:
     restart: unless-stopped
     ports:
       - "80:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - DOTNET_RUNNING_IN_CONTAINER=true
       - DATA_PROTECTION_KEYS_PATH=/app/secure-storage/dataprotection-keys
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=${POSTGRES_DB:-filistindb};Username=${POSTGRES_USER:-kanvasuser};Password=${POSTGRES_PASSWORD:-changeme_in_production}
-      - EmailSettings__Host=${EMAIL_HOST:-smtp-relay.brevo.com}
+      - EmailSettings__Host=${EMAIL_HOST:-host.docker.internal}
       - EmailSettings__Port=${EMAIL_PORT:-587}
       - EmailSettings__EnableSSL=${EMAIL_ENABLE_SSL:-true}
       - EmailSettings__Username=${EMAIL_USERNAME:-}

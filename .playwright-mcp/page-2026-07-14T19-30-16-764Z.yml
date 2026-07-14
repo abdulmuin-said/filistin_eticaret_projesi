@@ -1,0 +1,314 @@
+- generic [active] [ref=f15e1]:
+  - generic [ref=f15e3]:
+    - generic [ref=f15e4]:
+      - generic [ref=f15e5]:
+        - generic [ref=f15e6]: 
+        - text: Free shipping on orders over 200 ₪
+      - generic [ref=f15e7]:
+        - generic [ref=f15e8]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f15e9]:
+        - generic [ref=f15e10]: 
+        - text: Pay on delivery option
+      - generic [ref=f15e11]:
+        - generic [ref=f15e12]: 
+        - text: Fast Production
+      - generic [ref=f15e13]:
+        - generic [ref=f15e14]: 
+        - text: Careful Packaging
+      - generic [ref=f15e15]:
+        - generic [ref=f15e16]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f15e17]:
+        - generic [ref=f15e18]: 
+        - text: 14 Days Return
+      - generic [ref=f15e19]:
+        - generic [ref=f15e20]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f15e21]:
+        - generic [ref=f15e22]: 
+        - text: WhatsApp Support
+    - generic [ref=f15e23]:
+      - generic [ref=f15e24]:
+        - generic [ref=f15e25]: 
+        - text: Free shipping on orders over 200 ₪
+      - generic [ref=f15e26]:
+        - generic [ref=f15e27]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f15e28]:
+        - generic [ref=f15e29]: 
+        - text: Pay on delivery option
+      - generic [ref=f15e30]:
+        - generic [ref=f15e31]: 
+        - text: Fast Production
+      - generic [ref=f15e32]:
+        - generic [ref=f15e33]: 
+        - text: Careful Packaging
+      - generic [ref=f15e34]:
+        - generic [ref=f15e35]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f15e36]:
+        - generic [ref=f15e37]: 
+        - text: 14 Days Return
+      - generic [ref=f15e38]:
+        - generic [ref=f15e39]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f15e40]:
+        - generic [ref=f15e41]: 
+        - text: WhatsApp Support
+  - banner [ref=f15e42]:
+    - generic [ref=f15e43]:
+      - text: 
+      - link "7ANRPS48" [ref=f15e44] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f15e45]
+      - generic [ref=f15e46]:
+        - button "Open Menu" [ref=f15e47] [cursor=pointer]
+        - button "Search" [ref=f15e50] [cursor=pointer]
+        - button "Language" [ref=f15e54] [cursor=pointer]:
+          - generic [ref=f15e57]: English
+      - generic [ref=f15e58]:
+        - link "My Account" [ref=f15e59] [cursor=pointer]:
+          - /url: /Profil
+        - link "My Favorites" [ref=f15e62] [cursor=pointer]:
+          - /url: /Favori
+        - link "Cart" [ref=f15e65] [cursor=pointer]:
+          - /url: /Sepet
+          - generic [ref=f15e68]: "0"
+  - main [ref=f15e69]:
+    - text:      
+    - generic [ref=f15e71]:
+      - link "Home Page" [ref=f15e72] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f15e73]: /
+      - link "Collection" [ref=f15e74] [cursor=pointer]:
+        - /url: /Urun
+      - generic [ref=f15e75]: /
+      - generic [ref=f15e76]: Essence Mascara Lash Princess
+    - generic [ref=f15e77]:
+      - generic [ref=f15e78]:
+        - region "Product Image" [ref=f15e80]:
+          - img "ايسنس ماسكارا لاش برينسيس" [ref=f15e81]
+        - generic [ref=f15e82]:
+          - generic [ref=f15e83]:
+            - link "beauty" [ref=f15e84] [cursor=pointer]:
+              - /url: /Urun?k=89
+            - heading "Essence Mascara Lash Princess" [level=1] [ref=f15e85]
+            - generic [ref=f15e86]:
+              - generic "5.0" [ref=f15e87]:
+                - generic [ref=f15e88]: 
+                - generic [ref=f15e89]: 
+                - generic [ref=f15e90]: 
+                - generic [ref=f15e91]: 
+                - generic [ref=f15e92]: 
+              - link "0 reviews" [ref=f15e93] [cursor=pointer]:
+                - /url: "#reviews"
+            - paragraph [ref=f15e94]: ✨ Essence Mascara Lash Princess - carefully selected for your everyday routine.
+          - generic [ref=f15e95]:
+            - generic [ref=f15e96]: 8.94 ₪
+            - generic [ref=f15e97]: 9.99 ₪
+            - generic [ref=f15e98]: "%11 Discount"
+          - generic [ref=f15e99]:
+            - generic [ref=f15e100]:
+              - generic [ref=f15e101]: 
+              - text: Made to Order
+            - generic [ref=f15e102]:
+              - generic [ref=f15e103]: 
+              - text: 1 days
+          - text: 
+          - generic [ref=f15e104]:
+            - generic [ref=f15e105]:
+              - text: 
+              - generic [ref=f15e107] [cursor=pointer]:
+                - radio "Standard" [checked]
+                - text: Standard
+            - generic [ref=f15e111]:
+              - generic [ref=f15e112]:
+                - generic [ref=f15e113]: Quantity
+                - generic [ref=f15e114]:
+                  - button "-" [ref=f15e115] [cursor=pointer]
+                  - spinbutton [ref=f15e116]: "1"
+                  - button "+" [ref=f15e117] [cursor=pointer]
+              - button " Add to Cart" [ref=f15e118] [cursor=pointer]:
+                - generic [ref=f15e119]: 
+                - generic [ref=f15e120]: Add to Cart
+              - link "Cart" [ref=f15e121] [cursor=pointer]:
+                - /url: /Sepet
+                - generic [ref=f15e122]: 
+          - generic [ref=f15e123]:
+            - generic [ref=f15e124]:
+              - generic [ref=f15e125]: 
+              - paragraph [ref=f15e126]: Bank Transfer
+            - generic [ref=f15e127]:
+              - generic [ref=f15e128]: 
+              - paragraph [ref=f15e129]: Free Shipping
+            - generic [ref=f15e130]:
+              - generic [ref=f15e131]: 
+              - paragraph [ref=f15e132]: Return Guarantee
+          - generic [ref=f15e133]:
+            - generic [ref=f15e134]: 
+            - text: Secure checkout and protected order support
+      - generic [ref=f15e136]:
+        - generic [ref=f15e137]:
+          - generic [ref=f15e138]:
+            - article [ref=f15e139]:
+              - generic [ref=f15e140]: 
+              - heading "Material" [level=3] [ref=f15e141]
+              - paragraph [ref=f15e142]: ✨ Quality-selected product | ✨ منتج مختار بعناية
+            - article [ref=f15e143]:
+              - generic [ref=f15e144]: 
+              - heading "Packaging" [level=3] [ref=f15e145]
+              - paragraph [ref=f15e146]: 📦 Carefully packed for safe handling | 📦 تغليف بعناية لحماية المنتج
+            - article [ref=f15e147]:
+              - generic [ref=f15e148]: 
+              - heading "Care" [level=3] [ref=f15e149]
+              - paragraph [ref=f15e150]: 💡 Follow the product label instructions | 💡 اتبع تعليمات ملصق المنتج
+          - generic [ref=f15e151]:
+            - heading " Product Description" [level=2] [ref=f15e152]:
+              - generic [ref=f15e153]: 
+              - text: Product Description
+            - generic [ref=f15e154]: "✨ Essence Mascara Lash Princess from Essence The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula. ✅ Carefully selected for a dependable everyday experience. 📦 Packed with care to help your product arrive in great condition. 💡 Browse the product images and details to choose with confidence. 🏷️ Category: beauty."
+          - generic [ref=f15e155]:
+            - heading " Product Details" [level=2] [ref=f15e156]:
+              - generic [ref=f15e157]: 
+              - text: Product Details
+            - table [ref=f15e159]:
+              - rowgroup [ref=f15e160]:
+                - row [ref=f15e161]:
+                  - rowheader "🏷️ Brand" [ref=f15e162]
+                  - 'cell "Essence | العلامة: Essence" [ref=f15e163]'
+                - row [ref=f15e164]:
+                  - rowheader "🔖 SKU" [ref=f15e165]
+                  - cell "BEA-ESS-ESS-001" [ref=f15e166]
+                - row [ref=f15e167]:
+                  - rowheader "📦 Category" [ref=f15e168]
+                  - 'cell "beauty | الفئة: جمال" [ref=f15e169]'
+                - row [ref=f15e170]:
+                  - rowheader "✅ Availability" [ref=f15e171]
+                  - 'cell "99 units | المتوفر: 99 قطعة" [ref=f15e172]'
+        - complementary [ref=f15e173]:
+          - heading " Reviews" [level=2] [ref=f15e174]:
+            - generic [ref=f15e175]: 
+            - text: Reviews
+          - generic [ref=f15e176]:
+            - generic [ref=f15e177]: 
+            - paragraph [ref=f15e178]: No reviews yet
+            - button "Write Review" [ref=f15e179] [cursor=pointer]
+      - region [ref=f15e180]:
+        - generic [ref=f15e181]:
+          - generic [ref=f15e182]:
+            - paragraph [ref=f15e183]: Complete your selection
+            - heading "Often chosen together" [level=2] [ref=f15e184]
+          - link "Collection" [ref=f15e185] [cursor=pointer]:
+            - /url: /Urun?k=89
+        - generic [ref=f15e186]:
+          - link [ref=f15e187] [cursor=pointer]:
+            - /url: /Urun/Detay/test-2-eyeshadow-palette-with-mirror-113
+            - img "Eyeshadow Palette with Mirror" [ref=f15e188]
+            - heading "Eyeshadow Palette with Mirror" [level=3] [ref=f15e189]
+            - paragraph [ref=f15e190]: 16.35 ₪
+          - link [ref=f15e191] [cursor=pointer]:
+            - /url: /Urun/Detay/test-3-powder-canister-114
+            - img "Powder Canister" [ref=f15e192]
+            - heading "Powder Canister" [level=3] [ref=f15e193]
+            - paragraph [ref=f15e194]: 13.51 ₪
+          - link [ref=f15e195] [cursor=pointer]:
+            - /url: /Urun/Detay/test-4-red-lipstick-115
+            - img "Red Lipstick" [ref=f15e196]
+            - heading "Red Lipstick" [level=3] [ref=f15e197]
+            - paragraph [ref=f15e198]: 11.41 ₪
+      - region [ref=f15e199]:
+        - generic [ref=f15e200]:
+          - heading "Similar Products" [level=2] [ref=f15e202]
+          - generic [ref=f15e203]:
+            - link "Eyeshadow Palette with Mirror Eyeshadow Palette with Mirror 16.35 ₪ 19.99 ₪" [ref=f15e204] [cursor=pointer]:
+              - /url: /Urun/Detay/test-2-eyeshadow-palette-with-mirror-113
+              - img "Eyeshadow Palette with Mirror" [ref=f15e206]
+              - heading "Eyeshadow Palette with Mirror" [level=3] [ref=f15e207]
+              - generic [ref=f15e208]:
+                - generic [ref=f15e209]: 16.35 ₪
+                - generic [ref=f15e210]: 19.99 ₪
+            - link "Powder Canister Powder Canister 13.51 ₪ 14.99 ₪" [ref=f15e211] [cursor=pointer]:
+              - /url: /Urun/Detay/test-3-powder-canister-114
+              - img "Powder Canister" [ref=f15e213]
+              - heading "Powder Canister" [level=3] [ref=f15e214]
+              - generic [ref=f15e215]:
+                - generic [ref=f15e216]: 13.51 ₪
+                - generic [ref=f15e217]: 14.99 ₪
+            - link "Red Lipstick Red Lipstick 11.41 ₪ 12.99 ₪" [ref=f15e218] [cursor=pointer]:
+              - /url: /Urun/Detay/test-4-red-lipstick-115
+              - img "Red Lipstick" [ref=f15e220]
+              - heading "Red Lipstick" [level=3] [ref=f15e221]
+              - generic [ref=f15e222]:
+                - generic [ref=f15e223]: 11.41 ₪
+                - generic [ref=f15e224]: 12.99 ₪
+            - link "Red Nail Polish Red Nail Polish 7.96 ₪ 8.99 ₪" [ref=f15e225] [cursor=pointer]:
+              - /url: /Urun/Detay/test-5-red-nail-polish-116
+              - img "Red Nail Polish" [ref=f15e227]
+              - heading "Red Nail Polish" [level=3] [ref=f15e228]
+              - generic [ref=f15e229]:
+                - generic [ref=f15e230]: 7.96 ₪
+                - generic [ref=f15e231]: 8.99 ₪
+      - region "Add to Cart" [ref=f15e232]:
+        - generic [ref=f15e233]:
+          - generic [ref=f15e234]: Ready to order
+          - strong [ref=f15e235]: 8.94 ₪
+        - button " Add to Cart" [ref=f15e236] [cursor=pointer]:
+          - generic [ref=f15e237]: 
+          - text: Add to Cart
+  - contentinfo [ref=f15e238]:
+    - generic [ref=f15e240]:
+      - generic [ref=f15e245]:
+        - generic [ref=f15e246]: Across Palestine
+        - generic [ref=f15e247]: Free Shipping
+      - generic [ref=f15e252]:
+        - generic [ref=f15e253]: Bank Transfer
+        - generic [ref=f15e254]: 256 Bit SSL
+      - generic [ref=f15e259]:
+        - generic [ref=f15e260]: Bank Transfer
+        - generic [ref=f15e261]: Easy payment by IBAN
+    - generic [ref=f15e262]:
+      - generic [ref=f15e263]:
+        - generic [ref=f15e264]:
+          - heading "Subscribe to newsletter" [level=3] [ref=f15e265]
+          - paragraph [ref=f15e266]: Get new arrivals, Palestinian market picks, and special offers in your inbox.
+          - generic [ref=f15e267]:
+            - textbox "Email Address" [ref=f15e268]
+            - button "Subscribe" [ref=f15e269] [cursor=pointer]
+        - generic [ref=f15e270]:
+          - heading "Corporate" [level=4] [ref=f15e271]
+          - list [ref=f15e272]:
+            - listitem [ref=f15e273]:
+              - link "About Us" [ref=f15e274] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=f15e275]:
+              - link "Contact" [ref=f15e276] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=f15e277]:
+              - link "All Products" [ref=f15e278] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=f15e279]:
+              - link "Privacy Policy" [ref=f15e280] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f15e281]:
+              - link "Distance Sales Contract" [ref=f15e282] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=f15e284] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=f15e285]: 
+      - generic [ref=f15e286]:
+        - paragraph [ref=f15e288]: © 2026 7ANRPS48 — All rights reserved.
+        - generic [ref=f15e289]:
+          - link "Privacy Policy" [ref=f15e290] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "Return and Exchange" [ref=f15e291] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+          - text: "|"
+          - link "About Us" [ref=f15e292] [cursor=pointer]:
+            - /url: /Kurumsal/Hakkimizda
+  - link "WhatsApp Contact" [ref=f15e293] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+  - link "Cart" [ref=f15e296] [cursor=pointer]:
+    - /url: /Sepet
+  - text:        

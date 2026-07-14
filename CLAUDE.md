@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **7ANRPS48** (formerly *CANVASİA* / *MeteorGaleri*) — ASP.NET Core 8.0 MVC veterinary e-commerce site, backed by PostgreSQL.
 
-- **Domain:** filistin.kastamonuesnaf.com.tr (live, Cloudflare Tunnel)
+- **Domain:** Production domain is configured through deployment environment variables.
 - **Audience:** Palestinian veterinarians, pet owners, farmers
 - **Currency:** ILS (₪)
 - **Languages:** Arabic (default), English — RTL supported (`dir="rtl"` when `lang="ar"`). Turkish (`tr`) is still in `Program.cs` but is being phased out.
@@ -107,9 +107,9 @@ Full-featured admin panel with controllers for:
 
 ## Configuration & secrets
 
-- `.env` / `.env.example` — docker-compose values: Postgres creds and Brevo SMTP. **Never commit `.env`.**
+- `.env` / `.env.example` — docker-compose values: Postgres credentials and SMTP settings. **Never commit `.env`.**
 - `FilistinProje.Web/secrets.json` — local dev DB connection string (gitignored; do not commit real values).
-- `appsettings.json` — production defaults, EmailSettings (Brevo SMTP), Firebase project config.
+- `appsettings.json` — production defaults, EmailSettings (SMTP), Firebase project config.
 - Docker container names: `filistinproje-db`, `filistinproje-web`.
 - Docker volumes: `filistin_postgres_data`, `filistin_app_uploads` (`/app/wwwroot/img/products`), `filistin_app_media` (`/app/wwwroot/media/products`), `filistin_app_logs`, `filistin_app_data`.
 - Default local connection: `Host=localhost;Port=5434;Database=filistindb;Username=kanvasuser;Password=changeme_in_production`.

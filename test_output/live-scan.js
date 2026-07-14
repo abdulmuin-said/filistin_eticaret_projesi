@@ -1,5 +1,7 @@
 const { chromium } = require('playwright');
 (async () => {
+  const baseUrl = process.env.BASE_URL;
+  if (!baseUrl) throw new Error('BASE_URL environment variable is required.');
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
 
@@ -15,7 +17,7 @@ const { chromium } = require('playwright');
 
   for (const p of pages) {
     try {
-      const resp = await page.goto('https://filistin.kastamonuesnaf.com.tr' + p, {
+      const resp = await page.goto(baseUrl.replace(/\/$/, '') + p, {
         waitUntil: 'networkidle', timeout: 20000
       });
       const status = resp.status();

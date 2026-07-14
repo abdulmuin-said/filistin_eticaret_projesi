@@ -78,16 +78,9 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 fromEmail = model.Email;
             }
 
-            if (!IsValidEmail(smtpUser) || string.IsNullOrWhiteSpace(smtpPassword) || !IsValidEmail(fromEmail))
+            if (string.IsNullOrWhiteSpace(_config["EmailSettings:Host"]) || !IsValidEmail(smtpUser) || string.IsNullOrWhiteSpace(smtpPassword) || !IsValidEmail(fromEmail))
             {
-                TempData["Hata"] = "SMTP ayarları eksik. Brevo kullanıcı adı, SMTP anahtarı ve Brevo'da doğrulanmış gönderici e-posta adresi tanımlanmalıdır.";
-                TempData["Durum"] = "warning";
-                return RedirectToAction(nameof(Index));
-            }
-
-            if (IsBrevoSmtpLoginAddress(fromEmail))
-            {
-                TempData["Hata"] = "Brevo SMTP login adresi gönderici olarak kullanılamaz. Brevo panelinde doğrulanmış bir sender e-posta adresi tanımlayın.";
+                TempData["Hata"] = "SMTP ayarları eksik. Sunucu, kullanıcı, parola ve geçerli bir gönderici e-posta adresi tanımlanmalıdır.";
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -109,13 +102,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     string.Empty,
                     string.Empty);
 
-                TempData["Basari"] = $"Test maili gönderildi. Alıcı: {recipientEmail}. Gelen kutusunda görünmüyorsa Brevo Transactional Logs alanını kontrol edin.";
+                TempData["Basari"] = $"Test maili gönderildi. Alıcı: {recipientEmail}. Gelen kutusunu ve SMTP sunucu günlüklerini kontrol edin.";
                 TempData["Durum"] = "success";
             }
             catch (Exception ex)
             {
                 TempData["Hata"] = ex is TimeoutException
-                    ? "Test maili gönderimi 30 saniye içinde tamamlanamadı. Brevo SMTP bağlantısını ve internet erişimini kontrol edin."
+                    ? "Test maili gönderimi 30 saniye içinde tamamlanamadı. SMTP bağlantısını ve ağ erişimini kontrol edin."
                     : "Test maili gönderilemedi: " + ex.Message;
                 TempData["Durum"] = "danger";
             }
@@ -204,10 +197,5 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
         }
 
-        private static bool IsBrevoSmtpLoginAddress(string? email)
-        {
-            return !string.IsNullOrWhiteSpace(email)
-                && email.Trim().EndsWith("@smtp-brevo.com", StringComparison.OrdinalIgnoreCase);
-        }
     }
 }

@@ -296,7 +296,7 @@ Yapılacaklar:
    - PDF başlık/logo
    - package metadata
 4. Kargo takip URL’sini hardcoded United Express URL’si uydurarak değiştirme. KargoFirmasi/admin configuration’dan gelen güvenli URL template’i kullan; yoksa link gösterme.
-5. Final domain henüz kesin yapılandırılmamışsa `filistin.kastamonuesnaf.com.tr` yerine kod içine sahte domain yazma. Base URL’yi environment/config zorunlu hale getir ve eksik production config’i açık bildir.
+5. Final domain henüz kesin yapılandırılmamışsa kod içine sahte domain yazma. Base URL’yi environment/config zorunlu hale getir ve eksik production config’i açık bildir.
 6. Eski SQL dump/migration snapshot’larını körlemesine değiştirme; migration checksum/tarihsel güvenilirliği bozma. Runtime’a yanlışlıkla import edilebilen dump’ları açık biçimde legacy olarak ayır veya belgele.
 7. KanvasDbContext gibi geniş rename’in migration namespace/snapshot etkisini değerlendir. Sadece estetik için riskli rename yapma; gerekiyorsa ayrı teknik borç olarak bırak.
 8. Siyah/altın marka brief’i için yalnız temel site ayarı fallback/seed rengini düzelt. Bu oturumda geniş UI redesign yapma.

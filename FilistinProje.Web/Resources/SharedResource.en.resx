@@ -4429,10 +4429,7 @@
   <data name="Admin_MailInfrastructureTest" xml:space="preserve">
     <value>Mail Infrastructure Test</value>
   </data>
-  <data name="Admin_BrevoSMTPTest" xml:space="preserve">
-    <value>Brevo SMTP Test</value>
-  </data>
-  <data name="Admin_BrevoSMTPTestHint" xml:space="preserve">
+  <data name="Admin_MailInfrastructureTestHint" xml:space="preserve">
     <value>Sends a test email to the selected recipient.</value>
   </data>
   <data name="Admin_Test" xml:space="preserve">
@@ -5161,4 +5158,14 @@
   <data name="Admin_MonitorIpHits" xml:space="preserve"><value>{0} IPs / {1} hits</value></data>
   <data name="Admin_MonitorVisitorActivity" xml:space="preserve"><value>Visitor activity</value></data>
   <data name="Admin_MonitorNoIpStats" xml:space="preserve"><value>No IP statistics available.</value></data>
+  <data name="Product_DeliveryTitle" xml:space="preserve"><value>Delivery estimate</value></data>
+  <data name="Product_EstimatedArrival" xml:space="preserve"><value>Estimated delivery within {0} business days.</value></data>
+  <data name="Product_SelectCityHint" xml:space="preserve"><value>Select your city for a tailored estimate</value></data>
+  <data name="Product_DeliveryTo" xml:space="preserve"><value>Delivery to {0}: estimated within {1} business days.</value></data>
+  <data name="Product_TrustNote" xml:space="preserve"><value>Secure checkout and protected order support</value></data>
+  <data name="Product_Material" xml:space="preserve"><value>Material</value></data>
+  <data name="Product_Care" xml:space="preserve"><value>Care</value></data>
+  <data name="Product_WhyYouWillLove" xml:space="preserve"><value>Complete your selection</value></data>
+  <data name="Product_Together" xml:space="preserve"><value>Often chosen together</value></data>
+  <data name="Product_ReadyToOrder" xml:space="preserve"><value>Ready to order</value></data>
 </root>

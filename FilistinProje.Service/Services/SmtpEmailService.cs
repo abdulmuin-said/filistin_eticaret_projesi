@@ -32,7 +32,7 @@ namespace FilistinProje.Service.Services
 
         private async Task SendMailInternalAsync(string to, string subject, string body, string? inlineLogoPath = null)
         {
-            var host = _config["EmailSettings:Host"] ?? "smtp.gmail.com";
+            var host = _config["EmailSettings:Host"] ?? string.Empty;
             var port = int.TryParse(_config["EmailSettings:Port"], out var parsedPort) ? parsedPort : 587;
             var enableSsl = bool.TryParse(_config["EmailSettings:EnableSSL"], out var parsedSsl) ? parsedSsl : true;
             var username = _config["EmailSettings:Username"] ?? string.Empty;
@@ -50,16 +50,10 @@ namespace FilistinProje.Service.Services
                 fromName = brandName;
             }
 
-            if (!TryCreateMailAddress(fromEmail, fromName, out var fromAddress) || string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            if (!TryCreateMailAddress(fromEmail, fromName, out var fromAddress) || string.IsNullOrWhiteSpace(host) || string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
                 _logger.LogWarning("SMTP e-posta ayarlari eksik oldugu icin mail gonderimi atlandi. Subject={Subject}", subject);
-                throw new InvalidOperationException("SMTP ayarlari eksik. Gonderici e-posta, Brevo kullanici adi ve SMTP anahtari kontrol edilmelidir.");
-            }
-
-            if (IsBrevoSmtpLoginAddress(fromEmail))
-            {
-                _logger.LogWarning("Brevo SMTP login adresi gonderici olarak kullanilamaz. Brevo panelinde dogrulanmis bir sender e-posta adresi tanimlanmalidir. Subject={Subject}", subject);
-                throw new InvalidOperationException("Brevo SMTP login adresi gonderici olarak kullanilamaz. Dogrulanmis sender e-posta adresi tanimlanmalidir.");
+                throw new InvalidOperationException("SMTP ayarlari eksik. Sunucu, kullanici, parola ve gonderici e-posta adresini kontrol edin.");
             }
 
             if (!TryCreateMailAddress(to, null, out var toAddress))
@@ -230,12 +224,6 @@ namespace FilistinProje.Service.Services
             }
         }
 
-private static bool IsBrevoSmtpLoginAddress(string? email)
-        {
-            return !string.IsNullOrWhiteSpace(email)
-                && email.Trim().EndsWith("@smtp-brevo.com", StringComparison.OrdinalIgnoreCase);
-        }
-
         public async Task<bool> SendInvoiceEmailAsync(string toEmail, string musteriAdi, string siparisNo, string filePath)
         {
             try
@@ -259,13 +247,13 @@ private static bool IsBrevoSmtpLoginAddress(string? email)
                     fromName = brandName;
                 }
 
-                var host = _config["EmailSettings:Host"] ?? "smtp.gmail.com";
+                var host = _config["EmailSettings:Host"] ?? string.Empty;
                 var port = int.TryParse(_config["EmailSettings:Port"], out var parsedPort) ? parsedPort : 587;
                 var enableSsl = bool.TryParse(_config["EmailSettings:EnableSSL"], out var parsedSsl) ? parsedSsl : true;
                 var username = _config["EmailSettings:Username"] ?? string.Empty;
                 var password = _config["EmailSettings:Password"] ?? string.Empty;
 
-                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+                if (string.IsNullOrWhiteSpace(host) || string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
                 {
                     _logger.LogWarning("SMTP ayarlari eksik - fatura maili gonderilemedi");
                     return false;

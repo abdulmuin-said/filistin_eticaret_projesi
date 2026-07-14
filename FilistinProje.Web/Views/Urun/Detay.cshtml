@@ -563,12 +563,21 @@
                 <div><i class="fas fa-truck mb-2 text-brand-gold"></i><p class="text-xs font-semibold text-brand-darktext">@Localizer["FreeShipping"]</p></div>
                 <div><i class="fas fa-undo-alt mb-2 text-brand-gold"></i><p class="text-xs font-semibold text-brand-darktext">@Localizer["ReturnGuarantee"]</p></div>
             </div>
+            <div class="mt-4 flex items-center justify-center gap-2 text-xs text-brand-mutedtext"><i class="fas fa-circle-check text-brand-gold"></i>@Localizer["Product_TrustNote"]</div>
         </div>
     </div>
 
-    <section id="reviews" class="mt-20 border-t border-brand-border pt-12">
+    <section id="reviews" class="product-detail-sections mt-20 border-t border-brand-border pt-12">
         <div class="flex flex-col gap-12 lg:flex-row">
             <div class="space-y-12 lg:w-2/3">
+                @if (!string.IsNullOrWhiteSpace(Model.MalzemeBilgisi) || !string.IsNullOrWhiteSpace(Model.PaketlemeBilgisi) || !string.IsNullOrWhiteSpace(Model.BakimTalimati))
+                {
+                    <div class="grid gap-3 sm:grid-cols-3">
+                        @if (!string.IsNullOrWhiteSpace(Model.MalzemeBilgisi)) { <article class="product-benefit-card"><i class="fas fa-gem"></i><h3>@Localizer["Product_Material"]</h3><p>@Model.MalzemeBilgisi</p></article> }
+                        @if (!string.IsNullOrWhiteSpace(Model.PaketlemeBilgisi)) { <article class="product-benefit-card"><i class="fas fa-box-open"></i><h3>@Localizer["Packaging"]</h3><p>@Model.PaketlemeBilgisi</p></article> }
+                        @if (!string.IsNullOrWhiteSpace(Model.BakimTalimati)) { <article class="product-benefit-card"><i class="fas fa-hand-sparkles"></i><h3>@Localizer["Product_Care"]</h3><p>@Model.BakimTalimati</p></article> }
+                    </div>
+                }
                 <div>
                     <h2 class="mb-6 flex items-center gap-3 font-serif text-2xl text-brand-olive"><i class="fas fa-file-alt text-brand-gold"></i>@Localizer["ProductDescription"]</h2>
                     <div class="prose prose-sm max-w-none leading-relaxed text-brand-mutedtext">
@@ -647,6 +656,25 @@
         </div>
     </section>
 
+    @{ var urunlerleBirlikte = ViewBag.BenzerUrunler as List<FilistinProje.Core.DTOs.BenzerUrunDto> ?? new List<FilistinProje.Core.DTOs.BenzerUrunDto>(); }
+    @if (urunlerleBirlikte.Any())
+    {
+        <section class="product-together mt-16 rounded-lg border border-brand-border bg-brand-cream p-5 md:p-7" aria-labelledby="togetherTitle">
+            <div class="mb-5 flex flex-wrap items-end justify-between gap-3"><div><p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand-gold">@Localizer["Product_WhyYouWillLove"]</p><h2 id="togetherTitle" class="mt-1 font-serif text-2xl text-brand-olive">@Localizer["Product_Together"]</h2></div><a href="/Urun?k=@Model.KategoriId" class="text-xs font-semibold text-brand-olive underline-offset-4 hover:underline">@Localizer["Collection"]</a></div>
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                @foreach (var item in urunlerleBirlikte.Take(3))
+                {
+                    var itemSlug = string.IsNullOrWhiteSpace(item.Slug) ? FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.LocalizedBaslik) : item.Slug;
+                    <a href="/Urun/Detay/@itemSlug-@item.Id" class="group rounded-md bg-white p-2 transition-transform hover:-translate-y-1">
+                        <img src="@(string.IsNullOrWhiteSpace(item.AnaGorselUrl) ? "/img/products/placeholder.webp" : item.AnaGorselUrl)" alt="@item.LocalizedBaslik" class="aspect-square w-full rounded object-cover" loading="lazy" decoding="async" />
+                        <h3 class="mt-2 line-clamp-2 text-xs font-semibold text-brand-darktext">@item.LocalizedBaslik</h3>
+                        <p class="mt-1 text-sm font-bold text-brand-olive">@item.GosterFiyat.ToString("N2") @currencySymbol</p>
+                    </a>
+                }
+            </div>
+        </section>
+    }
+
 @{
     var benzerUrunler = ViewBag.BenzerUrunler as List<FilistinProje.Core.DTOs.BenzerUrunDto>;
 }
@@ -704,7 +732,26 @@
     </section>
 }
 
+@if (!Model.WhatsappSiparisVarMi && !Model.FiyatGizliMi)
+{
+    <div class="product-mobile-buybar lg:hidden" role="region" aria-label="@Localizer["AddToCart"]">
+        <div>
+            <span class="block text-[10px] uppercase tracking-widest text-brand-mutedtext">@Localizer["Product_ReadyToOrder"]</span>
+            <strong id="mobileStickyPrice" class="text-base text-brand-olive">@gosterilecekFiyat.ToString("N2") @currencySymbol</strong>
+        </div>
+        <button type="button" id="mobileStickyCartButton" class="flex h-11 items-center justify-center gap-2 bg-brand-olive px-5 text-xs font-bold uppercase tracking-widest text-white"><i class="fas fa-shopping-bag"></i>@Localizer["AddToCart"]</button>
+    </div>
+}
 
+<style>
+    .product-benefit-card { border: 1px solid #e5e2dc; background: #fff; padding: 1rem; }
+    .product-benefit-card > i { color: #b58735; margin-bottom: .65rem; }
+    .product-benefit-card h3 { color: #313511; font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .product-benefit-card p { color: #47473d; font-size: .75rem; line-height: 1.5; margin-top: .35rem; }
+    .product-detail-sections { margin-top: 5rem; }
+    .product-mobile-buybar { position: fixed; inset-inline: 0; bottom: 0; z-index: 80; display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-top: 1px solid #e5e2dc; background: rgba(255, 255, 255, .96); padding: .75rem 1rem; box-shadow: 0 -10px 28px rgba(28, 28, 24, .12); backdrop-filter: blur(10px); }
+    @@media (max-width: 1023px) { body { padding-bottom: 76px; } .product-detail-sections { margin-top: 3.5rem; } }
+</style>
 
 <script>
 const PRODUCT_CURRENCY = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(currencySymbol));
@@ -803,6 +850,10 @@ document.getElementById('productQuantity')?.addEventListener('input', function()
     var selectedQuantity = document.getElementById('selectedQuantity');
     if (selectedQuantity) selectedQuantity.value = this.value;
     updateSelectionSummary();
+});
+
+document.getElementById('mobileStickyCartButton')?.addEventListener('click', function () {
+    document.getElementById('ajaxSepetBtn')?.click();
 });
 
 let currentZoom = 1;
