@@ -732,25 +732,13 @@
     </section>
 }
 
-@if (!Model.WhatsappSiparisVarMi && !Model.FiyatGizliMi)
-{
-    <div class="product-mobile-buybar lg:hidden" role="region" aria-label="@Localizer["AddToCart"]">
-        <div>
-            <span class="block text-[10px] uppercase tracking-widest text-brand-mutedtext">@Localizer["Product_ReadyToOrder"]</span>
-            <strong id="mobileStickyPrice" class="text-base text-brand-olive">@gosterilecekFiyat.ToString("N2") @currencySymbol</strong>
-        </div>
-        <button type="button" id="mobileStickyCartButton" class="flex h-11 items-center justify-center gap-2 bg-brand-olive px-5 text-xs font-bold uppercase tracking-widest text-white"><i class="fas fa-shopping-bag"></i>@Localizer["AddToCart"]</button>
-    </div>
-}
-
 <style>
     .product-benefit-card { border: 1px solid #e5e2dc; background: #fff; padding: 1rem; }
     .product-benefit-card > i { color: #b58735; margin-bottom: .65rem; }
     .product-benefit-card h3 { color: #313511; font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
     .product-benefit-card p { color: #47473d; font-size: .75rem; line-height: 1.5; margin-top: .35rem; }
     .product-detail-sections { margin-top: 5rem; }
-    .product-mobile-buybar { position: fixed; inset-inline: 0; bottom: 0; z-index: 80; display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-top: 1px solid #e5e2dc; background: rgba(255, 255, 255, .96); padding: .75rem 1rem; box-shadow: 0 -10px 28px rgba(28, 28, 24, .12); backdrop-filter: blur(10px); }
-    @@media (max-width: 1023px) { body { padding-bottom: 76px; } .product-detail-sections { margin-top: 3.5rem; } }
+    @@media (max-width: 1023px) { .product-detail-sections { margin-top: 3.5rem; } }
 </style>
 
 <script>
@@ -850,10 +838,6 @@ document.getElementById('productQuantity')?.addEventListener('input', function()
     var selectedQuantity = document.getElementById('selectedQuantity');
     if (selectedQuantity) selectedQuantity.value = this.value;
     updateSelectionSummary();
-});
-
-document.getElementById('mobileStickyCartButton')?.addEventListener('click', function () {
-    document.getElementById('ajaxSepetBtn')?.click();
 });
 
 let currentZoom = 1;
