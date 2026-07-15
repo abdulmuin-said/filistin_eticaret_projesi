@@ -263,6 +263,10 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.DefaultRequestCulture = new RequestCulture("ar");
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
+    options.RequestCultureProviders = new[]
+    {
+        new CookieRequestCultureProvider()
+    };
 });
 
 // 10. Rate Limiting (Brute-force korumasÄ±)
@@ -385,6 +389,7 @@ app.Use(async (context, next) =>
 });
 
 app.UseStaticFiles();
+app.UseRequestLocalization();
 
 // Ozel Hata Sayfalari (404 vb.) - Guzel tasarimli sayfa gosterir
 app.UseStatusCodePagesWithReExecute("/Hata/{0}");
@@ -412,12 +417,8 @@ app.Use(async (context, next) =>
         ? siteSettings.SiteAdi
         : siteSettings.MarkaAdi;
     var siteTitle = WebUtility.HtmlEncode(siteTitleText);
-    var acceptLanguage = context.Request.Headers.AcceptLanguage.ToString()
-        .Split(',', StringSplitOptions.RemoveEmptyEntries)
-        .FirstOrDefault()?.Trim();
     var requestCulture = context.Features.Get<IRequestCultureFeature>()?.RequestCulture.Culture.TwoLetterISOLanguageName
-        ?? (acceptLanguage?.Length >= 2 ? acceptLanguage[..2].ToLowerInvariant() : null)
-        ?? "en";
+        ?? "ar";
     var maintenanceText = requestCulture switch
     {
         "ar" => new
@@ -496,7 +497,6 @@ app.Use(async (context, next) =>
 </html>
 """);
 });
-app.UseRequestLocalization();
 app.UseResponseCompression();
 app.UseRouting();
 app.UseRateLimiter();
