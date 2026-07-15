@@ -209,10 +209,10 @@ var kategoriler = await _context.Kategoriler
 
             try
             {
-                var mevcutAbone = await _context.BultenAbonelikleri.FirstOrDefaultAsync(x => x.Email == email);
+            var mevcutAbone = await _context.BultenAbonelikleri.FirstOrDefaultAsync(x => x.Email == email);
             if (mevcutAbone?.AktifMi == true)
             {
-                return Json(new { success = false, message = _localizer["Home_AlreadySubscribed"].Value });
+                return Json(new { success = true, message = _localizer["Home_AlreadySubscribed"].Value });
             }
 
             if (mevcutAbone != null)
