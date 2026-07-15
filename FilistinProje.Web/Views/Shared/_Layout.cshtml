@@ -480,11 +480,8 @@ document.addEventListener('keydown', function(event) {
             $('#newsletterForm').on('submit', function(e) {
                 e.preventDefault();
                 var form = $(this);
-                var messageDiv = $('#newsletterMessage');
                 var btn = form.find('button[type="submit"]');
-                var originalBtnText = btn.text();
-                
-                btn.text('@Localizer["PleaseWait"]').prop('disabled', true);
+                btn.prop('disabled', true).attr('aria-busy', 'true');
                 
                 $.ajax({
                     type: form.attr('method'),
@@ -495,16 +492,17 @@ document.addEventListener('keydown', function(event) {
                             window.showToast(response.message || '@Localizer["SuccessfullySubscribed"]', 'success');
                             $('#newsletterEmail').val('');
                         } else {
-                            window.showToast(response.message || 'Bir hata oluÅŸtu.', 'error');
+                            window.showToast(response.message || '@Localizer["OperationFailed"]', 'error');
                         }
-                        btn.text(originalBtnText).prop('disabled', false);
                     },
                     error: function(xhr) {
                         const responseMessage = xhr.responseJSON && xhr.responseJSON.message
                             ? xhr.responseJSON.message
                             : '@Localizer["OperationFailed"]';
                         window.showToast(responseMessage, 'error');
-                        btn.text(originalBtnText).prop('disabled', false);
+                    },
+                    complete: function() {
+                        btn.prop('disabled', false).removeAttr('aria-busy');
                     }
                 });
             });

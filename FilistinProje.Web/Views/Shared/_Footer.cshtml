@@ -57,9 +57,8 @@
                 <form id="newsletterForm" action="/Home/BulteneAboneOl" method="post" class="relative flex max-w-md items-center rounded-full border border-white/20 bg-white/10 px-4 py-2 shadow-inner">
                     @Html.AntiForgeryToken()
                     <input name="email" id="newsletterEmail" class="bg-transparent border-none w-full focus:ring-0 text-sm px-0 text-white placeholder-gray-300 outline-none" placeholder="@Localizer["EmailAddress"]" required="" type="email"/>
-                    <button type="submit" class="rounded-full bg-[#eef2c3] px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#25280c] transition-colors ms-4 whitespace-nowrap hover:bg-white">@Localizer["Subscribe"]</button>
+                    <button type="submit" class="rounded-full bg-[#eef2c3] px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#25280c] transition-all ms-4 whitespace-nowrap hover:bg-white disabled:cursor-wait disabled:opacity-60">@Localizer["Subscribe"]</button>
                 </form>
-                <div id="newsletterMessage" class="text-xs mt-2 hidden"></div>
             </div>
 
             <!-- Corporate Links & Socials -->
