@@ -1,76 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{MARKA_ADI} إشعار</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta name="supported-color-schemes" content="light">
+    <title>{BASLIK}</title>
+    <style>
+        @media only screen and (max-width: 620px) {
+            .email-shell { width: 100% !important; }
+            .email-pad { padding-left: 22px !important; padding-right: 22px !important; }
+            .email-title { font-size: 28px !important; }
+            .trust-cell { display: block !important; width: 100% !important; border-left: 0 !important; border-bottom: 1px solid #ddd8ca !important; }
+            .trust-cell:last-child { border-bottom: 0 !important; }
+        }
+    </style>
 </head>
-<body style="margin:0; padding:0; background:#f1ede7; color:#313511; font-family:'Segoe UI', Arial, sans-serif;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f1ede7; margin:0; padding:28px 12px;">
+<body style="margin:0; padding:0; background-color:#eeece5; color:#252716; font-family:Tahoma, Arial, sans-serif;">
+    <div style="display:none; max-height:0; overflow:hidden; opacity:0; color:transparent;">{BASLIK} | {MARKA_ADI}</div>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" dir="rtl" style="width:100%; background-color:#eeece5;">
         <tr>
-            <td align="center">
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:640px; background:#fcf9f3; border:1px solid #e5e2dc; border-radius:16px; overflow:hidden;">
+            <td align="center" style="padding:30px 12px;">
+                <table role="presentation" width="640" cellpadding="0" cellspacing="0" border="0" class="email-shell" style="width:640px; max-width:640px; background-color:#fffdf8; border:1px solid #ddd8ca; border-collapse:separate; border-radius:18px; overflow:hidden; box-shadow:0 10px 30px rgba(37,39,22,.08);">
                     <tr>
-                        <td align="center" style="background:#313511; padding:30px 26px 24px;">
-                            <a href="{SITE_URL}" target="_blank" style="text-decoration:none; display:inline-block;">
-                                <img src="{SITE_LOGO_URL}" alt="{MARKA_ADI}" width="112" height="112" style="display:block; width:112px; max-width:112px; height:112px; object-fit:contain; margin:0 auto 12px; border:0; border-radius:24px; background:#ffffff;">
+                        <td style="height:5px; font-size:0; line-height:0; background:linear-gradient(90deg,#171713 0 34%,#a72b2b 34% 66%,#2f5136 66% 100%);">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="padding:30px 28px 26px; background-color:#303317;">
+                            <a href="{SITE_URL}" target="_blank" style="display:inline-block; text-decoration:none;">
+                                <img src="{SITE_LOGO_URL}" width="82" height="82" alt="{MARKA_ADI}" style="display:block; width:82px; height:82px; margin:0 auto; border:0; border-radius:18px; background-color:#fffdf8;">
                             </a>
-                            <div style="font-family:Georgia, 'Times New Roman', serif; font-size:24px; line-height:1.2; color:#f8f3e8; letter-spacing:.04em;">{MARKA_ADI}</div>
-                            <div style="font-size:11px; line-height:1.5; color:#c6ca99; letter-spacing:.22em; text-transform:uppercase; margin-top:8px;">منتجات الديكور الفاخرة</div>
+                            <div style="margin-top:14px; color:#fffdf8; font-family:Georgia, 'Times New Roman', serif; font-size:26px; line-height:1.2; letter-spacing:1.5px;">{MARKA_ADI}</div>
+                            <div style="margin-top:8px; color:#d6c780; font-size:10px; font-weight:700; line-height:1.5; letter-spacing:1.5px;">من فلسطين، بكل عناية</div>
                         </td>
                     </tr>
-
                     <tr>
-                        <td style="padding:34px 30px 12px;">
-                            <div style="display:inline-block; background:#e9ead6; color:#313511; border-radius:999px; padding:8px 13px; font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; margin-bottom:18px;">إشعار</div>
-                            <h1 style="margin:0 0 18px; color:#313511; font-family:Georgia, 'Times New Roman', serif; font-size:30px; font-weight:500; line-height:1.18;">{BASLIK}</h1>
-                            <p style="margin:0 0 16px; color:#47473d; font-size:15px; line-height:1.75;">مرحباً <strong style="color:#313511;">{ADSOYAD}</strong>،</p>
-                            <div style="color:#47473d; font-size:15px; line-height:1.75;">{ICERIK}</div>
+                        <td class="email-pad" style="padding:38px 42px 18px; text-align:right;">
+                            <div style="display:inline-block; margin-bottom:16px; padding:7px 11px; border:1px solid #d8d3c4; border-radius:999px; color:#60633d; font-size:10px; font-weight:700; letter-spacing:1px;">تحديث من 7ANRPS48</div>
+                            <h1 class="email-title" style="margin:0 0 20px; color:#292b16; font-family:Tahoma, Arial, sans-serif; font-size:32px; font-weight:700; line-height:1.35;">{BASLIK}</h1>
+                            <p style="margin:0 0 18px; color:#4b4c3f; font-size:15px; line-height:1.9;">مرحباً <strong style="color:#292b16;">{ADSOYAD}</strong>،</p>
+                            <div style="color:#4b4c3f; font-size:15px; line-height:1.9;">{ICERIK}</div>
                         </td>
                     </tr>
-
                     <tr style="display:{BUTON_GORUNUM};">
-                        <td align="center" style="padding:18px 30px 26px;">
-                            <a href="{BUTON_LINK}" target="_blank" style="display:inline-block; background:#313511; color:#ffffff; text-decoration:none; border-radius:999px; padding:14px 28px; font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;">{BUTON_YAZI}</a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding:0 30px 28px;">
-                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e2dc; border-radius:12px; background:#fffaf0;">
+                        <td class="email-pad" align="right" style="padding:14px 42px 34px;">
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
-                                    <td width="33.33%" align="center" style="padding:18px 8px; border-left:1px solid #e5e2dc; border-right:none;">
-                                        <div style="font-size:12px; font-weight:700; color:#313511;">تسوق آمن</div>
-                                        <div style="font-size:11px; color:#777266; margin-top:4px;">محمي بـ SSL</div>
-                                    </td>
-                                    <td width="33.33%" align="center" style="padding:18px 8px; border-left:1px solid #e5e2dc; border-right:none;">
-                                        <div style="font-size:12px; font-weight:700; color:#313511;">تغليف دقيق</div>
-                                        <div style="font-size:11px; color:#777266; margin-top:4px;">تسليم آمن</div>
-                                    </td>
-                                    <td width="33.33%" align="center" style="padding:18px 8px;">
-                                        <div style="font-size:12px; font-weight:700; color:#313511;">جميع أنحاء فلسطين</div>
-                                        <div style="font-size:11px; color:#777266; margin-top:4px;">دعم الشحن</div>
+                                    <td bgcolor="#303317" style="border-radius:999px;">
+                                        <a href="{BUTON_LINK}" target="_blank" style="display:inline-block; padding:14px 26px; color:#ffffff; font-size:12px; font-weight:700; line-height:1.2; letter-spacing:.4px; text-decoration:none;">{BUTON_YAZI}</a>
                                     </td>
                                 </tr>
                             </table>
                         </td>
                     </tr>
-
                     <tr>
-                        <td style="padding:0 30px 34px;">
-                            <p style="margin:0; color:#47473d; font-size:14px; line-height:1.7;">مع خالص التقدير،<br><strong style="color:#313511;">فريق {MARKA_ADI}</strong></p>
+                        <td class="email-pad" style="padding:6px 42px 32px;">
+                            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%; border:1px solid #ddd8ca; border-radius:12px; background-color:#f7f3e9; overflow:hidden;">
+                                <tr>
+                                    <td width="33.33%" align="center" class="trust-cell" style="width:33.33%; padding:17px 8px; border-left:1px solid #ddd8ca;">
+                                        <div style="color:#303317; font-size:12px; font-weight:700;">تسوق آمن</div>
+                                        <div style="margin-top:4px; color:#787568; font-size:10px;">تجربة محمية</div>
+                                    </td>
+                                    <td width="33.33%" align="center" class="trust-cell" style="width:33.33%; padding:17px 8px; border-left:1px solid #ddd8ca;">
+                                        <div style="color:#303317; font-size:12px; font-weight:700;">تغليف بعناية</div>
+                                        <div style="margin-top:4px; color:#787568; font-size:10px;">تجهيز دقيق</div>
+                                    </td>
+                                    <td width="33.33%" align="center" class="trust-cell" style="width:33.33%; padding:17px 8px;">
+                                        <div style="color:#303317; font-size:12px; font-weight:700;">دعم محلي</div>
+                                        <div style="margin-top:4px; color:#787568; font-size:10px;">نحن هنا لمساعدتك</div>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
-
                     <tr>
-                        <td align="center" style="background:#272a0f; padding:24px 24px; color:#d8d2c4;">
-                            <div style="font-size:12px; line-height:1.7;">تم إرسال هذا البريد الإلكتروني بواسطة {SITE_ADI}.</div>
-                            <div style="font-size:12px; line-height:1.7; margin-top:8px;">
-                                <a href="{SITE_URL}" target="_blank" style="color:#c6ca99; text-decoration:none; font-weight:700;">الموقع الإلكتروني</a>
-                                <span style="color:#777266;"> | </span>
-                                <a href="{INSTAGRAM_URL}" target="_blank" style="color:#c6ca99; text-decoration:none; font-weight:700;">إنستغرام</a>
+                        <td class="email-pad" style="padding:0 42px 36px; color:#4b4c3f; font-size:14px; line-height:1.8; text-align:right;">
+                            مع خالص التقدير،<br><strong style="color:#303317;">فريق {MARKA_ADI}</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="padding:25px 24px; background-color:#252713; color:#c9c6b8;">
+                            <div style="font-size:11px; line-height:1.8;">تم إرسال رسالة الخدمة هذه بواسطة {SITE_ADI}.</div>
+                            <div style="margin-top:8px; font-size:11px; line-height:1.8;">
+                                <a href="{SITE_URL}" target="_blank" style="color:#d6c780; font-weight:700; text-decoration:none;">زيارة المتجر</a>
+                                <span style="padding:0 7px; color:#696b52;">|</span>
+                                <a href="{INSTAGRAM_URL}" target="_blank" style="color:#d6c780; font-weight:700; text-decoration:none;">إنستغرام</a>
                             </div>
-                            <div style="font-size:11px; line-height:1.7; color:#aaa28f; margin-top:8px;">{SITE_EMAIL} {SITE_CONTACT_SEPARATOR} {SITE_PHONE}</div>
+                            <div dir="ltr" style="margin-top:8px; color:#969484; font-size:10px; line-height:1.7;">{SITE_EMAIL} {SITE_CONTACT_SEPARATOR} {SITE_PHONE}</div>
                         </td>
                     </tr>
                 </table>

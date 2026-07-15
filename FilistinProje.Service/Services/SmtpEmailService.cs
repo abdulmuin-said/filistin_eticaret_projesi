@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
+using System.Globalization;
 using FilistinProje.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -87,6 +88,7 @@ namespace FilistinProje.Service.Services
                 };
 
                 logoResource.ContentType.Name = "7anrps48-logo.png";
+                logoResource.ContentLink = new Uri("cid:7anrps48-logo");
                 htmlView.LinkedResources.Add(logoResource);
                 mailMessage.AlternateViews.Add(htmlView);
             }
@@ -95,18 +97,25 @@ namespace FilistinProje.Service.Services
             await client.SendMailAsync(mailMessage).WaitAsync(TimeSpan.FromSeconds(30));
         }
 
-        public async Task SendTemplateMailAsync(string to, string baslik, string adSoyad, string icerik, string btnLink = "", string btnYazi = "", string culture = "ar")
+        public async Task SendTemplateMailAsync(string to, string baslik, string adSoyad, string icerik, string btnLink = "", string btnYazi = "", string culture = "")
         {
             var siteSettings = _siteSettingsService.GetSettings();
             var brandName = string.IsNullOrWhiteSpace(siteSettings.MarkaAdi) ? siteSettings.SiteAdi : siteSettings.MarkaAdi;
             var siteUrl = _siteSettingsService.BuildAbsoluteUrl(string.Empty);
-            var logoUrl = _siteSettingsService.BuildAbsoluteUrl("/74anrps48logo2.svg");
+            var logoUrl = "cid:7anrps48-logo";
+            var inlineLogoPath = Path.Combine(_env.WebRootPath, "EmailTemplates", "7anrps48-email-logo.png");
             var instagramUrl = string.IsNullOrWhiteSpace(siteSettings.InstagramUrl) ? siteUrl : siteSettings.InstagramUrl;
             var contactSeparator = !string.IsNullOrWhiteSpace(siteSettings.Email) && !string.IsNullOrWhiteSpace(siteSettings.Telefon)
                 ? "|"
                 : string.Empty;
 
-            var sablonDosyasi = culture switch
+            var normalizedCulture = culture.Trim().ToLowerInvariant();
+            if (normalizedCulture != "ar" && normalizedCulture != "en")
+            {
+                normalizedCulture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "en" ? "en" : "ar";
+            }
+
+            var sablonDosyasi = normalizedCulture switch
             {
                 "ar" => "Sablon.ar.html",
                 _ => "Sablon.en.html"
@@ -114,7 +123,7 @@ namespace FilistinProje.Service.Services
             var path = Path.Combine(_env.WebRootPath, "EmailTemplates", sablonDosyasi);
             var body = await File.ReadAllTextAsync(path);
 
-            var butonGorunum = string.IsNullOrEmpty(btnLink) ? "none" : "block";
+            var butonGorunum = string.IsNullOrEmpty(btnLink) ? "none" : "table-row";
 
             body = body.Replace("{BASLIK}", baslik)
                        .Replace("{ADSOYAD}", adSoyad)
@@ -131,7 +140,7 @@ namespace FilistinProje.Service.Services
                        .Replace("{SITE_CONTACT_SEPARATOR}", contactSeparator)
                        .Replace("{INSTAGRAM_URL}", instagramUrl);
 
-            await SendMailInternalAsync(to, baslik, body);
+            await SendMailInternalAsync(to, baslik, body, inlineLogoPath);
         }
 
         public async Task<bool> SendKargoNotificationEmail(string toEmail, string musteriAdi, string siparisNo, string kargoFirmasi, string kargoTakipNo)

@@ -4380,6 +4380,36 @@
   <data name="Admin_MailInfrastructureTestHint" xml:space="preserve">
     <value>يرسل بريدًا تجريبيًا إلى المستلم المحدد.</value>
   </data>
+  <data name="Admin_SettingsSaveSuccess" xml:space="preserve">
+    <value>تم حفظ إعدادات الموقع بنجاح.</value>
+  </data>
+  <data name="Admin_SettingsSaveFailed" xml:space="preserve">
+    <value>تعذر حفظ إعدادات الموقع: {0}</value>
+  </data>
+  <data name="Admin_TestMailRecipientRequired" xml:space="preserve">
+    <value>أدخل بريد مستلم الإشعارات أو بريد الموقع لإرسال رسالة الاختبار.</value>
+  </data>
+  <data name="Admin_SmtpSettingsMissing" xml:space="preserve">
+    <value>إعدادات SMTP غير مكتملة. يرجى ضبط الخادم واسم المستخدم وكلمة المرور وعنوان مرسل صالح.</value>
+  </data>
+  <data name="Admin_TestMailInvalidRecipient" xml:space="preserve">
+    <value>أدخل عنوان بريد إلكتروني صالحًا لاستلام رسالة الاختبار.</value>
+  </data>
+  <data name="Admin_TestMailSubject" xml:space="preserve">
+    <value>اختبار البنية التحتية للبريد</value>
+  </data>
+  <data name="Admin_TestMailBody" xml:space="preserve">
+    <value>تعمل البنية التحتية للبريد بشكل صحيح. سيتم إرسال إشعارات الطلبات والشحن والحساب والحملات عبر هذه القناة.</value>
+  </data>
+  <data name="Admin_TestMailSuccess" xml:space="preserve">
+    <value>تم إرسال رسالة الاختبار إلى {0}. تحقق من صندوق الوارد وسجلات خدمة SMTP.</value>
+  </data>
+  <data name="Admin_TestMailTimeout" xml:space="preserve">
+    <value>لم يكتمل إرسال رسالة الاختبار خلال 30 ثانية. تحقق من اتصال SMTP والوصول إلى الشبكة.</value>
+  </data>
+  <data name="Admin_TestMailFailed" xml:space="preserve">
+    <value>تعذر إرسال رسالة الاختبار: {0}</value>
+  </data>
   <data name="Admin_Test" xml:space="preserve">
     <value>اختبار</value>
   </data>

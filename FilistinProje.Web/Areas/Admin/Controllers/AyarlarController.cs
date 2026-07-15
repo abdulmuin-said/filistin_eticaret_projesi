@@ -4,8 +4,10 @@ using FilistinProje.Core.Models;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Service.Services;
+using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace FilistinProje.Web.Areas.Admin.Controllers
 {
@@ -16,17 +18,20 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         private readonly IEmailService _emailService;
         private readonly IConfiguration _config;
         private readonly KanvasDbContext _context;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
         public AyarlarController(
             ISiteSettingsService siteSettingsService,
             IEmailService emailService,
             IConfiguration config,
-            KanvasDbContext context)
+            KanvasDbContext context,
+            IStringLocalizer<SharedResource> localizer)
         {
             _siteSettingsService = siteSettingsService;
             _emailService = emailService;
             _config = config;
             _context = context;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index()
@@ -43,12 +48,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 await VarsayilanKargoFirmasiniGuncelleAsync(model.KargoFirmasi);
                 _siteSettingsService.SaveSettings(model);
-                TempData["Basari"] = "Site ayarları başarıyla kaydedildi.";
+                TempData["Basari"] = _localizer["Admin_SettingsSaveSuccess"].Value;
                 TempData["Durum"] = "success";
             }
             catch (Exception ex)
             {
-                TempData["Hata"] = "Ayarlar kaydedilirken hata oluştu: " + ex.Message;
+                TempData["Hata"] = _localizer["Admin_SettingsSaveFailed", ex.Message].Value;
                 TempData["Durum"] = "danger";
             }
 
@@ -65,7 +70,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (string.IsNullOrWhiteSpace(recipientEmail))
             {
-                TempData["Hata"] = "Test maili için bildirim alıcı e-postası veya site e-postası doldurulmalıdır.";
+                TempData["Hata"] = _localizer["Admin_TestMailRecipientRequired"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -80,14 +85,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (string.IsNullOrWhiteSpace(_config["EmailSettings:Host"]) || !IsValidEmail(smtpUser) || string.IsNullOrWhiteSpace(smtpPassword) || !IsValidEmail(fromEmail))
             {
-                TempData["Hata"] = "SMTP ayarları eksik. Sunucu, kullanıcı, parola ve geçerli bir gönderici e-posta adresi tanımlanmalıdır.";
+                TempData["Hata"] = _localizer["Admin_SmtpSettingsMissing"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
 
             if (!IsValidEmail(recipientEmail))
             {
-                TempData["Hata"] = "Test maili için geçerli bir alıcı e-posta adresi yazın.";
+                TempData["Hata"] = _localizer["Admin_TestMailInvalidRecipient"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -96,20 +101,20 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 await _emailService.SendTemplateMailAsync(
                     recipientEmail,
-                    "Test Maili",
+                    _localizer["Admin_TestMailSubject"].Value,
                     string.IsNullOrWhiteSpace(model.MarkaAdi) ? "7ANRPS48" : model.MarkaAdi,
-                    "Mail altyapısı başarıyla çalışıyor. Sipariş, kargo, üyelik ve kampanya bildirimleri bu kanal üzerinden gönderilecektir.",
+                    _localizer["Admin_TestMailBody"].Value,
                     string.Empty,
                     string.Empty);
 
-                TempData["Basari"] = $"Test maili gönderildi. Alıcı: {recipientEmail}. Gelen kutusunu ve SMTP sunucu günlüklerini kontrol edin.";
+                TempData["Basari"] = _localizer["Admin_TestMailSuccess", recipientEmail].Value;
                 TempData["Durum"] = "success";
             }
             catch (Exception ex)
             {
                 TempData["Hata"] = ex is TimeoutException
-                    ? "Test maili gönderimi 30 saniye içinde tamamlanamadı. SMTP bağlantısını ve ağ erişimini kontrol edin."
-                    : "Test maili gönderilemedi: " + ex.Message;
+                    ? _localizer["Admin_TestMailTimeout"].Value
+                    : _localizer["Admin_TestMailFailed", ex.Message].Value;
                 TempData["Durum"] = "danger";
             }
 

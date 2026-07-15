@@ -4432,6 +4432,36 @@
   <data name="Admin_MailInfrastructureTestHint" xml:space="preserve">
     <value>Sends a test email to the selected recipient.</value>
   </data>
+  <data name="Admin_SettingsSaveSuccess" xml:space="preserve">
+    <value>Site settings were saved successfully.</value>
+  </data>
+  <data name="Admin_SettingsSaveFailed" xml:space="preserve">
+    <value>Site settings could not be saved: {0}</value>
+  </data>
+  <data name="Admin_TestMailRecipientRequired" xml:space="preserve">
+    <value>Enter a notification recipient or site email address for the test email.</value>
+  </data>
+  <data name="Admin_SmtpSettingsMissing" xml:space="preserve">
+    <value>SMTP settings are incomplete. Configure the server, username, password, and a valid sender email address.</value>
+  </data>
+  <data name="Admin_TestMailInvalidRecipient" xml:space="preserve">
+    <value>Enter a valid recipient email address for the test.</value>
+  </data>
+  <data name="Admin_TestMailSubject" xml:space="preserve">
+    <value>Email Infrastructure Test</value>
+  </data>
+  <data name="Admin_TestMailBody" xml:space="preserve">
+    <value>The email infrastructure is working correctly. Order, shipping, account, and campaign notifications will be sent through this channel.</value>
+  </data>
+  <data name="Admin_TestMailSuccess" xml:space="preserve">
+    <value>Test email sent to {0}. Check the inbox and SMTP service logs.</value>
+  </data>
+  <data name="Admin_TestMailTimeout" xml:space="preserve">
+    <value>The test email was not completed within 30 seconds. Check the SMTP connection and network access.</value>
+  </data>
+  <data name="Admin_TestMailFailed" xml:space="preserve">
+    <value>The test email could not be sent: {0}</value>
+  </data>
   <data name="Admin_Test" xml:space="preserve">
     <value>Test</value>
   </data>
