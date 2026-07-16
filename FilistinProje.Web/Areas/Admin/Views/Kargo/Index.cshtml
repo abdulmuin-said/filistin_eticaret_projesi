@@ -32,12 +32,12 @@
                                 <input name="Ad" class="ca-input" placeholder="Palestine Post" required />
                             </div>
                             <div class="col-md-5">
-                                <label class="ca-label">Kod</label>
-                                <input name="Kod" class="ca-input" placeholder="aras" />
+                                <label class="ca-label">@Localizer["Admin_Code"]</label>
+                                <input name="Kod" class="ca-input" placeholder="palestine-post" />
                             </div>
                             <div class="col-12">
-                                <label class="ca-label">Logo URL</label>
-                                <input name="LogoUrl" class="ca-input" placeholder="/img/kargo/aras-kargo.svg" />
+                                <label class="ca-label">@Localizer["Admin_LogoUrl"]</label>
+                                <input name="LogoUrl" class="ca-input" placeholder="/img/shipping/company-logo.svg" />
                             </div>
                             <div class="col-md-4">
                                 <label class="ca-label">@Localizer["Admin_Telefon"]</label>
@@ -55,7 +55,7 @@
                                 </select>
                             </div>
                             <div class="col-12">
-                                <label class="ca-label">Takip URL</label>
+                                <label class="ca-label">@Localizer["Admin_TrackingUrl"]</label>
                                 <input name="TakipUrl" class="ca-input" placeholder="https://..." />
                             </div>
                             <div class="col-12">
@@ -88,8 +88,8 @@
                     <table class="ca-table">
                         <thead>
                             <tr>
-                                <th class="ps-4">Firma</th>
-                                <th>Takip</th>
+                                <th class="ps-4">@Localizer["Admin_Company"]</th>
+                                <th>@Localizer["Admin_Tracking"]</th>
                                 <th>@Localizer["Admin_Kargo_Ucreti"]</th>
                                 <th>@Localizer["Admin_Durum"]</th>
                                 <th class="text-end pe-4">@Localizer["Admin_Islem"]</th>
@@ -156,7 +156,7 @@
                                             <input type="hidden" name="Id" value="@firma.Id" />
                                             <div class="row g-3">
                                                 <div class="col-md-3"><input name="Ad" value="@firma.Ad" class="ca-input" placeholder="@Localizer["Admin_Firma_Adi"]" /></div>
-                                                <div class="col-md-2"><input name="Kod" value="@firma.Kod" class="ca-input" placeholder="Kod" /></div>
+                                                 <div class="col-md-2"><input name="Kod" value="@firma.Kod" class="ca-input" placeholder="@Localizer["Admin_Code"]" /></div>
                                                 <div class="col-md-2"><input name="Telefon" value="@firma.Telefon" class="ca-input" placeholder="@Localizer["Admin_Telefon"]" /></div>
                                                 <div class="col-md-2"><input name="Fiyat" value="@firma.Fiyat.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)" class="ca-input" type="number" step="0.01" min="0" placeholder="@Localizer["Admin_Kargo_Ucreti"]" required /></div>
                                                 <div class="col-md-3">
@@ -227,7 +227,7 @@
                             <input id="BolgeSira" name="sira" class="ca-input" type="number" min="0" value="0" />
                         </div>
                         <div class="mb-3">
-                            <label class="ca-label">Fiyat (₪)</label>
+                             <label class="ca-label">@Localizer["Admin_Price"] (₪)</label>
                             <input id="BolgeFiyat" name="fiyat" class="ca-input" type="number" step="0.01" min="0" value="0.00" />
                         </div>
                         <div class="d-flex gap-2">
@@ -278,7 +278,7 @@
                         <select id="bolgeFiltreUlke" class="ca-select form-select-sm" style="width:auto; min-width:120px;">
                              <option value="">@Localizer["Admin_AllCountries"]</option>
 
-                            <option value="Filistin">Filistin</option>
+                            <option value="Palestine">@Localizer["Admin_Palestine"]</option>
                         </select>
                     </div>
                 </div>
@@ -306,7 +306,7 @@
         <div class="ca-card-header d-flex justify-content-between align-items-center">
             <h3 class="ca-card-title"><i class="fas fa-map-marked-alt me-2"></i>@Localizer["Admin_ProvincePriceMatrix"]</h3>
             <button type="button" class="ca-btn ca-btn-secondary" id="bolgeFiyatYenileBtn">
-                <i class="fas fa-rotate me-1"></i> Yenile
+                <i class="fas fa-rotate me-1"></i> @Localizer["Admin_Refresh"]
             </button>
         </div>
         <div class="ca-card-body">
@@ -331,6 +331,7 @@
     const priceLoadErrorText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_PriceLoadError"].Value));
     const noCarrierProvinceText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_NoCarrierProvince"].Value));
     const editRegionText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_EditRegion"].Value));
+    const provinceText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Province"].Value));
 
     function getToken() {
         return document.querySelector('#bolgeForm input[name="__RequestVerificationToken"]')?.value
@@ -396,7 +397,7 @@
         }).join('');
 
         container.innerHTML = `<table class="ca-table">
-            <thead><tr><th class="ps-4">Vilayet</th>${firmalar.map(f => `<th>${f.ad}</th>`).join('')}</tr></thead>
+            <thead><tr><th class="ps-4">${provinceText}</th>${firmalar.map(f => `<th>${f.ad}</th>`).join('')}</tr></thead>
             <tbody>${rows}</tbody>
         </table>`;
     }
@@ -498,15 +499,15 @@
         },
         silBolge(id, ad) {
             Swal.fire({
-                 title: @System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_AreYouSure"].Value),
+                 title: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_AreYouSure"].Value)),
 
                 text: deleteRegionText.replace('{0}', ad),
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#6c757d',
-                confirmButtonText: @System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Yes"].Value),
-                cancelButtonText: @System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Iptal"].Value)
+                confirmButtonText: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Yes"].Value)),
+                cancelButtonText: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Iptal"].Value))
             }).then(result => {
                 if (!result.isConfirmed) return;
                 const fd = new FormData();
@@ -522,14 +523,14 @@
         },
         silSehir(id, ad) {
             Swal.fire({
-                 title: @System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_DeleteCity"].Value),
+                 title: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_DeleteCity"].Value)),
 
                 text: deleteCityText.replace('{0}', ad),
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
-                cancelButtonText: @System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Iptal"].Value),
-                confirmButtonText: @System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Delete"].Value)
+                cancelButtonText: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Iptal"].Value)),
+                confirmButtonText: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Delete"].Value))
             }).then(result => {
                 if (!result.isConfirmed) return;
                 const fd = new FormData();

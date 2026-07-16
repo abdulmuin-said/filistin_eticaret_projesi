@@ -15,6 +15,9 @@
     var categoryData = JsonSerializer.Serialize(Model.KategoriPerformansi.Select(x => x.Ciro));
     var statusLabels = JsonSerializer.Serialize(Model.DurumDagilimi.Select(x => x.Etiket));
     var statusData = JsonSerializer.Serialize(Model.DurumDagilimi.Select(x => x.Adet));
+    var revenueChartLabel = JsonSerializer.Serialize(Localizer["Admin_Revenue"].Value);
+    var orderChartLabel = JsonSerializer.Serialize(Localizer["Admin_Order"].Value);
+    var visitChartLabel = JsonSerializer.Serialize(Localizer["Admin_ReportVisits"].Value);
 
     string Money(decimal value) => value.ToString("N2") + " ₪";
     string Change(decimal current, decimal previous)
@@ -257,7 +260,7 @@
                             {
                                 <tr>
                                     <td>@item.Neden</td>
-                                    <td><span class="ca-badge @(item.Tip == "İade" ? "ca-badge-warning" : "ca-badge-danger")">@item.Tip</span></td>
+                                    <td><span class="ca-badge @(item.IadeMi ? "ca-badge-warning" : "ca-badge-danger")">@item.Tip</span></td>
                                     <td>@item.Adet</td>
                                     <td>@Money(item.Tutar)</td>
                                 </tr>
@@ -291,7 +294,7 @@
             </div>
 
             <div class="ca-card">
-                <div class="ca-card-header"><h2 class="ca-card-title mb-0">Kategori Performansı</h2></div>
+                <div class="ca-card-header"><h2 class="ca-card-title mb-0">@Localizer["Admin_Kategori_Performansi"]</h2></div>
                 <div class="ca-table-wrapper">
                     <table class="ca-table ca-report-table">
                         <thead><tr><th>@Localizer["Admin_Kategori"]</th><th>@Localizer["Admin_Urun"]</th><th>@Localizer["Admin_Quantity"]</th><th>@Localizer["Admin_Revenue"]</th></tr></thead>
@@ -370,9 +373,9 @@
             data: {
                 labels: @Html.Raw(revenueLabels),
                 datasets: [
-                    { type: 'line', label: 'Ciro', data: @Html.Raw(revenueData), borderColor: chartColors.primary, backgroundColor: 'rgba(49,53,17,.12)', borderWidth: 3, tension: .35, yAxisID: 'y' },
-                    { label: 'Sipariş', data: @Html.Raw(orderData), backgroundColor: 'rgba(184,163,90,.55)', borderRadius: 8, yAxisID: 'y1' },
-                    { type: 'line', label: 'Ziyaret', data: @Html.Raw(visitData), borderColor: chartColors.blue, backgroundColor: 'rgba(37,99,235,.08)', borderDash: [5, 5], tension: .35, yAxisID: 'y1' }
+                    { type: 'line', label: @Html.Raw(revenueChartLabel), data: @Html.Raw(revenueData), borderColor: chartColors.primary, backgroundColor: 'rgba(49,53,17,.12)', borderWidth: 3, tension: .35, yAxisID: 'y' },
+                    { label: @Html.Raw(orderChartLabel), data: @Html.Raw(orderData), backgroundColor: 'rgba(184,163,90,.55)', borderRadius: 8, yAxisID: 'y1' },
+                    { type: 'line', label: @Html.Raw(visitChartLabel), data: @Html.Raw(visitData), borderColor: chartColors.blue, backgroundColor: 'rgba(37,99,235,.08)', borderDash: [5, 5], tension: .35, yAxisID: 'y1' }
                 ]
             },
             options: { maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true, ticks: { callback: value => value + ' ₪' } }, y1: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false } } } }
@@ -383,8 +386,8 @@
             data: {
                 labels: @Html.Raw(hourlyLabels),
                 datasets: [
-                    { label: 'Sipariş', data: @Html.Raw(hourlyOrders), backgroundColor: 'rgba(49,53,17,.78)', borderRadius: 8 },
-                    { type: 'line', label: 'Ziyaret', data: @Html.Raw(hourlyVisits), borderColor: chartColors.blue, backgroundColor: 'rgba(37,99,235,.08)', tension: .35 }
+                    { label: @Html.Raw(orderChartLabel), data: @Html.Raw(hourlyOrders), backgroundColor: 'rgba(49,53,17,.78)', borderRadius: 8 },
+                    { type: 'line', label: @Html.Raw(visitChartLabel), data: @Html.Raw(hourlyVisits), borderColor: chartColors.blue, backgroundColor: 'rgba(37,99,235,.08)', tension: .35 }
                 ]
             },
             options: { maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: true } } }
@@ -392,7 +395,7 @@
 
         new Chart(document.getElementById('categoryChart'), {
             type: 'bar',
-            data: { labels: @Html.Raw(categoryLabels), datasets: [{ label: 'Ciro', data: @Html.Raw(categoryData), backgroundColor: 'rgba(49,53,17,.82)', borderRadius: 8 }] },
+            data: { labels: @Html.Raw(categoryLabels), datasets: [{ label: @Html.Raw(revenueChartLabel), data: @Html.Raw(categoryData), backgroundColor: 'rgba(49,53,17,.82)', borderRadius: 8 }] },
             options: { maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } }
         });
 

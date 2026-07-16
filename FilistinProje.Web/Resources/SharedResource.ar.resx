@@ -4564,7 +4564,6 @@
   <data name="Admin_VideoUrlHelp" xml:space="preserve"><value>مثال: /video/slider1.mp4 أو لاحقاً /video/slider1.webm.</value></data>
   <data name="Admin_UploadVideoFile" xml:space="preserve"><value>رفع ملف فيديو</value></data>
   <data name="Admin_UploadVideoFileHelp" xml:space="preserve"><value>إذا لم يتم اختيار فيديو جديد فسيتم الاحتفاظ بالفيديو الحالي.</value></data>
-  <data name="Admin_UsageNotes" xml:space="preserve"><value>ملاحظات الاستخدام</value></data>
   <data name="Admin_HomeNoteVideoUrl" xml:space="preserve"><value>إذا كان رابط الفيديو ممتلئاً فسيتم تشغيل الفيديو بدلاً من الصورة في الصفحة الرئيسية.</value></data>
   <data name="Admin_HomeNoteSilentVideos" xml:space="preserve"><value>تعمل الفيديوهات بصمت وبدون عناصر تحكم وكخلفية؛ ينتقل السلايدر التالي عند انتهاء الفيديو.</value></data>
   <data name="Admin_HomeNotePoster" xml:space="preserve"><value>يُستخدم حقل الصورة كصورة بديلة/ملصق للفيديو.</value></data>
@@ -5170,4 +5169,469 @@
   <data name="Product_WhyYouWillLove" xml:space="preserve"><value>أكمل اختيارك</value></data>
   <data name="Product_Together" xml:space="preserve"><value>يُختار معها غالباً</value></data>
   <data name="Product_ReadyToOrder" xml:space="preserve"><value>جاهز للطلب</value></data>
+  <data name="Admin_VisitorTraffic" xml:space="preserve"><value>حركة الزوار</value></data>
+  <data name="Admin_TrafficAnalyticsKicker" xml:space="preserve"><value>تحليلات الزيارات</value></data>
+  <data name="Admin_VisitorTrafficSubtitle" xml:space="preserve"><value>قم بتصفية الزوار المباشرين والمصادر والأجهزة والصفحات ونشاط المستخدمين.</value></data>
+  <data name="Admin_ExportVisitorTraffic" xml:space="preserve"><value>تصدير إلى Excel</value></data>
+  <data name="Admin_ClearTrafficHistoryConfirm" xml:space="preserve"><value>سيتم حذف سجل حركة الزوار بالكامل نهائياً. هل أنت متأكد؟</value></data>
+  <data name="Admin_ClearTrafficHistory" xml:space="preserve"><value>مسح السجل</value></data>
+  <data name="Admin_OnlineNow" xml:space="preserve"><value>المتواجدون الآن</value></data>
+  <data name="Admin_UniqueVisitorsLastFiveMinutes" xml:space="preserve"><value>الزوار الفريدون خلال آخر 5 دقائق</value></data>
+  <data name="Admin_UniqueToday" xml:space="preserve"><value>الزوار الفريدون اليوم</value></data>
+  <data name="Admin_DistinctIpsToday" xml:space="preserve"><value>عدد عناوين IP المختلفة اليوم</value></data>
+  <data name="Admin_VisitsToday" xml:space="preserve"><value>زيارات اليوم</value></data>
+  <data name="Admin_AllPageAndActionRecords" xml:space="preserve"><value>جميع سجلات الصفحات والإجراءات</value></data>
+  <data name="Admin_FilteredRecords" xml:space="preserve"><value>السجلات المصفاة</value></data>
+  <data name="Admin_UniqueVisitorCount" xml:space="preserve"><value>{0} زائر فريد</value></data>
+  <data name="Admin_VisitorFilters" xml:space="preserve"><value>عوامل التصفية</value></data>
+  <data name="Admin_VisitorSearch" xml:space="preserve"><value>البحث</value></data>
+  <data name="Admin_SearchTrafficPlaceholder" xml:space="preserve"><value>ابحث عن عنوان IP أو URL أو المدينة أو المستخدم أو المتصفح</value></data>
+  <data name="Admin_VisitorMethod" xml:space="preserve"><value>طريقة الطلب</value></data>
+  <data name="Admin_VisitorAll" xml:space="preserve"><value>الكل</value></data>
+  <data name="Admin_VisitorDevice" xml:space="preserve"><value>الجهاز</value></data>
+  <data name="Admin_VisitorMobile" xml:space="preserve"><value>هاتف محمول</value></data>
+  <data name="Admin_VisitorDesktop" xml:space="preserve"><value>سطح المكتب</value></data>
+  <data name="Admin_VisitorStartDate" xml:space="preserve"><value>تاريخ البداية</value></data>
+  <data name="Admin_VisitorEndDate" xml:space="preserve"><value>تاريخ النهاية</value></data>
+  <data name="Admin_VisitorHighlights" xml:space="preserve"><value>أبرز الإحصاءات</value></data>
+  <data name="Admin_MostVisited" xml:space="preserve"><value>الأكثر زيارة</value></data>
+  <data name="Admin_StrongestSource" xml:space="preserve"><value>المصدر الأقوى</value></data>
+  <data name="Admin_MobileDesktop" xml:space="preserve"><value>الجوال / سطح المكتب</value></data>
+  <data name="Admin_VisitorPage" xml:space="preserve"><value>الصفحة</value></data>
+  <data name="Admin_MostVisitedPages" xml:space="preserve"><value>الصفحات الأكثر زيارة</value></data>
+  <data name="Admin_VisitUniqueCounts" xml:space="preserve"><value>{0} زيارة / {1} زائر فريد</value></data>
+  <data name="Admin_NoPageDataForFilter" xml:space="preserve"><value>لا تتوفر بيانات صفحات لعامل التصفية هذا.</value></data>
+  <data name="Admin_VisitorTrafficSources" xml:space="preserve"><value>مصادر الزيارات</value></data>
+  <data name="Admin_NoSourceDataForFilter" xml:space="preserve"><value>لا تتوفر بيانات مصادر لعامل التصفية هذا.</value></data>
+  <data name="Admin_TrafficRecords" xml:space="preserve"><value>سجلات الزيارات</value></data>
+  <data name="Admin_VisitorPerPage" xml:space="preserve"><value>لكل صفحة</value></data>
+  <data name="Admin_VisitorLocation" xml:space="preserve"><value>الموقع</value></data>
+  <data name="Admin_VisitorSource" xml:space="preserve"><value>المصدر</value></data>
+  <data name="Admin_VisitorUnknown" xml:space="preserve"><value>غير معروف</value></data>
+  <data name="Admin_VisitorGuest" xml:space="preserve"><value>زائر</value></data>
+  <data name="Admin_DirectUnknown" xml:space="preserve"><value>زيارة مباشرة / غير معروف</value></data>
+  <data name="Admin_NoMatchingTrafficRecords" xml:space="preserve"><value>لا توجد سجلات زيارات تطابق عوامل التصفية المحددة.</value></data>
+  <data name="Admin_TrafficPaginationSummary" xml:space="preserve"><value>الصفحة {1} / {2} من أصل {0} سجل</value></data>
+  <data name="Admin_VisitorPrevious" xml:space="preserve"><value>السابق</value></data>
+  <data name="Admin_VisitorNext" xml:space="preserve"><value>التالي</value></data>
+  <data name="Admin_VisitorTrafficWorksheet" xml:space="preserve"><value>حركة الزوار</value></data>
+  <data name="Admin_VisitorDate" xml:space="preserve"><value>التاريخ</value></data>
+  <data name="Admin_VisitorIpAddress" xml:space="preserve"><value>عنوان IP</value></data>
+  <data name="Admin_VisitorCountry" xml:space="preserve"><value>الدولة</value></data>
+  <data name="Admin_VisitorCity" xml:space="preserve"><value>المدينة</value></data>
+  <data name="Admin_VisitorUrl" xml:space="preserve"><value>URL</value></data>
+  <data name="Admin_VisitorReferrer" xml:space="preserve"><value>المُحيل</value></data>
+  <data name="Admin_VisitorUser" xml:space="preserve"><value>المستخدم</value></data>
+  <data name="Admin_VisitorBrowser" xml:space="preserve"><value>المتصفح</value></data>
+  <data name="Admin_VisitorOperatingSystem" xml:space="preserve"><value>نظام التشغيل</value></data>
+  <data name="Admin_TrafficHistoryCleared" xml:space="preserve"><value>تم مسح سجل حركة الزوار.</value></data>
+  <data name="Admin_UnnamedUser" xml:space="preserve"><value>مستخدم بلا اسم</value></data>
+  <data name="Admin_CannotChangeOwnStatus" xml:space="preserve"><value>لا يمكنك تغيير حالة حسابك من هذه الشاشة.</value></data>
+  <data name="Admin_AuditUserUnblocked" xml:space="preserve"><value>تمت استعادة وصول المستخدم.</value></data>
+  <data name="Admin_AuditUserBlocked" xml:space="preserve"><value>تم حظر وصول المستخدم.</value></data>
+  <data name="Admin_UserUnblocked" xml:space="preserve"><value>تمت إزالة حظر المستخدم.</value></data>
+  <data name="Admin_UserBlocked" xml:space="preserve"><value>تم حظر المستخدم.</value></data>
+  <data name="Admin_PasswordUserNotSelected" xml:space="preserve"><value>لم يتم تحديد مستخدم لتغيير كلمة المرور.</value></data>
+  <data name="Admin_UserNotFound" xml:space="preserve"><value>لم يتم العثور على المستخدم.</value></data>
+  <data name="Admin_NewPasswordRequired" xml:space="preserve"><value>كلمة المرور الجديدة مطلوبة.</value></data>
+  <data name="Admin_PasswordsMustMatch" xml:space="preserve"><value>يجب أن تتطابق كلمتا المرور.</value></data>
+  <data name="Admin_AuditPasswordReset" xml:space="preserve"><value>تمت إعادة تعيين كلمة مرور المستخدم بواسطة مسؤول.</value></data>
+  <data name="Admin_PasswordUpdated" xml:space="preserve"><value>تم تحديث كلمة المرور بنجاح.</value></data>
+  <data name="Admin_EditUserNotSelected" xml:space="preserve"><value>لم يتم تحديد مستخدم للتعديل.</value></data>
+  <data name="Admin_InvalidRole" xml:space="preserve"><value>الدور المحدد غير صالح.</value></data>
+  <data name="Admin_CannotChangeOwnRole" xml:space="preserve"><value>لا يمكنك تغيير دورك من هذه الشاشة.</value></data>
+  <data name="Admin_NameRequired" xml:space="preserve"><value>الاسم الكامل مطلوب.</value></data>
+  <data name="Admin_InvalidPalestinePhone" xml:space="preserve"><value>أدخل رقم هاتف فلسطيني صالحًا. مثال: +970 599 123 456</value></data>
+  <data name="Admin_AuditUserRoleUpdated" xml:space="preserve"><value>تم تغيير دور المستخدم من {0} إلى {1}.</value></data>
+  <data name="Admin_UserAndRoleUpdated" xml:space="preserve"><value>تم تحديث معلومات المستخدم ودوره.</value></data>
+  <data name="Admin_UserUpdated" xml:space="preserve"><value>تم تحديث معلومات المستخدم.</value></data>
+  <data name="Admin_CannotDeleteOwnAccount" xml:space="preserve"><value>لا يمكنك حذف حسابك.</value></data>
+  <data name="Admin_AuditUserDeleted" xml:space="preserve"><value>تم حذف سجل المستخدم.</value></data>
+  <data name="Admin_UserDeleted" xml:space="preserve"><value>تم حذف سجل المستخدم.</value></data>
+  <data name="Admin_Role" xml:space="preserve"><value>الدور</value></data>
+  <data name="Admin_LastAdminLogin" xml:space="preserve"><value>آخر دخول إلى لوحة الإدارة</value></data>
+  <data name="Admin_UsersCsvFileName" xml:space="preserve"><value>users.csv</value></data>
+  <data name="Admin_AuditStaffSessionCleared" xml:space="preserve"><value>تم إنهاء جلسات الموظف بواسطة مسؤول.</value></data>
+  <data name="Admin_StaffSessionCleared" xml:space="preserve"><value>تم إنهاء جلسات {0}.</value></data>
+  <data name="Admin_Role_LegacyAdmin" xml:space="preserve"><value>مسؤول قديم</value></data>
+  <data name="Admin_Role_LegacyAdmin_Description" xml:space="preserve"><value>دور مسؤول قديم يتمتع بصلاحية كاملة.</value></data>
+  <data name="Admin_Role_SuperAdmin" xml:space="preserve"><value>المسؤول الأعلى</value></data>
+  <data name="Admin_Role_SuperAdmin_Description" xml:space="preserve"><value>صلاحية كاملة للإعدادات والمستخدمين وجميع شاشات الإدارة.</value></data>
+  <data name="Admin_Role_Manager" xml:space="preserve"><value>المدير</value></data>
+  <data name="Admin_Role_Manager_Description" xml:space="preserve"><value>يمكنه إدارة العمليات اليومية ومعظم المهام الإدارية.</value></data>
+  <data name="Admin_Role_OrderManager" xml:space="preserve"><value>مدير الطلبات</value></data>
+  <data name="Admin_Role_OrderManager_Description" xml:space="preserve"><value>يمكنه إدارة الطلبات والمرتجعات وسير العمليات.</value></data>
+  <data name="Admin_Role_ProductManager" xml:space="preserve"><value>مدير المنتجات</value></data>
+  <data name="Admin_Role_ProductManager_Description" xml:space="preserve"><value>يمكنه إدارة المنتجات والتصنيفات وبيانات الكتالوج.</value></data>
+  <data name="Admin_Role_ContentManager" xml:space="preserve"><value>مدير المحتوى</value></data>
+  <data name="Admin_Role_ContentManager_Description" xml:space="preserve"><value>يمكنه إدارة الصفحات والتقييمات والنشرات ومحتوى الواجهة.</value></data>
+  <data name="Admin_Role_ShippingManager" xml:space="preserve"><value>مدير الشحن</value></data>
+  <data name="Admin_Role_ShippingManager_Description" xml:space="preserve"><value>دور تشغيلي يركز على الشحن والمرتجعات.</value></data>
+  <data name="Admin_Role_Viewer" xml:space="preserve"><value>مشاهد فقط</value></data>
+  <data name="Admin_Role_Viewer_Description" xml:space="preserve"><value>يمكنه عرض لوحة الإدارة دون إجراء تغييرات.</value></data>
+  <data name="Admin_Role_Wholesale" xml:space="preserve"><value>تاجر جملة</value></data>
+  <data name="Admin_Role_Wholesale_Description" xml:space="preserve"><value>عميل لديه صلاحية عرض أسعار الجملة.</value></data>
+  <data name="Admin_Role_Member" xml:space="preserve"><value>عضو</value></data>
+  <data name="Admin_Role_Member_Description" xml:space="preserve"><value>عميل متجر دون صلاحية إدارية.</value></data>
+  <data name="Admin_MatrixGroup_General" xml:space="preserve"><value>عام</value></data>
+  <data name="Admin_MatrixGroup_Operations" xml:space="preserve"><value>العمليات</value></data>
+  <data name="Admin_MatrixGroup_Catalog" xml:space="preserve"><value>الكتالوج</value></data>
+  <data name="Admin_MatrixGroup_Content" xml:space="preserve"><value>المحتوى</value></data>
+  <data name="Admin_MatrixGroup_Management" xml:space="preserve"><value>الإدارة</value></data>
+  <data name="Admin_Matrix_Dashboard" xml:space="preserve"><value>لوحة المعلومات</value></data>
+  <data name="Admin_Matrix_Reports" xml:space="preserve"><value>التقارير</value></data>
+  <data name="Admin_Matrix_VisitorLogs" xml:space="preserve"><value>سجلات الزوار</value></data>
+  <data name="Admin_Matrix_Search" xml:space="preserve"><value>البحث</value></data>
+  <data name="Admin_Matrix_Orders" xml:space="preserve"><value>الطلبات</value></data>
+  <data name="Admin_Matrix_Returns" xml:space="preserve"><value>المرتجعات</value></data>
+  <data name="Admin_Matrix_ShippingManagement" xml:space="preserve"><value>إدارة الشحن</value></data>
+  <data name="Admin_Matrix_Products" xml:space="preserve"><value>المنتجات</value></data>
+  <data name="Admin_Matrix_Categories" xml:space="preserve"><value>التصنيفات</value></data>
+  <data name="Admin_Matrix_Coupons" xml:space="preserve"><value>القسائم</value></data>
+  <data name="Admin_Matrix_Reviews" xml:space="preserve"><value>التقييمات</value></data>
+  <data name="Admin_Matrix_Pages" xml:space="preserve"><value>الصفحات</value></data>
+  <data name="Admin_Matrix_Slides" xml:space="preserve"><value>الشرائح</value></data>
+  <data name="Admin_Matrix_Homepage" xml:space="preserve"><value>الصفحة الرئيسية</value></data>
+  <data name="Admin_Matrix_Newsletter" xml:space="preserve"><value>النشرة البريدية</value></data>
+  <data name="Admin_Matrix_ContactMessages" xml:space="preserve"><value>رسائل التواصل</value></data>
+  <data name="Admin_Matrix_Notifications" xml:space="preserve"><value>الإشعارات</value></data>
+  <data name="Admin_Matrix_HomepageSections" xml:space="preserve"><value>أقسام الصفحة الرئيسية</value></data>
+  <data name="Admin_Matrix_WholesaleManagement" xml:space="preserve"><value>إدارة الجملة</value></data>
+  <data name="Admin_Matrix_WholesaleProductGroups" xml:space="preserve"><value>مجموعات منتجات الجملة</value></data>
+  <data name="Admin_Matrix_UserManagement" xml:space="preserve"><value>إدارة المستخدمين</value></data>
+  <data name="Admin_Matrix_SiteSettings" xml:space="preserve"><value>إعدادات الموقع</value></data>
+  <data name="Admin_Matrix_BankAccounts" xml:space="preserve"><value>الحسابات البنكية</value></data>
+  <data name="Admin_UserManagementSubtitle" xml:space="preserve"><value>أدر الأدوار وحالة الجلسات ومعلومات العملاء من شاشة واحدة.</value></data>
+  <data name="Admin_AdminCount" xml:space="preserve"><value>{0} مسؤول</value></data>
+  <data name="Admin_CustomerCount" xml:space="preserve"><value>{0} عميل</value></data>
+  <data name="Admin_ExportCsv" xml:space="preserve"><value>تصدير CSV</value></data>
+  <data name="Admin_SearchUserPlaceholder" xml:space="preserve"><value>البحث بالاسم أو البريد الإلكتروني أو الهاتف</value></data>
+  <data name="Admin_UserPaginationSummary" xml:space="preserve"><value>{0} سجل، الصفحة {1} من {2}.</value></data>
+  <data name="Admin_ThisIsYourActiveAccount" xml:space="preserve"><value>هذا هو حسابك النشط حاليًا.</value></data>
+  <data name="Admin_PreviousLogin" xml:space="preserve"><value>السابق</value></data>
+  <data name="Admin_Edit" xml:space="preserve"><value>تعديل</value></data>
+  <data name="Admin_EditUserDetailsTitle" xml:space="preserve"><value>تعديل اسم المستخدم وهاتفه ومدينته ودوره.</value></data>
+  <data name="Admin_ChangePasswordTitle" xml:space="preserve"><value>فتح شاشة تعيين كلمة مرور جديدة.</value></data>
+  <data name="Admin_ChangePassword" xml:space="preserve"><value>تغيير كلمة المرور</value></data>
+  <data name="Admin_UnblockLogin" xml:space="preserve"><value>استعادة الوصول</value></data>
+  <data name="Admin_BlockLogin" xml:space="preserve"><value>حظر الوصول</value></data>
+  <data name="Admin_UnblockLoginTitle" xml:space="preserve"><value>السماح للمستخدم بتسجيل الدخول مجددًا.</value></data>
+  <data name="Admin_BlockLoginTitle" xml:space="preserve"><value>منع المستخدم من تسجيل الدخول.</value></data>
+  <data name="Admin_ConfirmUnblockUser" xml:space="preserve"><value>هل تريد استعادة وصول هذا المستخدم؟</value></data>
+  <data name="Admin_ConfirmBlockUser" xml:space="preserve"><value>هل تريد حظر وصول هذا المستخدم؟</value></data>
+  <data name="Admin_DeleteAccount" xml:space="preserve"><value>حذف الحساب</value></data>
+  <data name="Admin_DeleteAccountTitle" xml:space="preserve"><value>حذف سجل المستخدم نهائيًا.</value></data>
+  <data name="Admin_ConfirmDeleteUser" xml:space="preserve"><value>هل أنت متأكد من حذف هذا المستخدم؟</value></data>
+  <data name="Admin_OwnAccountActionsDisabled" xml:space="preserve"><value>الحظر والحذف معطلان لحسابك.</value></data>
+  <data name="Admin_OnlySuperAdminCanManageSuperAdmin" xml:space="preserve"><value>لا يمكن إدارة هذا الحساب إلا بواسطة المسؤول الأعلى.</value></data>
+  <data name="Admin_PageSize" xml:space="preserve"><value>حجم الصفحة</value></data>
+  <data name="Admin_EditUser" xml:space="preserve"><value>تعديل المستخدم</value></data>
+  <data name="Admin_NoAdminLoginYet" xml:space="preserve"><value>لا يوجد دخول إداري حتى الآن</value></data>
+  <data name="Admin_MemberManagement" xml:space="preserve"><value>إدارة الأعضاء</value></data>
+  <data name="Admin_EditUserSubtitle" xml:space="preserve"><value>أدر بيانات الحساب ومعلومات التواصل والصلاحيات الإدارية بأمان.</value></data>
+  <data name="Admin_BackToUsers" xml:space="preserve"><value>العودة إلى المستخدمين</value></data>
+  <data name="Admin_AccountInformation" xml:space="preserve"><value>معلومات الحساب</value></data>
+  <data name="Admin_CurrentAccountRoleLocked" xml:space="preserve"><value>هذا حسابك الإداري الحالي. يمكن تحديث المعلومات الأساسية، لكن تغيير الدور معطل لأسباب أمنية.</value></data>
+  <data name="Admin_BasicInformation" xml:space="preserve"><value>المعلومات الأساسية</value></data>
+  <data name="Admin_EmailCannotBeChanged" xml:space="preserve"><value>البريد الإلكتروني هو معرّف تسجيل الدخول ولا يمكن تغييره هنا.</value></data>
+  <data name="Admin_PalestinePhonePlaceholder" xml:space="preserve"><value>مثال: +970 599 123 456</value></data>
+  <data name="Admin_CityPlaceholder" xml:space="preserve"><value>مثال: رام الله</value></data>
+  <data name="Admin_PermissionAndRole" xml:space="preserve"><value>الصلاحيات والدور</value></data>
+  <data name="Admin_RoleSelectionHelp" xml:space="preserve"><value>يحدد الدور المختار شاشات الإدارة التي يمكن للمستخدم الوصول إليها. اترك دور العضو محددًا لحسابات العملاء.</value></data>
+  <data name="Admin_LoginBlocked" xml:space="preserve"><value>الوصول محظور</value></data>
+  <data name="Admin_ActiveAccount" xml:space="preserve"><value>حساب نشط</value></data>
+  <data name="Admin_CurrentRole" xml:space="preserve"><value>الدور الحالي</value></data>
+  <data name="Admin_RoleDescription" xml:space="preserve"><value>وصف الدور</value></data>
+  <data name="Admin_PreviousAdminLogin" xml:space="preserve"><value>دخول الإدارة السابق</value></data>
+  <data name="Admin_UsageNotes" xml:space="preserve"><value>ملاحظات الاستخدام</value></data>
+  <data name="Admin_EmailReadonlyNote" xml:space="preserve"><value>يتم عرض البريد الإلكتروني فقط لأنه معرّف تسجيل دخول المستخدم.</value></data>
+  <data name="Admin_MemberRoleNote" xml:space="preserve"><value>يجب إبقاء دور العضو للعملاء الذين لا يحتاجون إلى صلاحية إدارية.</value></data>
+  <data name="Admin_PasswordOperationNote" xml:space="preserve"><value>تتم عمليات كلمة المرور في شاشة منفصلة وتؤدي إلى إنهاء جلسات المستخدم الحالية.</value></data>
+  <data name="Admin_MemberSecurity" xml:space="preserve"><value>أمان الأعضاء</value></data>
+  <data name="Admin_ChangePasswordSubtitle" xml:space="preserve"><value>عيّن كلمة مرور جديدة وأنهِ جلسات المستخدم الحالية بأمان.</value></data>
+  <data name="Admin_NewPasswordInformation" xml:space="preserve"><value>معلومات كلمة المرور الجديدة</value></data>
+  <data name="Admin_PasswordResetWarning" xml:space="preserve"><value>سيؤدي هذا إلى إبطال كلمة المرور القديمة وإنهاء الجلسات النشطة بعد التغيير.</value></data>
+  <data name="Admin_NewPassword" xml:space="preserve"><value>كلمة المرور الجديدة</value></data>
+  <data name="Admin_TogglePasswordVisibility" xml:space="preserve"><value>إظهار أو إخفاء كلمة المرور</value></data>
+  <data name="Admin_StrongPasswordHint" xml:space="preserve"><value>استخدم أحرفًا كبيرة وصغيرة وأرقامًا ورموزًا لإنشاء كلمة مرور قوية.</value></data>
+  <data name="Admin_ConfirmNewPassword" xml:space="preserve"><value>تأكيد كلمة المرور الجديدة</value></data>
+  <data name="Admin_RepeatPasswordPlaceholder" xml:space="preserve"><value>أدخل كلمة المرور مرة أخرى</value></data>
+  <data name="Admin_TogglePasswordConfirmationVisibility" xml:space="preserve"><value>إظهار أو إخفاء تأكيد كلمة المرور</value></data>
+  <data name="Admin_PasswordRules" xml:space="preserve"><value>قواعد كلمة المرور</value></data>
+  <data name="Admin_PasswordRuleLength" xml:space="preserve"><value>6 أحرف على الأقل</value></data>
+  <data name="Admin_PasswordRuleUppercase" xml:space="preserve"><value>حرف كبير</value></data>
+  <data name="Admin_PasswordRuleLowercase" xml:space="preserve"><value>حرف صغير</value></data>
+  <data name="Admin_PasswordRuleNumber" xml:space="preserve"><value>رقم</value></data>
+  <data name="Admin_PasswordRuleSymbol" xml:space="preserve"><value>رمز خاص</value></data>
+  <data name="Admin_PasswordRuleMatch" xml:space="preserve"><value>كلمتا المرور متطابقتان</value></data>
+  <data name="Admin_UpdatePassword" xml:space="preserve"><value>تحديث كلمة المرور</value></data>
+  <data name="Admin_OperationNotes" xml:space="preserve"><value>ملاحظات العملية</value></data>
+  <data name="Admin_SharePasswordSecurelyNote" xml:space="preserve"><value>أرسل كلمة المرور الجديدة للمستخدم عبر قناة آمنة.</value></data>
+  <data name="Admin_PasswordClearsSessionNote" xml:space="preserve"><value>يؤدي تحديث كلمة المرور إلى إنهاء جلسات الإدارة المفتوحة للمستخدم.</value></data>
+  <data name="Admin_PasswordAuditNote" xml:space="preserve"><value>يتم تسجيل هذه العملية كإجراء أمني إداري.</value></data>
+  <data name="Admin_PasswordStrengthWeak" xml:space="preserve"><value>تبدو كلمة المرور ضعيفة. أضف أحرفًا وأرقامًا ورموزًا.</value></data>
+  <data name="Admin_PasswordStrengthMedium" xml:space="preserve"><value>كلمة المرور متوسطة القوة. أضف أنواعًا أخرى من الأحرف.</value></data>
+  <data name="Admin_PasswordStrengthStrong" xml:space="preserve"><value>تبدو كلمة المرور قوية.</value></data>
+  <data name="Admin_PasswordsMatching" xml:space="preserve"><value>كلمتا المرور متطابقتان.</value></data>
+  <data name="Admin_PasswordsNotMatching" xml:space="preserve"><value>كلمتا المرور غير متطابقتين.</value></data>
+  <data name="Admin_PasswordSubmitMismatch" xml:space="preserve"><value>تأكد من تطابق كلمتي المرور قبل الحفظ.</value></data>
+  <data name="Admin_TodayAt" xml:space="preserve"><value>اليوم الساعة {0}</value></data>
+  <data name="Admin_YesterdayAt" xml:space="preserve"><value>أمس الساعة {0}</value></data>
+  <data name="Admin_Online" xml:space="preserve"><value>متصل</value></data>
+  <data name="Admin_Offline" xml:space="preserve"><value>غير متصل</value></data>
+  <data name="Admin_ECommerceAnalyticsKicker" xml:space="preserve"><value>تحليلات التجارة الإلكترونية</value></data>
+  <data name="Admin_ExportPdf" xml:space="preserve"><value>تصدير PDF</value></data>
+  <data name="Admin_Revenue" xml:space="preserve"><value>الإيرادات</value></data>
+  <data name="Admin_VsPreviousPeriod" xml:space="preserve"><value>{0} مقارنة بالفترة السابقة</value></data>
+  <data name="Admin_Conversion" xml:space="preserve"><value>التحويل</value></data>
+  <data name="Admin_UniqueVisitorsCount" xml:space="preserve"><value>{0} زائر فريد</value></data>
+  <data name="Admin_NewVsRepeatCustomer" xml:space="preserve"><value>{0} جديد / {1} متكرر</value></data>
+  <data name="Admin_AverageCartValue" xml:space="preserve"><value>متوسط قيمة السلة</value></data>
+  <data name="Admin_ProductsSold" xml:space="preserve"><value>تم بيع {0} منتج</value></data>
+  <data name="Admin_AbandonedCarts" xml:space="preserve"><value>السلات المتروكة</value></data>
+  <data name="Admin_CartsCount" xml:space="preserve"><value>{0} سلة</value></data>
+  <data name="Admin_ReturnCancel" xml:space="preserve"><value>الإرجاع / الإلغاء</value></data>
+  <data name="Admin_ReturnScreen" xml:space="preserve"><value>الانتقال إلى الإرجاع</value></data>
+  <data name="Admin_TotalDiscount" xml:space="preserve"><value>إجمالي الخصم</value></data>
+  <data name="Admin_ReviewCoupons" xml:space="preserve"><value>مراجعة الكوبونات</value></data>
+  <data name="Admin_DailyRevenueOrderTraffic" xml:space="preserve"><value>الإيرادات والطلبات والزيارات اليومية</value></data>
+  <data name="Admin_DaysCount" xml:space="preserve"><value>{0} يوم</value></data>
+  <data name="Admin_ActionInsights" xml:space="preserve"><value>توصيات قابلة للتنفيذ</value></data>
+  <data name="Admin_HourlySalesTraffic" xml:space="preserve"><value>المبيعات والزيارات حسب الساعة</value></data>
+  <data name="Admin_OrderStatusDistribution" xml:space="preserve"><value>توزيع حالات الطلبات</value></data>
+  <data name="Admin_CategoryRevenue" xml:space="preserve"><value>الإيرادات حسب الفئة</value></data>
+  <data name="Admin_CustomerSummary" xml:space="preserve"><value>ملخص العملاء</value></data>
+  <data name="Admin_NewCustomer" xml:space="preserve"><value>عميل جديد</value></data>
+  <data name="Admin_RepeatCustomer" xml:space="preserve"><value>عميل متكرر</value></data>
+  <data name="Admin_RepeatCustomerRevenue" xml:space="preserve"><value>إيرادات العملاء المتكررين</value></data>
+  <data name="Admin_StrongestCity" xml:space="preserve"><value>المدينة الأفضل</value></data>
+  <data name="Admin_HighClicksLowSales" xml:space="preserve"><value>نقرات مرتفعة ومبيعات منخفضة</value></data>
+  <data name="Admin_Clicks" xml:space="preserve"><value>النقرات</value></data>
+  <data name="Admin_Sales" xml:space="preserve"><value>المبيعات</value></data>
+  <data name="Admin_Risk" xml:space="preserve"><value>المخاطر</value></data>
+  <data name="Admin_NoConversionRiskProducts" xml:space="preserve"><value>لا توجد منتجات معرضة لمخاطر التحويل.</value></data>
+  <data name="Admin_MostValuableCustomers" xml:space="preserve"><value>العملاء الأعلى قيمة</value></data>
+  <data name="Admin_Repeat" xml:space="preserve"><value>متكرر</value></data>
+  <data name="Admin_NoCustomerOrderData" xml:space="preserve"><value>لا توجد بيانات طلبات للعملاء.</value></data>
+  <data name="Admin_ReturnCancelReasons" xml:space="preserve"><value>أسباب الإرجاع / الإلغاء</value></data>
+  <data name="Admin_Reason" xml:space="preserve"><value>السبب</value></data>
+  <data name="Admin_Amount" xml:space="preserve"><value>المبلغ</value></data>
+  <data name="Admin_NoReturnCancelReasons" xml:space="preserve"><value>لا توجد أسباب إرجاع أو إلغاء.</value></data>
+  <data name="Admin_BestSellingProducts" xml:space="preserve"><value>المنتجات الأكثر مبيعاً</value></data>
+  <data name="Admin_GoToProducts" xml:space="preserve"><value>الانتقال إلى المنتجات</value></data>
+  <data name="Admin_Email" xml:space="preserve"><value>البريد الإلكتروني</value></data>
+  <data name="Admin_ReportProductFallback" xml:space="preserve"><value>المنتج رقم {0}</value></data>
+  <data name="Admin_ReportRiskClicksNoSales" xml:space="preserve"><value>نقرات دون مبيعات</value></data>
+  <data name="Admin_ReportRiskLowConversion" xml:space="preserve"><value>معدل تحويل منخفض</value></data>
+  <data name="Admin_ReportRiskMonitor" xml:space="preserve"><value>يحتاج إلى متابعة</value></data>
+  <data name="Admin_ReportUnnamedCustomer" xml:space="preserve"><value>عميل بدون اسم</value></data>
+  <data name="Admin_ReportReasonNotProvided" xml:space="preserve"><value>لم يتم تقديم سبب</value></data>
+  <data name="Admin_ReportCancellationType" xml:space="preserve"><value>إلغاء</value></data>
+  <data name="Admin_ReportReturnType" xml:space="preserve"><value>إرجاع</value></data>
+  <data name="Admin_ReportUncategorized" xml:space="preserve"><value>بدون فئة</value></data>
+  <data name="Admin_ReportShippingCompanyNotSelected" xml:space="preserve"><value>لم يتم اختيار شركة شحن</value></data>
+  <data name="Admin_ReportDirectUnknown" xml:space="preserve"><value>مباشر / غير معروف</value></data>
+  <data name="Admin_ReportMobile" xml:space="preserve"><value>هاتف محمول</value></data>
+  <data name="Admin_ReportTablet" xml:space="preserve"><value>جهاز لوحي</value></data>
+  <data name="Admin_ReportDesktop" xml:space="preserve"><value>حاسوب مكتبي</value></data>
+  <data name="Admin_ReportInsightPendingOrdersTitle" xml:space="preserve"><value>توجد طلبات معلقة</value></data>
+  <data name="Admin_ReportInsightPendingOrdersDescription" xml:space="preserve"><value>يبدو أن {0} طلب لم تتم معالجته بعد.</value></data>
+  <data name="Admin_ReportInsightConversionRiskTitle" xml:space="preserve"><value>مخاطر تحويل المنتج</value></data>
+  <data name="Admin_ReportInsightConversionRiskDescription" xml:space="preserve"><value>يحظى {0} بمشاهدات مرتفعة ومبيعات منخفضة. راجع السعر والصور والخيارات والوصف.</value></data>
+  <data name="Admin_ReportInsightAbandonedCartTitle" xml:space="preserve"><value>فرصة السلات المتروكة</value></data>
+  <data name="Admin_ReportInsightAbandonedCartDescription" xml:space="preserve"><value>تحتوي {0} سلة متروكة على إيرادات محتملة تقارب {1}.</value></data>
+  <data name="Admin_ReportInsightReturnCancelTitle" xml:space="preserve"><value>متابعة الإرجاع والإلغاء</value></data>
+  <data name="Admin_ReportInsightReturnCancelDescription" xml:space="preserve"><value>يوجد {0} طلب إرجاع و{1} طلب ملغي. تساعد متابعة الأسباب دورياً على تحسين الجودة.</value></data>
+  <data name="Admin_ReportInsightLowConversionTitle" xml:space="preserve"><value>معدل تحويل منخفض</value></data>
+  <data name="Admin_ReportInsightLowConversionDescription" xml:space="preserve"><value>معدل التحويل هو {0:N2}%. يمكن تحسين صفحات المنتجات والسلة وتدفق الحملات.</value></data>
+  <data name="Admin_ReportInsightNormalTitle" xml:space="preserve"><value>تبدو العمليات طبيعية</value></data>
+  <data name="Admin_ReportInsightNormalDescription" xml:space="preserve"><value>لا توجد تنبيهات تتطلب إجراءً عاجلاً خلال الفترة المحددة.</value></data>
+  <data name="Admin_ReportStatusOrderReceived" xml:space="preserve"><value>جديد</value></data>
+  <data name="Admin_ReportStatusPreparing" xml:space="preserve"><value>قيد التحضير</value></data>
+  <data name="Admin_ReportStatusPacking" xml:space="preserve"><value>قيد التجهيز</value></data>
+  <data name="Admin_ReportStatusShipped" xml:space="preserve"><value>تم الشحن</value></data>
+  <data name="Admin_ReportStatusDelivered" xml:space="preserve"><value>تم التسليم</value></data>
+  <data name="Admin_ReportStatusCancelled" xml:space="preserve"><value>ملغي</value></data>
+  <data name="Admin_ReportStatusReturnRequested" xml:space="preserve"><value>طلب إرجاع</value></data>
+  <data name="Admin_ReportStatusReturnApproved" xml:space="preserve"><value>تمت الموافقة على الإرجاع</value></data>
+  <data name="Admin_ReportStatusReturnCompleted" xml:space="preserve"><value>اكتمل الإرجاع</value></data>
+  <data name="Admin_ReportStatusUpdated" xml:space="preserve"><value>تم التحديث</value></data>
+  <data name="Admin_ReportPdfTitle" xml:space="preserve"><value>ملخص تقرير 7ANRPS48</value></data>
+  <data name="Admin_ReportRevenueSubtitle" xml:space="preserve"><value>محسوبة من الطلبات المحتسبة ضمن الإيرادات.</value></data>
+  <data name="Admin_ReportAverageCartSubtitle" xml:space="preserve"><value>متوسط السلة: {0}</value></data>
+  <data name="Admin_ReportRepeatCustomerSubtitle" xml:space="preserve"><value>{0} عميل متكرر</value></data>
+  <data name="Admin_ReportOperationsTrackingSubtitle" xml:space="preserve"><value>لمتابعة العمليات</value></data>
+  <data name="Admin_ReportTitleColumn" xml:space="preserve"><value>العنوان</value></data>
+  <data name="Admin_ReportPagePrefix" xml:space="preserve"><value>صفحة </value></data>
+  <data name="Admin_ReportPdfFileName" xml:space="preserve"><value>ملخص-التقرير-{0:yyyyMMdd}-{1:yyyyMMdd}.pdf</value></data>
+  <data name="Admin_ReportExcelFileName" xml:space="preserve"><value>تقارير-{0:yyyyMMdd}-{1:yyyyMMdd}.xlsx</value></data>
+  <data name="Admin_ReportSheetSummary" xml:space="preserve"><value>الملخص</value></data>
+  <data name="Admin_ReportSheetDaily" xml:space="preserve"><value>يومي</value></data>
+  <data name="Admin_ReportSheetHourlyAnalysis" xml:space="preserve"><value>تحليل الساعات</value></data>
+  <data name="Admin_ReportSheetOrderStatuses" xml:space="preserve"><value>حالات الطلبات</value></data>
+  <data name="Admin_ReportSheetBestSellingProducts" xml:space="preserve"><value>الأكثر مبيعاً</value></data>
+  <data name="Admin_ReportSheetMostClickedProducts" xml:space="preserve"><value>الأكثر نقراً</value></data>
+  <data name="Admin_ReportSheetProductConversionRisk" xml:space="preserve"><value>مخاطر تحويل المنتجات</value></data>
+  <data name="Admin_ReportSheetCustomers" xml:space="preserve"><value>العملاء</value></data>
+  <data name="Admin_ReportSheetReturnCancelReasons" xml:space="preserve"><value>أسباب الإرجاع والإلغاء</value></data>
+  <data name="Admin_ReportSheetCategoryPerformance" xml:space="preserve"><value>أداء الفئات</value></data>
+  <data name="Admin_ReportSheetCities" xml:space="preserve"><value>المدن</value></data>
+  <data name="Admin_ReportSheetCoupons" xml:space="preserve"><value>الكوبونات</value></data>
+  <data name="Admin_ReportSheetTrafficSources" xml:space="preserve"><value>مصادر الزيارات</value></data>
+  <data name="Admin_ReportSheetVisitedPages" xml:space="preserve"><value>الصفحات المزارة</value></data>
+  <data name="Admin_ReportSheetDeviceDistribution" xml:space="preserve"><value>توزيع الأجهزة</value></data>
+  <data name="Admin_ReportSheetShipping" xml:space="preserve"><value>الشحن</value></data>
+  <data name="Admin_ReportRange" xml:space="preserve"><value>نطاق التقرير</value></data>
+  <data name="Admin_ReportOrderCount" xml:space="preserve"><value>عدد الطلبات</value></data>
+  <data name="Admin_ReportProductsSoldCount" xml:space="preserve"><value>المنتجات المباعة</value></data>
+  <data name="Admin_ReportUniqueCustomers" xml:space="preserve"><value>العملاء الفريدون</value></data>
+  <data name="Admin_ReportVisits" xml:space="preserve"><value>الزيارات</value></data>
+  <data name="Admin_ReportUniqueVisitor" xml:space="preserve"><value>الزوار الفريدون</value></data>
+  <data name="Admin_ReportConversionRate" xml:space="preserve"><value>معدل التحويل</value></data>
+  <data name="Admin_ReportReturnRequests" xml:space="preserve"><value>طلبات الإرجاع</value></data>
+  <data name="Admin_ReportCancelledOrders" xml:space="preserve"><value>الطلبات الملغاة</value></data>
+  <data name="Admin_ReportAbandonedCartAmount" xml:space="preserve"><value>قيمة السلات المتروكة</value></data>
+  <data name="Admin_ReportHour" xml:space="preserve"><value>الساعة</value></data>
+  <data name="Admin_ReportProductId" xml:space="preserve"><value>معرف المنتج</value></data>
+  <data name="Admin_ReportSalesQuantity" xml:space="preserve"><value>الكمية المباعة</value></data>
+  <data name="Admin_ReportViews" xml:space="preserve"><value>المشاهدات</value></data>
+  <data name="Admin_ReportConversionPercent" xml:space="preserve"><value>نسبة التحويل %</value></data>
+  <data name="Admin_ReportRiskNote" xml:space="preserve"><value>ملاحظة المخاطر</value></data>
+  <data name="Admin_ReportLastOrder" xml:space="preserve"><value>آخر طلب</value></data>
+  <data name="Admin_ReportCategoryId" xml:space="preserve"><value>معرف الفئة</value></data>
+  <data name="Admin_ReportProductCount" xml:space="preserve"><value>عدد المنتجات</value></data>
+  <data name="Admin_ReportCoupon" xml:space="preserve"><value>الكوبون</value></data>
+  <data name="Admin_ReportCompany" xml:space="preserve"><value>الشركة</value></data>
+  <data name="Admin_ReportInTransit" xml:space="preserve"><value>قيد الشحن</value></data>
+  <data name="Admin_WholesaleGroupNameRequired" xml:space="preserve"><value>اسم المجموعة مطلوب.</value></data>
+  <data name="Admin_WholesaleGroupNotFound" xml:space="preserve"><value>لم يتم العثور على مجموعة المنتجات.</value></data>
+  <data name="Admin_WholesaleInvalidGroup" xml:space="preserve"><value>مجموعة المنتجات غير صالحة.</value></data>
+  <data name="Admin_WholesaleMinimumQuantityInvalid" xml:space="preserve"><value>يجب ألا تقل الكمية الدنيا عن 1.</value></data>
+  <data name="Admin_WholesaleDiscountRateInvalid" xml:space="preserve"><value>يجب أن تكون نسبة الخصم بين 0 و100.</value></data>
+  <data name="Admin_WholesaleDiscountNotFound" xml:space="preserve"><value>لم يتم العثور على سجل الخصم.</value></data>
+  <data name="Admin_OfferGiftWrap" xml:space="preserve"><value>توفير تغليف الهدايا</value></data>
+  <data name="Admin_OfferGiftWrapHelp" xml:space="preserve"><value>يمكن للعملاء إضافة تغليف الهدايا من صفحة المنتج.</value></data>
+  <data name="Admin_GiftWrapPrice" xml:space="preserve"><value>سعر تغليف الهدية</value></data>
+  <data name="Admin_InvalidProductImageUpload" xml:space="preserve"><value>ارفع صورة صالحة بصيغة JPG أو PNG أو WEBP ولا يزيد حجمها عن 10 ميجابايت.</value></data>
+  <data name="Home_CategoriesTitle" xml:space="preserve"><value>تسوق حسب الفئة</value></data>
+  <data name="Home_AllCategories" xml:space="preserve"><value>عرض جميع الفئات</value></data>
+  <data name="Admin_UploadCategoryImage" xml:space="preserve"><value>رفع صورة الفئة</value></data>
+  <data name="Admin_CategoryImageKeepHelp" xml:space="preserve"><value>JPG أو PNG أو WEBP بحد أقصى 10 ميجابايت. اتركه فارغاً للاحتفاظ بالصورة الحالية.</value></data>
+  <data name="Admin_InvalidCategoryImageUpload" xml:space="preserve"><value>ارفع صورة صالحة بصيغة JPG أو PNG أو WEBP ولا يزيد حجمها عن 10 ميجابايت.</value></data>
+  <data name="Admin_HomeSliderSaved" xml:space="preserve"><value>تم حفظ إعدادات شريط الصفحة الرئيسية.</value></data>
+  <data name="Admin_HomeSettingsSaveFailed" xml:space="preserve"><value>تعذر حفظ إعدادات الصفحة الرئيسية.</value></data>
+  <data name="Admin_SlideNumber" xml:space="preserve"><value>الشريحة {0}</value></data>
+  <data name="Admin_Unread" xml:space="preserve"><value>غير مقروء</value></data>
+  <data name="Admin_Read" xml:space="preserve"><value>مقروء</value></data>
+  <data name="Admin_SearchMessagePlaceholder" xml:space="preserve"><value>ابحث بالمرسل أو البريد أو الموضوع أو الرسالة</value></data>
+  <data name="Admin_ClearSearch" xml:space="preserve"><value>مسح البحث</value></data>
+  <data name="Admin_MarkSelectedAsRead" xml:space="preserve"><value>تحديد المختار كمقروء</value></data>
+  <data name="Admin_MarkNMessagesRead" xml:space="preserve"><value>رسائل محددة</value></data>
+  <data name="Admin_NoMessagesToShow" xml:space="preserve"><value>لا توجد رسائل مطابقة لهذا التصفية.</value></data>
+  <data name="Admin_SubjectAndMessage" xml:space="preserve"><value>الموضوع والرسالة</value></data>
+  <data name="Admin_GeneralInquiry" xml:space="preserve"><value>استفسار عام</value></data>
+  <data name="Admin_ReplySubjectPrefix" xml:space="preserve"><value>رد: رسالتك إلى 7ANRPS48</value></data>
+  <data name="Admin_ReadBadge" xml:space="preserve"><value>مقروء</value></data>
+  <data name="Admin_NewBadge" xml:space="preserve"><value>جديد</value></data>
+  <data name="Admin_ViewMessage" xml:space="preserve"><value>عرض الرسالة</value></data>
+  <data name="Admin_ReplyWithEmail" xml:space="preserve"><value>الرد بالبريد الإلكتروني</value></data>
+  <data name="Admin_MarkUnread" xml:space="preserve"><value>تحديد كغير مقروء</value></data>
+  <data name="Admin_MarkRead" xml:space="preserve"><value>تحديد كمقروء</value></data>
+  <data name="Admin_DeleteMessageConfirm" xml:space="preserve"><value>هل تريد حذف هذه الرسالة نهائياً؟</value></data>
+  <data name="Admin_MessageDetail" xml:space="preserve"><value>تفاصيل الرسالة</value></data>
+  <data name="Admin_MessageDetailSubtitle" xml:space="preserve"><value>راجع بيانات المرسل ونص الرسالة بالكامل.</value></data>
+  <data name="Admin_GoBack" xml:space="preserve"><value>رجوع</value></data>
+  <data name="Admin_Subject" xml:space="preserve"><value>الموضوع</value></data>
+  <data name="Admin_Reply" xml:space="preserve"><value>رد</value></data>
+  <data name="Admin_ContactMarkedRead" xml:space="preserve"><value>تم تحديد الرسالة كمقروءة.</value></data>
+  <data name="Admin_ContactMarkedUnread" xml:space="preserve"><value>تم تحديد الرسالة كغير مقروءة.</value></data>
+  <data name="Admin_SelectAtLeastOneMessage" xml:space="preserve"><value>اختر رسالة واحدة على الأقل.</value></data>
+  <data name="Admin_MessagesMarkedRead" xml:space="preserve"><value>تم تحديد {0} رسائل كمقروءة.</value></data>
+  <data name="Admin_MessageNotFound" xml:space="preserve"><value>الرسالة غير موجودة.</value></data>
+  <data name="Admin_ContactMessageDeleted" xml:space="preserve"><value>تم حذف الرسالة.</value></data>
+  <data name="Admin_ReviewManagement" xml:space="preserve"><value>إدارة التقييمات</value></data>
+  <data name="Admin_ReviewManagementSubtitle" xml:space="preserve"><value>راجع تقييمات المنتجات ووافق عليها أو أرشفها وصدّرها.</value></data>
+  <data name="Admin_PendingReviews" xml:space="preserve"><value>قيد الانتظار</value></data>
+  <data name="Admin_ApprovedReviews" xml:space="preserve"><value>مقبولة</value></data>
+  <data name="Admin_ListedReviews" xml:space="preserve"><value>المعروضة</value></data>
+  <data name="Admin_AverageRating" xml:space="preserve"><value>متوسط التقييم</value></data>
+  <data name="Admin_SearchReviewsPlaceholder" xml:space="preserve"><value>ابحث بالمنتج أو العميل أو نص التقييم</value></data>
+  <data name="Admin_ApproveSelected" xml:space="preserve"><value>الموافقة على المحدد</value></data>
+  <data name="Admin_ApproveNReviews" xml:space="preserve"><value>الموافقة على {0} تقييمات</value></data>
+  <data name="Admin_NoReviewsForFilter" xml:space="preserve"><value>لا توجد تقييمات مطابقة لهذا التصفية.</value></data>
+  <data name="Admin_Rating" xml:space="preserve"><value>الدرجة</value></data>
+  <data name="Admin_ProductId" xml:space="preserve"><value>رقم المنتج</value></data>
+  <data name="Admin_Guest" xml:space="preserve"><value>زائر</value></data>
+  <data name="Admin_Member" xml:space="preserve"><value>عضو</value></data>
+  <data name="Admin_ViewReview" xml:space="preserve"><value>عرض التقييم</value></data>
+  <data name="Admin_Approve" xml:space="preserve"><value>موافقة</value></data>
+  <data name="Admin_RemoveApproval" xml:space="preserve"><value>إلغاء الموافقة</value></data>
+  <data name="Admin_ArchiveReviewConfirm" xml:space="preserve"><value>هل تريد أرشفة هذا التقييم؟</value></data>
+  <data name="Admin_PageSummary" xml:space="preserve"><value>الصفحة {0} من {1}، عدد السجلات {2}</value></data>
+  <data name="Admin_ReviewsWorksheet" xml:space="preserve"><value>التقييمات</value></data>
+  <data name="Admin_ReviewApprovedMessage" xml:space="preserve"><value>تمت الموافقة على التقييم ويمكن عرضه في صفحة المنتج.</value></data>
+  <data name="Admin_ReviewApprovalRemoved" xml:space="preserve"><value>تم إلغاء الموافقة على التقييم.</value></data>
+  <data name="Admin_SelectAtLeastOneReview" xml:space="preserve"><value>اختر تقييماً واحداً على الأقل للموافقة.</value></data>
+  <data name="Admin_ReviewsApprovedCount" xml:space="preserve"><value>تمت الموافقة على {0} تقييمات.</value></data>
+  <data name="Admin_ReviewArchived" xml:space="preserve"><value>تمت أرشفة التقييم.</value></data>
+  <data name="Admin_CarrierNameRequired" xml:space="preserve"><value>اسم شركة الشحن مطلوب.</value></data>
+  <data name="Admin_CarrierAdded" xml:space="preserve"><value>تمت إضافة {0}.</value></data>
+  <data name="Admin_CarrierNotFound" xml:space="preserve"><value>شركة الشحن غير موجودة.</value></data>
+  <data name="Admin_CarrierUpdated" xml:space="preserve"><value>تم تحديث {0}.</value></data>
+  <data name="Admin_CarrierSetDefault" xml:space="preserve"><value>أصبحت {0} شركة الشحن الافتراضية.</value></data>
+  <data name="Admin_RegionNameRequired" xml:space="preserve"><value>اسم المنطقة مطلوب.</value></data>
+  <data name="Admin_RegionNotFound" xml:space="preserve"><value>المنطقة غير موجودة.</value></data>
+  <data name="Admin_RegionAdded" xml:space="preserve"><value>تمت إضافة المنطقة.</value></data>
+  <data name="Admin_RegionUpdated" xml:space="preserve"><value>تم تحديث المنطقة.</value></data>
+  <data name="Admin_RegionDeleted" xml:space="preserve"><value>تم حذف المنطقة.</value></data>
+  <data name="Admin_CityNameRequired" xml:space="preserve"><value>اسم المدينة مطلوب.</value></data>
+  <data name="Admin_CityAlreadyExists" xml:space="preserve"><value>هذه المدينة موجودة مسبقاً في المنطقة المحددة.</value></data>
+  <data name="Admin_CityNotFound" xml:space="preserve"><value>المدينة غير موجودة.</value></data>
+  <data name="Admin_CityAdded" xml:space="preserve"><value>تمت إضافة المدينة.</value></data>
+  <data name="Admin_CityUpdated" xml:space="preserve"><value>تم تحديث المدينة.</value></data>
+  <data name="Admin_CityDeleted" xml:space="preserve"><value>تم حذف المدينة.</value></data>
+  <data name="Admin_InvalidShippingPrice" xml:space="preserve"><value>يجب أن تكون تكلفة الشحن صفراً أو أكثر.</value></data>
+  <data name="Admin_RegionShippingPriceUpdated" xml:space="preserve"><value>تم تحديث تكلفة الشحن للمنطقة.</value></data>
+  <data name="Admin_Code" xml:space="preserve"><value>الرمز</value></data>
+  <data name="Admin_TrackingUrl" xml:space="preserve"><value>رابط التتبع</value></data>
+  <data name="Admin_Company" xml:space="preserve"><value>الشركة</value></data>
+  <data name="Admin_Tracking" xml:space="preserve"><value>التتبع</value></data>
+  <data name="Admin_Price" xml:space="preserve"><value>السعر</value></data>
+  <data name="Admin_Palestine" xml:space="preserve"><value>فلسطين</value></data>
+  <data name="Admin_Refresh" xml:space="preserve"><value>تحديث</value></data>
+  <data name="Admin_Province" xml:space="preserve"><value>المحافظة</value></data>
+  <data name="Admin_DefaultShippingCompany" xml:space="preserve"><value>شركة الشحن الافتراضية</value></data>
+  <data name="Admin_ChooseFile" xml:space="preserve"><value>اختيار ملف</value></data>
+  <data name="Admin_ChooseFiles" xml:space="preserve"><value>اختيار ملفات</value></data>
+  <data name="Admin_NoFileChosen" xml:space="preserve"><value>لم يتم اختيار ملف</value></data>
+  <data name="Admin_ProductFeatureFields" xml:space="preserve"><value>حقول خصائص المنتج</value></data>
+  <data name="Admin_ProductFeatureFieldsSubtitle" xml:space="preserve"><value>إدارة معلومات المنتجات القابلة للتصفية والمعلومات التقنية لكل نوع منتج.</value></data>
+  <data name="Admin_AllProductTypes" xml:space="preserve"><value>جميع أنواع المنتجات</value></data>
+  <data name="Admin_NewFeatureField" xml:space="preserve"><value>حقل خاصية جديد</value></data>
+  <data name="Admin_NewFeatureFieldSubtitle" xml:space="preserve"><value>عرّف حقلاً قابلاً لإعادة الاستخدام لأحد أنواع المنتجات الحالية.</value></data>
+  <data name="Admin_EditFeatureField" xml:space="preserve"><value>تعديل حقل الخاصية</value></data>
+  <data name="Admin_EditFeatureFieldSubtitle" xml:space="preserve"><value>تحديث تعريف وإعدادات ظهور {0}.</value></data>
+  <data name="Admin_FieldType" xml:space="preserve"><value>نوع الحقل</value></data>
+  <data name="Admin_FieldTitle" xml:space="preserve"><value>عنوان الحقل</value></data>
+  <data name="Admin_ShortText" xml:space="preserve"><value>نص قصير</value></data>
+  <data name="Admin_LongText" xml:space="preserve"><value>نص طويل</value></data>
+  <data name="Admin_Number" xml:space="preserve"><value>رقم</value></data>
+  <data name="Admin_SelectList" xml:space="preserve"><value>قائمة اختيار</value></data>
+  <data name="Admin_HelpText" xml:space="preserve"><value>نص المساعدة</value></data>
+  <data name="Admin_HelpTextPlaceholder" xml:space="preserve"><value>شرح مختصر يظهر أسفل الحقل</value></data>
+  <data name="Admin_Options" xml:space="preserve"><value>الخيارات</value></data>
+  <data name="Admin_OptionsPlaceholder" xml:space="preserve"><value>أدخل خياراً واحداً في كل سطر.</value></data>
+  <data name="Admin_OptionsHelp" xml:space="preserve"><value>يستخدم فقط مع حقول قائمة الاختيار. أدخل قيمة واحدة في كل سطر.</value></data>
+  <data name="Admin_UseInFilter" xml:space="preserve"><value>استخدام في التصفية</value></data>
+  <data name="Admin_ShowOnDetail" xml:space="preserve"><value>إظهار في تفاصيل المنتج</value></data>
+  <data name="Admin_ShowInTechnicalTable" xml:space="preserve"><value>إظهار في الجدول التقني</value></data>
+  <data name="Admin_ArchiveFeatureConfirm" xml:space="preserve"><value>هل تريد أرشفة حقل الخاصية؟</value></data>
+  <data name="Admin_FeatureAdded" xml:space="preserve"><value>تمت إضافة حقل الخاصية.</value></data>
+  <data name="Admin_FeatureUpdated" xml:space="preserve"><value>تم تحديث حقل الخاصية.</value></data>
+  <data name="Admin_FeatureArchived" xml:space="preserve"><value>تمت أرشفة حقل الخاصية.</value></data>
+  <data name="Admin_FeatureNameRequired" xml:space="preserve"><value>عنوان الحقل مطلوب.</value></data>
+  <data name="Admin_FeatureCodeRequired" xml:space="preserve"><value>رمز الحقل مطلوب.</value></data>
+  <data name="Admin_ValidFieldTypeRequired" xml:space="preserve"><value>اختر نوع حقل صالحاً.</value></data>
+  <data name="Admin_FeatureOptionsRequired" xml:space="preserve"><value>أدخل خيارات لحقل قائمة الاختيار.</value></data>
+  <data name="Admin_FeatureCodeDuplicate" xml:space="preserve"><value>هذا الرمز موجود مسبقاً لنوع المنتج المحدد.</value></data>
 </root>

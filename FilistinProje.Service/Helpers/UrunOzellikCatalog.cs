@@ -41,9 +41,7 @@ namespace FilistinProje.Service.Helpers
         public static string NormalizeProductType(string? value)
         {
             var normalized = value?.Trim();
-            return ProductTypes.Any(x => string.Equals(x.Value, normalized, StringComparison.OrdinalIgnoreCase))
-                ? ProductTypes.First(x => string.Equals(x.Value, normalized, StringComparison.OrdinalIgnoreCase)).Value
-                : Genel;
+            return string.IsNullOrWhiteSpace(normalized) ? Genel : normalized;
         }
 
         public static IReadOnlyList<SelectListItem> GetProductTypeSelectList(string? selectedValue = null)

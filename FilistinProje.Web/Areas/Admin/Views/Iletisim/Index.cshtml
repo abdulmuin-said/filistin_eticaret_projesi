@@ -305,15 +305,17 @@
         (function () {
             const selectAll = document.getElementById('selectAllMessages');
             const checkboxes = Array.from(document.querySelectorAll('.ca-message-checkbox'));
-            const bulkButton = document.getElementById('bulkReadButton');
+             const bulkButton = document.getElementById('bulkReadButton');
+             const markSelectedText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_MarkSelectedAsRead"].Value));
+             const markCountText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_MarkNMessagesRead"].Value));
 
             function refreshBulkState() {
                 const selected = checkboxes.filter(x => x.checked).length;
                 if (bulkButton) {
                     bulkButton.disabled = selected === 0;
                     bulkButton.innerHTML = selected === 0
-                        ? `<i class="fas fa-check-double"></i> ${@Json.Serialize(Localizer["Admin_MarkSelectedAsRead"].Value)}`
-                        : `<i class="fas fa-check-double"></i> ${selected} ${@Json.Serialize(Localizer["Admin_MarkNMessagesRead"].Value)}`;
+                        ? `<i class="fas fa-check-double"></i> ${markSelectedText}`
+                        : `<i class="fas fa-check-double"></i> ${selected} ${markCountText}`;
                 }
 
                 if (selectAll) {

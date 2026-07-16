@@ -28,7 +28,10 @@
     var arActive = currentCulture == "ar";
     var enActive = currentCulture == "en";
 
-    var topBarPrimary = string.Format(Localizer["FreeShippingLimit"], siteSettings.UcretsizKargoLimiti.ToString("N0"), siteSettings.ParaBirimi);
+    var freeShippingLimitText = siteSettings.UcretsizKargoLimiti == decimal.Truncate(siteSettings.UcretsizKargoLimiti)
+        ? siteSettings.UcretsizKargoLimiti.ToString("N0")
+        : siteSettings.UcretsizKargoLimiti.ToString("N2");
+    var topBarPrimary = string.Format(Localizer["FreeShippingLimit"], freeShippingLimitText, siteSettings.ParaBirimi);
     var trustMessages = new List<string>
     {
         topBarPrimary,

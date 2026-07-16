@@ -3,52 +3,52 @@
 <div class="row g-3">
     <div class="col-lg-6">
         <div class="ca-form-group">
-            <label class="ca-label">Alan Basligi</label>
+            <label class="ca-label">@Localizer["Admin_FieldTitle"]</label>
             <input asp-for="Ad" class="ca-input" />
         </div>
     </div>
     <div class="col-lg-3">
         <div class="ca-form-group">
-            <label class="ca-label">Kod</label>
+            <label class="ca-label">@Localizer["Admin_Code"]</label>
             <input asp-for="Kod" class="ca-input" />
         </div>
     </div>
     <div class="col-lg-3">
         <div class="ca-form-group">
-            <label class="ca-label">Urun Tipi</label>
+            <label class="ca-label">@Localizer["Admin_ProductType"]</label>
             <select asp-for="UrunTipi" asp-items="ViewBag.UrunTipleri" class="ca-select"></select>
         </div>
     </div>
 
     <div class="col-lg-3">
         <div class="ca-form-group">
-            <label class="ca-label">Alan Tipi</label>
+            <label class="ca-label">@Localizer["Admin_FieldType"]</label>
             <select asp-for="AlanTipi" class="ca-select">
-                <option value="text">Metin</option>
-                <option value="textarea">Uzun Metin</option>
-                <option value="number">Sayi</option>
-                <option value="select">Secimli Liste</option>
+                <option value="text">@Localizer["Admin_ShortText"]</option>
+                <option value="textarea">@Localizer["Admin_LongText"]</option>
+                <option value="number">@Localizer["Admin_Number"]</option>
+                <option value="select">@Localizer["Admin_SelectList"]</option>
             </select>
         </div>
     </div>
     <div class="col-lg-3">
         <div class="ca-form-group">
-            <label class="ca-label">Sira</label>
+            <label class="ca-label">@Localizer["Admin_Sira"]</label>
             <input asp-for="Sira" class="ca-input" type="number" min="0" />
         </div>
     </div>
     <div class="col-lg-6">
         <div class="ca-form-group">
-            <label class="ca-label">Yardim Metni</label>
-            <input asp-for="YardimMetni" class="ca-input" placeholder="Alan altinda kullaniciya gosterilecek aciklama" />
+            <label class="ca-label">@Localizer["Admin_HelpText"]</label>
+            <input asp-for="YardimMetni" class="ca-input" placeholder="@Localizer["Admin_HelpTextPlaceholder"]" />
         </div>
     </div>
 
     <div class="col-12">
         <div class="ca-form-group">
-            <label class="ca-label">Secenekler</label>
-            <textarea asp-for="Secenekler" class="ca-textarea" rows="5" placeholder="Her satira bir secenek yazin. Ornek: Modern&#10;Minimal&#10;Klasik"></textarea>
-            <div class="small text-muted mt-2">Sadece `Secimli Liste` alan tipinde kullanilir. `true` ve `false` degerleri detay sayfasinda otomatik `Evet/Hayir` gorunur.</div>
+            <label class="ca-label">@Localizer["Admin_Options"]</label>
+            <textarea asp-for="Secenekler" class="ca-textarea" rows="5" placeholder="@Localizer["Admin_OptionsPlaceholder"]"></textarea>
+            <div class="small text-muted mt-2">@Localizer["Admin_OptionsHelp"]</div>
         </div>
     </div>
 
@@ -63,19 +63,19 @@
             <div class="col-md-3">
                 <div class="form-check form-switch">
                     <input asp-for="FiltredeGoster" class="form-check-input" type="checkbox">
-                    <label asp-for="FiltredeGoster" class="form-check-label">Filtrede Kullan</label>
+                    <label asp-for="FiltredeGoster" class="form-check-label">@Localizer["Admin_UseInFilter"]</label>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-check form-switch">
                     <input asp-for="DetaySayfasindaGoster" class="form-check-input" type="checkbox">
-                    <label asp-for="DetaySayfasindaGoster" class="form-check-label">Detay Sayfasinda</label>
+                    <label asp-for="DetaySayfasindaGoster" class="form-check-label">@Localizer["Admin_ShowOnDetail"]</label>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-check form-switch">
                     <input asp-for="TeknikTablodaGoster" class="form-check-input" type="checkbox">
-                    <label asp-for="TeknikTablodaGoster" class="form-check-label">Teknik Tabloda</label>
+                    <label asp-for="TeknikTablodaGoster" class="form-check-label">@Localizer["Admin_ShowInTechnicalTable"]</label>
                 </div>
             </div>
         </div>

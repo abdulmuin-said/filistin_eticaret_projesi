@@ -1,10 +1,12 @@
 using FilistinProje.Core.Enums;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
+using FilistinProje.Web.Resources;
 using FilistinProje.Web.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using System.ComponentModel.DataAnnotations;
 
 namespace FilistinProje.Web.Areas.Admin.Controllers
@@ -15,15 +17,18 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly KanvasDbContext _db;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
         public ToptanciController(
             UserManager<AppUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            KanvasDbContext db)
+            KanvasDbContext db,
+            IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _db = db;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index(WholesaleStatus? durum = null, string? arama = null)
@@ -203,6 +208,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             var gruplar = await _db.ToptanciUrunGruplari
                 .Include(g => g.IskontoOranlari.Where(i => !i.SilindiMi))
+                .Include(g => g.Urunler)
                 .Where(g => !g.SilindiMi)
                 .OrderBy(g => g.Sira)
                 .ThenBy(g => g.Ad)
@@ -217,7 +223,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             if (string.IsNullOrWhiteSpace(model.Ad))
             {
-                TempData["Hata"] = "Grup adı boş olamaz.";
+                TempData["Hata"] = _localizer["Admin_WholesaleGroupNameRequired"].Value;
                 return RedirectToAction(nameof(UrunGruplari));
             }
 
@@ -226,7 +232,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 var existing = await _db.ToptanciUrunGruplari.FindAsync(model.Id);
                 if (existing == null)
                 {
-                    TempData["Hata"] = "Grup bulunamadı.";
+                    TempData["Hata"] = _localizer["Admin_WholesaleGroupNotFound"].Value;
                     return RedirectToAction(nameof(UrunGruplari));
                 }
                 existing.Ad = model.Ad.Trim();
@@ -244,7 +250,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             await _db.SaveChangesAsync();
-            TempData["Basari"] = "Ürün grubu kaydedildi.";
+            TempData["Basari"] = _localizer["WholesaleGroupSaved"].Value;
             return RedirectToAction(nameof(UrunGruplari));
         }
 
@@ -259,7 +265,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await _db.SaveChangesAsync();
             }
 
-            TempData["Basari"] = "Ürün grubu silindi.";
+            TempData["Basari"] = _localizer["WholesaleGroupDeleted"].Value;
             return RedirectToAction(nameof(UrunGruplari));
         }
 
@@ -269,19 +275,19 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             if (model.ToptanciUrunGrubuId <= 0)
             {
-                TempData["Hata"] = "Geçersiz grup.";
+                TempData["Hata"] = _localizer["Admin_WholesaleInvalidGroup"].Value;
                 return RedirectToAction(nameof(UrunGruplari));
             }
 
             if (model.MinAdet < 1)
             {
-                TempData["Hata"] = "Minimum adet en az 1 olmalıdır.";
+                TempData["Hata"] = _localizer["Admin_WholesaleMinimumQuantityInvalid"].Value;
                 return RedirectToAction(nameof(UrunGruplari));
             }
 
             if (model.IskontoYuzdesi < 0 || model.IskontoYuzdesi > 100)
             {
-                TempData["Hata"] = "İskonto oranı 0-100 arasında olmalıdır.";
+                TempData["Hata"] = _localizer["Admin_WholesaleDiscountRateInvalid"].Value;
                 return RedirectToAction(nameof(UrunGruplari));
             }
 
@@ -290,7 +296,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 var existing = await _db.ToptanciIskontoOranlari.FindAsync(model.Id);
                 if (existing == null)
                 {
-                    TempData["Hata"] = "İskonto kaydı bulunamadı.";
+                    TempData["Hata"] = _localizer["Admin_WholesaleDiscountNotFound"].Value;
                     return RedirectToAction(nameof(UrunGruplari));
                 }
                 existing.MinAdet = model.MinAdet;
@@ -300,13 +306,21 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
             else
             {
+                var groupExists = await _db.ToptanciUrunGruplari
+                    .AnyAsync(g => g.Id == model.ToptanciUrunGrubuId && !g.SilindiMi);
+                if (!groupExists)
+                {
+                    TempData["Hata"] = _localizer["Admin_WholesaleGroupNotFound"].Value;
+                    return RedirectToAction(nameof(UrunGruplari));
+                }
+
                 model.SilindiMi = false;
                 model.OlusturulmaTarihi = DateTime.UtcNow;
                 await _db.ToptanciIskontoOranlari.AddAsync(model);
             }
 
             await _db.SaveChangesAsync();
-            TempData["Basari"] = "İskonto oranı kaydedildi.";
+            TempData["Basari"] = _localizer["WholesaleDiscountSaved"].Value;
             return RedirectToAction(nameof(UrunGruplari));
         }
 
@@ -321,7 +335,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await _db.SaveChangesAsync();
             }
 
-            TempData["Basari"] = "İskonto oranı silindi.";
+            TempData["Basari"] = _localizer["WholesaleDiscountDeleted"].Value;
             return RedirectToAction(nameof(UrunGruplari));
         }
 

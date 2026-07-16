@@ -2,9 +2,11 @@ using FilistinProje.Core.Models;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Service.Services;
 using FilistinProje.Web.Security;
+using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace FilistinProje.Web.Areas.Admin.Controllers
 {
@@ -14,15 +16,18 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IAdminSessionStateService _sessionStateService;
         private readonly IAdminSecurityAuditService _auditService;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
         public PersonelController(
             UserManager<AppUser> userManager,
             IAdminSessionStateService sessionStateService,
-            IAdminSecurityAuditService auditService)
+            IAdminSecurityAuditService auditService,
+            IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
             _sessionStateService = sessionStateService;
             _auditService = auditService;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index()
@@ -54,15 +59,16 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 var item = new PersonelListItemViewModel
                 {
                     Id = user.Id,
-                    AdSoyad = string.IsNullOrWhiteSpace(user.AdSoyad) ? (user.Email ?? "Adsız") : user.AdSoyad,
+                    AdSoyad = string.IsNullOrWhiteSpace(user.AdSoyad) ? (user.Email ?? _localizer["Admin_UnnamedUser"]) : user.AdSoyad,
                     Email = user.Email ?? string.Empty,
                     Telefon = user.PhoneNumber ?? string.Empty,
                     RolAdi = primaryRole,
-                    RolLabel = AdminSecurityRoles.GetRoleLabel(primaryRole),
+                    RolLabel = GetLocalizedRoleOption(primaryRole).Label,
                     SonGirisUtc = sessionState?.CurrentLoginUtc,
                     OncekiGirisUtc = sessionState?.PreviousLoginUtc,
                     EngelliMi = user.LockoutEnd.HasValue && user.LockoutEnd.Value > DateTime.UtcNow,
                     KendisiMi = string.Equals(user.Id, currentUserId, StringComparison.Ordinal),
+                    YonetilebilirMi = User.IsInRole(AdminSecurityRoles.SuperAdmin) || !IsProtectedAdminRole(primaryRole),
                     KayitTarihi = user.BasvuruTarihi ?? user.LockoutEnd?.UtcDateTime ?? DateTime.MinValue
                 };
 
@@ -108,7 +114,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 RolGruplari = rolGruplari
                     .Select(kv =>
                     {
-                        var roleOption = AdminSecurityRoles.GetRoleOption(kv.Key);
+                        var roleOption = GetLocalizedRoleOption(kv.Key);
                         return new PersonelRoleGroupViewModel
                         {
                             RolAdi = kv.Key,
@@ -136,7 +142,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .Select((rol, idx) => new YetkiMatrisiRoleItem
                 {
                     RolAdi = rol,
-                    Label = AdminSecurityRoles.GetRoleLabel(rol),
+                    Label = GetLocalizedRoleOption(rol).Label,
+                    Aciklama = GetLocalizedRoleOption(rol).Description,
                     Renk = rol switch
                     {
                         AdminSecurityRoles.SuperAdmin or AdminSecurityRoles.LegacyAdmin => "danger",
@@ -155,29 +162,28 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             var controllerlar = new List<YetkiMatrisiControllerItem>
             {
-                new() { ControllerAdi = "Home", DisplayAdi = "Dashboard", Grup = "Genel", Ikon = "fa-chart-pie" },
-                new() { ControllerAdi = "Rapor", DisplayAdi = "Raporlar", Grup = "Genel", Ikon = "fa-chart-bar" },
-                new() { ControllerAdi = "Ziyaretci", DisplayAdi = "Ziyaretçi Logları", Grup = "Genel", Ikon = "fa-eye" },
-                new() { ControllerAdi = "Search", DisplayAdi = "Arama", Grup = "Genel", Ikon = "fa-search" },
-                new() { ControllerAdi = "Siparis", DisplayAdi = "Siparişler", Grup = "Operasyon", Ikon = "fa-truck" },
-                new() { ControllerAdi = "Iade", DisplayAdi = "İade", Grup = "Operasyon", Ikon = "fa-rotate-left" },
-                new() { ControllerAdi = "Kargo", DisplayAdi = "Kargo Yönetimi", Grup = "Operasyon", Ikon = "fa-shipping-fast" },
-                new() { ControllerAdi = "Urun", DisplayAdi = "Ürünler", Grup = "Katalog", Ikon = "fa-box" },
-                new() { ControllerAdi = "Kategori", DisplayAdi = "Kategoriler", Grup = "Katalog", Ikon = "fa-sitemap" },
-                new() { ControllerAdi = "Kupon", DisplayAdi = "Kuponlar", Grup = "İçerik", Ikon = "fa-tags" },
-                new() { ControllerAdi = "Yorum", DisplayAdi = "Yorumlar", Grup = "İçerik", Ikon = "fa-comments" },
-                new() { ControllerAdi = "Sayfa", DisplayAdi = "Sayfalar", Grup = "İçerik", Ikon = "fa-file" },
-                new() { ControllerAdi = "Slayt", DisplayAdi = "Slaytlar", Grup = "İçerik", Ikon = "fa-images" },
-                new() { ControllerAdi = "AnaSayfa", DisplayAdi = "Anasayfa", Grup = "İçerik", Ikon = "fa-palette" },
-                new() { ControllerAdi = "Bulten", DisplayAdi = "Bülten", Grup = "İçerik", Ikon = "fa-envelope-open-text" },
-                new() { ControllerAdi = "Iletisim", DisplayAdi = "İletişim Mesajları", Grup = "İçerik", Ikon = "fa-inbox" },
-                new() { ControllerAdi = "PushBildirim", DisplayAdi = "Bildirimler", Grup = "İçerik", Ikon = "fa-bell" },
-                new() { ControllerAdi = "HomeSections", DisplayAdi = "Anasayfa Bölümleri", Grup = "İçerik", Ikon = "fa-layer-group" },
-                new() { ControllerAdi = "Toptanci", DisplayAdi = "Toptancı Yönetimi", Grup = "Yönetim", Ikon = "fa-warehouse" },
-                new() { ControllerAdi = "ToptanciUrunGrubu", DisplayAdi = "Toptan Ürün Grubu", Grup = "Yönetim", Ikon = "fa-cubes" },
-                new() { ControllerAdi = "Kullanici", DisplayAdi = "Kullanıcı Yönetimi", Grup = "Yönetim", Ikon = "fa-users" },
-                new() { ControllerAdi = "Ayarlar", DisplayAdi = "Site Ayarları", Grup = "Yönetim", Ikon = "fa-gear" },
-                new() { ControllerAdi = "Bankalar", DisplayAdi = "Banka Hesapları", Grup = "Yönetim", Ikon = "fa-building-columns" },
+                MatrixItem("Home", "Dashboard", "General", "fa-chart-pie"),
+                MatrixItem("Rapor", "Reports", "General", "fa-chart-bar"),
+                MatrixItem("Ziyaretci", "VisitorLogs", "General", "fa-eye"),
+                MatrixItem("Search", "Search", "General", "fa-search"),
+                MatrixItem("Siparis", "Orders", "Operations", "fa-truck"),
+                MatrixItem("Iade", "Returns", "Operations", "fa-rotate-left"),
+                MatrixItem("Kargo", "ShippingManagement", "Operations", "fa-shipping-fast"),
+                MatrixItem("Urun", "Products", "Catalog", "fa-box"),
+                MatrixItem("Kategori", "Categories", "Catalog", "fa-sitemap"),
+                MatrixItem("Kupon", "Coupons", "Content", "fa-tags"),
+                MatrixItem("Yorum", "Reviews", "Content", "fa-comments"),
+                MatrixItem("Sayfa", "Pages", "Content", "fa-file"),
+                MatrixItem("Slayt", "Slides", "Content", "fa-images"),
+                MatrixItem("AnaSayfa", "Homepage", "Content", "fa-palette"),
+                MatrixItem("Bulten", "Newsletter", "Content", "fa-envelope-open-text"),
+                MatrixItem("Iletisim", "ContactMessages", "Content", "fa-inbox"),
+                MatrixItem("HomeSections", "HomepageSections", "Content", "fa-layer-group"),
+                MatrixItem("Toptanci", "WholesaleManagement", "Management", "fa-warehouse"),
+                MatrixItem("ToptanciUrunGrubu", "WholesaleProductGroups", "Management", "fa-cubes"),
+                MatrixItem("Kullanici", "UserManagement", "Management", "fa-users"),
+                MatrixItem("Ayarlar", "SiteSettings", "Management", "fa-gear"),
+                MatrixItem("Bankalar", "BankAccounts", "Management", "fa-building-columns"),
             };
 
             var matris = new Dictionary<string, Dictionary<string, bool>>();
@@ -217,18 +223,59 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             if (user == null)
                 return NotFound();
 
+            var roles = await _userManager.GetRolesAsync(user);
+            if (roles.Any(IsProtectedAdminRole) && !User.IsInRole(AdminSecurityRoles.SuperAdmin))
+                return Forbid();
+
             await _sessionStateService.ClearSessionAsync(user.Id);
 
             await _auditService.LogAsync(
                 HttpContext,
                 "admin_session_cleared",
-                $"Personel oturumu admin tarafından temizlendi.",
+                _localizer["Admin_AuditStaffSessionCleared"],
                 "Personel",
                 user.Id,
                 user.UserName ?? user.Email);
 
-            TempData["Basari"] = $"{(string.IsNullOrWhiteSpace(user.AdSoyad) ? user.Email : user.AdSoyad)} için oturum temizlendi.";
+            var displayName = string.IsNullOrWhiteSpace(user.AdSoyad)
+                ? user.Email ?? _localizer["Admin_UnnamedUser"].Value
+                : user.AdSoyad;
+            TempData["Basari"] = _localizer["Admin_StaffSessionCleared", displayName].Value;
             return RedirectToAction(nameof(Index));
+        }
+
+        private YetkiMatrisiControllerItem MatrixItem(string controller, string displayKey, string groupKey, string icon)
+        {
+            return new YetkiMatrisiControllerItem
+            {
+                ControllerAdi = controller,
+                DisplayAdi = _localizer[$"Admin_Matrix_{displayKey}"],
+                Grup = _localizer[$"Admin_MatrixGroup_{groupKey}"],
+                Ikon = icon
+            };
+        }
+
+        private AdminRoleOption GetLocalizedRoleOption(string roleName)
+        {
+            var key = roleName switch
+            {
+                AdminSecurityRoles.LegacyAdmin => "LegacyAdmin",
+                AdminSecurityRoles.SuperAdmin => "SuperAdmin",
+                AdminSecurityRoles.Yonetici => "Manager",
+                AdminSecurityRoles.SiparisYoneticisi => "OrderManager",
+                AdminSecurityRoles.UrunYoneticisi => "ProductManager",
+                AdminSecurityRoles.IcerikYoneticisi => "ContentManager",
+                AdminSecurityRoles.KargoYoneticisi => "ShippingManager",
+                _ => "Viewer"
+            };
+            var option = AdminSecurityRoles.GetRoleOption(roleName);
+            return new AdminRoleOption(roleName, _localizer[$"Admin_Role_{key}"], _localizer[$"Admin_Role_{key}_Description"], option.SortOrder);
+        }
+
+        private static bool IsProtectedAdminRole(string? roleName)
+        {
+            return string.Equals(roleName, AdminSecurityRoles.SuperAdmin, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(roleName, AdminSecurityRoles.LegacyAdmin, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

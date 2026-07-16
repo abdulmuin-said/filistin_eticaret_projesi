@@ -145,12 +145,11 @@ namespace FilistinProje.Web.Controllers
                 secilenUrunler,
                 8);
 
-var kategoriler = await _context.Kategoriler
+            var kategoriler = await _context.Kategoriler
                 .AsNoTracking()
                 .Where(k => k.AktifMi && !k.SilindiMi && k.ParentKategoriId == null)
                 .OrderBy(k => k.Sira)
                 .ThenBy(k => k.Ad)
-                .Take(18)
                 .ToListAsync();
 
             var aktifSlaytlar = await _context.Slaytlar

@@ -40,7 +40,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 if (string.IsNullOrWhiteSpace(model.Ad))
                 {
-                    TempData["Mesaj"] = "Kargo firması adı zorunludur.";
+                    TempData["Mesaj"] = _localizer["Admin_CarrierNameRequired"].Value;
                     TempData["Durum"] = "danger";
                     return RedirectToAction(nameof(Index));
                 }
@@ -61,14 +61,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 {
                     model.OlusturulmaTarihi = DateTime.UtcNow;
                     _context.KargoFirmalari.Add(model);
-                    TempData["Mesaj"] = $"{model.Ad} kargo firması eklendi.";
+                    TempData["Mesaj"] = _localizer["Admin_CarrierAdded", model.Ad].Value;
                 }
                 else
                 {
                     var firma = await _context.KargoFirmalari.FirstOrDefaultAsync(x => x.Id == model.Id);
                     if (firma == null)
                     {
-                        TempData["Mesaj"] = "Kargo firması bulunamadı.";
+                        TempData["Mesaj"] = _localizer["Admin_CarrierNotFound"].Value;
                         TempData["Durum"] = "danger";
                         return RedirectToAction(nameof(Index));
                     }
@@ -84,7 +84,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     firma.AktifMi = model.AktifMi;
                     firma.VarsayilanMi = model.VarsayilanMi;
                     firma.Fiyat = model.Fiyat;
-                    TempData["Mesaj"] = $"{model.Ad} kargo firması güncellendi.";
+                    TempData["Mesaj"] = _localizer["Admin_CarrierUpdated", model.Ad].Value;
                 }
 
                 await _context.SaveChangesAsync();
@@ -106,7 +106,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var firma = await _context.KargoFirmalari.FirstOrDefaultAsync(x => x.Id == id && !x.SilindiMi);
             if (firma == null)
             {
-                TempData["Mesaj"] = "Kargo firması bulunamadı.";
+                TempData["Mesaj"] = _localizer["Admin_CarrierNotFound"].Value;
                 TempData["Durum"] = "danger";
                 return RedirectToAction(nameof(Index));
             }
@@ -116,7 +116,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             firma.AktifMi = true;
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{firma.Ad} varsayılan kargo firması yapıldı.";
+            TempData["Mesaj"] = _localizer["Admin_CarrierSetDefault", firma.Ad].Value;
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -150,7 +150,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             try
             {
                 if (string.IsNullOrWhiteSpace(ad))
-                    return Json(new { success = false, message = "Bölge adı zorunludur." });
+                    return Json(new { success = false, message = _localizer["Admin_RegionNameRequired"].Value });
 
                 if (id == 0)
                 {
@@ -169,7 +169,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 {
                     var bolge = await _context.KargoBolgeler.FirstOrDefaultAsync(x => x.Id == id);
                     if (bolge == null)
-                        return Json(new { success = false, message = "Bölge bulunamadı." });
+                        return Json(new { success = false, message = _localizer["Admin_RegionNotFound"].Value });
 
                     bolge.Ad = ad.Trim();
                     bolge.Ulke = ulke?.Trim();
@@ -179,7 +179,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-                return Json(new { success = true, message = id == 0 ? "Bölge eklendi." : "Bölge güncellendi." });
+                return Json(new { success = true, message = id == 0 ? _localizer["Admin_RegionAdded"].Value : _localizer["Admin_RegionUpdated"].Value });
             }
             catch (Exception)
             {
@@ -195,11 +195,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 var bolge = await _context.KargoBolgeler.FirstOrDefaultAsync(x => x.Id == id);
                 if (bolge == null)
-                    return Json(new { success = false, message = "Bölge bulunamadı." });
+                    return Json(new { success = false, message = _localizer["Admin_RegionNotFound"].Value });
 
                 bolge.SilindiMi = true;
                 await _context.SaveChangesAsync();
-                return Json(new { success = true, message = "Bölge silindi." });
+                return Json(new { success = true, message = _localizer["Admin_RegionDeleted"].Value });
             }
             catch (Exception)
             {
@@ -214,18 +214,18 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             try
             {
                 if (string.IsNullOrWhiteSpace(sehirAdi))
-                    return Json(new { success = false, message = "Şehir adı zorunludur." });
+                    return Json(new { success = false, message = _localizer["Admin_CityNameRequired"].Value });
 
                 var bolge = await _context.KargoBolgeler.FirstOrDefaultAsync(x => x.Id == bolgeId && !x.SilindiMi);
                 if (bolge == null)
-                    return Json(new { success = false, message = "Bölge bulunamadı." });
+                    return Json(new { success = false, message = _localizer["Admin_RegionNotFound"].Value });
 
                 if (id == 0)
                 {
                     var mevcut = await _context.KargoBolgeSehirler
                         .AnyAsync(x => x.BolgeId == bolgeId && x.SehirAdi == sehirAdi.Trim() && !x.SilindiMi);
                     if (mevcut)
-                        return Json(new { success = false, message = "Bu şehir zaten bu bölgede mevcut." });
+                        return Json(new { success = false, message = _localizer["Admin_CityAlreadyExists"].Value });
 
                     _context.KargoBolgeSehirler.Add(new KargoBolgeSehir
                     {
@@ -238,13 +238,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 {
                     var sehir = await _context.KargoBolgeSehirler.FirstOrDefaultAsync(x => x.Id == id);
                     if (sehir == null)
-                        return Json(new { success = false, message = "Şehir bulunamadı." });
+                        return Json(new { success = false, message = _localizer["Admin_CityNotFound"].Value });
 
                     sehir.SehirAdi = sehirAdi.Trim();
                 }
 
                 await _context.SaveChangesAsync();
-                return Json(new { success = true, message = id == 0 ? "Şehir eklendi." : "Şehir güncellendi." });
+                return Json(new { success = true, message = id == 0 ? _localizer["Admin_CityAdded"].Value : _localizer["Admin_CityUpdated"].Value });
             }
             catch (Exception)
             {
@@ -260,11 +260,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 var sehir = await _context.KargoBolgeSehirler.FirstOrDefaultAsync(x => x.Id == id);
                 if (sehir == null)
-                    return Json(new { success = false, message = "Şehir bulunamadı." });
+                    return Json(new { success = false, message = _localizer["Admin_CityNotFound"].Value });
 
                 _context.KargoBolgeSehirler.Remove(sehir);
                 await _context.SaveChangesAsync();
-                return Json(new { success = true, message = "Şehir silindi." });
+                return Json(new { success = true, message = _localizer["Admin_CityDeleted"].Value });
             }
             catch (Exception)
             {
@@ -284,7 +284,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             var bolgeler = await _context.KargoBolgeler
                 .IgnoreQueryFilters()
-                .Where(x => !x.SilindiMi && x.Ulke == "Filistin")
+                .Where(x => !x.SilindiMi)
                 .OrderBy(x => x.Sira)
                 .ThenBy(x => x.Ad)
                 .Select(x => new { x.Id, x.Ad, x.Ulke })
@@ -306,17 +306,17 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             try
             {
                 if (fiyat < 0)
-                    return Json(new { success = false, message = "Kargo fiyatı 0 veya daha büyük olmalıdır." });
+                    return Json(new { success = false, message = _localizer["Admin_InvalidShippingPrice"].Value });
 
                 var firmaVar = await _context.KargoFirmalari.IgnoreQueryFilters()
                     .AnyAsync(x => x.Id == kargoFirmasiId && !x.SilindiMi);
                 if (!firmaVar)
-                    return Json(new { success = false, message = "Kargo firması bulunamadı." });
+                    return Json(new { success = false, message = _localizer["Admin_CarrierNotFound"].Value });
 
                 var bolgeVar = await _context.KargoBolgeler.IgnoreQueryFilters()
                     .AnyAsync(x => x.Id == bolgeId && !x.SilindiMi);
                 if (!bolgeVar)
-                    return Json(new { success = false, message = "Bölge bulunamadı." });
+                    return Json(new { success = false, message = _localizer["Admin_RegionNotFound"].Value });
 
                 var bolgeFiyat = await _context.KargoBolgeFiyatlari.IgnoreQueryFilters()
                     .FirstOrDefaultAsync(x => x.KargoFirmasiId == kargoFirmasiId && x.BolgeId == bolgeId);
@@ -338,7 +338,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-                return Json(new { success = true, message = "Bölge kargo fiyatı güncellendi." });
+                return Json(new { success = true, message = _localizer["Admin_RegionShippingPriceUpdated"].Value });
             }
             catch (Exception)
             {

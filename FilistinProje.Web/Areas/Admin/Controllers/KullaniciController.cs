@@ -5,9 +5,11 @@ using FilistinProje.Data;
 using FilistinProje.Service.Services;
 using FilistinProje.Web.Security;
 using FilistinProje.Web.Services;
+using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace FilistinProje.Web.Areas.Admin.Controllers
 {
@@ -18,17 +20,20 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         private readonly IAdminSessionStateService _adminSessionStateService;
         private readonly IAdminSecurityAuditService _auditService;
         private readonly KanvasDbContext _context;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
         public KullaniciController(
             UserManager<AppUser> userManager,
             IAdminSessionStateService adminSessionStateService,
             IAdminSecurityAuditService auditService,
-            KanvasDbContext context)
+            KanvasDbContext context,
+            IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
             _adminSessionStateService = adminSessionStateService;
             _auditService = auditService;
             _context = context;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index(string? search, int page = 1, int pageSize = 20)
@@ -75,6 +80,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             var states = await _adminSessionStateService.GetStatesAsync(users.Select(x => x.Id));
             var currentUserId = _userManager.GetUserId(User);
+            var canManageSuperAdmin = User.IsInRole(AdminSecurityRoles.SuperAdmin);
             var items = new List<KullaniciListItemViewModel>(users.Count);
             var userIds = users.Select(x => x.Id).ToList();
             var userRoles = await (from userRole in _context.UserRoles.AsNoTracking()
@@ -100,15 +106,16 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 items.Add(new KullaniciListItemViewModel
                 {
                     Id = user.Id,
-                    AdSoyad = string.IsNullOrWhiteSpace(user.AdSoyad) ? (user.Email ?? "Adsız kullanıcı") : user.AdSoyad,
+                    AdSoyad = string.IsNullOrWhiteSpace(user.AdSoyad) ? (user.Email ?? _localizer["Admin_UnnamedUser"]) : user.AdSoyad,
                     Email = user.Email ?? string.Empty,
                     PhoneNumber = user.PhoneNumber ?? string.Empty,
                     Sehir = user.Sehir ?? string.Empty,
                     PrimaryRole = primaryRole,
-                    RoleLabel = AdminSecurityRoles.GetRoleLabel(primaryRole),
+                    RoleLabel = GetLocalizedRoleOption(primaryRole).Label,
                     IsAdmin = AdminSecurityRoles.IsAdminRole(primaryRole),
                     IsBanned = user.LockoutEnd.HasValue && user.LockoutEnd.Value > DateTime.UtcNow,
                     IsCurrentUser = string.Equals(user.Id, currentUserId, StringComparison.Ordinal),
+                    CanManage = canManageSuperAdmin || !IsProtectedAdminRole(primaryRole),
                     LastAdminLoginUtc = sessionState?.CurrentLoginUtc,
                     PreviousAdminLoginUtc = sessionState?.PreviousLoginUtc
                 });
@@ -142,9 +149,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            if (!await CanManageUserAsync(user))
+            {
+                return Forbid();
+            }
+
             if (string.Equals(user.Id, _userManager.GetUserId(User), StringComparison.Ordinal))
             {
-                TempData["Hata"] = "Kendi hesabınızın durumunu bu ekrandan değiştiremezsiniz.";
+                TempData["Hata"] = _localizer["Admin_CannotChangeOwnStatus"].Value;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -163,12 +175,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             await _auditService.LogAsync(
                 HttpContext,
                 isBanned ? "user_unblocked" : "user_blocked",
-                isBanned ? "Kullanıcı engeli kaldırıldı." : "Kullanıcı engellendi.",
+                isBanned ? _localizer["Admin_AuditUserUnblocked"] : _localizer["Admin_AuditUserBlocked"],
                 target: user.Id);
 
             TempData["Basari"] = isBanned
-                ? "Kullanıcı engeli kaldırıldı."
-                : "Kullanıcı engellendi.";
+                ? _localizer["Admin_UserUnblocked"].Value
+                : _localizer["Admin_UserBlocked"].Value;
 
             return RedirectToAction(nameof(Index));
         }
@@ -178,15 +190,20 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             if (string.IsNullOrWhiteSpace(id))
             {
-                TempData["Hata"] = "Şifresi değiştirilecek kullanıcı seçilmedi.";
+                TempData["Hata"] = _localizer["Admin_PasswordUserNotSelected"].Value;
                 return RedirectToAction(nameof(Index));
             }
 
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
-                TempData["Hata"] = "Kullanıcı bulunamadı.";
+                TempData["Hata"] = _localizer["Admin_UserNotFound"].Value;
                 return RedirectToAction(nameof(Index));
+            }
+
+            if (!await CanManageUserAsync(user))
+            {
+                return Forbid();
             }
 
             return View(user);
@@ -199,19 +216,24 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
-                TempData["Hata"] = "Kullanıcı bulunamadı.";
+                TempData["Hata"] = _localizer["Admin_UserNotFound"].Value;
                 return RedirectToAction(nameof(Index));
+            }
+
+            if (!await CanManageUserAsync(user))
+            {
+                return Forbid();
             }
 
             if (string.IsNullOrWhiteSpace(yeniSifre))
             {
-                TempData["Hata"] = "Yeni şifre boş bırakılamaz.";
+                TempData["Hata"] = _localizer["Admin_NewPasswordRequired"].Value;
                 return View(user);
             }
 
             if (!string.Equals(yeniSifre, sifreTekrar, StringComparison.Ordinal))
             {
-                TempData["Hata"] = "Yeni şifre ve tekrar alanı aynı olmalıdır.";
+                TempData["Hata"] = _localizer["Admin_PasswordsMustMatch"].Value;
                 return View(user);
             }
 
@@ -229,10 +251,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             await _auditService.LogAsync(
                 HttpContext,
                 "user_password_reset",
-                "Kullanıcı şifresi admin tarafından sıfırlandı.",
+                _localizer["Admin_AuditPasswordReset"],
                 target: user.Id);
 
-            TempData["Basari"] = "Şifre başarıyla güncellendi.";
+            TempData["Basari"] = _localizer["Admin_PasswordUpdated"].Value;
             return RedirectToAction(nameof(Index));
         }
 
@@ -241,15 +263,20 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             if (string.IsNullOrWhiteSpace(id))
             {
-                TempData["Hata"] = "Düzenlenecek kullanıcı seçilmedi.";
+                TempData["Hata"] = _localizer["Admin_EditUserNotSelected"].Value;
                 return RedirectToAction(nameof(Index));
             }
 
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
-                TempData["Hata"] = "Kullanıcı bulunamadı.";
+                TempData["Hata"] = _localizer["Admin_UserNotFound"].Value;
                 return RedirectToAction(nameof(Index));
+            }
+
+            if (!await CanManageUserAsync(user))
+            {
+                return Forbid();
             }
 
             return View(await BuildEditModelAsync(user));
@@ -271,33 +298,55 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 : AdminSecurityRoles.GetPrimaryRole(currentRoles);
             var currentEditableRole = NormalizeEditableRole(currentPrimaryRole);
 
+            if (IsProtectedAdminRole(currentPrimaryRole) && !User.IsInRole(AdminSecurityRoles.SuperAdmin))
+            {
+                return Forbid();
+            }
+
             var selectedRole = string.IsNullOrWhiteSpace(model.SelectedRole)
                 ? AdminSecurityRoles.Uye
                 : model.SelectedRole;
-            var allowedRoles = AdminSecurityRoles.GetAssignableRoleOptions()
+            var allowedRoles = GetAssignableRoleOptions()
                 .Select(x => x.Value)
                 .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
             if (!allowedRoles.Contains(selectedRole))
             {
-                ModelState.AddModelError(string.Empty, "Seçilen rol geçersiz.");
+                ModelState.AddModelError(string.Empty, _localizer["Admin_InvalidRole"]);
                 var invalidRoleModel = await BuildEditModelAsync(user);
                 invalidRoleModel.SelectedRole = currentEditableRole;
                 return View(invalidRoleModel);
+            }
+
+            if (IsProtectedAdminRole(selectedRole) && !User.IsInRole(AdminSecurityRoles.SuperAdmin))
+            {
+                return Forbid();
             }
 
             var currentUserId = _userManager.GetUserId(User);
             if (string.Equals(user.Id, currentUserId, StringComparison.Ordinal) &&
                 !string.Equals(selectedRole, currentEditableRole, StringComparison.OrdinalIgnoreCase))
             {
-                TempData["Hata"] = "Kendi rolünüzü bu ekrandan değiştiremezsiniz.";
+                TempData["Hata"] = _localizer["Admin_CannotChangeOwnRole"].Value;
                 return RedirectToAction(nameof(Duzenle), new { id = user.Id });
+            }
+
+
+            if (string.IsNullOrWhiteSpace(model.AdSoyad))
+            {
+                ModelState.AddModelError(nameof(model.AdSoyad), _localizer["Admin_NameRequired"]);
+                var invalidNameModel = await BuildEditModelAsync(user);
+                invalidNameModel.AdSoyad = model.AdSoyad;
+                invalidNameModel.PhoneNumber = model.PhoneNumber;
+                invalidNameModel.Sehir = model.Sehir;
+                invalidNameModel.SelectedRole = selectedRole;
+                return View(invalidNameModel);
             }
 
             string? normalizedPhone = null;
             if (!string.IsNullOrWhiteSpace(model.PhoneNumber) && !PhoneNumberNormalizer.TryNormalize(model.PhoneNumber, out normalizedPhone))
             {
-                ModelState.AddModelError(nameof(model.PhoneNumber), "Geçerli bir Filistin telefon numarası giriniz. Örn: +970 599 123 456");
+                ModelState.AddModelError(nameof(model.PhoneNumber), _localizer["Admin_InvalidPalestinePhone"]);
                 var invalidPhoneModel = await BuildEditModelAsync(user);
                 invalidPhoneModel.AdSoyad = model.AdSoyad;
                 invalidPhoneModel.PhoneNumber = model.PhoneNumber;
@@ -352,13 +401,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await _auditService.LogAsync(
                     HttpContext,
                     "user_role_updated",
-                    $"Kullanıcı rolü {AdminSecurityRoles.GetRoleLabel(currentEditableRole)} rolünden {AdminSecurityRoles.GetRoleLabel(selectedRole)} rolüne güncellendi.",
+                    _localizer["Admin_AuditUserRoleUpdated", GetLocalizedRoleOption(currentEditableRole).Label, GetLocalizedRoleOption(selectedRole).Label],
                     target: user.Id);
             }
 
             TempData["Basari"] = roleChanged
-                ? "Kullanıcı bilgileri ve rolü güncellendi."
-                : "Kullanıcı bilgileri güncellendi.";
+                ? _localizer["Admin_UserAndRoleUpdated"].Value
+                : _localizer["Admin_UserUpdated"].Value;
 
             return RedirectToAction(nameof(Index));
         }
@@ -373,9 +422,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            if (!await CanManageUserAsync(user))
+            {
+                return Forbid();
+            }
+
             if (string.Equals(user.Id, _userManager.GetUserId(User), StringComparison.Ordinal))
             {
-                TempData["Hata"] = "Kendi hesabınızı silemezsiniz.";
+                TempData["Hata"] = _localizer["Admin_CannotDeleteOwnAccount"].Value;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -391,10 +445,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             await _auditService.LogAsync(
                 HttpContext,
                 "user_deleted",
-                "Kullanıcı kaydı silindi.",
+                _localizer["Admin_AuditUserDeleted"],
                 target: user.Id);
 
-            TempData["Basari"] = "Kullanıcı kaydı silindi.";
+            TempData["Basari"] = _localizer["Admin_UserDeleted"].Value;
             return RedirectToAction(nameof(Index));
         }
 
@@ -404,7 +458,16 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var states = await _adminSessionStateService.GetStatesAsync(users.Select(x => x.Id));
             var builder = new StringBuilder();
 
-            builder.AppendLine("Id,AdSoyad,Email,Telefon,Sehir,Rol,SonAdminGirisi");
+            builder.AppendLine(string.Join(",", new[]
+            {
+                "Id",
+                EscapeCsv(_localizer["Admin_Ad_Soyad"]),
+                EscapeCsv(_localizer["Admin_E_posta"]),
+                EscapeCsv(_localizer["Admin_Telefon"]),
+                EscapeCsv(_localizer["Admin_Sehir"]),
+                EscapeCsv(_localizer["Admin_Role"]),
+                EscapeCsv(_localizer["Admin_LastAdminLogin"])
+            }));
 
             foreach (var user in users)
             {
@@ -414,7 +477,9 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     : AdminSecurityRoles.GetPrimaryRole(roles);
 
                 states.TryGetValue(user.Id, out var sessionState);
-                var lastLogin = sessionState?.CurrentLoginUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? string.Empty;
+                var lastLogin = sessionState?.CurrentLoginUtc.HasValue == true
+                    ? ToPalestineTime(sessionState.CurrentLoginUtc.Value).ToString("yyyy-MM-dd HH:mm:ss")
+                    : string.Empty;
 
                 builder.AppendLine(string.Join(",",
                     EscapeCsv(user.Id),
@@ -422,11 +487,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     EscapeCsv(user.Email),
                     EscapeCsv(user.PhoneNumber),
                     EscapeCsv(user.Sehir),
-                    EscapeCsv(AdminSecurityRoles.GetRoleLabel(primaryRole)),
+                    EscapeCsv(GetLocalizedRoleOption(primaryRole).Label),
                     EscapeCsv(lastLogin)));
             }
 
-            return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "kullanicilar.csv");
+            return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", _localizer["Admin_UsersCsvFileName"].Value);
         }
 
         private async Task<KullaniciDuzenleViewModel> BuildEditModelAsync(AppUser user)
@@ -437,7 +502,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 : AdminSecurityRoles.GetPrimaryRole(roles);
             var editableRole = NormalizeEditableRole(primaryRole);
 
-            var roleOption = AdminSecurityRoles.GetRoleOption(editableRole);
+            var roleOption = GetLocalizedRoleOption(editableRole);
             var sessionState = await _adminSessionStateService.GetStateAsync(user.Id);
 
             return new KullaniciDuzenleViewModel
@@ -451,10 +516,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 CurrentRoleLabel = roleOption.Label,
                 CurrentRoleDescription = roleOption.Description,
                 IsCurrentUser = string.Equals(user.Id, _userManager.GetUserId(User), StringComparison.Ordinal),
+                CanManageSuperAdmin = User.IsInRole(AdminSecurityRoles.SuperAdmin),
                 IsBanned = user.LockoutEnd.HasValue && user.LockoutEnd.Value > DateTime.UtcNow,
                 LastAdminLoginUtc = sessionState?.CurrentLoginUtc,
                 PreviousAdminLoginUtc = sessionState?.PreviousLoginUtc,
-                RoleOptions = AdminSecurityRoles.GetAssignableRoleOptions().ToList()
+                RoleOptions = GetAssignableRoleOptions().ToList()
             };
         }
 
@@ -480,7 +546,74 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return string.Empty;
             }
 
-            return $"\"{value.Replace("\"", "\"\"")}\"";
+            var safeValue = value;
+            var firstNonWhitespace = safeValue.FirstOrDefault(c => !char.IsWhiteSpace(c));
+            if (firstNonWhitespace is '=' or '+' or '-' or '@' || safeValue[0] is '\t' or '\r' or '\n')
+            {
+                safeValue = "'" + safeValue;
+            }
+
+            return $"\"{safeValue.Replace("\"", "\"\"")}\"";
+        }
+
+        private async Task<bool> CanManageUserAsync(AppUser user)
+        {
+            if (User.IsInRole(AdminSecurityRoles.SuperAdmin))
+            {
+                return true;
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            return !roles.Any(IsProtectedAdminRole);
+        }
+
+        private IReadOnlyList<AdminRoleOption> GetAssignableRoleOptions()
+        {
+            return AdminSecurityRoles.GetAssignableRoleOptions()
+                .Where(x => User.IsInRole(AdminSecurityRoles.SuperAdmin) || !IsProtectedAdminRole(x.Value))
+                .Select(x => GetLocalizedRoleOption(x.Value))
+                .ToList();
+        }
+
+        private AdminRoleOption GetLocalizedRoleOption(string roleName)
+        {
+            var key = roleName switch
+            {
+                AdminSecurityRoles.LegacyAdmin => "LegacyAdmin",
+                AdminSecurityRoles.SuperAdmin => "SuperAdmin",
+                AdminSecurityRoles.Yonetici => "Manager",
+                AdminSecurityRoles.SiparisYoneticisi => "OrderManager",
+                AdminSecurityRoles.UrunYoneticisi => "ProductManager",
+                AdminSecurityRoles.IcerikYoneticisi => "ContentManager",
+                AdminSecurityRoles.KargoYoneticisi => "ShippingManager",
+                AdminSecurityRoles.Goruntuleyici => "Viewer",
+                AdminSecurityRoles.Wholesale => "Wholesale",
+                _ => "Member"
+            };
+            var option = AdminSecurityRoles.GetRoleOption(roleName);
+            return new AdminRoleOption(roleName, _localizer[$"Admin_Role_{key}"], _localizer[$"Admin_Role_{key}_Description"], option.SortOrder);
+        }
+
+        private static bool IsProtectedAdminRole(string? roleName)
+        {
+            return string.Equals(roleName, AdminSecurityRoles.SuperAdmin, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(roleName, AdminSecurityRoles.LegacyAdmin, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static DateTime ToPalestineTime(DateTime utc)
+        {
+            var utcValue = DateTime.SpecifyKind(utc, DateTimeKind.Utc);
+            foreach (var id in new[] { "Asia/Hebron", "West Bank Standard Time" })
+            {
+                try
+                {
+                    return TimeZoneInfo.ConvertTimeFromUtc(utcValue, TimeZoneInfo.FindSystemTimeZoneById(id));
+                }
+                catch (TimeZoneNotFoundException) { }
+                catch (InvalidTimeZoneException) { }
+            }
+
+            return utcValue.AddHours(3);
         }
     }
 }

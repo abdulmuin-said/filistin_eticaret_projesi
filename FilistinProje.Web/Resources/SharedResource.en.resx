@@ -4616,7 +4616,6 @@
   <data name="Admin_VideoUrlHelp" xml:space="preserve"><value>Example: /video/slider1.mp4 or later /video/slider1.webm.</value></data>
   <data name="Admin_UploadVideoFile" xml:space="preserve"><value>Upload Video File</value></data>
   <data name="Admin_UploadVideoFileHelp" xml:space="preserve"><value>If no new video is selected, the current video is kept.</value></data>
-  <data name="Admin_UsageNotes" xml:space="preserve"><value>Usage Notes</value></data>
   <data name="Admin_HomeNoteVideoUrl" xml:space="preserve"><value>If the video URL is filled, video plays instead of the image on the homepage.</value></data>
   <data name="Admin_HomeNoteSilentVideos" xml:space="preserve"><value>Videos play muted, without controls and like a background; the next slide starts when the video ends.</value></data>
   <data name="Admin_HomeNotePoster" xml:space="preserve"><value>The image field is used as a poster/fallback image for video.</value></data>
@@ -5198,4 +5197,469 @@
   <data name="Product_WhyYouWillLove" xml:space="preserve"><value>Complete your selection</value></data>
   <data name="Product_Together" xml:space="preserve"><value>Often chosen together</value></data>
   <data name="Product_ReadyToOrder" xml:space="preserve"><value>Ready to order</value></data>
+  <data name="Admin_VisitorTraffic" xml:space="preserve"><value>Visitor Traffic</value></data>
+  <data name="Admin_TrafficAnalyticsKicker" xml:space="preserve"><value>Traffic Analytics</value></data>
+  <data name="Admin_VisitorTrafficSubtitle" xml:space="preserve"><value>Filter live visitors, sources, devices, pages, and user activity.</value></data>
+  <data name="Admin_ExportVisitorTraffic" xml:space="preserve"><value>Export to Excel</value></data>
+  <data name="Admin_ClearTrafficHistoryConfirm" xml:space="preserve"><value>All visitor traffic history will be permanently deleted. Are you sure?</value></data>
+  <data name="Admin_ClearTrafficHistory" xml:space="preserve"><value>Clear History</value></data>
+  <data name="Admin_OnlineNow" xml:space="preserve"><value>Online Now</value></data>
+  <data name="Admin_UniqueVisitorsLastFiveMinutes" xml:space="preserve"><value>Unique visitors in the last 5 minutes</value></data>
+  <data name="Admin_UniqueToday" xml:space="preserve"><value>Unique Today</value></data>
+  <data name="Admin_DistinctIpsToday" xml:space="preserve"><value>Number of distinct IP addresses today</value></data>
+  <data name="Admin_VisitsToday" xml:space="preserve"><value>Visits Today</value></data>
+  <data name="Admin_AllPageAndActionRecords" xml:space="preserve"><value>All page and action records</value></data>
+  <data name="Admin_FilteredRecords" xml:space="preserve"><value>Filtered Records</value></data>
+  <data name="Admin_UniqueVisitorCount" xml:space="preserve"><value>{0} unique visitors</value></data>
+  <data name="Admin_VisitorFilters" xml:space="preserve"><value>Filters</value></data>
+  <data name="Admin_VisitorSearch" xml:space="preserve"><value>Search</value></data>
+  <data name="Admin_SearchTrafficPlaceholder" xml:space="preserve"><value>Search by IP, URL, city, user, or browser</value></data>
+  <data name="Admin_VisitorMethod" xml:space="preserve"><value>Method</value></data>
+  <data name="Admin_VisitorAll" xml:space="preserve"><value>All</value></data>
+  <data name="Admin_VisitorDevice" xml:space="preserve"><value>Device</value></data>
+  <data name="Admin_VisitorMobile" xml:space="preserve"><value>Mobile</value></data>
+  <data name="Admin_VisitorDesktop" xml:space="preserve"><value>Desktop</value></data>
+  <data name="Admin_VisitorStartDate" xml:space="preserve"><value>Start Date</value></data>
+  <data name="Admin_VisitorEndDate" xml:space="preserve"><value>End Date</value></data>
+  <data name="Admin_VisitorHighlights" xml:space="preserve"><value>Highlights</value></data>
+  <data name="Admin_MostVisited" xml:space="preserve"><value>Most Visited</value></data>
+  <data name="Admin_StrongestSource" xml:space="preserve"><value>Strongest Source</value></data>
+  <data name="Admin_MobileDesktop" xml:space="preserve"><value>Mobile / Desktop</value></data>
+  <data name="Admin_VisitorPage" xml:space="preserve"><value>Page</value></data>
+  <data name="Admin_MostVisitedPages" xml:space="preserve"><value>Most Visited Pages</value></data>
+  <data name="Admin_VisitUniqueCounts" xml:space="preserve"><value>{0} visits / {1} unique</value></data>
+  <data name="Admin_NoPageDataForFilter" xml:space="preserve"><value>No page data is available for this filter.</value></data>
+  <data name="Admin_VisitorTrafficSources" xml:space="preserve"><value>Traffic Sources</value></data>
+  <data name="Admin_NoSourceDataForFilter" xml:space="preserve"><value>No source data is available for this filter.</value></data>
+  <data name="Admin_TrafficRecords" xml:space="preserve"><value>Traffic Records</value></data>
+  <data name="Admin_VisitorPerPage" xml:space="preserve"><value>Per Page</value></data>
+  <data name="Admin_VisitorLocation" xml:space="preserve"><value>Location</value></data>
+  <data name="Admin_VisitorSource" xml:space="preserve"><value>Source</value></data>
+  <data name="Admin_VisitorUnknown" xml:space="preserve"><value>Unknown</value></data>
+  <data name="Admin_VisitorGuest" xml:space="preserve"><value>Guest</value></data>
+  <data name="Admin_DirectUnknown" xml:space="preserve"><value>Direct / Unknown</value></data>
+  <data name="Admin_NoMatchingTrafficRecords" xml:space="preserve"><value>No traffic records match the selected filters.</value></data>
+  <data name="Admin_TrafficPaginationSummary" xml:space="preserve"><value>Page {1} / {2} of {0} records</value></data>
+  <data name="Admin_VisitorPrevious" xml:space="preserve"><value>Previous</value></data>
+  <data name="Admin_VisitorNext" xml:space="preserve"><value>Next</value></data>
+  <data name="Admin_VisitorTrafficWorksheet" xml:space="preserve"><value>Visitor Traffic</value></data>
+  <data name="Admin_VisitorDate" xml:space="preserve"><value>Date</value></data>
+  <data name="Admin_VisitorIpAddress" xml:space="preserve"><value>IP Address</value></data>
+  <data name="Admin_VisitorCountry" xml:space="preserve"><value>Country</value></data>
+  <data name="Admin_VisitorCity" xml:space="preserve"><value>City</value></data>
+  <data name="Admin_VisitorUrl" xml:space="preserve"><value>URL</value></data>
+  <data name="Admin_VisitorReferrer" xml:space="preserve"><value>Referrer</value></data>
+  <data name="Admin_VisitorUser" xml:space="preserve"><value>User</value></data>
+  <data name="Admin_VisitorBrowser" xml:space="preserve"><value>Browser</value></data>
+  <data name="Admin_VisitorOperatingSystem" xml:space="preserve"><value>Operating System</value></data>
+  <data name="Admin_TrafficHistoryCleared" xml:space="preserve"><value>Visitor traffic history was cleared.</value></data>
+  <data name="Admin_UnnamedUser" xml:space="preserve"><value>Unnamed user</value></data>
+  <data name="Admin_CannotChangeOwnStatus" xml:space="preserve"><value>You cannot change the status of your own account here.</value></data>
+  <data name="Admin_AuditUserUnblocked" xml:space="preserve"><value>User access was restored.</value></data>
+  <data name="Admin_AuditUserBlocked" xml:space="preserve"><value>User access was blocked.</value></data>
+  <data name="Admin_UserUnblocked" xml:space="preserve"><value>User access was restored.</value></data>
+  <data name="Admin_UserBlocked" xml:space="preserve"><value>User access was blocked.</value></data>
+  <data name="Admin_PasswordUserNotSelected" xml:space="preserve"><value>No user was selected for the password change.</value></data>
+  <data name="Admin_UserNotFound" xml:space="preserve"><value>User not found.</value></data>
+  <data name="Admin_NewPasswordRequired" xml:space="preserve"><value>The new password is required.</value></data>
+  <data name="Admin_PasswordsMustMatch" xml:space="preserve"><value>Both passwords must match.</value></data>
+  <data name="Admin_AuditPasswordReset" xml:space="preserve"><value>The user's password was reset by an administrator.</value></data>
+  <data name="Admin_PasswordUpdated" xml:space="preserve"><value>Password updated successfully.</value></data>
+  <data name="Admin_EditUserNotSelected" xml:space="preserve"><value>No user was selected for editing.</value></data>
+  <data name="Admin_InvalidRole" xml:space="preserve"><value>The selected role is invalid.</value></data>
+  <data name="Admin_CannotChangeOwnRole" xml:space="preserve"><value>You cannot change your own role here.</value></data>
+  <data name="Admin_NameRequired" xml:space="preserve"><value>Full name is required.</value></data>
+  <data name="Admin_InvalidPalestinePhone" xml:space="preserve"><value>Enter a valid Palestinian phone number. Example: +970 599 123 456</value></data>
+  <data name="Admin_AuditUserRoleUpdated" xml:space="preserve"><value>User role changed from {0} to {1}.</value></data>
+  <data name="Admin_UserAndRoleUpdated" xml:space="preserve"><value>User information and role were updated.</value></data>
+  <data name="Admin_UserUpdated" xml:space="preserve"><value>User information was updated.</value></data>
+  <data name="Admin_CannotDeleteOwnAccount" xml:space="preserve"><value>You cannot delete your own account.</value></data>
+  <data name="Admin_AuditUserDeleted" xml:space="preserve"><value>User record was deleted.</value></data>
+  <data name="Admin_UserDeleted" xml:space="preserve"><value>User record was deleted.</value></data>
+  <data name="Admin_Role" xml:space="preserve"><value>Role</value></data>
+  <data name="Admin_LastAdminLogin" xml:space="preserve"><value>Last admin login</value></data>
+  <data name="Admin_UsersCsvFileName" xml:space="preserve"><value>users.csv</value></data>
+  <data name="Admin_AuditStaffSessionCleared" xml:space="preserve"><value>Staff sessions were cleared by an administrator.</value></data>
+  <data name="Admin_StaffSessionCleared" xml:space="preserve"><value>Sessions for {0} were cleared.</value></data>
+  <data name="Admin_Role_LegacyAdmin" xml:space="preserve"><value>Legacy Administrator</value></data>
+  <data name="Admin_Role_LegacyAdmin_Description" xml:space="preserve"><value>Legacy administrator role with full access.</value></data>
+  <data name="Admin_Role_SuperAdmin" xml:space="preserve"><value>Super Administrator</value></data>
+  <data name="Admin_Role_SuperAdmin_Description" xml:space="preserve"><value>Full access to settings, users, and all management screens.</value></data>
+  <data name="Admin_Role_Manager" xml:space="preserve"><value>Manager</value></data>
+  <data name="Admin_Role_Manager_Description" xml:space="preserve"><value>Can manage daily operations and most administrative tasks.</value></data>
+  <data name="Admin_Role_OrderManager" xml:space="preserve"><value>Order Manager</value></data>
+  <data name="Admin_Role_OrderManager_Description" xml:space="preserve"><value>Can manage orders, returns, and operational workflows.</value></data>
+  <data name="Admin_Role_ProductManager" xml:space="preserve"><value>Product Manager</value></data>
+  <data name="Admin_Role_ProductManager_Description" xml:space="preserve"><value>Can manage products, categories, and catalog data.</value></data>
+  <data name="Admin_Role_ContentManager" xml:space="preserve"><value>Content Manager</value></data>
+  <data name="Admin_Role_ContentManager_Description" xml:space="preserve"><value>Can manage pages, reviews, newsletters, and storefront content.</value></data>
+  <data name="Admin_Role_ShippingManager" xml:space="preserve"><value>Shipping Manager</value></data>
+  <data name="Admin_Role_ShippingManager_Description" xml:space="preserve"><value>Operational role focused on shipping and returns.</value></data>
+  <data name="Admin_Role_Viewer" xml:space="preserve"><value>Viewer</value></data>
+  <data name="Admin_Role_Viewer_Description" xml:space="preserve"><value>Can view the admin panel but cannot make changes.</value></data>
+  <data name="Admin_Role_Wholesale" xml:space="preserve"><value>Wholesaler</value></data>
+  <data name="Admin_Role_Wholesale_Description" xml:space="preserve"><value>Customer with access to wholesale prices.</value></data>
+  <data name="Admin_Role_Member" xml:space="preserve"><value>Member</value></data>
+  <data name="Admin_Role_Member_Description" xml:space="preserve"><value>Storefront customer without admin access.</value></data>
+  <data name="Admin_MatrixGroup_General" xml:space="preserve"><value>General</value></data>
+  <data name="Admin_MatrixGroup_Operations" xml:space="preserve"><value>Operations</value></data>
+  <data name="Admin_MatrixGroup_Catalog" xml:space="preserve"><value>Catalog</value></data>
+  <data name="Admin_MatrixGroup_Content" xml:space="preserve"><value>Content</value></data>
+  <data name="Admin_MatrixGroup_Management" xml:space="preserve"><value>Management</value></data>
+  <data name="Admin_Matrix_Dashboard" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Admin_Matrix_Reports" xml:space="preserve"><value>Reports</value></data>
+  <data name="Admin_Matrix_VisitorLogs" xml:space="preserve"><value>Visitor Logs</value></data>
+  <data name="Admin_Matrix_Search" xml:space="preserve"><value>Search</value></data>
+  <data name="Admin_Matrix_Orders" xml:space="preserve"><value>Orders</value></data>
+  <data name="Admin_Matrix_Returns" xml:space="preserve"><value>Returns</value></data>
+  <data name="Admin_Matrix_ShippingManagement" xml:space="preserve"><value>Shipping Management</value></data>
+  <data name="Admin_Matrix_Products" xml:space="preserve"><value>Products</value></data>
+  <data name="Admin_Matrix_Categories" xml:space="preserve"><value>Categories</value></data>
+  <data name="Admin_Matrix_Coupons" xml:space="preserve"><value>Coupons</value></data>
+  <data name="Admin_Matrix_Reviews" xml:space="preserve"><value>Reviews</value></data>
+  <data name="Admin_Matrix_Pages" xml:space="preserve"><value>Pages</value></data>
+  <data name="Admin_Matrix_Slides" xml:space="preserve"><value>Slides</value></data>
+  <data name="Admin_Matrix_Homepage" xml:space="preserve"><value>Homepage</value></data>
+  <data name="Admin_Matrix_Newsletter" xml:space="preserve"><value>Newsletter</value></data>
+  <data name="Admin_Matrix_ContactMessages" xml:space="preserve"><value>Contact Messages</value></data>
+  <data name="Admin_Matrix_Notifications" xml:space="preserve"><value>Notifications</value></data>
+  <data name="Admin_Matrix_HomepageSections" xml:space="preserve"><value>Homepage Sections</value></data>
+  <data name="Admin_Matrix_WholesaleManagement" xml:space="preserve"><value>Wholesale Management</value></data>
+  <data name="Admin_Matrix_WholesaleProductGroups" xml:space="preserve"><value>Wholesale Product Groups</value></data>
+  <data name="Admin_Matrix_UserManagement" xml:space="preserve"><value>User Management</value></data>
+  <data name="Admin_Matrix_SiteSettings" xml:space="preserve"><value>Site Settings</value></data>
+  <data name="Admin_Matrix_BankAccounts" xml:space="preserve"><value>Bank Accounts</value></data>
+  <data name="Admin_UserManagementSubtitle" xml:space="preserve"><value>Manage roles, session status, and customer information from one screen.</value></data>
+  <data name="Admin_AdminCount" xml:space="preserve"><value>{0} administrators</value></data>
+  <data name="Admin_CustomerCount" xml:space="preserve"><value>{0} customers</value></data>
+  <data name="Admin_ExportCsv" xml:space="preserve"><value>Export CSV</value></data>
+  <data name="Admin_SearchUserPlaceholder" xml:space="preserve"><value>Search by name, email, or phone</value></data>
+  <data name="Admin_UserPaginationSummary" xml:space="preserve"><value>{0} records, page {1} of {2}.</value></data>
+  <data name="Admin_ThisIsYourActiveAccount" xml:space="preserve"><value>This is your currently active account.</value></data>
+  <data name="Admin_PreviousLogin" xml:space="preserve"><value>Previous</value></data>
+  <data name="Admin_Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Admin_EditUserDetailsTitle" xml:space="preserve"><value>Edit the user's name, phone, city, and role.</value></data>
+  <data name="Admin_ChangePasswordTitle" xml:space="preserve"><value>Open the screen for assigning a new password.</value></data>
+  <data name="Admin_ChangePassword" xml:space="preserve"><value>Change Password</value></data>
+  <data name="Admin_UnblockLogin" xml:space="preserve"><value>Restore Access</value></data>
+  <data name="Admin_BlockLogin" xml:space="preserve"><value>Block Access</value></data>
+  <data name="Admin_UnblockLoginTitle" xml:space="preserve"><value>Allow the user to sign in again.</value></data>
+  <data name="Admin_BlockLoginTitle" xml:space="preserve"><value>Prevent the user from signing in.</value></data>
+  <data name="Admin_ConfirmUnblockUser" xml:space="preserve"><value>Restore this user's access?</value></data>
+  <data name="Admin_ConfirmBlockUser" xml:space="preserve"><value>Block this user's access?</value></data>
+  <data name="Admin_DeleteAccount" xml:space="preserve"><value>Delete Account</value></data>
+  <data name="Admin_DeleteAccountTitle" xml:space="preserve"><value>Permanently delete the user record.</value></data>
+  <data name="Admin_ConfirmDeleteUser" xml:space="preserve"><value>Are you sure you want to delete this user?</value></data>
+  <data name="Admin_OwnAccountActionsDisabled" xml:space="preserve"><value>Blocking and deletion are disabled for your own account.</value></data>
+  <data name="Admin_OnlySuperAdminCanManageSuperAdmin" xml:space="preserve"><value>Only a Super Administrator can manage this account.</value></data>
+  <data name="Admin_PageSize" xml:space="preserve"><value>Page size</value></data>
+  <data name="Admin_EditUser" xml:space="preserve"><value>Edit User</value></data>
+  <data name="Admin_NoAdminLoginYet" xml:space="preserve"><value>No admin login yet</value></data>
+  <data name="Admin_MemberManagement" xml:space="preserve"><value>MEMBER MANAGEMENT</value></data>
+  <data name="Admin_EditUserSubtitle" xml:space="preserve"><value>Safely manage account details, contact information, and admin permissions.</value></data>
+  <data name="Admin_BackToUsers" xml:space="preserve"><value>Back to Users</value></data>
+  <data name="Admin_AccountInformation" xml:space="preserve"><value>Account Information</value></data>
+  <data name="Admin_CurrentAccountRoleLocked" xml:space="preserve"><value>This is your current admin account. Basic information can be updated, but role changes are disabled for security.</value></data>
+  <data name="Admin_BasicInformation" xml:space="preserve"><value>Basic Information</value></data>
+  <data name="Admin_EmailCannotBeChanged" xml:space="preserve"><value>The email address is the sign-in identifier and cannot be changed here.</value></data>
+  <data name="Admin_PalestinePhonePlaceholder" xml:space="preserve"><value>Example: +970 599 123 456</value></data>
+  <data name="Admin_CityPlaceholder" xml:space="preserve"><value>Example: Ramallah</value></data>
+  <data name="Admin_PermissionAndRole" xml:space="preserve"><value>Permissions and Role</value></data>
+  <data name="Admin_RoleSelectionHelp" xml:space="preserve"><value>The selected role determines which admin screens the user can access. Keep Member selected for customer accounts.</value></data>
+  <data name="Admin_LoginBlocked" xml:space="preserve"><value>Access Blocked</value></data>
+  <data name="Admin_ActiveAccount" xml:space="preserve"><value>Active Account</value></data>
+  <data name="Admin_CurrentRole" xml:space="preserve"><value>Current role</value></data>
+  <data name="Admin_RoleDescription" xml:space="preserve"><value>Role description</value></data>
+  <data name="Admin_PreviousAdminLogin" xml:space="preserve"><value>Previous admin login</value></data>
+  <data name="Admin_UsageNotes" xml:space="preserve"><value>Usage Notes</value></data>
+  <data name="Admin_EmailReadonlyNote" xml:space="preserve"><value>The email address is only displayed because it is the user's sign-in identifier.</value></data>
+  <data name="Admin_MemberRoleNote" xml:space="preserve"><value>Customers who do not require admin access should retain the Member role.</value></data>
+  <data name="Admin_PasswordOperationNote" xml:space="preserve"><value>Password operations use a separate screen and clear the user's current sessions.</value></data>
+  <data name="Admin_MemberSecurity" xml:space="preserve"><value>MEMBER SECURITY</value></data>
+  <data name="Admin_ChangePasswordSubtitle" xml:space="preserve"><value>Assign a new sign-in password and securely close the user's existing sessions.</value></data>
+  <data name="Admin_NewPasswordInformation" xml:space="preserve"><value>New Password Information</value></data>
+  <data name="Admin_PasswordResetWarning" xml:space="preserve"><value>This invalidates the user's old password and closes active sessions after the change.</value></data>
+  <data name="Admin_NewPassword" xml:space="preserve"><value>New Password</value></data>
+  <data name="Admin_TogglePasswordVisibility" xml:space="preserve"><value>Show or hide password</value></data>
+  <data name="Admin_StrongPasswordHint" xml:space="preserve"><value>Use uppercase and lowercase letters, numbers, and symbols for a strong password.</value></data>
+  <data name="Admin_ConfirmNewPassword" xml:space="preserve"><value>Confirm New Password</value></data>
+  <data name="Admin_RepeatPasswordPlaceholder" xml:space="preserve"><value>Enter the password again</value></data>
+  <data name="Admin_TogglePasswordConfirmationVisibility" xml:space="preserve"><value>Show or hide password confirmation</value></data>
+  <data name="Admin_PasswordRules" xml:space="preserve"><value>Password rules</value></data>
+  <data name="Admin_PasswordRuleLength" xml:space="preserve"><value>At least 6 characters</value></data>
+  <data name="Admin_PasswordRuleUppercase" xml:space="preserve"><value>Uppercase letter</value></data>
+  <data name="Admin_PasswordRuleLowercase" xml:space="preserve"><value>Lowercase letter</value></data>
+  <data name="Admin_PasswordRuleNumber" xml:space="preserve"><value>Number</value></data>
+  <data name="Admin_PasswordRuleSymbol" xml:space="preserve"><value>Special character</value></data>
+  <data name="Admin_PasswordRuleMatch" xml:space="preserve"><value>Passwords match</value></data>
+  <data name="Admin_UpdatePassword" xml:space="preserve"><value>Update Password</value></data>
+  <data name="Admin_OperationNotes" xml:space="preserve"><value>Operation Notes</value></data>
+  <data name="Admin_SharePasswordSecurelyNote" xml:space="preserve"><value>Share the new password with the user through a secure channel.</value></data>
+  <data name="Admin_PasswordClearsSessionNote" xml:space="preserve"><value>Updating the password clears the user's open admin sessions.</value></data>
+  <data name="Admin_PasswordAuditNote" xml:space="preserve"><value>This operation is recorded as an administrative security action.</value></data>
+  <data name="Admin_PasswordStrengthWeak" xml:space="preserve"><value>The password appears weak. Add letters, numbers, and symbols.</value></data>
+  <data name="Admin_PasswordStrengthMedium" xml:space="preserve"><value>The password has medium strength. Add more character types.</value></data>
+  <data name="Admin_PasswordStrengthStrong" xml:space="preserve"><value>The password appears strong.</value></data>
+  <data name="Admin_PasswordsMatching" xml:space="preserve"><value>Passwords match.</value></data>
+  <data name="Admin_PasswordsNotMatching" xml:space="preserve"><value>Passwords do not match.</value></data>
+  <data name="Admin_PasswordSubmitMismatch" xml:space="preserve"><value>Make sure both passwords match before saving.</value></data>
+  <data name="Admin_TodayAt" xml:space="preserve"><value>Today at {0}</value></data>
+  <data name="Admin_YesterdayAt" xml:space="preserve"><value>Yesterday at {0}</value></data>
+  <data name="Admin_Online" xml:space="preserve"><value>Online</value></data>
+  <data name="Admin_Offline" xml:space="preserve"><value>Offline</value></data>
+  <data name="Admin_ECommerceAnalyticsKicker" xml:space="preserve"><value>E-commerce analytics</value></data>
+  <data name="Admin_ExportPdf" xml:space="preserve"><value>Export PDF</value></data>
+  <data name="Admin_Revenue" xml:space="preserve"><value>Revenue</value></data>
+  <data name="Admin_VsPreviousPeriod" xml:space="preserve"><value>{0} vs previous period</value></data>
+  <data name="Admin_Conversion" xml:space="preserve"><value>Conversion</value></data>
+  <data name="Admin_UniqueVisitorsCount" xml:space="preserve"><value>{0} unique visitors</value></data>
+  <data name="Admin_NewVsRepeatCustomer" xml:space="preserve"><value>{0} new / {1} repeat</value></data>
+  <data name="Admin_AverageCartValue" xml:space="preserve"><value>Average Cart Value</value></data>
+  <data name="Admin_ProductsSold" xml:space="preserve"><value>{0} products sold</value></data>
+  <data name="Admin_AbandonedCarts" xml:space="preserve"><value>Abandoned Carts</value></data>
+  <data name="Admin_CartsCount" xml:space="preserve"><value>{0} carts</value></data>
+  <data name="Admin_ReturnCancel" xml:space="preserve"><value>Returns / Cancellations</value></data>
+  <data name="Admin_ReturnScreen" xml:space="preserve"><value>Go to Returns</value></data>
+  <data name="Admin_TotalDiscount" xml:space="preserve"><value>Total Discount</value></data>
+  <data name="Admin_ReviewCoupons" xml:space="preserve"><value>Review Coupons</value></data>
+  <data name="Admin_DailyRevenueOrderTraffic" xml:space="preserve"><value>Daily Revenue, Orders and Traffic</value></data>
+  <data name="Admin_DaysCount" xml:space="preserve"><value>{0} days</value></data>
+  <data name="Admin_ActionInsights" xml:space="preserve"><value>Action Insights</value></data>
+  <data name="Admin_HourlySalesTraffic" xml:space="preserve"><value>Hourly Sales and Traffic</value></data>
+  <data name="Admin_OrderStatusDistribution" xml:space="preserve"><value>Order Status Distribution</value></data>
+  <data name="Admin_CategoryRevenue" xml:space="preserve"><value>Revenue by Category</value></data>
+  <data name="Admin_CustomerSummary" xml:space="preserve"><value>Customer Summary</value></data>
+  <data name="Admin_NewCustomer" xml:space="preserve"><value>New Customer</value></data>
+  <data name="Admin_RepeatCustomer" xml:space="preserve"><value>Repeat Customer</value></data>
+  <data name="Admin_RepeatCustomerRevenue" xml:space="preserve"><value>Repeat Customer Revenue</value></data>
+  <data name="Admin_StrongestCity" xml:space="preserve"><value>Top City</value></data>
+  <data name="Admin_HighClicksLowSales" xml:space="preserve"><value>High Clicks, Low Sales</value></data>
+  <data name="Admin_Clicks" xml:space="preserve"><value>Clicks</value></data>
+  <data name="Admin_Sales" xml:space="preserve"><value>Sales</value></data>
+  <data name="Admin_Risk" xml:space="preserve"><value>Risk</value></data>
+  <data name="Admin_NoConversionRiskProducts" xml:space="preserve"><value>No products with conversion risk.</value></data>
+  <data name="Admin_MostValuableCustomers" xml:space="preserve"><value>Most Valuable Customers</value></data>
+  <data name="Admin_Repeat" xml:space="preserve"><value>Repeat</value></data>
+  <data name="Admin_NoCustomerOrderData" xml:space="preserve"><value>No customer order data.</value></data>
+  <data name="Admin_ReturnCancelReasons" xml:space="preserve"><value>Return / Cancellation Reasons</value></data>
+  <data name="Admin_Reason" xml:space="preserve"><value>Reason</value></data>
+  <data name="Admin_Amount" xml:space="preserve"><value>Amount</value></data>
+  <data name="Admin_NoReturnCancelReasons" xml:space="preserve"><value>No return or cancellation reasons.</value></data>
+  <data name="Admin_BestSellingProducts" xml:space="preserve"><value>Best-Selling Products</value></data>
+  <data name="Admin_GoToProducts" xml:space="preserve"><value>Go to Products</value></data>
+  <data name="Admin_Email" xml:space="preserve"><value>Email</value></data>
+  <data name="Admin_ReportProductFallback" xml:space="preserve"><value>Product #{0}</value></data>
+  <data name="Admin_ReportRiskClicksNoSales" xml:space="preserve"><value>Clicks without sales</value></data>
+  <data name="Admin_ReportRiskLowConversion" xml:space="preserve"><value>Low conversion</value></data>
+  <data name="Admin_ReportRiskMonitor" xml:space="preserve"><value>Monitor</value></data>
+  <data name="Admin_ReportUnnamedCustomer" xml:space="preserve"><value>Unnamed customer</value></data>
+  <data name="Admin_ReportReasonNotProvided" xml:space="preserve"><value>No reason provided</value></data>
+  <data name="Admin_ReportCancellationType" xml:space="preserve"><value>Cancellation</value></data>
+  <data name="Admin_ReportReturnType" xml:space="preserve"><value>Return</value></data>
+  <data name="Admin_ReportUncategorized" xml:space="preserve"><value>Uncategorized</value></data>
+  <data name="Admin_ReportShippingCompanyNotSelected" xml:space="preserve"><value>No shipping company selected</value></data>
+  <data name="Admin_ReportDirectUnknown" xml:space="preserve"><value>Direct / Unknown</value></data>
+  <data name="Admin_ReportMobile" xml:space="preserve"><value>Mobile</value></data>
+  <data name="Admin_ReportTablet" xml:space="preserve"><value>Tablet</value></data>
+  <data name="Admin_ReportDesktop" xml:space="preserve"><value>Desktop</value></data>
+  <data name="Admin_ReportInsightPendingOrdersTitle" xml:space="preserve"><value>Pending orders require attention</value></data>
+  <data name="Admin_ReportInsightPendingOrdersDescription" xml:space="preserve"><value>{0} orders appear not to have been processed yet.</value></data>
+  <data name="Admin_ReportInsightConversionRiskTitle" xml:space="preserve"><value>Product conversion risk</value></data>
+  <data name="Admin_ReportInsightConversionRiskDescription" xml:space="preserve"><value>{0} has high views but low sales. Review its price, images, variations, and description.</value></data>
+  <data name="Admin_ReportInsightAbandonedCartTitle" xml:space="preserve"><value>Abandoned cart opportunity</value></data>
+  <data name="Admin_ReportInsightAbandonedCartDescription" xml:space="preserve"><value>{0} abandoned carts contain approximately {1} in potential revenue.</value></data>
+  <data name="Admin_ReportInsightReturnCancelTitle" xml:space="preserve"><value>Return and cancellation tracking</value></data>
+  <data name="Admin_ReportInsightReturnCancelDescription" xml:space="preserve"><value>There are {0} return requests and {1} cancelled orders. Tracking their reasons regularly can improve quality.</value></data>
+  <data name="Admin_ReportInsightLowConversionTitle" xml:space="preserve"><value>Low conversion rate</value></data>
+  <data name="Admin_ReportInsightLowConversionDescription" xml:space="preserve"><value>The conversion rate is {0:N2}%. The product detail, cart, and campaign flows can be improved.</value></data>
+  <data name="Admin_ReportInsightNormalTitle" xml:space="preserve"><value>Operations appear normal</value></data>
+  <data name="Admin_ReportInsightNormalDescription" xml:space="preserve"><value>No report alerts requiring urgent action were found for the selected period.</value></data>
+  <data name="Admin_ReportStatusOrderReceived" xml:space="preserve"><value>New</value></data>
+  <data name="Admin_ReportStatusPreparing" xml:space="preserve"><value>Preparing</value></data>
+  <data name="Admin_ReportStatusPacking" xml:space="preserve"><value>Packing</value></data>
+  <data name="Admin_ReportStatusShipped" xml:space="preserve"><value>Shipped</value></data>
+  <data name="Admin_ReportStatusDelivered" xml:space="preserve"><value>Delivered</value></data>
+  <data name="Admin_ReportStatusCancelled" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="Admin_ReportStatusReturnRequested" xml:space="preserve"><value>Return Requested</value></data>
+  <data name="Admin_ReportStatusReturnApproved" xml:space="preserve"><value>Return Approved</value></data>
+  <data name="Admin_ReportStatusReturnCompleted" xml:space="preserve"><value>Return Completed</value></data>
+  <data name="Admin_ReportStatusUpdated" xml:space="preserve"><value>Updated</value></data>
+  <data name="Admin_ReportPdfTitle" xml:space="preserve"><value>7ANRPS48 Report Summary</value></data>
+  <data name="Admin_ReportRevenueSubtitle" xml:space="preserve"><value>Calculated from revenue-generating orders.</value></data>
+  <data name="Admin_ReportAverageCartSubtitle" xml:space="preserve"><value>Average cart: {0}</value></data>
+  <data name="Admin_ReportRepeatCustomerSubtitle" xml:space="preserve"><value>{0} repeat customers</value></data>
+  <data name="Admin_ReportOperationsTrackingSubtitle" xml:space="preserve"><value>For operational tracking</value></data>
+  <data name="Admin_ReportTitleColumn" xml:space="preserve"><value>Title</value></data>
+  <data name="Admin_ReportPagePrefix" xml:space="preserve"><value>Page </value></data>
+  <data name="Admin_ReportPdfFileName" xml:space="preserve"><value>report-summary-{0:yyyyMMdd}-{1:yyyyMMdd}.pdf</value></data>
+  <data name="Admin_ReportExcelFileName" xml:space="preserve"><value>reports-{0:yyyyMMdd}-{1:yyyyMMdd}.xlsx</value></data>
+  <data name="Admin_ReportSheetSummary" xml:space="preserve"><value>Summary</value></data>
+  <data name="Admin_ReportSheetDaily" xml:space="preserve"><value>Daily</value></data>
+  <data name="Admin_ReportSheetHourlyAnalysis" xml:space="preserve"><value>Hourly Analysis</value></data>
+  <data name="Admin_ReportSheetOrderStatuses" xml:space="preserve"><value>Order Statuses</value></data>
+  <data name="Admin_ReportSheetBestSellingProducts" xml:space="preserve"><value>Best Sellers</value></data>
+  <data name="Admin_ReportSheetMostClickedProducts" xml:space="preserve"><value>Most Clicked</value></data>
+  <data name="Admin_ReportSheetProductConversionRisk" xml:space="preserve"><value>Product Conversion Risk</value></data>
+  <data name="Admin_ReportSheetCustomers" xml:space="preserve"><value>Customers</value></data>
+  <data name="Admin_ReportSheetReturnCancelReasons" xml:space="preserve"><value>Return &amp; Cancel Reasons</value></data>
+  <data name="Admin_ReportSheetCategoryPerformance" xml:space="preserve"><value>Category Performance</value></data>
+  <data name="Admin_ReportSheetCities" xml:space="preserve"><value>Cities</value></data>
+  <data name="Admin_ReportSheetCoupons" xml:space="preserve"><value>Coupons</value></data>
+  <data name="Admin_ReportSheetTrafficSources" xml:space="preserve"><value>Traffic Sources</value></data>
+  <data name="Admin_ReportSheetVisitedPages" xml:space="preserve"><value>Visited Pages</value></data>
+  <data name="Admin_ReportSheetDeviceDistribution" xml:space="preserve"><value>Device Distribution</value></data>
+  <data name="Admin_ReportSheetShipping" xml:space="preserve"><value>Shipping</value></data>
+  <data name="Admin_ReportRange" xml:space="preserve"><value>Report Range</value></data>
+  <data name="Admin_ReportOrderCount" xml:space="preserve"><value>Order Count</value></data>
+  <data name="Admin_ReportProductsSoldCount" xml:space="preserve"><value>Products Sold</value></data>
+  <data name="Admin_ReportUniqueCustomers" xml:space="preserve"><value>Unique Customers</value></data>
+  <data name="Admin_ReportVisits" xml:space="preserve"><value>Visits</value></data>
+  <data name="Admin_ReportUniqueVisitor" xml:space="preserve"><value>Unique Visitors</value></data>
+  <data name="Admin_ReportConversionRate" xml:space="preserve"><value>Conversion Rate</value></data>
+  <data name="Admin_ReportReturnRequests" xml:space="preserve"><value>Return Requests</value></data>
+  <data name="Admin_ReportCancelledOrders" xml:space="preserve"><value>Cancelled Orders</value></data>
+  <data name="Admin_ReportAbandonedCartAmount" xml:space="preserve"><value>Abandoned Cart Amount</value></data>
+  <data name="Admin_ReportHour" xml:space="preserve"><value>Hour</value></data>
+  <data name="Admin_ReportProductId" xml:space="preserve"><value>Product ID</value></data>
+  <data name="Admin_ReportSalesQuantity" xml:space="preserve"><value>Sales Quantity</value></data>
+  <data name="Admin_ReportViews" xml:space="preserve"><value>Views</value></data>
+  <data name="Admin_ReportConversionPercent" xml:space="preserve"><value>Conversion %</value></data>
+  <data name="Admin_ReportRiskNote" xml:space="preserve"><value>Risk Note</value></data>
+  <data name="Admin_ReportLastOrder" xml:space="preserve"><value>Last Order</value></data>
+  <data name="Admin_ReportCategoryId" xml:space="preserve"><value>Category ID</value></data>
+  <data name="Admin_ReportProductCount" xml:space="preserve"><value>Product Count</value></data>
+  <data name="Admin_ReportCoupon" xml:space="preserve"><value>Coupon</value></data>
+  <data name="Admin_ReportCompany" xml:space="preserve"><value>Company</value></data>
+  <data name="Admin_ReportInTransit" xml:space="preserve"><value>In Transit</value></data>
+  <data name="Admin_WholesaleGroupNameRequired" xml:space="preserve"><value>Group name is required.</value></data>
+  <data name="Admin_WholesaleGroupNotFound" xml:space="preserve"><value>Product group was not found.</value></data>
+  <data name="Admin_WholesaleInvalidGroup" xml:space="preserve"><value>Invalid product group.</value></data>
+  <data name="Admin_WholesaleMinimumQuantityInvalid" xml:space="preserve"><value>Minimum quantity must be at least 1.</value></data>
+  <data name="Admin_WholesaleDiscountRateInvalid" xml:space="preserve"><value>Discount rate must be between 0 and 100.</value></data>
+  <data name="Admin_WholesaleDiscountNotFound" xml:space="preserve"><value>Discount record was not found.</value></data>
+  <data name="Admin_OfferGiftWrap" xml:space="preserve"><value>Offer gift wrapping</value></data>
+  <data name="Admin_OfferGiftWrapHelp" xml:space="preserve"><value>Customers can add gift wrapping from the product page.</value></data>
+  <data name="Admin_GiftWrapPrice" xml:space="preserve"><value>Gift wrap price</value></data>
+  <data name="Admin_InvalidProductImageUpload" xml:space="preserve"><value>Upload a valid JPG, PNG, or WEBP image no larger than 10 MB.</value></data>
+  <data name="Home_CategoriesTitle" xml:space="preserve"><value>Shop by category</value></data>
+  <data name="Home_AllCategories" xml:space="preserve"><value>View all categories</value></data>
+  <data name="Admin_UploadCategoryImage" xml:space="preserve"><value>Upload category image</value></data>
+  <data name="Admin_CategoryImageKeepHelp" xml:space="preserve"><value>JPG, PNG, or WEBP up to 10 MB. Leave empty to keep the current image.</value></data>
+  <data name="Admin_InvalidCategoryImageUpload" xml:space="preserve"><value>Upload a valid JPG, PNG, or WEBP image no larger than 10 MB.</value></data>
+  <data name="Admin_HomeSliderSaved" xml:space="preserve"><value>Home page slider settings were saved.</value></data>
+  <data name="Admin_HomeSettingsSaveFailed" xml:space="preserve"><value>Home page settings could not be saved.</value></data>
+  <data name="Admin_SlideNumber" xml:space="preserve"><value>Slide {0}</value></data>
+  <data name="Admin_Unread" xml:space="preserve"><value>Unread</value></data>
+  <data name="Admin_Read" xml:space="preserve"><value>Read</value></data>
+  <data name="Admin_SearchMessagePlaceholder" xml:space="preserve"><value>Search by sender, email, subject, or message</value></data>
+  <data name="Admin_ClearSearch" xml:space="preserve"><value>Clear search</value></data>
+  <data name="Admin_MarkSelectedAsRead" xml:space="preserve"><value>Mark selected as read</value></data>
+  <data name="Admin_MarkNMessagesRead" xml:space="preserve"><value>messages selected</value></data>
+  <data name="Admin_NoMessagesToShow" xml:space="preserve"><value>No messages match this filter.</value></data>
+  <data name="Admin_SubjectAndMessage" xml:space="preserve"><value>Subject and message</value></data>
+  <data name="Admin_GeneralInquiry" xml:space="preserve"><value>General inquiry</value></data>
+  <data name="Admin_ReplySubjectPrefix" xml:space="preserve"><value>Re: Your message to 7ANRPS48</value></data>
+  <data name="Admin_ReadBadge" xml:space="preserve"><value>Read</value></data>
+  <data name="Admin_NewBadge" xml:space="preserve"><value>New</value></data>
+  <data name="Admin_ViewMessage" xml:space="preserve"><value>View message</value></data>
+  <data name="Admin_ReplyWithEmail" xml:space="preserve"><value>Reply by email</value></data>
+  <data name="Admin_MarkUnread" xml:space="preserve"><value>Mark as unread</value></data>
+  <data name="Admin_MarkRead" xml:space="preserve"><value>Mark as read</value></data>
+  <data name="Admin_DeleteMessageConfirm" xml:space="preserve"><value>Delete this message permanently?</value></data>
+  <data name="Admin_MessageDetail" xml:space="preserve"><value>Message details</value></data>
+  <data name="Admin_MessageDetailSubtitle" xml:space="preserve"><value>Review the sender details and full message.</value></data>
+  <data name="Admin_GoBack" xml:space="preserve"><value>Go back</value></data>
+  <data name="Admin_Subject" xml:space="preserve"><value>Subject</value></data>
+  <data name="Admin_Reply" xml:space="preserve"><value>Reply</value></data>
+  <data name="Admin_ContactMarkedRead" xml:space="preserve"><value>The message was marked as read.</value></data>
+  <data name="Admin_ContactMarkedUnread" xml:space="preserve"><value>The message was marked as unread.</value></data>
+  <data name="Admin_SelectAtLeastOneMessage" xml:space="preserve"><value>Select at least one message.</value></data>
+  <data name="Admin_MessagesMarkedRead" xml:space="preserve"><value>{0} messages were marked as read.</value></data>
+  <data name="Admin_MessageNotFound" xml:space="preserve"><value>Message not found.</value></data>
+  <data name="Admin_ContactMessageDeleted" xml:space="preserve"><value>The message was deleted.</value></data>
+  <data name="Admin_ReviewManagement" xml:space="preserve"><value>Review management</value></data>
+  <data name="Admin_ReviewManagementSubtitle" xml:space="preserve"><value>Review, approve, archive, and export customer product reviews.</value></data>
+  <data name="Admin_PendingReviews" xml:space="preserve"><value>Pending</value></data>
+  <data name="Admin_ApprovedReviews" xml:space="preserve"><value>Approved</value></data>
+  <data name="Admin_ListedReviews" xml:space="preserve"><value>Listed</value></data>
+  <data name="Admin_AverageRating" xml:space="preserve"><value>Average rating</value></data>
+  <data name="Admin_SearchReviewsPlaceholder" xml:space="preserve"><value>Search by product, customer, or review</value></data>
+  <data name="Admin_ApproveSelected" xml:space="preserve"><value>Approve selected</value></data>
+  <data name="Admin_ApproveNReviews" xml:space="preserve"><value>Approve {0} reviews</value></data>
+  <data name="Admin_NoReviewsForFilter" xml:space="preserve"><value>No reviews match this filter.</value></data>
+  <data name="Admin_Rating" xml:space="preserve"><value>Rating</value></data>
+  <data name="Admin_ProductId" xml:space="preserve"><value>Product ID</value></data>
+  <data name="Admin_Guest" xml:space="preserve"><value>Guest</value></data>
+  <data name="Admin_Member" xml:space="preserve"><value>Member</value></data>
+  <data name="Admin_ViewReview" xml:space="preserve"><value>View review</value></data>
+  <data name="Admin_Approve" xml:space="preserve"><value>Approve</value></data>
+  <data name="Admin_RemoveApproval" xml:space="preserve"><value>Remove approval</value></data>
+  <data name="Admin_ArchiveReviewConfirm" xml:space="preserve"><value>Archive this review?</value></data>
+  <data name="Admin_PageSummary" xml:space="preserve"><value>Page {0} of {1}, {2} records</value></data>
+  <data name="Admin_ReviewsWorksheet" xml:space="preserve"><value>Reviews</value></data>
+  <data name="Admin_ReviewApprovedMessage" xml:space="preserve"><value>The review was approved and can now appear on the product page.</value></data>
+  <data name="Admin_ReviewApprovalRemoved" xml:space="preserve"><value>Review approval was removed.</value></data>
+  <data name="Admin_SelectAtLeastOneReview" xml:space="preserve"><value>Select at least one review to approve.</value></data>
+  <data name="Admin_ReviewsApprovedCount" xml:space="preserve"><value>{0} reviews were approved.</value></data>
+  <data name="Admin_ReviewArchived" xml:space="preserve"><value>The review was archived.</value></data>
+  <data name="Admin_CarrierNameRequired" xml:space="preserve"><value>Shipping company name is required.</value></data>
+  <data name="Admin_CarrierAdded" xml:space="preserve"><value>{0} was added.</value></data>
+  <data name="Admin_CarrierNotFound" xml:space="preserve"><value>Shipping company not found.</value></data>
+  <data name="Admin_CarrierUpdated" xml:space="preserve"><value>{0} was updated.</value></data>
+  <data name="Admin_CarrierSetDefault" xml:space="preserve"><value>{0} is now the default shipping company.</value></data>
+  <data name="Admin_RegionNameRequired" xml:space="preserve"><value>Region name is required.</value></data>
+  <data name="Admin_RegionNotFound" xml:space="preserve"><value>Region not found.</value></data>
+  <data name="Admin_RegionAdded" xml:space="preserve"><value>Region added.</value></data>
+  <data name="Admin_RegionUpdated" xml:space="preserve"><value>Region updated.</value></data>
+  <data name="Admin_RegionDeleted" xml:space="preserve"><value>Region deleted.</value></data>
+  <data name="Admin_CityNameRequired" xml:space="preserve"><value>City name is required.</value></data>
+  <data name="Admin_CityAlreadyExists" xml:space="preserve"><value>This city already exists in the selected region.</value></data>
+  <data name="Admin_CityNotFound" xml:space="preserve"><value>City not found.</value></data>
+  <data name="Admin_CityAdded" xml:space="preserve"><value>City added.</value></data>
+  <data name="Admin_CityUpdated" xml:space="preserve"><value>City updated.</value></data>
+  <data name="Admin_CityDeleted" xml:space="preserve"><value>City deleted.</value></data>
+  <data name="Admin_InvalidShippingPrice" xml:space="preserve"><value>Shipping price must be zero or greater.</value></data>
+  <data name="Admin_RegionShippingPriceUpdated" xml:space="preserve"><value>Region shipping price updated.</value></data>
+  <data name="Admin_Code" xml:space="preserve"><value>Code</value></data>
+  <data name="Admin_TrackingUrl" xml:space="preserve"><value>Tracking URL</value></data>
+  <data name="Admin_Company" xml:space="preserve"><value>Company</value></data>
+  <data name="Admin_Tracking" xml:space="preserve"><value>Tracking</value></data>
+  <data name="Admin_Price" xml:space="preserve"><value>Price</value></data>
+  <data name="Admin_Palestine" xml:space="preserve"><value>Palestine</value></data>
+  <data name="Admin_Refresh" xml:space="preserve"><value>Refresh</value></data>
+  <data name="Admin_Province" xml:space="preserve"><value>Province</value></data>
+  <data name="Admin_DefaultShippingCompany" xml:space="preserve"><value>Default shipping company</value></data>
+  <data name="Admin_ChooseFile" xml:space="preserve"><value>Choose file</value></data>
+  <data name="Admin_ChooseFiles" xml:space="preserve"><value>Choose files</value></data>
+  <data name="Admin_NoFileChosen" xml:space="preserve"><value>No file chosen</value></data>
+  <data name="Admin_ProductFeatureFields" xml:space="preserve"><value>Product feature fields</value></data>
+  <data name="Admin_ProductFeatureFieldsSubtitle" xml:space="preserve"><value>Manage filterable and technical product information for each product type.</value></data>
+  <data name="Admin_AllProductTypes" xml:space="preserve"><value>All product types</value></data>
+  <data name="Admin_NewFeatureField" xml:space="preserve"><value>New feature field</value></data>
+  <data name="Admin_NewFeatureFieldSubtitle" xml:space="preserve"><value>Define a reusable field for an existing product type.</value></data>
+  <data name="Admin_EditFeatureField" xml:space="preserve"><value>Edit feature field</value></data>
+  <data name="Admin_EditFeatureFieldSubtitle" xml:space="preserve"><value>Update the definition and visibility settings for {0}.</value></data>
+  <data name="Admin_FieldType" xml:space="preserve"><value>Field type</value></data>
+  <data name="Admin_FieldTitle" xml:space="preserve"><value>Field title</value></data>
+  <data name="Admin_ShortText" xml:space="preserve"><value>Short text</value></data>
+  <data name="Admin_LongText" xml:space="preserve"><value>Long text</value></data>
+  <data name="Admin_Number" xml:space="preserve"><value>Number</value></data>
+  <data name="Admin_SelectList" xml:space="preserve"><value>Select list</value></data>
+  <data name="Admin_HelpText" xml:space="preserve"><value>Help text</value></data>
+  <data name="Admin_HelpTextPlaceholder" xml:space="preserve"><value>A short explanation shown below the field</value></data>
+  <data name="Admin_Options" xml:space="preserve"><value>Options</value></data>
+  <data name="Admin_OptionsPlaceholder" xml:space="preserve"><value>Enter one option per line.</value></data>
+  <data name="Admin_OptionsHelp" xml:space="preserve"><value>Used only for select-list fields. Enter one value per line.</value></data>
+  <data name="Admin_UseInFilter" xml:space="preserve"><value>Use in filters</value></data>
+  <data name="Admin_ShowOnDetail" xml:space="preserve"><value>Show on product details</value></data>
+  <data name="Admin_ShowInTechnicalTable" xml:space="preserve"><value>Show in technical table</value></data>
+  <data name="Admin_ArchiveFeatureConfirm" xml:space="preserve"><value>Archive this feature field?</value></data>
+  <data name="Admin_FeatureAdded" xml:space="preserve"><value>Feature field added.</value></data>
+  <data name="Admin_FeatureUpdated" xml:space="preserve"><value>Feature field updated.</value></data>
+  <data name="Admin_FeatureArchived" xml:space="preserve"><value>Feature field archived.</value></data>
+  <data name="Admin_FeatureNameRequired" xml:space="preserve"><value>Field title is required.</value></data>
+  <data name="Admin_FeatureCodeRequired" xml:space="preserve"><value>Field code is required.</value></data>
+  <data name="Admin_ValidFieldTypeRequired" xml:space="preserve"><value>Select a valid field type.</value></data>
+  <data name="Admin_FeatureOptionsRequired" xml:space="preserve"><value>Enter options for a select-list field.</value></data>
+  <data name="Admin_FeatureCodeDuplicate" xml:space="preserve"><value>This code already exists for the selected product type.</value></data>
 </root>

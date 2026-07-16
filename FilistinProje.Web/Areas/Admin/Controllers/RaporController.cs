@@ -2,8 +2,10 @@
 using FilistinProje.Core.Models;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
+using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using QuestPDF.Fluent;
@@ -17,11 +19,16 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
     {
         private readonly KanvasDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public RaporController(KanvasDbContext context, IWebHostEnvironment webHostEnvironment)
+        public RaporController(
+            KanvasDbContext context,
+            IWebHostEnvironment webHostEnvironment,
+            IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index(DateTime? baslangic, DateTime? bitis)
@@ -43,24 +50,24 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             AddDailySheet(package, model);
             AddHourlySheet(package, model);
             AddStatusSheet(package, model);
-            AddProductSheet(package, "En Ã‡ok Satan ÃœrÃ¼nler", model.EnCokSatanUrunler);
-            AddProductSheet(package, "En Ã‡ok TÄ±klanan ÃœrÃ¼nler", model.EnCokTiklananUrunler);
+            AddProductSheet(package, L("Admin_ReportSheetBestSellingProducts"), model.EnCokSatanUrunler);
+            AddProductSheet(package, L("Admin_ReportSheetMostClickedProducts"), model.EnCokTiklananUrunler);
             AddConversionSheet(package, model);
             AddCustomerSheet(package, model);
             AddReturnReasonSheet(package, model);
             AddCategorySheet(package, model);
             AddCitySheet(package, model);
             AddCouponSheet(package, model);
-            AddTrafficSheet(package, "Trafik KaynaklarÄ±", model.TrafikKaynaklari);
-            AddTrafficSheet(package, "Gezilen Sayfalar", model.EnCokGezilenSayfalar);
-            AddTrafficSheet(package, "Cihaz DaÄŸÄ±lÄ±mÄ±", model.CihazDagilimi);
+            AddTrafficSheet(package, L("Admin_ReportSheetTrafficSources"), model.TrafikKaynaklari);
+            AddTrafficSheet(package, L("Admin_ReportSheetVisitedPages"), model.EnCokGezilenSayfalar);
+            AddTrafficSheet(package, L("Admin_ReportSheetDeviceDistribution"), model.CihazDagilimi);
             AddCargoSheet(package, model);
 
             var bytes = package.GetAsByteArray();
             return File(
                 bytes,
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                $"raporlar-{startLocal:yyyyMMdd}-{endLocal:yyyyMMdd}.xlsx");
+                L("Admin_ReportExcelFileName", startLocal, endLocal));
         }
 
         public async Task<IActionResult> PdfExport(DateTime? baslangic, DateTime? bitis)
@@ -84,7 +91,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                         {
                             row.RelativeItem().Column(header =>
                             {
-                                header.Item().Text("7ANRPS48 Rapor Ã–zeti").FontSize(18).Bold().FontColor("#313511");
+                                header.Item().Text(L("Admin_ReportPdfTitle")).FontSize(18).Bold().FontColor("#313511");
                                 header.Item().Text(model.AralikEtiketi).FontSize(9).FontColor("#6b6f45");
                             });
 
@@ -110,29 +117,29 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
                         column.Item().Row(row =>
                         {
-                            row.RelativeItem().Element(box => PdfKpi(box, "Ciro", Money(model.Ciro), "SatÄ±ÅŸ getiren sipariÅŸlerden hesaplandÄ±."));
-                            row.RelativeItem().Element(box => PdfKpi(box, "SipariÅŸ", model.SiparisSayisi.ToString(), $"Ortalama sepet: {Money(model.OrtalamaSepet)}"));
+                            row.RelativeItem().Element(box => PdfKpi(box, L("Admin_Revenue"), Money(model.Ciro), L("Admin_ReportRevenueSubtitle")));
+                            row.RelativeItem().Element(box => PdfKpi(box, L("Admin_Order"), model.SiparisSayisi.ToString(), L("Admin_ReportAverageCartSubtitle", Money(model.OrtalamaSepet))));
                         });
                         column.Item().Row(row =>
                         {
-                            row.RelativeItem().Element(box => PdfKpi(box, "DÃ¶nÃ¼ÅŸÃ¼m", $"%{model.DonusumOrani:N2}", $"{model.TekilZiyaretciSayisi} tekil ziyaretÃ§i"));
-                            row.RelativeItem().Element(box => PdfKpi(box, "Terk Sepet", Money(model.TerkEdilenSepetTutari), $"{model.TerkEdilenSepetSayisi} sepet"));
+                            row.RelativeItem().Element(box => PdfKpi(box, L("Admin_Conversion"), $"%{model.DonusumOrani:N2}", L("Admin_UniqueVisitorsCount", model.TekilZiyaretciSayisi)));
+                            row.RelativeItem().Element(box => PdfKpi(box, L("Admin_AbandonedCarts"), Money(model.TerkEdilenSepetTutari), L("Admin_CartsCount", model.TerkEdilenSepetSayisi)));
                         });
                         column.Item().Row(row =>
                         {
-                            row.RelativeItem().Element(box => PdfKpi(box, "Yeni MÃ¼ÅŸteri", model.YeniMusteriSayisi.ToString(), $"{model.TekrarMusteriSayisi} tekrar mÃ¼ÅŸteri"));
-                            row.RelativeItem().Element(box => PdfKpi(box, "Ä°ade / Ä°ptal", $"{model.IadeTalebiSayisi} / {model.IptalSiparisSayisi}", "Operasyon takibi iÃ§in"));
+                            row.RelativeItem().Element(box => PdfKpi(box, L("Admin_NewCustomer"), model.YeniMusteriSayisi.ToString(), L("Admin_ReportRepeatCustomerSubtitle", model.TekrarMusteriSayisi)));
+                            row.RelativeItem().Element(box => PdfKpi(box, L("Admin_ReturnCancel"), $"{model.IadeTalebiSayisi} / {model.IptalSiparisSayisi}", L("Admin_ReportOperationsTrackingSubtitle")));
                         });
 
-                        PdfSection(column, "Aksiyon Ã–nerileri", table =>
+                        PdfSection(column, L("Admin_ActionInsights"), table =>
                         {
                             table.ColumnsDefinition(columns =>
                             {
                                 columns.RelativeColumn(1);
                                 columns.RelativeColumn(3);
                             });
-                            PdfHeader(table, "BaÅŸlÄ±k");
-                            PdfHeader(table, "AÃ§Ä±klama");
+                            PdfHeader(table, L("Admin_ReportTitleColumn"));
+                            PdfHeader(table, L("Admin_Aciklama"));
                             foreach (var item in model.Oneriler.Take(5))
                             {
                                 PdfCell(table, item.Baslik);
@@ -140,7 +147,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                             }
                         });
 
-                        PdfSection(column, "Ã‡ok TÄ±klanan Ama SatÄ±ÅŸta ZayÄ±f ÃœrÃ¼nler", table =>
+                        PdfSection(column, L("Admin_HighClicksLowSales"), table =>
                         {
                             table.ColumnsDefinition(columns =>
                             {
@@ -149,10 +156,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();
                             });
-                            PdfHeader(table, "ÃœrÃ¼n");
-                            PdfHeader(table, "TÄ±klama");
-                            PdfHeader(table, "SatÄ±ÅŸ");
-                            PdfHeader(table, "Risk");
+                            PdfHeader(table, L("Admin_Urun"));
+                            PdfHeader(table, L("Admin_Clicks"));
+                            PdfHeader(table, L("Admin_Sales"));
+                            PdfHeader(table, L("Admin_Risk"));
                             foreach (var item in model.UrunDonusumSorunlari.Take(8))
                             {
                                 PdfCell(table, item.UrunAdi);
@@ -162,7 +169,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                             }
                         });
 
-                        PdfSection(column, "En DeÄŸerli MÃ¼ÅŸteriler", table =>
+                        PdfSection(column, L("Admin_MostValuableCustomers"), table =>
                         {
                             table.ColumnsDefinition(columns =>
                             {
@@ -171,10 +178,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();
                             });
-                            PdfHeader(table, "MÃ¼ÅŸteri");
-                            PdfHeader(table, "E-posta");
-                            PdfHeader(table, "SipariÅŸ");
-                            PdfHeader(table, "Ciro");
+                            PdfHeader(table, L("Admin_Musteri"));
+                            PdfHeader(table, L("Admin_Email"));
+                            PdfHeader(table, L("Admin_Order"));
+                            PdfHeader(table, L("Admin_Revenue"));
                             foreach (var item in model.EnDegerliMusteriler.Take(8))
                             {
                                 PdfCell(table, item.Musteri);
@@ -184,7 +191,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                             }
                         });
 
-                        PdfSection(column, "Ä°ade / Ä°ptal Nedenleri", table =>
+                        PdfSection(column, L("Admin_ReturnCancelReasons"), table =>
                         {
                             table.ColumnsDefinition(columns =>
                             {
@@ -193,10 +200,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();
                             });
-                            PdfHeader(table, "Neden");
-                            PdfHeader(table, "Tip");
-                            PdfHeader(table, "Adet");
-                            PdfHeader(table, "Tutar");
+                            PdfHeader(table, L("Admin_Reason"));
+                            PdfHeader(table, L("Admin_Type"));
+                            PdfHeader(table, L("Admin_Quantity"));
+                            PdfHeader(table, L("Admin_Amount"));
                             foreach (var item in model.IadeIptalNedenleri.Take(8))
                             {
                                 PdfCell(table, item.Neden);
@@ -211,7 +218,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                         .AlignRight()
                         .Text(text =>
                         {
-                            text.Span("Sayfa ");
+                            text.Span(L("Admin_ReportPagePrefix"));
                             text.CurrentPageNumber();
                             text.Span(" / ");
                             text.TotalPages();
@@ -219,7 +226,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 });
             }).GeneratePdf();
 
-            return File(pdfBytes, "application/pdf", $"rapor-ozeti-{startLocal:yyyyMMdd}-{endLocal:yyyyMMdd}.pdf");
+            return File(pdfBytes, "application/pdf", L("Admin_ReportPdfFileName", startLocal, endLocal));
         }
 
         private async Task<RaporIndexViewModel> BuildReportAsync(DateTime startUtc, DateTime endUtc, DateTime startLocal, DateTime endLocal)
@@ -328,7 +335,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .GroupBy(x => new
                 {
                     x.UrunId,
-                    UrunAdi = string.IsNullOrWhiteSpace(x.Urun?.Baslik) ? $"ÃœrÃ¼n #{x.UrunId}" : x.Urun.Baslik,
+                    UrunAdi = string.IsNullOrWhiteSpace(x.Urun?.Baslik) ? L("Admin_ReportProductFallback", x.UrunId) : x.Urun.Baslik,
                     Gorsel = x.Urun?.AnaGorselUrl ?? string.Empty
                 })
                 .Select(g => new RaporProductMetric
@@ -382,7 +389,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                         SatisAdedi = sold,
                         Ciro = sales?.Ciro ?? 0,
                         DonusumOrani = conversion,
-                        RiskNotu = sold == 0 ? "TÄ±klama var, satÄ±ÅŸ yok" : conversion < 1 ? "DÃ¶nÃ¼ÅŸÃ¼m dÃ¼ÅŸÃ¼k" : "Takip edilmeli"
+                        RiskNotu = sold == 0
+                            ? L("Admin_ReportRiskClicksNoSales")
+                            : conversion < 1
+                                ? L("Admin_ReportRiskLowConversion")
+                                : L("Admin_ReportRiskMonitor")
                     };
                 })
                 .Where(x => x.SatisAdedi == 0 || x.DonusumOrani < 1)
@@ -400,7 +411,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     var key = g.Key;
                     return new RaporCustomerMetric
                     {
-                        Musteri = string.IsNullOrWhiteSpace(lastOrder.MusteriAdSoyad) ? "Ä°simsiz mÃ¼ÅŸteri" : lastOrder.MusteriAdSoyad,
+                        Musteri = string.IsNullOrWhiteSpace(lastOrder.MusteriAdSoyad) ? L("Admin_ReportUnnamedCustomer") : lastOrder.MusteriAdSoyad,
                         Eposta = string.IsNullOrWhiteSpace(lastOrder.Eposta) ? "-" : lastOrder.Eposta,
                         Sehir = string.IsNullOrWhiteSpace(lastOrder.Sehir) ? "-" : lastOrder.Sehir,
                         SiparisAdedi = g.Count(),
@@ -415,20 +426,22 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             var cancelledReasons = orders
                 .Where(x => x.Durum == SiparisDurumHelper.IptalEdildi)
-                .GroupBy(x => NormalizeReason(x.Aciklama, "Sebep girilmemiÅŸ"))
+                .GroupBy(x => NormalizeReason(x.Aciklama, L("Admin_ReportReasonNotProvided")))
                 .Select(g => new RaporReturnReasonMetric
                 {
                     Neden = g.Key,
-                    Tip = "Ä°ptal",
+                    Tip = L("Admin_ReportCancellationType"),
+                    IadeMi = false,
                     Adet = g.Count(),
                     Tutar = g.Sum(x => x.ToplamTutar)
                 });
             var returnReasons = returns
-                .GroupBy(x => NormalizeReason(x.Neden, "Sebep girilmemiÅŸ"))
+                .GroupBy(x => NormalizeReason(x.Neden, L("Admin_ReportReasonNotProvided")))
                 .Select(g => new RaporReturnReasonMetric
                 {
                     Neden = g.Key,
-                    Tip = "Ä°ade",
+                    Tip = L("Admin_ReportReturnType"),
+                    IadeMi = true,
                     Adet = g.Count(),
                     Tutar = g.Sum(x => x.Siparis?.ToplamTutar ?? 0)
                 });
@@ -464,7 +477,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     .Select(g => new RaporStatusMetric
                     {
                         Durum = g.Key,
-                        Etiket = SiparisDurumHelper.GetShortLabel(g.Key),
+                        Etiket = GetOrderStatusLabel(g.Key),
                         Adet = g.Count(),
                         Tutar = g.Where(IsRevenueOrder).Sum(x => x.ToplamTutar)
                     })
@@ -483,7 +496,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     .GroupBy(x => new
                     {
                         KategoriId = x.Urun?.KategoriId ?? 0,
-                        KategoriAdi = x.Urun?.Kategori?.Ad ?? "Kategorisiz"
+                        KategoriAdi = x.Urun?.Kategori?.Ad ?? L("Admin_ReportUncategorized")
                     })
                     .Select(g => new RaporCategoryMetric
                     {
@@ -497,7 +510,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     .Take(10)
                     .ToList(),
                 SehirPerformansi = revenueOrders
-                    .GroupBy(x => string.IsNullOrWhiteSpace(x.Sehir) ? "BelirtilmemiÅŸ" : x.Sehir.Trim())
+                    .GroupBy(x => string.IsNullOrWhiteSpace(x.Sehir) ? L("Admin_Belirtilmemis") : x.Sehir.Trim())
                     .Select(g => new RaporCityMetric
                     {
                         Sehir = g.Key,
@@ -554,7 +567,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     .OrderByDescending(x => x.Adet)
                     .ToList(),
                 KargoPerformansi = orders
-                    .GroupBy(x => string.IsNullOrWhiteSpace(x.KargoFirmasi) ? "Kargo firması seçilmedi" : x.KargoFirmasi.Trim())
+                    .GroupBy(x => string.IsNullOrWhiteSpace(x.KargoFirmasi) ? L("Admin_ReportShippingCompanyNotSelected") : x.KargoFirmasi.Trim())
                     .Select(g => new RaporKargoMetric
                     {
                         Firma = g.Key,
@@ -605,7 +618,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .ToList();
         }
 
-        private static IReadOnlyList<RaporInsightItem> BuildInsights(RaporIndexViewModel model)
+        private IReadOnlyList<RaporInsightItem> BuildInsights(RaporIndexViewModel model)
         {
             var insights = new List<RaporInsightItem>();
 
@@ -614,8 +627,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 insights.Add(new RaporInsightItem
                 {
                     Seviye = "warning",
-                    Baslik = "Bekleyen sipariÅŸler var",
-                    Aciklama = $"{model.BekleyenSiparisSayisi} sipariÅŸ henÃ¼z iÅŸleme alÄ±nmamÄ±ÅŸ gÃ¶rÃ¼nÃ¼yor.",
+                    Baslik = L("Admin_ReportInsightPendingOrdersTitle"),
+                    Aciklama = L("Admin_ReportInsightPendingOrdersDescription", model.BekleyenSiparisSayisi),
                     Link = "/Admin/Siparis?durum=0"
                 });
             }
@@ -626,8 +639,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 insights.Add(new RaporInsightItem
                 {
                     Seviye = "warning",
-                    Baslik = "ÃœrÃ¼n dÃ¶nÃ¼ÅŸÃ¼m riski",
-                    Aciklama = $"{risk.UrunAdi} yÃ¼ksek gÃ¶rÃ¼ntÃ¼lenmeye raÄŸmen dÃ¼ÅŸÃ¼k satÄ±ÅŸ Ã¼retiyor. Fiyat, gÃ¶rsel, varyasyon ve aÃ§Ä±klama kontrol edilebilir.",
+                    Baslik = L("Admin_ReportInsightConversionRiskTitle"),
+                    Aciklama = L("Admin_ReportInsightConversionRiskDescription", risk.UrunAdi),
                     Link = $"/Admin/Urun/Duzenle/{risk.UrunId}"
                 });
             }
@@ -637,8 +650,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 insights.Add(new RaporInsightItem
                 {
                     Seviye = "info",
-                    Baslik = "Terk edilen sepet fÄ±rsatÄ±",
-                    Aciklama = $"{model.TerkEdilenSepetSayisi} terk edilen sepette yaklaÅŸÄ±k {model.TerkEdilenSepetTutari:N2} ₪ potansiyel gelir var.",
+                    Baslik = L("Admin_ReportInsightAbandonedCartTitle"),
+                    Aciklama = L("Admin_ReportInsightAbandonedCartDescription", model.TerkEdilenSepetSayisi, Money(model.TerkEdilenSepetTutari)),
                     Link = "/Admin/Rapor"
                 });
             }
@@ -648,8 +661,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 insights.Add(new RaporInsightItem
                 {
                     Seviye = "info",
-                    Baslik = "Ä°ade / iptal takibi",
-                    Aciklama = $"{model.IadeTalebiSayisi} iade talebi ve {model.IptalSiparisSayisi} iptal sipariÅŸi var. Nedenleri dÃ¼zenli takip etmek kaliteyi artÄ±rÄ±r.",
+                    Baslik = L("Admin_ReportInsightReturnCancelTitle"),
+                    Aciklama = L("Admin_ReportInsightReturnCancelDescription", model.IadeTalebiSayisi, model.IptalSiparisSayisi),
                     Link = "/Admin/Iade"
                 });
             }
@@ -659,8 +672,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 insights.Add(new RaporInsightItem
                 {
                     Seviye = "info",
-                    Baslik = "DÃ¶nÃ¼ÅŸÃ¼m oranÄ± dÃ¼ÅŸÃ¼k",
-                    Aciklama = $"DÃ¶nÃ¼ÅŸÃ¼m oranÄ± %{model.DonusumOrani:N2}. ÃœrÃ¼n detay sayfasÄ±, sepet ve kampanya akÄ±ÅŸÄ± gÃ¼Ã§lendirilebilir.",
+                    Baslik = L("Admin_ReportInsightLowConversionTitle"),
+                    Aciklama = L("Admin_ReportInsightLowConversionDescription", model.DonusumOrani),
                     Link = "/Admin/Kupon"
                 });
             }
@@ -670,8 +683,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 insights.Add(new RaporInsightItem
                 {
                     Seviye = "success",
-                    Baslik = "Operasyon normal gÃ¶rÃ¼nÃ¼yor",
-                    Aciklama = "SeÃ§ilen dÃ¶nem iÃ§in acil aksiyon gerektiren bir rapor uyarÄ±sÄ± bulunmuyor.",
+                    Baslik = L("Admin_ReportInsightNormalTitle"),
+                    Aciklama = L("Admin_ReportInsightNormalDescription"),
                     Link = "/Admin/Siparis"
                 });
             }
@@ -716,11 +729,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             return string.IsNullOrWhiteSpace(order.Eposta) ? string.Empty : $"e:{order.Eposta.Trim().ToLowerInvariant()}";
         }
 
-        private static string NormalizeReferer(string? referer)
+        private string NormalizeReferer(string? referer)
         {
             if (string.IsNullOrWhiteSpace(referer))
             {
-                return "Direkt / Bilinmiyor";
+                return L("Admin_ReportDirectUnknown");
             }
 
             if (Uri.TryCreate(referer, UriKind.Absolute, out var uri))
@@ -731,20 +744,20 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             return referer.Length > 40 ? referer[..40] : referer;
         }
 
-        private static string NormalizeDevice(string? model, string? os)
+        private string NormalizeDevice(string? model, string? os)
         {
             var text = $"{model} {os}".ToLowerInvariant();
             if (text.Contains("iphone") || text.Contains("android") || text.Contains("mobile"))
             {
-                return "Mobil";
+                return L("Admin_ReportMobile");
             }
 
             if (text.Contains("ipad") || text.Contains("tablet"))
             {
-                return "Tablet";
+                return L("Admin_ReportTablet");
             }
 
-            return "MasaÃ¼stÃ¼";
+            return L("Admin_ReportDesktop");
         }
 
         private static string NormalizeReason(string? value, string fallback)
@@ -758,33 +771,49 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             return text.Length > 80 ? text[..80] : text;
         }
 
+        private string GetOrderStatusLabel(int status) => status switch
+        {
+            SiparisDurumHelper.SiparisAlindi => L("Admin_ReportStatusOrderReceived"),
+            SiparisDurumHelper.UretimHazirlaniyor => L("Admin_ReportStatusPreparing"),
+            SiparisDurumHelper.Paketleniyor => L("Admin_ReportStatusPacking"),
+            SiparisDurumHelper.KargoyaVerildi => L("Admin_ReportStatusShipped"),
+            SiparisDurumHelper.TeslimEdildi => L("Admin_ReportStatusDelivered"),
+            SiparisDurumHelper.IptalEdildi => L("Admin_ReportStatusCancelled"),
+            SiparisDurumHelper.IadeTalebi => L("Admin_ReportStatusReturnRequested"),
+            SiparisDurumHelper.IadeOnaylandi => L("Admin_ReportStatusReturnApproved"),
+            SiparisDurumHelper.IadeTamamlandi => L("Admin_ReportStatusReturnCompleted"),
+            _ => L("Admin_ReportStatusUpdated")
+        };
+
+        private string L(string key, params object[] arguments) => _localizer[key, arguments].Value;
+
         private static string Money(decimal value)
         {
             return $"{value:N2} ₪";
         }
 
-        private static void AddSummarySheet(ExcelPackage package, RaporIndexViewModel model)
+        private void AddSummarySheet(ExcelPackage package, RaporIndexViewModel model)
         {
-            var summary = package.Workbook.Worksheets.Add("Ã–zet");
+            var summary = package.Workbook.Worksheets.Add(L("Admin_ReportSheetSummary"));
             var summaryRows = new (string Label, object Value)[]
             {
-                ("Rapor AralÄ±ÄŸÄ±", model.AralikEtiketi),
-                ("Ciro", model.Ciro),
-                ("SipariÅŸ SayÄ±sÄ±", model.SiparisSayisi),
-                ("Ortalama Sepet", model.OrtalamaSepet),
-                ("SatÄ±lan ÃœrÃ¼n Adedi", model.SatilanUrunAdedi),
-                ("Tekil MÃ¼ÅŸteri", model.TekilMusteriSayisi),
-                ("Yeni MÃ¼ÅŸteri", model.YeniMusteriSayisi),
-                ("Tekrar MÃ¼ÅŸteri", model.TekrarMusteriSayisi),
-                ("Tekrar MÃ¼ÅŸteri Cirosu", model.TekrarMusteriCirosu),
-                ("Ziyaret", model.ZiyaretSayisi),
-                ("Tekil ZiyaretÃ§i", model.TekilZiyaretciSayisi),
-                ("DÃ¶nÃ¼ÅŸÃ¼m OranÄ±", $"{model.DonusumOrani:N2}%"),
-                ("Toplam Ä°ndirim", model.IndirimToplami),
-                ("Ä°ade Talebi", model.IadeTalebiSayisi),
-                ("Ä°ptal SipariÅŸi", model.IptalSiparisSayisi),
-                ("Terk Edilen Sepet", model.TerkEdilenSepetSayisi),
-                ("Terk Edilen Sepet TutarÄ±", model.TerkEdilenSepetTutari)
+                (L("Admin_ReportRange"), model.AralikEtiketi),
+                (L("Admin_Revenue"), model.Ciro),
+                (L("Admin_ReportOrderCount"), model.SiparisSayisi),
+                (L("Admin_AverageCartValue"), model.OrtalamaSepet),
+                (L("Admin_ReportProductsSoldCount"), model.SatilanUrunAdedi),
+                (L("Admin_ReportUniqueCustomers"), model.TekilMusteriSayisi),
+                (L("Admin_NewCustomer"), model.YeniMusteriSayisi),
+                (L("Admin_RepeatCustomer"), model.TekrarMusteriSayisi),
+                (L("Admin_RepeatCustomerRevenue"), model.TekrarMusteriCirosu),
+                (L("Admin_ReportVisits"), model.ZiyaretSayisi),
+                (L("Admin_ReportUniqueVisitor"), model.TekilZiyaretciSayisi),
+                (L("Admin_ReportConversionRate"), $"{model.DonusumOrani:N2}%"),
+                (L("Admin_TotalDiscount"), model.IndirimToplami),
+                (L("Admin_ReportReturnRequests"), model.IadeTalebiSayisi),
+                (L("Admin_ReportCancelledOrders"), model.IptalSiparisSayisi),
+                (L("Admin_AbandonedCarts"), model.TerkEdilenSepetSayisi),
+                (L("Admin_ReportAbandonedCartAmount"), model.TerkEdilenSepetTutari)
             };
 
             for (var i = 0; i < summaryRows.Length; i++)
@@ -796,10 +825,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             StyleKeyValueSheet(summary, summaryRows.Length);
         }
 
-        private static void AddDailySheet(ExcelPackage package, RaporIndexViewModel model)
+        private void AddDailySheet(ExcelPackage package, RaporIndexViewModel model)
         {
-            var ws = package.Workbook.Worksheets.Add("GÃ¼nlÃ¼k");
-            WriteHeaders(ws, "Tarih", "Ciro", "SipariÅŸ", "Ziyaret");
+            var ws = package.Workbook.Worksheets.Add(L("Admin_ReportSheetDaily"));
+            WriteHeaders(ws, L("Admin_Date"), L("Admin_Revenue"), L("Admin_Order"), L("Admin_ReportVisits"));
             var row = 2;
             foreach (var item in model.GunlukMetrikler)
             {
@@ -814,10 +843,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             AutoFit(ws);
         }
 
-        private static void AddHourlySheet(ExcelPackage package, RaporIndexViewModel model)
+        private void AddHourlySheet(ExcelPackage package, RaporIndexViewModel model)
         {
-            var ws = package.Workbook.Worksheets.Add("Saatlik Analiz");
-            WriteHeaders(ws, "Saat", "SipariÅŸ", "Ciro", "Ziyaret");
+            var ws = package.Workbook.Worksheets.Add(L("Admin_ReportSheetHourlyAnalysis"));
+            WriteHeaders(ws, L("Admin_ReportHour"), L("Admin_Order"), L("Admin_Revenue"), L("Admin_ReportVisits"));
             var row = 2;
             foreach (var item in model.SaatlikMetrikler)
             {
@@ -831,10 +860,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             AutoFit(ws);
         }
 
-        private static void AddStatusSheet(ExcelPackage package, RaporIndexViewModel model)
+        private void AddStatusSheet(ExcelPackage package, RaporIndexViewModel model)
         {
-            var ws = package.Workbook.Worksheets.Add("SipariÅŸ DurumlarÄ±");
-            WriteHeaders(ws, "Durum", "Adet", "Tutar");
+            var ws = package.Workbook.Worksheets.Add(L("Admin_ReportSheetOrderStatuses"));
+            WriteHeaders(ws, L("Admin_Durum"), L("Admin_Quantity"), L("Admin_Amount"));
             var row = 2;
             foreach (var item in model.DurumDagilimi)
             {
@@ -847,10 +876,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             AutoFit(ws);
         }
 
-        private static void AddProductSheet(ExcelPackage package, string title, IReadOnlyList<RaporProductMetric> items)
+        private void AddProductSheet(ExcelPackage package, string title, IReadOnlyList<RaporProductMetric> items)
         {
             var ws = package.Workbook.Worksheets.Add(title);
-            WriteHeaders(ws, "ÃœrÃ¼n Id", "ÃœrÃ¼n", "SatÄ±ÅŸ Adedi", "Ciro", "GÃ¶rÃ¼ntÃ¼lenme", "Favori");
+            WriteHeaders(ws, L("Admin_ReportProductId"), L("Admin_Urun"), L("Admin_ReportSalesQuantity"), L("Admin_Revenue"), L("Admin_ReportViews"), L("Admin_Favorite"));
             var row = 2;
             foreach (var item in items)
             {
@@ -866,10 +895,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             AutoFit(ws);
         }
 
-        private static void AddConversionSheet(ExcelPackage package, RaporIndexViewModel model)
+        private void AddConversionSheet(ExcelPackage package, RaporIndexViewModel model)
         {
-            var ws = package.Workbook.Worksheets.Add("ÃœrÃ¼n DÃ¶nÃ¼ÅŸÃ¼m Riski");
-            WriteHeaders(ws, "ÃœrÃ¼n Id", "ÃœrÃ¼n", "GÃ¶rÃ¼ntÃ¼lenme", "SatÄ±ÅŸ", "Ciro", "DÃ¶nÃ¼ÅŸÃ¼m %", "Risk Notu");
+            var ws = package.Workbook.Worksheets.Add(L("Admin_ReportSheetProductConversionRisk"));
+            WriteHeaders(ws, L("Admin_ReportProductId"), L("Admin_Urun"), L("Admin_ReportViews"), L("Admin_Sales"), L("Admin_Revenue"), L("Admin_ReportConversionPercent"), L("Admin_ReportRiskNote"));
             var row = 2;
             foreach (var item in model.UrunDonusumSorunlari)
             {
@@ -887,10 +916,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             AutoFit(ws);
         }
 
-        private static void AddCustomerSheet(ExcelPackage package, RaporIndexViewModel model)
+        private void AddCustomerSheet(ExcelPackage package, RaporIndexViewModel model)
         {
-            var ws = package.Workbook.Worksheets.Add("MÃ¼ÅŸteriler");
-            WriteHeaders(ws, "MÃ¼ÅŸteri", "E-posta", "Åehir", "SipariÅŸ", "Ciro", "Son SipariÅŸ", "Tip");
+            var ws = package.Workbook.Worksheets.Add(L("Admin_ReportSheetCustomers"));
+            WriteHeaders(ws, L("Admin_Musteri"), L("Admin_Email"), L("Admin_Sehir"), L("Admin_Order"), L("Admin_Revenue"), L("Admin_ReportLastOrder"), L("Admin_Type"));
             var row = 2;
             foreach (var item in model.EnDegerliMusteriler)
             {
@@ -900,7 +929,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 ws.Cells[row, 4].Value = item.SiparisAdedi;
                 ws.Cells[row, 5].Value = item.Ciro;
                 ws.Cells[row, 6].Value = ToPalestineLocal(item.SonSiparisTarihi);
-                ws.Cells[row, 7].Value = item.YeniMusteri ? "Yeni" : "Tekrar";
+                ws.Cells[row, 7].Value = item.YeniMusteri ? L("Admin_New") : L("Admin_Repeat");
                 row++;
             }
             ws.Column(5).Style.Numberformat.Format = "#,##0.00";
@@ -908,10 +937,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             AutoFit(ws);
         }
 
-        private static void AddReturnReasonSheet(ExcelPackage package, RaporIndexViewModel model)
+        private void AddReturnReasonSheet(ExcelPackage package, RaporIndexViewModel model)
         {
-            var ws = package.Workbook.Worksheets.Add("Ä°ade Ä°ptal Nedenleri");
-            WriteHeaders(ws, "Neden", "Tip", "Adet", "Tutar");
+            var ws = package.Workbook.Worksheets.Add(L("Admin_ReportSheetReturnCancelReasons"));
+            WriteHeaders(ws, L("Admin_Reason"), L("Admin_Type"), L("Admin_Quantity"), L("Admin_Amount"));
             var row = 2;
             foreach (var item in model.IadeIptalNedenleri)
             {
@@ -925,10 +954,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             AutoFit(ws);
         }
 
-        private static void AddCategorySheet(ExcelPackage package, RaporIndexViewModel model)
+        private void AddCategorySheet(ExcelPackage package, RaporIndexViewModel model)
         {
-            var ws = package.Workbook.Worksheets.Add("Kategori PerformansÄ±");
-            WriteHeaders(ws, "Kategori Id", "Kategori", "ÃœrÃ¼n Adedi", "SatÄ±ÅŸ Adedi", "Ciro");
+            var ws = package.Workbook.Worksheets.Add(L("Admin_ReportSheetCategoryPerformance"));
+            WriteHeaders(ws, L("Admin_ReportCategoryId"), L("Admin_Kategori"), L("Admin_ReportProductCount"), L("Admin_ReportSalesQuantity"), L("Admin_Revenue"));
             var row = 2;
             foreach (var item in model.KategoriPerformansi)
             {
@@ -943,10 +972,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             AutoFit(ws);
         }
 
-        private static void AddCitySheet(ExcelPackage package, RaporIndexViewModel model)
+        private void AddCitySheet(ExcelPackage package, RaporIndexViewModel model)
         {
-            var ws = package.Workbook.Worksheets.Add("Åehirler");
-            WriteHeaders(ws, "Åehir", "SipariÅŸ", "Ciro");
+            var ws = package.Workbook.Worksheets.Add(L("Admin_ReportSheetCities"));
+            WriteHeaders(ws, L("Admin_Sehir"), L("Admin_Order"), L("Admin_Revenue"));
             var row = 2;
             foreach (var item in model.SehirPerformansi)
             {
@@ -959,10 +988,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             AutoFit(ws);
         }
 
-        private static void AddCouponSheet(ExcelPackage package, RaporIndexViewModel model)
+        private void AddCouponSheet(ExcelPackage package, RaporIndexViewModel model)
         {
-            var ws = package.Workbook.Worksheets.Add("Kuponlar");
-            WriteHeaders(ws, "Kupon", "KullanÄ±m", "Ä°ndirim", "Ciro");
+            var ws = package.Workbook.Worksheets.Add(L("Admin_ReportSheetCoupons"));
+            WriteHeaders(ws, L("Admin_ReportCoupon"), L("Admin_Usage"), L("Admin_Discount"), L("Admin_Revenue"));
             var row = 2;
             foreach (var item in model.KuponPerformansi)
             {
@@ -977,10 +1006,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             AutoFit(ws);
         }
 
-        private static void AddTrafficSheet(ExcelPackage package, string title, IReadOnlyList<RaporTrafficMetric> items)
+        private void AddTrafficSheet(ExcelPackage package, string title, IReadOnlyList<RaporTrafficMetric> items)
         {
             var ws = package.Workbook.Worksheets.Add(title);
-            WriteHeaders(ws, "BaÅŸlÄ±k", "Toplam", "Tekil");
+            WriteHeaders(ws, L("Admin_ReportTitleColumn"), L("Admin_Toplam"), L("Admin_Unique"));
             var row = 2;
             foreach (var item in items)
             {
@@ -992,10 +1021,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             AutoFit(ws);
         }
 
-        private static void AddCargoSheet(ExcelPackage package, RaporIndexViewModel model)
+        private void AddCargoSheet(ExcelPackage package, RaporIndexViewModel model)
         {
-            var ws = package.Workbook.Worksheets.Add("Kargo");
-            WriteHeaders(ws, "Firma", "SipariÅŸ", "Kargoda", "Teslim");
+            var ws = package.Workbook.Worksheets.Add(L("Admin_ReportSheetShipping"));
+            WriteHeaders(ws, L("Admin_ReportCompany"), L("Admin_Order"), L("Admin_ReportInTransit"), L("Admin_Delivery"));
             var row = 2;
             foreach (var item in model.KargoPerformansi)
             {

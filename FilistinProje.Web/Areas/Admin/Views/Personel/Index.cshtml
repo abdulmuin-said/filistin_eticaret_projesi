@@ -5,13 +5,28 @@
 }
 
 @functions {
-    private static string FormatGiris(DateTime? utc)
+    private static DateTime ToPalestineTime(DateTime utc)
+    {
+        var utcValue = DateTime.SpecifyKind(utc, DateTimeKind.Utc);
+        foreach (var id in new[] { "Asia/Hebron", "West Bank Standard Time" })
+        {
+            try
+            {
+                return TimeZoneInfo.ConvertTimeFromUtc(utcValue, TimeZoneInfo.FindSystemTimeZoneById(id));
+            }
+            catch (TimeZoneNotFoundException) { }
+            catch (InvalidTimeZoneException) { }
+        }
+        return utcValue.AddHours(3);
+    }
+
+    private string FormatGiris(DateTime? utc)
     {
         if (!utc.HasValue) return "-";
-        var local = utc.Value.ToLocalTime();
-        var now = DateTime.Now;
-        if (local.Date == now.Date) return $"Bugün {local:HH:mm}";
-        if (local.Date == now.Date.AddDays(-1)) return $"Dün {local:HH:mm}";
+        var local = ToPalestineTime(utc.Value);
+        var now = ToPalestineTime(DateTime.UtcNow);
+        if (local.Date == now.Date) return Localizer["Admin_TodayAt", local.ToString("HH:mm")];
+        if (local.Date == now.Date.AddDays(-1)) return Localizer["Admin_YesterdayAt", local.ToString("HH:mm")];
         return local.ToString("dd.MM.yyyy HH:mm");
     }
 
@@ -379,11 +394,11 @@
                                 @person.AdSoyad
                                 @if (online)
                                 {
-                                    <span class="ca-online-dot" title="Çevrimiçi"></span>
+                                    <span class="ca-online-dot" title="@Localizer["Admin_Online"]"></span>
                                 }
                                 else
                                 {
-                                    <span class="ca-offline-dot" title="Çevrimdışı"></span>
+                                    <span class="ca-offline-dot" title="@Localizer["Admin_Offline"]"></span>
                                 }
                                 @if (person.KendisiMi)
                                 {
@@ -400,6 +415,8 @@
                                 <span><i class="fas fa-clock"></i>@Localizer["Admin_LastLogin"]: @FormatGiris(person.SonGirisUtc)</span>
                             </div>
                         </div>
+                        @if (person.YonetilebilirMi)
+                        {
                         <div class="ca-personel-actions">
                             <a href="/Admin/Kullanici/Duzenle/@person.Id"
                                class="ca-personel-action"
@@ -407,7 +424,7 @@
                                 <i class="fas fa-pen"></i>
                             </a>
                             <form asp-action="OturumTemizle" asp-route-id="@person.Id" method="post"
-                                  onsubmit="return confirm('@Localizer["Admin_ConfirmClearSession"]'.replace('{0}', '@person.AdSoyad'));">
+                                  data-confirm="@Localizer["Admin_ConfirmClearSession", person.AdSoyad]">
                                 @Html.AntiForgeryToken()
                                 <button type="submit"
                                         class="ca-personel-action"
@@ -416,6 +433,7 @@
                                 </button>
                             </form>
                         </div>
+                        }
                     </div>
                 }
             </div>
@@ -433,3 +451,15 @@
         </div>
     }
 </div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('form[data-confirm]').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!window.confirm(form.dataset.confirm)) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+}

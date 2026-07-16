@@ -146,6 +146,7 @@ namespace FilistinProje.Core.Models
     {
         public string Neden { get; set; } = string.Empty;
         public string Tip { get; set; } = string.Empty;
+        public bool IadeMi { get; set; }
         public int Adet { get; set; }
         public decimal Tutar { get; set; }
     }

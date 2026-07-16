@@ -2,14 +2,17 @@
 using FilistinProje.Data;
 using FilistinProje.Core.Helpers;
 using FilistinProje.Service.Interfaces;
+using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using SixLabors.ImageSharp;
 
 namespace FilistinProje.Web.Areas.Admin.Controllers
 {
@@ -18,11 +21,24 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
     {
         private readonly KanvasDbContext _context;
         private readonly ICacheService _cacheService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IStringLocalizer<SharedResource> _localizer;
+        private static readonly HashSet<string> AllowedImageExtensions = new(StringComparer.OrdinalIgnoreCase)
+        {
+            ".jpg", ".jpeg", ".png", ".webp"
+        };
+        private const long MaxImageFileBytes = 10 * 1024 * 1024;
 
-        public KategoriController(KanvasDbContext context, ICacheService cacheService)
+        public KategoriController(
+            KanvasDbContext context,
+            ICacheService cacheService,
+            IWebHostEnvironment webHostEnvironment,
+            IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
             _cacheService = cacheService;
+            _webHostEnvironment = webHostEnvironment;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index(string? arama, string? durum, string? tip)
@@ -195,8 +211,9 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Ekle(Kategori kategori)
+        public async Task<IActionResult> Ekle(Kategori kategori, IFormFile? gorselDosyasi)
         {
+            await ValidateImageUploadAsync(gorselDosyasi);
             if (!await ValidateCategoryAsync(kategori))
             {
                 await PopulateParentCategoriesAsync(kategori.ParentKategoriId);
@@ -210,6 +227,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             kategori.Sira = await NormalizeCategoryOrderAsync(kategori.Sira);
             kategori.UrunSiralamaTipi = NormalizeSortType(kategori.UrunSiralamaTipi);
             kategori.Slug = await GenerateUniqueCategorySlugAsync(kategori.Slug, kategori.Ad, null);
+            if (gorselDosyasi is { Length: > 0 })
+            {
+                kategori.GorselUrl = await SaveCategoryImageAsync(gorselDosyasi);
+            }
 
             _context.Kategoriler.Add(kategori);
             await _context.SaveChangesAsync();
@@ -239,7 +260,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Duzenle(Kategori model)
+        public async Task<IActionResult> Duzenle(Kategori model, IFormFile? gorselDosyasi)
         {
             var kategori = await _context.Kategoriler.FirstOrDefaultAsync(x => x.Id == model.Id);
             if (kategori == null)
@@ -247,6 +268,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            await ValidateImageUploadAsync(gorselDosyasi);
             if (!await ValidateCategoryAsync(model))
             {
                 PopulateCategoryEditStats(kategori);
@@ -271,6 +293,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             kategori.KampanyaEtiketi = model.KampanyaEtiketi?.Trim() ?? string.Empty;
             kategori.UrunSiralamaTipi = NormalizeSortType(model.UrunSiralamaTipi);
             kategori.Slug = await GenerateUniqueCategorySlugAsync(model.Slug, model.Ad, model.Id);
+            if (gorselDosyasi is { Length: > 0 })
+            {
+                kategori.GorselUrl = await SaveCategoryImageAsync(gorselDosyasi);
+            }
 
             await _context.SaveChangesAsync();
             await InvalidateCategoryCachesAsync();
@@ -441,6 +467,53 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             return ModelState.IsValid;
+        }
+
+        private async Task ValidateImageUploadAsync(IFormFile? file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return;
+            }
+
+            var extension = Path.GetExtension(file.FileName);
+            if (!AllowedImageExtensions.Contains(extension) || file.Length > MaxImageFileBytes)
+            {
+                ModelState.AddModelError("gorselDosyasi", _localizer["Admin_InvalidCategoryImageUpload"]);
+                return;
+            }
+
+            try
+            {
+                await using var stream = file.OpenReadStream();
+                if (await SixLabors.ImageSharp.Image.IdentifyAsync(stream) == null)
+                {
+                    ModelState.AddModelError("gorselDosyasi", _localizer["Admin_InvalidCategoryImageUpload"]);
+                }
+            }
+            catch (UnknownImageFormatException)
+            {
+                ModelState.AddModelError("gorselDosyasi", _localizer["Admin_InvalidCategoryImageUpload"]);
+            }
+            catch (InvalidImageContentException)
+            {
+                ModelState.AddModelError("gorselDosyasi", _localizer["Admin_InvalidCategoryImageUpload"]);
+            }
+        }
+
+        private async Task<string> SaveCategoryImageAsync(IFormFile file)
+        {
+            var uploadDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", "kategoriler");
+            Directory.CreateDirectory(uploadDirectory);
+
+            var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+            var fileName = $"{Guid.NewGuid():N}{extension}";
+            var physicalPath = Path.Combine(uploadDirectory, fileName);
+
+            await using var stream = new FileStream(physicalPath, FileMode.CreateNew);
+            await file.CopyToAsync(stream);
+
+            return $"/uploads/kategoriler/{fileName}";
         }
 
         private async Task<int> NormalizeCategoryOrderAsync(int currentOrder)

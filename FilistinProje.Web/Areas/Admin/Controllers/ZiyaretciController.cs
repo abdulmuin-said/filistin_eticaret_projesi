@@ -1,8 +1,10 @@
 ﻿using FilistinProje.Core.Models;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
+using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 
@@ -11,11 +13,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
     [Area("Admin")]
     public class ZiyaretciController : AdminBaseController
     {
+        private static readonly TimeZoneInfo PalestineTimeZone = ResolvePalestineTimeZone();
         private readonly KanvasDbContext _context;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public ZiyaretciController(KanvasDbContext context)
+        public ZiyaretciController(KanvasDbContext context, IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index(
@@ -41,9 +46,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
-            var now = DateTime.UtcNow.AddHours(3);
-            var todayStart = DateTime.SpecifyKind(now.Date, DateTimeKind.Utc);
-            var onlineStart = now.AddMinutes(-5);
+            var utcNow = DateTime.UtcNow;
+            var palestineNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, PalestineTimeZone);
+            var todayStart = PalestineLocalDateToUtc(palestineNow.Date);
+            var onlineStart = utcNow.AddMinutes(-5);
 
             var allLogsQuery = _context.ZiyaretciLoglari.AsNoTracking();
             var filteredLogs = await query.ToListAsync();
@@ -111,25 +117,26 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Export(string? q, string? metod, string? cihaz, DateTime? baslangic, DateTime? bitis)
         {
             ExcelPackage.License.SetNonCommercialOrganization("7ANRPS48");
+            var exportTime = ToPalestineLocal(DateTime.UtcNow);
             var kayitlar = await BuildFilteredQuery(q, metod, cihaz, baslangic, bitis)
                 .OrderByDescending(x => x.OlusturulmaTarihi)
                 .ToListAsync();
 
             using var package = new ExcelPackage();
-            var worksheet = package.Workbook.Worksheets.Add("ZiyaretÃ§i TrafiÄŸi");
+            var worksheet = package.Workbook.Worksheets.Add(_localizer["Admin_VisitorTrafficWorksheet"].Value);
             var headers = new[]
             {
-                "Tarih",
-                "IP Adresi",
-                "Ãœlke",
-                "Åehir",
-                "Metod",
-                "URL",
-                "Referans",
-                "KullanÄ±cÄ±",
-                "Cihaz",
-                "TarayÄ±cÄ±",
-                "Ä°ÅŸletim Sistemi"
+                _localizer["Admin_VisitorDate"].Value,
+                _localizer["Admin_VisitorIpAddress"].Value,
+                _localizer["Admin_VisitorCountry"].Value,
+                _localizer["Admin_VisitorCity"].Value,
+                _localizer["Admin_VisitorMethod"].Value,
+                _localizer["Admin_VisitorUrl"].Value,
+                _localizer["Admin_VisitorReferrer"].Value,
+                _localizer["Admin_VisitorUser"].Value,
+                _localizer["Admin_VisitorDevice"].Value,
+                _localizer["Admin_VisitorBrowser"].Value,
+                _localizer["Admin_VisitorOperatingSystem"].Value
             };
 
             for (var i = 0; i < headers.Length; i++)
@@ -140,15 +147,20 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var row = 2;
             foreach (var item in kayitlar)
             {
-                worksheet.Cells[row, 1].Value = item.OlusturulmaTarihi;
+                worksheet.Cells[row, 1].Value = ToPalestineLocal(item.OlusturulmaTarihi);
                 worksheet.Cells[row, 2].Value = SafeSpreadsheetText(item.IpAdresi);
                 worksheet.Cells[row, 3].Value = SafeSpreadsheetText(item.Ulke);
                 worksheet.Cells[row, 4].Value = SafeSpreadsheetText(item.Sehir);
                 worksheet.Cells[row, 5].Value = SafeSpreadsheetText(item.Metod);
                 worksheet.Cells[row, 6].Value = SafeSpreadsheetText(item.Url);
-                worksheet.Cells[row, 7].Value = SafeSpreadsheetText(item.ReferansUrl);
-                worksheet.Cells[row, 8].Value = SafeSpreadsheetText(item.KullaniciAdi);
-                worksheet.Cells[row, 9].Value = SafeSpreadsheetText(item.CihazModeli);
+                worksheet.Cells[row, 7].Value = SafeSpreadsheetText(
+                    string.IsNullOrWhiteSpace(item.ReferansUrl) ? _localizer["Admin_DirectUnknown"].Value : item.ReferansUrl);
+                worksheet.Cells[row, 8].Value = SafeSpreadsheetText(
+                    string.IsNullOrWhiteSpace(item.KullaniciAdi) || item.KullaniciAdi == "Misafir"
+                        ? _localizer["Admin_VisitorGuest"].Value
+                        : item.KullaniciAdi);
+                worksheet.Cells[row, 9].Value = SafeSpreadsheetText(
+                    string.IsNullOrWhiteSpace(item.CihazModeli) ? _localizer["Admin_VisitorUnknown"].Value : item.CihazModeli);
                 worksheet.Cells[row, 10].Value = SafeSpreadsheetText(item.Tarayici);
                 worksheet.Cells[row, 11].Value = SafeSpreadsheetText(item.IsletimSistemi);
                 row++;
@@ -162,7 +174,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 range.Style.Font.Color.SetColor(System.Drawing.Color.White);
             }
 
-            worksheet.Column(1).Style.Numberformat.Format = "dd.mm.yyyy hh:mm:ss";
+            worksheet.Column(1).Style.Numberformat.Format = "yyyy-mm-dd hh:mm:ss";
             if (worksheet.Dimension != null)
             {
                 worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
@@ -171,7 +183,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             return File(
                 package.GetAsByteArray(),
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                $"ziyaretci-trafigi-{DateTime.Now:yyyyMMdd-HHmm}.xlsx");
+                $"visitor-traffic-{exportTime:yyyyMMdd-HHmm}.xlsx");
         }
 
         public Task<IActionResult> Indir(string? q, string? metod, string? cihaz, DateTime? baslangic, DateTime? bitis)
@@ -190,7 +202,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Temizle()
         {
             await _context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE \"ZiyaretciLoglari\"");
-            TempData["Basari"] = "ZiyaretÃ§i trafik geÃ§miÅŸi temizlendi.";
+            TempData["Basari"] = _localizer["Admin_TrafficHistoryCleared"].Value;
             return RedirectToAction(nameof(Index));
         }
 
@@ -241,13 +253,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (baslangic.HasValue)
             {
-                var start = DateTime.SpecifyKind(baslangic.Value.Date, DateTimeKind.Utc);
+                var start = PalestineLocalDateToUtc(baslangic.Value.Date);
                 query = query.Where(x => x.OlusturulmaTarihi >= start);
             }
 
             if (bitis.HasValue)
             {
-                var end = DateTime.SpecifyKind(bitis.Value.Date.AddDays(1), DateTimeKind.Utc);
+                var end = PalestineLocalDateToUtc(bitis.Value.Date.AddDays(1));
                 query = query.Where(x => x.OlusturulmaTarihi < end);
             }
 
@@ -265,11 +277,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             return text.Contains("iphone") || text.Contains("android") || text.Contains("mobile");
         }
 
-        private static string NormalizeReferer(string? referer)
+        private string NormalizeReferer(string? referer)
         {
             if (string.IsNullOrWhiteSpace(referer))
             {
-                return "Direkt / Bilinmiyor";
+                return _localizer["Admin_DirectUnknown"].Value;
             }
 
             if (Uri.TryCreate(referer, UriKind.Absolute, out var uri))
@@ -278,6 +290,40 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             return referer.Length > 48 ? referer[..48] : referer;
+        }
+
+        private static DateTime PalestineLocalDateToUtc(DateTime value)
+        {
+            var localValue = DateTime.SpecifyKind(value, DateTimeKind.Unspecified);
+            return TimeZoneInfo.ConvertTimeToUtc(localValue, PalestineTimeZone);
+        }
+
+        private static DateTime ToPalestineLocal(DateTime value)
+        {
+            var utcValue = value.Kind == DateTimeKind.Utc
+                ? value
+                : DateTime.SpecifyKind(value, DateTimeKind.Utc);
+
+            return TimeZoneInfo.ConvertTimeFromUtc(utcValue, PalestineTimeZone);
+        }
+
+        private static TimeZoneInfo ResolvePalestineTimeZone()
+        {
+            foreach (var timeZoneId in new[] { "Asia/Gaza", "West Bank Standard Time" })
+            {
+                try
+                {
+                    return TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+                }
+                catch (TimeZoneNotFoundException)
+                {
+                }
+                catch (InvalidTimeZoneException)
+                {
+                }
+            }
+
+            return TimeZoneInfo.Utc;
         }
     }
 }

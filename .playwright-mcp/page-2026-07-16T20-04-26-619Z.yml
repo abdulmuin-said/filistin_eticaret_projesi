@@ -1,0 +1,131 @@
+- generic [ref=e2]:
+  - text:          +                     
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "7ANRPS48 لوحة التحكم" [ref=e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=e6]
+      - generic [ref=e7]: لوحة التحكم
+    - navigation "القائمة الرئيسية للإدارة" [ref=e8]:
+      - link " لوحة البيانات" [ref=e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=e10]: 
+        - text: لوحة البيانات
+      - generic [ref=e11]:
+        - button " إدارة الطلبات" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]: 
+          - text: إدارة الطلبات
+        - text:      
+      - generic [ref=e14]:
+        - button " إدارة المنتجات" [ref=e15] [cursor=pointer]:
+          - generic [ref=e16]: 
+          - text: إدارة المنتجات
+        - text:  +  
+      - generic [ref=e17]:
+        - button " محتوى المتجر" [ref=e18] [cursor=pointer]:
+          - generic [ref=e19]: 
+          - text: محتوى المتجر
+        - text:          
+      - link " الأعضاء" [ref=e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=e21]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=e23]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=e25]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=e27]: 
+        - text: مجموعات الجملة
+      - generic [ref=e28]:
+        - button " التقارير" [ref=e29] [cursor=pointer]:
+          - generic [ref=e30]: 
+          - text: التقارير
+        - text:  
+      - link " الحسابات البنكية" [ref=e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=e32]: 
+        - text: الحسابات البنكية
+      - link " الإعدادات" [ref=e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=e34]: 
+        - text: الإعدادات
+    - generic [ref=e35]:
+      - text: 
+      - combobox "اللغة" [ref=e37]:
+        - option "AR" [selected]
+        - option "EN"
+      - generic [ref=e38]:
+        - button "7ANRPS48 Admin Admin 7" [ref=e39] [cursor=pointer]:
+          - generic [ref=e40]:
+            - strong [ref=e41]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=e42]: "7"
+        - text:  
+  - generic [ref=e43]:
+    - main [ref=e44]:
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - heading "Yorum Yönetimi" [level=1] [ref=e48]
+            - paragraph [ref=e49]: Müşteri yorumlarını inceleyin, onaylayın, arşivleyin ve Excel olarak dışa aktarın.
+          - generic [ref=e50]:
+            - link " Bekleyenler (0)" [ref=e51] [cursor=pointer]:
+              - /url: /Admin/Yorum?durum=0&pageSize=20
+              - generic [ref=e52]: 
+              - text: Bekleyenler (0)
+            - link " Onaylananlar (0)" [ref=e53] [cursor=pointer]:
+              - /url: /Admin/Yorum?durum=1&pageSize=20
+              - generic [ref=e54]: 
+              - text: Onaylananlar (0)
+            - link " Tümü" [ref=e55] [cursor=pointer]:
+              - /url: /Admin/Yorum?durum=2&pageSize=20
+              - generic [ref=e56]: 
+              - text: Tümü
+        - generic [ref=e57]:
+          - generic [ref=e58]:
+            - generic [ref=e59]:
+              - generic [ref=e60]: Bekleyen
+              - strong [ref=e61]: "0"
+            - generic [ref=e62]: 
+          - generic [ref=e63]:
+            - generic [ref=e64]:
+              - generic [ref=e65]: Onaylanan
+              - strong [ref=e66]: "0"
+            - generic [ref=e67]: 
+          - generic [ref=e68]:
+            - generic [ref=e69]:
+              - generic [ref=e70]: Listelenen
+              - strong [ref=e71]: "0"
+            - generic [ref=e72]: 
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - generic [ref=e75]: Ortalama Puan
+              - strong [ref=e76]: 0٫0
+            - generic [ref=e77]: 
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - generic [ref=e80]:
+              - generic [ref=e81]: 
+              - searchbox "Ürün, müşteri veya yorum içinde ara" [ref=e82]
+            - generic [ref=e83]:
+              - combobox [ref=e84]:
+                - option "20" [selected]
+                - option "50"
+                - option "100"
+              - link " Excel'e Aktar" [ref=e85] [cursor=pointer]:
+                - /url: /Admin/Yorum/Export?durum=0&q=
+                - generic [ref=e86]: 
+                - text: Excel'e Aktar
+              - button " Seçilenleri Onayla" [disabled] [ref=e87] [cursor=pointer]:
+                - generic [ref=e88]: 
+                - text: Seçilenleri Onayla
+          - generic [ref=e89]:
+            - generic [ref=e90]: 
+            - paragraph [ref=e91]: Bu filtreye uygun yorum bulunmuyor.
+    - contentinfo [ref=e92]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

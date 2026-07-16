@@ -1,7 +1,9 @@
 ﻿using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
+using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 
@@ -11,10 +13,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
     public class YorumController : AdminBaseController
     {
         private readonly KanvasDbContext _context;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public YorumController(KanvasDbContext context)
+        public YorumController(KanvasDbContext context, IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index(int durum = 0, string? q = null, int page = 1, int pageSize = 20)
@@ -57,8 +61,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             ExcelPackage.License.SetNonCommercialOrganization("7ANRPS48");
             using var package = new ExcelPackage();
-            var worksheet = package.Workbook.Worksheets.Add("Yorumlar");
-            var headers = new[] { "Id", "Durum", "ÃœrÃ¼n", "MÃ¼ÅŸteri", "Puan", "Yorum", "Tarih" };
+            var worksheet = package.Workbook.Worksheets.Add(_localizer["Admin_ReviewsWorksheet"].Value);
+            var headers = new[] { "Id", _localizer["Admin_Status"].Value, _localizer["Admin_Urun"].Value, _localizer["Admin_Musteri"].Value, _localizer["Admin_Rating"].Value, _localizer["Admin_Review"].Value, _localizer["Admin_Tarih"].Value };
 
             for (var i = 0; i < headers.Length; i++)
             {
@@ -78,7 +82,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 var yorum = yorumlar[i];
                 var row = i + 2;
                 worksheet.Cells[row, 1].Value = yorum.Id;
-                worksheet.Cells[row, 2].Value = yorum.OnayliMi ? "OnaylandÄ±" : "Bekliyor";
+                worksheet.Cells[row, 2].Value = yorum.OnayliMi ? _localizer["Admin_Approved"].Value : _localizer["Admin_Pending"].Value;
                 worksheet.Cells[row, 3].Value = yorum.Urun?.Baslik ?? "-";
                 worksheet.Cells[row, 4].Value = yorum.AdSoyad;
                 worksheet.Cells[row, 5].Value = yorum.Puan;
@@ -91,7 +95,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             return File(
                 package.GetAsByteArray(),
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                $"yorumlar-{DateTime.Now:yyyyMMdd-HHmm}.xlsx");
+                 $"reviews-{DateTime.Now:yyyyMMdd-HHmm}.xlsx");
         }
 
         [HttpPost]
@@ -103,7 +107,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 yorum.OnayliMi = true;
                 await _context.SaveChangesAsync();
-                TempData["Mesaj"] = "Yorum onaylandÄ± ve Ã¼rÃ¼n sayfasÄ±nda yayÄ±nlanabilir hale geldi.";
+                TempData["Mesaj"] = _localizer["Admin_ReviewApprovedMessage"].Value;
                 TempData["Durum"] = "success";
             }
 
@@ -119,7 +123,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 yorum.OnayliMi = false;
                 await _context.SaveChangesAsync();
-                TempData["Mesaj"] = "Yorum onayÄ± kaldÄ±rÄ±ldÄ±.";
+                TempData["Mesaj"] = _localizer["Admin_ReviewApprovalRemoved"].Value;
                 TempData["Durum"] = "success";
             }
 
@@ -133,7 +137,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             yorumIds = yorumIds.Where(x => x > 0).Distinct().ToList();
             if (!yorumIds.Any())
             {
-                TempData["Hata"] = "Onaylamak iÃ§in en az bir yorum seÃ§in.";
+                TempData["Hata"] = _localizer["Admin_SelectAtLeastOneReview"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index), new { durum = 0 });
             }
@@ -149,7 +153,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{yorumlar.Count} yorum onaylandÄ±.";
+            TempData["Mesaj"] = _localizer["Admin_ReviewsApprovedCount", yorumlar.Count].Value;
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index), new { durum = 0 });
         }
@@ -164,69 +168,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 yorum.SilindiMi = true;
                 yorum.OnayliMi = false;
                 await _context.SaveChangesAsync();
-                TempData["Mesaj"] = "Yorum arÅŸive alÄ±ndÄ±.";
+                TempData["Mesaj"] = _localizer["Admin_ReviewArchived"].Value;
                 TempData["Durum"] = "success";
             }
 
             return RedirectToAction(nameof(Index));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> SiteDegerlendirmeleri(int page = 1)
-        {
-            page = Math.Max(page, 1);
-            var pageSize = 20;
-
-            var query = _context.SiteDegerlendirmeleri
-                .AsNoTracking()
-                .Where(x => !x.SilindiMi);
-
-            var totalCount = await query.CountAsync();
-            var totalPages = Math.Max(1, (int)Math.Ceiling(totalCount / (double)pageSize));
-            page = Math.Min(page, totalPages);
-
-            var list = await query
-                .OrderByDescending(x => x.OlusturulmaTarihi)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            ViewBag.Page = page;
-            ViewBag.TotalPages = totalPages;
-            ViewBag.TotalCount = totalCount;
-            ViewBag.PendingCount = await _context.SiteDegerlendirmeleri.CountAsync(x => !x.SilindiMi && !x.OnayliMi);
-
-            return View(list);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SiteOnayla(int id)
-        {
-            var item = await _context.SiteDegerlendirmeleri.FirstOrDefaultAsync(x => x.Id == id && !x.SilindiMi);
-            if (item != null)
-            {
-                item.OnayliMi = true;
-                await _context.SaveChangesAsync();
-                TempData["Mesaj"] = "Site deÄŸerlendirmesi onaylandÄ±.";
-                TempData["Durum"] = "success";
-            }
-            return RedirectToAction(nameof(SiteDegerlendirmeleri));
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SiteSil(int id)
-        {
-            var item = await _context.SiteDegerlendirmeleri.FirstOrDefaultAsync(x => x.Id == id && !x.SilindiMi);
-            if (item != null)
-            {
-                item.SilindiMi = true;
-                await _context.SaveChangesAsync();
-                TempData["Mesaj"] = "Site deÄŸerlendirmesi arÅŸive alÄ±ndÄ±.";
-                TempData["Durum"] = "success";
-            }
-            return RedirectToAction(nameof(SiteDegerlendirmeleri));
         }
 
         private IQueryable<FilistinProje.Core.Varliklar.Yorum> BuildReviewQuery(int durum, string? q)

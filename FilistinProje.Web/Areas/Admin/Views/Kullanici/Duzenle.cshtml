@@ -1,18 +1,35 @@
 @model FilistinProje.Core.Models.KullaniciDuzenleViewModel
 @{
-    ViewData["Title"] = "Kullanıcı Düzenle";
+    ViewData["Title"] = Localizer["Admin_EditUser"];
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 
     var lastLoginText = Model.LastAdminLoginUtc.HasValue
-        ? Model.LastAdminLoginUtc.Value.ToLocalTime().ToString("dd.MM.yyyy HH:mm")
-        : "Henüz admin girişi yok";
+        ? ToPalestineTime(Model.LastAdminLoginUtc.Value).ToString("dd.MM.yyyy HH:mm")
+        : Localizer["Admin_NoAdminLoginYet"].Value;
 
     var previousLoginText = Model.PreviousAdminLoginUtc.HasValue
-        ? Model.PreviousAdminLoginUtc.Value.ToLocalTime().ToString("dd.MM.yyyy HH:mm")
+        ? ToPalestineTime(Model.PreviousAdminLoginUtc.Value).ToString("dd.MM.yyyy HH:mm")
         : "-";
 
-    var displayName = string.IsNullOrWhiteSpace(Model.AdSoyad) ? "İsimsiz Kullanıcı" : Model.AdSoyad;
+    var displayName = string.IsNullOrWhiteSpace(Model.AdSoyad) ? Localizer["Admin_UnnamedUser"].Value : Model.AdSoyad;
     var initial = displayName.Substring(0, 1).ToUpperInvariant();
+}
+
+@functions {
+    private static DateTime ToPalestineTime(DateTime utc)
+    {
+        var utcValue = DateTime.SpecifyKind(utc, DateTimeKind.Utc);
+        foreach (var id in new[] { "Asia/Hebron", "West Bank Standard Time" })
+        {
+            try
+            {
+                return TimeZoneInfo.ConvertTimeFromUtc(utcValue, TimeZoneInfo.FindSystemTimeZoneById(id));
+            }
+            catch (TimeZoneNotFoundException) { }
+            catch (InvalidTimeZoneException) { }
+        }
+        return utcValue.AddHours(3);
+    }
 }
 
 <style>
@@ -233,16 +250,16 @@
     <div class="ca-user-edit-shell">
         <div class="ca-user-edit-hero">
             <div>
-                <div class="ca-page-kicker">ÜYE YÖNETİMİ</div>
-                <h1 class="ca-page-title">Kullanıcı Düzenle</h1>
-                <p class="ca-page-subtitle">Hesap bilgilerini, iletişim alanlarını ve admin paneli yetkisini güvenli şekilde yönetin.</p>
+                <div class="ca-page-kicker">@Localizer["Admin_MemberManagement"]</div>
+                <h1 class="ca-page-title">@Localizer["Admin_EditUser"]</h1>
+                <p class="ca-page-subtitle">@Localizer["Admin_EditUserSubtitle"]</p>
             </div>
             <div class="d-flex gap-2 flex-wrap justify-content-end">
                 <a href="/Admin/Kullanici" class="ca-btn ca-btn-outline">
-                    <i class="fas fa-arrow-left"></i> Kullanıcılara Dön
+                    <i class="fas fa-arrow-left"></i> @Localizer["Admin_BackToUsers"]
                 </a>
                 <a href="/Admin/Kullanici/SifreSifirla/@Model.Id" class="ca-btn ca-btn-outline">
-                    <i class="fas fa-key"></i> Şifre Değiştir
+                    <i class="fas fa-key"></i> @Localizer["Admin_ChangePassword"]
                 </a>
             </div>
         </div>
@@ -258,7 +275,7 @@
                 }
 
                 <div class="ca-card-header">
-                    <h2 class="ca-card-title mb-0">Hesap Bilgileri</h2>
+                    <h2 class="ca-card-title mb-0">@Localizer["Admin_AccountInformation"]</h2>
                 </div>
                 <div class="ca-card-body">
                     @if (!ViewData.ModelState.IsValid)
@@ -278,14 +295,14 @@
                     {
                         <div class="ca-alert ca-alert-warning mb-3">
                             <i class="fas fa-shield-halved"></i>
-                            <span>Bu hesap şu an kullandığınız admin hesabı. Temel bilgileri güncelleyebilirsiniz; rol değişikliği güvenlik nedeniyle kapalıdır.</span>
+                            <span>@Localizer["Admin_CurrentAccountRoleLocked"]</span>
                         </div>
                     }
 
                     <section class="ca-edit-section">
                         <div class="ca-edit-section-title">
                             <i class="fas fa-address-card"></i>
-                            <span>Temel Bilgiler</span>
+                            <span>@Localizer["Admin_BasicInformation"]</span>
                         </div>
 
                         <div class="row g-3">
@@ -298,18 +315,18 @@
                             <div class="col-md-6">
                                 <label class="ca-label" asp-for="Email">@Localizer["Admin_E_posta"]</label>
                                 <input asp-for="Email" class="ca-input ca-readonly-input" readonly />
-                                <span class="ca-field-help">E-posta adresi giriş kimliği olduğu için bu ekrandan değiştirilmez.</span>
+                                <span class="ca-field-help">@Localizer["Admin_EmailCannotBeChanged"]</span>
                             </div>
 
                             <div class="col-md-6">
                                 <label class="ca-label" asp-for="PhoneNumber">@Localizer["Admin_Telefon"]</label>
-                                <input asp-for="PhoneNumber" class="ca-input" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="Örn: +970 599 123 456" />
+                                <input asp-for="PhoneNumber" class="ca-input" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="@Localizer["Admin_PalestinePhonePlaceholder"]" />
                                 <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
                             </div>
 
                             <div class="col-md-6">
                                 <label class="ca-label" asp-for="Sehir">@Localizer["Admin_Sehir"]</label>
-                                <input asp-for="Sehir" class="ca-input" autocomplete="address-level1" placeholder="Örn: Ramallah" />
+                                <input asp-for="Sehir" class="ca-input" autocomplete="address-level1" placeholder="@Localizer["Admin_CityPlaceholder"]" />
                                 <span asp-validation-for="Sehir" class="text-danger small"></span>
                             </div>
                         </div>
@@ -318,7 +335,7 @@
                     <section class="ca-edit-section">
                         <div class="ca-edit-section-title">
                             <i class="fas fa-user-shield"></i>
-                            <span>Yetki ve Rol</span>
+                            <span>@Localizer["Admin_PermissionAndRole"]</span>
                         </div>
 
                         <div class="ca-role-grid">
@@ -340,7 +357,7 @@
                         </div>
 
                         <span class="ca-field-help">
-                            Rol seçimi kullanıcının admin panelinde hangi ekranlara erişebileceğini belirler. Müşteri hesabı için “Üye” rolü seçili kalmalıdır.
+                            @Localizer["Admin_RoleSelectionHelp"]
                         </span>
                     </section>
                 </div>
@@ -348,7 +365,7 @@
                 <div class="ca-card-footer d-flex justify-content-end gap-2 flex-wrap">
                     <a href="/Admin/Kullanici" class="ca-btn ca-btn-outline">@Localizer["Admin_Iptal"]</a>
                     <button type="submit" class="ca-btn ca-btn-primary">
-                        <i class="fas fa-save"></i> Değişiklikleri Kaydet
+                        <i class="fas fa-save"></i> @Localizer["Admin_SaveChanges"]
                     </button>
                 </div>
             </form>
@@ -363,11 +380,11 @@
                             <div class="mt-2">
                                 @if (Model.IsBanned)
                                 {
-                                    <span class="ca-badge ca-badge-danger"><i class="fas fa-ban"></i> Giriş Engelli</span>
+                                    <span class="ca-badge ca-badge-danger"><i class="fas fa-ban"></i> @Localizer["Admin_LoginBlocked"]</span>
                                 }
                                 else
                                 {
-                                    <span class="ca-badge ca-badge-success"><i class="fas fa-check"></i> Aktif Hesap</span>
+                                    <span class="ca-badge ca-badge-success"><i class="fas fa-check"></i> @Localizer["Admin_ActiveAccount"]</span>
                                 }
                             </div>
                         </div>
@@ -375,19 +392,19 @@
                     <div class="ca-card-body">
                         <div class="ca-summary-list">
                             <div class="ca-summary-item">
-                                <span>Mevcut rol</span>
+                                <span>@Localizer["Admin_CurrentRole"]</span>
                                 <strong>@Model.CurrentRoleLabel</strong>
                             </div>
                             <div class="ca-summary-item">
-                                <span>Rol açıklaması</span>
+                                <span>@Localizer["Admin_RoleDescription"]</span>
                                 <strong>@Model.CurrentRoleDescription</strong>
                             </div>
                             <div class="ca-summary-item">
-                                <span>Son admin girişi</span>
+                                <span>@Localizer["Admin_LastAdminLogin"]</span>
                                 <strong>@lastLoginText</strong>
                             </div>
                             <div class="ca-summary-item">
-                                <span>Önceki admin girişi</span>
+                                <span>@Localizer["Admin_PreviousAdminLogin"]</span>
                                 <strong>@previousLoginText</strong>
                             </div>
                         </div>
@@ -396,21 +413,21 @@
 
                 <div class="ca-card">
                     <div class="ca-card-header">
-                        <h2 class="ca-card-title mb-0">Kullanım Notları</h2>
+                        <h2 class="ca-card-title mb-0">@Localizer["Admin_UsageNotes"]</h2>
                     </div>
                     <div class="ca-card-body">
                         <ul class="ca-guidance-list">
                             <li>
                                 <i class="fas fa-circle-info"></i>
-                                <span>E-posta adresi kullanıcının giriş bilgisi olduğu için bu ekranda sadece görüntülenir.</span>
+                                <span>@Localizer["Admin_EmailReadonlyNote"]</span>
                             </li>
                             <li>
                                 <i class="fas fa-shield-halved"></i>
-                                <span>Admin yetkisi gerekmeyen müşteriler için rol “Üye” olarak bırakılmalıdır.</span>
+                                <span>@Localizer["Admin_MemberRoleNote"]</span>
                             </li>
                             <li>
                                 <i class="fas fa-key"></i>
-                                <span>Şifre işlemleri ayrı ekrandan yapılır ve işlem sonrası kullanıcının mevcut oturumu kapatılır.</span>
+                                <span>@Localizer["Admin_PasswordOperationNote"]</span>
                             </li>
                         </ul>
                     </div>

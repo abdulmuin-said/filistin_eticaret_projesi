@@ -164,7 +164,7 @@
         </div>
     </div>
 
-    <form asp-action="Duzenle" method="post">
+    <form asp-action="Duzenle" method="post" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="OlusturulmaTarihi" />
@@ -254,6 +254,12 @@
                                  <label class="ca-label">@Localizer["Admin_Kategori_Gorsel_URL"]</label>
 
                                 <input asp-for="GorselUrl" class="ca-input" id="categoryImageUrl" onchange="updateCategoryPreview()" />
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="ca-label">@Localizer["Admin_UploadCategoryImage"]</label>
+                                <input type="file" name="gorselDosyasi" id="categoryImageFile" class="ca-input" accept=".jpg,.jpeg,.png,.webp" onchange="previewCategoryFile(event)" />
+                                <span class="text-danger small" data-valmsg-for="gorselDosyasi"></span>
+                                <div class="small text-muted mt-1">@Localizer["Admin_CategoryImageKeepHelp"]</div>
                             </div>
                             <div class="col-lg-6">
                                   <label class="ca-label">@Localizer["Admin_Kategori_Banner_URL"]</label>
@@ -374,5 +380,15 @@
 
          preview.innerHTML = `<img src="${input.value}" alt="@Localizer["Admin_Kategori_Gorsel"]" onerror="this.closest('.category-preview').innerHTML='<div class=&quot;category-preview-placeholder&quot;><i class=&quot;fas fa-image&quot;></i>@Localizer["Admin_ImageLoadFailed"]</div>';">`;
 
+    }
+
+    function previewCategoryFile(event) {
+        const file = event.target.files && event.target.files[0];
+        const preview = document.getElementById('categoryPreview');
+        if (!file || !preview) return;
+
+        const imageUrl = URL.createObjectURL(file);
+        preview.innerHTML = `<img src="${imageUrl}" alt="@Localizer["Admin_Kategori_Gorsel"]">`;
+        preview.querySelector('img').addEventListener('load', () => URL.revokeObjectURL(imageUrl), { once: true });
     }
 </script>

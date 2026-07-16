@@ -27,6 +27,7 @@ namespace FilistinProje.Core.Models
         public DateTime? OncekiGirisUtc { get; set; }
         public bool EngelliMi { get; set; }
         public bool KendisiMi { get; set; }
+        public bool YonetilebilirMi { get; set; }
         public DateTime KayitTarihi { get; set; }
     }
 
@@ -51,6 +52,7 @@ namespace FilistinProje.Core.Models
     {
         public string RolAdi { get; set; } = string.Empty;
         public string Label { get; set; } = string.Empty;
+        public string Aciklama { get; set; } = string.Empty;
         public string Renk { get; set; } = "secondary";
         public int Sira { get; set; }
     }

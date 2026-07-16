@@ -5,9 +5,24 @@
 }
 
 @functions {
+    private static DateTime ToPalestineTime(DateTime utc)
+    {
+        var utcValue = DateTime.SpecifyKind(utc, DateTimeKind.Utc);
+        foreach (var id in new[] { "Asia/Hebron", "West Bank Standard Time" })
+        {
+            try
+            {
+                return TimeZoneInfo.ConvertTimeFromUtc(utcValue, TimeZoneInfo.FindSystemTimeZoneById(id));
+            }
+            catch (TimeZoneNotFoundException) { }
+            catch (InvalidTimeZoneException) { }
+        }
+        return utcValue.AddHours(3);
+    }
+
     private static string FormatDate(DateTime? value)
     {
-        return value.HasValue ? value.Value.ToLocalTime().ToString("dd.MM.yyyy HH:mm") : "-";
+        return value.HasValue ? ToPalestineTime(value.Value).ToString("dd.MM.yyyy HH:mm") : "-";
     }
 
     private string PageUrl(int page, int? pageSize = null)
@@ -126,17 +141,17 @@
     <div class="ca-page-header">
         <div>
             <h1 class="ca-page-title">@Localizer["Admin_Kullanici_Yonetimi"]</h1>
-            <p class="ca-page-subtitle">Rolleri, oturum durumunu ve temel müşteri bilgilerini tek ekrandan yönetin.</p>
+            <p class="ca-page-subtitle">@Localizer["Admin_UserManagementSubtitle"]</p>
         </div>
         <div class="d-flex gap-2 align-items-center flex-wrap justify-content-end">
             <div class="ca-badge ca-badge-neutral" style="padding:8px 16px; font-size:.9rem;">
-                <i class="fas fa-shield-alt me-1"></i> @Model.AdminCount Admin
+                <i class="fas fa-shield-alt me-1"></i> @Localizer["Admin_AdminCount", Model.AdminCount]
             </div>
             <div class="ca-badge ca-badge-success" style="padding:8px 16px; font-size:.9rem;">
-                <i class="fas fa-user me-1"></i> @Model.CustomerCount Müşteri
+                <i class="fas fa-user me-1"></i> @Localizer["Admin_CustomerCount", Model.CustomerCount]
             </div>
             <a href="/Admin/Kullanici/ExcelExport" class="ca-btn ca-btn-outline ca-btn-sm">
-                <i class="fas fa-file-export"></i> CSV Dışa Aktar
+                <i class="fas fa-file-export"></i> @Localizer["Admin_ExportCsv"]
             </a>
         </div>
     </div>
@@ -147,12 +162,12 @@
                 <input type="hidden" name="pageSize" value="@Model.PageSize" />
                 <div class="ca-input-icon-group" style="flex:1;">
                     <i class="fas fa-search ca-icon-left"></i>
-                    <input type="text" name="search" value="@Model.Search" class="ca-input" placeholder="İsim, e-posta veya telefon ara">
+                    <input type="text" name="search" value="@Model.Search" class="ca-input" placeholder="@Localizer["Admin_SearchUserPlaceholder"]">
                 </div>
             </form>
 
             <div class="small text-muted d-flex align-items-center">
-                Toplam @Model.TotalCount kayıt, sayfa @Model.Page / @Model.TotalPages.
+                @Localizer["Admin_UserPaginationSummary", Model.TotalCount, Model.Page, Model.TotalPages]
             </div>
         </div>
 
@@ -161,11 +176,11 @@
                 <thead>
                     <tr>
                         <th class="ps-4">@Localizer["Admin_Kullanici"]</th>
-                        <th>İletişim</th>
-                        <th>Konum</th>
-                        <th>Rol</th>
-                        <th>Son Admin Girişi</th>
-                        <th class="text-end pe-4">İşlemler</th>
+                        <th>@Localizer["Admin_Contact"]</th>
+                        <th>@Localizer["Admin_Location"]</th>
+                        <th>@Localizer["Admin_Role"]</th>
+                        <th>@Localizer["Admin_LastAdminLogin"]</th>
+                        <th class="text-end pe-4">@Localizer["Admin_Actions"]</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -184,7 +199,7 @@
                                         <small class="ca-text-muted">ID: #@user.Id.Substring(0, Math.Min(8, user.Id.Length))</small>
                                         @if (user.IsCurrentUser)
                                         {
-                                            <div><small class="text-primary">Bu hesap aktif oturumunuz.</small></div>
+                                            <div><small class="text-primary">@Localizer["Admin_ThisIsYourActiveAccount"]</small></div>
                                         }
                                     </div>
                                 </div>
@@ -222,7 +237,7 @@
 
                                 @if (user.IsBanned)
                                 {
-                                    <div class="mt-2"><span class="badge text-bg-danger">Engelli</span></div>
+                                    <div class="mt-2"><span class="badge text-bg-danger">@Localizer["Admin_Banned"]</span></div>
                                 }
                             </td>
 
@@ -230,20 +245,23 @@
                                 <div class="small">@FormatDate(user.LastAdminLoginUtc)</div>
                                 @if (user.PreviousAdminLoginUtc.HasValue)
                                 {
-                                    <div class="small text-muted">Önceki: @FormatDate(user.PreviousAdminLoginUtc)</div>
+                                    <div class="small text-muted">@Localizer["Admin_PreviousLogin"]: @FormatDate(user.PreviousAdminLoginUtc)</div>
                                 }
                             </td>
 
                             <td class="text-end pe-4">
                                 <div class="ca-user-actions ms-auto">
-                                    <a href="/Admin/Kullanici/Duzenle/@user.Id" class="ca-user-action is-primary" title="Kullanıcının ad, telefon, şehir ve rol bilgisini düzenler.">
-                                        <i class="fas fa-pen"></i>
-                                        <span>Bilgileri Düzenle</span>
-                                    </a>
-                                    <a href="/Admin/Kullanici/SifreSifirla/@user.Id" class="ca-user-action" title="Kullanıcı için yeni şifre belirleme ekranını açar.">
-                                        <i class="fas fa-key"></i>
-                                        <span>Şifre Değiştir</span>
-                                    </a>
+                                    @if (user.CanManage)
+                                    {
+                                        <a href="/Admin/Kullanici/Duzenle/@user.Id" class="ca-user-action is-primary" title="@Localizer["Admin_EditUserDetailsTitle"]">
+                                            <i class="fas fa-pen"></i>
+                                            <span>@Localizer["Admin_Edit"]</span>
+                                        </a>
+                                        <a href="/Admin/Kullanici/SifreSifirla/@user.Id" class="ca-user-action" title="@Localizer["Admin_ChangePasswordTitle"]">
+                                            <i class="fas fa-key"></i>
+                                            <span>@Localizer["Admin_ChangePassword"]</span>
+                                        </a>
+                                    }
 
                                     <form asp-action="DurumDegistir" asp-route-id="@user.Id" method="post">
                                         @Html.AntiForgeryToken()
@@ -251,20 +269,20 @@
                                         {
                                             <button type="submit"
                                                     class="ca-user-action @(user.IsBanned ? string.Empty : "is-warning")"
-                                                    title="Kendi hesabınızın giriş durumunu buradan değiştiremezsiniz."
+                                                     title="@Localizer["Admin_CannotChangeOwnStatus"]"
                                                     disabled>
                                                 <i class="fas @(user.IsBanned ? "fa-unlock" : "fa-ban")"></i>
-                                                <span>@(user.IsBanned ? "Engeli Kaldır" : "Girişi Engelle")</span>
+                                                <span>@(user.IsBanned ? Localizer["Admin_UnblockLogin"] : Localizer["Admin_BlockLogin"])</span>
                                             </button>
                                         }
-                                        else
+                                        else if (user.CanManage)
                                         {
                                             <button type="submit"
                                                     class="ca-user-action @(user.IsBanned ? string.Empty : "is-warning")"
-                                                    title="@(user.IsBanned ? "Kullanıcının tekrar giriş yapmasına izin verir." : "Kullanıcının hesaba giriş yapmasını engeller.")"
-                                                    onclick="return confirm('@(user.IsBanned ? "Bu kullanıcının engelini kaldırmak istiyor musunuz?" : "Bu kullanıcının girişini engellemek istiyor musunuz?")');">
+                                                     title="@(user.IsBanned ? Localizer["Admin_UnblockLoginTitle"] : Localizer["Admin_BlockLoginTitle"])"
+                                                     data-confirm="@(user.IsBanned ? Localizer["Admin_ConfirmUnblockUser"] : Localizer["Admin_ConfirmBlockUser"])">
                                                 <i class="fas @(user.IsBanned ? "fa-unlock" : "fa-ban")"></i>
-                                                <span>@(user.IsBanned ? "Engeli Kaldır" : "Girişi Engelle")</span>
+                                                <span>@(user.IsBanned ? Localizer["Admin_UnblockLogin"] : Localizer["Admin_BlockLogin"])</span>
                                             </button>
                                         }
                                     </form>
@@ -275,27 +293,31 @@
                                         {
                                             <button type="submit"
                                                     class="ca-user-action is-danger"
-                                                    title="Kendi hesabınızı silemezsiniz."
+                                                     title="@Localizer["Admin_CannotDeleteOwnAccount"]"
                                                     disabled>
                                                 <i class="fas fa-trash"></i>
-                                                <span>Hesabı Sil</span>
+                                                <span>@Localizer["Admin_DeleteAccount"]</span>
                                             </button>
                                         }
-                                        else
+                                        else if (user.CanManage)
                                         {
                                             <button type="submit"
                                                     class="ca-user-action is-danger"
-                                                    title="Kullanıcı kaydını kalıcı olarak siler."
-                                                    onclick="return confirm('Bu kullanıcı kaydını silmek istediğinize emin misiniz?');">
+                                                     title="@Localizer["Admin_DeleteAccountTitle"]"
+                                                     data-confirm="@Localizer["Admin_ConfirmDeleteUser"]">
                                                 <i class="fas fa-trash"></i>
-                                                <span>Hesabı Sil</span>
+                                                <span>@Localizer["Admin_DeleteAccount"]</span>
                                             </button>
                                         }
                                     </form>
                                 </div>
                                 @if (user.IsCurrentUser)
                                 {
-                                    <small class="ca-action-note">Kendi hesabınızda engelleme ve silme kapalıdır.</small>
+                                    <small class="ca-action-note">@Localizer["Admin_OwnAccountActionsDisabled"]</small>
+                                }
+                                else if (!user.CanManage)
+                                {
+                                    <small class="ca-action-note">@Localizer["Admin_OnlySuperAdminCanManageSuperAdmin"]</small>
                                 }
                             </td>
                         </tr>
@@ -308,7 +330,7 @@
         {
             <div class="ca-pagination mt-3 d-flex flex-wrap align-items-center justify-content-between gap-3">
                 <div class="d-flex align-items-center gap-2">
-                    <span class="small text-muted">Sayfa boyutu</span>
+                    <span class="small text-muted">@Localizer["Admin_PageSize"]</span>
                     <select class="ca-input" style="width:90px;" onchange="location.href='@PageUrl(1, 0)'.replace('pageSize=0', 'pageSize=' + this.value)">
                         <option value="20" selected="@(Model.PageSize == 20)">20</option>
                         <option value="50" selected="@(Model.PageSize == 50)">50</option>
@@ -316,11 +338,23 @@
                     </select>
                 </div>
                 <div class="d-flex align-items-center gap-2">
-                    <a class="ca-btn ca-btn-outline ca-btn-sm @(Model.Page <= 1 ? "disabled" : string.Empty)" href="@(Model.Page <= 1 ? "#" : PageUrl(Model.Page - 1))">Önceki</a>
+                    <a class="ca-btn ca-btn-outline ca-btn-sm @(Model.Page <= 1 ? "disabled" : string.Empty)" href="@(Model.Page <= 1 ? "#" : PageUrl(Model.Page - 1))">@Localizer["Admin_Previous"]</a>
                     <span class="small text-muted">@Model.Page / @Model.TotalPages</span>
-                    <a class="ca-btn ca-btn-outline ca-btn-sm @(Model.Page >= Model.TotalPages ? "disabled" : string.Empty)" href="@(Model.Page >= Model.TotalPages ? "#" : PageUrl(Model.Page + 1))">Sonraki</a>
+                    <a class="ca-btn ca-btn-outline ca-btn-sm @(Model.Page >= Model.TotalPages ? "disabled" : string.Empty)" href="@(Model.Page >= Model.TotalPages ? "#" : PageUrl(Model.Page + 1))">@Localizer["Admin_Next"]</a>
                 </div>
             </div>
         }
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('[data-confirm]').forEach(function (button) {
+            button.addEventListener('click', function (event) {
+                if (!window.confirm(button.dataset.confirm)) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+}

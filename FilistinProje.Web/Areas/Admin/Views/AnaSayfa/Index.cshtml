@@ -26,7 +26,7 @@
 
     .ca-slide-preview {
         min-height: 230px;
-        background: ;
+        background: var(--ca-bg);
         position: relative;
         overflow: hidden;
     }
@@ -164,7 +164,7 @@
                                             }
                                             else if (!string.IsNullOrWhiteSpace(Model.Hero.DesktopSlides[i].ImageUrl))
                                             {
-                                                <img src="@Model.Hero.DesktopSlides[i].ImageUrl" alt="Slider @(i + 1)" loading="lazy" decoding="async" />
+                                                 <img src="@Model.Hero.DesktopSlides[i].ImageUrl" alt="@Localizer["Admin_SlideNumber", i + 1]" loading="lazy" decoding="async" />
                                             }
                                             else
                                             {
@@ -175,7 +175,7 @@
                                                     </div>
                                                 </div>
                                             }
-                                            <span class="ca-slide-badge">Slider @(i + 1)</span>
+                                             <span class="ca-slide-badge">@Localizer["Admin_SlideNumber", i + 1]</span>
                                         </div>
                                     </div>
                                     <div class="col-lg-7">

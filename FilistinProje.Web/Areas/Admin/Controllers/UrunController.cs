@@ -5,9 +5,11 @@ using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Core.Models;
 using FilistinProje.Service.Helpers;
+using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using SixLabors.ImageSharp;
@@ -40,11 +42,16 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         private readonly KanvasDbContext _context;
         private readonly IWebHostEnvironment _webHost;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public UrunController(KanvasDbContext context, IWebHostEnvironment webHost)
+        public UrunController(
+            KanvasDbContext context,
+            IWebHostEnvironment webHost,
+            IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
             _webHost = webHost;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index(string? search, int? kategoriId, int page = 1, int pageSize = 20)
@@ -118,7 +125,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             NormalizeOptionalProductFieldsForValidation(urun);
             RemoveOptionalProductModelStateErrors();
 
-            if (!await ValidateProductAsync(urun, resimDosyasi))
+            if (!await ValidateProductAsync(urun, resimDosyasi, galeriDosyalari: galeriDosyalari))
             {
                 await PopulateCategorySelectListAsync(urun.KategoriId);
                 await PopulateProductMetadataAsync(urun.UrunTipi);
@@ -216,7 +223,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             NormalizeOptionalProductFieldsForValidation(model);
             RemoveOptionalProductModelStateErrors();
 
-            if (!await ValidateProductAsync(model, anaResimDosyasi, id))
+            if (!await ValidateProductAsync(model, anaResimDosyasi, id, galeriDosyalari))
             {
                 await PopulateCategorySelectListAsync(model.KategoriId);
                 await PopulateProductMetadataAsync(model.UrunTipi);
@@ -2240,7 +2247,11 @@ await _context.SaveChangesAsync();
             }
         }
 
-        private async Task<bool> ValidateProductAsync(Urun urun, IFormFile? imageFile, int? currentId = null)
+        private async Task<bool> ValidateProductAsync(
+            Urun urun,
+            IFormFile? imageFile,
+            int? currentId = null,
+            IReadOnlyCollection<IFormFile>? galeriDosyalari = null)
         {
             if (string.IsNullOrWhiteSpace(urun.Baslik))
             {
@@ -2278,9 +2289,50 @@ await _context.SaveChangesAsync();
                 ModelState.AddModelError(nameof(Urun.AnaGorselUrl), "Ana gÃ¶rsel yÃ¼kleyin veya gÃ¶rsel URL girin.");
             }
 
+            await ValidateImageUploadAsync(imageFile, nameof(Urun.AnaGorselUrl));
+            if (galeriDosyalari != null)
+            {
+                foreach (var galleryFile in galeriDosyalari)
+                {
+                    await ValidateImageUploadAsync(galleryFile, "galeriDosyalari");
+                }
+            }
+
             ValidateVariants(urun.UrunSecenek);
 
             return ModelState.IsValid;
+        }
+
+        private async Task ValidateImageUploadAsync(IFormFile? file, string fieldName)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return;
+            }
+
+            var extension = Path.GetExtension(file.FileName);
+            if (!AllowedImageExtensions.Contains(extension) || file.Length > MaxImageFileBytes)
+            {
+                ModelState.AddModelError(fieldName, _localizer["Admin_InvalidProductImageUpload"]);
+                return;
+            }
+
+            try
+            {
+                await using var stream = file.OpenReadStream();
+                if (await Image.IdentifyAsync(stream) == null)
+                {
+                    ModelState.AddModelError(fieldName, _localizer["Admin_InvalidProductImageUpload"]);
+                }
+            }
+            catch (UnknownImageFormatException)
+            {
+                ModelState.AddModelError(fieldName, _localizer["Admin_InvalidProductImageUpload"]);
+            }
+            catch (InvalidImageContentException)
+            {
+                ModelState.AddModelError(fieldName, _localizer["Admin_InvalidProductImageUpload"]);
+            }
         }
 
         private void NormalizeProductInput(Urun urun)
@@ -2300,6 +2352,11 @@ await _context.SaveChangesAsync();
             urun.PaketlemeBilgisi = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.PaketlemeBilgisi);
             urun.StokDurumu = NormalizeStockStatus(urun.StokDurumu);
             urun.KdvOrani = urun.KdvOrani < 0 ? 0 : urun.KdvOrani;
+            urun.HediyePaketFiyati = Math.Max(0, urun.HediyePaketFiyati);
+            if (!urun.HediyePaketiVarMi)
+            {
+                urun.HediyePaketFiyati = 0;
+            }
             urun.MinSiparisAdedi = urun.MinSiparisAdedi < 1 ? 1 : urun.MinSiparisAdedi;
             urun.MaxSiparisAdedi = urun.MaxSiparisAdedi.HasValue && urun.MaxSiparisAdedi.Value < 1 ? null : urun.MaxSiparisAdedi;
             urun.IndirimliFiyat = urun.IndirimliFiyat.HasValue && urun.IndirimliFiyat.Value <= 0
@@ -2929,6 +2986,8 @@ await _context.SaveChangesAsync();
             target.YeniUrunMu = source.YeniUrunMu;
             target.KampanyaliMi = source.KampanyaliMi;
             target.AnaSayfadaGoster = source.AnaSayfadaGoster;
+            target.HediyePaketiVarMi = source.HediyePaketiVarMi;
+            target.HediyePaketFiyati = source.HediyePaketFiyati;
             target.MinSiparisAdedi = source.MinSiparisAdedi;
             target.MaxSiparisAdedi = source.MaxSiparisAdedi;
             target.KategoriId = source.KategoriId;

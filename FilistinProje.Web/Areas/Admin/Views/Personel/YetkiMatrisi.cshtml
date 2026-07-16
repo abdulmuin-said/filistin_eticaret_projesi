@@ -1,5 +1,4 @@
 @model FilistinProje.Core.Models.YetkiMatrisiViewModel
-@using FilistinProje.Web.Security
 @{
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = Localizer["Admin_PermissionMatrix"];
@@ -276,7 +275,7 @@
                             <div>
                                 <strong style="font-size:.82rem; color:var(--ca-text);">@rol.Label</strong>
                                 <p style="font-size:.78rem; color:var(--ca-text-muted); margin:4px 0 0 0;">
-                                    @AdminSecurityRoles.GetRoleOption(rol.RolAdi).Description
+                                     @rol.Aciklama
                                 </p>
                             </div>
                         </div>

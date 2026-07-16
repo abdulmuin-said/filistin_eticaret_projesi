@@ -1,7 +1,7 @@
 @model IEnumerable<FilistinProje.Core.Varliklar.UrunOzellikTanimi>
 @{
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Ürün Özellik Alanları";
+    ViewData["Title"] = Localizer["Admin_ProductFeatureFields"];
     var currentType = ViewBag.CurrentUrunTipi?.ToString() ?? string.Empty;
 }
 
@@ -18,8 +18,8 @@
                     <i class="fas fa-sliders-h fa-2x"></i>
                 </div>
                 <div>
-                    <h4 class="mb-1 fw-bold">Ürün Özellik Alanları</h4>
-                    <p class="mb-0 small" style="opacity:.7;">Ürün tipine göre dinamik alan setlerini bu ekrandan yönetin.</p>
+                     <h4 class="mb-1 fw-bold">@Localizer["Admin_ProductFeatureFields"]</h4>
+                     <p class="mb-0 small" style="opacity:.7;">@Localizer["Admin_ProductFeatureFieldsSubtitle"]</p>
                 </div>
             </div>
             <i class="fas fa-layer-group ca-form-header-icon"></i>
@@ -29,7 +29,7 @@
             <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
                 <form method="get" class="d-flex flex-wrap gap-2">
                     <select name="urunTipi" class="ca-select" style="min-width:220px;">
-                        <option value="">Tüm ürün tipleri</option>
+                         <option value="">@Localizer["Admin_AllProductTypes"]</option>
                         @foreach (var item in (IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewBag.UrunTipleri)
                         {
                             <option value="@item.Value" selected="@(item.Value == currentType)">@item.Text</option>
@@ -39,7 +39,7 @@
                 </form>
 
                 <a href="/Admin/UrunOzellik/Ekle" class="ca-btn ca-btn-success">
-                    <i class="fas fa-plus"></i> Yeni Alan
+                     <i class="fas fa-plus"></i> @Localizer["Admin_NewFeatureField"]
                 </a>
             </div>
 
@@ -47,10 +47,10 @@
                 <table class="ca-table">
                     <thead>
                         <tr>
-                            <th>Alan</th>
-                            <th>Ürün Tipi</th>
-                            <th>Alan Tipi</th>
-                            <th>Filtre</th>
+                             <th>@Localizer["Admin_Field"]</th>
+                             <th>@Localizer["Admin_ProductType"]</th>
+                             <th>@Localizer["Admin_FieldType"]</th>
+                             <th>@Localizer["Admin_Filter"]</th>
                             <th>@Localizer["Admin_Detay"]</th>
                             <th>@Localizer["Admin_Aktif"]</th>
                             <th>@Localizer["Admin_Sira"]</th>
@@ -67,17 +67,17 @@
                                 </td>
                                 <td>@item.UrunTipi</td>
                                 <td>@item.AlanTipi</td>
-                                <td>@(item.FiltredeGoster ? "Evet" : "Hayır")</td>
-                                <td>@(item.DetaySayfasindaGoster ? "Evet" : "Hayır")</td>
-                                <td>@(item.AktifMi ? "Aktif" : "Pasif")</td>
+                                 <td>@(item.FiltredeGoster ? Localizer["Admin_Evet"].Value : Localizer["Admin_Hayir"].Value)</td>
+                                 <td>@(item.DetaySayfasindaGoster ? Localizer["Admin_Evet"].Value : Localizer["Admin_Hayir"].Value)</td>
+                                 <td>@(item.AktifMi ? Localizer["Admin_Aktif"].Value : Localizer["Admin_Pasif"].Value)</td>
                                 <td>@item.Sira</td>
                                 <td>
                                     <div class="d-flex gap-2">
                                         <a href="/Admin/UrunOzellik/Duzenle/@item.Id" class="ca-btn ca-btn-primary ca-btn-sm">@Localizer["Admin_Duzenle"]</a>
-                                        <form asp-action="Sil" method="post" onsubmit="return confirm('Bu alan arşive alınsın mı?');">
+                                         <form asp-action="Sil" method="post" onsubmit='return confirm(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_ArchiveFeatureConfirm"].Value)));'>
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="id" value="@item.Id" />
-                                            <button type="submit" class="ca-btn ca-btn-outline ca-btn-sm text-danger">Arşivle</button>
+                                             <button type="submit" class="ca-btn ca-btn-outline ca-btn-sm text-danger">@Localizer["Admin_Archive"]</button>
                                         </form>
                                     </div>
                                 </td>

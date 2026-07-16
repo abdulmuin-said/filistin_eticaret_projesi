@@ -1,6 +1,8 @@
 using FilistinProje.Core.Models;
 using FilistinProje.Service.Services;
+using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace FilistinProje.Web.Areas.Admin.Controllers
 {
@@ -9,11 +11,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
     {
         private readonly IHomePageSettingsService _homePageSettingsService;
         private readonly IWebHostEnvironment _env;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public AnaSayfaController(IHomePageSettingsService homePageSettingsService, IWebHostEnvironment env)
+        public AnaSayfaController(IHomePageSettingsService homePageSettingsService, IWebHostEnvironment env, IStringLocalizer<SharedResource> localizer)
         {
             _homePageSettingsService = homePageSettingsService;
             _env = env;
+            _localizer = localizer;
         }
 
         public IActionResult Index()
@@ -79,11 +83,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 }
 
                 _homePageSettingsService.SaveSettings(model);
-                TempData["Basari"] = "Ana sayfa slider ayarları kaydedildi.";
+                TempData["Basari"] = _localizer["Admin_HomeSliderSaved"].Value;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                TempData["Hata"] = "Ana sayfa ayarları kaydedilirken hata oluştu: " + ex.Message;
+                TempData["Hata"] = _localizer["Admin_HomeSettingsSaveFailed"].Value;
             }
 
             return RedirectToAction(nameof(Index));

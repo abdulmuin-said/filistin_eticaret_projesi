@@ -26,6 +26,7 @@ namespace FilistinProje.Core.Models
         public bool IsAdmin { get; set; }
         public bool IsBanned { get; set; }
         public bool IsCurrentUser { get; set; }
+        public bool CanManage { get; set; }
         public DateTime? LastAdminLoginUtc { get; set; }
         public DateTime? PreviousAdminLoginUtc { get; set; }
     }
@@ -41,6 +42,7 @@ namespace FilistinProje.Core.Models
         public string CurrentRoleLabel { get; set; } = string.Empty;
         public string CurrentRoleDescription { get; set; } = string.Empty;
         public bool IsCurrentUser { get; set; }
+        public bool CanManageSuperAdmin { get; set; }
         public bool IsBanned { get; set; }
         public DateTime? LastAdminLoginUtc { get; set; }
         public DateTime? PreviousAdminLoginUtc { get; set; }

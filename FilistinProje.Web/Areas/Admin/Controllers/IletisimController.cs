@@ -1,6 +1,8 @@
 using FilistinProje.Data;
+using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace FilistinProje.Web.Areas.Admin.Controllers
 {
@@ -8,10 +10,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
     public class IletisimController : AdminBaseController
     {
         private readonly KanvasDbContext _context;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public IletisimController(KanvasDbContext context)
+        public IletisimController(KanvasDbContext context, IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
+            _localizer = localizer;
         }
 
         [HttpGet]
@@ -60,7 +64,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 message.OkunduMu = true;
                 await _context.SaveChangesAsync();
-                TempData["Mesaj"] = "İletişim mesajı okundu olarak işaretlendi.";
+                TempData["Mesaj"] = _localizer["Admin_ContactMarkedRead"].Value;
                 TempData["Durum"] = "success";
             }
 
@@ -76,7 +80,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 message.OkunduMu = false;
                 await _context.SaveChangesAsync();
-                TempData["Mesaj"] = "İletişim mesajı tekrar okunmamış olarak işaretlendi.";
+                TempData["Mesaj"] = _localizer["Admin_ContactMarkedUnread"].Value;
                 TempData["Durum"] = "success";
             }
 
@@ -90,7 +94,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             mesajIds = mesajIds.Where(x => x > 0).Distinct().ToList();
             if (!mesajIds.Any())
             {
-                TempData["Hata"] = "İşlem yapmak için en az bir mesaj seçin.";
+                TempData["Hata"] = _localizer["Admin_SelectAtLeastOneMessage"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -106,7 +110,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{messages.Count} mesaj okundu olarak işaretlendi.";
+            TempData["Mesaj"] = _localizer["Admin_MessagesMarkedRead", messages.Count].Value;
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -117,7 +121,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var message = await _context.IletisimMesajlari.FirstOrDefaultAsync(x => x.Id == id);
             if (message == null)
             {
-                TempData["Hata"] = "Mesaj bulunamadı.";
+                TempData["Hata"] = _localizer["Admin_MessageNotFound"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -133,7 +137,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 _context.IletisimMesajlari.Remove(message);
                 await _context.SaveChangesAsync();
-                TempData["Mesaj"] = "İletişim mesajı silindi.";
+                TempData["Mesaj"] = _localizer["Admin_ContactMessageDeleted"].Value;
                 TempData["Durum"] = "success";
             }
 

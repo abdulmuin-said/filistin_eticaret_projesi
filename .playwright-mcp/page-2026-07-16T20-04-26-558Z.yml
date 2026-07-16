@@ -1,0 +1,204 @@
+- generic [ref=e2]:
+  - text:          +                     
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "7ANRPS48 لوحة التحكم" [ref=e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=e6]
+      - generic [ref=e7]: لوحة التحكم
+    - navigation "القائمة الرئيسية للإدارة" [ref=e8]:
+      - link " لوحة البيانات" [ref=e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=e10]: 
+        - text: لوحة البيانات
+      - generic [ref=e11]:
+        - button " إدارة الطلبات" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]: 
+          - text: إدارة الطلبات
+        - text:      
+      - generic [ref=e14]:
+        - button " إدارة المنتجات" [ref=e15] [cursor=pointer]:
+          - generic [ref=e16]: 
+          - text: إدارة المنتجات
+        - text:  +  
+      - generic [ref=e17]:
+        - button " محتوى المتجر" [ref=e18] [cursor=pointer]:
+          - generic [ref=e19]: 
+          - text: محتوى المتجر
+        - text:          
+      - link " الأعضاء" [ref=e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=e21]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=e23]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=e25]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=e27]: 
+        - text: مجموعات الجملة
+      - generic [ref=e28]:
+        - button " التقارير" [ref=e29] [cursor=pointer]:
+          - generic [ref=e30]: 
+          - text: التقارير
+        - text:  
+      - link " الحسابات البنكية" [ref=e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=e32]: 
+        - text: الحسابات البنكية
+      - link " الإعدادات" [ref=e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=e34]: 
+        - text: الإعدادات
+    - generic [ref=e35]:
+      - text: 
+      - combobox "اللغة" [ref=e37]:
+        - option "AR" [selected]
+        - option "EN"
+      - generic [ref=e38]:
+        - button "7ANRPS48 Admin Admin 7" [ref=e39] [cursor=pointer]:
+          - generic [ref=e40]:
+            - strong [ref=e41]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=e42]: "7"
+        - text:  
+  - generic [ref=e43]:
+    - main [ref=e44]:
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - heading "إضافة منتج جديد" [level=1] [ref=e48]
+            - paragraph [ref=e49]: أدخل المعلومات المطلوبة فقط للحفظ الأول. يتم تعديل الخصائص التفصيلية بعد حفظ المنتج.
+          - link " العودة إلى المنتجات" [ref=e50] [cursor=pointer]:
+            - /url: /Admin/Urun
+            - generic [ref=e51]: 
+            - text: العودة إلى المنتجات
+        - generic [ref=e52]:
+          - generic [ref=e53]:
+            - generic [ref=e54]: كيف يعمل سعر البيع وسعر الخيارات؟
+            - generic [ref=e55]: سعر البيع في هذه الشاشة هو السعر الأساسي للمنتج. عند الحفظ ينشئ النظام خياراً افتراضياً بهذا السعر. يمكنك إضافة أسعار خاصة للمقاسات أو الخيارات بعد حفظ المنتج.
+          - generic [ref=e56]:
+            - generic [ref=e57]:
+              - generic [ref=e59]:
+                - generic [ref=e60]: 
+                - text: معلومات المنتج
+              - generic [ref=e61]:
+                - generic [ref=e62]: أنشئ المنتج بسرعة هنا. بعد الحفظ يمكنك إضافة الخيارات والمعرض والفيديو وتفاصيل SEO من صفحة التعديل.
+                - generic [ref=e63]:
+                  - generic [ref=e64]:
+                    - generic [ref=e65]: "* اسم المنتج"
+                    - 'textbox "مثال: مجموعة هدايا بطابع فلسطيني" [ref=e66]'
+                  - generic [ref=e67]:
+                    - generic [ref=e68]:
+                      - generic [ref=e69]:
+                        - generic [ref=e70]: Slug
+                        - textbox "urun-adi-otomatik-olusturulur" [ref=e71]
+                      - generic [ref=e72]:
+                        - generic [ref=e73]: SEO URL
+                        - textbox "urun-adi-otomatik-olusturulur" [ref=e74]
+                    - generic [ref=e75]: يتم إنشاء هذه الحقول تلقائياً أثناء كتابة اسم المنتج. يمكن تعديلها بعد الحفظ إذا لزم الأمر.
+                  - generic [ref=e76]:
+                    - generic [ref=e77]: "* الفئة"
+                    - combobox [ref=e78]:
+                      - option "اختر التصنيف" [selected]
+                      - option "أثاث"
+                      - option "العطور"
+                      - option "بقالة"
+                      - option "جمال"
+                      - option "أثاث منزلي"
+                      - option "إلكترونيات"
+                      - option "أزياء"
+                  - generic [ref=e79]:
+                    - generic [ref=e80]: "* سعر البيع (₪)"
+                    - spinbutton "0,00" [ref=e81]: "0"
+                  - generic [ref=e82]:
+                    - generic [ref=e83]: سعر الخصم (₪)
+                    - spinbutton "يمكن تركه فارغاً" [ref=e84]
+                  - generic [ref=e85]:
+                    - generic [ref=e86]: "* ملف الصورة الرئيسية"
+                    - button "Choose File" [ref=e87]
+                    - generic [ref=e88]: "الصيغ المدعومة: JPG، PNG، WEBP. الحد الأقصى لحجم الملف: 10MB."
+                  - generic [ref=e89]:
+                    - generic [ref=e90]: رابط الصورة الرئيسية
+                    - textbox "/img/products/ornek.webp" [ref=e91]
+                    - generic [ref=e92]: إذا لم ترفع ملفاً يمكنك إدخال رابط صورة موجود. يكفي أحدهما.
+                  - generic [ref=e93]:
+                    - generic [ref=e94]: صور إضافية للمنتج
+                    - button "Choose File" [ref=e95]
+                    - generic [ref=e96]: يمكنك اختيار عدة صور. ستتم إضافتها إلى معرض المنتج.
+                    - generic [ref=e97]: "الصيغ المدعومة: JPG، PNG، WEBP. الحد الأقصى لحجم الملف: 10MB."
+                  - generic [ref=e98]:
+                    - generic [ref=e99]: وصف قصير
+                    - textbox "وصف قصير" [ref=e100]
+                  - generic [ref=e101]:
+                    - generic [ref=e102]: وصف تفصيلي
+                    - textbox "اكتب معلومات عن المنتج أو الاستخدام أو وصف الجودة." [ref=e103]
+                  - generic [ref=e105]:
+                    - generic [ref=e107]:
+                      - generic [ref=e108]: 
+                      - text: معلومات SEO
+                    - generic [ref=e109]:
+                      - generic [ref=e110]: وسوم ميتا مخصصة لمحركات البحث. إذا تركتها فارغة يتم استخدام معلومات المنتج تلقائياً.
+                      - generic [ref=e111]:
+                        - generic [ref=e112]:
+                          - generic [ref=e113]: عنوان SEO
+                          - 'textbox "مثال: مجموعة هدايا بطابع فلسطيني - 7ANRPS48" [ref=e114]'
+                          - generic [ref=e115]: يظهر كنص بارز. يوصى بـ 60-70 حرفاً.
+                        - generic [ref=e116]:
+                          - generic [ref=e117]: وصف SEO
+                          - 'textbox "مثال: مجموعات هدايا فلسطينية عالية الجودة. توصيل سريع وتغليف آمن." [ref=e118]'
+                          - generic [ref=e119]: يظهر في نتائج البحث. يوصى بـ 150-160 حرفاً.
+                        - generic [ref=e120]:
+                          - generic [ref=e121]: كلمات SEO المفتاحية
+                          - textbox "هدايا فلسطين، القدس، غزة، علم" [ref=e122]
+                          - generic [ref=e123]: اكتبها مفصولة بفواصل.
+                  - generic [ref=e125]:
+                    - checkbox "نشر المنتج" [checked] [ref=e126]
+                    - generic [ref=e127]: نشر المنتج
+                  - generic [ref=e130]:
+                    - generic [ref=e131]:
+                      - strong [ref=e132]: توفير تغليف الهدايا
+                      - text: يمكن للعملاء إضافة تغليف الهدايا من صفحة المنتج.
+                    - checkbox [ref=e133]
+                  - generic [ref=e134]:
+                    - generic [ref=e135]: سعر تغليف الهدية
+                    - generic [ref=e136]:
+                      - generic [ref=e137]: ₪
+                      - spinbutton "0.00" [ref=e138]: "0"
+                - generic [ref=e139]:
+                  - generic [ref=e140]: يتم تعديل الخيارات والمقاسات بعد الحفظ.
+                  - generic [ref=e141]: بعد الحفظ الأول يمكنك إدارة المقاسات والمخزون وأسعار الخيارات من شاشة تعديل المنتج.
+                - generic [ref=e142]:
+                  - link "إلغاء" [ref=e143] [cursor=pointer]:
+                    - /url: /Admin/Urun
+                  - button " حفظ المنتج" [ref=e144] [cursor=pointer]:
+                    - generic [ref=e145]: 
+                    - text: حفظ المنتج
+            - complementary [ref=e146]:
+              - generic [ref=e147]:
+                - generic [ref=e148]: معاينة
+                - generic [ref=e150]:
+                  - img "معاينة الصورة الرئيسية للمنتج الجديد" [ref=e152]
+                  - generic [ref=e153]: لم يتم إدخال اسم المنتج بعد
+                  - generic [ref=e154]: يمكنك توسيع التفاصيل بعد الحفظ.
+              - generic [ref=e155]:
+                - generic [ref=e156]: الحقول المطلوبة
+                - generic [ref=e158]:
+                  - generic [ref=e159]:
+                    - generic [ref=e160]: 
+                    - text: اسم المنتج
+                  - generic [ref=e161]:
+                    - generic [ref=e162]: 
+                    - text: الفئة
+                  - generic [ref=e163]:
+                    - generic [ref=e164]: 
+                    - text: سعر البيع
+                  - generic [ref=e165]:
+                    - generic [ref=e166]: 
+                    - text: ملف الصورة الرئيسية أو الرابط
+    - contentinfo [ref=e167]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

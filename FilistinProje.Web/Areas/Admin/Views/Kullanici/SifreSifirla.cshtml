@@ -1,9 +1,9 @@
 @model FilistinProje.Core.Varliklar.AppUser
 @{
-    ViewData["Title"] = "Şifre Değiştir";
+    ViewData["Title"] = Localizer["Admin_ChangePassword"];
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 
-    var displayName = string.IsNullOrWhiteSpace(Model.AdSoyad) ? "İsimsiz Kullanıcı" : Model.AdSoyad;
+    var displayName = string.IsNullOrWhiteSpace(Model.AdSoyad) ? Localizer["Admin_UnnamedUser"].Value : Model.AdSoyad;
     var initial = displayName.Substring(0, 1).ToUpperInvariant();
     var email = string.IsNullOrWhiteSpace(Model.Email) ? "-" : Model.Email;
     var phone = string.IsNullOrWhiteSpace(Model.PhoneNumber) ? "-" : Model.PhoneNumber;
@@ -197,16 +197,16 @@
     <div class="ca-password-shell">
         <div class="ca-password-hero">
             <div>
-                <div class="ca-page-kicker">ÜYE GÜVENLİĞİ</div>
-                <h1 class="ca-page-title">Şifre Değiştir</h1>
-                <p class="ca-page-subtitle">Kullanıcı için yeni bir giriş şifresi belirleyin ve mevcut oturumlarını güvenli şekilde kapatın.</p>
+                <div class="ca-page-kicker">@Localizer["Admin_MemberSecurity"]</div>
+                <h1 class="ca-page-title">@Localizer["Admin_ChangePassword"]</h1>
+                <p class="ca-page-subtitle">@Localizer["Admin_ChangePasswordSubtitle"]</p>
             </div>
             <div class="d-flex gap-2 flex-wrap justify-content-end">
                 <a href="/Admin/Kullanici/Duzenle/@Model.Id" class="ca-btn ca-btn-outline">
-                    <i class="fas fa-user-pen"></i> Kullanıcıyı Düzenle
+                    <i class="fas fa-user-pen"></i> @Localizer["Admin_EditUser"]
                 </a>
                 <a href="/Admin/Kullanici" class="ca-btn ca-btn-outline">
-                    <i class="fas fa-arrow-left"></i> Listeye Dön
+                    <i class="fas fa-arrow-left"></i> @Localizer["Admin_BackToList"]
                 </a>
             </div>
         </div>
@@ -217,7 +217,7 @@
                 <input type="hidden" name="id" value="@Model.Id" />
 
                 <div class="ca-card-header">
-                    <h2 class="ca-card-title mb-0">Yeni Şifre Bilgisi</h2>
+                    <h2 class="ca-card-title mb-0">@Localizer["Admin_NewPasswordInformation"]</h2>
                 </div>
 
                 <div class="ca-card-body">
@@ -231,12 +231,12 @@
 
                     <div class="ca-alert ca-alert-warning mb-4">
                         <i class="fas fa-triangle-exclamation"></i>
-                        <span>Bu işlem kullanıcının eski şifresini geçersiz kılar. Şifre değişince kullanıcının aktif oturumları kapatılır.</span>
+                        <span>@Localizer["Admin_PasswordResetWarning"]</span>
                     </div>
 
                     <div class="row g-3">
                         <div class="col-12">
-                            <label class="ca-label" for="yeniSifre">Yeni Şifre <span class="required">*</span></label>
+                            <label class="ca-label" for="yeniSifre">@Localizer["Admin_NewPassword"] <span class="required">*</span></label>
                             <div class="ca-password-input-wrap">
                                 <div class="ca-input-icon-group">
                                     <i class="fas fa-lock ca-icon-left"></i>
@@ -249,16 +249,16 @@
                                            autocomplete="new-password"
                                            placeholder='@Localizer["Admin_PasswordExamplePlaceholder"]' />
                                 </div>
-                                <button type="button" class="ca-password-toggle" data-toggle-password="yeniSifre" aria-label="Şifreyi göster veya gizle">
+                                <button type="button" class="ca-password-toggle" data-toggle-password="yeniSifre" aria-label="@Localizer["Admin_TogglePasswordVisibility"]">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
                             <div class="ca-password-meter" aria-hidden="true"><span id="passwordMeter"></span></div>
-                            <small class="ca-field-help" id="passwordHint">Güçlü bir şifre için büyük harf, küçük harf, rakam ve özel karakter kullanın.</small>
+                            <small class="ca-field-help" id="passwordHint">@Localizer["Admin_StrongPasswordHint"]</small>
                         </div>
 
                         <div class="col-12">
-                            <label class="ca-label" for="sifreTekrar">Yeni Şifre Tekrar <span class="required">*</span></label>
+                            <label class="ca-label" for="sifreTekrar">@Localizer["Admin_ConfirmNewPassword"] <span class="required">*</span></label>
                             <div class="ca-password-input-wrap">
                                 <div class="ca-input-icon-group">
                                     <i class="fas fa-check-double ca-icon-left"></i>
@@ -269,30 +269,30 @@
                                            required
                                            minlength="6"
                                            autocomplete="new-password"
-                                           placeholder="Şifreyi tekrar yazın" />
+                                           placeholder="@Localizer["Admin_RepeatPasswordPlaceholder"]" />
                                 </div>
-                                <button type="button" class="ca-password-toggle" data-toggle-password="sifreTekrar" aria-label="Şifre tekrarını göster veya gizle">
+                                <button type="button" class="ca-password-toggle" data-toggle-password="sifreTekrar" aria-label="@Localizer["Admin_TogglePasswordConfirmationVisibility"]">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
-                            <small class="ca-field-help" id="matchHint">İki şifre aynı olmalıdır.</small>
+                            <small class="ca-field-help" id="matchHint">@Localizer["Admin_PasswordsMustMatch"]</small>
                         </div>
                     </div>
 
-                    <ul class="ca-password-rules" aria-label="Şifre kuralları">
-                        <li data-rule="length"><i class="fas fa-circle-check"></i> En az 6 karakter</li>
-                        <li data-rule="upper"><i class="fas fa-circle-check"></i> Büyük harf</li>
-                        <li data-rule="lower"><i class="fas fa-circle-check"></i> Küçük harf</li>
-                        <li data-rule="number"><i class="fas fa-circle-check"></i> Rakam</li>
-                        <li data-rule="symbol"><i class="fas fa-circle-check"></i> Özel karakter</li>
-                        <li data-rule="match"><i class="fas fa-circle-check"></i> Şifreler aynı</li>
+                    <ul class="ca-password-rules" aria-label="@Localizer["Admin_PasswordRules"]">
+                        <li data-rule="length"><i class="fas fa-circle-check"></i> @Localizer["Admin_PasswordRuleLength"]</li>
+                        <li data-rule="upper"><i class="fas fa-circle-check"></i> @Localizer["Admin_PasswordRuleUppercase"]</li>
+                        <li data-rule="lower"><i class="fas fa-circle-check"></i> @Localizer["Admin_PasswordRuleLowercase"]</li>
+                        <li data-rule="number"><i class="fas fa-circle-check"></i> @Localizer["Admin_PasswordRuleNumber"]</li>
+                        <li data-rule="symbol"><i class="fas fa-circle-check"></i> @Localizer["Admin_PasswordRuleSymbol"]</li>
+                        <li data-rule="match"><i class="fas fa-circle-check"></i> @Localizer["Admin_PasswordRuleMatch"]</li>
                     </ul>
                 </div>
 
                 <div class="ca-card-footer d-flex justify-content-end gap-2 flex-wrap">
                     <a href="/Admin/Kullanici" class="ca-btn ca-btn-outline">@Localizer["Admin_Iptal"]</a>
                     <button type="submit" class="ca-btn ca-btn-danger" id="submitPassword">
-                        <i class="fas fa-key"></i> Şifreyi Güncelle
+                        <i class="fas fa-key"></i> @Localizer["Admin_UpdatePassword"]
                     </button>
                 </div>
             </form>
@@ -307,11 +307,11 @@
                             <div class="mt-2">
                                 @if (isLocked)
                                 {
-                                    <span class="ca-badge ca-badge-danger"><i class="fas fa-ban"></i> Giriş Engelli</span>
+                                    <span class="ca-badge ca-badge-danger"><i class="fas fa-ban"></i> @Localizer["Admin_LoginBlocked"]</span>
                                 }
                                 else
                                 {
-                                    <span class="ca-badge ca-badge-success"><i class="fas fa-check"></i> Aktif Hesap</span>
+                                    <span class="ca-badge ca-badge-success"><i class="fas fa-check"></i> @Localizer["Admin_ActiveAccount"]</span>
                                 }
                             </div>
                         </div>
@@ -334,21 +334,21 @@
 
                 <div class="ca-card">
                     <div class="ca-card-header">
-                        <h2 class="ca-card-title mb-0">İşlem Notları</h2>
+                        <h2 class="ca-card-title mb-0">@Localizer["Admin_OperationNotes"]</h2>
                     </div>
                     <div class="ca-card-body">
                         <ul class="ca-warning-list">
                             <li>
                                 <i class="fas fa-shield-halved"></i>
-                                <span>Yeni şifre kullanıcıya güvenli bir kanaldan iletilmelidir.</span>
+                                <span>@Localizer["Admin_SharePasswordSecurelyNote"]</span>
                             </li>
                             <li>
                                 <i class="fas fa-right-from-bracket"></i>
-                                <span>Şifre güncellendiğinde kullanıcının açık admin oturumu temizlenir.</span>
+                                <span>@Localizer["Admin_PasswordClearsSessionNote"]</span>
                             </li>
                             <li>
                                 <i class="fas fa-clock-rotate-left"></i>
-                                <span>Bu işlem güvenlik kayıtlarına admin işlemi olarak yazılır.</span>
+                                <span>@Localizer["Admin_PasswordAuditNote"]</span>
                             </li>
                         </ul>
                     </div>
@@ -365,6 +365,15 @@
         const meter = document.getElementById('passwordMeter');
         const passwordHint = document.getElementById('passwordHint');
         const matchHint = document.getElementById('matchHint');
+        const passwordTexts = {
+            weak: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_PasswordStrengthWeak"].Value)),
+            medium: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_PasswordStrengthMedium"].Value)),
+            strong: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_PasswordStrengthStrong"].Value)),
+            mustMatch: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_PasswordsMustMatch"].Value)),
+            matching: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_PasswordsMatching"].Value)),
+            notMatching: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_PasswordsNotMatching"].Value)),
+            submitMismatch: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_PasswordSubmitMismatch"].Value))
+        };
 
         function setRule(name, isOk) {
             const item = document.querySelector(`[data-rule="${name}"]`);
@@ -392,21 +401,21 @@
             meter.style.width = `${percent}%`;
             meter.style.background = score <= 2 ? '#ef4444' : score <= 4 ? '#f59e0b' : '#16a34a';
             passwordHint.textContent = score <= 2
-                ? 'Şifre zayıf görünüyor. Harf, rakam ve özel karakter ekleyin.'
+                ? passwordTexts.weak
                 : score <= 4
-                    ? 'Şifre orta güçte. Birkaç farklı karakter türü daha ekleyebilirsiniz.'
-                    : 'Şifre güçlü görünüyor.';
+                    ? passwordTexts.medium
+                    : passwordTexts.strong;
 
             if (!repeat) {
-                matchHint.textContent = 'İki şifre aynı olmalıdır.';
+                matchHint.textContent = passwordTexts.mustMatch;
                 matchHint.classList.remove('text-success');
                 matchHint.classList.remove('text-danger');
             } else if (checks.match) {
-                matchHint.textContent = 'Şifreler eşleşiyor.';
+                matchHint.textContent = passwordTexts.matching;
                 matchHint.classList.add('text-success');
                 matchHint.classList.remove('text-danger');
             } else {
-                matchHint.textContent = 'Şifreler eşleşmiyor.';
+                matchHint.textContent = passwordTexts.notMatching;
                 matchHint.classList.add('text-danger');
                 matchHint.classList.remove('text-success');
             }
@@ -430,7 +439,7 @@
             if (passwordInput.value !== repeatInput.value) {
                 event.preventDefault();
                 repeatInput.focus();
-                matchHint.textContent = 'Kaydetmeden önce iki şifrenin aynı olduğundan emin olun.';
+                matchHint.textContent = passwordTexts.submitMismatch;
                 matchHint.classList.add('text-danger');
             }
         });
