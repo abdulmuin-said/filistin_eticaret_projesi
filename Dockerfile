@@ -9,9 +9,7 @@ COPY FilistinProje.Core/FilistinProje.Core.csproj FilistinProje.Core/
 COPY FilistinProje.Data/FilistinProje.Data.csproj FilistinProje.Data/
 COPY FilistinProje.Service/FilistinProje.Service.csproj FilistinProje.Service/
 COPY FilistinProje.Web/FilistinProje.Web.csproj FilistinProje.Web/
-COPY FilistinProje.sln .
-
-RUN dotnet restore FilistinProje.sln
+RUN dotnet restore FilistinProje.Web/FilistinProje.Web.csproj
 
 # Tüm kaynak kodunu kopyala ve publish et
 COPY . .
