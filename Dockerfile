@@ -1,10 +1,11 @@
 # ==========================================
 # Stage 1: Build
 # ==========================================
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
 # Proje dosyalarını kopyala ve restore et (cache optimizasyonu)
+COPY global.json ./
 COPY FilistinProje.Core/FilistinProje.Core.csproj FilistinProje.Core/
 COPY FilistinProje.Data/FilistinProje.Data.csproj FilistinProje.Data/
 COPY FilistinProje.Service/FilistinProje.Service.csproj FilistinProje.Service/
@@ -21,7 +22,7 @@ RUN dotnet publish FilistinProje.Web/FilistinProje.Web.csproj \
 # ==========================================
 # Stage 2: Runtime
 # ==========================================
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 
 # Güvenlik: Root olmayan kullanıcı

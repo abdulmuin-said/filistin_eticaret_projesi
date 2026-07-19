@@ -2,7 +2,7 @@
 
 ## Project overview
 
-- **Stack**: ASP.NET Core 8.0 MVC + PostgreSQL (Docker) + TailwindCSS
+- **Stack**: ASP.NET Core 10.0 MVC + PostgreSQL (Docker) + TailwindCSS
 - **Architecture**: Clean Architecture (4 projeler: Web → Service → Data → Core)
 - **Brand**: 7ANRPS48.com (Filistin e-ticaret, eski Canvasia/MeteorGaleri fork)
 - **Para birimi**: ₪ (ILS - Yeni İsrail Şekeli)
