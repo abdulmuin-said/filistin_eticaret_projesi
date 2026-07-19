@@ -10,6 +10,7 @@ namespace FilistinProje.Web.Models
         public List<Urun> CokSatanlar { get; set; } = new List<Urun>();
         public List<Urun> FirsatUrunleri { get; set; } = new List<Urun>();
         public List<Kategori> Kategoriler { get; set; } = new List<Kategori>();
+        public Dictionary<int, string> KategoriGorselleri { get; set; } = new();
         public IEnumerable<FilistinProje.Core.Varliklar.HomePageSection> Sections { get; set; } = new List<FilistinProje.Core.Varliklar.HomePageSection>();
         public List<Slayt> AktifSlaytlar { get; set; } = new List<Slayt>();
     }

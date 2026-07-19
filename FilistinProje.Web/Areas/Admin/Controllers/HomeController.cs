@@ -1,4 +1,4 @@
-using FilistinProje.Core.Varliklar;
+﻿using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Core.Helpers;
 using FilistinProje.Core.Models;
@@ -128,7 +128,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 })
                 .ToList();
 
-            // --- Şehir bazlı satış istatistikleri ---
+            // --- Åehir bazlÄ± satÄ±ÅŸ istatistikleri ---
             var citySales = siparisler
                 .Where(x => !string.IsNullOrWhiteSpace(x.Sehir))
                 .GroupBy(x => x.Sehir.Trim())
@@ -143,7 +143,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .Take(8)
                 .ToList();
 
-            // --- Kategori bazlı satış performansı ---
+            // --- Kategori bazlÄ± satÄ±ÅŸ performansÄ± ---
             var categorySales = siparisDetaylari
                 .Where(x => x.Urun?.Kategori != null && !x.Urun.Kategori.SilindiMi)
                 .GroupBy(x => new { x.Urun!.KategoriId, KategoriAdi = x.Urun.Kategori!.Ad })
@@ -158,7 +158,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .Take(6)
                 .ToList();
 
-            // --- 12 aylık ciro trendi ---
+            // --- 12 aylÄ±k ciro trendi ---
             var onikiAy = Enumerable.Range(0, 12)
                 .Select(i => new DateTime(now.Year, now.Month, 1).AddMonths(-(11 - i)))
                 .ToList();
@@ -177,7 +177,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 })
                 .ToList();
 
-            // --- Geçen ay cirosu ---
+            // --- GeÃ§en ay cirosu ---
             var gecenAyBaslangic = new DateTime(now.Year, now.Month, 1).AddMonths(-1);
             var gecenAyBitis = gecenAyBaslangic.AddMonths(1);
             var previousMonthRevenue = odenmisSiparisler
@@ -246,7 +246,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 {
                     Type = "Siparis",
                     Title = _localizer["Admin_NewOrderActivity", x.Id],
-                    Detail = $"{x.MusteriAdSoyad} - {x.ToplamTutar:N2} ₪",
+                    Detail = $"{x.MusteriAdSoyad} - {x.ToplamTutar:N2} â‚ª",
                     OccurredAt = x.OlusturulmaTarihi
                 }));
             recentActivities.AddRange(aktifUrunler
@@ -303,7 +303,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     {
                         Id = x.Id,
                         Title = x.Baslik,
-                        Subtitle = $"{(string.IsNullOrWhiteSpace(x.SKU) ? _localizer["Admin_SkuMissing"].Value : x.SKU)} | {x.EtkinFiyat:N2} ₪",
+                        Subtitle = $"{(string.IsNullOrWhiteSpace(x.SKU) ? _localizer["Admin_SkuMissing"].Value : x.SKU)} | {x.EtkinFiyat:N2} â‚ª",
                         CreatedAt = x.OlusturulmaTarihi
                     })
                     .ToList(),
@@ -340,3 +340,5 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 }
+
+

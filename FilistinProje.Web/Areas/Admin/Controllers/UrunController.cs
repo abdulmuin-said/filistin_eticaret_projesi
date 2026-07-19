@@ -6,6 +6,7 @@ using FilistinProje.Data;
 using FilistinProje.Core.Models;
 using FilistinProje.Service.Helpers;
 using FilistinProje.Web.Resources;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -181,8 +182,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             urun.OlusturulmaTarihi = DateTime.UtcNow;
             urun.Sira = await NormalizeProductOrderAsync(urun.Sira);
-            urun.UrlYolu = SlugHelper.GenerateSlug(string.IsNullOrWhiteSpace(urun.UrlYolu) ? urun.Baslik : urun.UrlYolu);
-            urun.Slug = await GenerateUniqueProductSlugAsync(urun.Slug, urun.Baslik, null);
+            urun.UrlYolu = SlugHelper.GenerateSlug(string.IsNullOrWhiteSpace(urun.UrlYolu) ? (!string.IsNullOrWhiteSpace(urun.BaslikEn) ? urun.BaslikEn : urun.Baslik) : urun.UrlYolu);
+            urun.Slug = await GenerateUniqueProductSlugAsync(urun.Slug, urun.Baslik, urun.BaslikEn, null);
             urun.UrunSecenek = new List<UrunSecenek>();
             urun.UrunOzellikleri = new List<UrunOzellikDegeri>();
 
@@ -285,8 +286,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var supportsCanvasOptions = await SupportsCanvasOptionsAsync(model.KategoriId);
             SanitizeVariantScope(model.UrunSecenek, supportsCanvasOptions);
             urun.Sira = await NormalizeProductOrderAsync(model.Sira);
-            urun.UrlYolu = SlugHelper.GenerateSlug(string.IsNullOrWhiteSpace(model.UrlYolu) ? model.Baslik : model.UrlYolu);
-            urun.Slug = await GenerateUniqueProductSlugAsync(model.Slug, model.Baslik, id);
+            urun.UrlYolu = SlugHelper.GenerateSlug(string.IsNullOrWhiteSpace(model.UrlYolu) ? (!string.IsNullOrWhiteSpace(model.BaslikEn) ? model.BaslikEn : model.Baslik) : model.UrlYolu);
+            urun.Slug = await GenerateUniqueProductSlugAsync(model.Slug, model.Baslik, model.BaslikEn, id);
 
             if (anaResimDosyasi != null)
             {
@@ -1326,7 +1327,7 @@ await _context.SaveChangesAsync();
                 StokDurumu = "Stokta",
                 UrunTipi = UrunOzellikCatalog.Genel,
                 UrlYolu = SlugHelper.GenerateSlug(title),
-                Slug = await GenerateUniqueProductSlugAsync(null, title, null),
+                Slug = await GenerateUniqueProductSlugAsync(null, title, title, null),
                 Sira = await NormalizeProductOrderAsync(0),
                 OlusturulmaTarihi = DateTime.UtcNow
             };
@@ -1569,8 +1570,8 @@ await _context.SaveChangesAsync();
             {
                 product.Baslik = title;
                 product.KisaAd = string.IsNullOrWhiteSpace(product.KisaAd) ? title : product.KisaAd;
-                product.UrlYolu = SlugHelper.GenerateSlug(title);
-                product.Slug = await GenerateUniqueProductSlugAsync(product.Slug, title, product.Id);
+                product.UrlYolu = SlugHelper.GenerateSlug(!string.IsNullOrWhiteSpace(product.BaslikEn) ? product.BaslikEn : title);
+                product.Slug = await GenerateUniqueProductSlugAsync(product.Slug, title, product.BaslikEn, product.Id);
             }
 
             var categoryId = ResolveExcelCategoryId(worksheet, headers, categories, row);
@@ -2056,7 +2057,7 @@ await _context.SaveChangesAsync();
             }
 
             value = value
-                .Replace("₪", string.Empty, StringComparison.OrdinalIgnoreCase)
+                .Replace("?", string.Empty, StringComparison.OrdinalIgnoreCase)
                 .Replace("I" + "LS", string.Empty, StringComparison.OrdinalIgnoreCase)
                 .Replace("T" + "L", string.Empty, StringComparison.OrdinalIgnoreCase)
                 .Trim();
@@ -2536,9 +2537,13 @@ await _context.SaveChangesAsync();
             };
         }
 
-        private async Task<string> GenerateUniqueProductSlugAsync(string? requestedSlug, string title, int? excludedId)
+        private async Task<string> GenerateUniqueProductSlugAsync(string? requestedSlug, string title, string? englishTitle, int? excludedId)
         {
-            var baseSlug = SlugHelper.GenerateSlug(string.IsNullOrWhiteSpace(requestedSlug) ? title : requestedSlug);
+            var sourceText = string.IsNullOrWhiteSpace(requestedSlug) 
+                ? (!string.IsNullOrWhiteSpace(englishTitle) ? englishTitle : title) 
+                : requestedSlug;
+            
+            var baseSlug = SlugHelper.GenerateSlug(sourceText);
             var existingSlugs = await _context.Urunler
                 .Where(x => x.Id != excludedId && x.Slug != null)
                 .Select(x => x.Slug!)
@@ -3127,3 +3132,5 @@ await _context.SaveChangesAsync();
         }
     }
 }
+
+

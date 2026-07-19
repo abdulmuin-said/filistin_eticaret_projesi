@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using FilistinProje.Core.Varliklar;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Localization;
 
 namespace FilistinProje.Web.Controllers
 {
-    // DİKKAT: [Authorize] buradan kaldırıldı, aşağıya özel olarak eklendi.
+    [Route("favorites")]
     public class FavoriController : Controller
     {
         private readonly KanvasDbContext _context;
@@ -26,8 +26,10 @@ namespace FilistinProje.Web.Controllers
             _localizer = localizer;
         }
 
-        // 1. Favorilerim Sayfası (Burası Korumalı - Giriş yapmayan giremez)
+        // 1. Favorilerim SayfasÄ± (BurasÄ± KorumalÄ± - GiriÅŸ yapmayan giremez)
         [Authorize]
+        [HttpGet("")]
+        [HttpGet("/Favori")]
         public async Task<IActionResult> Index()
         {
             var userId = User.Identity?.IsAuthenticated == true ? _userManager.GetUserId(User) : null;
@@ -41,11 +43,12 @@ namespace FilistinProje.Web.Controllers
             return View(favoriler);
         }
 
-        [HttpPost]
+        [HttpPost("toggle")]
+        [HttpPost("/Favori/Toggle")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Toggle(int urunId)
         {
-            // Giriş yapmamışsa hata döndür (Opsiyonel: JSON ile bildir)
+            // GiriÅŸ yapmamÄ±ÅŸsa hata dÃ¶ndÃ¼r (Opsiyonel: JSON ile bildir)
             if (User.Identity?.IsAuthenticated != true)
             {
                 return Json(new { success = false, message = _localizer["Favori_LoginRequired"].Value });
@@ -54,16 +57,16 @@ namespace FilistinProje.Web.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return Json(new { success = false, message = _localizer["Favori_UserNotFound"].Value });
 
-            // Veritabanında var mı bak
+            // VeritabanÄ±nda var mÄ± bak
             var favori = await _context.Favoriler
                 .FirstOrDefaultAsync(x => x.UrunId == urunId && x.AppUserId == user.Id);
 
             if (favori != null)
             {
-                // Varsa SİL (Favorilerden Çıkar)
+                // Varsa SÄ°L (Favorilerden Ã‡Ä±kar)
                 _context.Favoriler.Remove(favori);
                 await _context.SaveChangesAsync();
-                // JavaScript'e "Silindi" bilgisini ve durumu TRUE olarak dönüyoruz
+                // JavaScript'e "Silindi" bilgisini ve durumu TRUE olarak dÃ¶nÃ¼yoruz
                 return Json(new { success = true, isAdded = false });
             }
             else
@@ -82,12 +85,9 @@ namespace FilistinProje.Web.Controllers
         }
 
         /// <summary>
-        /// Fiyat düşüş bildirimini aç/kapat
+        /// Fiyat dÃ¼ÅŸÃ¼ÅŸ bildirimini aÃ§/kapat
         /// </summary>
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> TogglePriceNotification(int urunId)
+        [HttpPost("toggle-notify")] [Authorize] [ValidateAntiForgeryToken] public async Task<IActionResult> TogglePriceNotification(int urunId)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -112,3 +112,5 @@ namespace FilistinProje.Web.Controllers
         }
     }
 }
+
+

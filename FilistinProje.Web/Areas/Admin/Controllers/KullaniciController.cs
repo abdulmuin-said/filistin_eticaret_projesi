@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 using FilistinProje.Core.Models;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
@@ -617,3 +617,5 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 }
+
+

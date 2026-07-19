@@ -1,4 +1,4 @@
-@using System.Globalization
+﻿@using System.Globalization
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @inject IStringLocalizer<SharedResource> Localizer
 @{
@@ -56,7 +56,12 @@
                 </p>
                 <form id="newsletterForm" action="/Home/BulteneAboneOl" method="post" class="relative flex max-w-md items-center rounded-full border border-white/20 bg-white/10 px-4 py-2 shadow-inner">
                     @Html.AntiForgeryToken()
-                    <input name="email" id="newsletterEmail" class="bg-transparent border-none w-full focus:ring-0 text-sm px-0 text-white placeholder-gray-300 outline-none" placeholder="@Localizer["EmailAddress"]" required="" type="email"/>
+                    <input name="email" id="newsletterEmail" class="bg-transparent border-none w-full focus:ring-0 text-sm px-0 text-white placeholder-gray-300 outline-none" 
+                           placeholder="@Localizer["EmailAddress"]" 
+                           required="required" 
+                           oninvalid="this.setCustomValidity('@Localizer["FillRequiredFields"]')" 
+                           oninput="this.setCustomValidity('')" 
+                           type="email"/>
                     <button type="submit" class="rounded-full bg-[#eef2c3] px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#25280c] transition-all ms-4 whitespace-nowrap hover:bg-white disabled:cursor-wait disabled:opacity-60">@Localizer["Subscribe"]</button>
                 </form>
             </div>
@@ -65,9 +70,9 @@
             <div class="flex flex-col md:items-end">
                 <h4 class="font-bold text-sm tracking-widest mb-4 uppercase text-white drop-shadow-sm">@Localizer["Corporate"]</h4>
                 <ul class="space-y-2 text-sm font-light text-gray-100 text-start md:text-end">
-                    <li><a class="hover:text-white transition-colors" href="/Kurumsal/Hakkimizda">@Localizer["AboutUs"]</a></li>
-                    <li><a class="hover:text-white transition-colors" href="/Kurumsal/Iletisim">@Localizer["Contact"]</a></li>
-                    <li><a class="hover:text-white transition-colors" href="/Urun">@Localizer["AllProducts"]</a></li>
+                    <li><a class="hover:text-white transition-colors" href="/pages/about">@Localizer["AboutUs"]</a></li>
+                    <li><a class="hover:text-white transition-colors" href="/pages/contact">@Localizer["Contact"]</a></li>
+                    <li><a class="hover:text-white transition-colors" href="/products">@Localizer["AllProducts"]</a></li>
                     <li><a class="hover:text-white transition-colors" href="/Sozlesmeler/Gizlilik">@Localizer["PrivacyPolicy"]</a></li>
                     <li><a class="hover:text-white transition-colors" href="/Sozlesmeler/MesafeliSatis">@Localizer["DistanceSalesContract"]</a></li>
                 </ul>
@@ -75,10 +80,6 @@
                     @if (!string.IsNullOrEmpty(siteSettings.InstagramUrl))
                     {
                         <a href="@siteSettings.InstagramUrl" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:border-white/40 hover:bg-white/10"><i class="fab fa-instagram text-lg"></i></a>
-                    }
-                    @if (!string.IsNullOrEmpty(siteSettings.WhatsappNumarasi))
-                    {
-                        <a href="https://wa.me/@siteSettings.WhatsappNumarasi.Replace(" ", "").Replace("+", "")" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:border-white/40 hover:bg-white/10"><i class="fab fa-whatsapp text-lg"></i></a>
                     }
                     @if (!string.IsNullOrEmpty(siteSettings.FacebookUrl))
                     {
@@ -96,9 +97,9 @@
             <div class="mb-4 md:mb-0 order-1 md:order-2">
                 <a href="/Sozlesmeler/Gizlilik" class="text-[11px] text-gray-200 hover:text-white transition-colors mx-2">@Localizer["PrivacyPolicy"]</a>
                 <span class="text-gray-600">|</span>
-                <a href="/Kurumsal/IadeKosullari" class="text-[11px] text-gray-200 hover:text-white transition-colors mx-2">@Localizer["ReturnExchange"]</a>
+                <a href="/pages/return-policy" class="text-[11px] text-gray-200 hover:text-white transition-colors mx-2">@Localizer["ReturnExchange"]</a>
                 <span class="text-gray-600">|</span>
-                <a href="/Kurumsal/Hakkimizda" class="text-[11px] text-gray-200 hover:text-white transition-colors mx-2">@Localizer["AboutUs"]</a>
+                <a href="/pages/about" class="text-[11px] text-gray-200 hover:text-white transition-colors mx-2">@Localizer["AboutUs"]</a>
             </div>
         </div>
     </div>

@@ -27,7 +27,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         private readonly IDosyaServisi _dosyaServisi;
         private readonly ILogger<SiparisController> _logger;
 
-        public SiparisController(
+        private readonly Microsoft.Extensions.Localization.IStringLocalizer<FilistinProje.Web.Resources.SharedResource> _localizer; public SiparisController(
             IService<Siparis> siparisService,
             IService<SiparisDetay> detayService,
             IService<UrunSecenek> secenekService,
@@ -37,7 +37,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             IFaturaPdfService faturaPdfService,
             KanvasDbContext context,
             IDosyaServisi dosyaServisi,
-            ILogger<SiparisController> logger)
+            ILogger<SiparisController> logger, Microsoft.Extensions.Localization.IStringLocalizer<FilistinProje.Web.Resources.SharedResource> localizer)
         {
             _siparisService = siparisService;
             _detayService = detayService;
@@ -47,8 +47,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             _siteSettingsService = siteSettingsService;
             _faturaPdfService = faturaPdfService;
             _context = context;
+            
             _dosyaServisi = dosyaServisi;
             _logger = logger;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index(string search, int? durum, int? receteDurum, int page = 1, int pageSize = 20)
@@ -223,7 +225,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (durum == eskiDurum)
             {
-                TempData["Mesaj"] = "تم تحديث معلومات عملية الطلب.";
+                TempData["Mesaj"] = "?? ????? ??????? ????? ?????.";
                 TempData["Durum"] = "success";
                 return RedirectToAction("Detay", new { id });
             }
@@ -231,12 +233,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var mailSonucu = await SendStatusNotificationAsync(siparis, eskiDurum, durum, firma?.Ad ?? string.Empty, temizKargoNo);
             if (mailSonucu.Success)
             {
-                TempData["Mesaj"] = "تم تحديث حالة الطلب. تم إرسال بريد إلكتروني إعلامي للعميل.";
+                TempData["Mesaj"] = "?? ????? ???? ?????. ?? ????? ???? ???????? ?????? ??????.";
                 TempData["Durum"] = "success";
             }
             else
             {
-                TempData["Mesaj"] = $"تم تحديث حالة الطلب. تم تخطي إرسال البريد الإلكتروني: {mailSonucu.Message}";
+                TempData["Mesaj"] = $"?? ????? ???? ?????. ?? ???? ????? ?????? ??????????: {mailSonucu.Message}";
                 TempData["Durum"] = "warning";
             }
 
@@ -295,7 +297,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             worksheet.Column(7).Style.Numberformat.Format = "dd.mm.yyyy hh:mm";
-            worksheet.Column(8).Style.Numberformat.Format = "#,##0.00 ₪";
+            worksheet.Column(8).Style.Numberformat.Format = "#,##0.00 ?";
             worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
 
             return File(
@@ -473,13 +475,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{siparisler.Count} طلب تم تحديثه إلى 'تم التسليم'.";
+            TempData["Mesaj"] = $"{siparisler.Count} ??? ?? ?????? ??? '?? ???????'.";
             TempData["Durum"] = "success";
 
             return RedirectToAction(nameof(Index), new
             {
                 durum = SiparisDurumHelper.KargoyaVerildi,
-                toast = Uri.EscapeDataString($"{siparisler.Count} طلب تم تسليمها"),
+                toast = Uri.EscapeDataString($"{siparisler.Count} ??? ?? ???????"),
                 toastType = "success"
             });
         }
@@ -492,7 +494,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!siparisIds.Any())
             {
-                TempData["Mesaj"] = "يجب اختيار طلب واحد على الأقل للتحديث.";
+                TempData["Mesaj"] = "??? ?????? ??? ???? ??? ????? ???????.";
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -527,10 +529,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"تم تحديث {guncellenecekler.Count} طلب إلى حالة '{durumAd}'.";
+            TempData["Mesaj"] = $"?? ????? {guncellenecekler.Count} ??? ??? ???? '{durumAd}'.";
             TempData["Durum"] = "success";
             
-            return RedirectToAction(nameof(Index), new { toast = Uri.EscapeDataString($"تم تحديث حالة {guncellenecekler.Count} طلب"), toastType = "success" });
+            return RedirectToAction(nameof(Index), new { toast = Uri.EscapeDataString($"?? ????? ???? {guncellenecekler.Count} ???"), toastType = "success" });
         }
 
         [HttpPost]
@@ -539,7 +541,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             if (string.IsNullOrWhiteSpace(siparisIds))
             {
-                TempData["Mesaj"] = "يجب اختيار طلب واحد على الأقل للإلغاء.";
+                TempData["Mesaj"] = "??? ?????? ??? ???? ??? ????? ???????.";
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -548,7 +550,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!idList.Any())
             {
-                TempData["Mesaj"] = "يجب اختيار طلب واحد على الأقل للإلغاء.";
+                TempData["Mesaj"] = "??? ?????? ??? ???? ??? ????? ???????.";
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -758,20 +760,20 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var yeniDurumText = System.Net.WebUtility.HtmlEncode(yeniDurum);
             var durumMesaji = durum switch
             {
-                SiparisDurumHelper.UretimHazirlaniyor => "تم إدراج طلبك في خطة الإنتاج. سيتم تجهيز منتجاتك بعناية.",
-                SiparisDurumHelper.Paketleniyor => "تم تجهيز منتجاتك وانتقلت إلى مرحلة التغليف الآمن.",
-                SiparisDurumHelper.TeslimEdildi => "تم تحديث طلبك كمسلّم. نتمنى لك استخداماً ممتعاً.",
-                SiparisDurumHelper.IptalEdildi => "تم تحديث طلبك كملغي. يمكنك التواصل معنا للتفاصيل.",
-                SiparisDurumHelper.IadeTalebi => "تم استلام طلب الإرجاع الخاص بك وهو قيد المراجعة من قبل فريقنا.",
-                SiparisDurumHelper.IadeOnaylandi => "تمت الموافقة على طلب الإرجاع الخاص بك. سنتواصل معك للخطوات التالية.",
-                SiparisDurumHelper.IadeTamamlandi => "اكتملت عملية الإرجاع الخاصة بك.",
-                _ => "تم تحديث حالة طلبك."
+                SiparisDurumHelper.UretimHazirlaniyor => "?? ????? ???? ?? ??? ???????. ???? ????? ??????? ??????.",
+                SiparisDurumHelper.Paketleniyor => "?? ????? ??????? ??????? ??? ????? ??????? ?????.",
+                SiparisDurumHelper.TeslimEdildi => "?? ????? ???? ??????. ????? ?? ????????? ??????.",
+                SiparisDurumHelper.IptalEdildi => "?? ????? ???? ?????. ????? ??????? ???? ????????.",
+                SiparisDurumHelper.IadeTalebi => "?? ?????? ??? ??????? ????? ?? ??? ??? ???????? ?? ??? ??????.",
+                SiparisDurumHelper.IadeOnaylandi => "??? ???????? ??? ??? ??????? ????? ??. ??????? ??? ??????? ???????.",
+                SiparisDurumHelper.IadeTamamlandi => "?????? ????? ??????? ?????? ??.",
+                _ => "?? ????? ???? ????."
             };
 
             return $@"
-                <p>تم تحديث حالة طلبك رقم <strong>{siparisNo}</strong>.</p>
-                <p><strong>الحالة السابقة:</strong> {oncekiDurumText}<br>
-                <strong>الحالة الجديدة:</strong> {yeniDurumText}</p>
+                <p>?? ????? ???? ???? ??? <strong>{siparisNo}</strong>.</p>
+                <p><strong>?????? ???????:</strong> {oncekiDurumText}<br>
+                <strong>?????? ???????:</strong> {yeniDurumText}</p>
                 <p>{durumMesaji}</p>";
         }
 
@@ -804,7 +806,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                             {notSatiri}
                         </td>
                         <td style='padding:10px; border-top:1px solid #e5e2dc; text-align:center; color:#47473d;'>{item.Adet}</td>
-                        <td style='padding:10px; border-top:1px solid #e5e2dc; text-align:right; color:#313511; font-weight:600;'>{(item.BirimFiyat * item.Adet):N2} ₪</td>
+                        <td style='padding:10px; border-top:1px solid #e5e2dc; text-align:right; color:#313511; font-weight:600;'>{(item.BirimFiyat * item.Adet):N2} ?</td>
                     </tr>");
             }
 
@@ -893,7 +895,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var siparis = await _context.Siparisler.FindAsync(siparisId);
             if (siparis == null)
             {
-                TempData["Hata"] = "SipariÅŸ bulunamadÄ±.";
+                TempData["Hata"] = _localizer["Admin_Sonuc_bulunamadi"].Value;
                 return RedirectToAction("Index");
             }
 
@@ -973,7 +975,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var siparis = await _context.Siparisler.FindAsync(id);
             if (siparis == null)
             {
-                TempData["Hata"] = "Sipariş bulunamadı.";
+                TempData["Hata"] = "Sipariş not found.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -995,7 +997,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var siparis = await _context.Siparisler.FindAsync(id);
             if (siparis == null)
             {
-                TempData["Hata"] = "Sipariş bulunamadı.";
+                TempData["Hata"] = "Sipariş not found.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -1047,3 +1049,9 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 }
+
+
+
+
+
+

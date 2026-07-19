@@ -5,6 +5,9 @@
     var currentCulture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
     var currentDirection = currentCulture == "ar" ? "rtl" : "ltr";
     var languageReturnUrl = $"{Context.Request.Path}{Context.Request.QueryString}";
+    var encodedLanguageReturnUrl = Uri.EscapeDataString(languageReturnUrl);
+    var arActive = currentCulture == "ar";
+    var enActive = currentCulture == "en";
     var siteSettings = SiteSettingsService.GetSettings();
     var brandName = string.IsNullOrWhiteSpace(siteSettings.MarkaAdi) ? siteSettings.SiteAdi : siteSettings.MarkaAdi;
     var logoUrl = string.IsNullOrWhiteSpace(siteSettings.SiteLogoUrl) ? "/74anrps48logo2.svg" : siteSettings.SiteLogoUrl;
@@ -211,8 +214,8 @@
                 @if (canManageProducts)
                 {
                     <div class="dropdown">
-                        <button class="ca-partner-nav-link dropdown-toggle @(productControllers.Contains(currentController) ? "active" : "")" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-cubes"></i> @Localizer["ProductManagement"]
+                        <button class="ca-partner-nav-link dropdown-toggle @(currentController == "Siparis" || currentController == "Iade" || currentController == "Kargo" ? "active" : "")" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-popper-config='{"strategy":"fixed"}'>
+                            <i class="fas fa-bag-shopping"></i> @Localizer["OrderManagement"]
                         </button>
                         <ul class="dropdown-menu ca-top-menu">
                             <li><a class="dropdown-item" href="/Admin/Urun"><i class="fas fa-box-open"></i> @Localizer["Products"]</a></li>
@@ -269,7 +272,7 @@
                 @if (canViewReports)
                 {
                     <div class="dropdown">
-                        <button class="ca-partner-nav-link dropdown-toggle @(reportControllers.Contains(currentController) && currentController != "Home" ? "active" : "")" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="ca-partner-nav-link dropdown-toggle @(reportControllers.Contains(currentController) && currentController != "Home" ? "active" : "")" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-popper-config='{"strategy":"fixed"}'>
                             <i class="fas fa-chart-pie"></i> @Localizer["Reports"]
                         </button>
                         <ul class="dropdown-menu ca-top-menu">
@@ -303,13 +306,37 @@
                     </form>
                 }
 
-                <form action="/Dil/Degistir" method="get" class="me-2">
-                    <input type="hidden" name="returnUrl" value="@languageReturnUrl" />
-                    <select name="culture" onchange="this.form.submit()" title="@Localizer["Language"]" class="form-select form-select-sm d-inline-block" style="width: auto; min-width: 70px;">
-                        <option value="ar" selected="@(currentCulture == "ar")">AR</option>
-                        <option value="en" selected="@(currentCulture == "en")">EN</option>
-                    </select>
-                </form>
+                <div class="d-none d-md-flex align-items-center gap-1 rounded-pill p-1 shadow-sm me-3" style="border: 1px solid rgba(201,181,138,0.7); background: rgba(255,250,240,0.95); box-shadow: 0 4px 15px rgba(49, 53, 17, 0.08) !important;">
+                    <span class="d-flex align-items-center justify-content-center rounded-circle bg-white shadow-sm" style="width: 32px; height: 32px; color: #b58735;" aria-hidden="true">
+                        <i class="fas fa-globe" style="font-size: 12px;"></i>
+                    </span>
+                    <a href="/Dil/Degistir?culture=ar&returnUrl=@encodedLanguageReturnUrl"
+                       lang="ar" dir="rtl"
+                       class="rounded-pill px-3 py-1 text-decoration-none transition-all fw-semibold" 
+                       style="font-size: 12px; @(arActive ? "background-color: #313511; color: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);" : "color: #47473d;")"
+                       onmouseover="this.style.backgroundColor='#ffffff'; this.style.color='#313511';"
+                       onmouseout="@(arActive ? "this.style.backgroundColor='#313511'; this.style.color='white';" : "this.style.backgroundColor='transparent'; this.style.color='#47473d';")">
+                        العربية
+                    </a>
+                    <a href="/Dil/Degistir?culture=en&returnUrl=@encodedLanguageReturnUrl"
+                       lang="en" dir="ltr"
+                       class="rounded-pill px-3 py-1 text-decoration-none transition-all fw-semibold" 
+                       style="font-size: 12px; letter-spacing: 0.025em; @(enActive ? "background-color: #313511; color: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);" : "color: #47473d;")"
+                       onmouseover="this.style.backgroundColor='#ffffff'; this.style.color='#313511';"
+                       onmouseout="@(enActive ? "this.style.backgroundColor='#313511'; this.style.color='white';" : "this.style.backgroundColor='transparent'; this.style.color='#47473d';")">
+                        English
+                    </a>
+                </div>
+
+                <div class="d-md-none dropdown me-2">
+                    <button class="btn btn-sm btn-outline-secondary rounded-pill dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-color: rgba(201,181,138,0.7); background: rgba(255,250,240,0.95); color: #313511; font-weight: 600;">
+                        <i class="fas fa-globe"></i> @(arActive ? "AR" : "EN")
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="min-width: 120px; border-color: rgba(201,181,138,0.7);">
+                        <li><a class="dropdown-item @(arActive ? "active bg-dark text-white" : "")" href="/Dil/Degistir?culture=ar&returnUrl=@encodedLanguageReturnUrl" lang="ar" dir="rtl">العربية (AR)</a></li>
+                        <li><a class="dropdown-item @(enActive ? "active bg-dark text-white" : "")" href="/Dil/Degistir?culture=en&returnUrl=@encodedLanguageReturnUrl" lang="en" dir="ltr">English (EN)</a></li>
+                    </ul>
+                </div>
 
                 @if (isReadOnlyAdmin)
                 {

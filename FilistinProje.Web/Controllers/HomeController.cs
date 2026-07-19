@@ -153,6 +153,52 @@ namespace FilistinProje.Web.Controllers
                 .ThenBy(k => k.Ad)
                 .ToListAsync();
 
+            var anaSayfaUrunleri = besParcaliKoleksiyon
+                .Concat(vitrinUrunleri)
+                .Concat(cokSatanlar)
+                .Concat(firsatUrunleri)
+                .DistinctBy(u => u.Id)
+                .ToList();
+
+            // Kategori id'lerine gore urun resimlerini bulmak icin
+            var kategoriIdleri = kategoriler.Select(k => k.Id).ToList();
+            var kategoriUrunResimleri = await _context.Urunler
+                .AsNoTracking()
+                .Where(u => u.AktifMi && u.YayindaMi && !u.SilindiMi && kategoriIdleri.Contains(u.KategoriId))
+                .Select(u => new 
+                { 
+                    u.KategoriId, 
+                    ResimUrl = !string.IsNullOrWhiteSpace(u.AnaGorselUrl) 
+                        ? u.AnaGorselUrl 
+                        : u.UrunResimleri.OrderBy(r => r.Sira).Select(r => r.ResimYolu).FirstOrDefault() 
+                })
+                .Where(x => !string.IsNullOrWhiteSpace(x.ResimUrl))
+                .GroupBy(x => x.KategoriId)
+                .ToDictionaryAsync(g => g.Key, g => g.First().ResimUrl);
+
+            var kategoriGorselleri = kategoriler.ToDictionary(
+                kategori => kategori.Id,
+                kategori =>
+                {
+                    var tanimliGorsel = !string.IsNullOrWhiteSpace(kategori.GorselUrl)
+                        ? kategori.GorselUrl
+                        : (!string.IsNullOrWhiteSpace(kategori.MenuGorselUrl)
+                            ? kategori.MenuGorselUrl
+                            : kategori.BannerUrl);
+
+                    if (!string.IsNullOrWhiteSpace(tanimliGorsel))
+                    {
+                        return tanimliGorsel;
+                    }
+
+                    if (kategoriUrunResimleri.TryGetValue(kategori.Id, out var resimYolu))
+                    {
+                        return resimYolu ?? string.Empty;
+                    }
+
+                    return string.Empty;
+                });
+
             var aktifSlaytlar = await _context.Slaytlar
                 .AsNoTracking()
                 .Where(s => s.AktifMi)
@@ -168,6 +214,7 @@ namespace FilistinProje.Web.Controllers
                 BesParcaliKoleksiyon = besParcaliKoleksiyon,
                 FirsatUrunleri = firsatUrunleri,
                 Kategoriler = kategoriler,
+                KategoriGorselleri = kategoriGorselleri,
                 Sections = sections,
                 AktifSlaytlar = aktifSlaytlar
             };
@@ -357,3 +404,5 @@ namespace FilistinProje.Web.Controllers
         }
     }
 }
+
+

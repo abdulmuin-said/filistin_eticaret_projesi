@@ -155,8 +155,9 @@
     min-width: 0;
     max-width: 100%;
     flex-wrap: nowrap;
-    overflow: visible;
-    padding: 8px 2px 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 8px 2px 2px;
     border-top: 1px solid rgba(216, 201, 170, .7);
     scrollbar-width: none;
 }

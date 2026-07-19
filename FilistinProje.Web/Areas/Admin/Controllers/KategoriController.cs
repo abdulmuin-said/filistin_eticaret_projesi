@@ -235,7 +235,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             await _context.SaveChangesAsync();
             await InvalidateCategoryCachesAsync();
 
-            TempData["Basari"] = "Kategori baÅŸarÄ±yla oluÅŸturuldu.";
+            TempData["Basari"] = _localizer["Admin_IslemBasarili"].Value;
             return RedirectToAction(nameof(Index));
         }
 
@@ -301,7 +301,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             await _context.SaveChangesAsync();
             await InvalidateCategoryCachesAsync();
 
-            TempData["Basari"] = "Kategori gÃ¼ncellendi.";
+            TempData["Basari"] = _localizer["Admin_IslemBasarili"].Value;
             return RedirectToAction(nameof(Index));
         }
 
@@ -329,7 +329,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
             await InvalidateCategoryCachesAsync();
-            TempData["Basari"] = "Kategori arÅŸive alÄ±ndÄ±.";
+            TempData["Basari"] = _localizer["Admin_IslemBasarili"].Value;
             return RedirectToAction(nameof(Index));
         }
 
@@ -557,3 +557,5 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 }
+
+

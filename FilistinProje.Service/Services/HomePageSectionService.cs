@@ -39,6 +39,11 @@ namespace FilistinProje.Service.Services
                     .OrderBy(s => s.SortOrder)
                     .Include(s => s.SectionProducts)
                     .ThenInclude(sp => sp.Urun)
+                    .ThenInclude(u => u!.UrunResimleri)
+                    .Include(s => s.SectionProducts)
+                    .ThenInclude(sp => sp.Urun)
+                    .ThenInclude(u => u!.UrunSecenek)
+                    .AsSplitQuery()
                     .ToListAsync();
                 return sections ?? new List<HomePageSection>();
             }) ?? new List<HomePageSection>();
@@ -50,6 +55,11 @@ namespace FilistinProje.Service.Services
                 .AsNoTracking()
                 .Include(s => s.SectionProducts)
                 .ThenInclude(sp => sp.Urun)
+                .ThenInclude(u => u!.UrunResimleri)
+                .Include(s => s.SectionProducts)
+                .ThenInclude(sp => sp.Urun)
+                .ThenInclude(u => u!.UrunSecenek)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 

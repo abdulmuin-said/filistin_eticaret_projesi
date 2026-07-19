@@ -19,11 +19,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         private readonly IEmailService _emailService;
         private readonly ISiteSettingsService _siteSettingsService;
 
-        public BultenController(KanvasDbContext context, IEmailService emailService, ISiteSettingsService siteSettingsService)
+        private readonly Microsoft.Extensions.Localization.IStringLocalizer<FilistinProje.Web.Resources.SharedResource> _localizer; public BultenController(KanvasDbContext context, IEmailService emailService, ISiteSettingsService siteSettingsService, Microsoft.Extensions.Localization.IStringLocalizer<FilistinProje.Web.Resources.SharedResource> localizer)
         {
             _context = context;
             _emailService = emailService;
             _siteSettingsService = siteSettingsService;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index(int durum = 1, string? q = null, int page = 1, int pageSize = 20)
@@ -227,7 +228,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!aboneler.Any())
             {
-                TempData["Hata"] = "GÃ¶nderilecek aktif bÃ¼lten abonesi bulunamadÄ±.";
+                TempData["Hata"] = _localizer["Admin_Sonuc_bulunamadi"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index), new { durum, q, page, pageSize });
             }
@@ -368,3 +369,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 }
+
+
+
+

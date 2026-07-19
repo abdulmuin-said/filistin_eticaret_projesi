@@ -1,4 +1,4 @@
-using FilistinProje.Data;
+﻿using FilistinProje.Data;
 using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -145,3 +145,5 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 }
+
+

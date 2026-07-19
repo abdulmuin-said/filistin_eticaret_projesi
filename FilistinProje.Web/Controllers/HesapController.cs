@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 using FilistinProje.Core.Enums;
 using FilistinProje.Core.Interfaces;
@@ -19,6 +19,7 @@ using Microsoft.Extensions.Localization;
 
 namespace FilistinProje.Web.Controllers
 {
+    [Route("account")]
     public class HesapController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
@@ -56,13 +57,15 @@ namespace FilistinProje.Web.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet("register")]
+        [HttpGet("/Hesap/KayitOl")]
         public IActionResult KayitOl()
         {
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("register")]
+        [HttpPost("/Hesap/KayitOl")]
         [ValidateAntiForgeryToken]
         [EnableRateLimiting("auth")]
         public async Task<IActionResult> KayitOl(KayitViewModel model)
@@ -134,14 +137,14 @@ namespace FilistinProje.Web.Controllers
                     "Verify My Account"
                 ),
                 "ar" => (
-                    "تحقق من عنوان بريدك الإلكتروني",
-                    $"تم إنشاء حسابك في {brandName}. يرجى التحقق من عنوان بريدك الإلكتروني لاستخدام حسابك بأمان.",
-                    "تحقق من حسابي"
+                    "ØªØ­Ù‚Ù‚ Ù…Ù† Ø¹Ù†ÙˆØ§Ù† Ø¨Ø±ÙŠØ¯Ùƒ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ",
+                    $"ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨Ùƒ ÙÙŠ {brandName}. ÙŠØ±Ø¬Ù‰ Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø¹Ù†ÙˆØ§Ù† Ø¨Ø±ÙŠØ¯Ùƒ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ù„Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø­Ø³Ø§Ø¨Ùƒ Ø¨Ø£Ù…Ø§Ù†.",
+                    "ØªØ­Ù‚Ù‚ Ù…Ù† Ø­Ø³Ø§Ø¨ÙŠ"
                 ),
                 _ => (
-                    "Hesabınızı doğrulayın",
-                    $"{brandName} hesabınız oluşturuldu. Hesabınızı güvenli şekilde kullanabilmek için e-posta adresinizi doğrulamanız gerekiyor.",
-                    "Hesabımı Doğrula"
+                    "HesabÄ±nÄ±zÄ± doÄŸrulayÄ±n",
+                    $"{brandName} hesabÄ±nÄ±z oluÅŸturuldu. HesabÄ±nÄ±zÄ± gÃ¼venli ÅŸekilde kullanabilmek iÃ§in e-posta adresinizi doÄŸrulamanÄ±z gerekiyor.",
+                    "HesabÄ±mÄ± DoÄŸrula"
                 )
             };
 
@@ -166,14 +169,12 @@ namespace FilistinProje.Web.Controllers
             return RedirectToAction("EpostaOnayBilgilendirme");
         }
 
-        [HttpGet]
-        public IActionResult EpostaOnayBilgilendirme()
+        [HttpGet("email-verification-info")] public IActionResult EpostaOnayBilgilendirme()
         {
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> EpostaDogrula(string userId, string token)
+        [HttpGet("verify-email")] public async Task<IActionResult> EpostaDogrula(string userId, string token)
         {
             if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(token))
             {
@@ -195,14 +196,16 @@ namespace FilistinProje.Web.Controllers
             return Content(_localizer["Hesap_EmailVerificationError"].Value);
         }
 
-        [HttpGet]
+        [HttpGet("login")]
+        [HttpGet("/Hesap/GirisYap")]
         public IActionResult GirisYap(string? returnUrl = null)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("login")]
+        [HttpPost("/Hesap/GirisYap")]
         [ValidateAntiForgeryToken]
         [EnableRateLimiting("auth")]
         public async Task<IActionResult> GirisYap(string eposta, string sifre, string? returnUrl = null)
@@ -269,7 +272,8 @@ namespace FilistinProje.Web.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("logout")]
+        [HttpPost("/Hesap/CikisYap")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CikisYap()
         {
@@ -299,8 +303,7 @@ namespace FilistinProje.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet]
-        public IActionResult SifremiUnuttum()
+        [HttpGet("forgot-password")] public IActionResult SifremiUnuttum()
         {
             return View();
         }
@@ -324,14 +327,14 @@ namespace FilistinProje.Web.Controllers
                     "Reset My Password"
                 ),
                 "ar" => (
-                    "طلب إعادة تعيين كلمة المرور",
-                    "لقد تلقينا طلباً لإعادة تعيين كلمة المرور لحسابك. إذا لم تقم بهذا الطلب، يمكنك تجاهل هذه الرسالة.",
-                    "إعادة تعيين كلمة المرور"
+                    "Ø·Ù„Ø¨ Ø¥Ø¹Ø§Ø¯Ø© ØªØ¹ÙŠÙŠÙ† ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±",
+                    "Ù„Ù‚Ø¯ ØªÙ„Ù‚ÙŠÙ†Ø§ Ø·Ù„Ø¨Ø§Ù‹ Ù„Ø¥Ø¹Ø§Ø¯Ø© ØªØ¹ÙŠÙŠÙ† ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ù„Ø­Ø³Ø§Ø¨Ùƒ. Ø¥Ø°Ø§ Ù„Ù… ØªÙ‚Ù… Ø¨Ù‡Ø°Ø§ Ø§Ù„Ø·Ù„Ø¨ØŒ ÙŠÙ…ÙƒÙ†Ùƒ ØªØ¬Ø§Ù‡Ù„ Ù‡Ø°Ù‡ Ø§Ù„Ø±Ø³Ø§Ù„Ø©.",
+                    "Ø¥Ø¹Ø§Ø¯Ø© ØªØ¹ÙŠÙŠÙ† ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±"
                 ),
                 _ => (
-                    "Şifre sıfırlama talebi",
-                    "Hesabınız için bir şifre sıfırlama talebi aldık. Bu işlemi siz yapmadıysanız mesajı yok sayabilirsiniz.",
-                    "Şifremi Sıfırla"
+                    "Åifre sÄ±fÄ±rlama talebi",
+                    "HesabÄ±nÄ±z iÃ§in bir ÅŸifre sÄ±fÄ±rlama talebi aldÄ±k. Bu iÅŸlemi siz yapmadÄ±ysanÄ±z mesajÄ± yok sayabilirsiniz.",
+                    "Åifremi SÄ±fÄ±rla"
                 )
             };
 
@@ -358,7 +361,7 @@ namespace FilistinProje.Web.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Parola sıfırlama e-postası gönderilemedi. UserId={UserId}", user.Id);
+                    _logger.LogError(ex, "Parola sÄ±fÄ±rlama e-postasÄ± gÃ¶nderilemedi. UserId={UserId}", user.Id);
                 }
             }
 
@@ -367,8 +370,7 @@ namespace FilistinProje.Web.Controllers
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> SifreSifirla(string userId, string token)
+        [HttpGet("reset-password")] public async Task<IActionResult> SifreSifirla(string userId, string token)
         {
             var decodedToken = TryDecodePasswordResetToken(token);
             if (string.IsNullOrWhiteSpace(userId) || decodedToken == null)
@@ -449,3 +451,5 @@ namespace FilistinProje.Web.Controllers
         }
     }
 }
+
+

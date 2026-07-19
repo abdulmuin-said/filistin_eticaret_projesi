@@ -1,4 +1,4 @@
-using FilistinProje.Core.Interfaces;
+﻿using FilistinProje.Core.Interfaces;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Service.Services;
@@ -13,7 +13,7 @@ using System.Net;
 
 namespace FilistinProje.Web.Controllers
 {
-    [Authorize]
+    [Route("profile")]
     public class ProfilController : Controller
     {
         private const int IadeHakkiGun = 14;
@@ -44,6 +44,8 @@ namespace FilistinProje.Web.Controllers
             _localizer = localizer;
         }
 
+        [HttpGet("")]
+        [HttpGet("/Profil")]
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -76,6 +78,8 @@ namespace FilistinProje.Web.Controllers
             return View(user);
         }
 
+        [HttpGet("orders")]
+        [HttpGet("/Profil/Siparislerim")]
         public async Task<IActionResult> Siparislerim()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -91,6 +95,8 @@ namespace FilistinProje.Web.Controllers
             return View(siparislerim);
         }
 
+        [HttpGet("orders/{id}")]
+        [HttpGet("/Profil/SiparisDetay/{id}")]
         public async Task<IActionResult> SiparisDetay(int id)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -153,8 +159,7 @@ namespace FilistinProje.Web.Controllers
             return View(siparis);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> IadeOlustur(int siparisId)
+        [HttpGet("create-return/{siparisId?}")] public async Task<IActionResult> IadeOlustur(int siparisId)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -319,9 +324,7 @@ namespace FilistinProje.Web.Controllers
             return RedirectToAction(nameof(Adreslerim));
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AdresSil(int id)
+        [HttpPost("delete-address")] [ValidateAntiForgeryToken] public async Task<IActionResult> AdresSil(int id)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -361,14 +364,14 @@ namespace FilistinProje.Web.Controllers
                 return RedirectToAction(nameof(Siparislerim));
             }
 
-            // Sadece SiparisAlindi (0) veya UretimHazirlaniyor (1) durumundaki siparişler iptal edilebilir
+            // Sadece SiparisAlindi (0) veya UretimHazirlaniyor (1) durumundaki sipariÅŸler iptal edilebilir
             if (siparis.Durum != SiparisDurumHelper.SiparisAlindi && siparis.Durum != SiparisDurumHelper.UretimHazirlaniyor)
             {
                 TempData["Hata"] = _localizer["Profil_OrderCannotCancel"].Value;
                 return RedirectToAction(nameof(SiparisDetay), new { id });
             }
 
-            // İptal süresi kontrolü
+            // Ä°ptal sÃ¼resi kontrolÃ¼
             var settings = _siteSettingsService.GetSettings();
             if (settings.IptalSuresiSaat > 0)
             {
@@ -383,7 +386,7 @@ namespace FilistinProje.Web.Controllers
             }
             else if (settings.IptalSuresiSaat == 0)
             {
-                // 0 = iptal tamamen kapalı
+                // 0 = iptal tamamen kapalÄ±
                 TempData["Hata"] = _localizer["Profil_CancelNotAllowed"].Value;
                 return RedirectToAction(nameof(SiparisDetay), new { id });
             }
@@ -410,15 +413,12 @@ namespace FilistinProje.Web.Controllers
             return RedirectToAction(nameof(SiparisDetay), new { id });
         }
 
-        [HttpGet]
-        public IActionResult HesabiSil()
+        [HttpGet("delete-account")] public IActionResult HesabiSil()
         {
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> HesabiSilOnayla(string sifre)
+        [HttpPost("delete-account")] [ValidateAntiForgeryToken] public async Task<IActionResult> HesabiSilOnayla(string sifre)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -601,7 +601,9 @@ namespace FilistinProje.Web.Controllers
         private string GetCurrencySymbol()
         {
             var settings = _siteSettingsService.GetSettings();
-            return string.IsNullOrWhiteSpace(settings.ParaBirimi) ? "₪" : settings.ParaBirimi;
+            return string.IsNullOrWhiteSpace(settings.ParaBirimi) ? "â‚ª" : settings.ParaBirimi;
         }
     }
 }
+
+

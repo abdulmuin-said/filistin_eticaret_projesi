@@ -1,4 +1,4 @@
-using FilistinProje.Core.Varliklar;
+﻿using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Service.Services;
 using FilistinProje.Web.Resources;
@@ -26,8 +26,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var sections = await _sectionService.GetActiveSectionsAsync();
-            // Aktif+pasif hepsini göster (GetActiveSectionsAsync sadece Enabled olanları döner)
-            // Tüm bölümleri sıralayarak göster
+            // Aktif+pasif hepsini gÃ¶ster (GetActiveSectionsAsync sadece Enabled olanlarÄ± dÃ¶ner)
+            // TÃ¼m bÃ¶lÃ¼mleri sÄ±ralayarak gÃ¶ster
             var allSections = await _context.HomePageSections
                 .AsNoTracking()
                 .OrderBy(s => s.SortOrder)
@@ -62,7 +62,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             await _sectionService.CreateSectionAsync(model);
-            TempData["Basari"] = "Yeni bölüm başarıyla oluşturuldu.";
+            TempData["Basari"] = _localizer["Admin_IslemBasarili"].Value;
             return RedirectToAction(nameof(Index));
         }
 
@@ -75,7 +75,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            // Ürün listesini view'a gönder (ürün seçimi için)
+            // ÃœrÃ¼n listesini view'a gÃ¶nder (Ã¼rÃ¼n seÃ§imi iÃ§in)
             ViewBag.TumUrunler = await _context.Urunler
                 .AsNoTracking()
                 .Where(u => u.AktifMi && !u.SilindiMi)
@@ -109,13 +109,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _sectionService.UpdateSectionAsync(model);
 
-            // Ürün listesini güncelle (ProductBlock tipi için)
+            // ÃœrÃ¼n listesini gÃ¼ncelle (ProductBlock tipi iÃ§in)
             if (model.SectionType == HomePageSectionType.ProductBlock && selectedProducts != null)
             {
                 await _sectionService.SetSectionProductsAsync(id, selectedProducts.ToList());
             }
 
-            TempData["Basari"] = "Bölüm başarıyla güncellendi.";
+            TempData["Basari"] = _localizer["Admin_IslemBasarili"].Value;
             return RedirectToAction(nameof(Index));
         }
 
@@ -131,7 +131,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             await _sectionService.DeleteSectionAsync(id);
-            TempData["Basari"] = "Bölüm silindi.";
+            TempData["Basari"] = _localizer["Admin_IslemBasarili"].Value;
             return RedirectToAction(nameof(Index));
         }
 
@@ -150,3 +150,5 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 }
+
+

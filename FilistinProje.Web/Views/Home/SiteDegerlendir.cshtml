@@ -1,4 +1,4 @@
-﻿@using FilistinProje.Core.Varliklar
+@using FilistinProje.Core.Varliklar
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["SiteReview"];
@@ -94,7 +94,7 @@
                                             <h5 class="text-sm font-semibold text-brand-darktext">@d.AdSoyad</h5>
                                             @if (!string.IsNullOrWhiteSpace(d.Baslik))
                                             {
-                                                <span class="text-xs text-brand-mutedtext">â€” @d.Baslik</span>
+                                                <span class="text-xs text-brand-mutedtext">— @d.Baslik</span>
                                             }
                                         </div>
                                         <div class="text-brand-gold text-[10px]">

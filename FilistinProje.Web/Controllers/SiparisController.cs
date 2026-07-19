@@ -1,4 +1,4 @@
-using FilistinProje.Core.DTOs;
+﻿using FilistinProje.Core.DTOs;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -20,6 +20,7 @@ using System.Globalization;
 
 namespace FilistinProje.Web.Controllers
 {
+    [Route("checkout")]
     public class SiparisController : Controller
     {
         private const string UploadTokenHashSessionKey = "CheckoutUploadTokenHash";
@@ -68,7 +69,8 @@ namespace FilistinProje.Web.Controllers
             _purchaseOrderService = purchaseOrderService;
         }
 
-        [HttpGet]
+        [HttpGet("")]
+        [HttpGet("/Siparis/Odeme")]
         public async Task<IActionResult> Odeme()
         {
             var userId = User.Identity?.IsAuthenticated == true ? _userManager.GetUserId(User) : null;
@@ -102,7 +104,8 @@ namespace FilistinProje.Web.Controllers
             return View(dto);
         }
 
-        [HttpPost]
+        [HttpPost("")]
+        [HttpPost("/Siparis/Odeme")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Odeme(CheckoutRequestDto dto)
         {
@@ -115,7 +118,7 @@ namespace FilistinProje.Web.Controllers
                 return RedirectToAction("Index", "Sepet");
             }
 
-            // === B27: Bind attribute ile sadece güvenli alanlar alındı (DTO).
+            // === B27: Bind attribute ile sadece gÃ¼venli alanlar alÄ±ndÄ± (DTO).
             if (!dto.SozlesmeOnaylandi)
             {
                 ModelState.AddModelError(nameof(dto.SozlesmeOnaylandi), _localizer["Siparis_TermsRequired"].Value);
@@ -211,7 +214,7 @@ namespace FilistinProje.Web.Controllers
             HttpContext.Session.Remove("UygulananKupon");
             ClearCheckoutUploadCapability();
 
-            // Fiyat değişti ise kullanıcıya bildir (B3: sessizce farklı tahsil etmemek)
+            // Fiyat deÄŸiÅŸti ise kullanÄ±cÄ±ya bildir (B3: sessizce farklÄ± tahsil etmemek)
             if (placeOrderResult.Pricing?.FiyatDegistiMi == true)
             {
                 TempData["Siparis_FiyatDegisti"] = string.Format(
@@ -242,8 +245,7 @@ namespace FilistinProje.Web.Controllers
             return RedirectToAction(nameof(Beklemede), new { siparisNo = siparis.SiparisNo });
         }
 
-        [HttpGet]
-        public async Task<IActionResult> KargoHesapla(string sehir)
+        [HttpGet("shipping-cost")] public async Task<IActionResult> KargoHesapla(string sehir)
         {
             try
             {
@@ -279,8 +281,8 @@ namespace FilistinProje.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Kargo hesaplama hatası");
-                return Json(new { success = false, message = "Kargo hesaplanamadı." });
+                _logger.LogError(ex, "Kargo hesaplama hatasÄ±");
+                return Json(new { success = false, message = "Kargo hesaplanamadÄ±." });
             }
         }
 
@@ -351,7 +353,7 @@ namespace FilistinProje.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Reçete yüklenirken hata oluştu");
+                _logger.LogError(ex, "ReÃ§ete yÃ¼klenirken hata oluÅŸtu");
                 return Json(new { success = false, message = _localizer["Siparis_FileUploadError"].Value });
             }
         }
@@ -362,6 +364,8 @@ namespace FilistinProje.Web.Controllers
             return View();
         }
 
+        [HttpGet("success")]
+        [HttpGet("/Siparis/Basarili")]
         public IActionResult Basarili(string siparisNo)
         {
             ViewBag.SiparisNo = siparisNo;
@@ -388,7 +392,7 @@ namespace FilistinProje.Web.Controllers
                 return NotFound(_localizer["Siparis_OrderNotFound"].Value);
             }
 
-            // Güvenlik: Sadece kendi siparişinin faturasını indirebilir
+            // GÃ¼venlik: Sadece kendi sipariÅŸinin faturasÄ±nÄ± indirebilir
             if (siparis.AppUserId != user.Id)
             {
                 return Forbid();
@@ -992,7 +996,7 @@ namespace FilistinProje.Web.Controllers
         private string GetCurrencySymbol()
         {
             var settings = _siteSettingsService.GetSettings();
-            return string.IsNullOrWhiteSpace(settings.ParaBirimi) ? "₪" : settings.ParaBirimi;
+            return string.IsNullOrWhiteSpace(settings.ParaBirimi) ? "â‚ª" : settings.ParaBirimi;
         }
 
         private string BuildOrderLineDetail(SiparisDetay item)
@@ -1012,7 +1016,7 @@ namespace FilistinProje.Web.Controllers
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(item.CerceveModeli) && item.CerceveModeli != "Çerçevesiz")
+            if (!string.IsNullOrWhiteSpace(item.CerceveModeli) && item.CerceveModeli != "Ã‡erÃ§evesiz")
             {
                 details.Add(string.Format(_localizer["Siparis_EmailFrame"].Value, item.CerceveModeli));
             }
@@ -1021,3 +1025,5 @@ namespace FilistinProje.Web.Controllers
         }
     }
 }
+
+

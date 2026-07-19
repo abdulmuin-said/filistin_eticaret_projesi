@@ -1,4 +1,4 @@
-using FilistinProje.Data;
+﻿using FilistinProje.Data;
 using FilistinProje.Web.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,3 +44,5 @@ namespace FilistinProje.Web.Controllers
         }
     }
 }
+
+

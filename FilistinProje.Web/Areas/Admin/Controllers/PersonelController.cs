@@ -1,4 +1,4 @@
-using FilistinProje.Core.Models;
+﻿using FilistinProje.Core.Models;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Service.Services;
 using FilistinProje.Web.Security;
@@ -279,3 +279,5 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 }
+
+

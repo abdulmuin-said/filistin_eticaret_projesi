@@ -1,4 +1,4 @@
-using FilistinProje.Core.Enums;
+﻿using FilistinProje.Core.Enums;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Web.Resources;
@@ -89,7 +89,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
-                TempData["Hata"] = "Kullanıcı bulunamadı.";
+                TempData["Hata"] = _localizer["Admin_Sonuc_bulunamadi"].Value;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -107,11 +107,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
-                TempData["Hata"] = "Onaylama sırasında hata oluştu.";
+                TempData["Hata"] = "Onaylama sÄ±rasÄ±nda hata oluÅŸtu.";
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["Basari"] = $"{user.AdSoyad} toptancı olarak onaylandı.";
+            TempData["Basari"] = $"{user.AdSoyad} toptancÄ± olarak onaylandÄ±.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -122,7 +122,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
-                TempData["Hata"] = "Kullanıcı bulunamadı.";
+                TempData["Hata"] = _localizer["Admin_Sonuc_bulunamadi"].Value;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -135,11 +135,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
-                TempData["Hata"] = "Reddetme sırasında hata oluştu.";
+                TempData["Hata"] = "Reddetme sÄ±rasÄ±nda hata oluÅŸtu.";
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["Basari"] = $"{user.AdSoyad} toptancı başvurusu reddedildi.";
+            TempData["Basari"] = $"{user.AdSoyad} toptancÄ± baÅŸvurusu reddedildi.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -181,7 +181,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
-                TempData["Hata"] = "Kullanıcı bulunamadı.";
+                TempData["Hata"] = _localizer["Admin_Sonuc_bulunamadi"].Value;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -194,15 +194,15 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
-                TempData["Hata"] = "Durum güncellenirken hata oluştu.";
+                TempData["Hata"] = "Durum gÃ¼ncellenirken hata oluÅŸtu.";
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["Basari"] = $"{user.AdSoyad} toptancı durumu beklemedeye alındı.";
+            TempData["Basari"] = $"{user.AdSoyad} toptancÄ± durumu beklemedeye alÄ±ndÄ±.";
             return RedirectToAction(nameof(Index));
         }
 
-        #region Ürün Grupları
+        #region ÃœrÃ¼n GruplarÄ±
 
         public async Task<IActionResult> UrunGruplari()
         {
@@ -344,7 +344,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         private static string GetStatusLabel(WholesaleStatus status) => status switch
         {
             WholesaleStatus.Pending => "Beklemede",
-            WholesaleStatus.Approved => "Onaylı",
+            WholesaleStatus.Approved => "OnaylÄ±",
             WholesaleStatus.Rejected => "Reddedildi",
             _ => "Bilinmiyor"
         };
@@ -367,3 +367,5 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         public DateTime? BasvuruTarihi { get; set; }
     }
 }
+
+

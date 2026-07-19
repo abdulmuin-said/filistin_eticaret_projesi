@@ -1,4 +1,4 @@
-ï»¿@model IEnumerable<FilistinProje.Core.Varliklar.Urun>
+@model IEnumerable<FilistinProje.Core.Varliklar.Urun>
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @inject IStringLocalizer<SharedResource> Localizer
 @using FilistinProje.Core.Helpers
@@ -7,7 +7,7 @@
     ViewData["Title"] = Localizer["Collections"];
     var siteSettings = SiteSettingsService.GetSettings();
     var stoktaYokSatisIzni = siteSettings.StoktaYokSatisIzni;
-    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "Ã¢â€šÂª" : siteSettings.ParaBirimi;
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "â‚ª" : siteSettings.ParaBirimi;
     var isWholesale = User.IsInRole("Wholesale");
 
     int currentPage = ViewBag.CurrentPage != null ? (int)ViewBag.CurrentPage : 1;
@@ -79,7 +79,7 @@
             AddQueryValue("ozellik", $"{kv.Key}:{kv.Value}");
         }
         var parts = values.Select(x => $"{Uri.EscapeDataString(x.Key)}={Uri.EscapeDataString(x.Value)}").ToList();
-        return parts.Count == 0 ? "/Urun" : "/Urun?" + string.Join("&", parts);
+        return parts.Count == 0 ? "/products" : "/products?" + string.Join("&", parts);
     }
 
     string BuildProductSlug(FilistinProje.Core.Varliklar.Urun urun)
@@ -149,7 +149,7 @@
             .Select(x => $"{System.Uri.EscapeDataString(x.Key)}={System.Uri.EscapeDataString(x.Value)}")
             .ToList();
 
-        return parts.Count == 0 ? "/Urun" : "/Urun?" + string.Join("&", parts);
+        return parts.Count == 0 ? "/products" : "/products?" + string.Join("&", parts);
     }
 
     string BuildClearFiltersUrl()
@@ -171,7 +171,7 @@
             .Select(x => $"{System.Uri.EscapeDataString(x.Key)}={System.Uri.EscapeDataString(x.Value)}")
             .ToList();
 
-        return parts.Count == 0 ? "/Urun" : "/Urun?" + string.Join("&", parts);
+        return parts.Count == 0 ? "/products" : "/products?" + string.Join("&", parts);
     }
 }
 
@@ -199,7 +199,7 @@
             box-shadow: none;
         }
 
-        /* â”€â”€â”€ List View Layout overrides â”€â”€â”€ */
+        /* ¦¦¦ List View Layout overrides ¦¦¦ */
         .layout-list {
             display: flex !important;
             flex-direction: column !important;
@@ -240,7 +240,7 @@
             padding-bottom: 0.6rem !important;
         }
 
-        /* â”€â”€â”€ Filter Drawer Animation â”€â”€â”€ */
+        /* ¦¦¦ Filter Drawer Animation ¦¦¦ */
         .filter-drawer {
             transform: translateX(100%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -338,7 +338,7 @@
 
             <!-- Fiyat Filtresi (Slider) -->
             <h3 class="font-serif text-lg text-brand-olive mb-4 border-b border-brand-border pb-2">@Localizer["PriceRange"]</h3>
-            <form method="get" action="/Urun" class="space-y-3" id="priceFilterForm">
+            <form method="get" action="/products" class="space-y-3" id="priceFilterForm">
                 @if (aktifKategori.HasValue)
                 {
                     <input type="hidden" name="k" value="@aktifKategori" />
@@ -397,7 +397,7 @@
                 </ul>
             }
 
-            <!-- Ãƒâ€“zellik Filtreleri -->
+            <!-- Ã–zellik Filtreleri -->
             @if (ozellikFiltreleri.Count > 0)
             {
                 foreach (var filtre in ozellikFiltreleri)
@@ -420,9 +420,9 @@
             }
         </aside>
 
-        <!-- Ana Ã„Â°ÃƒÂ§erik -->
+        <!-- Ana Ä°Ã§erik -->
         <main class="flex-1 min-w-0">
-            <!-- BaÃ…Å¸lÃ„Â±k + SÃ„Â±ralama -->
+            <!-- BaÅŸlÄ±k + SÄ±ralama -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                 <div>
                     <h1 class="font-serif text-3xl text-brand-olive">@aktifKategoriAd</h1>
@@ -433,7 +433,7 @@
                     {
                         <span class="bg-brand-olive text-white text-xs px-3 py-1 rounded-full flex items-center gap-1">
                             "<span>@aktifArama</span>"
-                            <a href="/Urun@(aktifKategori.HasValue ? "?k=" + aktifKategori : "")" class="ml-1 opacity-70 hover:opacity-100">Ã—</a>
+                            <a href="/products@(aktifKategori.HasValue ? "?k=" + aktifKategori : "")" class="ml-1 opacity-70 hover:opacity-100">×</a>
                         </span>
                     }
                     <!-- Mobile Filter Toggle Button -->
@@ -479,7 +479,7 @@
                 }
             </div>
 
-            <!-- ÃƒÅ“rÃƒÂ¼n Grid -->
+            <!-- ÃœrÃ¼n Grid -->
             @if (Model != null && Model.Any())
             {
             <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6" id="productGrid" data-motion-stagger>
@@ -542,7 +542,7 @@
                     <i class="fas fa-search fa-3x mb-6 opacity-30"></i>
                     <h3 class="font-serif text-2xl text-brand-olive mb-2">@Localizer["ProductNotFound"]</h3>
                     <p class="text-sm mb-6">@Localizer["TryDifferentCategoryOrSearch"]</p>
-                    <a href="/Urun" class="inline-block border border-brand-olive text-brand-olive px-6 py-2 text-xs uppercase tracking-widest hover:bg-brand-olive hover:text-white transition-colors rounded-full">
+                    <a href="/products" class="inline-block border border-brand-olive text-brand-olive px-6 py-2 text-xs uppercase tracking-widest hover:bg-brand-olive hover:text-white transition-colors rounded-full">
                         @Localizer["ViewAllProducts"]
                     </a>
                 </div>
@@ -625,7 +625,7 @@
 
     <!-- Price Filter -->
     <h3 class="font-serif text-sm text-brand-olive mb-3 mt-6 border-b border-brand-border pb-2">@Localizer["PriceRange"]</h3>
-    <form method="get" action="/Urun" class="space-y-3 mb-6" id="mobilePriceFilterForm">
+    <form method="get" action="/products" class="space-y-3 mb-6" id="mobilePriceFilterForm">
         @if (aktifKategori.HasValue){<input type="hidden" name="k" value="@aktifKategori"/>}
         @if (!string.IsNullOrWhiteSpace(aktifArama)){<input type="hidden" name="s" value="@aktifArama"/>}
         @if (!string.IsNullOrWhiteSpace(aktifMarka)){<input type="hidden" name="marka" value="@aktifMarka"/>}
@@ -753,7 +753,7 @@
             }
         });
 
-        // â”€â”€â”€ Desktop Price Slider â”€â”€â”€
+        // ¦¦¦ Desktop Price Slider ¦¦¦
         (function () {
             var slider = document.getElementById('priceSlider');
             var minInput = document.getElementById('minInput');
@@ -788,7 +788,7 @@
             }
         })();
 
-        // â”€â”€â”€ Mobile Price Slider â”€â”€â”€
+        // ¦¦¦ Mobile Price Slider ¦¦¦
         (function () {
             var slider = document.getElementById('mobilePriceSlider');
             var minInput = document.getElementById('mobileMinInput');
@@ -823,7 +823,7 @@
             });
         })();
 
-        // â”€â”€â”€ Grid / List Layout Toggle â”€â”€â”€
+        // ¦¦¦ Grid / List Layout Toggle ¦¦¦
         window.setProductLayout = function(layout) {
             const grid = document.getElementById('productGrid');
             const btnGrid = document.getElementById('btnGridView');

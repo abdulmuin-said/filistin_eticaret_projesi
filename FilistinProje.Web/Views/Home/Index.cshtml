@@ -27,18 +27,37 @@
     var heroAnimationDuration = Math.Max(heroSlideCount, 1) * 5;
     var siteUrl = SiteSettingsService.BuildAbsoluteUrl(string.Empty);
     var isWholesale = User.IsInRole("Wholesale");
-    string BuildProductUrl(FilistinProje.Core.Varliklar.Urun urun)
+    FilistinProje.Web.Models.ProductCardViewModel BuildHomeProductCard(
+        FilistinProje.Core.Varliklar.Urun urun,
+        string? badgeText = null)
     {
         var slug = !string.IsNullOrWhiteSpace(urun.Slug)
             ? urun.Slug
             : FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(urun.LocalizedBaslik);
 
-        if (string.IsNullOrWhiteSpace(slug))
+        return new FilistinProje.Web.Models.ProductCardViewModel
         {
-            slug = "urun";
-        }
-
-        return $"/Urun/Detay/{slug}-{urun.Id}";
+            Id = urun.Id,
+            Baslik = urun.LocalizedBaslik,
+            Slug = string.IsNullOrWhiteSpace(slug) ? "urun" : slug,
+            GorselUrl = !string.IsNullOrWhiteSpace(urun.AnaGorselUrl)
+                ? urun.AnaGorselUrl
+                : urun.UrunResimleri?.OrderBy(r => r.Sira).FirstOrDefault()?.ResimYolu ?? string.Empty,
+            Fiyat = urun.Fiyat,
+            IndirimliFiyat = urun.IndirimliFiyat,
+            TopFiyat = urun.TopFiyat,
+            IndirimVarMi = urun.IndirimVarMi,
+            IndirimYuzdesi = urun.IndirimYuzdesi,
+            YeniUrunMu = urun.YeniUrunMu,
+            StoktaVarMi = urun.StoktaVarMi,
+            ToplamStok = urun.ToplamStok,
+            FiyatGizliMi = urun.FiyatGizliMi,
+            KampanyaBitisTarihi = urun.KampanyaBitisTarihi,
+            IsWholesale = isWholesale,
+            BadgeText = badgeText,
+            ShowFavori = true,
+            ShowQuickAdd = true
+        };
     }
 
     var websiteSchema = new Dictionary<string, object?>
@@ -50,7 +69,7 @@
         ["potentialAction"] = new Dictionary<string, object?>
         {
             ["@type"] = "SearchAction",
-            ["target"] = SiteSettingsService.BuildAbsoluteUrl("/Urun?s={search_term_string}"),
+            ["target"] = SiteSettingsService.BuildAbsoluteUrl("/products?s={search_term_string}"),
             ["query-input"] = "required name=search_term_string"
         }
     };
@@ -75,7 +94,8 @@
 
 <style>
     .home-hero-frame {
-        height: 260px;
+        height: 35vh;
+        min-height: 280px;
         background:
             radial-gradient(circle at 12% 18%, rgba(215, 193, 118, 0.34), transparent 28%),
             linear-gradient(135deg, #fffaf0 0%, #f7f1e6 52%, #efe3c7 100%);
@@ -86,23 +106,25 @@
         position: absolute;
         inset: 0;
         opacity: 0;
+        transition: opacity 1000ms cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1;
     }
 
-    .home-hero-slide.is-single,
     .home-hero-slide.is-active {
         opacity: 1;
-    }
-
-    .home-hero-slide.is-animated {
-        animation-name: homeHeroFade;
-        animation-timing-function: ease-in-out;
-        animation-iteration-count: infinite;
+        z-index: 2;
     }
 
     .home-hero-image {
         object-fit: contain;
         background: transparent;
         filter: drop-shadow(0 18px 34px rgba(49, 53, 17, 0.16));
+        transform: scale(1.05);
+        transition: transform 6000ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .home-hero-slide.is-active .home-hero-image {
+        transform: scale(1);
     }
 
     .home-hero-blur {
@@ -124,22 +146,110 @@
             linear-gradient(180deg, rgba(252,249,243,0.44), rgba(247,241,230,0.16) 45%, rgba(49,53,17,0.12));
     }
 
-    @@keyframes homeHeroFade {
-        0%, 100% { opacity: 0; }
-        4%, 26% { opacity: 1; }
-        31% { opacity: 0; }
+    .hero-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(181, 135, 53, 0.3);
+        color: #313511;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0;
+        transition: all 300ms ease;
+    }
+
+    .home-hero-frame:hover .hero-nav-btn {
+        opacity: 1;
+    }
+
+    .hero-nav-btn:hover {
+        background: #ffffff;
+        color: #b58735;
+        border-color: #b58735;
+        transform: translateY(-50%) scale(1.05);
+        box-shadow: 0 4px 15px rgba(181, 135, 53, 0.2);
+    }
+
+    .hero-nav-prev {
+        left: 1rem;
+    }
+
+    [dir="rtl"] .hero-nav-prev {
+        left: auto;
+        right: 1rem;
+        transform: translateY(-50%) rotate(180deg);
+    }
+
+    [dir="rtl"] .hero-nav-prev:hover {
+        transform: translateY(-50%) rotate(180deg) scale(1.05);
+    }
+
+    .hero-nav-next {
+        right: 1rem;
+    }
+
+    [dir="rtl"] .hero-nav-next {
+        right: auto;
+        left: 1rem;
+        transform: translateY(-50%) rotate(180deg);
+    }
+
+    [dir="rtl"] .hero-nav-next:hover {
+        transform: translateY(-50%) rotate(180deg) scale(1.05);
+    }
+
+    .hero-dots {
+        position: absolute;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .hero-dot {
+        width: 2rem;
+        height: 0.25rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.4);
+        cursor: pointer;
+        transition: all 300ms ease;
+    }
+
+    .hero-dot.is-active {
+        background: #b58735;
+        width: 3rem;
     }
 
     .home-trust-scroll {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.55rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
     }
 
     .home-trust-card {
+        flex: 1 1 auto;
         min-height: 58px;
+        min-width: 220px;
         background: linear-gradient(135deg, rgba(255,255,255,0.94), rgba(255,250,240,0.82));
         box-shadow: 0 10px 30px rgba(49, 53, 17, 0.08);
+        border: 1px solid rgba(198, 202, 153, 0.35);
+        border-radius: 1rem;
+        padding: 0.75rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
     }
 
     .home-feature-card {
@@ -167,30 +277,92 @@
         box-shadow: 0 0 0 6px rgba(215, 193, 118, 0.16), 0 0 28px rgba(45, 212, 191, 0.24);
     }
 
-    .home-category-rail {
-        scrollbar-width: thin;
-        scrollbar-color: rgba(215, 193, 118, 0.7) transparent;
+    /* ─── Premium Light Categories ─── */
+    .home-cat-wrapper {
+        position: relative;
+        overflow: hidden;
+        background: #fbf8f2;
     }
 
-    .home-category-rail::-webkit-scrollbar {
-        height: 4px;
+    .home-cat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.75rem;
     }
 
-    .home-category-rail::-webkit-scrollbar-thumb {
-        border-radius: 999px;
-        background: rgba(215, 193, 118, 0.7);
+    .home-cat-item {
+        position: relative;
+        border-radius: 1rem;
+        overflow: hidden;
+        background: #ffffff;
+        border: 1px solid rgba(181, 135, 53, 0.15);
+        box-shadow: 0 4px 15px rgba(49, 53, 17, 0.03);
+        transition: transform 400ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 400ms ease, border-color 400ms ease;
+        display: flex;
+        flex-direction: column;
     }
 
-    .home-category-card {
+    .home-cat-item:hover,
+    .home-cat-item:focus-visible {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(49, 53, 17, 0.06);
+        border-color: rgba(181, 135, 53, 0.35);
+        outline: none;
+    }
+
+    .home-cat-img-box {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1/1;
+        overflow: hidden;
+        background: #f7f1e6;
+    }
+
+    .home-cat-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .home-cat-item:hover .home-cat-img,
+    .home-cat-item:focus-visible .home-cat-img {
+        transform: scale(1.05);
+    }
+
+    .home-cat-fallback {
+        position: absolute;
+        inset: 0;
         background:
-            radial-gradient(circle at 82% 16%, rgba(215, 193, 118, 0.2), transparent 34%),
-            linear-gradient(150deg, #fff 0%, #fffaf0 100%);
-        box-shadow: 0 12px 32px rgba(49, 53, 17, 0.08);
+            radial-gradient(circle at 50% 50%, rgba(198, 202, 153, 0.15), transparent 60%),
+            repeating-linear-gradient(45deg, rgba(181, 135, 53, 0.03) 0 1px, transparent 1px 12px),
+            #fcf9f3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .home-cat-content {
+        padding: 0.6rem 0.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background: linear-gradient(180deg, #ffffff, #fcf9f3);
+    }
+
+    @@media (min-width: 640px) {
+        .home-cat-grid {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1rem;
+        }
     }
 
     @@media (min-width: 768px) {
         .home-hero-frame {
-            height: 480px;
+            height: 400px;
         }
 
         .home-hero-image {
@@ -204,23 +376,22 @@
         }
 
         .home-trust-scroll {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
+            gap: 1.25rem;
         }
 
-        .home-trust-card {
-            min-height: 0;
-            border-color: transparent;
-            background: transparent;
-            box-shadow: none;
+        .home-cat-grid {
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 1.25rem;
+        }
+
+        .home-cat-content {
+            padding: 0.75rem;
         }
     }
 
     @@media (min-width: 1024px) {
         .home-hero-frame {
-            height: 560px;
+            height: 440px;
             box-shadow: 0 28px 80px rgba(49, 53, 17, 0.20);
         }
     }
@@ -228,80 +399,143 @@
 
 <!-- BEGIN: Hero Banner - Pure Image (no text/buttons) -->
 <section class="w-full relative overflow-hidden bg-brand-warmcream px-3 py-3 md:px-6 md:py-5" aria-label="Hero Banner">
-    <div class="home-hero-frame relative mx-auto max-w-[1480px] overflow-hidden rounded-3xl border border-white/90 shadow-2xl">
-        @if (heroSlaytlar.Any())
-        {
-            for (var i = 0; i < heroSlaytlar.Count; i++)
+    <div class="home-hero-frame relative mx-auto max-w-[1480px] overflow-hidden rounded-3xl border border-white/90 shadow-2xl" id="heroSlider">
+        
+        <div id="heroSlidesContainer" class="relative h-full w-full">
+            @if (heroSlaytlar.Any())
             {
-                var slayt = heroSlaytlar[i];
-                var isVideo = string.Equals(slayt.Tur, "Video", StringComparison.OrdinalIgnoreCase);
-                var mediaUrl = isVideo ? slayt.VideoUrl : slayt.ResimUrl;
-                var slideClass = heroSlideCount == 1 ? "is-single" : "is-animated";
-                var slideStyle = heroSlideCount > 1
-                    ? $"animation-duration:{heroAnimationDuration.ToString(CultureInfo.InvariantCulture)}s;animation-delay:{(i * 5).ToString(CultureInfo.InvariantCulture)}s;"
-                    : string.Empty;
+                for (var i = 0; i < heroSlaytlar.Count; i++)
+                {
+                    var slayt = heroSlaytlar[i];
+                    var isVideo = string.Equals(slayt.Tur, "Video", StringComparison.OrdinalIgnoreCase);
+                    var mediaUrl = isVideo ? slayt.VideoUrl : slayt.ResimUrl;
+                    var slideClass = i == 0 ? "is-active" : "";
 
-                <div class="home-hero-slide @slideClass" style="@slideStyle">
-                    @if (isVideo)
-                    {
-                        <video class="home-hero-image relative z-10 h-full w-full" autoplay muted loop playsinline preload="metadata">
-                            <source src="@mediaUrl" />
-                        </video>
-                    }
-                    else
-                    {
-                        <img src="@mediaUrl" alt="" class="home-hero-blur" aria-hidden="true" />
-                        <div class="home-hero-vignette pointer-events-none" aria-hidden="true"></div>
-                        <img src="@mediaUrl" alt="@(string.IsNullOrWhiteSpace(slayt.LocalizedBaslik) ? brandName + " Banner" : slayt.LocalizedBaslik)" class="home-hero-image relative z-10 h-full w-full" loading="@(i == 0 ? "eager" : "lazy")" />
-                    }
+                    <div class="home-hero-slide @slideClass" data-slide-index="@i">
+                        @if (isVideo)
+                        {
+                            <video class="home-hero-image relative z-10 h-full w-full" autoplay muted loop playsinline preload="metadata">
+                                <source src="@mediaUrl" />
+                            </video>
+                        }
+                        else
+                        {
+                            <img src="@mediaUrl" alt="" class="home-hero-blur" aria-hidden="true" />
+                            <div class="home-hero-vignette pointer-events-none" aria-hidden="true"></div>
+                            <img src="@mediaUrl" alt="@(string.IsNullOrWhiteSpace(slayt.LocalizedBaslik) ? brandName + " Banner" : slayt.LocalizedBaslik)" class="home-hero-image relative z-10 h-full w-full" loading="@(i == 0 ? "eager" : "lazy")" />
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="home-hero-slide is-active" data-slide-index="0">
+                    <img src="/placeholder.svg" alt="" class="home-hero-blur" aria-hidden="true" />
+                    <div class="home-hero-vignette pointer-events-none" aria-hidden="true"></div>
+                    <img src="/placeholder.svg" alt="@brandName Banner" class="home-hero-image relative z-10 h-full w-full" loading="eager" />
                 </div>
             }
-        }
-        else
+        </div>
+
+        @if (heroSlideCount > 1)
         {
-            <div class="home-hero-slide is-single">
-                <img src="/slider-demo.jpg" alt="" class="home-hero-blur" aria-hidden="true" />
-                <div class="home-hero-vignette pointer-events-none" aria-hidden="true"></div>
-                <img src="/slider-demo.jpg" alt="@brandName Banner" class="home-hero-image relative z-10 h-full w-full" loading="eager" />
+            <button type="button" class="hero-nav-btn hero-nav-prev" aria-label="Previous Slide" onclick="moveSlide(-1)">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
+            </button>
+            <button type="button" class="hero-nav-btn hero-nav-next" aria-label="Next Slide" onclick="moveSlide(1)">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+            </button>
+
+            <div class="hero-dots">
+                @for (var i = 0; i < heroSlideCount; i++)
+                {
+                    <button type="button" class="hero-dot @(i == 0 ? "is-active" : "")" aria-label="Go to slide @(i + 1)" onclick="goToSlide(@i)"></button>
+                }
             </div>
         }
-        <div class="pointer-events-none absolute inset-0 z-20 bg-[linear-gradient(90deg,rgba(255,255,255,0.14),rgba(255,255,255,0)_45%,rgba(215,193,118,0.10))]"></div>
-        <div class="pointer-events-none absolute inset-x-6 bottom-4 h-px bg-gradient-to-r from-transparent via-brand-gold/45 to-transparent"></div>
+
+        <div class="pointer-events-none absolute inset-0 z-[5] bg-[linear-gradient(90deg,rgba(255,255,255,0.14),rgba(255,255,255,0)_45%,rgba(215,193,118,0.10))]"></div>
+        <div class="pointer-events-none absolute inset-x-6 bottom-4 h-px bg-gradient-to-r from-transparent via-brand-gold/45 to-transparent z-[5]"></div>
     </div>
 </section>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.home-hero-slide');
+    const dots = document.querySelectorAll('.hero-dot');
+    const totalSlides = slides.length;
+    let slideInterval;
+
+    function updateSlider() {
+        slides.forEach((slide, index) => {
+            if (index === currentSlide) {
+                slide.classList.add('is-active');
+            } else {
+                slide.classList.remove('is-active');
+            }
+        });
+
+        dots.forEach((dot, index) => {
+            if (index === currentSlide) {
+                dot.classList.add('is-active');
+            } else {
+                dot.classList.remove('is-active');
+            }
+        });
+    }
+
+    function moveSlide(direction) {
+        currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+        updateSlider();
+        resetInterval();
+    }
+
+    function goToSlide(index) {
+        currentSlide = index;
+        updateSlider();
+        resetInterval();
+    }
+
+    function startInterval() {
+        if (totalSlides > 1) {
+            slideInterval = setInterval(() => moveSlide(1), 5000);
+        }
+    }
+
+    function resetInterval() {
+        clearInterval(slideInterval);
+        startInterval();
+    }
+
+    if (totalSlides > 1) {
+        startInterval();
+    }
+</script>
 <!-- END: Hero Banner -->
 
 @* ─── Trust Bar ─── *@
-<section class="bg-brand-cream py-3 md:bg-brand-olive md:py-4 md:text-white" aria-label="@Localizer["TrustBar"]">
-    <div class="container mx-auto px-3 md:px-4">
-        <div class="home-trust-scroll text-[11px] md:text-sm lg:gap-16">
+<section class="bg-brand-cream py-4" aria-label="@Localizer["TrustBar"]">
+    <div class="container mx-auto px-4">
+        <div class="home-trust-scroll text-sm">
 
-            <div class="home-trust-card flex items-center gap-2 rounded-2xl border border-brand-lightgold/35 px-3 py-2 text-brand-olive md:min-h-0 md:border-0 md:bg-transparent md:px-0 md:py-0 md:text-white md:shadow-none">
-                <svg class="w-4 h-4 shrink-0 text-brand-gold md:h-5 md:w-5 md:text-brand-lightgold" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
-                </svg>
-                <span class="font-medium">@Localizer["FreeShippingLimit", freeShippingLimitText, currencySymbol]</span>
+            <div class="home-trust-card text-brand-olive">
+                <img src="/icons/shipping.svg" class="w-5 h-5 shrink-0 text-brand-gold" alt="" aria-hidden="true" />
+                <span class="font-medium whitespace-nowrap">@Localizer["FreeShippingLimit", freeShippingLimitText, currencySymbol]</span>
             </div>
 
-            <div class="home-trust-card flex items-center gap-2 rounded-2xl border border-brand-lightgold/35 px-3 py-2 text-brand-olive md:min-h-0 md:border-0 md:bg-transparent md:px-0 md:py-0 md:text-white md:shadow-none">
-                <svg class="w-4 h-4 shrink-0 text-brand-gold md:h-5 md:w-5 md:text-brand-lightgold" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
-                </svg>
-                <span class="font-medium">@Localizer["TrustSecurePayment"]</span>
+            <div class="home-trust-card text-brand-olive">
+                <img src="/icons/secure.svg" class="w-5 h-5 shrink-0 text-brand-gold" alt="" aria-hidden="true" />
+                <span class="font-medium whitespace-nowrap">@Localizer["TrustSecurePayment"]</span>
             </div>
 
-            <div class="home-trust-card flex items-center gap-2 rounded-2xl border border-brand-lightgold/35 px-3 py-2 text-brand-olive md:min-h-0 md:border-0 md:bg-transparent md:px-0 md:py-0 md:text-white md:shadow-none">
-                <svg class="w-4 h-4 shrink-0 text-brand-gold md:h-5 md:w-5 md:text-brand-lightgold" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
-                </svg>
-                <span class="font-medium">@Localizer["TrustOriginalProducts"]</span>
+            <div class="home-trust-card text-brand-olive">
+                <img src="/icons/original.svg" class="w-5 h-5 shrink-0 text-brand-gold" alt="" aria-hidden="true" />
+                <span class="font-medium whitespace-nowrap">@Localizer["TrustOriginalProducts"]</span>
             </div>
 
-            <div class="home-trust-card flex items-center gap-2 rounded-2xl border border-brand-lightgold/35 px-3 py-2 text-brand-olive md:min-h-0 md:border-0 md:bg-transparent md:px-0 md:py-0 md:text-white md:shadow-none">
-                <svg class="w-4 h-4 shrink-0 text-brand-gold md:h-5 md:w-5 md:text-brand-lightgold" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
-                </svg>
-                <span class="font-medium">@Localizer["TrustSupport"]</span>
+            <div class="home-trust-card text-brand-olive">
+                <img src="/icons/support.svg" class="w-5 h-5 shrink-0 text-brand-gold" alt="" aria-hidden="true" />
+                <span class="font-medium whitespace-nowrap">@Localizer["TrustSupport"]</span>
             </div>
 
         </div>
@@ -312,54 +546,55 @@
 @* ─── Categories ─── *@
 @if (Model.Kategoriler != null && Model.Kategoriler.Any())
 {
-    <section class="overflow-hidden bg-brand-warmcream py-9 md:py-12" aria-labelledby="homeCategoriesTitle">
+    <section class="home-cat-wrapper py-10 md:py-16" aria-labelledby="homeCategoriesTitle">
         <div class="container mx-auto px-4">
-            <div class="mb-6 flex items-end justify-between gap-4 md:mb-8">
-                <div>
-                    <p class="mb-2 text-[10px] font-semibold uppercase tracking-[0.34em] text-brand-gold">@brandName</p>
-                    <h2 id="homeCategoriesTitle" class="font-serif text-2xl text-brand-olive md:text-3xl">@Localizer["Home_CategoriesTitle"]</h2>
+            <div class="mb-10 text-center flex flex-col items-center">
+                <div class="flex items-center justify-center w-full mb-4">
+                    <hr class="hidden w-1/4 border-brand-border md:block"/>
+                    <h2 id="homeCategoriesTitle" class="font-serif mx-6 text-2xl text-brand-olive md:text-3xl">@Localizer["Home_CategoriesTitle"]</h2>
+                    <hr class="hidden w-1/4 border-brand-border md:block"/>
                 </div>
-                <a href="/Urun" class="hidden items-center gap-2 border-b border-brand-olive pb-1 text-xs font-semibold text-brand-olive transition-colors hover:border-brand-gold hover:text-brand-gold sm:inline-flex">
+                <a href="/products" class="inline-flex items-center gap-2 border-b border-brand-olive pb-1 text-xs uppercase tracking-widest text-brand-olive transition-colors hover:text-brand-gold">
                     @Localizer["Home_AllCategories"]
                     <svg class="h-3.5 w-3.5 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6" /></svg>
                 </a>
             </div>
 
-            <div class="home-category-rail flex snap-x snap-mandatory gap-3 overflow-x-auto pb-4 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:pb-0 lg:grid-cols-4 xl:grid-cols-6" data-motion-stagger>
-                @foreach (var kategori in Model.Kategoriler)
+            <div class="home-cat-grid" data-motion-stagger>
+                @for (var categoryIndex = 0; categoryIndex < Model.Kategoriler.Count; categoryIndex++)
                 {
-                    var kategoriGorseli = !string.IsNullOrWhiteSpace(kategori.GorselUrl)
-                        ? kategori.GorselUrl
-                        : (!string.IsNullOrWhiteSpace(kategori.MenuGorselUrl) ? kategori.MenuGorselUrl : kategori.BannerUrl);
+                    var kategori = Model.Kategoriler[categoryIndex];
+                    var kategoriGorseli = Model.KategoriGorselleri.GetValueOrDefault(kategori.Id) ?? string.Empty;
 
-                    <a href="/Urun?k=@kategori.Id" class="home-category-card group relative flex min-h-[168px] w-[68vw] max-w-[230px] shrink-0 snap-start flex-col overflow-hidden rounded-3xl border border-brand-lightgold/35 p-3 transition duration-300 hover:-translate-y-1 hover:border-brand-gold/70 hover:shadow-soft md:w-auto md:max-w-none" data-motion-item>
-                        <div class="relative mb-3 flex h-24 items-center justify-center overflow-hidden rounded-2xl bg-brand-cream md:h-28">
+                    <a href="/products?k=@kategori.Id"
+                       class="home-cat-item group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-4 focus-visible:ring-offset-brand-cream"
+                       aria-label="@kategori.LocalizedAd"
+                       data-motion-item>
+                        
+                        <div class="home-cat-img-box">
                             @if (!string.IsNullOrWhiteSpace(kategoriGorseli))
                             {
-                                <img src="@kategoriGorseli" alt="@kategori.LocalizedAd" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
-                                <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-olive/20 to-transparent"></div>
+                                <img src="@kategoriGorseli"
+                                     alt="@kategori.LocalizedAd"
+                                     class="home-cat-img"
+                                     loading="lazy"
+                                     decoding="async"
+                                     onerror="this.src='/placeholder.svg'; this.onerror=null; this.classList.add('opacity-80', 'mix-blend-multiply');" />
                             }
                             else
                             {
-                                <div class="flex h-16 w-16 items-center justify-center rounded-full border border-brand-lightgold/50 bg-white/75 text-brand-gold transition duration-300 group-hover:scale-105 group-hover:text-brand-olive">
-                                    <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6Zm9.75 0a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6Zm-9.75 9.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25Zm9.75 0a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" /></svg>
+                                <div class="home-cat-fallback" aria-hidden="true">
+                                    <img src="/placeholder.svg" alt="@kategori.LocalizedAd" class="home-cat-img opacity-80 mix-blend-multiply" />
                                 </div>
                             }
                         </div>
-                        <div class="flex items-center justify-between gap-3 px-1 pb-1">
-                            <h3 class="line-clamp-2 text-sm font-semibold leading-snug text-brand-olive">@kategori.LocalizedAd</h3>
-                            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-brand-lightgold/60 text-brand-gold transition group-hover:border-brand-olive group-hover:bg-brand-olive group-hover:text-white">
-                                <svg class="h-3 w-3 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6" /></svg>
-                            </span>
+
+                        <div class="home-cat-content">
+                            <h3 class="font-serif line-clamp-1 text-sm font-semibold leading-tight text-brand-primary md:text-base">@kategori.LocalizedAd</h3>
                         </div>
                     </a>
                 }
             </div>
-
-            <a href="/Urun" class="mt-3 inline-flex items-center gap-2 border-b border-brand-olive pb-1 text-xs font-semibold text-brand-olive sm:hidden">
-                @Localizer["Home_AllCategories"]
-                <svg class="h-3.5 w-3.5 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6" /></svg>
-            </a>
         </div>
     </section>
 }
@@ -385,50 +620,31 @@
             {
                 <section class="bg-brand-cream py-14 md:py-16" data-motion-section>
                     <div class="container mx-auto px-4">
-                        <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                            <div>
-                                @if (!string.IsNullOrWhiteSpace(homeSection.Title))
-                                {
-                                    <h2 class="font-serif text-3xl text-brand-olive">@(homeSection.Title)</h2>
-                                }
-                                @if (!string.IsNullOrWhiteSpace(homeSection.Subtitle))
-                                {
-                                    <p class="mt-2 max-w-2xl text-sm text-brand-mutedtext">@(homeSection.Subtitle)</p>
-                                }
-                            </div>
+                        <div class="mb-10 text-center flex flex-col items-center">
+                            @if (!string.IsNullOrWhiteSpace(homeSection.Title))
+                            {
+                                <div class="flex items-center justify-center w-full mb-3">
+                                    <hr class="hidden w-1/4 border-brand-border md:block"/>
+                                    <h2 class="font-serif mx-6 text-3xl text-brand-olive md:text-4xl">@(homeSection.Title)</h2>
+                                    <hr class="hidden w-1/4 border-brand-border md:block"/>
+                                </div>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(homeSection.Subtitle))
+                            {
+                                <p class="text-sm text-brand-mutedtext mb-4">@(homeSection.Subtitle)</p>
+                            }
                             @if (!string.IsNullOrWhiteSpace(homeSection.ViewAllUrl))
                             {
-                                <a href="@(homeSection.ViewAllUrl)" class="inline-flex items-center gap-2 self-start border-b border-brand-olive pb-1 text-xs uppercase tracking-widest text-brand-olive transition-colors hover:text-brand-gold md:self-auto">
+                                <a href="@(homeSection.ViewAllUrl)" class="inline-flex items-center gap-2 border-b border-brand-olive pb-1 text-xs uppercase tracking-widest text-brand-olive transition-colors hover:text-brand-gold">
                                     @(string.IsNullOrWhiteSpace(homeSection.ViewAllText) ? Localizer["ViewAll"] : homeSection.ViewAllText)
                                     <svg class="w-3 h-3 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 </a>
                             }
                         </div>
-                        <div class="grid grid-cols-2 gap-5 md:grid-cols-4 lg:grid-cols-5" data-motion-stagger>
+                        <div class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-5" data-motion-stagger>
                             @foreach (var urun in sectionProducts.Take(15))
                             {
-                                var gorsel = !string.IsNullOrWhiteSpace(urun.AnaGorselUrl)
-                                    ? urun.AnaGorselUrl
-                                    : urun.UrunResimleri?.OrderBy(r => r.Sira).FirstOrDefault()?.ResimYolu;
-
-                                <article class="group bg-white rounded-2xl border border-brand-border shadow-sm hover:shadow-soft hover:-translate-y-1 transition-all duration-300 p-3" data-motion-item>
-                                    <a href="@BuildProductUrl(urun)" class="block">
-                                        <div class="relative mb-3 aspect-square overflow-hidden bg-brand-cream rounded-xl flex items-center justify-center p-2">
-                                            @if (!string.IsNullOrWhiteSpace(gorsel))
-                                            {
-                                                <img src="@gorsel" alt="@urun.LocalizedBaslik" class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
-                                            }
-                                            else
-                                            {
-                                                <div class="flex h-full w-full items-center justify-center bg-brand-cream">
-                                                    <img src="/img/products/placeholder.webp" alt="Placeholder" class="w-1/2 opacity-20 grayscale" loading="lazy" decoding="async" />
-                                                </div>
-                                            }
-                                        </div>
-                                        <h3 class="mb-1 line-clamp-2 text-xs font-semibold tracking-wide text-brand-darktext transition-colors group-hover:text-brand-gold">@urun.LocalizedBaslik</h3>
-                                        <p class="text-xs text-brand-mutedtext">@urun.EtkinFiyat.ToString("N0") @currencySymbol</p>
-                                    </a>
-                                </article>
+                                @await Html.PartialAsync("_HomeProductCard", BuildHomeProductCard(urun))
                             }
                         </div>
                     </div>
@@ -462,42 +678,22 @@
         {
             <section class="bg-brand-cream py-14 md:py-16">
                 <div class="container mx-auto px-4">
-                    <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                        <div>
-                            <h2 class="font-serif text-3xl text-brand-olive">@(string.IsNullOrWhiteSpace(homeSection.Title) ? Localizer["FeaturedProducts"] : homeSection.Title)</h2>
-                            <p class="mt-2 max-w-2xl text-sm text-brand-mutedtext">@(string.IsNullOrWhiteSpace(homeSection.Subtitle) ? Localizer["FeaturedProductsSubtitle"] : homeSection.Subtitle)</p>
+                    <div class="mb-10 text-center flex flex-col items-center">
+                        <div class="flex items-center justify-center w-full mb-3">
+                            <hr class="hidden w-1/4 border-brand-border md:block"/>
+                            <h2 class="font-serif mx-6 text-3xl text-brand-olive md:text-4xl">@(string.IsNullOrWhiteSpace(homeSection.Title) ? Localizer["FeaturedProducts"] : homeSection.Title)</h2>
+                            <hr class="hidden w-1/4 border-brand-border md:block"/>
                         </div>
-                        <a href="@(string.IsNullOrWhiteSpace(homeSection.ViewAllUrl) ? "/Urun?s=5%20Par%C3%A7a" : homeSection.ViewAllUrl)" class="inline-flex items-center gap-2 self-start border-b border-brand-olive pb-1 text-xs uppercase tracking-widest text-brand-olive transition-colors hover:text-brand-gold md:self-auto">
+                        <p class="text-sm text-brand-mutedtext mb-4">@(string.IsNullOrWhiteSpace(homeSection.Subtitle) ? Localizer["FeaturedProductsSubtitle"] : homeSection.Subtitle)</p>
+                        <a href="@(string.IsNullOrWhiteSpace(homeSection.ViewAllUrl) ? "/products" : homeSection.ViewAllUrl)" class="inline-flex items-center gap-2 border-b border-brand-olive pb-1 text-xs uppercase tracking-widest text-brand-olive transition-colors hover:text-brand-gold">
                             @(string.IsNullOrWhiteSpace(homeSection.ViewAllText) ? Localizer["ViewAll5Piece"] : homeSection.ViewAllText)
                             <svg class="w-3 h-3 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </a>
                     </div>
-                    <div class="grid grid-cols-2 gap-5 md:grid-cols-4 lg:grid-cols-5">
+                    <div class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-5" data-motion-stagger>
                         @foreach (var urun in Model.BesParcaliKoleksiyon.Take(15))
                         {
-                            var gorsel = !string.IsNullOrWhiteSpace(urun.AnaGorselUrl)
-                                ? urun.AnaGorselUrl
-                                : urun.UrunResimleri?.OrderBy(r => r.Sira).FirstOrDefault()?.ResimYolu;
-
-                            <article class="group bg-white rounded-2xl border border-brand-border shadow-sm hover:shadow-soft hover:-translate-y-1 transition-all duration-300 p-3">
-                                <a href="@BuildProductUrl(urun)" class="block">
-                                    <div class="relative mb-3 aspect-square overflow-hidden bg-brand-cream rounded-xl flex items-center justify-center p-2">
-                                        <span class="absolute left-2 top-2 z-10 bg-white/90 px-2 py-1 text-[9px] uppercase tracking-widest text-brand-olive shadow-sm">@Localizer["5Piece"]</span>
-                                        @if (!string.IsNullOrWhiteSpace(gorsel))
-                                        {
-                                            <img src="@gorsel" alt="@urun.LocalizedBaslik" class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
-                                        }
-                                        else
-                                        {
-                                            <div class="flex h-full w-full items-center justify-center bg-brand-cream">
-                                                <img src="/img/products/placeholder.webp" alt="Placeholder" class="w-1/2 opacity-20 grayscale" loading="lazy" decoding="async" />
-                                            </div>
-                                        }
-                                    </div>
-                                    <h3 class="mb-1 line-clamp-2 text-xs font-semibold tracking-wide text-brand-darktext transition-colors group-hover:text-brand-gold">@urun.LocalizedBaslik</h3>
-                                    <p class="text-xs text-brand-mutedtext">@urun.EtkinFiyat.ToString("N0") @currencySymbol</p>
-                                </a>
-                            </article>
+                            @await Html.PartialAsync("_HomeProductCard", BuildHomeProductCard(urun, Localizer["5Piece"].Value))
                         }
                     </div>
                 </div>
@@ -510,7 +706,7 @@
         {
             <section class="container mx-auto px-4 py-16 md:py-20">
                 <div class="mb-10 text-center">
-                    <p class="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-brand-gold">@brandName</p>
+
                     <div class="flex items-center justify-center">
                         <hr class="hidden w-1/4 border-brand-border md:block"/>
                         <h2 class="font-serif mx-6 text-3xl text-brand-olive md:text-4xl">@(string.IsNullOrWhiteSpace(homeSection.Title) ? Localizer["FeaturedProducts"] : homeSection.Title)</h2>
@@ -521,64 +717,14 @@
                 {
                     <p class="text-center text-sm text-brand-mutedtext mb-8 -mt-4">@homeSection.Subtitle</p>
                 }
-                <div class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
+                <div class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-5" data-motion-stagger>
                     @foreach (var urun in Model.VitrinUrunleri.Take(8))
                     {
-                        <div class="group flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-brand-border bg-white p-2.5 shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-brand-lightgold hover:shadow-2xl md:p-3">
-                            <div class="relative mb-3 flex aspect-square items-center justify-center overflow-hidden rounded-xl bg-brand-warmcream p-3">
-                                <a href="@BuildProductUrl(urun)" class="block w-full h-full flex items-center justify-center">
-                                @if (urun.YeniUrunMu || urun.IndirimVarMi)
-                                {
-                                    <span class="absolute start-2 top-2 z-10 rounded-full bg-brand-olive px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-white shadow-sm">
-                                        @(urun.YeniUrunMu ? Localizer["New"] : Localizer["%Indirim", urun.IndirimYuzdesi])
-                                    </span>
-                                }
-                                @{
-                                    var gorsel = !string.IsNullOrWhiteSpace(urun.AnaGorselUrl)
-                                        ? urun.AnaGorselUrl
-                                        : urun.UrunResimleri?.OrderBy(r => r.Sira).FirstOrDefault()?.ResimYolu;
-                                }
-                                @if (!string.IsNullOrWhiteSpace(gorsel))
-                                {
-                                <img alt="@urun.LocalizedBaslik" class="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500" src="@gorsel" loading="lazy" decoding="async"/>
-                                }
-                                else
-                                {
-                                    <div class="flex h-full w-full items-center justify-center bg-brand-cream">
-                                        <svg class="w-8 h-8 text-brand-lightgold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z"/></svg>
-                                    </div>
-                                }
-                                </a>
-                                <button type="button" onclick="window.toggleFavori(this, @urun.Id)" class="group/btn absolute end-2 top-2 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-white/95 shadow-md transition-all duration-200 hover:scale-110 active:scale-90" title="@Localizer["AddToFavorites"]">
-                                    <svg class="w-3.5 h-3.5 text-brand-mutedtext group-hover/btn:text-red-400 transition-colors" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
-                                </button>
-                            </div>
-                            <div class="px-1 pb-1">
-                            <h3 class="mb-2 line-clamp-2 min-h-[2.4em] text-xs font-semibold leading-relaxed tracking-tight text-brand-darktext md:text-[13px]">
-                                <a href="@BuildProductUrl(urun)" class="hover:text-brand-gold transition-colors">@urun.LocalizedBaslik</a>
-                            </h3>
-                            <div class="mt-auto flex flex-wrap items-center justify-between gap-x-1.5 gap-y-1 border-t border-brand-border/70 pt-2">
-                                <p class="text-sm font-bold text-brand-olive">@urun.EtkinFiyat.ToString("N0") @currencySymbol</p>
-                                @if (urun.IndirimVarMi)
-                                {
-                                    <p class="text-[10px] text-brand-mutedtext line-through">@urun.Fiyat.ToString("N0") @currencySymbol</p>
-                                    <span class="text-[9px] text-white bg-brand-gold px-1 py-0.5 rounded font-bold">-%@urun.IndirimYuzdesi</span>
-                                }
-                            </div>
-                            <button type="button" class="js-quick-add-btn mt-2 inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-olive px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-white transition-colors hover:bg-[#1c2001] disabled:cursor-wait" data-urun-id="@urun.Id" aria-label="@Localizer["AddToCart"]">
-                                <i class="js-quick-add-icon fas fa-shopping-bag text-[10px]"></i>
-                                <span class="js-quick-add-label">@Localizer["AddToCart"]</span>
-                            </button>
-                            </div>
-                            @if (urun.KampanyaBitisTarihi.HasValue && urun.KampanyaBitisTarihi.Value > DateTime.UtcNow)
-                            {
-                                @await Html.PartialAsync("_CountdownPartial", urun.KampanyaBitisTarihi.Value)
-                            }
-                        </div>
+                        @await Html.PartialAsync("_HomeProductCard", BuildHomeProductCard(urun))
                     }
                 </div>
                 <div class="mt-12 text-center">
-                    <a href="@(string.IsNullOrWhiteSpace(homeSection.ViewAllUrl) ? "/Urun" : homeSection.ViewAllUrl)" class="inline-flex items-center justify-center rounded-full border border-brand-olive bg-brand-olive px-8 py-3 text-xs uppercase tracking-widest text-white shadow-sm transition-colors hover:bg-[#22250b] hover:shadow-soft">
+                    <a href="@(string.IsNullOrWhiteSpace(homeSection.ViewAllUrl) ? "/products" : homeSection.ViewAllUrl)" class="inline-flex items-center justify-center rounded-full border border-brand-olive bg-brand-olive px-8 py-3 text-xs uppercase tracking-widest text-white shadow-sm transition-colors hover:bg-[#22250b] hover:shadow-soft">
                         @(string.IsNullOrWhiteSpace(homeSection.ViewAllText) ? Localizer["ViewAll"] : homeSection.ViewAllText)
                     </a>
                 </div>
@@ -590,53 +736,22 @@
         else if (homeSection.SectionType == HomePageSectionType.AutoCokSatanlar && Model.CokSatanlar != null && Model.CokSatanlar.Any())
         {
             <section class="container mx-auto px-4 pb-16">
-                <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                    <div>
-                        <p class="mb-2 text-xs uppercase tracking-[0.25em] text-brand-gold">@(string.IsNullOrWhiteSpace(homeSection.Subtitle) ? Localizer["BestSellers"] : homeSection.Subtitle)</p>
-                        <h2 class="font-serif text-3xl text-brand-olive">@(string.IsNullOrWhiteSpace(homeSection.Title) ? Localizer["MostPreferred"] : homeSection.Title)</h2>
+                <div class="mb-10 text-center flex flex-col items-center">
+                    <p class="mb-3 text-xs uppercase tracking-[0.25em] text-brand-gold">@(string.IsNullOrWhiteSpace(homeSection.Subtitle) ? Localizer["BestSellers"] : homeSection.Subtitle)</p>
+                    <div class="flex items-center justify-center w-full mb-4">
+                        <hr class="hidden w-1/4 border-brand-border md:block"/>
+                        <h2 class="font-serif mx-6 text-3xl text-brand-olive md:text-4xl">@(string.IsNullOrWhiteSpace(homeSection.Title) ? Localizer["MostPreferred"] : homeSection.Title)</h2>
+                        <hr class="hidden w-1/4 border-brand-border md:block"/>
                     </div>
-                    <a href="@(string.IsNullOrWhiteSpace(homeSection.ViewAllUrl) ? "/Urun?sort=popularity" : homeSection.ViewAllUrl)" class="inline-flex items-center gap-2 self-start border-b border-brand-olive pb-1 text-xs uppercase tracking-widest text-brand-olive transition-colors hover:text-brand-gold md:self-auto">
+                    <a href="@(string.IsNullOrWhiteSpace(homeSection.ViewAllUrl) ? "/products?sort=popularity" : homeSection.ViewAllUrl)" class="inline-flex items-center gap-2 border-b border-brand-olive pb-1 text-xs uppercase tracking-widest text-brand-olive transition-colors hover:text-brand-gold">
                         @(string.IsNullOrWhiteSpace(homeSection.ViewAllText) ? Localizer["ViewAll"] : homeSection.ViewAllText)
                         <svg class="w-3 h-3 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </a>
                 </div>
-                <div class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+                <div class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-5" data-motion-stagger>
                     @foreach (var urun in Model.CokSatanlar.Take(8))
                     {
-                        var gorsel = !string.IsNullOrWhiteSpace(urun.AnaGorselUrl)
-                            ? urun.AnaGorselUrl
-                            : urun.UrunResimleri?.OrderBy(r => r.Sira).FirstOrDefault()?.ResimYolu;
-
-                        <article class="group overflow-hidden rounded-2xl border border-brand-border bg-white p-3 shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-brand-lightgold hover:shadow-2xl">
-                            <a href="@BuildProductUrl(urun)" class="block">
-                                <div class="relative mb-4 flex aspect-[4/5] items-center justify-center overflow-hidden rounded-xl bg-brand-warmcream p-3">
-                                    <span class="absolute start-3 top-3 z-10 rounded-full bg-white/95 px-2.5 py-1 text-[10px] uppercase tracking-widest text-brand-olive shadow-sm">@Localizer["Bestseller"]</span>
-                                    @if (urun.IndirimVarMi)
-                                    {
-                                        <span class="absolute right-3 top-3 z-10 bg-brand-gold text-white text-[10px] font-bold px-2 py-0.5 rounded-sm shadow-sm">%@urun.IndirimYuzdesi</span>
-                                    }
-                                    @if (!string.IsNullOrWhiteSpace(gorsel))
-                                    {
-                                        <img src="@gorsel" alt="@urun.LocalizedBaslik" class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
-                                    }
-                                    else
-                                    {
-                                        <div class="flex h-full w-full items-center justify-center bg-brand-cream">
-                                            <img src="/img/products/placeholder.webp" alt="Placeholder" class="w-1/2 opacity-20 grayscale" loading="lazy" decoding="async" />
-                                        </div>
-                                    }
-                                </div>
-                                <h3 class="mb-2 line-clamp-2 min-h-[2.6em] text-sm font-semibold leading-relaxed tracking-wide text-brand-darktext transition-colors group-hover:text-brand-gold">@urun.LocalizedBaslik</h3>
-                                <div class="flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-brand-border/70 pt-2">
-                                    <p class="text-sm font-bold text-brand-olive">@urun.EtkinFiyat.ToString("N0") @currencySymbol</p>
-                                    @if (urun.IndirimVarMi)
-                                    {
-                                        <p class="text-[10px] text-brand-mutedtext line-through">@urun.Fiyat.ToString("N0") @currencySymbol</p>
-                                        <span class="text-[9px] text-white bg-brand-gold px-1 py-0.5 rounded font-bold">-%@urun.IndirimYuzdesi</span>
-                                    }
-                                </div>
-                            </a>
-                        </article>
+                        @await Html.PartialAsync("_HomeProductCard", BuildHomeProductCard(urun, Localizer["Bestseller"].Value))
                     }
                 </div>
             </section>
@@ -648,53 +763,22 @@
         {
             <section class="bg-brand-warmcream py-16">
                 <div class="container mx-auto px-4">
-                    <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                        <div>
-                            <p class="mb-2 text-xs uppercase tracking-[0.25em] text-brand-gold">@(string.IsNullOrWhiteSpace(homeSection.Subtitle) ? Localizer["DealProducts"] : homeSection.Subtitle)</p>
-                            <h2 class="font-serif text-3xl text-brand-olive">@(string.IsNullOrWhiteSpace(homeSection.Title) ? Localizer["CampaignSelections"] : homeSection.Title)</h2>
+                    <div class="mb-10 text-center flex flex-col items-center">
+                        <p class="mb-3 text-xs uppercase tracking-[0.25em] text-brand-gold">@(string.IsNullOrWhiteSpace(homeSection.Subtitle) ? Localizer["DealProducts"] : homeSection.Subtitle)</p>
+                        <div class="flex items-center justify-center w-full mb-4">
+                            <hr class="hidden w-1/4 border-brand-border md:block"/>
+                            <h2 class="font-serif mx-6 text-3xl text-brand-olive md:text-4xl">@(string.IsNullOrWhiteSpace(homeSection.Title) ? Localizer["CampaignSelections"] : homeSection.Title)</h2>
+                            <hr class="hidden w-1/4 border-brand-border md:block"/>
                         </div>
-                        <a href="@(string.IsNullOrWhiteSpace(homeSection.ViewAllUrl) ? "/Urun?sort=price_asc" : homeSection.ViewAllUrl)" class="inline-flex items-center gap-2 self-start border-b border-brand-olive pb-1 text-xs uppercase tracking-widest text-brand-olive transition-colors hover:text-brand-gold md:self-auto">
+                        <a href="@(string.IsNullOrWhiteSpace(homeSection.ViewAllUrl) ? "/products?sort=price_asc" : homeSection.ViewAllUrl)" class="inline-flex items-center gap-2 border-b border-brand-olive pb-1 text-xs uppercase tracking-widest text-brand-olive transition-colors hover:text-brand-gold">
                             @(string.IsNullOrWhiteSpace(homeSection.ViewAllText) ? Localizer["ViewDeals"] : homeSection.ViewAllText)
                             <svg class="w-3 h-3 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </a>
                     </div>
-                    <div class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+                    <div class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-5" data-motion-stagger>
                     @foreach (var urun in Model.FirsatUrunleri.Take(8))
                     {
-                        var gorsel = !string.IsNullOrWhiteSpace(urun.AnaGorselUrl)
-                            ? urun.AnaGorselUrl
-                            : urun.UrunResimleri?.OrderBy(r => r.Sira).FirstOrDefault()?.ResimYolu;
-
-                            <article class="group overflow-hidden rounded-2xl border border-brand-border bg-white p-3 shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-brand-lightgold hover:shadow-2xl">
-                                <a href="@BuildProductUrl(urun)" class="block">
-                                    <div class="relative mb-4 flex aspect-[4/5] items-center justify-center overflow-hidden rounded-xl bg-brand-warmcream p-3">
-                                        <span class="absolute start-3 top-3 z-10 rounded-full bg-brand-gold px-2.5 py-1 text-[10px] uppercase tracking-widest text-white shadow-sm">-%@urun.IndirimYuzdesi</span>
-                                        @if (!string.IsNullOrWhiteSpace(gorsel))
-                                        {
-                                        <img src="@gorsel" alt="@urun.LocalizedBaslik" class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
-                                        }
-                                        else
-                                        {
-                                            <div class="flex h-full w-full items-center justify-center bg-brand-cream">
-                                                <img src="/img/products/placeholder.webp" alt="Placeholder" class="w-1/2 opacity-20 grayscale" loading="lazy" decoding="async" />
-                                            </div>
-                                        }
-                                    </div>
-                                    <h3 class="mb-2 line-clamp-2 min-h-[2.6em] text-sm font-semibold leading-relaxed tracking-wide text-brand-darktext transition-colors group-hover:text-brand-gold">@urun.LocalizedBaslik</h3>
-                                    <div class="flex flex-wrap items-center gap-2 border-t border-brand-border/70 pt-2">
-                                        <p class="text-sm font-bold text-brand-olive">@urun.EtkinFiyat.ToString("N0") @currencySymbol</p>
-                                        @if (urun.IndirimVarMi)
-                                        {
-                                            <p class="text-[10px] text-brand-mutedtext line-through">@urun.Fiyat.ToString("N0") @currencySymbol</p>
-                                            <span class="text-[9px] text-white bg-brand-gold px-1 py-0.5 rounded font-bold">-%@urun.IndirimYuzdesi</span>
-                                        }
-                                    </div>
-                                    @if (urun.KampanyaBitisTarihi.HasValue && urun.KampanyaBitisTarihi.Value > DateTime.UtcNow)
-                                    {
-                                        @await Html.PartialAsync("_CountdownPartial", urun.KampanyaBitisTarihi.Value)
-                                    }
-                                </a>
-                            </article>
+                        @await Html.PartialAsync("_HomeProductCard", BuildHomeProductCard(urun))
                     }
                     </div>
                 </div>
@@ -709,21 +793,21 @@
         <div class="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-8">
             <div class="home-feature-card rounded-3xl border border-brand-lightgold/35 p-4 text-start transition-all duration-300 hover:-translate-y-1 hover:shadow-soft md:p-8 md:text-center">
                 <div class="home-feature-icon mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-olive text-brand-lightgold md:mx-auto md:mb-5 md:h-14 md:w-14">
-                    <svg class="w-6 h-6 md:h-7 md:w-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"/></svg>
+                    <img src="/icons/secure.svg" class="w-6 h-6 md:h-7 md:w-7" alt="" aria-hidden="true" />
                 </div>
                 <h4 class="font-serif mb-1 text-base text-brand-olive md:mb-2 md:text-lg">@Localizer["SecurePayment"]</h4>
                 <p class="text-xs leading-relaxed text-brand-mutedtext md:text-sm">@Localizer["SecurePaymentDesc"]</p>
             </div>
             <div class="home-feature-card rounded-3xl border border-brand-lightgold/35 p-4 text-start transition-all duration-300 hover:-translate-y-1 hover:shadow-soft md:p-8 md:text-center">
                 <div class="home-feature-icon mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-olive text-brand-lightgold md:mx-auto md:mb-5 md:h-14 md:w-14">
-                    <svg class="w-6 h-6 md:h-7 md:w-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/></svg>
+                    <img src="/icons/shipping.svg" class="w-6 h-6 md:h-7 md:w-7" alt="" aria-hidden="true" />
                 </div>
                 <h4 class="font-serif mb-1 text-base text-brand-olive md:mb-2 md:text-lg">@Localizer["FastDelivery"]</h4>
                 <p class="text-xs leading-relaxed text-brand-mutedtext md:text-sm">@Localizer["FastDeliveryDesc"]</p>
             </div>
             <div class="home-feature-card rounded-3xl border border-brand-lightgold/35 p-4 text-start transition-all duration-300 hover:-translate-y-1 hover:shadow-soft md:p-8 md:text-center">
                 <div class="home-feature-icon mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-olive text-brand-lightgold md:mx-auto md:mb-5 md:h-14 md:w-14">
-                    <svg class="w-6 h-6 md:h-7 md:w-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"/></svg>
+                    <img src="/icons/satisfaction.svg" class="w-6 h-6 md:h-7 md:w-7" alt="" aria-hidden="true" />
                 </div>
                 <h4 class="font-serif mb-1 text-base text-brand-olive md:mb-2 md:text-lg">@Localizer["CustomerSatisfaction"]</h4>
                 <p class="text-xs leading-relaxed text-brand-mutedtext md:text-sm">@Localizer["CustomerSatisfactionDesc"]</p>

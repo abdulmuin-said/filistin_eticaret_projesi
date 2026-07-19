@@ -1,0 +1,192 @@
+- generic [ref=f1e2]:
+  - text:          +                    
+  - banner [ref=f1e3]:
+    - generic [ref=f1e4]:
+      - link "7ANRPS48 لوحة التحكم" [ref=f1e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f1e6]
+      - generic [ref=f1e7]: لوحة التحكم
+    - navigation "القائمة الرئيسية للإدارة" [ref=f1e8]:
+      - link " لوحة البيانات" [ref=f1e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f1e10]: 
+        - text: لوحة البيانات
+      - generic [ref=f1e11]:
+        - button " إدارة الطلبات" [ref=f1e12] [cursor=pointer]:
+          - generic [ref=f1e13]: 
+          - text: إدارة الطلبات
+        - text:      
+      - generic [ref=f1e14]:
+        - button " إدارة الطلبات" [ref=f1e15] [cursor=pointer]:
+          - generic [ref=f1e16]: 
+          - text: إدارة الطلبات
+        - text:  +  
+      - generic [ref=f1e17]:
+        - button " محتوى المتجر" [ref=f1e18] [cursor=pointer]:
+          - generic [ref=f1e19]: 
+          - text: محتوى المتجر
+        - text:        
+      - link " الأعضاء" [ref=f1e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f1e21]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=f1e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f1e23]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=f1e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f1e25]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=f1e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f1e27]: 
+        - text: مجموعات الجملة
+      - generic [ref=f1e28]:
+        - button " التقارير" [ref=f1e29] [cursor=pointer]:
+          - generic [ref=f1e30]: 
+          - text: التقارير
+        - text:  
+      - link " الحسابات البنكية" [ref=f1e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f1e32]: 
+        - text: الحسابات البنكية
+      - link " الإعدادات" [ref=f1e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f1e34]: 
+        - text: الإعدادات
+    - generic [ref=f1e35]:
+      - text: 
+      - generic [ref=f1e36]:
+        - generic [ref=f1e37]: 
+        - link "العربية" [ref=f1e39] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FAdmin%2FSlayt%2FDuzenle%2F10
+        - link "English" [ref=f1e40] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FAdmin%2FSlayt%2FDuzenle%2F10
+      - text: 
+      - generic [ref=f1e41]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f1e42] [cursor=pointer]:
+          - generic [ref=f1e43]:
+            - strong [ref=f1e44]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f1e45]: "7"
+        - text:  
+  - generic [ref=f1e46]:
+    - main [ref=f1e47]:
+      - generic [ref=f1e48]:
+        - generic [ref=f1e49]:
+          - generic [ref=f1e50]:
+            - heading "تعديل الشريحة" [level=1] [ref=f1e51]
+            - paragraph [ref=f1e52]: حدّث معلومات الشريحة.
+          - link " العودة إلى قائمة الشرائح" [ref=f1e54] [cursor=pointer]:
+            - /url: /Admin/Slayt
+            - generic [ref=f1e55]: 
+            - text: العودة إلى قائمة الشرائح
+        - generic [ref=f1e57]:
+          - generic [ref=f1e58]: 
+          - generic [ref=f1e59]:
+            - strong [ref=f1e60]: "أبعاد السلايدر:"
+            - list [ref=f1e61]:
+              - listitem [ref=f1e62]:
+                - strong [ref=f1e63]: "الصورة:"
+                - text: على الأقل 1920x700 بكسل (يوصى بـ 3840x1400 بكسل لجودة عالية). ارفع JPG أو PNG أو WEBP.
+              - listitem [ref=f1e64]:
+                - strong [ref=f1e65]: "فيديو:"
+                - text: "يوصى بصيغة MP4. الحد الأقصى لحجم الملف: 50MB. الدقة الموصى بها: 1920x700 أو أعلى."
+              - listitem [ref=f1e66]:
+                - text: "يتم تخزين الملفات بشكل دائم على الخادم:"
+                - code [ref=f1e67]: /uploads/slider/
+        - generic [ref=f1e68]:
+          - generic [ref=f1e69]:
+            - generic [ref=f1e70]:
+              - generic [ref=f1e71]:
+                - heading " معلومات الشريحة" [level=3] [ref=f1e73]:
+                  - generic [ref=f1e74]: 
+                  - text: معلومات الشريحة
+                - generic [ref=f1e75]:
+                  - generic [ref=f1e76]:
+                    - generic [ref=f1e77]: العنوان *
+                    - textbox "عنوان الشريحة" [ref=f1e78]: تسوق أناقة الحياة اليومية
+                  - generic [ref=f1e79]:
+                    - generic [ref=f1e80]: العنوان الفرعي
+                    - textbox "العنوان الفرعي" [ref=f1e81]: كل ما تحتاجه لحياة أكثر أناقة في مكان واحد
+                  - generic [ref=f1e82]:
+                    - generic [ref=f1e83]: الوصف
+                    - textbox "وصف قصير" [ref=f1e84]: اكتشف مجموعة مختارة بعناية من الأثاث والعطور والبقالة ومنتجات الجمال والأزياء والإلكترونيات وأثاث المنزل.
+                  - heading [level=2] [ref=f1e87]:
+                    - button " حقول متعددة اللغات" [ref=f1e88] [cursor=pointer]:
+                      - generic [ref=f1e89]: 
+                      - text: حقول متعددة اللغات
+                  - generic [ref=f1e90]:
+                    - heading " زر السلايدر" [level=6] [ref=f1e91]:
+                      - generic [ref=f1e92]: 
+                      - text: زر السلايدر
+                    - generic [ref=f1e93]:
+                      - generic [ref=f1e94]:
+                        - generic [ref=f1e95]: Buton Metni (EN)
+                        - textbox "Shop Now" [ref=f1e96]: Explore Categories
+                      - generic [ref=f1e97]:
+                        - generic [ref=f1e98]: Buton Metni (AR)
+                        - textbox "تسوق الآن" [ref=f1e99]: اكتشف الأقسام
+                    - generic [ref=f1e101]:
+                      - generic [ref=f1e102]: رابط الزر
+                      - textbox "/Urun veya https://..." [ref=f1e103]
+                      - generic [ref=f1e104]: أدخل رابطاً مثل /Urun أو رابط حملة.
+              - generic [ref=f1e105]:
+                - heading " صورة / فيديو" [level=3] [ref=f1e107]:
+                  - generic [ref=f1e108]: 
+                  - text: صورة / فيديو
+                - generic [ref=f1e109]:
+                  - generic [ref=f1e110]:
+                    - generic [ref=f1e111]: نوع الشريحة
+                    - combobox [ref=f1e112]:
+                      - option "الصورة" [selected]
+                      - option "فيديو"
+                  - generic [ref=f1e113]:
+                    - generic [ref=f1e114]: 
+                    - generic [ref=f1e115]:
+                      - strong [ref=f1e116]: "الصورة الحالية:"
+                      - text: /uploads/slider/690f93fbc0334c11b14f3f1141bd3c9e.png
+                      - generic [ref=f1e117]: إذا رفعت صورة جديدة فسيتم حذف الصورة الحالية. حدد المربع أدناه لحذف الصورة.
+                      - generic [ref=f1e118]:
+                        - checkbox "حذف الصورة الحالية" [ref=f1e119]
+                        - text: حذف الصورة الحالية
+                  - img "الصورة الحالية" [ref=f1e121]
+                  - generic [ref=f1e122]:
+                    - generic [ref=f1e123]: رفع صورة جديدة
+                    - button "Choose File" [ref=f1e124] [cursor=pointer]
+                    - generic [ref=f1e125]: "الصيغ المدعومة: JPG، PNG، WEBP. الحد الأقصى لحجم الملف: 10MB."
+                  - generic [ref=f1e126]:
+                    - generic [ref=f1e127]:
+                      - generic [ref=f1e128]: أو رابط الصورة
+                      - textbox "https://..." [ref=f1e129]: /uploads/slider/690f93fbc0334c11b14f3f1141bd3c9e.png
+                    - generic [ref=f1e130]:
+                      - generic [ref=f1e131]: أو رابط الفيديو
+                      - textbox "https://..." [ref=f1e132]
+            - generic [ref=f1e133]:
+              - generic [ref=f1e134]:
+                - heading " الإعدادات" [level=3] [ref=f1e136]:
+                  - generic [ref=f1e137]: 
+                  - text: الإعدادات
+                - generic [ref=f1e138]:
+                  - generic [ref=f1e139]:
+                    - generic [ref=f1e140]: الترتيب
+                    - spinbutton [ref=f1e141]: "1"
+                    - generic [ref=f1e142]: الرقم الأصغر = يظهر أولاً.
+                  - generic [ref=f1e143]:
+                    - generic [ref=f1e144]:
+                      - checkbox "نشط" [checked] [ref=f1e145]
+                      - generic [ref=f1e146]: نشط
+                    - generic [ref=f1e147]: إذا تم تعطيلها فلن تظهر في السلايدر.
+              - generic [ref=f1e148]:
+                - heading " معاينة" [level=3] [ref=f1e150]:
+                  - generic [ref=f1e151]: 
+                  - text: معاينة
+                - img "معاينة" [ref=f1e154]
+          - generic [ref=f1e155]:
+            - button " حفظ" [ref=f1e156] [cursor=pointer]:
+              - generic [ref=f1e157]: 
+              - text: حفظ
+            - link "إلغاء" [ref=f1e158] [cursor=pointer]:
+              - /url: /Admin/Slayt
+    - contentinfo [ref=f1e159]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

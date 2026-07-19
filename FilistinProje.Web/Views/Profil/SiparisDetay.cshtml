@@ -1,11 +1,11 @@
-﻿@model FilistinProje.Core.Varliklar.Siparis
+@model FilistinProje.Core.Varliklar.Siparis
 @using FilistinProje.Core.Helpers
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["OrderDetail"] + " #" + Model.Id;
     var siteSettings = SiteSettingsService.GetSettings();
-    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "â‚ª" : siteSettings.ParaBirimi;
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
     var urunler = ViewBag.Urunler as List<dynamic>;
     var statusStep = Model.Durum;
     var isCancelled = Model.Durum == 4;
@@ -18,9 +18,9 @@
     <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-brand-mutedtext">
         <a href="/" class="hover:text-brand-olive transition-colors">@Localizer["HomePage"]</a>
         <span>/</span>
-        <a href="/Profil" class="hover:text-brand-olive transition-colors">@Localizer["MyAccount"]</a>
+        <a href="/profile" class="hover:text-brand-olive transition-colors">@Localizer["MyAccount"]</a>
         <span>/</span>
-        <a href="/Profil/Siparislerim" class="hover:text-brand-olive transition-colors">@Localizer["MyOrders"]</a>
+        <a href="/profile/orderslerim" class="hover:text-brand-olive transition-colors">@Localizer["MyOrders"]</a>
         <span>/</span>
         <span class="text-brand-darktext font-medium">#@Model.Id</span>
     </div>
@@ -29,27 +29,27 @@
 <div class="container mx-auto px-4 py-10">
     <div class="flex flex-col lg:flex-row gap-8">
         
-        <!-- Yan MenÃ¼ -->
+        <!-- Yan Menü -->
         <aside class="lg:w-56 flex-shrink-0">
             <div class="bg-white border border-brand-border rounded-lg overflow-hidden">
                 <div class="bg-brand-olive p-4 text-center">
                     <p class="text-white text-sm font-medium">@Localizer["MyAccount"]</p>
                 </div>
                 <nav class="p-2">
-                    <a href="/Profil" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
+                    <a href="/profile" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
                         <i class="fas fa-user w-4"></i> @Localizer["Overview"]
                     </a>
-                    <a href="/Profil/Siparislerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-olive bg-brand-warmcream font-semibold mb-1">
+                    <a href="/profile/orderslerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-olive bg-brand-warmcream font-semibold mb-1">
                         <i class="fas fa-box w-4"></i> @Localizer["MyOrders"]
                     </a>
-                    <a href="/Profil/Adreslerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
+                    <a href="/profile/Adreslerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
                         <i class="fas fa-location-dot w-4"></i> @Localizer["MyAddresses"]
                     </a>
-                    <a href="/Favori" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
+                    <a href="/favorites" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
                         <i class="fas fa-heart w-4"></i> @Localizer["MyFavorites"]
                     </a>
                     <hr class="border-brand-border my-2" />
-                    <form action="/Hesap/CikisYap" method="post" class="m-0">
+                    <form action="/account/CikisYap" method="post" class="m-0">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded text-sm text-red-500 hover:bg-red-50 transition-colors text-left">
                             <i class="fas fa-right-from-bracket w-4"></i> @Localizer["Logout"]
@@ -98,7 +98,7 @@
 
                         if (iptalEdilebilir)
                         {
-                            <form id="cancelForm-@Model.Id" method="post" action="/Profil/SiparisIptal" class="inline">
+                            <form id="cancelForm-@Model.Id" method="post" action="/profile/ordersIptal" class="inline">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="@Model.Id" />
                                 <button type="button" onclick="confirmCancel(@Model.Id)"
@@ -117,11 +117,11 @@
                     }
                     @if (Model.Durum == 3)
                     {
-                        <a href="/Profil/IadeOlustur?siparisId=@Model.Id" class="border border-red-200 text-red-600 bg-red-50 hover:bg-red-100 text-xs tracking-widest uppercase px-4 py-2 rounded transition-colors flex items-center gap-2">
+                        <a href="/profile/IadeOlustur?siparisId=@Model.Id" class="border border-red-200 text-red-600 bg-red-50 hover:bg-red-100 text-xs tracking-widest uppercase px-4 py-2 rounded transition-colors flex items-center gap-2">
                             <i class="fas fa-rotate-left"></i> @Localizer["ReturnRequest"]
                         </a>
                     }
-                    <a href="/Profil/Siparislerim" class="border border-brand-border text-brand-mutedtext text-xs tracking-widest uppercase px-4 py-2 rounded hover:bg-brand-warmcream transition-colors flex items-center gap-2">
+                    <a href="/profile/orderslerim" class="border border-brand-border text-brand-mutedtext text-xs tracking-widest uppercase px-4 py-2 rounded hover:bg-brand-warmcream transition-colors flex items-center gap-2">
                         <i class="fas fa-arrow-left"></i> @Localizer["BackToList"]
                     </a>
                 </div>
@@ -135,7 +135,7 @@
                 </div>
             }
 
-            <!-- Takip AdÄ±mlarÄ± -->
+            <!-- Takip Adımları -->
             <div class="bg-white border border-brand-border rounded-lg p-6 mb-8">
                 <h3 class="font-serif text-xl text-brand-olive mb-6 border-b border-brand-border pb-4">
                     @(isReturn ? Localizer["ReturnProcess"].Value : Localizer["OrderTracking"].Value)
@@ -212,7 +212,7 @@
                 }
             </div>
 
-            <!-- ÃœrÃ¼nler Tablosu -->
+            <!-- Ürünler Tablosu -->
             <div class="bg-white border border-brand-border rounded-lg overflow-hidden mb-8">
                 <div class="p-6 border-b border-brand-border">
                     <h3 class="font-serif text-xl text-brand-olive">@Localizer["PurchasedProducts"]</h3>
@@ -238,11 +238,11 @@
                                             <div class="flex items-center gap-4">
                                             <img src="@item.Resim" alt="@item.Baslik" class="w-16 h-16 object-cover rounded border border-brand-border" loading="lazy" decoding="async" />
                                                 <div>
-                                                    <a href="/Urun/Detay/@(FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.Baslik))-@item.UrunId" class="font-semibold text-brand-darktext hover:text-brand-gold transition-colors block mb-1">@item.Baslik</a>
+                                                    <a href="/products/@(FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.Baslik))-@item.UrunId" class="font-semibold text-brand-darktext hover:text-brand-gold transition-colors block mb-1">@item.Baslik</a>
                                                     <div class="text-xs text-brand-mutedtext">@Localizer["UnitPrice"]: @item.Fiyat.ToString("N2") @currencySymbol</div>
                                                     @if (Model.Durum == 3)
                                                     {
-                                                        <a href="/Urun/Detay/@(FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.Baslik))-@item.UrunId#reviews-section" class="text-[10px] text-brand-gold hover:text-brand-olive uppercase tracking-wider mt-2 inline-block">
+                                                        <a href="/products/@(FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.Baslik))-@item.UrunId#reviews-section" class="text-[10px] text-brand-gold hover:text-brand-olive uppercase tracking-wider mt-2 inline-block">
                                                             <i class="fas fa-star mr-1"></i>@Localizer["RateProductShort"]
                                                         </a>
                                                     }
@@ -295,7 +295,7 @@
                 </div>
             </div>
 
-            <!-- Adres ve Ã–deme Bilgileri -->
+            <!-- Adres ve Ödeme Bilgileri -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Teslimat Adresi -->
                 <div class="bg-white border border-brand-border rounded-lg p-6">
@@ -328,7 +328,7 @@
                     </div>
                 </div>
 
-                <!-- Ã–deme Bilgisi -->
+                <!-- Ödeme Bilgisi -->
                 <div class="bg-white border border-brand-border rounded-lg p-6">
                     <h3 class="font-serif text-lg text-brand-olive mb-6 flex items-center gap-2 border-b border-brand-border pb-3">
                         <i class="fas fa-credit-card text-brand-gold"></i> @Localizer["PaymentInfo"]

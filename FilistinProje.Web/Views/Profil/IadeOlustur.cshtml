@@ -1,19 +1,19 @@
-﻿@model FilistinProje.Core.Varliklar.Siparis
+@model FilistinProje.Core.Varliklar.Siparis
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["CreateReturnRequestTitle"];
     var siteSettings = SiteSettingsService.GetSettings();
-    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "â‚ª" : siteSettings.ParaBirimi;
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
 }
 
 <div class="bg-brand-cream border-b border-brand-border py-3">
     <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-brand-mutedtext">
         <a href="/" class="hover:text-brand-olive transition-colors">@Localizer["HomePage"]</a>
         <span>/</span>
-        <a href="/Profil" class="hover:text-brand-olive transition-colors">@Localizer["MyAccount"]</a>
+        <a href="/profile" class="hover:text-brand-olive transition-colors">@Localizer["MyAccount"]</a>
         <span>/</span>
-        <a href="/Profil/Siparislerim" class="hover:text-brand-olive transition-colors">@Localizer["MyOrders"]</a>
+        <a href="/profile/orderslerim" class="hover:text-brand-olive transition-colors">@Localizer["MyOrders"]</a>
         <span>/</span>
         <span class="text-brand-darktext font-medium">@Localizer["ReturnRequest"]</span>
     </div>
@@ -37,10 +37,10 @@
             <label class="block text-xs uppercase tracking-widest text-brand-darktext font-medium mb-2">@Localizer["ReturnReason"]</label>
             <select name="Neden" required class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream">
                 <option value="">@Localizer["SelectOption"]</option>
-                <option value="HasarlÄ± ÃœrÃ¼n">@Localizer["ReasonDamagedProduct"]</option>
-                <option value="YanlÄ±ÅŸ ÃœrÃ¼n">@Localizer["ReasonWrongProduct"]</option>
-                <option value="Beklentimi KarÅŸÄ±lamadÄ±">@Localizer["ReasonNotAsExpected"]</option>
-                <option value="VazgeÃ§tim">@Localizer["ReasonChangedMind"]</option>
+                <option value="Hasarlı Ürün">@Localizer["ReasonDamagedProduct"]</option>
+                <option value="Yanlış Ürün">@Localizer["ReasonWrongProduct"]</option>
+                <option value="Beklentimi Karşılamadı">@Localizer["ReasonNotAsExpected"]</option>
+                <option value="Vazgeçtim">@Localizer["ReasonChangedMind"]</option>
             </select>
         </div>
 
@@ -58,7 +58,7 @@
             <button type="submit" class="bg-brand-olive text-white px-8 py-3 text-xs tracking-widest uppercase rounded hover:bg-[#1c2001] transition-colors">
                 @Localizer["SubmitRequest"]
             </button>
-            <a href="/Profil/Siparislerim" class="bg-white border border-brand-border text-brand-olive px-8 py-3 text-xs tracking-widest uppercase rounded hover:bg-brand-cream transition-colors inline-flex items-center">
+            <a href="/profile/orderslerim" class="bg-white border border-brand-border text-brand-olive px-8 py-3 text-xs tracking-widest uppercase rounded hover:bg-brand-cream transition-colors inline-flex items-center">
                 @Localizer["CancelRequest"]
             </a>
         </div>

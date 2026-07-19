@@ -1,4 +1,4 @@
-﻿@model List<FilistinProje.Core.Varliklar.Adres>
+@model List<FilistinProje.Core.Varliklar.Adres>
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["MyAddresses"];
@@ -10,7 +10,7 @@
     <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-brand-mutedtext">
         <a href="/" class="hover:text-brand-olive transition-colors">@Localizer["HomePage"]</a>
         <span>/</span>
-        <a href="/Profil" class="hover:text-brand-olive transition-colors">@Localizer["MyAccount"]</a>
+        <a href="/profile" class="hover:text-brand-olive transition-colors">@Localizer["MyAccount"]</a>
         <span>/</span>
         <span class="text-brand-darktext font-medium">@Localizer["MyAddresses"]</span>
     </div>
@@ -19,27 +19,27 @@
 <div class="container mx-auto px-4 py-10">
     <div class="flex flex-col lg:flex-row gap-8">
 
-        <!-- Yan MenÃ¼ -->
+        <!-- Yan Menü -->
         <aside class="lg:w-56 flex-shrink-0">
             <div class="bg-white border border-brand-border rounded-lg overflow-hidden">
                 <div class="bg-brand-olive p-4 text-center">
                     <p class="text-white text-sm font-medium">@Localizer["MyAccount"]</p>
                 </div>
                 <nav class="p-2">
-                    <a href="/Profil" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
+                    <a href="/profile" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
                         <i class="fas fa-user w-4"></i> @Localizer["Overview"]
                     </a>
-                    <a href="/Profil/Siparislerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
+                    <a href="/profile/orderslerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
                         <i class="fas fa-box w-4"></i> @Localizer["MyOrders"]
                     </a>
-                    <a href="/Profil/Adreslerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-olive bg-brand-warmcream font-semibold mb-1">
+                    <a href="/profile/Adreslerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-olive bg-brand-warmcream font-semibold mb-1">
                         <i class="fas fa-location-dot w-4"></i> @Localizer["MyAddresses"]
                     </a>
-                    <a href="/Favori" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
+                    <a href="/favorites" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
                         <i class="fas fa-heart w-4"></i> @Localizer["MyFavorites"]
                     </a>
                     <hr class="border-brand-border my-2" />
-                    <form action="/Hesap/CikisYap" method="post" class="m-0">
+                    <form action="/account/CikisYap" method="post" class="m-0">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded text-sm text-red-500 hover:bg-red-50 transition-colors text-left">
                             <i class="fas fa-right-from-bracket w-4"></i> @Localizer["Logout"]
@@ -49,7 +49,7 @@
             </div>
         </aside>
 
-        <!-- Ana Ä°Ã§erik -->
+        <!-- Ana İçerik -->
         <main class="flex-1 min-w-0">
             <div class="flex items-center justify-between mb-8">
                 <div>
@@ -98,7 +98,7 @@
                                     <span class="text-xs uppercase tracking-widest text-brand-gold font-medium">@item.Baslik</span>
                                     <h3 class="font-semibold text-brand-darktext mt-0.5">@item.Sehir / @item.Ilce</h3>
                                 </div>
-                                <form action="/Profil/AdresSil" method="post" onsubmit="return confirm('@Localizer["ConfirmDeleteAddress"]')">
+                                <form action="/profile/AdresSil" method="post" onsubmit="return confirm('@Localizer["ConfirmDeleteAddress"]')">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@item.Id" />
                                     <button type="submit" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors rounded-full hover:bg-red-50" title="@Localizer["DeleteAddress"]">
@@ -137,7 +137,7 @@
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        <form action="/Profil/AdresEkle" method="post" class="p-6">
+        <form action="/profile/AdresEkle" method="post" class="p-6">
             @Html.AntiForgeryToken()
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>

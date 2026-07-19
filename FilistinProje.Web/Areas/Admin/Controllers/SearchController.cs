@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using FilistinProje.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -39,7 +39,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     Baslik = x.Baslik, 
                     Tip = tipProduct, 
                     Url = $"/Admin/Urun/Duzenle/{x.Id}",
-                    Detay = $"₪{x.Fiyat}" 
+                    Detay = $"â‚ª{x.Fiyat}" 
                 })
                 .ToListAsync();
 
@@ -64,7 +64,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 
-    // Basit bir DTO sınıfı
+    // Basit bir DTO sÄ±nÄ±fÄ±
     public class SearchResult
     {
         public string Baslik { get; set; } = string.Empty;
@@ -73,3 +73,5 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         public string Detay { get; set; } = string.Empty;
     }
 }
+
+

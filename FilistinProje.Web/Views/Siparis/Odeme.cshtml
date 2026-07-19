@@ -1,11 +1,11 @@
-﻿@model FilistinProje.Core.DTOs.CheckoutRequestDto
+@model FilistinProje.Core.DTOs.CheckoutRequestDto
 @using FilistinProje.Core.Varliklar
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["SecurePayment"];
     var siteSettings = SiteSettingsService.GetSettings();
-    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "â‚ª" : siteSettings.ParaBirimi;
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
 
     decimal araToplam = ViewBag.AraToplam ?? 0;
     decimal indirim = ViewBag.IndirimTutari ?? 0;
@@ -22,7 +22,7 @@
 
     var kayitliAdresler = ViewBag.KayitliAdresler as List<FilistinProje.Core.Varliklar.Adres>;
     bool girisYapmis = User.Identity?.IsAuthenticated == true;
-    // Şehir listesi veritabanındaki KargoBolgeSehirler'den gelir
+    // �ehir listesi veritaban�ndaki KargoBolgeSehirler'den gelir
     var sehirListesi = ViewBag.Sehirler as List<string> ?? new List<string>();
     var sehirler = sehirListesi;
 }
@@ -30,7 +30,7 @@
 <!-- Breadcrumb -->
 <div class="bg-brand-cream border-b border-brand-border py-4">
     <div class="container mx-auto px-4 flex items-center justify-center gap-4 text-xs tracking-widest uppercase">
-        <a href="/Sepet" class="text-brand-mutedtext hover:text-brand-olive transition-colors flex items-center gap-2">
+        <a href="/cart" class="text-brand-mutedtext hover:text-brand-olive transition-colors flex items-center gap-2">
             <span class="w-5 h-5 rounded-full bg-brand-border text-brand-mutedtext flex items-center justify-center font-bold">1</span> @Localizer["Cart"]
         </a>
         <span class="text-brand-border">/</span>
@@ -47,7 +47,7 @@
     </div>
 
     <div class="flex flex-col lg:flex-row gap-12 lg:gap-16 max-w-6xl mx-auto">
-        <!-- Sol Form AlanÄ± -->
+        <!-- Sol Form Alanı -->
         <div class="lg:w-2/3 space-y-12">
             
                 <form asp-action="Odeme" method="post" id="odemeForm">
@@ -122,7 +122,7 @@
         var token = document.querySelector('input[name="__RequestVerificationToken"]').value;
 
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/Siparis/YukleRecete', true);
+        xhr.open('POST', '/orders/YukleRecete', true);
         xhr.setRequestHeader('RequestVerificationToken', token);
         xhr.setRequestHeader('X-Checkout-Upload-Token', checkoutUploadToken);
 
@@ -137,7 +137,7 @@
                         }
                     } else {
                         if (window.showToast) {
-                            window.showToast(response.message || 'Hata oluÅŸtu', 'error');
+                            window.showToast(response.message || 'Hata oluştu', 'error');
                         }
                     }
                 } catch (e) {
@@ -260,13 +260,13 @@
 
     var cameraMessages = (document.documentElement.lang || '').toLowerCase().startsWith('ar')
         ? {
-            unsupported: 'الكاميرا غير مدعومة في هذا المتصفح. يرجى رفع صورة من الجهاز.',
-            insecure: 'يلزم اتصال آمن HTTPS لاستخدام الكاميرا. يرجى رفع صورة من الجهاز.',
-            denied: 'تم رفض إذن الكاميرا. يمكنك رفع صورة الهوية من الجهاز.',
-            notFound: 'لم يتم العثور على كاميرا. يرجى رفع صورة من الجهاز.',
-            busy: 'تعذر تشغيل الكاميرا. أغلق التطبيقات الأخرى أو ارفع صورة من الجهاز.',
-            failed: 'تعذر تشغيل الكاميرا. يرجى المحاولة مرة أخرى أو رفع صورة.',
-            uploadFailed: 'تعذر رفع الملف. تحقق من النوع والحجم ثم حاول مرة أخرى.'
+            unsupported: '???????? ??? ?????? ?? ??? ???????. ???? ??? ???? ?? ??????.',
+            insecure: '???? ????? ??? HTTPS ???????? ????????. ???? ??? ???? ?? ??????.',
+            denied: '?? ??? ??? ????????. ????? ??? ???? ?????? ?? ??????.',
+            notFound: '?? ??? ?????? ??? ??????. ???? ??? ???? ?? ??????.',
+            busy: '???? ????? ????????. ???? ????????? ?????? ?? ???? ???? ?? ??????.',
+            failed: '???? ????? ????????. ???? ???????? ??? ???? ?? ??? ????.',
+            uploadFailed: '???? ??? ?????. ???? ?? ????? ?????? ?? ???? ??? ????.'
         }
         : {
             unsupported: 'Camera is not supported in this browser. Please upload a file instead.',
@@ -385,7 +385,7 @@
 
         var token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/Siparis/YukleKimlikFoto', true);
+        xhr.open('POST', '/orders/YukleKimlikFoto', true);
         if (token) {
             xhr.setRequestHeader('RequestVerificationToken', token);
         }
@@ -515,12 +515,12 @@
         stopIdentityCamera();
     });
 
-    // --- Dinamik Kargo Hesaplama (Åehir BazlÄ±) ---
+    // --- Dinamik Kargo Hesaplama (Şehir Bazlı) ---
     function sehirKargoHesapla() {
         const sehir = document.getElementById("Sehir")?.value;
         if (!sehir) return;
 
-        const url = "/Siparis/KargoHesapla?sehir=" + encodeURIComponent(sehir);
+        const url = "/orders/KargoHesapla?sehir=" + encodeURIComponent(sehir);
 
         fetch(url)
             .then(r => r.json())
@@ -537,7 +537,7 @@
                     const selectedPayment = document.querySelector('input[name="odemeYontemi"]:checked')?.value || 'BankaHavalesi';
                     const codPrice = (selectedPayment === 'KapidaOdeme') ? codBedel : 0;
 
-                    // Kargo Ã¼cretini gÃ¼ncelle
+                    // Kargo ücretini güncelle
                     const isFree = data.kargoUcreti <= 0 || araToplam >= data.ucretsizKargoLimiti;
                     const gecerliKargoUcreti = isFree ? 0 : data.kargoUcreti;
 
@@ -551,7 +551,7 @@
                         }
                     }
 
-                    // Free shipping banner gÃ¼ncelleme
+                    // Free shipping banner güncelleme
                     const kalanTutar = data.ucretsizKargoLimiti - araToplam;
                     if (checkoutFreeShippingBanner) {
                         if (kalanTutar > 0) {
@@ -572,7 +572,7 @@
                         checkoutFreeShippingBanner.classList.remove('hidden');
                     }
 
-                    // Total gÃ¼ncelle
+                    // Total güncelle
                     const genelToplamVal = araToplam + gecerliKargoUcreti + codPrice;
                     if (totalDisplay) {
 totalDisplay.innerHTML = window.formatMoney(genelToplamVal) + ' <span class="text-lg font-normal text-brand-mutedtext">' + currencySymbol + '</span>';
@@ -582,10 +582,10 @@ totalDisplay.innerHTML = window.formatMoney(genelToplamVal) + ' <span class="tex
                     }
                 }
             })
-            .catch(err => console.error("Kargo hesaplama hatasÄ±:", err));
+            .catch(err => console.error("Kargo hesaplama hatası:", err));
     }
 
-    // Åehir deÄŸiÅŸince kargo hesapla
+    // Şehir değişince kargo hesapla
     document.addEventListener("DOMContentLoaded", function () {
         const sehirSelect = document.getElementById("Sehir");
         if (sehirSelect) {
@@ -623,7 +623,7 @@ totalDisplay.innerHTML = window.formatMoney(genelToplamVal) + ' <span class="tex
             const selectedPayment = document.querySelector('input[name="odemeYontemi"]:checked')?.value || 'BankaHavalesi';
             const codPrice = (selectedPayment === 'KapidaOdeme' && !isStorePickup) ? codBedel : 0;
 
-            // Kargo Ã¼creti iÃ§in mevcut gÃ¶rÃ¼nen deÄŸeri al (ÅŸehir bazlÄ± hesaplama zaten yapÄ±ldÄ±ysa)
+            // Kargo ücreti için mevcut görünen değeri al (şehir bazlı hesaplama zaten yapıldıysa)
             const mevcutKargo = kargoDisplay ? kargoDisplay.textContent : (isStorePickup ? '0.00 ' + currencySymbol : currencySymbol + '0.00');
             let kargoPrice = 0;
             if (!isStorePickup) {

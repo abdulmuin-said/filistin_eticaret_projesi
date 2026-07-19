@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Web.Resources;
@@ -43,18 +43,42 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         [RequestFormLimits(MultipartBodyLengthLimit = 52_428_800)]
         public async Task<IActionResult> Ekle(Slayt model, IFormFile? Resim, IFormFile? Video)
         {
+            model.BaslikEn ??= string.Empty;
+            model.BaslikAr ??= string.Empty;
+            model.AltBaslikEn ??= string.Empty;
+            model.AltBaslikAr ??= string.Empty;
+            model.AciklamaEn ??= string.Empty;
+            model.AciklamaAr ??= string.Empty;
+            model.ButonMetni ??= string.Empty;
+            model.ButonMetniEn ??= string.Empty;
+            model.ButonMetniAr ??= string.Empty;
+
+            ModelState.Remove(nameof(model.BaslikEn));
+            ModelState.Remove(nameof(model.BaslikAr));
+            ModelState.Remove(nameof(model.AltBaslikEn));
+            ModelState.Remove(nameof(model.AltBaslikAr));
+            ModelState.Remove(nameof(model.AciklamaEn));
+            ModelState.Remove(nameof(model.AciklamaAr));
+            ModelState.Remove(nameof(model.ButonMetni));
+            ModelState.Remove(nameof(model.ButonMetniEn));
+            ModelState.Remove(nameof(model.ButonMetniAr));
+            ModelState.Remove(nameof(model.LocalizedBaslik));
+            ModelState.Remove(nameof(model.LocalizedAltBaslik));
+            ModelState.Remove(nameof(model.LocalizedAciklama));
+            ModelState.Remove(nameof(model.LocalizedButonMetni));
+
             if (!ModelState.IsValid)
                 return View(model);
 
             if (model.Tur == "Video" && Video == null && string.IsNullOrWhiteSpace(model.VideoUrl))
             {
-                ModelState.AddModelError("Video", "Video tipinde slayt için video yüklemeniz veya video URL'si girmeniz gerekir.");
+                ModelState.AddModelError("Video", "Video tipinde slayt iÃ§in video yÃ¼klemeniz veya video URL'si girmeniz gerekir.");
                 return View(model);
             }
 
             if (model.Tur == "Resim" && Resim == null && string.IsNullOrWhiteSpace(model.ResimUrl))
             {
-                ModelState.AddModelError("Resim", "Resim tipinde slayt için görsel yüklemeniz veya görsel URL'si girmeniz gerekir.");
+                ModelState.AddModelError("Resim", "Resim tipinde slayt iÃ§in gÃ¶rsel yÃ¼klemeniz veya gÃ¶rsel URL'si girmeniz gerekir.");
                 return View(model);
             }
 
@@ -77,7 +101,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             _db.Slaytlar.Add(model);
             await _db.SaveChangesAsync();
 
-            TempData["Basari"] = "Slayt başarıyla eklendi.";
+            TempData["Basari"] = _localizer["Admin_IslemBasarili"].Value;
             return RedirectToAction(nameof(Index));
         }
 
@@ -86,7 +110,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var slayt = await _db.Slaytlar.FindAsync(id);
             if (slayt == null)
             {
-                TempData["Hata"] = "Slayt bulunamadı.";
+                TempData["Hata"] = _localizer["Admin_Sonuc_bulunamadi"].Value;
                 return RedirectToAction(nameof(Index));
             }
             return View(slayt);
@@ -101,9 +125,33 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var slayt = await _db.Slaytlar.FindAsync(id);
             if (slayt == null)
             {
-                TempData["Hata"] = "Slayt bulunamadı.";
+                TempData["Hata"] = _localizer["Admin_Sonuc_bulunamadi"].Value;
                 return RedirectToAction(nameof(Index));
             }
+
+            model.BaslikEn ??= string.Empty;
+            model.BaslikAr ??= string.Empty;
+            model.AltBaslikEn ??= string.Empty;
+            model.AltBaslikAr ??= string.Empty;
+            model.AciklamaEn ??= string.Empty;
+            model.AciklamaAr ??= string.Empty;
+            model.ButonMetni ??= string.Empty;
+            model.ButonMetniEn ??= string.Empty;
+            model.ButonMetniAr ??= string.Empty;
+
+            ModelState.Remove(nameof(model.BaslikEn));
+            ModelState.Remove(nameof(model.BaslikAr));
+            ModelState.Remove(nameof(model.AltBaslikEn));
+            ModelState.Remove(nameof(model.AltBaslikAr));
+            ModelState.Remove(nameof(model.AciklamaEn));
+            ModelState.Remove(nameof(model.AciklamaAr));
+            ModelState.Remove(nameof(model.ButonMetni));
+            ModelState.Remove(nameof(model.ButonMetniEn));
+            ModelState.Remove(nameof(model.ButonMetniAr));
+            ModelState.Remove(nameof(model.LocalizedBaslik));
+            ModelState.Remove(nameof(model.LocalizedAltBaslik));
+            ModelState.Remove(nameof(model.LocalizedAciklama));
+            ModelState.Remove(nameof(model.LocalizedButonMetni));
 
             if (!ModelState.IsValid)
                 return View(slayt);
@@ -163,7 +211,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _db.SaveChangesAsync();
 
-            TempData["Basari"] = "Slayt başarıyla güncellendi.";
+            TempData["Basari"] = _localizer["Admin_IslemBasarili"].Value;
             return RedirectToAction(nameof(Index));
         }
 
@@ -176,7 +224,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 slayt.AktifMi = !slayt.AktifMi;
                 await _db.SaveChangesAsync();
-                TempData["Basari"] = slayt.AktifMi ? "Slayt aktif edildi." : "Slayt pasif edildi.";
+                TempData["Basari"] = slayt.AktifMi ? "Slide activated." : "Slide deactivated.";
             }
             return RedirectToAction(nameof(Index));
         }
@@ -188,7 +236,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var jsonPath = System.IO.Path.Combine(_env.ContentRootPath, "App_Data", "home-page-settings.json");
             if (!System.IO.File.Exists(jsonPath))
             {
-                TempData["Hata"] = "JSON dosyası bulunamadı.";
+                TempData["Hata"] = _localizer["Admin_Sonuc_bulunamadi"].Value;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -231,7 +279,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             await _db.SaveChangesAsync();
-            TempData["Basari"] = "JSON'dan " + (sira - 1) + " slayt içe aktarıldı.";
+            TempData["Basari"] = _localizer["Admin_IslemBasarili"] + (sira - 1) + " slayt iÃ§e aktarÄ±ldÄ±.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -242,13 +290,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var slayt = await _db.Slaytlar.FindAsync(id);
             if (slayt == null)
             {
-                return Json(new { success = false, message = "Slayt bulunamadı." });
+                return Json(new { success = false, message = "Slayt bulunamadÄ±." });
             }
 
             var totalCount = await _db.Slaytlar.CountAsync();
             if (totalCount <= 1)
             {
-                return Json(new { success = false, message = "En az 1 slayt kalmalıdır. Tüm slaytları silemezsiniz." });
+                return Json(new { success = false, message = "En az 1 slayt kalmalÄ±dÄ±r. TÃ¼m slaytlarÄ± silemezsiniz." });
             }
 
             if (!string.IsNullOrEmpty(slayt.ResimUrl))
@@ -319,3 +367,5 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 }
+
+

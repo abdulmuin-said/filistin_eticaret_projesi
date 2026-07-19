@@ -1,0 +1,143 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - text:          +                    
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "7ANRPS48 لوحة التحكم" [ref=e5] [cursor=pointer]:
+          - /url: /Admin/Home
+          - img "7ANRPS48" [ref=e6]
+        - generic [ref=e7]: لوحة التحكم
+      - navigation "القائمة الرئيسية للإدارة" [ref=e8]:
+        - link " لوحة البيانات" [ref=e9] [cursor=pointer]:
+          - /url: /Admin/Home
+          - generic [ref=e10]: 
+          - text: لوحة البيانات
+        - generic [ref=e11]:
+          - button " إدارة الطلبات" [ref=e12] [cursor=pointer]:
+            - generic [ref=e13]: 
+            - text: إدارة الطلبات
+          - text:      
+        - generic [ref=e14]:
+          - button " إدارة الطلبات" [ref=e15] [cursor=pointer]:
+            - generic [ref=e16]: 
+            - text: إدارة الطلبات
+          - text:  +  
+        - generic [ref=e17]:
+          - button " محتوى المتجر" [ref=e18] [cursor=pointer]:
+            - generic [ref=e19]: 
+            - text: محتوى المتجر
+          - text:        
+        - link " الأعضاء" [ref=e20] [cursor=pointer]:
+          - /url: /Admin/Kullanici
+          - generic [ref=e21]: 
+          - text: الأعضاء
+        - link " الموظفون" [ref=e22] [cursor=pointer]:
+          - /url: /Admin/Personel
+          - generic [ref=e23]: 
+          - text: الموظفون
+        - link " تجار الجملة" [ref=e24] [cursor=pointer]:
+          - /url: /Admin/Toptanci
+          - generic [ref=e25]: 
+          - text: تجار الجملة
+        - link " مجموعات الجملة" [ref=e26] [cursor=pointer]:
+          - /url: /Admin/Toptanci/UrunGruplari
+          - generic [ref=e27]: 
+          - text: مجموعات الجملة
+        - generic [ref=e28]:
+          - button " التقارير" [ref=e29] [cursor=pointer]:
+            - generic [ref=e30]: 
+            - text: التقارير
+          - text:  
+        - link " الحسابات البنكية" [ref=e31] [cursor=pointer]:
+          - /url: /Admin/Bankalar
+          - generic [ref=e32]: 
+          - text: الحسابات البنكية
+        - link " الإعدادات" [ref=e33] [cursor=pointer]:
+          - /url: /Admin/Ayarlar
+          - generic [ref=e34]: 
+          - text: الإعدادات
+      - generic [ref=e35]:
+        - text: 
+        - generic [ref=e36]:
+          - generic [ref=e37]: 
+          - link "العربية" [ref=e39] [cursor=pointer]:
+            - /url: /Dil/Degistir?culture=ar&returnUrl=%2FAdmin%2FSlayt
+          - link "English" [ref=e40] [cursor=pointer]:
+            - /url: /Dil/Degistir?culture=en&returnUrl=%2FAdmin%2FSlayt
+        - text: 
+        - generic [ref=e41]:
+          - button "7ANRPS48 Admin Admin 7" [ref=e42] [cursor=pointer]:
+            - generic [ref=e43]:
+              - strong [ref=e44]: 7ANRPS48 Admin
+              - text: Admin
+            - generic [ref=e45]: "7"
+          - text:  
+    - generic [ref=e46]:
+      - main [ref=e47]:
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - generic [ref=e50]:
+              - heading "إدارة الشرائح" [level=1] [ref=e51]
+              - paragraph [ref=e52]: إدارة شرائح سلايدر الصفحة الرئيسية. يمكنك إضافة شرائح صور أو فيديو.
+            - link "+ إضافة شريحة جديدة" [ref=e54] [cursor=pointer]:
+              - /url: /Admin/Slayt/Ekle
+              - generic [ref=e55]: +
+              - text: إضافة شريحة جديدة
+          - generic [ref=e56]:
+            - generic [ref=e57]:
+              - heading " قائمة الشرائح" [level=3] [ref=e58]:
+                - generic [ref=e59]: 
+                - text: قائمة الشرائح
+              - paragraph [ref=e60]: اسحب الشرائح لتغيير الترتيب.
+            - table [ref=e63]:
+              - rowgroup [ref=e64]:
+                - row [ref=e65]:
+                  - columnheader "الترتيب" [ref=e66]
+                  - columnheader "معاينة" [ref=e67]
+                  - columnheader "العنوان" [ref=e68]
+                  - columnheader "العنوان الفرعي" [ref=e69]
+                  - columnheader "النوع" [ref=e70]
+                  - columnheader "الحالة" [ref=e71]
+                  - columnheader "الإجراءات" [ref=e72]
+              - rowgroup [ref=e73]:
+                - row [ref=e74]:
+                  - cell " 1" [ref=e75]:
+                    - generic [ref=e76]: 
+                    - generic [ref=e77]: "1"
+                  - cell "" [ref=e78]
+                  - cell "تسوق أناقة الحياة اليومية اكتشف مجموعة مختارة بعناية من الأثاث والعطور والبقالة ومنتجات الجمال والأزياء والإلكترونيات وأثاث المنزل." [ref=e81]:
+                    - strong [ref=e82]: تسوق أناقة الحياة اليومية
+                    - generic [ref=e83]: اكتشف مجموعة مختارة بعناية من الأثاث والعطور والبقالة ومنتجات الجمال والأزياء والإلكترونيات وأثاث المنزل.
+                  - cell "كل ما تحتاجه لحياة أكثر أناقة في مكان واحد" [ref=e84]
+                  - cell " الصورة" [ref=e85]:
+                    - generic [ref=e86]:
+                      - generic [ref=e87]: 
+                      - text: الصورة
+                  - cell "نشط" [ref=e88]
+                  - cell [ref=e90]:
+                    - button "" [ref=e92] [cursor=pointer]
+                    - link "" [ref=e94] [cursor=pointer]:
+                      - /url: /Admin/Slayt/Duzenle/10
+                    - button "" [ref=e96] [cursor=pointer]
+                - row [ref=e98]:
+                  - cell " 2" [ref=e99]:
+                    - generic [ref=e100]: 
+                    - generic [ref=e101]: "2"
+                  - cell [ref=e102]:
+                    - img "أناقة طبيعية بلمسة هادئة" [ref=e103]
+                  - cell "أناقة طبيعية بلمسة هادئة اكتشف منتجات طبيعية مختارة بعناية تجمع بين الجودة الراقية والتصميم الأنيق، لتمنح يومك لمسة مميزة وبسيطة." [ref=e104]:
+                    - strong [ref=e105]: أناقة طبيعية بلمسة هادئة
+                    - generic [ref=e106]: اكتشف منتجات طبيعية مختارة بعناية تجمع بين الجودة الراقية والتصميم الأنيق، لتمنح يومك لمسة مميزة وبسيطة.
+                  - cell "منتجات مختارة بعناية لحياة أكثر جمالًا وهدوءًا" [ref=e107]
+                  - cell " الصورة" [ref=e108]:
+                    - generic [ref=e109]:
+                      - generic [ref=e110]: 
+                      - text: الصورة
+                  - cell "نشط" [ref=e111]
+                  - cell [ref=e113]:
+                    - button "" [ref=e115] [cursor=pointer]
+                    - link "" [ref=e117] [cursor=pointer]:
+                      - /url: /Admin/Slayt/Duzenle/15
+                    - button "" [ref=e119] [cursor=pointer]
+      - contentinfo [ref=e121]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.
+  - text:  

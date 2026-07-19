@@ -1,10 +1,10 @@
-﻿@inject IStringLocalizer<SharedResource> Localizer
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["OrderReceived"];
 }
 
 <div class="container mx-auto px-4 py-16 max-w-2xl">
-    <!-- BaÅŸarÄ± Ä°konu -->
+    <!-- Başarı İkonu -->
     <div class="text-center mb-10">
         <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[#e2e6b3] mb-6">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -17,7 +17,7 @@
         </p>
     </div>
 
-    <!-- SipariÅŸ KartÄ± -->
+    <!-- Sipariş Kartı -->
     <div class="bg-white border border-brand-border rounded-lg overflow-hidden mb-8">
         <div class="bg-brand-cream px-6 py-4 flex items-center justify-between">
             <div>
@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <!-- SÃ¼reÃ§ AdÄ±mlarÄ± -->
+    <!-- Süreç Adımları -->
     <div class="grid grid-cols-3 gap-4 mb-10">
         <div class="text-center bg-white border border-brand-border rounded-lg p-4">
             <div class="w-10 h-10 rounded-full bg-brand-olive text-white flex items-center justify-center text-sm font-semibold mx-auto mb-3">1</div>
@@ -61,21 +61,21 @@
 
     <!-- Butonlar -->
     <div class="flex flex-col sm:flex-row gap-3">
-        <a href="/Profil/Siparislerim"
+        <a href="/profile/orderslerim"
            class="flex-1 bg-brand-olive text-white text-center text-xs tracking-widest uppercase py-3.5 rounded hover:bg-[#1c2001] transition-colors">
             <i class="fas fa-box mr-2 text-[10px]"></i>@Localizer["TrackOrder"]
         </a>
-        <a href="/Urun"
+        <a href="/products"
            class="flex-1 border border-brand-olive text-brand-olive text-center text-xs tracking-widest uppercase py-3.5 rounded hover:bg-brand-olive hover:text-white transition-colors">
             <i class="fas fa-shopping-bag mr-2 text-[10px]"></i>@Localizer["ContinueShopping"]
         </a>
     </div>
 
-    <!-- Destek BaÄŸlantÄ±larÄ± -->
+    <!-- Destek Bağlantıları -->
     <div class="text-center mt-8 pt-6 border-t border-brand-border">
         <p class="text-xs text-brand-mutedtext mb-3">@Localizer["HaveQuestions"]</p>
         <div class="flex justify-center gap-6">
-            <a href="/Kurumsal/Iletisim" class="text-xs text-brand-gold hover:text-brand-olive transition-colors">
+            <a href="/pages/Iletisim" class="text-xs text-brand-gold hover:text-brand-olive transition-colors">
                 <i class="fas fa-headset mr-1"></i>@Localizer["ContactUs"]
             </a>
             <a href="/" class="text-xs text-brand-gold hover:text-brand-olive transition-colors">

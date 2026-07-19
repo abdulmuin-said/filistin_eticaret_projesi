@@ -122,12 +122,12 @@
                 }
             </a>
 
-            <!-- Desktop Nav Right Side: Search + Account/Favorites/Cart -->
+            <!-- Desktop Nav Right Side: Search + Account/favoritestes/Cart -->
             <div class="absolute right-4 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-4 text-brand-darktext">
 
                 <!-- Desktop Search Bar (inline, replaces button when active) -->
                 <div id="desktopSearchBar" class="hidden items-center">
-                    <form action="/Urun" method="get" class="relative flex items-center">
+                    <form action="/products" method="get" class="relative flex items-center">
                         <input type="text" name="s" id="desktopSearchInput" placeholder="@Localizer["SearchProducts"]" autocomplete="off"
                                class="w-[260px] bg-white border border-brand-border rounded-full px-4 pr-9 py-2 text-sm text-brand-darktext placeholder-[] focus:outline-none focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold shadow-md" />
                         <button type="submit" aria-label="@Localizer["Search"]" class="absolute right-3 top-1/2 -translate-y-1/2 text-brand-mutedtext hover:text-brand-gold transition-colors">
@@ -161,24 +161,24 @@
                 <!-- Account -->
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <a href="/Profil" aria-label="@Localizer["MyAccount"]" title="@Localizer["MyAccount"]" class="hover:text-brand-gold transition-colors">
+                    <a href="/profile" aria-label="@Localizer["MyAccount"]" title="@Localizer["MyAccount"]" class="hover:text-brand-gold transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                     </a>
                 }
                 else
                 {
-                    <a href="/Hesap/GirisYap" aria-label="@Localizer["Login"]" title="@Localizer["Login"]" class="hover:text-brand-gold transition-colors">
+                    <a href="/account/GirisYap" aria-label="@Localizer["Login"]" title="@Localizer["Login"]" class="hover:text-brand-gold transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                     </a>
                 }
 
                 <!-- Favoriler -->
-                <a href="/Favori" aria-label="@Localizer["Favorites"]" class="hover:text-red-500 transition-colors">
+                <a href="/favorites" aria-label="@Localizer["Favorites"]" class="hover:text-red-500 transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
                 </a>
 
                 <!-- Sepet -->
-                <a href="/Sepet" aria-label="@Localizer["Cart"]" class="relative hover:text-brand-gold transition-colors">
+                <a href="/cart" aria-label="@Localizer["Cart"]" class="relative hover:text-brand-gold transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                     <span id="cartItemCount" class="absolute -top-1 -end-2 bg-brand-gold text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center transition-transform duration-300">@sepetCount</span>
                 </a>
@@ -209,25 +209,25 @@
                 </div>
             </div>
 
-            <!-- Mobile Right: Account/Favorites/Cart -->
+            <!-- Mobile Right: Account/favoritestes/Cart -->
             <div id="mobileIcons" class="absolute right-3 top-[calc(50%+3px)] -translate-y-1/2 flex md:hidden items-center gap-1 text-brand-darktext sm:right-4 sm:gap-1.5">
 
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <a href="/Profil" aria-label="@Localizer["MyAccount"]" title="@Localizer["MyAccount"]" class="flex h-11 w-11 items-center justify-center hover:text-brand-gold rounded-lg transition-colors">
+                    <a href="/profile" aria-label="@Localizer["MyAccount"]" title="@Localizer["MyAccount"]" class="flex h-11 w-11 items-center justify-center hover:text-brand-gold rounded-lg transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                     </a>
                 }
                 else
                 {
-                    <a href="/Hesap/GirisYap" aria-label="@Localizer["Login"]" title="@Localizer["Login"]" class="flex h-11 w-11 items-center justify-center hover:text-brand-gold rounded-lg transition-colors">
+                    <a href="/account/GirisYap" aria-label="@Localizer["Login"]" title="@Localizer["Login"]" class="flex h-11 w-11 items-center justify-center hover:text-brand-gold rounded-lg transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                     </a>
                 }
-                <a href="/Favori" aria-label="@Localizer["Favorites"]" class="flex h-11 w-11 items-center justify-center hover:text-red-500 rounded-lg transition-colors">
+                <a href="/favorites" aria-label="@Localizer["Favorites"]" class="flex h-11 w-11 items-center justify-center hover:text-red-500 rounded-lg transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
                 </a>
-                <a href="/Sepet" aria-label="@Localizer["Cart"]" class="relative flex h-11 w-11 items-center justify-center hover:text-brand-gold rounded-lg transition-colors">
+                <a href="/cart" aria-label="@Localizer["Cart"]" class="relative flex h-11 w-11 items-center justify-center hover:text-brand-gold rounded-lg transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                     <span id="cartItemCountMobile" class="absolute -top-1 -end-2 bg-brand-gold text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">@sepetCount</span>
                 </a>
@@ -245,94 +245,74 @@
                             : Localizer["ExploreCollectionProducts"];
 
                         <li class="relative group cursor-pointer hover:text-brand-darktext transition-colors py-2" data-category-menu-item>
-                            <a href="/Urun?k=@kategori.Id" class="flex items-center gap-1 whitespace-nowrap">
+                            <a href="/products?k=@kategori.Id" class="flex items-center gap-1 whitespace-nowrap">
                                 @kategori.LocalizedAd
                                 <svg class="w-3 h-3 opacity-70 group-hover:rotate-180 transition-transform duration-300 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19.5 8.25l-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             </a>
 
                             <!-- Geniş kategori menüsü ve önizleme -->
                             <div class="absolute left-1/2 top-full pt-3 w-[min(820px,calc(100vw-32px))] z-[9999]" style="transform:translateX(-50%)" data-category-dropdown>
-                                <div class="bg-brand-warmcream border border-[#c9b58a]/60 shadow-xl rounded-sm p-5 ring-1 ring-[#313511]/5">
-                                    <div class="mb-4 flex items-center justify-between border-b border-brand-darkborder pb-3">
+                                <div class="bg-brand-warmcream border border-[#c9b58a]/60 shadow-xl rounded-sm p-6 ring-1 ring-[#313511]/5">
+                                    <div class="grid gap-6 lg:grid-cols-[1.35fr_0.65fr]">
+                                        
+                                        <!-- Sol Kısım: Menüler / Alt Kategoriler -->
                                         <div>
-                                            <div class="font-serif text-lg normal-case tracking-normal text-brand-olive">@kategori.LocalizedAd</div>
-                                            <div class="mt-1 text-[11px] font-light normal-case tracking-normal text-brand-mutedtext">@(altKategoriler.Any() ? Localizer["Subcategories"] : Localizer["CategoryDetail"])</div>
-                                        </div>
-                                        <a href="/Urun?k=@kategori.Id" class="text-[11px] font-medium tracking-widest text-brand-mutedtext hover:text-brand-olive">@Localizer["ViewAll"]</a>
-                                    </div>
-
-                                    @if (altKategoriler.Any())
-                                    {
-                                        <div class="grid gap-5 lg:grid-cols-[1.35fr_0.65fr]">
-                                            <div class="grid grid-cols-2 gap-x-5 gap-y-1 sm:grid-cols-3">
-                                                @foreach (var alt in altKategoriler)
-                                                {
-                                                    var altGorsel = GetCategoryMenuImage(alt);
-                                                    <a href="/Urun?k=@alt.Id"
-                                                       class="flex items-center gap-3 border-b border-[#dfd3ba]/70 px-1 py-2 text-left text-[11px] leading-snug text-brand-mutedtext transition-colors hover:text-brand-olive">
-                                                        <span class="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden bg-brand-warmcream text-brand-gold">
-                                                            @if (!string.IsNullOrWhiteSpace(altGorsel))
-                                                            {
-                                                                <img src="@altGorsel" alt="@alt.LocalizedAd" class="h-full w-full object-cover" loading="lazy" decoding="async" />
-                                                            }
-                                                            else
-                                                            {
-                                                                <i class="fas fa-layer-group text-sm"></i>
-                                                            }
-                                                        </span>
-                                                        <span>@alt.LocalizedAd</span>
-                                                    </a>
-                                                }
-                                             </div>
-                                             <!-- Kategori önizleme paneli -->
-                                             <div class="hidden sm:block overflow-hidden rounded-sm">
-                                                 @if (!string.IsNullOrWhiteSpace(kategoriPreviewGorsel))
-                                                 {
-                                                     <img src="@kategoriPreviewGorsel" alt="@kategori.LocalizedAd" class="h-full w-full object-cover" loading="lazy" decoding="async" />
-                                                 }
-                                                 else
-                                                 {
-                                                     <div class="flex min-h-[150px] items-center justify-center bg-gradient-to-br from-brand-olive via-[#42471a] to-brand-gold text-white">
-                                                         <i class="fas fa-store text-3xl opacity-90"></i>
-                                                     </div>
-                                                 }
-                                                 <div class="p-4">
-                                                    <div class="font-serif text-sm text-brand-olive">@kategori.LocalizedAd</div>
-                                                    <p class="mt-1 text-[11px] leading-relaxed text-brand-mutedtext">@kategoriPreviewMetin</p>
+                                            <div class="mb-5 flex items-center justify-between border-b border-brand-darkborder pb-3">
+                                                <div>
+                                                    <div class="font-serif text-xl normal-case tracking-normal text-brand-olive">@kategori.LocalizedAd</div>
+                                                    <div class="mt-1 text-xs font-light normal-case tracking-wide text-brand-mutedtext">
+                                                        @(altKategoriler.Any() ? Localizer["Subcategories"] : Localizer["CategoryDetail"])
+                                                    </div>
                                                 </div>
+                                                <a href="/products?k=@kategori.Id" class="text-[11px] font-medium uppercase tracking-widest text-brand-gold hover:text-brand-olive transition-colors">@Localizer["ViewAll"]</a>
+                                            </div>
+
+                                            @if (altKategoriler.Any())
+                                            {
+                                                <div class="grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-3">
+                                                    @foreach (var alt in altKategoriler)
+                                                    {
+                                                        <a href="/products?k=@alt.Id" class="flex items-center gap-3 group/item py-2 transition-colors">
+                                                            <span class="text-sm font-medium normal-case tracking-normal text-brand-mutedtext group-hover/item:text-brand-olive">@alt.LocalizedAd</span>
+                                                        </a>
+                                                    }
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="normal-case tracking-normal pt-2">
+                                                    <p class="text-sm leading-6 text-brand-mutedtext max-w-md">@kategoriPreviewMetin</p>
+                                                    <a href="/products?k=@kategori.Id" class="mt-6 inline-flex w-fit items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-brand-olive transition-colors hover:text-brand-gold">
+                                                        @Localizer["ExploreCategory"]
+                                                        <i class="fas fa-arrow-right text-[10px] rtl:rotate-180"></i>
+                                                    </a>
+                                                </div>
+                                            }
+                                        </div>
+
+                                        <!-- Sağ Kısım: Görsel Önizleme -->
+                                        <div class="hidden sm:block overflow-hidden rounded-lg bg-canvasia-sand relative group/preview">
+                                            @if (!string.IsNullOrWhiteSpace(kategoriPreviewGorsel))
+                                            {
+                                                <img src="@kategoriPreviewGorsel" alt="@kategori.LocalizedAd" class="h-full w-full object-cover transition-transform duration-700 group-hover/preview:scale-105" loading="lazy" decoding="async" />
+                                            }
+                                            else
+                                            {
+                                                <div class="flex h-full min-h-[220px] items-center justify-center bg-gradient-to-br from-brand-olive via-[#42471a] to-brand-gold text-white">
+                                                    <i class="fas fa-store text-4xl opacity-50"></i>
+                                                </div>
+                                            }
+                                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover/preview:opacity-100 flex items-end p-5">
+                                                <a href="/products?k=@kategori.Id" class="text-white text-sm font-medium tracking-wide">@Localizer["ExploreCategory"]</a>
                                             </div>
                                         </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="grid gap-5 lg:grid-cols-[1.35fr_0.65fr]">
-                                            <div class="normal-case tracking-normal">
-                                                <h4 class="font-serif text-xl text-brand-olive">@kategori.LocalizedAd</h4>
-                                                <p class="mt-2 text-sm leading-6 text-brand-mutedtext">@kategoriPreviewMetin</p>
-                                                <a href="/Urun?k=@kategori.Id" class="mt-4 inline-flex w-fit items-center gap-2 border-b border-brand-olive pb-1 text-[11px] font-medium uppercase tracking-widest text-brand-olive transition-colors hover:text-brand-olive">
-                                                    @Localizer["ExploreCategory"]
-                                                    <i class="fas fa-arrow-right text-[10px]"></i>
-                                                </a>
-                                             </div>
-                                             <div class="hidden sm:block overflow-hidden rounded-sm">
-                                                 @if (!string.IsNullOrWhiteSpace(kategoriPreviewGorsel))
-                                                 {
-                                                     <img src="@kategoriPreviewGorsel" alt="@kategori.LocalizedAd" class="h-full w-full object-cover" loading="lazy" decoding="async" />
-                                                 }
-                                                 else
-                                                 {
-                                                     <div class="flex min-h-[150px] items-center justify-center bg-gradient-to-br from-brand-olive via-[#42471a] to-brand-gold text-white">
-                                                         <i class="fas fa-store text-3xl opacity-90"></i>
-                                                     </div>
-                                                 }
-                                             </div>
-                                         </div>
-                                    }
+
+                                    </div>
                                 </div>
                             </div>
                         </li>
                     }
-                    <li class="cursor-pointer hover:text-brand-darktext transition-colors py-2 whitespace-nowrap"><a href="/Kurumsal/Iletisim">@Localizer["Contact"]</a></li>
+                    <li class="cursor-pointer hover:text-brand-darktext transition-colors py-2 whitespace-nowrap"><a href="/pages/Iletisim">@Localizer["Contact"]</a></li>
                 </ul>
             </nav>
         </div>
@@ -345,7 +325,7 @@
         })
 
         <!-- Mobile Search Bar (full width overlay) -->
-        <form id="mobileSearchBar" action="/Urun" method="get" style="display:none;" class="absolute left-0 right-0 top-0 z-[95] bg-brand-cream px-4 py-3 flex items-center gap-3 border-b border-brand-border md:hidden">
+        <form id="mobileSearchBar" action="/products" method="get" style="display:none;" class="absolute left-0 right-0 top-0 z-[95] bg-brand-cream px-4 py-3 flex items-center gap-3 border-b border-brand-border md:hidden">
             <button type="button" id="mobileSearchCloseBtn" class="shrink-0 text-brand-mutedtext hover:text-brand-olive">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path></svg>
             </button>

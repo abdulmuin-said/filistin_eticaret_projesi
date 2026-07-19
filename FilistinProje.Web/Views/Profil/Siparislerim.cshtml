@@ -1,10 +1,10 @@
-﻿@model IEnumerable<FilistinProje.Core.Varliklar.Siparis>
+@model IEnumerable<FilistinProje.Core.Varliklar.Siparis>
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["MyOrders"];
     var siteSettings = SiteSettingsService.GetSettings();
-    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "â‚ª" : siteSettings.ParaBirimi;
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
     var aktifFiltre = Context.Request.Query["filtre"].FirstOrDefault() ?? "all";
     var siparisler = Model.OrderByDescending(x => x.OlusturulmaTarihi).ToList();
     var filtreliSiparisler = aktifFiltre switch
@@ -58,7 +58,7 @@
     <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-brand-mutedtext">
         <a href="/" class="hover:text-brand-olive transition-colors">@Localizer["HomePage"]</a>
         <span>/</span>
-        <a href="/Profil" class="hover:text-brand-olive transition-colors">@Localizer["MyAccount"]</a>
+        <a href="/profile" class="hover:text-brand-olive transition-colors">@Localizer["MyAccount"]</a>
         <span>/</span>
         <span class="text-brand-darktext font-medium">@Localizer["MyOrders"]</span>
     </div>
@@ -67,27 +67,27 @@
 <div class="container mx-auto px-4 py-10">
     <div class="flex flex-col lg:flex-row gap-8">
 
-        <!-- Yan MenÃ¼ -->
+        <!-- Yan Menü -->
         <aside class="lg:w-56 flex-shrink-0">
             <div class="bg-white border border-brand-border rounded-lg overflow-hidden">
                 <div class="bg-brand-olive p-4 text-center">
                     <p class="text-white text-sm font-medium">@Localizer["MyAccount"]</p>
                 </div>
                 <nav class="p-2">
-                    <a href="/Profil" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
+                    <a href="/profile" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
                         <i class="fas fa-user w-4"></i> @Localizer["Overview"]
                     </a>
-                    <a href="/Profil/Siparislerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-olive bg-brand-warmcream font-semibold mb-1">
+                    <a href="/profile/orderslerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-olive bg-brand-warmcream font-semibold mb-1">
                         <i class="fas fa-box w-4"></i> @Localizer["MyOrders"]
                     </a>
-                    <a href="/Profil/Adreslerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
+                    <a href="/profile/Adreslerim" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
                         <i class="fas fa-location-dot w-4"></i> @Localizer["MyAddresses"]
                     </a>
-                    <a href="/Favori" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
+                    <a href="/favorites" class="flex items-center gap-3 px-3 py-2.5 rounded text-sm text-brand-mutedtext hover:bg-brand-warmcream transition-colors mb-1">
                         <i class="fas fa-heart w-4"></i> @Localizer["MyFavorites"]
                     </a>
                     <hr class="border-brand-border my-2" />
-                    <form action="/Hesap/CikisYap" method="post" class="m-0">
+                    <form action="/account/CikisYap" method="post" class="m-0">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded text-sm text-red-500 hover:bg-red-50 transition-colors text-left">
                             <i class="fas fa-right-from-bracket w-4"></i> @Localizer["Logout"]
@@ -97,14 +97,14 @@
             </div>
         </aside>
 
-        <!-- Ana Ä°Ã§erik -->
+        <!-- Ana İçerik -->
         <main class="flex-1 min-w-0">
             <div class="flex items-center justify-between mb-8">
                 <div>
                     <h1 class="font-serif text-3xl text-brand-olive">@Localizer["MyOrders"]</h1>
                     <p class="text-xs text-brand-mutedtext mt-1">@Localizer["OrderCount", Model.Count()]</p>
                 </div>
-                <a href="/Urun" class="border border-brand-olive text-brand-olive text-xs tracking-widest uppercase px-4 py-2 rounded hover:bg-brand-olive hover:text-white transition-colors">
+                <a href="/products" class="border border-brand-olive text-brand-olive text-xs tracking-widest uppercase px-4 py-2 rounded hover:bg-brand-olive hover:text-white transition-colors">
                     @Localizer["BackToShopping"]
                 </a>
             </div>
@@ -115,7 +115,7 @@
                     <i class="fas fa-basket-shopping fa-4x text-brand-border mb-6"></i>
                     <h3 class="font-serif text-2xl text-brand-olive mb-3">@(aktifFiltre == "all" ? Localizer["NoOrdersYet"] : Localizer["NoOrdersInFilter"])</h3>
                     <p class="text-sm text-brand-mutedtext mb-6 max-w-sm mx-auto">@Localizer["BrowseProductsToOrder"]</p>
-                    <a href="/Urun" class="inline-block bg-brand-olive text-white px-6 py-3 text-xs tracking-widest uppercase rounded-full hover:bg-[#1c2001] transition-colors">
+                    <a href="/products" class="inline-block bg-brand-olive text-white px-6 py-3 text-xs tracking-widest uppercase rounded-full hover:bg-[#1c2001] transition-colors">
                         @Localizer["BrowseProducts"]
                     </a>
                 </div>
@@ -153,7 +153,7 @@
                                             }
                                         </div>
                                         <div class="text-xs text-brand-mutedtext mt-0.5">
-                                            @item.OlusturulmaTarihi.ToString("dd MMMM yyyy") â€” @item.OlusturulmaTarihi.ToString("HH:mm")
+                                            @item.OlusturulmaTarihi.ToString("dd MMMM yyyy") — @item.OlusturulmaTarihi.ToString("HH:mm")
                                         </div>
                                     </div>
                                 </div>
@@ -165,7 +165,7 @@
                                         </span>
                                     }
                                     <span class="font-semibold text-brand-darktext">@item.ToplamTutar.ToString("N2") @currencySymbol</span>
-                                    <a href="/Profil/SiparisDetay/@item.Id"
+                                    <a href="/profile/ordersDetay/@item.Id"
                                        class="text-xs border border-brand-border px-3 py-1.5 rounded hover:bg-brand-warmcream text-brand-olive transition-colors whitespace-nowrap">
                                         @Localizer["Detail"] <i class="fas fa-chevron-right ml-1 text-[10px]"></i>
                                     </a>

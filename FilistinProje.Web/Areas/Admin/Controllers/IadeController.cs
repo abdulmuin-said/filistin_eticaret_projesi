@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FilistinProje.Data;
@@ -14,9 +14,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         private readonly KanvasDbContext _context;
 
-        public IadeController(KanvasDbContext context)
+        private readonly Microsoft.Extensions.Localization.IStringLocalizer<FilistinProje.Web.Resources.SharedResource> _localizer; public IadeController(KanvasDbContext context, Microsoft.Extensions.Localization.IStringLocalizer<FilistinProje.Web.Resources.SharedResource> localizer)
         {
             _context = context;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index()
@@ -57,7 +58,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (durum is < 1 or > 3)
             {
-                TempData["Hata"] = "Gecersiz iade durumu.";
+                TempData["Hata"] = _localizer["Admin_IslemHata"].Value;
                 return RedirectToAction(nameof(Detay), new { id });
             }
 
@@ -67,7 +68,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Detay), new { id });
             }
 
-            talep.Durum = durum; // 1: Onay, 2: Tamamlandı, 3: Red
+            talep.Durum = durum; // 1: Onay, 2: TamamlandÄ±, 3: Red
             talep.AdminNotu = adminNotu?.Trim();
 
             var siparis = talep.Siparis;
@@ -104,3 +105,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 }
+
+
+
+
+

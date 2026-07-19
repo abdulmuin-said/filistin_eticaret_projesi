@@ -1,4 +1,4 @@
-using FilistinProje.Core.Varliklar;
+﻿using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -60,7 +60,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             _context.Kuponlar.Add(model);
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{model.Kod} kuponu oluşturuldu.";
+            TempData["Mesaj"] = $"{model.Kod} kuponu oluÅŸturuldu.";
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -107,7 +107,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{kupon.Kod} kuponu güncellendi.";
+            TempData["Mesaj"] = $"{kupon.Kod} kuponu gÃ¼ncellendi.";
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -127,7 +127,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             TempData["Mesaj"] = kupon.AktifMi
                 ? $"{kupon.Kod} kuponu aktif edildi."
-                : $"{kupon.Kod} kuponu pasife alındı.";
+                : $"{kupon.Kod} kuponu pasife alÄ±ndÄ±.";
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -146,7 +146,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             kupon.AktifMi = false;
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{kupon.Kod} kuponu arşive alındı.";
+            TempData["Mesaj"] = $"{kupon.Kod} kuponu arÅŸive alÄ±ndÄ±.";
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -165,32 +165,32 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (model.Tip is not (0 or 1))
             {
-                ModelState.AddModelError(nameof(Kupon.Tip), "Geçerli bir indirim tipi seçin.");
+                ModelState.AddModelError(nameof(Kupon.Tip), "GeÃ§erli bir indirim tipi seÃ§in.");
             }
 
             if (model.Deger <= 0)
             {
-                ModelState.AddModelError(nameof(Kupon.Deger), "İndirim değeri sıfırdan büyük olmalıdır.");
+                ModelState.AddModelError(nameof(Kupon.Deger), "Ä°ndirim deÄŸeri sÄ±fÄ±rdan bÃ¼yÃ¼k olmalÄ±dÄ±r.");
             }
 
             if (model.Tip == 0 && model.Deger > 100)
             {
-                ModelState.AddModelError(nameof(Kupon.Deger), "Yüzde indirim 100'den büyük olamaz.");
+                ModelState.AddModelError(nameof(Kupon.Deger), "YÃ¼zde indirim 100'den bÃ¼yÃ¼k olamaz.");
             }
 
             if (model.MinSepetTutari < 0)
             {
-                ModelState.AddModelError(nameof(Kupon.MinSepetTutari), "Minimum sepet tutarı negatif olamaz.");
+                ModelState.AddModelError(nameof(Kupon.MinSepetTutari), "Minimum sepet tutarÄ± negatif olamaz.");
             }
 
             if (model.KullanimLimiti < 0)
             {
-                ModelState.AddModelError(nameof(Kupon.KullanimLimiti), "Kullanım limiti negatif olamaz. Sınırsız için 0 yazabilirsiniz.");
+                ModelState.AddModelError(nameof(Kupon.KullanimLimiti), "KullanÄ±m limiti negatif olamaz. SÄ±nÄ±rsÄ±z iÃ§in 0 yazabilirsiniz.");
             }
 
             if (model.SonKullanmaTarihi.Year < 2020)
             {
-                ModelState.AddModelError(nameof(Kupon.SonKullanmaTarihi), "Geçerli bir son kullanım tarihi seçin.");
+                ModelState.AddModelError(nameof(Kupon.SonKullanmaTarihi), "GeÃ§erli bir son kullanÄ±m tarihi seÃ§in.");
             }
 
             var duplicateExists = await _context.Kuponlar.AnyAsync(x =>
@@ -200,7 +200,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (duplicateExists)
             {
-                ModelState.AddModelError(nameof(Kupon.Kod), "Bu kupon kodu zaten kullanılıyor.");
+                ModelState.AddModelError(nameof(Kupon.Kod), "Bu kupon kodu zaten kullanÄ±lÄ±yor.");
             }
 
             return ModelState.IsValid;
@@ -235,3 +235,5 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 }
+
+

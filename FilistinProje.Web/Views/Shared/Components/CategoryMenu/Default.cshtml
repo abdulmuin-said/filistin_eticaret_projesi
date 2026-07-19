@@ -4,10 +4,10 @@
 <nav class="mg-nav">
     <div class="mg-nav__inner">
         <div class="mg-nav__links">
-            <a href="/Urun/Index" class="mg-nav__link">@Localizer["AllCollections"]</a>
+            <a href="/products" class="mg-nav__link">@Localizer["AllCollections"]</a>
             @foreach (var item in Model.Take(8))
             {
-                <a href="/Urun/Index?k=@item.Id" class="mg-nav__link">
+                <a href="/products?k=@item.Id" class="mg-nav__link">
                     @item.Ad
                 </a>
             }

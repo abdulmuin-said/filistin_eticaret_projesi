@@ -1,4 +1,4 @@
-using FilistinProje.Core.Varliklar;
+﻿using FilistinProje.Core.Varliklar;
 using FilistinProje.Core.DTOs;
 using FilistinProje.Data;
 using FilistinProje.Service.Helpers;
@@ -16,6 +16,7 @@ using Microsoft.Extensions.Localization;
 
 namespace FilistinProje.Web.Controllers
 {
+    [Route("products")]
     public class UrunController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
@@ -38,7 +39,8 @@ namespace FilistinProje.Web.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet("")]
+        [HttpGet("/Urun")]
         public async Task<IActionResult> Index(
             int? k,
             string? s,
@@ -274,9 +276,7 @@ namespace FilistinProje.Web.Controllers
                     .Sum(id => dogrudanUrunSayilari.GetValueOrDefault(id)));
         }
 
-        [HttpGet]
-        [EnableRateLimiting("general")]
-        public async Task<IActionResult> CanliAra(string? q)
+        [HttpGet("CanliAra")] [EnableRateLimiting("general")] public async Task<IActionResult> CanliAra(string? q)
         {
             if (string.IsNullOrWhiteSpace(q))
             {
@@ -296,7 +296,7 @@ namespace FilistinProje.Web.Controllers
 
             var culture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
             var siteSettings = _siteSettingsService.GetSettings();
-            var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
+            var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "â‚ª" : siteSettings.ParaBirimi;
 
             var baseQuery = _context.Urunler
                 .AsNoTracking()
@@ -341,8 +341,7 @@ namespace FilistinProje.Web.Controllers
             return Json(new { items = sonuclar, total = totalCount });
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Secenekler(int id)
+        [HttpGet("Secenekler/{id?}")] public async Task<IActionResult> Secenekler(int id)
         {
             var urun = await _context.Urunler
                 .AsNoTracking()
@@ -376,6 +375,8 @@ namespace FilistinProje.Web.Controllers
             return View(secenekler);
         }
 
+        [HttpGet("{id}")]
+        [HttpGet("/Urun/Detay/{id}")]
         public async Task<IActionResult> Detay(string? id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -441,13 +442,13 @@ namespace FilistinProje.Web.Controllers
 
                     if (affectedRows == 1)
                     {
-                        // ExecuteUpdate change tracker'ı güncellemez; yalnızca ekrandaki değer eşitlenir.
+                        // ExecuteUpdate change tracker'Ä± gÃ¼ncellemez; yalnÄ±zca ekrandaki deÄŸer eÅŸitlenir.
                         urun.GoruntulenmeSayisi++;
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Sayaç analitiktir; başarısızlığı ürün görüntülemeyi engellememelidir.
+                    // SayaÃ§ analitiktir; baÅŸarÄ±sÄ±zlÄ±ÄŸÄ± Ã¼rÃ¼n gÃ¶rÃ¼ntÃ¼lemeyi engellememelidir.
                     _logger.LogWarning(ex, "Urun goruntulenme sayaci artirilamadi. UrunId={UrunId}", urun.Id);
                 }
             }
@@ -509,7 +510,7 @@ namespace FilistinProje.Web.Controllers
             ViewBag.OrtalamaPuan = ortalamaPuan;
             ViewBag.YorumSayisi = yorumlar.Count;
 
-            // Benzer ürünler - aynı kategoriden, fiyatı gizli olmayan, silinmemiş/pasif olmayan
+            // Benzer Ã¼rÃ¼nler - aynÄ± kategoriden, fiyatÄ± gizli olmayan, silinmemiÅŸ/pasif olmayan
             var benzerUrunler = await _context.Urunler
                 .AsNoTracking()
                 .Where(x =>
@@ -545,13 +546,13 @@ namespace FilistinProje.Web.Controllers
                 })
                 .ToListAsync();
 
-            // Sonradan client tarafı için stok politikası ayıklaması (StoktaYokSatisIzni=true ise
-            // stokta olmayan ürünler de satışa açık olabilir — bu durumda kart göstermeye devam ediyoruz).
-            // Controller zaten default olarak `StoktaVarMi` olmayanları düşürür; ancak
-            // StoktaYokSatisIzni açıksa kartı göstermek için sitede filtreyi geç.
+            // Sonradan client tarafÄ± iÃ§in stok politikasÄ± ayÄ±klamasÄ± (StoktaYokSatisIzni=true ise
+            // stokta olmayan Ã¼rÃ¼nler de satÄ±ÅŸa aÃ§Ä±k olabilir â€” bu durumda kart gÃ¶stermeye devam ediyoruz).
+            // Controller zaten default olarak `StoktaVarMi` olmayanlarÄ± dÃ¼ÅŸÃ¼rÃ¼r; ancak
+            // StoktaYokSatisIzni aÃ§Ä±ksa kartÄ± gÃ¶stermek iÃ§in sitede filtreyi geÃ§.
             if (siteSettings.StoktaYokSatisIzni)
             {
-                // Tüm aktif ürünleri göster — kullanıcı kendi seçimiyle "Tükendi" rozeti görsün
+                // TÃ¼m aktif Ã¼rÃ¼nleri gÃ¶ster â€” kullanÄ±cÄ± kendi seÃ§imiyle "TÃ¼kendi" rozeti gÃ¶rsÃ¼n
             }
             else
             {
@@ -580,9 +581,7 @@ namespace FilistinProje.Web.Controllers
                 userAgent.Contains(marker, StringComparison.OrdinalIgnoreCase));
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> YorumYap([Bind("UrunId,Puan,YorumMetni,AdSoyad")] Yorum yorum)
+        [HttpPost("YorumYap")] [ValidateAntiForgeryToken] public async Task<IActionResult> YorumYap([Bind("UrunId,Puan,YorumMetni,AdSoyad")] Yorum yorum)
         {
             var urunVarMi = await _context.Urunler.AnyAsync(x => x.Id == yorum.UrunId && x.AktifMi && !x.SilindiMi);
             if (!urunVarMi)
@@ -716,3 +715,7 @@ namespace FilistinProje.Web.Controllers
         }
     }
 }
+
+
+
+

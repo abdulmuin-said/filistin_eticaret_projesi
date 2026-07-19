@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FilistinProje.Data;
 using System.Text.RegularExpressions;
@@ -64,7 +64,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                         Kullanci = e.UserName,
                         Ip = e.IpAddress,
                         Islem = e.EventType,
-                        Detay = MaskSensitiveText($"{e.Message} → {e.Target}")
+                        Detay = MaskSensitiveText($"{e.Message} â†’ {e.Target}")
                     }));
             }
 
@@ -83,7 +83,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     Kullanci = e.AppUserId?.Length > 8 ? e.AppUserId[..8] + "..." : e.MusteriAdSoyad,
                     Ip = "-",
                     Islem = $"#{e.SiparisNo}",
-                    Detay = $"{e.ToplamTutar:N2} ₪ - {e.Durum}"
+                    Detay = $"{e.ToplamTutar:N2} â‚ª - {e.Durum}"
                 }));
             }
 
@@ -153,3 +153,5 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 }
+
+

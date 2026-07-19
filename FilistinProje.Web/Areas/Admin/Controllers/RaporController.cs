@@ -788,7 +788,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         private static string Money(decimal value)
         {
-            return $"{value:N2} ₪";
+            return $"{value:N2} ?";
         }
 
         private void AddSummarySheet(ExcelPackage package, RaporIndexViewModel model)
@@ -1095,3 +1095,5 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 }
+
+

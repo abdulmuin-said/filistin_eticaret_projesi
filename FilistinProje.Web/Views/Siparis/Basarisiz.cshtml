@@ -1,4 +1,4 @@
-﻿@inject IStringLocalizer<SharedResource> Localizer
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["PaymentFailed"];
 }
@@ -25,10 +25,10 @@
         }
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="/Sepet" class="w-full sm:w-auto bg-brand-olive text-white px-8 py-3 text-xs tracking-widest uppercase rounded hover:bg-[#1c2001] transition-colors">
+            <a href="/cart" class="w-full sm:w-auto bg-brand-olive text-white px-8 py-3 text-xs tracking-widest uppercase rounded hover:bg-[#1c2001] transition-colors">
                 @Localizer["ReturnToCartAndRetry"]
             </a>
-            <a href="/Kurumsal/Iletisim" class="w-full sm:w-auto bg-white border border-brand-border text-brand-olive px-8 py-3 text-xs tracking-widest uppercase rounded hover:bg-brand-cream transition-colors">
+            <a href="/pages/Iletisim" class="w-full sm:w-auto bg-white border border-brand-border text-brand-olive px-8 py-3 text-xs tracking-widest uppercase rounded hover:bg-brand-cream transition-colors">
                 @Localizer["GetSupport"]
             </a>
         </div>

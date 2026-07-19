@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Localization;
+﻿using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FilistinProje.Web.Controllers
@@ -38,3 +38,5 @@ namespace FilistinProje.Web.Controllers
         }
     }
 }
+
+

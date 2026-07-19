@@ -630,7 +630,7 @@ document.addEventListener('keydown', function(event) {
                 formData.append('__RequestVerificationToken', token);
             }
 
-            fetch('/Sepet/Ekle', {
+            fetch('/cart/Ekle', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -645,7 +645,7 @@ document.addEventListener('keydown', function(event) {
                     window.showToast(quickAddAddedText, 'success');
 
                     // Sepet sayısını güncelle
-                    fetch('/Sepet/GetSepetSayisi')
+                    fetch('/cart/GetSepetSayisi')
                     .then(r => r.json())
                     .then(countData => {
                         const newCount = countData.count;
@@ -808,7 +808,7 @@ document.addEventListener('keydown', function(event) {
         document.getElementById('mobileSearchSubmit')?.addEventListener('click', function (e) {
             e.preventDefault();
             const term = document.getElementById('mobileSearchInput')?.value.trim() || '';
-            window.location.href = '/Urun' + (term ? '?s=' + encodeURIComponent(term) : '');
+            window.location.href = '/products' + (term ? '?s=' + encodeURIComponent(term) : '');
         });
 
         (function () {
@@ -861,7 +861,7 @@ document.addEventListener('keydown', function(event) {
                     const price = item.fiyat ? escapeHtml(item.fiyat) : '';
                     const image = item.gorsel ? `<img src="${escapeHtml(item.gorsel)}" alt="${title}" class="w-12 h-12 object-cover rounded" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.search-img-fallback').style.display='flex'">` : '';
                     const fallbackIcon = `<div class="w-12 h-12 rounded flex items-center justify-center search-img-fallback" style="${image ? 'display:none' : 'display:flex'}"><i class="fas fa-image text-brand-gold"></i></div>`;
-                    const url = item.slug ? '/Urun/Detay/' + encodeURIComponent(item.slug) + '-' + item.id : '/Urun/Detay/' + item.id;
+                    const url = item.slug ? '/products/' + encodeURIComponent(item.slug) + '-' + item.id : '/products/' + item.id;
                     let metaHtml = '';
                     if (brand) metaHtml += `<span class="text-[11px] text-brand-mutedtext px-1.5 py-0.5 rounded border border-brand-border">${brand}</span>`;
                     if (category) metaHtml += `<span class="text-[11px] text-brand-mutedtext px-1.5 py-0.5 rounded border border-brand-border">${category}</span>`;
@@ -892,7 +892,7 @@ document.addEventListener('keydown', function(event) {
                 const resultCountLabel = '<div class="text-[10px] uppercase tracking-widest text-brand-mutedtext px-2 pb-2">' + total + ' @Localizer["ResultsFound"]</div>';
                 const itemsHtml = renderItemsHtml(items);
                 const footer = total > 8
-                    ? `<a href="/Urun?s=${encodeURIComponent(term)}" class="block text-center text-xs text-brand-gold font-semibold py-2.5 border-t border-brand-border hover:bg-brand-warmcream transition-colors rounded-b-lg" role="option">@Localizer["ViewAllResults"] <i class="fas fa-arrow-right ml-1 text-[10px]"></i></a>`
+                    ? `<a href="/products?s=${encodeURIComponent(term)}" class="block text-center text-xs text-brand-gold font-semibold py-2.5 border-t border-brand-border hover:bg-brand-warmcream transition-colors rounded-b-lg" role="option">@Localizer["ViewAllResults"] <i class="fas fa-arrow-right ml-1 text-[10px]"></i></a>`
                     : '';
                 showResults('<div class="p-2" role="listbox" aria-label="@Localizer["SearchResults"]">' + resultCountLabel + itemsHtml + footer + '</div>');
                 if (resultsDropdown) resultsDropdown.scrollTop = 0;
@@ -960,7 +960,7 @@ document.addEventListener('keydown', function(event) {
                 if (abortController) abortController.abort();
                 abortController = new AbortController();
                 showLoading();
-                fetch('/Urun/CanliAra?q=' + encodeURIComponent(term), { signal: abortController.signal })
+                fetch('/products/CanliAra?q=' + encodeURIComponent(term), { signal: abortController.signal })
                     .then(r => r.ok ? r.json() : null)
                     .then(data => { renderDropdown(data); })
                     .catch(error => {
@@ -1052,7 +1052,7 @@ document.addEventListener('keydown', function(event) {
 
             let token = document.querySelector('#globalAntiForgeryForm input[name="__RequestVerificationToken"]')?.value;
 
-            fetch('/Favori/Toggle?urunId=' + urunId, {
+            fetch('/favorites/Toggle?urunId=' + urunId, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1071,7 +1071,7 @@ document.addEventListener('keydown', function(event) {
                     }
                 } else {
                     if (data.message === '@Localizer["PleaseLogin"]') {
-                        window.location.href = '/Hesap/GirisYap?ReturnUrl=' + window.location.pathname;
+                        window.location.href = '/account/GirisYap?ReturnUrl=' + window.location.pathname;
                     } else {
                         if(window.showToast) window.showToast(data.message || '@Localizer["AnErrorOccurred"]', 'error');
                         btn.innerHTML = originalHtml;

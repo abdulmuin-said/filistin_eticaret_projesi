@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace FilistinProje.Web.Controllers
 {
@@ -18,3 +18,5 @@ namespace FilistinProje.Web.Controllers
         }
     }
 }
+
+

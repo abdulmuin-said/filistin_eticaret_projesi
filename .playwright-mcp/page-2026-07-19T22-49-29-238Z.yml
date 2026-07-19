@@ -1,0 +1,186 @@
+- generic [active] [ref=f6e1]:
+  - generic [ref=f6e3]:
+    - generic [ref=f6e4]:
+      - generic [ref=f6e5]:
+        - generic [ref=f6e6]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f6e7]:
+        - generic [ref=f6e8]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f6e9]:
+        - generic [ref=f6e10]: 
+        - text: Pay on delivery option
+      - generic [ref=f6e11]:
+        - generic [ref=f6e12]: 
+        - text: Fast Production
+      - generic [ref=f6e13]:
+        - generic [ref=f6e14]: 
+        - text: Careful Packaging
+      - generic [ref=f6e15]:
+        - generic [ref=f6e16]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f6e17]:
+        - generic [ref=f6e18]: 
+        - text: 14 Days Return
+      - generic [ref=f6e19]:
+        - generic [ref=f6e20]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f6e21]:
+        - generic [ref=f6e22]: 
+        - text: WhatsApp Support
+    - generic [ref=f6e23]:
+      - generic [ref=f6e24]:
+        - generic [ref=f6e25]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f6e26]:
+        - generic [ref=f6e27]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f6e28]:
+        - generic [ref=f6e29]: 
+        - text: Pay on delivery option
+      - generic [ref=f6e30]:
+        - generic [ref=f6e31]: 
+        - text: Fast Production
+      - generic [ref=f6e32]:
+        - generic [ref=f6e33]: 
+        - text: Careful Packaging
+      - generic [ref=f6e34]:
+        - generic [ref=f6e35]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f6e36]:
+        - generic [ref=f6e37]: 
+        - text: 14 Days Return
+      - generic [ref=f6e38]:
+        - generic [ref=f6e39]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f6e40]:
+        - generic [ref=f6e41]: 
+        - text: WhatsApp Support
+  - banner [ref=f6e42]:
+    - generic [ref=f6e43]:
+      - generic [ref=f6e44]:
+        - generic [ref=f6e45]: 
+        - link "العربية" [ref=f6e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2Fpages%2Ffaq
+        - link "English" [ref=f6e48] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2Fpages%2Ffaq
+      - link "7ANRPS48" [ref=f6e49] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f6e50]
+      - generic [ref=f6e51]:
+        - button "Search" [ref=f6e52] [cursor=pointer]
+        - link "My Account" [ref=f6e55] [cursor=pointer]:
+          - /url: /profile
+        - link "My Favorites" [ref=f6e58] [cursor=pointer]:
+          - /url: /favorites
+        - link "Cart" [ref=f6e61] [cursor=pointer]:
+          - /url: /cart
+          - generic [ref=f6e64]: "3"
+      - navigation [ref=f6e65]:
+        - list [ref=f6e66]:
+          - listitem [ref=f6e67] [cursor=pointer]:
+            - link "beauty" [ref=f6e68]:
+              - /url: /products?k=89
+          - listitem [ref=f6e71] [cursor=pointer]:
+            - link "fragrances" [ref=f6e72]:
+              - /url: /products?k=90
+          - listitem [ref=f6e75] [cursor=pointer]:
+            - link "furniture" [ref=f6e76]:
+              - /url: /products?k=91
+          - listitem [ref=f6e79] [cursor=pointer]:
+            - link "groceries" [ref=f6e80]:
+              - /url: /products?k=92
+          - listitem [ref=f6e83] [cursor=pointer]:
+            - link "Home Furniture" [ref=f6e84]:
+              - /url: /products?k=78
+          - listitem [ref=f6e87] [cursor=pointer]:
+            - link "Electronics" [ref=f6e88]:
+              - /url: /products?k=79
+          - listitem [ref=f6e91] [cursor=pointer]:
+            - link "Fashion" [ref=f6e92]:
+              - /url: /products?k=80
+          - listitem [ref=f6e95] [cursor=pointer]:
+            - link "Contact" [ref=f6e96]:
+              - /url: /pages/Iletisim
+  - main [ref=f6e97]:
+    - generic [ref=f6e99]:
+      - link "Home Page" [ref=f6e100] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f6e101]: /
+      - generic [ref=f6e102]: Frequently Asked Questions
+    - generic [ref=f6e103]:
+      - heading "Frequently Asked Questions" [level=1] [ref=f6e105]
+      - generic [ref=f6e107]:
+        - heading "Orders & Shipping" [level=2] [ref=f6e108]
+        - heading "When will my order be shipped?" [level=4] [ref=f6e109]
+        - paragraph [ref=f6e110]: Your orders are prepared within the production time stated on the product detail page and shipped as soon as possible.
+        - heading "How much is the shipping cost?" [level=4] [ref=f6e111]
+        - paragraph [ref=f6e112]: Shipping cost varies depending on your delivery address and the shipping company you choose. Follow the site for free shipping campaigns.
+        - heading "How can I track my order?" [level=4] [ref=f6e113]
+        - paragraph [ref=f6e114]: You will be notified when your order is delivered to the courier. You can track your orders from your profile page.
+        - separator [ref=f6e115]
+        - heading "Products & Quality" [level=2] [ref=f6e116]
+        - heading "What materials do you use?" [level=4] [ref=f6e117]
+        - paragraph [ref=f6e118]: We use high-quality materials in our products. Each product is manufactured to be long-lasting.
+        - heading "Do prints fade over time?" [level=4] [ref=f6e119]
+        - paragraph [ref=f6e120]: No, UV-resistant inks and lamination coating provide protection against fading.
+        - heading "How should cleaning be done?" [level=4] [ref=f6e121]
+        - paragraph [ref=f6e122]: Clean your products by wiping with a slightly damp cloth. Do not use acetone or abrasive cleaning agents.
+        - separator [ref=f6e123]
+        - heading "Returns & Exchange" [level=2] [ref=f6e124]
+        - heading "Can I return my product?" [level=4] [ref=f6e125]
+        - paragraph [ref=f6e126]: Yes, you can create a return request within 14 days from the date of delivery.
+  - contentinfo [ref=f6e127]:
+    - generic [ref=f6e129]:
+      - generic [ref=f6e134]:
+        - generic [ref=f6e135]: Across Palestine
+        - generic [ref=f6e136]: Free Shipping
+      - generic [ref=f6e141]:
+        - generic [ref=f6e142]: Bank Transfer
+        - generic [ref=f6e143]: 256 Bit SSL
+      - generic [ref=f6e148]:
+        - generic [ref=f6e149]: Bank Transfer
+        - generic [ref=f6e150]: Easy payment by IBAN
+    - generic [ref=f6e151]:
+      - generic [ref=f6e152]:
+        - generic [ref=f6e153]:
+          - heading "Subscribe to newsletter" [level=3] [ref=f6e154]
+          - paragraph [ref=f6e155]: Get new arrivals, Palestinian market picks, and special offers in your inbox.
+          - generic [ref=f6e156]:
+            - textbox "Email Address" [ref=f6e157]
+            - button "Subscribe" [ref=f6e158] [cursor=pointer]
+        - generic [ref=f6e159]:
+          - heading "Corporate" [level=4] [ref=f6e160]
+          - list [ref=f6e161]:
+            - listitem [ref=f6e162]:
+              - link "About Us" [ref=f6e163] [cursor=pointer]:
+                - /url: /pages/about
+            - listitem [ref=f6e164]:
+              - link "Contact" [ref=f6e165] [cursor=pointer]:
+                - /url: /pages/contact
+            - listitem [ref=f6e166]:
+              - link "All Products" [ref=f6e167] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=f6e168]:
+              - link "Privacy Policy" [ref=f6e169] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f6e170]:
+              - link "Distance Sales Contract" [ref=f6e171] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+      - generic [ref=f6e172]:
+        - paragraph [ref=f6e174]: © 2026 7ANRPS48 — All rights reserved.
+        - generic [ref=f6e175]:
+          - link "Privacy Policy" [ref=f6e176] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "Return and Exchange" [ref=f6e177] [cursor=pointer]:
+            - /url: /pages/return-policy
+          - text: "|"
+          - link "About Us" [ref=f6e178] [cursor=pointer]:
+            - /url: /pages/about
+  - link "WhatsApp Contact" [ref=f6e179] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=f6e182]: WhatsApp
+  - link "Cart" [ref=f6e183] [cursor=pointer]:
+    - /url: /cart
+    - generic [ref=f6e186]: "3"

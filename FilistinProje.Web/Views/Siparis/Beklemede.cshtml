@@ -1,4 +1,4 @@
-﻿@inject IStringLocalizer<SharedResource> Localizer
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["OrderReceived"];
     var siparisNo = ViewBag.SiparisNo as string ?? string.Empty;
@@ -31,11 +31,11 @@
                 }
 
                 <div class="grid gap-3 sm:grid-cols-2">
-                    <a href="/Urun" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-brand-olive text-white font-semibold hover:bg-[#25280d] transition">
+                    <a href="/products" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-brand-olive text-white font-semibold hover:bg-[#25280d] transition">
                         <i class="fas fa-arrow-left"></i>
                         @Localizer["ContinueShopping"]
                     </a>
-                    <a href="/Kurumsal/Iletisim" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-brand-olive text-brand-olive font-semibold hover:bg-brand-olive hover:text-white transition">
+                    <a href="/pages/Iletisim" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-brand-olive text-brand-olive font-semibold hover:bg-brand-olive hover:text-white transition">
                         <i class="fas fa-headset"></i>
                         @Localizer["ContactUs"]
                     </a>

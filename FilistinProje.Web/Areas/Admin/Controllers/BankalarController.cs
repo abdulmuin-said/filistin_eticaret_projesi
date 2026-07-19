@@ -1,4 +1,4 @@
-using FilistinProje.Core.Varliklar;
+﻿using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +36,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     string.IsNullOrWhiteSpace(model.HesapSahibi) ||
                     string.IsNullOrWhiteSpace(model.IBAN))
                 {
-                    TempData["Mesaj"] = "Banka adı, hesap sahibi ve IBAN zorunludur.";
+                    TempData["Mesaj"] = "Banka adÄ±, hesap sahibi ve IBAN zorunludur.";
                     TempData["Durum"] = "danger";
                     return RedirectToAction(nameof(Index));
                 }
@@ -49,7 +49,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 {
                     model.OlusturulmaTarihi = DateTime.UtcNow;
                     _context.BankaHesaplari.Add(model);
-                    TempData["Mesaj"] = $"{model.BankaAdi} banka hesabı eklendi.";
+                    TempData["Mesaj"] = $"{model.BankaAdi} banka hesabÄ± eklendi.";
                 }
                 else
                 {
@@ -59,7 +59,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
                     if (hesap == null)
                     {
-                        TempData["Mesaj"] = "Banka hesabı bulunamadı.";
+                        TempData["Mesaj"] = "Banka hesabÄ± bulunamadÄ±.";
                         TempData["Durum"] = "danger";
                         return RedirectToAction(nameof(Index));
                     }
@@ -71,7 +71,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     hesap.HesapNo = model.HesapNo;
                     hesap.AktifMi = model.AktifMi;
                     hesap.Sira = model.Sira;
-                    TempData["Mesaj"] = $"{model.BankaAdi} banka hesabı güncellendi.";
+                    TempData["Mesaj"] = $"{model.BankaAdi} banka hesabÄ± gÃ¼ncellendi.";
                 }
 
                 await _context.SaveChangesAsync();
@@ -96,7 +96,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (hesap == null)
             {
-                TempData["Mesaj"] = "Banka hesabı bulunamadı.";
+                TempData["Mesaj"] = "Banka hesabÄ± bulunamadÄ±.";
                 TempData["Durum"] = "danger";
                 return RedirectToAction(nameof(Index));
             }
@@ -104,9 +104,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             hesap.SilindiMi = true;
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{hesap.BankaAdi} banka hesabı silindi.";
+            TempData["Mesaj"] = $"{hesap.BankaAdi} banka hesabÄ± silindi.";
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
     }
 }
+
+

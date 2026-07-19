@@ -158,7 +158,7 @@
     var request = HttpContextAccessor.HttpContext?.Request;
     string baseUrl = request != null ? SiteSettingsService.BuildAbsoluteUrl(string.Empty) : "";
     string detaySlug = string.IsNullOrWhiteSpace(Model.Slug) ? $"{FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(Model.LocalizedBaslik)}-{Model.Id}" : $"{Model.Slug}-{Model.Id}";
-    string productUrl = $"{baseUrl}/Urun/Detay/{detaySlug}";
+    string productUrl = $"{baseUrl}/products/{detaySlug}";
     var encodedProductUrl = Uri.EscapeDataString(productUrl);
     var encodedProductTitle = Uri.EscapeDataString(Model.LocalizedBaslik);
     var schemaImagePath = !string.IsNullOrWhiteSpace(varsayilanMedya?.EtkinPosterYolu) ? varsayilanMedya.EtkinPosterYolu : varsayilanGaleriGorseli;

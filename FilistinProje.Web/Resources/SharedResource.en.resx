@@ -2914,15 +2914,9 @@
   <data name="Admin_Aciklama" xml:space="preserve">
     <value>الوصف</value>
   </data>
-  <data name="Admin_Baslik" xml:space="preserve">
-    <value>العنوان</value>
-  </data>
-  <data name="Admin_Alt_Baslik" xml:space="preserve">
-    <value>العنوان الفرعي</value>
-  </data>
-  <data name="Admin_Sira" xml:space="preserve">
-    <value>الترتيب</value>
-  </data>
+  <data name="Admin_Baslik" xml:space="preserve"><value>Title</value></data>
+  <data name="Admin_Alt_Baslik" xml:space="preserve"><value>Subtitle</value></data>
+  <data name="Admin_Sira" xml:space="preserve"><value>Order</value></data>
   <data name="Admin_SEO_Basligi" xml:space="preserve">
     <value>عنوان SEO</value>
   </data>
@@ -3058,18 +3052,12 @@
   <data name="Admin_Detay" xml:space="preserve">
     <value>التفاصيل</value>
   </data>
-  <data name="Admin_Aktif" xml:space="preserve">
-    <value>نشط</value>
-  </data>
-  <data name="Admin_Pasif" xml:space="preserve">
-    <value>غير نشط</value>
-  </data>
+  <data name="Admin_Aktif" xml:space="preserve"><value>Active</value></data>
+  <data name="Admin_Pasif" xml:space="preserve"><value>Inactive</value></data>
   <data name="Admin_Evet" xml:space="preserve">
     <value>نعم</value>
   </data>
-  <data name="Admin_Durum" xml:space="preserve">
-    <value>الحالة</value>
-  </data>
+  <data name="Admin_Durum" xml:space="preserve"><value>Status</value></data>
   <data name="Admin_Kategori" xml:space="preserve">
     <value>الفئة</value>
   </data>
@@ -3082,9 +3070,7 @@
   <data name="Admin_Stok" xml:space="preserve">
     <value>المخزون</value>
   </data>
-  <data name="Admin_Resim" xml:space="preserve">
-    <value>الصورة</value>
-  </data>
+  <data name="Admin_Resim" xml:space="preserve"><value>Image</value></data>
   <data name="Admin_Telefon" xml:space="preserve">
     <value>Phone</value>
   </data>
@@ -5663,3 +5649,4 @@
   <data name="Admin_FeatureOptionsRequired" xml:space="preserve"><value>Enter options for a select-list field.</value></data>
   <data name="Admin_FeatureCodeDuplicate" xml:space="preserve"><value>This code already exists for the selected product type.</value></data>
 </root>
+

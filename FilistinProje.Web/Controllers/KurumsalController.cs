@@ -1,4 +1,4 @@
-using FilistinProje.Core.Interfaces;
+﻿using FilistinProje.Core.Interfaces;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Service.Services;
@@ -9,6 +9,7 @@ using Microsoft.Extensions.Localization;
 
 namespace FilistinProje.Web.Controllers
 {
+    [Route("pages")]
     public class KurumsalController : Controller
     {
         private readonly KanvasDbContext _context;
@@ -44,9 +45,12 @@ namespace FilistinProje.Web.Controllers
             return View(sayfa);
         }
 
+        [HttpGet("about")]
+        [HttpGet("/Kurumsal/Hakkimizda")]
         public IActionResult Hakkimizda() => View();
 
-        [HttpGet]
+        [HttpGet("contact")]
+        [HttpGet("/Kurumsal/Iletisim")]
         public IActionResult Iletisim()
         {
             var settings = _siteSettingsService.GetSettings();
@@ -57,7 +61,8 @@ namespace FilistinProje.Web.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("contact")]
+        [HttpPost("/Kurumsal/IletisimGonder")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> IletisimGonder(IletisimMesaj model)
         {
@@ -107,11 +112,30 @@ namespace FilistinProje.Web.Controllers
             return Json(new { success = true, message = _localizer["Kurumsal_MessageSent"].Value });
         }
 
+        [HttpGet("faq")]
+        [HttpGet("/Kurumsal/SSS")]
         public IActionResult SSS() => View();
+        
+        [HttpGet("bank-accounts")]
+        [HttpGet("/Kurumsal/BankaHesaplari")]
         public IActionResult BankaHesaplari() => View();
+        
+        [HttpGet("privacy-policy")]
+        [HttpGet("/Kurumsal/Gizlilik")]
         public IActionResult Gizlilik() => View();
+        
+        [HttpGet("terms-of-service")]
+        [HttpGet("/Kurumsal/KullaniciSozlesmesi")]
         public IActionResult KullaniciSozlesmesi() => View();
-        public IActionResult MesafeliSatis() => RedirectToAction("MesafeliSatis", "Sozlesmeler");
+        
+        [HttpGet("distance-selling-contract")]
+        [HttpGet("/Kurumsal/MesafeliSatis")]
+        public IActionResult MesafeliSatis() => View();
+        
+        [HttpGet("return-policy")]
+        [HttpGet("/Kurumsal/IadeKosullari")]
         public IActionResult IadeKosullari() => View();
     }
 }
+
+

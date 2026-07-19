@@ -1,4 +1,4 @@
-﻿@inject IStringLocalizer<SharedResource> Localizer
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = @Localizer["ForgotPassword"];
     var eposta = ViewBag.Eposta as string ?? string.Empty;
@@ -42,7 +42,7 @@
                 </button>
             </form>
             <div class="mt-6 text-center">
-                <a href="/Hesap/GirisYap" class="text-xs text-brand-gold hover:underline uppercase tracking-widest">@Localizer["ReturnToLogin"]</a>
+                <a href="/account/GirisYap" class="text-xs text-brand-gold hover:underline uppercase tracking-widest">@Localizer["ReturnToLogin"]</a>
             </div>
         </div>
     </div>

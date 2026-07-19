@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using FilistinProje.Core.Interfaces; // ISepetService
 using FilistinProje.Data;
 using FilistinProje.Web.Resources;
@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.RateLimiting;
 
 namespace FilistinProje.Web.Controllers
 {
+    [Route("cart")]
     public class SepetController : Controller
     {
         private readonly KanvasDbContext _context;
@@ -42,13 +43,15 @@ namespace FilistinProje.Web.Controllers
             _kargoHesaplama = kargoHesaplama;
         }
 
+        [HttpGet("")]
+        [HttpGet("/Sepet")]
         public async Task<IActionResult> Index()
         {
             // User ID ve Session ID al
             var userId = User.Identity?.IsAuthenticated == true ? _userManager.GetUserId(User) : null;
             var sessionId = HttpContext.Session.Id;
 
-            // Database'den sepeti çek
+            // Database'den sepeti Ã§ek
             var sepetItems = await _sepetService.GetSepetItemsAsync(userId, sessionId);
             decimal sepetToplami = await _sepetService.GetSepetToplamiAsync(userId, sessionId);
 
@@ -65,7 +68,7 @@ namespace FilistinProje.Web.Controllers
                 }
                 else
                 {
-                    // Şartlar sağlanmıyorsa kuponu düşür
+                    // Åartlar saÄŸlanmÄ±yorsa kuponu dÃ¼ÅŸÃ¼r
                     HttpContext.Session.Remove("UygulananKupon");
                     kuponKodu = null;
                 }
@@ -111,7 +114,7 @@ namespace FilistinProje.Web.Controllers
             ViewBag.GenelToplam = genelToplam;
             // -----------------------
 
-            // Sepette olmayan tamamlayıcı/popüler 4 ürünü çek
+            // Sepette olmayan tamamlayÄ±cÄ±/popÃ¼ler 4 Ã¼rÃ¼nÃ¼ Ã§ek
             var sepettekiUrunIdleri = sepetItems.Select(x => x.UrunId).ToList();
             var tamamlayiciUrunler = await _context.Urunler
                 .Include(u => u.UrunResimleri)
@@ -139,12 +142,9 @@ namespace FilistinProje.Web.Controllers
 
 
 
-        // SepetController içine ekle:
+        // SepetController iÃ§ine ekle:
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [EnableRateLimiting("auth")]
-        public async Task<IActionResult> KuponUygula(string kuponKodu)
+        [HttpPost("apply-coupon")] [ValidateAntiForgeryToken] [EnableRateLimiting("auth")] public async Task<IActionResult> KuponUygula(string kuponKodu)
         {
             if (string.IsNullOrEmpty(kuponKodu))
             {
@@ -181,7 +181,7 @@ namespace FilistinProje.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Sepet tutarını database'den kontrol et
+            // Sepet tutarÄ±nÄ± database'den kontrol et
             var userId = User.Identity?.IsAuthenticated == true ? _userManager.GetUserId(User) : null;
             var sessionId = HttpContext.Session.Id;
             decimal sepetTutari = await _sepetService.GetSepetToplamiAsync(userId, sessionId);
@@ -192,7 +192,7 @@ namespace FilistinProje.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            // --- BAŞARILI ---
+            // --- BAÅARILI ---
             HttpContext.Session.SetString("UygulananKupon", kupon.Kod);
             TempData["SepetBasari"] = _localizer["Sepet_CouponApplied"].Value;
             
@@ -224,17 +224,13 @@ namespace FilistinProje.Web.Controllers
                 .Replace(" ", string.Empty);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult KuponKaldir()
+        [HttpPost("remove-coupon")] [ValidateAntiForgeryToken] public IActionResult KuponKaldir()
         {
             HttpContext.Session.Remove("UygulananKupon");
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SecilenKargoGuncelle(int kargoId)
+        [HttpPost("update-shipping")] [ValidateAntiForgeryToken] public async Task<IActionResult> SecilenKargoGuncelle(int kargoId)
         {
             var kargoExists = await _context.KargoFirmalari.AnyAsync(x => x.Id == kargoId && !x.SilindiMi && x.AktifMi);
             if (kargoExists)
@@ -245,7 +241,8 @@ namespace FilistinProje.Web.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("Ekle")]
+        [HttpPost("/Sepet/Ekle")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Ekle(int UrunId, int? SecenekId, int Adet = 1, string? CerceveModeli = null, string? MusteriNotu = null, decimal? CerceveFarki = null, bool HediyePaketi = false, decimal? HediyePaketFiyati = null)
         {
@@ -272,10 +269,8 @@ namespace FilistinProje.Web.Controllers
             }
         }
 
-        // Adet güncelleme - database'de SepetItem ID ile çalışıyor
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AdetGuncelle(int sepetItemId, int yeniAdet)
+        // Adet gÃ¼ncelleme - database'de SepetItem ID ile Ã§alÄ±ÅŸÄ±yor
+        [HttpPost("update-qty")] [ValidateAntiForgeryToken] public async Task<IActionResult> AdetGuncelle(int sepetItemId, int yeniAdet)
         {
             var userId = User.Identity?.IsAuthenticated == true ? _userManager.GetUserId(User) : null;
             var sessionId = HttpContext.Session.Id;
@@ -289,9 +284,7 @@ namespace FilistinProje.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> NotGuncelle(int sepetItemId, string? musteriNotu)
+        [HttpPost("update-note")] [ValidateAntiForgeryToken] public async Task<IActionResult> NotGuncelle(int sepetItemId, string? musteriNotu)
         {
             var userId = User.Identity?.IsAuthenticated == true ? _userManager.GetUserId(User) : null;
             var sessionId = HttpContext.Session.Id;
@@ -311,11 +304,9 @@ namespace FilistinProje.Web.Controllers
 
 
         // Sepetten item sil
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Sil(int sepetItemId)
+        [HttpPost("remove")] [ValidateAntiForgeryToken] public async Task<IActionResult> Sil(int sepetItemId)
         {
-            // IDOR Koruması: Sadece kendi sepet öğesini silebilsin
+            // IDOR KorumasÄ±: Sadece kendi sepet Ã¶ÄŸesini silebilsin
             var userId = User.Identity?.IsAuthenticated == true ? _userManager.GetUserId(User) : null;
             var sessionId = HttpContext.Session.Id;
             var sepetItems = await _sepetService.GetSepetItemsAsync(userId, sessionId);
@@ -326,9 +317,7 @@ namespace FilistinProje.Web.Controllers
             return RedirectToAction("Index");
         }
         // Sepeti temizle
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Temizle()
+        [HttpPost("clear")] [ValidateAntiForgeryToken] public async Task<IActionResult> Temizle()
         {
             var userId = User.Identity?.IsAuthenticated == true ? _userManager.GetUserId(User) : null;
             var sessionId = HttpContext.Session.Id;
@@ -347,8 +336,7 @@ namespace FilistinProje.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetSepetSayisi()
+        [HttpGet("count")] public async Task<IActionResult> GetSepetSayisi()
         {
             var userId = User.Identity?.IsAuthenticated == true ? _userManager.GetUserId(User) : null;
             var sessionId = HttpContext.Session.Id;
@@ -358,4 +346,6 @@ namespace FilistinProje.Web.Controllers
     }
 }
 // Trigger rebuild to clear cached settings
+
+
 

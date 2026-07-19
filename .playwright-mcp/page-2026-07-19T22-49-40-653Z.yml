@@ -1,0 +1,142 @@
+- generic [active] [ref=f9e1]:
+  - generic [ref=f9e2]:
+    - text:          +                    
+    - banner [ref=f9e3]:
+      - generic [ref=f9e4]:
+        - link "7ANRPS48 Admin Panel" [ref=f9e5] [cursor=pointer]:
+          - /url: /Admin/Home
+          - img "7ANRPS48" [ref=f9e6]
+        - generic [ref=f9e7]: Admin Panel
+      - navigation "Admin main menu" [ref=f9e8]:
+        - link " Dashboard" [ref=f9e9] [cursor=pointer]:
+          - /url: /Admin/Home
+          - generic [ref=f9e10]: 
+          - text: Dashboard
+        - generic [ref=f9e11]:
+          - button " Order Management" [ref=f9e12] [cursor=pointer]:
+            - generic [ref=f9e13]: 
+            - text: Order Management
+          - text:      
+        - generic [ref=f9e14]:
+          - button " Order Management" [ref=f9e15] [cursor=pointer]:
+            - generic [ref=f9e16]: 
+            - text: Order Management
+          - text:  +  
+        - generic [ref=f9e17]:
+          - button " Store Content" [ref=f9e18] [cursor=pointer]:
+            - generic [ref=f9e19]: 
+            - text: Store Content
+          - text:        
+        - link " Members" [ref=f9e20] [cursor=pointer]:
+          - /url: /Admin/Kullanici
+          - generic [ref=f9e21]: 
+          - text: Members
+        - link " Staff" [ref=f9e22] [cursor=pointer]:
+          - /url: /Admin/Personel
+          - generic [ref=f9e23]: 
+          - text: Staff
+        - link " Wholesalers" [ref=f9e24] [cursor=pointer]:
+          - /url: /Admin/Toptanci
+          - generic [ref=f9e25]: 
+          - text: Wholesalers
+        - link " Wholesale Groups" [ref=f9e26] [cursor=pointer]:
+          - /url: /Admin/Toptanci/UrunGruplari
+          - generic [ref=f9e27]: 
+          - text: Wholesale Groups
+        - generic [ref=f9e28]:
+          - button " Reports" [ref=f9e29] [cursor=pointer]:
+            - generic [ref=f9e30]: 
+            - text: Reports
+          - text:  
+        - link " Bank Accounts" [ref=f9e31] [cursor=pointer]:
+          - /url: /Admin/Bankalar
+          - generic [ref=f9e32]: 
+          - text: Bank Accounts
+        - link " Settings" [ref=f9e33] [cursor=pointer]:
+          - /url: /Admin/Ayarlar
+          - generic [ref=f9e34]: 
+          - text: Settings
+      - generic [ref=f9e35]:
+        - text: 
+        - generic [ref=f9e36]:
+          - generic [ref=f9e37]: 
+          - link "العربية" [ref=f9e39] [cursor=pointer]:
+            - /url: /Dil/Degistir?culture=ar&returnUrl=%2FAdmin%2FSlayt
+          - link "English" [ref=f9e40] [cursor=pointer]:
+            - /url: /Dil/Degistir?culture=en&returnUrl=%2FAdmin%2FSlayt
+        - text: 
+        - generic [ref=f9e41]:
+          - button "7ANRPS48 Admin Admin 7" [ref=f9e42] [cursor=pointer]:
+            - generic [ref=f9e43]:
+              - strong [ref=f9e44]: 7ANRPS48 Admin
+              - text: Admin
+            - generic [ref=f9e45]: "7"
+          - text:  
+    - generic [ref=f9e46]:
+      - main [ref=f9e47]:
+        - generic [ref=f9e48]:
+          - generic [ref=f9e49]:
+            - generic [ref=f9e50]:
+              - heading "Slider Management" [level=1] [ref=f9e51]
+              - paragraph [ref=f9e52]: Manage home page slider slides. You can add image or video slides.
+            - link "+ Add New Slide" [ref=f9e54] [cursor=pointer]:
+              - /url: /Admin/Slayt/Ekle
+              - generic [ref=f9e55]: +
+              - text: Add New Slide
+          - generic [ref=f9e56]:
+            - generic [ref=f9e57]:
+              - heading " Slide List" [level=3] [ref=f9e58]:
+                - generic [ref=f9e59]: 
+                - text: Slide List
+              - paragraph [ref=f9e60]: Drag slides to change the order.
+            - table [ref=f9e63]:
+              - rowgroup [ref=f9e64]:
+                - row [ref=f9e65]:
+                  - columnheader "Order" [ref=f9e66]
+                  - columnheader "Preview" [ref=f9e67]
+                  - columnheader "Title" [ref=f9e68]
+                  - columnheader "Subtitle" [ref=f9e69]
+                  - columnheader "Type" [ref=f9e70]
+                  - columnheader "Status" [ref=f9e71]
+                  - columnheader "Actions" [ref=f9e72]
+              - rowgroup [ref=f9e73]:
+                - row [ref=f9e74]:
+                  - cell " 1" [ref=f9e75]:
+                    - generic [ref=f9e76]: 
+                    - generic [ref=f9e77]: "1"
+                  - cell [ref=f9e78]
+                  - cell [ref=f9e79]:
+                    - strong
+                  - cell "-" [ref=f9e80]
+                  - cell " Image" [ref=f9e81]:
+                    - generic [ref=f9e82]:
+                      - generic [ref=f9e83]: 
+                      - text: Image
+                  - cell "Inactive" [ref=f9e84]
+                  - cell [ref=f9e86]:
+                    - button "" [ref=f9e88] [cursor=pointer]
+                    - link "" [ref=f9e90] [cursor=pointer]:
+                      - /url: /Admin/Slayt/Duzenle/10
+                    - button "" [ref=f9e92] [cursor=pointer]
+                - row [ref=f9e94]:
+                  - cell " 2" [ref=f9e95]:
+                    - generic [ref=f9e96]: 
+                    - generic [ref=f9e97]: "2"
+                  - cell [ref=f9e98]:
+                    - img "أناقة طبيعية بلمسة هادئة" [ref=f9e99]
+                  - cell "أناقة طبيعية بلمسة هادئة اكتشف منتجات طبيعية مختارة بعناية تجمع بين الجودة الراقية والتصميم الأنيق، لتمنح يومك لمسة مميزة وبسيطة." [ref=f9e100]:
+                    - strong [ref=f9e101]: أناقة طبيعية بلمسة هادئة
+                    - generic [ref=f9e102]: اكتشف منتجات طبيعية مختارة بعناية تجمع بين الجودة الراقية والتصميم الأنيق، لتمنح يومك لمسة مميزة وبسيطة.
+                  - cell "منتجات مختارة بعناية لحياة أكثر جمالًا وهدوءًا" [ref=f9e103]
+                  - cell " Image" [ref=f9e104]:
+                    - generic [ref=f9e105]:
+                      - generic [ref=f9e106]: 
+                      - text: Image
+                  - cell "Active" [ref=f9e107]
+                  - cell [ref=f9e109]:
+                    - button "" [ref=f9e111] [cursor=pointer]
+                    - link "" [ref=f9e113] [cursor=pointer]:
+                      - /url: /Admin/Slayt/Duzenle/15
+                    - button "" [ref=f9e115] [cursor=pointer]
+      - contentinfo [ref=f9e117]: © 2026 7ANRPS48 Admin Panel. All rights reserved.
+  - text:  

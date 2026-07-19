@@ -1,10 +1,10 @@
-﻿@model IEnumerable<FilistinProje.Core.Varliklar.Favori>
+@model IEnumerable<FilistinProje.Core.Varliklar.Favori>
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["MyFavorites"];
     var siteSettings = SiteSettingsService.GetSettings();
-    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "â‚ª" : siteSettings.ParaBirimi;
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
 }
 
 <form id="favoriAntiForgeryForm" class="hidden">
@@ -16,7 +16,7 @@
     <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-brand-mutedtext">
         <a href="/" class="hover:text-brand-olive transition-colors">@Localizer["HomePage"]</a>
         <span>/</span>
-        <a href="/Profil" class="hover:text-brand-olive transition-colors">@Localizer["MyAccount"]</a>
+        <a href="/profile" class="hover:text-brand-olive transition-colors">@Localizer["MyAccount"]</a>
         <span>/</span>
         <span class="text-brand-darktext font-medium">@Localizer["MyFavorites"]</span>
     </div>
@@ -34,7 +34,7 @@
             <i class="far fa-heart text-6xl text-brand-border mb-4"></i>
             <h4 class="font-serif text-2xl text-brand-olive mb-2">@Localizer["NoFavorites"]</h4>
             <p class="text-sm text-brand-mutedtext mb-6">@Localizer["ExploreFavoriteCollection"]</p>
-            <a href="/Urun" class="inline-block bg-brand-olive text-white px-8 py-3 text-xs tracking-widest uppercase rounded hover:bg-[#1c2001] transition-colors">
+            <a href="/products" class="inline-block bg-brand-olive text-white px-8 py-3 text-xs tracking-widest uppercase rounded hover:bg-[#1c2001] transition-colors">
                 @Localizer["ExploreCollection"]
             </a>
         </div>
@@ -50,7 +50,7 @@
                 var bildirimAktif = favori.FiyatDustugundaBildir;
                 <div class="favori-item group relative flex flex-col bg-white border border-brand-border hover:border-brand-gold transition-colors rounded-lg overflow-hidden">
                     <div class="relative aspect-[4/5] bg-brand-cream overflow-hidden">
-                        <a href="/Urun/Detay/@urlSlug" class="block w-full h-full">
+                        <a href="/products/@urlSlug" class="block w-full h-full">
                     <img src="@urun.AnaGorselUrl" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="@urun.Baslik" loading="lazy" decoding="async">
                         </a>
 
@@ -68,7 +68,7 @@
 
                     <div class="p-4 flex flex-col flex-1">
                         <h6 class="font-semibold text-sm text-brand-darktext mb-1 line-clamp-1">
-                            <a href="/Urun/Detay/@urlSlug" class="hover:text-brand-gold transition-colors">@urun.Baslik</a>
+                            <a href="/products/@urlSlug" class="hover:text-brand-gold transition-colors">@urun.Baslik</a>
                         </h6>
                         <div class="mb-3">
                             @if (urun.IndirimVarMi)
@@ -82,7 +82,7 @@
                             }
                         </div>
 
-                        <!-- Fiyat DÃ¼ÅŸÃ¼ÅŸ Bildirimi Butonu -->
+                        <!-- Fiyat Düşüş Bildirimi Butonu -->
                         <button type="button"
                                 class="mb-2 w-full flex items-center justify-center gap-2 py-2 text-xs rounded transition-all duration-300
                                        @(bildirimAktif
@@ -112,7 +112,7 @@
     function favoridenCikar(btn, id) {
         if (!confirm('@Localizer["ConfirmRemoveFavorite"]')) return;
 
-        fetch('/Favori/Toggle?urunId=' + id, {
+        fetch('/favorites/Toggle?urunId=' + id, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -147,7 +147,7 @@
         btn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> <span>@Localizer["Processing"]</span>';
         btn.disabled = true;
 
-        fetch('/Favori/TogglePriceNotification?urunId=' + urunId, {
+        fetch('/favorites/TogglePriceNotification?urunId=' + urunId, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -184,7 +184,7 @@
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
         btn.disabled = true;
 
-        fetch('/Sepet/Ekle?UrunId=' + urunId + '&Adet=1', {
+        fetch('/cart/Ekle?UrunId=' + urunId + '&Adet=1', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

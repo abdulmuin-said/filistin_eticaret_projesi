@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using FilistinProje.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
@@ -59,7 +59,7 @@ namespace FilistinProje.Web.Controllers
                 AppendUrl(sitemap, $"{baseUrl}/Urun?k={kategori.Id}", "weekly", "0.8", DateTime.UtcNow);
             }
 
-            // Ürünler (ilk 2000 ürün - performans için)
+            // ÃœrÃ¼nler (ilk 2000 Ã¼rÃ¼n - performans iÃ§in)
             var urunler = await _context.Urunler
                 .AsNoTracking()
                 .Where(u => !u.SilindiMi && u.AktifMi && u.YayindaMi)
@@ -93,3 +93,5 @@ namespace FilistinProje.Web.Controllers
         private static string XmlEncode(string value) => WebUtility.HtmlEncode(value);
     }
 }
+
+

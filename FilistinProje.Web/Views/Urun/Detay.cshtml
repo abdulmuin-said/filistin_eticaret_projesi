@@ -1,4 +1,4 @@
-﻿@model FilistinProje.Core.Varliklar.Urun
+@model FilistinProje.Core.Varliklar.Urun
 @using FilistinProje.Service.Helpers
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
@@ -7,10 +7,10 @@
     ViewData["Title"] = Model.LocalizedBaslik;
     var siteSettings = SiteSettingsService.GetSettings();
     var brandName = string.IsNullOrWhiteSpace(siteSettings.MarkaAdi) ? siteSettings.SiteAdi : siteSettings.MarkaAdi;
-    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "?" : siteSettings.ParaBirimi;
     var isRtlDetay = System.Threading.Thread.CurrentThread.CurrentUICulture.TextInfo.IsRightToLeft;
 
-    // --- VARYANT VE FÃƒâ€Ã‚Â°YAT HESAPLAMA ---
+    // --- VARYANT VE FÃ„Â°YAT HESAPLAMA ---
     var secenekler = ViewBag.Secenekler as List<FilistinProje.Core.Varliklar.UrunSecenek> ?? new List<FilistinProje.Core.Varliklar.UrunSecenek>();
     var stokBiteniGriGoster = siteSettings.StokBiteniGriGoster;
     var stoktaYokSatisIzni = siteSettings.StoktaYokSatisIzni;
@@ -36,7 +36,7 @@
     }
     decimal eskiFiyat = gosterilecekFiyat * 1.15m;
 
-    // --- YORUM VERÃƒâ€Ã‚Â°LERÃƒâ€Ã‚Â° ---
+    // --- YORUM VERÃ„Â°LERÃ„Â° ---
     decimal? gosterilecekEskiFiyatEski = varsayilanSecenek == null && Model.IndirimVarMi ? Model.Fiyat : null;
     decimal? gosterilecekEskiFiyat = varsayilanSecenek != null && Model.Fiyat > gosterilecekFiyat
         ? Model.Fiyat
@@ -85,7 +85,7 @@
     bool cerceveSecimiGerekli = (Model.UrunTipi ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase)
         || (Model.Kategori?.Ad ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase)
         || (Model.Kategori?.ParentKategori?.Ad ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase);
-    var cerceveModelleri = new[] { "Ã‡erÃ§evesiz", "Siyah", "Beyaz", "Gold", "GÃ¼mÃ¼ÅŸ", "MeÅŸe", "Ceviz" };
+    var cerceveModelleri = new[] { "Çerçevesiz", "Siyah", "Beyaz", "Gold", "Gümüş", "Meşe", "Ceviz" };
 
     var teknikSatirlari = (Model.TeknikOzellikler ?? string.Empty)
         .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
@@ -150,15 +150,15 @@
     double ortalamaPuan = ViewBag.OrtalamaPuan != null ? (double)ViewBag.OrtalamaPuan : 0;
     int yorumSayisi = ViewBag.YorumSayisi != null ? (int)ViewBag.YorumSayisi : 0;
     
-    // YÃƒâ€Ã‚Â±ldÃƒâ€Ã‚Â±z Hesaplama
+    // YÃ„Â±ldÃ„Â±z Hesaplama
     int tamYildiz = (int)ortalamaPuan;
     bool yarimYildiz = (ortalamaPuan - tamYildiz) >= 0.5;
     
-    // --- SCHEMA.ORG Ãƒâ€Ã‚Â°ÃƒÆ’Ã¢â‚¬Â¡Ãƒâ€Ã‚Â°N URL VE GÃƒÆ’Ã¢â‚¬â€œRSEL ---
+    // --- SCHEMA.ORG Ã„Â°Ãƒâ€¡Ã„Â°N URL VE GÃƒâ€“RSEL ---
     var request = HttpContextAccessor.HttpContext?.Request;
     string baseUrl = request != null ? SiteSettingsService.BuildAbsoluteUrl(string.Empty) : "";
     string detaySlug = string.IsNullOrWhiteSpace(Model.Slug) ? $"{FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(Model.LocalizedBaslik)}-{Model.Id}" : $"{Model.Slug}-{Model.Id}";
-    string productUrl = $"{baseUrl}/Urun/Detay/{detaySlug}";
+    string productUrl = $"{baseUrl}/products/{detaySlug}";
     var encodedProductUrl = Uri.EscapeDataString(productUrl);
     var encodedProductTitle = Uri.EscapeDataString(Model.LocalizedBaslik);
     var schemaImagePath = !string.IsNullOrWhiteSpace(varsayilanMedya?.EtkinPosterYolu) ? varsayilanMedya.EtkinPosterYolu : varsayilanGaleriGorseli;
@@ -186,7 +186,7 @@
         Model.Marka,
         "dekorasyon",
         "premium dekorasyon",
-        "sipariÅŸe Ã¶zel Ã¼retim"
+        "siparişe özel üretim"
     };
     keywordParts.AddRange((Model.Etiketler ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
 
@@ -209,7 +209,7 @@
 }
 
 
-<!-- ÃƒÂ¢Ã…â€œÃ‚Â¨ SCHEMA.ORG JSON-LD: Google Shopping Rich Snippets ÃƒÂ¢Ã…â€œÃ‚Â¨ -->
+<!-- Ã¢Å“Â¨ SCHEMA.ORG JSON-LD: Google Shopping Rich Snippets Ã¢Å“Â¨ -->
 <script type="application/ld+json">
 @Html.Raw(productSchema)
 </script>
@@ -252,7 +252,7 @@
     <div class="bg-white rounded-lg w-full max-w-md p-6 relative">
         <button class="absolute top-4 right-4 text-gray-400 hover:text-black" id="closeCommentModalBtn"><i class="fas fa-times"></i></button>
         <h5 class="font-serif text-2xl text-brand-olive mb-6">@Localizer["RateProduct"]</h5>
-        <form action="/Urun/YorumYap" method="post">
+        <form action="/products/YorumYap" method="post">
             @Html.AntiForgeryToken()
             <input type="hidden" name="UrunId" value="@Model.Id" />
             
@@ -296,7 +296,7 @@
     <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-brand-mutedtext">
         <a href="/" class="hover:text-brand-olive transition-colors">@Localizer["HomePage"]</a>
         <span>/</span>
-        <a href="/Urun" class="hover:text-brand-olive transition-colors">@Localizer["Collection"]</a>
+        <a href="/products" class="hover:text-brand-olive transition-colors">@Localizer["Collection"]</a>
         <span>/</span>
         <span class="text-brand-darktext font-medium">@Model.LocalizedBaslik</span>
     </div>
@@ -305,9 +305,9 @@
 <div class="container mx-auto px-4 py-10 lg:py-12">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
         <div class="space-y-4">
-            @* ─── ANA MEDYA ALANI ───
-                Galeri + Video karışık medya listesi. width/height CLS için explicit.
-                Keyboard ve touch swipe _Layout/globalmedia.js içinde delegated. *@
+            @* ��� ANA MEDYA ALANI ���
+                Galeri + Video kar���k medya listesi. width/height CLS i�in explicit.
+                Keyboard ve touch swipe _Layout/globalmedia.js i�inde delegated. *@
             <div id="mainProductImageContainer"
                  class="product-media group relative aspect-square overflow-hidden rounded-lg bg-brand-cream"
                  role="region"
@@ -345,8 +345,8 @@
                     </div>
                 }
 
-                @* Galeri ok tuşları — RTL/LTR uyumlu (mantıksal prev/next; start/end always visual)
-                   Mantıksal olarak prev/next tipleri için ui ikonu locale göre ters çevrilir. *@
+                @* Galeri ok tu�lar� � RTL/LTR uyumlu (mant�ksal prev/next; start/end always visual)
+                   Mant�ksal olarak prev/next tipleri i�in ui ikonu locale g�re ters �evrilir. *@
                 @if (galeriMedyalari.Count > 1)
                 {
                     var prevIcon = isRtlDetay ? "fa-chevron-right" : "fa-chevron-left";
@@ -362,7 +362,7 @@
                 }
             </div>
 
-            @* ─── THUMBNAIL STRIP — klavye/swipe friendly tab list ─── *@
+            @* ��� THUMBNAIL STRIP � klavye/swipe friendly tab list ��� *@
             @if (galeriMedyalari.Count > 1)
             {
                 <div class="product-thumbs flex gap-3 overflow-x-auto pb-2 px-1"
@@ -387,7 +387,7 @@
                 </div>
             }
 
-            @* ─── VIDEO BLOKLARI —autoplay kapalı, poster = image, playsinline ─── *@
+            @* ��� VIDEO BLOKLARI �autoplay kapal�, poster = image, playsinline ��� *@
             @if (videoMedyalari.Any())
             {
                 <div class="grid grid-cols-1 gap-3">
@@ -423,7 +423,7 @@
             <div class="border-b border-brand-border pb-6">
                 @if (!string.IsNullOrWhiteSpace(Model.Kategori?.LocalizedAd))
                 {
-                    <a href="/Urun?k=@Model.KategoriId" class="mb-3 inline-flex text-xs font-semibold uppercase tracking-[0.22em] text-brand-gold hover:text-brand-olive">@Model.Kategori.LocalizedAd</a>
+                    <a href="/products?k=@Model.KategoriId" class="mb-3 inline-flex text-xs font-semibold uppercase tracking-[0.22em] text-brand-gold hover:text-brand-olive">@Model.Kategori.LocalizedAd</a>
                 }
                 <h1 class="font-serif text-3xl leading-tight text-brand-olive md:text-4xl lg:text-5xl">@Model.LocalizedBaslik</h1>
                 <div class="mt-4 flex items-center gap-3">
@@ -554,7 +554,7 @@
                 <div class="product-purchase-actions flex items-end gap-3">
                     <div><label class="mb-2 block text-xs font-medium uppercase tracking-widest text-brand-darktext">@Localizer["Quantity"]</label><div class="flex h-12 items-center border border-brand-border bg-white"><button type="button" class="flex h-full w-10 items-center justify-center hover:bg-brand-cream" onclick="decreaseQuantity()">-</button><input id="productQuantity" type="number" min="@minSiparisAdedi" max="@maxSiparisAdedi" value="@minSiparisAdedi" class="h-full w-12 border-0 bg-transparent p-0 text-center text-sm font-semibold focus:ring-0" readonly /><button type="button" class="flex h-full w-10 items-center justify-center hover:bg-brand-cream" onclick="increaseQuantity()">+</button></div></div>
                     <button id="ajaxSepetBtn" type="button" class="flex h-12 min-w-0 flex-1 items-center justify-center gap-2 bg-brand-olive px-4 text-xs font-bold uppercase tracking-widest text-white transition-colors hover:bg-[#1c2001] disabled:cursor-wait disabled:opacity-70"><i class="fas fa-shopping-bag add-to-cart-icon"></i><span class="add-to-cart-text">@Localizer["AddToCart"]</span></button>
-                    <a href="/Sepet" class="flex h-12 w-12 items-center justify-center bg-brand-gold text-white transition-colors hover:bg-[#8e6a28]" aria-label="@Localizer["Cart"]"><i class="fas fa-shopping-cart"></i></a>
+                    <a href="/cart" class="flex h-12 w-12 items-center justify-center bg-brand-gold text-white transition-colors hover:bg-[#8e6a28]" aria-label="@Localizer["Cart"]"><i class="fas fa-shopping-cart"></i></a>
                 </div>
             </form>
             }
@@ -639,7 +639,7 @@
                                 <div class="mb-3 flex items-start justify-between gap-3">
                                     <div class="flex items-center gap-3">
                                         <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-cream text-sm font-semibold text-brand-olive">@basHarfler</span>
-                                        <div><strong class="block text-sm text-brand-darktext">@yorum.AdSoyad</strong><span class="text-[10px] text-brand-gold">@string.Concat(Enumerable.Repeat("★", yorum.Puan))</span></div>
+                                        <div><strong class="block text-sm text-brand-darktext">@yorum.AdSoyad</strong><span class="text-[10px] text-brand-gold">@string.Concat(Enumerable.Repeat("?", yorum.Puan))</span></div>
                                     </div>
                                     <time class="text-[10px] text-brand-mutedtext">@yorum.OlusturulmaTarihi.ToString("dd MMM yyyy")</time>
                                 </div>
@@ -660,12 +660,12 @@
     @if (urunlerleBirlikte.Any())
     {
         <section class="product-together mt-16 rounded-lg border border-brand-border bg-brand-cream p-5 md:p-7" aria-labelledby="togetherTitle">
-            <div class="mb-5 flex flex-wrap items-end justify-between gap-3"><div><p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand-gold">@Localizer["Product_WhyYouWillLove"]</p><h2 id="togetherTitle" class="mt-1 font-serif text-2xl text-brand-olive">@Localizer["Product_Together"]</h2></div><a href="/Urun?k=@Model.KategoriId" class="text-xs font-semibold text-brand-olive underline-offset-4 hover:underline">@Localizer["Collection"]</a></div>
+            <div class="mb-5 flex flex-wrap items-end justify-between gap-3"><div><p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand-gold">@Localizer["Product_WhyYouWillLove"]</p><h2 id="togetherTitle" class="mt-1 font-serif text-2xl text-brand-olive">@Localizer["Product_Together"]</h2></div><a href="/products?k=@Model.KategoriId" class="text-xs font-semibold text-brand-olive underline-offset-4 hover:underline">@Localizer["Collection"]</a></div>
             <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 @foreach (var item in urunlerleBirlikte.Take(3))
                 {
                     var itemSlug = string.IsNullOrWhiteSpace(item.Slug) ? FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.LocalizedBaslik) : item.Slug;
-                    <a href="/Urun/Detay/@itemSlug-@item.Id" class="group rounded-md bg-white p-2 transition-transform hover:-translate-y-1">
+                    <a href="/products/@itemSlug-@item.Id" class="group rounded-md bg-white p-2 transition-transform hover:-translate-y-1">
                         <img src="@(string.IsNullOrWhiteSpace(item.AnaGorselUrl) ? "/img/products/placeholder.webp" : item.AnaGorselUrl)" alt="@item.LocalizedBaslik" class="aspect-square w-full rounded object-cover" loading="lazy" decoding="async" />
                         <h3 class="mt-2 line-clamp-2 text-xs font-semibold text-brand-darktext">@item.LocalizedBaslik</h3>
                         <p class="mt-1 text-sm font-bold text-brand-olive">@item.GosterFiyat.ToString("N2") @currencySymbol</p>
@@ -694,7 +694,7 @@
                     decimal? bEskiFiyat = (item.IndirimliFiyat != null && item.IndirimliFiyat < item.Fiyat) ? item.Fiyat : null;
                     var benzerUrlSlug = !string.IsNullOrEmpty(item.Slug) ? item.Slug : FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.LocalizedBaslik);
                     if (string.IsNullOrWhiteSpace(benzerUrlSlug)) { benzerUrlSlug = "urun"; }
-                    string bProductUrl = $"/Urun/Detay/{benzerUrlSlug}-{item.Id}";
+                    string bProductUrl = $"/products/{benzerUrlSlug}-{item.Id}";
                     bool benzerResimVar = !string.IsNullOrWhiteSpace(item.AnaGorselUrl);
                     <a href="@bProductUrl" class="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 rounded">
                         <div class="related-image-container relative overflow-hidden mb-3 aspect-square bg-[#f8f6f2] rounded">
@@ -918,7 +918,7 @@ function toggleAllReviews() {
     if (!list || !btn) return;
     if (list.style.maxHeight && list.style.maxHeight !== '600px') {
         list.style.maxHeight = '600px';
-        btn.textContent = 'TÃ¼m YorumlarÄ± GÃ¶r (' + btn.textContent.match(/\d+/)?.[0] + ')';
+        btn.textContent = 'Tüm Yorumları Gör (' + btn.textContent.match(/\d+/)?.[0] + ')';
     } else {
         list.style.maxHeight = list.scrollHeight + 'px';
         btn.textContent = 'Gizle';
@@ -1054,7 +1054,7 @@ const FRAME_PRICE_PER_METER = 250;
 
 function parseOlcu(olcuText) {
     if (!olcuText) return null;
-    var match = olcuText.match(/(\d+(?:[.,]\d+)?)\s*(?:cm)?\s*[xXÃ—]\s*(\d+(?:[.,]\d+)?)/i);
+    var match = olcuText.match(/(\d+(?:[.,]\d+)?)\s*(?:cm)?\s*[xX×]\s*(\d+(?:[.,]\d+)?)/i);
     if (!match) return null;
     var w = parseFloat(match[1].replace(',', '.'));
     var h = parseFloat(match[2].replace(',', '.'));
@@ -1063,7 +1063,7 @@ function parseOlcu(olcuText) {
 }
 
 function calcFrameFiyat(olcuText, cerceve) {
-    if (!cerceve || cerceve === 'Ã‡erÃ§evesiz') return 0;
+    if (!cerceve || cerceve === 'Çerçevesiz') return 0;
     var dims = parseOlcu(olcuText);
     if (!dims) return 0;
     var cevreMetre = ((dims.width + dims.height) * 2) / 100;
@@ -1085,7 +1085,7 @@ function updateSelectionSummary() {
     var cerceve = selectedFrame ? selectedFrame.value : null;
     var temelFiyat = selectedVariant ? parseFloat(selectedVariant.getAttribute('data-price')) || 0 : 0;
     var adet = parseInt(document.getElementById('productQuantity')?.value) || 1;
-    var cerceveFarki = selectedVariant ? calcFrameFiyat(olcu, cerceve || 'Ã‡erÃ§evesiz') : 0;
+    var cerceveFarki = selectedVariant ? calcFrameFiyat(olcu, cerceve || 'Çerçevesiz') : 0;
     var toplamBirim = temelFiyat + cerceveFarki;
     var toplam = toplamBirim * adet;
 
@@ -1155,7 +1155,7 @@ function toggleGiftWrap(container) {
             var olcu = selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '';
             var selectedFrame = document.querySelector('.frame-radio:checked');
             var cerceve = selectedFrame ? selectedFrame.value : null;
-            var cerceveFarki = calcFrameFiyat(olcu, cerceve || 'Ã‡erÃ§evesiz');
+            var cerceveFarki = calcFrameFiyat(olcu, cerceve || 'Çerçevesiz');
             var totalPrice = basePrice + cerceveFarki;
             if (checkbox.checked) {
                 var giftPriceInput = document.getElementById('hediyePaketFiyatiHidden');
@@ -1174,7 +1174,7 @@ function updatePriceWithFrame() {
     var basePrice = parseFloat(selectedVariant.getAttribute('data-price')) || 0;
     var olcu = selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '';
     var cerceve = selectedFrame ? selectedFrame.value : null;
-    var cerceveFarki = calcFrameFiyat(olcu, cerceve || 'Ã‡erÃ§evesiz');
+    var cerceveFarki = calcFrameFiyat(olcu, cerceve || 'Çerçevesiz');
     var newPrice = basePrice + cerceveFarki;
 
     var priceDisplay = document.getElementById('priceDisplay');
@@ -1384,7 +1384,7 @@ if (ajaxSepetBtn) {
             return;
         }
         
-        const url = '/Sepet/Ekle';
+        const url = '/cart/Ekle';
         const urunId = form.querySelector('input[name="UrunId"]')?.value;
         const adet = form.querySelector('input[name="Adet"]')?.value;
         const secenekId = document.getElementById('selectedVariantId')?.value;
@@ -1454,7 +1454,7 @@ if (ajaxSepetBtn) {
                     window.showToast(PRODUCT_ADDED_TO_CART_TEXT, 'success');
                 }
                 
-                // 1 saniye sonra butonu sÄ±fÄ±rla (tekrar tÄ±klanabilir olsun)
+                // 1 saniye sonra butonu sıfırla (tekrar tıklanabilir olsun)
                 setTimeout(() => {
                     if (icon) {
                         icon.classList.remove('fa-check');
@@ -1547,7 +1547,7 @@ function selectFrameOption(label, value) {
     }
 }
 
-// MasaÃ¼stÃ¼ fare koordinatlarÄ±na gÃ¶re pÃ¼rÃ¼zsÃ¼z zoom (transform-origin)
+// Masaüstü fare koordinatlarına göre pürüzsüz zoom (transform-origin)
 document.addEventListener("DOMContentLoaded", function () {
     const container = document.getElementById('mainProductImageContainer');
     const img = document.getElementById('mainProductImage');

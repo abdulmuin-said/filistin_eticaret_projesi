@@ -1,4 +1,4 @@
-﻿@inject IStringLocalizer<SharedResource> Localizer
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["AboutUs"];
     ViewData["SeoTitle"] = Localizer["AboutUs"] + " - 7ANRPS48";
@@ -40,7 +40,7 @@
         <div class="mt-12 bg-brand-cream p-6 text-center border border-brand-border rounded">
             <h3 class="mt-0 font-serif text-brand-olive">@Localizer["ContactUs"]</h3>
             <p class="text-sm">@Localizer["ContactUsDescription"]</p>
-            <a href="/Kurumsal/Iletisim" class="inline-block mt-4 bg-brand-olive text-white px-6 py-2 text-xs uppercase tracking-widest rounded hover:bg-[#1c2001] transition-colors no-underline">
+            <a href="/pages/Iletisim" class="inline-block mt-4 bg-brand-olive text-white px-6 py-2 text-xs uppercase tracking-widest rounded hover:bg-[#1c2001] transition-colors no-underline">
                 @Localizer["ContactPage"]
             </a>
         </div>
