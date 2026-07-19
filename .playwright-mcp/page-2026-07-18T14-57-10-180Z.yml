@@ -1,0 +1,520 @@
+- generic [active] [ref=f15e1]:
+  - generic [ref=f15e3]:
+    - generic [ref=f15e4]:
+      - generic [ref=f15e5]:
+        - generic [ref=f15e6]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f15e7]:
+        - generic [ref=f15e8]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f15e9]:
+        - generic [ref=f15e10]: 
+        - text: Pay on delivery option
+      - generic [ref=f15e11]:
+        - generic [ref=f15e12]: 
+        - text: Fast Production
+      - generic [ref=f15e13]:
+        - generic [ref=f15e14]: 
+        - text: Careful Packaging
+      - generic [ref=f15e15]:
+        - generic [ref=f15e16]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f15e17]:
+        - generic [ref=f15e18]: 
+        - text: 14 Days Return
+      - generic [ref=f15e19]:
+        - generic [ref=f15e20]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f15e21]:
+        - generic [ref=f15e22]: 
+        - text: WhatsApp Support
+    - generic [ref=f15e23]:
+      - generic [ref=f15e24]:
+        - generic [ref=f15e25]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f15e26]:
+        - generic [ref=f15e27]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f15e28]:
+        - generic [ref=f15e29]: 
+        - text: Pay on delivery option
+      - generic [ref=f15e30]:
+        - generic [ref=f15e31]: 
+        - text: Fast Production
+      - generic [ref=f15e32]:
+        - generic [ref=f15e33]: 
+        - text: Careful Packaging
+      - generic [ref=f15e34]:
+        - generic [ref=f15e35]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f15e36]:
+        - generic [ref=f15e37]: 
+        - text: 14 Days Return
+      - generic [ref=f15e38]:
+        - generic [ref=f15e39]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f15e40]:
+        - generic [ref=f15e41]: 
+        - text: WhatsApp Support
+  - banner [ref=f15e42]:
+    - generic [ref=f15e43]:
+      - text: 
+      - link "7ANRPS48" [ref=f15e44] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f15e45]
+      - generic [ref=f15e46]:
+        - button "Open Menu" [ref=f15e47] [cursor=pointer]
+        - button "Search" [ref=f15e50] [cursor=pointer]
+        - button "Language" [ref=f15e54] [cursor=pointer]:
+          - generic [ref=f15e56]: English
+      - generic [ref=f15e57]:
+        - link "My Account" [ref=f15e58] [cursor=pointer]:
+          - /url: /Profil
+        - link "My Favorites" [ref=f15e61] [cursor=pointer]:
+          - /url: /Favori
+        - link "Cart" [ref=f15e64] [cursor=pointer]:
+          - /url: /Sepet
+          - generic [ref=f15e67]: "1"
+  - main [ref=f15e68]:
+    - region "Hero Banner" [ref=f15e69]:
+      - img "7ANRPS48 Banner" [ref=f15e73]
+    - region "TrustBar" [ref=f15e74]:
+      - generic [ref=f15e76]:
+        - generic [ref=f15e77]: Free shipping on orders over 1,500 ₪
+        - generic [ref=f15e81]: Secure & Safe Payment
+        - generic [ref=f15e85]: 100% Original Products
+        - generic [ref=f15e89]: 24/7 Customer Support
+    - region [ref=f15e93]:
+      - generic [ref=f15e94]:
+        - generic [ref=f15e96]:
+          - paragraph [ref=f15e97]: 7ANRPS48
+          - heading "Shop by category" [level=2] [ref=f15e98]
+        - generic [ref=f15e99]:
+          - link [ref=f15e100] [cursor=pointer]:
+            - /url: /Urun?k=91
+            - heading "furniture" [level=3] [ref=f15e106]
+          - link [ref=f15e110] [cursor=pointer]:
+            - /url: /Urun?k=90
+            - heading "fragrances" [level=3] [ref=f15e116]
+          - link [ref=f15e120] [cursor=pointer]:
+            - /url: /Urun?k=92
+            - heading "groceries" [level=3] [ref=f15e126]
+          - link [ref=f15e130] [cursor=pointer]:
+            - /url: /Urun?k=89
+            - heading "beauty" [level=3] [ref=f15e136]
+          - link [ref=f15e140] [cursor=pointer]:
+            - /url: /Urun?k=78
+            - heading "Home Furniture" [level=3] [ref=f15e146]
+          - link [ref=f15e150] [cursor=pointer]:
+            - /url: /Urun?k=79
+            - heading "Electronics" [level=3] [ref=f15e156]
+          - link [ref=f15e160] [cursor=pointer]:
+            - /url: /Urun?k=80
+            - heading "Fashion" [level=3] [ref=f15e166]
+        - link "View all categories" [ref=f15e170] [cursor=pointer]:
+          - /url: /Urun
+    - generic [ref=f15e173]:
+      - generic [ref=f15e174]:
+        - paragraph [ref=f15e175]: 7ANRPS48
+        - heading "Featured Products" [level=2] [ref=f15e177]
+      - generic [ref=f15e178]:
+        - generic [ref=f15e179] [cursor=pointer]:
+          - generic [ref=f15e180]:
+            - link "New Essence Mascara Lash Princess" [ref=f15e181]:
+              - /url: /Urun/Detay/test-1-essence-mascara-lash-princess-112
+              - generic [ref=f15e182]: New
+              - img "Essence Mascara Lash Princess" [ref=f15e183]
+            - button "Add to Favorites" [ref=f15e184]
+          - generic [ref=f15e187]:
+            - heading [level=3] [ref=f15e188]:
+              - link "Essence Mascara Lash Princess" [ref=f15e189]:
+                - /url: /Urun/Detay/test-1-essence-mascara-lash-princess-112
+            - generic [ref=f15e190]:
+              - paragraph [ref=f15e191]: 9 ₪
+              - paragraph [ref=f15e192]: 10 ₪
+              - generic [ref=f15e193]: "-%11"
+            - button "Add to Cart" [ref=f15e194]:
+              - generic [ref=f15e195]: 
+        - generic [ref=f15e197] [cursor=pointer]:
+          - generic [ref=f15e198]:
+            - link "New Eyeshadow Palette with Mirror" [ref=f15e199]:
+              - /url: /Urun/Detay/test-2-eyeshadow-palette-with-mirror-113
+              - generic [ref=f15e200]: New
+              - img "Eyeshadow Palette with Mirror" [ref=f15e201]
+            - button "Add to Favorites" [ref=f15e202]
+          - generic [ref=f15e205]:
+            - heading [level=3] [ref=f15e206]:
+              - link "Eyeshadow Palette with Mirror" [ref=f15e207]:
+                - /url: /Urun/Detay/test-2-eyeshadow-palette-with-mirror-113
+            - generic [ref=f15e208]:
+              - paragraph [ref=f15e209]: 16 ₪
+              - paragraph [ref=f15e210]: 20 ₪
+              - generic [ref=f15e211]: "-%18"
+            - button "Add to Cart" [ref=f15e212]:
+              - generic [ref=f15e213]: 
+        - generic [ref=f15e215] [cursor=pointer]:
+          - generic [ref=f15e216]:
+            - link "New Powder Canister" [ref=f15e217]:
+              - /url: /Urun/Detay/test-3-powder-canister-114
+              - generic [ref=f15e218]: New
+              - img "Powder Canister" [ref=f15e219]
+            - button "Add to Favorites" [ref=f15e220]
+          - generic [ref=f15e223]:
+            - heading [level=3] [ref=f15e224]:
+              - link "Powder Canister" [ref=f15e225]:
+                - /url: /Urun/Detay/test-3-powder-canister-114
+            - generic [ref=f15e226]:
+              - paragraph [ref=f15e227]: 14 ₪
+              - paragraph [ref=f15e228]: 15 ₪
+              - generic [ref=f15e229]: "-%10"
+            - button "Add to Cart" [ref=f15e230]:
+              - generic [ref=f15e231]: 
+        - generic [ref=f15e233] [cursor=pointer]:
+          - generic [ref=f15e234]:
+            - link "New Red Lipstick" [ref=f15e235]:
+              - /url: /Urun/Detay/test-4-red-lipstick-115
+              - generic [ref=f15e236]: New
+              - img "Red Lipstick" [ref=f15e237]
+            - button "Add to Favorites" [ref=f15e238]
+          - generic [ref=f15e241]:
+            - heading [level=3] [ref=f15e242]:
+              - link "Red Lipstick" [ref=f15e243]:
+                - /url: /Urun/Detay/test-4-red-lipstick-115
+            - generic [ref=f15e244]:
+              - paragraph [ref=f15e245]: 11 ₪
+              - paragraph [ref=f15e246]: 13 ₪
+              - generic [ref=f15e247]: "-%12"
+            - button "Add to Cart" [ref=f15e248]:
+              - generic [ref=f15e249]: 
+        - generic [ref=f15e251] [cursor=pointer]:
+          - generic [ref=f15e252]:
+            - link "New Red Nail Polish" [ref=f15e253]:
+              - /url: /Urun/Detay/test-5-red-nail-polish-116
+              - generic [ref=f15e254]: New
+              - img "Red Nail Polish" [ref=f15e255]
+            - button "Add to Favorites" [ref=f15e256]
+          - generic [ref=f15e259]:
+            - heading [level=3] [ref=f15e260]:
+              - link "Red Nail Polish" [ref=f15e261]:
+                - /url: /Urun/Detay/test-5-red-nail-polish-116
+            - generic [ref=f15e262]:
+              - paragraph [ref=f15e263]: 8 ₪
+              - paragraph [ref=f15e264]: 9 ₪
+              - generic [ref=f15e265]: "-%11"
+            - button "Add to Cart" [ref=f15e266]:
+              - generic [ref=f15e267]: 
+        - generic [ref=f15e269] [cursor=pointer]:
+          - generic [ref=f15e270]:
+            - link "New Calvin Klein CK One" [ref=f15e271]:
+              - /url: /Urun/Detay/test-6-calvin-klein-ck-one-117
+              - generic [ref=f15e272]: New
+              - img "Calvin Klein CK One" [ref=f15e273]
+            - button "Add to Favorites" [ref=f15e274]
+          - generic [ref=f15e277]:
+            - heading [level=3] [ref=f15e278]:
+              - link "Calvin Klein CK One" [ref=f15e279]:
+                - /url: /Urun/Detay/test-6-calvin-klein-ck-one-117
+            - generic [ref=f15e280]:
+              - paragraph [ref=f15e281]: 49 ₪
+              - paragraph [ref=f15e282]: 50 ₪
+              - generic [ref=f15e283]: "-%2"
+            - button "Add to Cart" [ref=f15e284]:
+              - generic [ref=f15e285]: 
+        - generic [ref=f15e287] [cursor=pointer]:
+          - generic [ref=f15e288]:
+            - link "New Chanel Coco Noir Eau De" [ref=f15e289]:
+              - /url: /Urun/Detay/test-7-chanel-coco-noir-eau-de-118
+              - generic [ref=f15e290]: New
+              - img "Chanel Coco Noir Eau De" [ref=f15e291]
+            - button "Add to Favorites" [ref=f15e292]
+          - generic [ref=f15e295]:
+            - heading [level=3] [ref=f15e296]:
+              - link "Chanel Coco Noir Eau De" [ref=f15e297]:
+                - /url: /Urun/Detay/test-7-chanel-coco-noir-eau-de-118
+            - generic [ref=f15e298]:
+              - paragraph [ref=f15e299]: 109 ₪
+              - paragraph [ref=f15e300]: 130 ₪
+              - generic [ref=f15e301]: "-%17"
+            - button "Add to Cart" [ref=f15e302]:
+              - generic [ref=f15e303]: 
+        - generic [ref=f15e305] [cursor=pointer]:
+          - generic [ref=f15e306]:
+            - link "New Dior J'adore" [ref=f15e307]:
+              - /url: /Urun/Detay/test-8-dior-jadore-119
+              - generic [ref=f15e308]: New
+              - img "Dior J'adore" [ref=f15e309]
+            - button "Add to Favorites" [ref=f15e310]
+          - generic [ref=f15e313]:
+            - heading [level=3] [ref=f15e314]:
+              - link "Dior J'adore" [ref=f15e315]:
+                - /url: /Urun/Detay/test-8-dior-jadore-119
+            - generic [ref=f15e316]:
+              - paragraph [ref=f15e317]: 77 ₪
+              - paragraph [ref=f15e318]: 90 ₪
+              - generic [ref=f15e319]: "-%15"
+            - button "Add to Cart" [ref=f15e320]:
+              - generic [ref=f15e321]: 
+      - link "View All" [ref=f15e324] [cursor=pointer]:
+        - /url: /Urun
+    - generic [ref=f15e325]:
+      - generic [ref=f15e326]:
+        - generic [ref=f15e327]:
+          - paragraph [ref=f15e328]: Best Sellers
+          - heading "Most Preferred" [level=2] [ref=f15e329]
+        - link "View All" [ref=f15e330] [cursor=pointer]:
+          - /url: /Urun?sort=popularity
+      - generic [ref=f15e333]:
+        - article [ref=f15e334]:
+          - link "Best Seller %9 Annibale Colombo Bed Annibale Colombo Bed 1,737 ₪ 1,900 ₪ -%9" [ref=f15e335] [cursor=pointer]:
+            - /url: /Urun/Detay/test-11-annibale-colombo-bed-122
+            - generic [ref=f15e336]:
+              - generic [ref=f15e337]: Best Seller
+              - generic [ref=f15e338]: "%9"
+              - img "Annibale Colombo Bed"
+            - heading "Annibale Colombo Bed" [level=3] [ref=f15e339]
+            - generic [ref=f15e340]:
+              - paragraph [ref=f15e341]: 1,737 ₪
+              - paragraph [ref=f15e342]: 1,900 ₪
+              - generic [ref=f15e343]: "-%9"
+        - article [ref=f15e344]:
+          - link "Best Seller %2 Knoll Saarinen Executive Conference Chair Knoll Saarinen Executive Conference Chair 490 ₪ 500 ₪ -%2" [ref=f15e345] [cursor=pointer]:
+            - /url: /Urun/Detay/test-14-knoll-saarinen-executive-conference-chair-125
+            - generic [ref=f15e346]:
+              - generic [ref=f15e347]: Best Seller
+              - generic [ref=f15e348]: "%2"
+              - img "Knoll Saarinen Executive Conference Chair"
+            - heading "Knoll Saarinen Executive Conference Chair" [level=3] [ref=f15e349]
+            - generic [ref=f15e350]:
+              - paragraph [ref=f15e351]: 490 ₪
+              - paragraph [ref=f15e352]: 500 ₪
+              - generic [ref=f15e353]: "-%2"
+        - article [ref=f15e354]:
+          - link "Best Seller %13 Apple Apple 2 ₪ 2 ₪ -%13" [ref=f15e355] [cursor=pointer]:
+            - /url: /Urun/Detay/test-16-apple-127
+            - generic [ref=f15e356]:
+              - generic [ref=f15e357]: Best Seller
+              - generic [ref=f15e358]: "%13"
+              - img "Apple"
+            - heading "Apple" [level=3] [ref=f15e359]
+            - generic [ref=f15e360]:
+              - paragraph [ref=f15e361]: 2 ₪
+              - paragraph [ref=f15e362]: 2 ₪
+              - generic [ref=f15e363]: "-%13"
+        - article [ref=f15e364]:
+          - link "Best Seller %10 Beef Steak Beef Steak 12 ₪ 13 ₪ -%10" [ref=f15e365] [cursor=pointer]:
+            - /url: /Urun/Detay/test-17-beef-steak-128
+            - generic [ref=f15e366]:
+              - generic [ref=f15e367]: Best Seller
+              - generic [ref=f15e368]: "%10"
+              - img "Beef Steak"
+            - heading "Beef Steak" [level=3] [ref=f15e369]
+            - generic [ref=f15e370]:
+              - paragraph [ref=f15e371]: 12 ₪
+              - paragraph [ref=f15e372]: 13 ₪
+              - generic [ref=f15e373]: "-%10"
+        - article [ref=f15e374]:
+          - link "Best Seller %9 Cooking Oil Cooking Oil 5 ₪ 5 ₪ -%9" [ref=f15e375] [cursor=pointer]:
+            - /url: /Urun/Detay/test-20-cooking-oil-131
+            - generic [ref=f15e376]:
+              - generic [ref=f15e377]: Best Seller
+              - generic [ref=f15e378]: "%9"
+              - img "Cooking Oil"
+            - heading "Cooking Oil" [level=3] [ref=f15e379]
+            - generic [ref=f15e380]:
+              - paragraph [ref=f15e381]: 5 ₪
+              - paragraph [ref=f15e382]: 5 ₪
+              - generic [ref=f15e383]: "-%9"
+        - article [ref=f15e384]:
+          - link "Best Seller Cucumber Cucumber 1 ₪" [ref=f15e385] [cursor=pointer]:
+            - /url: /Urun/Detay/test-21-cucumber-132
+            - generic [ref=f15e386]:
+              - generic [ref=f15e387]: Best Seller
+              - img "Cucumber"
+            - heading "Cucumber" [level=3] [ref=f15e388]
+            - paragraph [ref=f15e390]: 1 ₪
+        - article [ref=f15e391]:
+          - link "Best Seller %10 Dog Food Dog Food 10 ₪ 11 ₪ -%10" [ref=f15e392] [cursor=pointer]:
+            - /url: /Urun/Detay/test-22-dog-food-133
+            - generic [ref=f15e393]:
+              - generic [ref=f15e394]: Best Seller
+              - generic [ref=f15e395]: "%10"
+              - img "Dog Food"
+            - heading "Dog Food" [level=3] [ref=f15e396]
+            - generic [ref=f15e397]:
+              - paragraph [ref=f15e398]: 10 ₪
+              - paragraph [ref=f15e399]: 11 ₪
+              - generic [ref=f15e400]: "-%10"
+        - article [ref=f15e401]:
+          - link "Best Seller %15 Kiwi Kiwi 2 ₪ 2 ₪ -%15" [ref=f15e402] [cursor=pointer]:
+            - /url: /Urun/Detay/test-30-kiwi-141
+            - generic [ref=f15e403]:
+              - generic [ref=f15e404]: Best Seller
+              - generic [ref=f15e405]: "%15"
+              - img "Kiwi"
+            - heading "Kiwi" [level=3] [ref=f15e406]
+            - generic [ref=f15e407]:
+              - paragraph [ref=f15e408]: 2 ₪
+              - paragraph [ref=f15e409]: 2 ₪
+              - generic [ref=f15e410]: "-%15"
+    - generic [ref=f15e412]:
+      - generic [ref=f15e413]:
+        - generic [ref=f15e414]:
+          - paragraph [ref=f15e415]: Deal Products
+          - heading "Campaign Selections" [level=2] [ref=f15e416]
+        - link "View Deals" [ref=f15e417] [cursor=pointer]:
+          - /url: /Urun?sort=price_asc
+      - generic [ref=f15e420]:
+        - article [ref=f15e421]:
+          - link "-%1 Green Chili Pepper Green Chili Pepper 1 ₪ 1 ₪ -%1" [ref=f15e422] [cursor=pointer]:
+            - /url: /Urun/Detay/test-26-green-chili-pepper-137
+            - generic [ref=f15e423]:
+              - generic [ref=f15e424]: "-%1"
+              - img "Green Chili Pepper"
+            - heading "Green Chili Pepper" [level=3] [ref=f15e425]
+            - generic [ref=f15e426]:
+              - paragraph [ref=f15e427]: 1 ₪
+              - paragraph [ref=f15e428]: 1 ₪
+              - generic [ref=f15e429]: "-%1"
+        - article [ref=f15e430]:
+          - link "-%11 Eggs Eggs 3 ₪ 3 ₪ -%11" [ref=f15e431] [cursor=pointer]:
+            - /url: /Urun/Detay/test-23-eggs-134
+            - generic [ref=f15e432]:
+              - generic [ref=f15e433]: "-%11"
+              - img "Eggs"
+            - heading "Eggs" [level=3] [ref=f15e434]
+            - generic [ref=f15e435]:
+              - paragraph [ref=f15e436]: 3 ₪
+              - paragraph [ref=f15e437]: 3 ₪
+              - generic [ref=f15e438]: "-%11"
+        - article [ref=f15e439]:
+          - link "-%12 Juice Juice 4 ₪ 4 ₪ -%12" [ref=f15e440] [cursor=pointer]:
+            - /url: /Urun/Detay/test-29-juice-140
+            - generic [ref=f15e441]:
+              - generic [ref=f15e442]: "-%12"
+              - img "Juice"
+            - heading "Juice" [level=3] [ref=f15e443]
+            - generic [ref=f15e444]:
+              - paragraph [ref=f15e445]: 4 ₪
+              - paragraph [ref=f15e446]: 4 ₪
+              - generic [ref=f15e447]: "-%12"
+        - article [ref=f15e448]:
+          - link "-%9 Ice Cream Ice Cream 5 ₪ 5 ₪ -%9" [ref=f15e449] [cursor=pointer]:
+            - /url: /Urun/Detay/test-28-ice-cream-139
+            - generic [ref=f15e450]:
+              - generic [ref=f15e451]: "-%9"
+              - img "Ice Cream"
+            - heading "Ice Cream" [level=3] [ref=f15e452]
+            - generic [ref=f15e453]:
+              - paragraph [ref=f15e454]: 5 ₪
+              - paragraph [ref=f15e455]: 5 ₪
+              - generic [ref=f15e456]: "-%9"
+        - article [ref=f15e457]:
+          - link "-%14 Honey Jar Honey Jar 6 ₪ 7 ₪ -%14" [ref=f15e458] [cursor=pointer]:
+            - /url: /Urun/Detay/test-27-honey-jar-138
+            - generic [ref=f15e459]:
+              - generic [ref=f15e460]: "-%14"
+              - img "Honey Jar"
+            - heading "Honey Jar" [level=3] [ref=f15e461]
+            - generic [ref=f15e462]:
+              - paragraph [ref=f15e463]: 6 ₪
+              - paragraph [ref=f15e464]: 7 ₪
+              - generic [ref=f15e465]: "-%14"
+        - article [ref=f15e466]:
+          - link "-%10 Cat Food Cat Food 8 ₪ 9 ₪ -%10" [ref=f15e467] [cursor=pointer]:
+            - /url: /Urun/Detay/test-18-cat-food-129
+            - generic [ref=f15e468]:
+              - generic [ref=f15e469]: "-%10"
+              - img "Cat Food"
+            - heading "Cat Food" [level=3] [ref=f15e470]
+            - generic [ref=f15e471]:
+              - paragraph [ref=f15e472]: 8 ₪
+              - paragraph [ref=f15e473]: 9 ₪
+              - generic [ref=f15e474]: "-%10"
+        - article [ref=f15e475]:
+          - link "-%14 Chicken Meat Chicken Meat 9 ₪ 10 ₪ -%14" [ref=f15e476] [cursor=pointer]:
+            - /url: /Urun/Detay/test-19-chicken-meat-130
+            - generic [ref=f15e477]:
+              - generic [ref=f15e478]: "-%14"
+              - img "Chicken Meat"
+            - heading "Chicken Meat" [level=3] [ref=f15e479]
+            - generic [ref=f15e480]:
+              - paragraph [ref=f15e481]: 9 ₪
+              - paragraph [ref=f15e482]: 10 ₪
+              - generic [ref=f15e483]: "-%14"
+        - article [ref=f15e484]:
+          - link "-%4 Fish Steak Fish Steak 14 ₪ 15 ₪ -%4" [ref=f15e485] [cursor=pointer]:
+            - /url: /Urun/Detay/test-24-fish-steak-135
+            - generic [ref=f15e486]:
+              - generic [ref=f15e487]: "-%4"
+              - img "Fish Steak"
+            - heading "Fish Steak" [level=3] [ref=f15e488]
+            - generic [ref=f15e489]:
+              - paragraph [ref=f15e490]: 14 ₪
+              - paragraph [ref=f15e491]: 15 ₪
+              - generic [ref=f15e492]: "-%4"
+    - generic [ref=f15e495]:
+      - generic [ref=f15e496]:
+        - heading "Bank Transfer" [level=4] [ref=f15e500]
+        - paragraph [ref=f15e501]: Easy payment with IBAN details
+      - generic [ref=f15e502]:
+        - heading "Fast Delivery" [level=4] [ref=f15e506]
+        - paragraph [ref=f15e507]: Your orders arrive quickly
+      - generic [ref=f15e508]:
+        - heading "Customer Satisfaction" [level=4] [ref=f15e512]
+        - paragraph [ref=f15e513]: 100% customer satisfaction focused service
+  - contentinfo [ref=f15e514]:
+    - generic [ref=f15e516]:
+      - generic [ref=f15e521]:
+        - generic [ref=f15e522]: Across Palestine
+        - generic [ref=f15e523]: Free Shipping
+      - generic [ref=f15e528]:
+        - generic [ref=f15e529]: Bank Transfer
+        - generic [ref=f15e530]: 256 Bit SSL
+      - generic [ref=f15e535]:
+        - generic [ref=f15e536]: Bank Transfer
+        - generic [ref=f15e537]: Easy payment by IBAN
+    - generic [ref=f15e538]:
+      - generic [ref=f15e539]:
+        - generic [ref=f15e540]:
+          - heading "Subscribe to newsletter" [level=3] [ref=f15e541]
+          - paragraph [ref=f15e542]: Get new arrivals, Palestinian market picks, and special offers in your inbox.
+          - generic [ref=f15e543]:
+            - textbox "Email Address" [ref=f15e544]
+            - button "Subscribe" [ref=f15e545] [cursor=pointer]
+        - generic [ref=f15e546]:
+          - heading "Corporate" [level=4] [ref=f15e547]
+          - list [ref=f15e548]:
+            - listitem [ref=f15e549]:
+              - link "About Us" [ref=f15e550] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=f15e551]:
+              - link "Contact" [ref=f15e552] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=f15e553]:
+              - link "All Products" [ref=f15e554] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=f15e555]:
+              - link "Privacy Policy" [ref=f15e556] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f15e557]:
+              - link "Distance Sales Contract" [ref=f15e558] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=f15e560] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=f15e561]: 
+      - generic [ref=f15e562]:
+        - paragraph [ref=f15e564]: © 2026 7ANRPS48 — All rights reserved.
+        - generic [ref=f15e565]:
+          - link "Privacy Policy" [ref=f15e566] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "Return and Exchange" [ref=f15e567] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+          - text: "|"
+          - link "About Us" [ref=f15e568] [cursor=pointer]:
+            - /url: /Kurumsal/Hakkimizda
+  - link "WhatsApp Contact" [ref=f15e569] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+  - link "Cart" [ref=f15e572] [cursor=pointer]:
+    - /url: /Sepet
+    - generic [ref=f15e575]: "1"

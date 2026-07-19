@@ -11,12 +11,14 @@ using FilistinProje.Service.Services;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.HttpOverrides;
 using FilistinProje.Core.Varliklar;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using FilistinProje.Web.Attributes;
+using FilistinProje.Web.Caching;
 using FilistinProje.Web.Diagnostics;
 using FilistinProje.Web.HealthChecks;
 using FilistinProje.Web.Security;
@@ -29,18 +31,49 @@ using Hangfire;
 using Hangfire.PostgreSql;
 using Npgsql;
 using System.Security.Claims;
-
-// ============================================================
-// EPPLUS LÄ°SANS AYARI (En Tepeye Eklenmeli)
-// ============================================================
-Environment.SetEnvironmentVariable("EPPlusLicenseContext", "NonCommercial");
-// ============================================================
+using OfficeOpenXml;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("secrets.json", optional: true, reloadOnChange: true);
 builder.Configuration.AddEnvironmentVariables();
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.ForwardLimit = 1;
+    options.RequireHeaderSymmetry = true;
+
+    foreach (var proxyValue in builder.Configuration.GetSection("ReverseProxy:KnownProxies").Get<string[]>() ?? [])
+    {
+        if (IPAddress.TryParse(proxyValue, out var proxyAddress))
+        {
+            options.KnownProxies.Add(proxyAddress);
+        }
+    }
+
+    foreach (var networkValue in builder.Configuration.GetSection("ReverseProxy:KnownNetworks").Get<string[]>() ?? [])
+    {
+        var parts = networkValue.Split('/', 2);
+        if (parts.Length == 2 &&
+            IPAddress.TryParse(parts[0], out var prefix) &&
+            int.TryParse(parts[1], out var prefixLength))
+        {
+            options.KnownNetworks.Add(new Microsoft.AspNetCore.HttpOverrides.IPNetwork(prefix, prefixLength));
+        }
+    }
+});
+
 var startupWarnings = new List<string>();
+var epplusCommercialLicenseKey = builder.Configuration["EPPlus:LicenseKey"];
+if (!string.IsNullOrWhiteSpace(epplusCommercialLicenseKey))
+{
+    ExcelPackage.License.SetCommercial(epplusCommercialLicenseKey);
+}
+else
+{
+    startupWarnings.Add(
+        "EPPlus ticari lisans anahtari yapilandirilmamis. Excel import/export islemleri lisans saglanana kadar kullanilmamalidir.");
+}
 var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var isDatabaseAvailableAtStartup = CanConnectToPostgres(defaultConnectionString, out var databaseAvailabilityError);
 
@@ -57,9 +90,11 @@ if (string.IsNullOrWhiteSpace(dataProtectionKeysPath))
 
 // 1. VeritabanÄ± BaÄŸlantÄ±sÄ±
 builder.Services.AddSingleton<RequestSqlProfiler>();
+builder.Services.AddSingleton<AdminCounterInvalidationInterceptor>();
 builder.Services.AddDbContext<KanvasDbContext>((serviceProvider, options) =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.AddInterceptors(serviceProvider.GetRequiredService<AdminCounterInvalidationInterceptor>());
 
     if (builder.Environment.IsDevelopment())
     {
@@ -91,6 +126,11 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<KanvasDbContext>()
 .AddDefaultTokenProviders();
 
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    options.TokenLifespan = TimeSpan.FromHours(1);
+});
+
 // 3. Cookie (Ã‡erez) AyarlarÄ±
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -99,7 +139,9 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Hesap/ErisimEngellendi";
     options.SlidingExpiration = true;
     options.ExpireTimeSpan = TimeSpan.FromDays(30);
-    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+    options.Cookie.SecurePolicy = builder.Environment.IsDevelopment()
+        ? CookieSecurePolicy.SameAsRequest
+        : CookieSecurePolicy.Always;
     options.Cookie.SameSite = SameSiteMode.Lax;
     options.Cookie.HttpOnly = true;
     options.Events = new CookieAuthenticationEvents
@@ -166,6 +208,7 @@ builder.Services.AddScoped<ICacheService, CacheService>();
 // Media AltyapÄ±sÄ±
 builder.Services.AddScoped<IMediaService, LocalMediaService>();
 builder.Services.AddScoped<IDosyaServisi, DosyaServisi>();
+builder.Services.AddHostedService<TemporaryUploadCleanupService>();
 
 // Hangfire AltyapÄ±sÄ±
 if (isDatabaseAvailableAtStartup)
@@ -195,6 +238,10 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
     options.Cookie.Name = ".FilistinProje.Session";
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.SecurePolicy = builder.Environment.IsDevelopment()
+        ? CookieSecurePolicy.SameAsRequest
+        : CookieSecurePolicy.Always;
 });
 
 // SEO Servisleri
@@ -208,12 +255,18 @@ if (isDatabaseAvailableAtStartup)
 }
 
 builder.Services.AddScoped<ZiyaretciTakipAttribute>();
+builder.Services.AddSingleton<VisitorTrackingQueue>();
+builder.Services.AddSingleton<IVisitorTrackingQueue>(serviceProvider =>
+    serviceProvider.GetRequiredService<VisitorTrackingQueue>());
+builder.Services.AddHostedService(serviceProvider =>
+    serviceProvider.GetRequiredService<VisitorTrackingQueue>());
 
 // 7. HTTP Context Accessor
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ISiteSettingsService, SiteSettingsService>();
 builder.Services.AddScoped<IHomePageSettingsService, HomePageSettingsService>();
 builder.Services.AddScoped<IHomePageSectionService, HomePageSectionService>();
+builder.Services.AddScoped<IHeaderCategoryService, HeaderCategoryService>();
 builder.Services.AddScoped<IFavoriService, FavoriService>();
 builder.Services.AddScoped<IKargoHesaplamaServisi, KargoHesaplamaServisi>();
 builder.Services.AddScoped<IOrderPricingService, OrderPricingService>();
@@ -295,12 +348,24 @@ builder.Services.AddRateLimiter(options =>
                 QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
                 QueueLimit = 0
             }));
+    options.AddPolicy("checkout-upload", context =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: context.User.Identity?.Name ?? context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 6,
+                Window = TimeSpan.FromMinutes(10),
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 0
+            }));
 });
 
 // 11. Antiforgery gÃ¼venli ayarlar
 builder.Services.AddAntiforgery(options =>
 {
-    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+    options.Cookie.SecurePolicy = builder.Environment.IsDevelopment()
+        ? CookieSecurePolicy.SameAsRequest
+        : CookieSecurePolicy.Always;
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.Strict;
 });
@@ -320,6 +385,10 @@ var runningInContainer = string.Equals(
     Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"),
     "true",
     StringComparison.OrdinalIgnoreCase);
+
+// Forwarded headers must run before HTTPS, authentication, rate limiting and IP consumers.
+// Untrusted senders are ignored unless their proxy/network is explicitly configured above.
+app.UseForwardedHeaders();
 
 foreach (var startupWarning in startupWarnings)
 {
@@ -372,7 +441,7 @@ app.Use(async (context, next) =>
     await next();
 });
 
-if (!runningInContainer)
+if (!app.Environment.IsDevelopment() && !runningInContainer)
 {
     app.UseHttpsRedirection();
 }
@@ -710,7 +779,8 @@ static bool IsLegacySensitiveUploadPath(PathString path)
 {
     var value = path.Value ?? string.Empty;
     return value.StartsWith("/uploads/kimlikler", StringComparison.OrdinalIgnoreCase)
-        || value.StartsWith("/uploads/receteler", StringComparison.OrdinalIgnoreCase);
+        || value.StartsWith("/uploads/receteler", StringComparison.OrdinalIgnoreCase)
+        || value.StartsWith("/uploads/invoices", StringComparison.OrdinalIgnoreCase);
 }
 
 static async Task EnsureSensitiveUploadsMigratedAsync(KanvasDbContext context, IWebHostEnvironment env, Microsoft.Extensions.Logging.ILogger logger)
@@ -743,7 +813,8 @@ static async Task EnsureSensitiveUploadsMigratedAsync(KanvasDbContext context, I
     var siparisler = await context.Siparisler
         .Where(x =>
             (x.KimlikFotoYolu != null && x.KimlikFotoYolu.StartsWith("/uploads/kimlikler/")) ||
-            (x.ReceteDosyaYolu != null && x.ReceteDosyaYolu.StartsWith("/uploads/receteler/")))
+            (x.ReceteDosyaYolu != null && x.ReceteDosyaYolu.StartsWith("/uploads/receteler/")) ||
+            (x.FaturaDosyaYolu != null && x.FaturaDosyaYolu.StartsWith("/uploads/invoices/")))
         .ToListAsync();
 
     foreach (var siparis in siparisler)
@@ -772,6 +843,20 @@ static async Task EnsureSensitiveUploadsMigratedAsync(KanvasDbContext context, I
             siparis.ReceteDosyaYolu = privateReceteReference;
             changed = true;
             if (!string.IsNullOrWhiteSpace(oldRecetePath)) deleteAfterSave.Add(oldRecetePath);
+        }
+
+        if (TryCopyLegacySensitiveFile(
+            env,
+            siparis.FaturaDosyaYolu,
+            "uploads/invoices",
+            HassasBelgeKategorisi.Fatura,
+            out var privateFaturaReference,
+            out _))
+        {
+            siparis.FaturaDosyaYolu = privateFaturaReference;
+            changed = true;
+            // Fatura kaynağı güvenli endpoint doğrulanana kadar fiziksel olarak korunur.
+            // Legacy URL middleware tarafından 404 döndürülür.
         }
     }
 
@@ -1288,13 +1373,10 @@ BEGIN
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "IptalSuresiSaat" integer NOT NULL DEFAULT 3;
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "FooterAciklamasiEn" text NOT NULL DEFAULT 'A Palestinian e-commerce site offering varied products at competitive prices with fast delivery to all cities.';
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "FooterAciklamasiAr" text NOT NULL DEFAULT 'متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن';
-    ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "FooterAciklamasiTr" text NOT NULL DEFAULT 'Rekabetçi fiyatlarla çeşitli ürünler sunan ve tüm şehirlere hızlı teslimat yapan bir Filistin e-ticaret sitesi.';
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "HeroBaslikAr" text NOT NULL DEFAULT 'جلب الفن الفلسطيني إلى منزلك';
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "HeroBaslikEn" text NOT NULL DEFAULT 'Bring Palestinian Art to Your Home';
-    ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "HeroBaslikTr" text NOT NULL DEFAULT 'Filistin Sanatını Evinize Getirin';
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "HeroAltBaslikAr" text NOT NULL DEFAULT 'تصاميم فريدة تجمع بين التراث والحداثة';
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "HeroAltBaslikEn" text NOT NULL DEFAULT 'Unique designs blending heritage and modernity';
-    ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "HeroAltBaslikTr" text NOT NULL DEFAULT 'Mirasa modern bir dokunuş katan özel tasarımlar';
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "HeroGorselUrl" text NOT NULL DEFAULT '/slider-demo.jpg';
 
     -- Filistin kargo bölgeleri: Ulke, Aciklama ve Fiyat alanları

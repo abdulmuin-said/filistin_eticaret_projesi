@@ -43,7 +43,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var (startUtc, endUtc, startLocal, endLocal) = ResolveDateRange(baslangic, bitis);
             var model = await BuildReportAsync(startUtc, endUtc, startLocal, endLocal);
 
-            ExcelPackage.License.SetNonCommercialOrganization("7ANRPS48");
             using var package = new ExcelPackage();
 
             AddSummarySheet(package, model);

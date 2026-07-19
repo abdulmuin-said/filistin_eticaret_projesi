@@ -324,7 +324,7 @@
                                 {
                                     <span class="badge bg-success"><i class="fas fa-check"></i> @Localizer["Admin_Exists"]</span>
                                     <div class="mt-1 d-flex gap-1">
-                                        <a href="/Admin/Siparis/FaturaIndir/@item.Id" target="_blank" class="btn btn-sm btn-outline-primary" title="@Localizer["Admin_Download"]">
+                                        <a href="/Belge/Fatura?siparisId=@item.Id&amp;indir=true" target="_blank" class="btn btn-sm btn-outline-primary" title="@Localizer["Admin_Download"]">
                                             <i class="fas fa-download"></i>
                                         </a>
                                         <a href="/Admin/Siparis/FaturaPdf/@item.Id" target="_blank" class="btn btn-sm btn-outline-danger" title="@Localizer["Admin_PdfInvoice"]">
@@ -577,7 +577,9 @@
         }
         var toast = document.createElement('div');
         toast.className = 'ca-toast ' + (type || 'info');
-        toast.innerHTML = '<span>' + message + '</span>';
+        var text = document.createElement('span');
+        text.textContent = String(message ?? '');
+        toast.appendChild(text);
         container.appendChild(toast);
         setTimeout(function() { toast.remove(); }, 3000);
     }

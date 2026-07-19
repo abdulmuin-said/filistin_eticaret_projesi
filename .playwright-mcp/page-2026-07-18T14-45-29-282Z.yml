@@ -1,0 +1,551 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]: 
+        - text: شحن مجاني للطلبات فوق 1٬500 ₪
+      - generic [ref=e7]:
+        - generic [ref=e8]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=e9]:
+        - generic [ref=e10]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=e11]:
+        - generic [ref=e12]: 
+        - text: إنتاج سريع
+      - generic [ref=e13]:
+        - generic [ref=e14]: 
+        - text: تغليف دقيق
+      - generic [ref=e15]:
+        - generic [ref=e16]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=e17]:
+        - generic [ref=e18]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=e19]:
+        - generic [ref=e20]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=e21]:
+        - generic [ref=e22]: 
+        - text: دعم واتساب
+    - generic [ref=e23]:
+      - generic [ref=e24]:
+        - generic [ref=e25]: 
+        - text: شحن مجاني للطلبات فوق 1٬500 ₪
+      - generic [ref=e26]:
+        - generic [ref=e27]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=e28]:
+        - generic [ref=e29]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=e30]:
+        - generic [ref=e31]: 
+        - text: إنتاج سريع
+      - generic [ref=e32]:
+        - generic [ref=e33]: 
+        - text: تغليف دقيق
+      - generic [ref=e34]:
+        - generic [ref=e35]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=e36]:
+        - generic [ref=e37]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=e38]:
+        - generic [ref=e39]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=e40]:
+        - generic [ref=e41]: 
+        - text: دعم واتساب
+  - banner [ref=e42]:
+    - generic [ref=e43]:
+      - generic [ref=e44]:
+        - generic [ref=e45]: 
+        - link "العربية" [ref=e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2F
+        - link "English" [ref=e48] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2F
+      - link "7ANRPS48" [ref=e49] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=e50]
+      - generic [ref=e51]:
+        - button "بحث" [ref=e52] [cursor=pointer]
+        - link "حسابي" [ref=e55] [cursor=pointer]:
+          - /url: /Profil
+        - link "المفضلة" [ref=e58] [cursor=pointer]:
+          - /url: /Favori
+        - link "السلة" [ref=e61] [cursor=pointer]:
+          - /url: /Sepet
+          - generic [ref=e64]: "0"
+      - navigation [ref=e65]:
+        - list [ref=e66]:
+          - listitem [ref=e67] [cursor=pointer]:
+            - link "أثاث" [ref=e68]:
+              - /url: /Urun?k=91
+          - listitem [ref=e71] [cursor=pointer]:
+            - link "العطور" [ref=e72]:
+              - /url: /Urun?k=90
+          - listitem [ref=e75] [cursor=pointer]:
+            - link "بقالة" [ref=e76]:
+              - /url: /Urun?k=92
+          - listitem [ref=e79] [cursor=pointer]:
+            - link "جمال" [ref=e80]:
+              - /url: /Urun?k=89
+          - listitem [ref=e83] [cursor=pointer]:
+            - link "أثاث منزلي" [ref=e84]:
+              - /url: /Urun?k=78
+          - listitem [ref=e87] [cursor=pointer]:
+            - link "إلكترونيات" [ref=e88]:
+              - /url: /Urun?k=79
+          - listitem [ref=e91] [cursor=pointer]:
+            - link "أزياء" [ref=e92]:
+              - /url: /Urun?k=80
+          - listitem [ref=e95] [cursor=pointer]:
+            - link "اتصل بنا" [ref=e96]:
+              - /url: /Kurumsal/Iletisim
+  - main [ref=e97]:
+    - region "Hero Banner" [ref=e98]:
+      - img "7ANRPS48 Banner" [ref=e101]
+    - region "TrustBar" [ref=e102]:
+      - generic [ref=e104]:
+        - generic [ref=e105]: شحن مجاني للطلبات فوق 1٬500 ₪
+        - generic [ref=e109]: دفع آمن ومضمون
+        - generic [ref=e113]: منتجات أصلية 100%
+        - generic [ref=e117]: دعم على مدار الساعة
+    - region [ref=e121]:
+      - generic [ref=e122]:
+        - generic [ref=e123]:
+          - generic [ref=e124]:
+            - paragraph [ref=e125]: 7ANRPS48
+            - heading "تسوق حسب الفئة" [level=2] [ref=e126]
+          - link "عرض جميع الفئات" [ref=e127] [cursor=pointer]:
+            - /url: /Urun
+        - generic [ref=e130]:
+          - link [ref=e131] [cursor=pointer]:
+            - /url: /Urun?k=91
+            - heading "أثاث" [level=3] [ref=e137]
+          - link [ref=e141] [cursor=pointer]:
+            - /url: /Urun?k=90
+            - heading "العطور" [level=3] [ref=e147]
+          - link [ref=e151] [cursor=pointer]:
+            - /url: /Urun?k=92
+            - heading "بقالة" [level=3] [ref=e157]
+          - link [ref=e161] [cursor=pointer]:
+            - /url: /Urun?k=89
+            - heading "جمال" [level=3] [ref=e167]
+          - link [ref=e171] [cursor=pointer]:
+            - /url: /Urun?k=78
+            - heading "أثاث منزلي" [level=3] [ref=e177]
+          - link [ref=e181] [cursor=pointer]:
+            - /url: /Urun?k=79
+            - heading "إلكترونيات" [level=3] [ref=e187]
+          - link [ref=e191] [cursor=pointer]:
+            - /url: /Urun?k=80
+            - heading "أزياء" [level=3] [ref=e197]
+    - generic [ref=e201]:
+      - generic [ref=e202]:
+        - paragraph [ref=e203]: 7ANRPS48
+        - generic [ref=e204]:
+          - separator [ref=e205]
+          - heading "منتجات مميزة" [level=2] [ref=e206]
+          - separator [ref=e207]
+      - generic [ref=e208]:
+        - generic [ref=e209] [cursor=pointer]:
+          - generic [ref=e210]:
+            - link "جديد ايسنس ماسكارا لاش برينسيس" [ref=e211]:
+              - /url: /Urun/Detay/test-1-essence-mascara-lash-princess-112
+              - generic [ref=e212]: جديد
+              - img "ايسنس ماسكارا لاش برينسيس" [ref=e213]
+            - button "أضف إلى المفضلة" [ref=e214]
+          - generic [ref=e217]:
+            - heading [level=3] [ref=e218]:
+              - link "ايسنس ماسكارا لاش برينسيس" [ref=e219]:
+                - /url: /Urun/Detay/test-1-essence-mascara-lash-princess-112
+            - generic [ref=e220]:
+              - paragraph [ref=e221]: 9 ₪
+              - paragraph [ref=e222]: 10 ₪
+              - generic [ref=e223]: "-%11"
+            - button "أضف إلى السلة" [ref=e224]:
+              - generic [ref=e225]: 
+        - generic [ref=e227] [cursor=pointer]:
+          - generic [ref=e228]:
+            - link "جديد لوحة ظلال العيون مع مرآة" [ref=e229]:
+              - /url: /Urun/Detay/test-2-eyeshadow-palette-with-mirror-113
+              - generic [ref=e230]: جديد
+              - img "لوحة ظلال العيون مع مرآة" [ref=e231]
+            - button "أضف إلى المفضلة" [ref=e232]
+          - generic [ref=e235]:
+            - heading [level=3] [ref=e236]:
+              - link "لوحة ظلال العيون مع مرآة" [ref=e237]:
+                - /url: /Urun/Detay/test-2-eyeshadow-palette-with-mirror-113
+            - generic [ref=e238]:
+              - paragraph [ref=e239]: 16 ₪
+              - paragraph [ref=e240]: 20 ₪
+              - generic [ref=e241]: "-%18"
+            - button "أضف إلى السلة" [ref=e242]:
+              - generic [ref=e243]: 
+        - generic [ref=e245] [cursor=pointer]:
+          - generic [ref=e246]:
+            - link "جديد علبة مسحوق" [ref=e247]:
+              - /url: /Urun/Detay/test-3-powder-canister-114
+              - generic [ref=e248]: جديد
+              - img "علبة مسحوق" [ref=e249]
+            - button "أضف إلى المفضلة" [ref=e250]
+          - generic [ref=e253]:
+            - heading [level=3] [ref=e254]:
+              - link "علبة مسحوق" [ref=e255]:
+                - /url: /Urun/Detay/test-3-powder-canister-114
+            - generic [ref=e256]:
+              - paragraph [ref=e257]: 14 ₪
+              - paragraph [ref=e258]: 15 ₪
+              - generic [ref=e259]: "-%10"
+            - button "أضف إلى السلة" [ref=e260]:
+              - generic [ref=e261]: 
+        - generic [ref=e263] [cursor=pointer]:
+          - generic [ref=e264]:
+            - link "جديد أحمر الشفاه" [ref=e265]:
+              - /url: /Urun/Detay/test-4-red-lipstick-115
+              - generic [ref=e266]: جديد
+              - img "أحمر الشفاه" [ref=e267]
+            - button "أضف إلى المفضلة" [ref=e268]
+          - generic [ref=e271]:
+            - heading [level=3] [ref=e272]:
+              - link "أحمر الشفاه" [ref=e273]:
+                - /url: /Urun/Detay/test-4-red-lipstick-115
+            - generic [ref=e274]:
+              - paragraph [ref=e275]: 11 ₪
+              - paragraph [ref=e276]: 13 ₪
+              - generic [ref=e277]: "-%12"
+            - button "أضف إلى السلة" [ref=e278]:
+              - generic [ref=e279]: 
+        - generic [ref=e281] [cursor=pointer]:
+          - generic [ref=e282]:
+            - link "جديد طلاء الأظافر باللون الأحمر" [ref=e283]:
+              - /url: /Urun/Detay/test-5-red-nail-polish-116
+              - generic [ref=e284]: جديد
+              - img "طلاء الأظافر باللون الأحمر"
+            - button "أضف إلى المفضلة" [ref=e285]
+          - generic [ref=e288]:
+            - heading [level=3] [ref=e289]:
+              - link "طلاء الأظافر باللون الأحمر" [ref=e290]:
+                - /url: /Urun/Detay/test-5-red-nail-polish-116
+            - generic [ref=e291]:
+              - paragraph [ref=e292]: 8 ₪
+              - paragraph [ref=e293]: 9 ₪
+              - generic [ref=e294]: "-%11"
+            - button "أضف إلى السلة" [ref=e295]:
+              - generic [ref=e296]: 
+        - generic [ref=e298] [cursor=pointer]:
+          - generic [ref=e299]:
+            - link "جديد كالفن كلاين سي كيه وان" [ref=e300]:
+              - /url: /Urun/Detay/test-6-calvin-klein-ck-one-117
+              - generic [ref=e301]: جديد
+              - img "كالفن كلاين سي كيه وان"
+            - button "أضف إلى المفضلة" [ref=e302]
+          - generic [ref=e305]:
+            - heading [level=3] [ref=e306]:
+              - link "كالفن كلاين سي كيه وان" [ref=e307]:
+                - /url: /Urun/Detay/test-6-calvin-klein-ck-one-117
+            - generic [ref=e308]:
+              - paragraph [ref=e309]: 49 ₪
+              - paragraph [ref=e310]: 50 ₪
+              - generic [ref=e311]: "-%2"
+            - button "أضف إلى السلة" [ref=e312]:
+              - generic [ref=e313]: 
+        - generic [ref=e315] [cursor=pointer]:
+          - generic [ref=e316]:
+            - link "جديد شانيل كوكو نوير أو دي" [ref=e317]:
+              - /url: /Urun/Detay/test-7-chanel-coco-noir-eau-de-118
+              - generic [ref=e318]: جديد
+              - img "شانيل كوكو نوير أو دي"
+            - button "أضف إلى المفضلة" [ref=e319]
+          - generic [ref=e322]:
+            - heading [level=3] [ref=e323]:
+              - link "شانيل كوكو نوير أو دي" [ref=e324]:
+                - /url: /Urun/Detay/test-7-chanel-coco-noir-eau-de-118
+            - generic [ref=e325]:
+              - paragraph [ref=e326]: 109 ₪
+              - paragraph [ref=e327]: 130 ₪
+              - generic [ref=e328]: "-%17"
+            - button "أضف إلى السلة" [ref=e329]:
+              - generic [ref=e330]: 
+        - generic [ref=e332] [cursor=pointer]:
+          - generic [ref=e333]:
+            - link "جديد ديور جادور" [ref=e334]:
+              - /url: /Urun/Detay/test-8-dior-jadore-119
+              - generic [ref=e335]: جديد
+              - img "ديور جادور"
+            - button "أضف إلى المفضلة" [ref=e336]
+          - generic [ref=e339]:
+            - heading [level=3] [ref=e340]:
+              - link "ديور جادور" [ref=e341]:
+                - /url: /Urun/Detay/test-8-dior-jadore-119
+            - generic [ref=e342]:
+              - paragraph [ref=e343]: 77 ₪
+              - paragraph [ref=e344]: 90 ₪
+              - generic [ref=e345]: "-%15"
+            - button "أضف إلى السلة" [ref=e346]:
+              - generic [ref=e347]: 
+      - link "عرض الكل" [ref=e350] [cursor=pointer]:
+        - /url: /Urun
+    - generic [ref=e351]:
+      - generic [ref=e352]:
+        - generic [ref=e353]:
+          - paragraph [ref=e354]: الأكثر مبيعاً
+          - heading "الأكثر تفضيلاً" [level=2] [ref=e355]
+        - link "عرض الكل" [ref=e356] [cursor=pointer]:
+          - /url: /Urun?sort=popularity
+      - generic [ref=e359]:
+        - article [ref=e360]:
+          - link "الأكثر مبيعاً %9 سرير أنيبال كولومبو سرير أنيبال كولومبو 1٬737 ₪ 1٬900 ₪ -%9" [ref=e361] [cursor=pointer]:
+            - /url: /Urun/Detay/test-11-annibale-colombo-bed-122
+            - generic [ref=e362]:
+              - generic [ref=e363]: الأكثر مبيعاً
+              - generic [ref=e364]: "%9"
+              - img "سرير أنيبال كولومبو"
+            - heading "سرير أنيبال كولومبو" [level=3] [ref=e365]
+            - generic [ref=e366]:
+              - paragraph [ref=e367]: 1٬737 ₪
+              - paragraph [ref=e368]: 1٬900 ₪
+              - generic [ref=e369]: "-%9"
+        - article [ref=e370]:
+          - link "الأكثر مبيعاً %2 نول سارينن رئيس المؤتمر التنفيذي نول سارينن رئيس المؤتمر التنفيذي 490 ₪ 500 ₪ -%2" [ref=e371] [cursor=pointer]:
+            - /url: /Urun/Detay/test-14-knoll-saarinen-executive-conference-chair-125
+            - generic [ref=e372]:
+              - generic [ref=e373]: الأكثر مبيعاً
+              - generic [ref=e374]: "%2"
+              - img "نول سارينن رئيس المؤتمر التنفيذي"
+            - heading "نول سارينن رئيس المؤتمر التنفيذي" [level=3] [ref=e375]
+            - generic [ref=e376]:
+              - paragraph [ref=e377]: 490 ₪
+              - paragraph [ref=e378]: 500 ₪
+              - generic [ref=e379]: "-%2"
+        - article [ref=e380]:
+          - link "الأكثر مبيعاً %13 تفاحة تفاحة 2 ₪ 2 ₪ -%13" [ref=e381] [cursor=pointer]:
+            - /url: /Urun/Detay/test-16-apple-127
+            - generic [ref=e382]:
+              - generic [ref=e383]: الأكثر مبيعاً
+              - generic [ref=e384]: "%13"
+              - img "تفاحة"
+            - heading "تفاحة" [level=3] [ref=e385]
+            - generic [ref=e386]:
+              - paragraph [ref=e387]: 2 ₪
+              - paragraph [ref=e388]: 2 ₪
+              - generic [ref=e389]: "-%13"
+        - article [ref=e390]:
+          - link "الأكثر مبيعاً %10 شريحة لحم البقر شريحة لحم البقر 12 ₪ 13 ₪ -%10" [ref=e391] [cursor=pointer]:
+            - /url: /Urun/Detay/test-17-beef-steak-128
+            - generic [ref=e392]:
+              - generic [ref=e393]: الأكثر مبيعاً
+              - generic [ref=e394]: "%10"
+              - img "شريحة لحم البقر"
+            - heading "شريحة لحم البقر" [level=3] [ref=e395]
+            - generic [ref=e396]:
+              - paragraph [ref=e397]: 12 ₪
+              - paragraph [ref=e398]: 13 ₪
+              - generic [ref=e399]: "-%10"
+        - article [ref=e400]:
+          - link "الأكثر مبيعاً %9 زيت الطبخ زيت الطبخ 5 ₪ 5 ₪ -%9" [ref=e401] [cursor=pointer]:
+            - /url: /Urun/Detay/test-20-cooking-oil-131
+            - generic [ref=e402]:
+              - generic [ref=e403]: الأكثر مبيعاً
+              - generic [ref=e404]: "%9"
+              - img "زيت الطبخ"
+            - heading "زيت الطبخ" [level=3] [ref=e405]
+            - generic [ref=e406]:
+              - paragraph [ref=e407]: 5 ₪
+              - paragraph [ref=e408]: 5 ₪
+              - generic [ref=e409]: "-%9"
+        - article [ref=e410]:
+          - link "الأكثر مبيعاً خيار خيار 1 ₪" [ref=e411] [cursor=pointer]:
+            - /url: /Urun/Detay/test-21-cucumber-132
+            - generic [ref=e412]:
+              - generic [ref=e413]: الأكثر مبيعاً
+              - img "خيار"
+            - heading "خيار" [level=3] [ref=e414]
+            - paragraph [ref=e416]: 1 ₪
+        - article [ref=e417]:
+          - link "الأكثر مبيعاً %10 طعام الكلاب طعام الكلاب 10 ₪ 11 ₪ -%10" [ref=e418] [cursor=pointer]:
+            - /url: /Urun/Detay/test-22-dog-food-133
+            - generic [ref=e419]:
+              - generic [ref=e420]: الأكثر مبيعاً
+              - generic [ref=e421]: "%10"
+              - img "طعام الكلاب"
+            - heading "طعام الكلاب" [level=3] [ref=e422]
+            - generic [ref=e423]:
+              - paragraph [ref=e424]: 10 ₪
+              - paragraph [ref=e425]: 11 ₪
+              - generic [ref=e426]: "-%10"
+        - article [ref=e427]:
+          - link "الأكثر مبيعاً %15 كيوي كيوي 2 ₪ 2 ₪ -%15" [ref=e428] [cursor=pointer]:
+            - /url: /Urun/Detay/test-30-kiwi-141
+            - generic [ref=e429]:
+              - generic [ref=e430]: الأكثر مبيعاً
+              - generic [ref=e431]: "%15"
+              - img "كيوي"
+            - heading "كيوي" [level=3] [ref=e432]
+            - generic [ref=e433]:
+              - paragraph [ref=e434]: 2 ₪
+              - paragraph [ref=e435]: 2 ₪
+              - generic [ref=e436]: "-%15"
+    - generic [ref=e438]:
+      - generic [ref=e439]:
+        - generic [ref=e440]:
+          - paragraph [ref=e441]: منتجات العروض
+          - heading "اختيارات الحملات" [level=2] [ref=e442]
+        - link "عرض العروض" [ref=e443] [cursor=pointer]:
+          - /url: /Urun?sort=price_asc
+      - generic [ref=e446]:
+        - article [ref=e447]:
+          - link "-%1 فلفل أخضر حار فلفل أخضر حار 1 ₪ 1 ₪ -%1" [ref=e448] [cursor=pointer]:
+            - /url: /Urun/Detay/test-26-green-chili-pepper-137
+            - generic [ref=e449]:
+              - generic [ref=e450]: "-%1"
+              - img "فلفل أخضر حار"
+            - heading "فلفل أخضر حار" [level=3] [ref=e451]
+            - generic [ref=e452]:
+              - paragraph [ref=e453]: 1 ₪
+              - paragraph [ref=e454]: 1 ₪
+              - generic [ref=e455]: "-%1"
+        - article [ref=e456]:
+          - link "-%11 بيض بيض 3 ₪ 3 ₪ -%11" [ref=e457] [cursor=pointer]:
+            - /url: /Urun/Detay/test-23-eggs-134
+            - generic [ref=e458]:
+              - generic [ref=e459]: "-%11"
+              - img "بيض"
+            - heading "بيض" [level=3] [ref=e460]
+            - generic [ref=e461]:
+              - paragraph [ref=e462]: 3 ₪
+              - paragraph [ref=e463]: 3 ₪
+              - generic [ref=e464]: "-%11"
+        - article [ref=e465]:
+          - link "-%12 عصير عصير 4 ₪ 4 ₪ -%12" [ref=e466] [cursor=pointer]:
+            - /url: /Urun/Detay/test-29-juice-140
+            - generic [ref=e467]:
+              - generic [ref=e468]: "-%12"
+              - img "عصير"
+            - heading "عصير" [level=3] [ref=e469]
+            - generic [ref=e470]:
+              - paragraph [ref=e471]: 4 ₪
+              - paragraph [ref=e472]: 4 ₪
+              - generic [ref=e473]: "-%12"
+        - article [ref=e474]:
+          - link "-%9 بوظة بوظة 5 ₪ 5 ₪ -%9" [ref=e475] [cursor=pointer]:
+            - /url: /Urun/Detay/test-28-ice-cream-139
+            - generic [ref=e476]:
+              - generic [ref=e477]: "-%9"
+              - img "بوظة"
+            - heading "بوظة" [level=3] [ref=e478]
+            - generic [ref=e479]:
+              - paragraph [ref=e480]: 5 ₪
+              - paragraph [ref=e481]: 5 ₪
+              - generic [ref=e482]: "-%9"
+        - article [ref=e483]:
+          - link "-%14 جرة العسل جرة العسل 6 ₪ 7 ₪ -%14" [ref=e484] [cursor=pointer]:
+            - /url: /Urun/Detay/test-27-honey-jar-138
+            - generic [ref=e485]:
+              - generic [ref=e486]: "-%14"
+              - img "جرة العسل"
+            - heading "جرة العسل" [level=3] [ref=e487]
+            - generic [ref=e488]:
+              - paragraph [ref=e489]: 6 ₪
+              - paragraph [ref=e490]: 7 ₪
+              - generic [ref=e491]: "-%14"
+        - article [ref=e492]:
+          - link "-%10 طعام القطط طعام القطط 8 ₪ 9 ₪ -%10" [ref=e493] [cursor=pointer]:
+            - /url: /Urun/Detay/test-18-cat-food-129
+            - generic [ref=e494]:
+              - generic [ref=e495]: "-%10"
+              - img "طعام القطط"
+            - heading "طعام القطط" [level=3] [ref=e496]
+            - generic [ref=e497]:
+              - paragraph [ref=e498]: 8 ₪
+              - paragraph [ref=e499]: 9 ₪
+              - generic [ref=e500]: "-%10"
+        - article [ref=e501]:
+          - link "-%14 لحم دجاج لحم دجاج 9 ₪ 10 ₪ -%14" [ref=e502] [cursor=pointer]:
+            - /url: /Urun/Detay/test-19-chicken-meat-130
+            - generic [ref=e503]:
+              - generic [ref=e504]: "-%14"
+              - img "لحم دجاج"
+            - heading "لحم دجاج" [level=3] [ref=e505]
+            - generic [ref=e506]:
+              - paragraph [ref=e507]: 9 ₪
+              - paragraph [ref=e508]: 10 ₪
+              - generic [ref=e509]: "-%14"
+        - article [ref=e510]:
+          - link "-%4 شريحة لحم السمك شريحة لحم السمك 14 ₪ 15 ₪ -%4" [ref=e511] [cursor=pointer]:
+            - /url: /Urun/Detay/test-24-fish-steak-135
+            - generic [ref=e512]:
+              - generic [ref=e513]: "-%4"
+              - img "شريحة لحم السمك"
+            - heading "شريحة لحم السمك" [level=3] [ref=e514]
+            - generic [ref=e515]:
+              - paragraph [ref=e516]: 14 ₪
+              - paragraph [ref=e517]: 15 ₪
+              - generic [ref=e518]: "-%4"
+    - generic [ref=e521]:
+      - generic [ref=e522]:
+        - heading "تحويل بنكي" [level=4] [ref=e526]
+        - paragraph [ref=e527]: دفع سهل عبر بيانات الآيبان
+      - generic [ref=e528]:
+        - heading "توصيل سريع" [level=4] [ref=e532]
+        - paragraph [ref=e533]: تصل طلباتك بسرعة
+      - generic [ref=e534]:
+        - heading "رضا العملاء" [level=4] [ref=e538]
+        - paragraph [ref=e539]: خدمة تركز على رضا العملاء 100%
+  - contentinfo [ref=e540]:
+    - generic [ref=e542]:
+      - generic [ref=e547]:
+        - generic [ref=e548]: في جميع مناطق فلسطين
+        - generic [ref=e549]: شحن مجاني
+      - generic [ref=e554]:
+        - generic [ref=e555]: تحويل بنكي
+        - generic [ref=e556]: 256 Bit SSL
+      - generic [ref=e561]:
+        - generic [ref=e562]: تحويل بنكي
+        - generic [ref=e563]: دفع سهل عبر الآيبان
+    - generic [ref=e564]:
+      - generic [ref=e565]:
+        - generic [ref=e566]:
+          - heading "اشترك في النشرة البريدية" [level=3] [ref=e567]
+          - paragraph [ref=e568]: استقبل أحدث المنتجات المختارة من السوق الفلسطيني والعروض الخاصة على بريدك.
+          - generic [ref=e569]:
+            - textbox "عنوان البريد الإلكتروني" [ref=e570]
+            - button "اشتراك" [ref=e571] [cursor=pointer]
+        - generic [ref=e572]:
+          - heading "مؤسسي" [level=4] [ref=e573]
+          - list [ref=e574]:
+            - listitem [ref=e575]:
+              - link "من نحن" [ref=e576] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=e577]:
+              - link "اتصل بنا" [ref=e578] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=e579]:
+              - link "جميع المنتجات" [ref=e580] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=e581]:
+              - link "سياسة الخصوصية" [ref=e582] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=e583]:
+              - link "عقد البيع عن بعد" [ref=e584] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=e586] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=e587]: 
+      - generic [ref=e588]:
+        - paragraph [ref=e590]: © 2026 7ANRPS48 — جميع الحقوق محفوظة.
+        - generic [ref=e591]:
+          - link "سياسة الخصوصية" [ref=e592] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "الإرجاع والاستبدال" [ref=e593] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+          - text: "|"
+          - link "من نحن" [ref=e594] [cursor=pointer]:
+            - /url: /Kurumsal/Hakkimizda
+  - link "اتصال واتساب" [ref=e595] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=e598]: WhatsApp
+  - link "السلة" [ref=e599] [cursor=pointer]:
+    - /url: /Sepet

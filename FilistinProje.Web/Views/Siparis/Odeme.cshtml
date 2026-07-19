@@ -63,6 +63,7 @@
             </div>
         </div>
 <script>
+    const checkoutUploadToken = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.CheckoutUploadToken as string ?? string.Empty));
     function selectAddress(ad, tel, sehir, ilce, acikAdres) {
         document.getElementById("MusteriAdSoyad").value = ad;
         document.getElementById("Telefon").value = tel;
@@ -123,6 +124,7 @@
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/Siparis/YukleRecete', true);
         xhr.setRequestHeader('RequestVerificationToken', token);
+        xhr.setRequestHeader('X-Checkout-Upload-Token', checkoutUploadToken);
 
         xhr.onload = function() {
             if (xhr.status === 200) {
@@ -387,6 +389,7 @@
         if (token) {
             xhr.setRequestHeader('RequestVerificationToken', token);
         }
+        xhr.setRequestHeader('X-Checkout-Upload-Token', checkoutUploadToken);
 
         xhr.onload = function() {
             if (xhr.status === 200) {

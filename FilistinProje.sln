@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilistinProje.Service", "Fi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilistinProje.Web", "FilistinProje.Web\FilistinProje.Web.csproj", "{D58DEC8D-891E-421A-9348-C2D3A59C5131}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilistinProje.Tests", "FilistinProje.Tests\FilistinProje.Tests.csproj", "{67A1DC6F-8CBC-476F-9441-CBA46EE501D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{D58DEC8D-891E-421A-9348-C2D3A59C5131}.Release|x64.Build.0 = Release|Any CPU
 		{D58DEC8D-891E-421A-9348-C2D3A59C5131}.Release|x86.ActiveCfg = Release|Any CPU
 		{D58DEC8D-891E-421A-9348-C2D3A59C5131}.Release|x86.Build.0 = Release|Any CPU
+		{67A1DC6F-8CBC-476F-9441-CBA46EE501D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67A1DC6F-8CBC-476F-9441-CBA46EE501D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67A1DC6F-8CBC-476F-9441-CBA46EE501D6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{67A1DC6F-8CBC-476F-9441-CBA46EE501D6}.Debug|x64.Build.0 = Debug|Any CPU
+		{67A1DC6F-8CBC-476F-9441-CBA46EE501D6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{67A1DC6F-8CBC-476F-9441-CBA46EE501D6}.Debug|x86.Build.0 = Debug|Any CPU
+		{67A1DC6F-8CBC-476F-9441-CBA46EE501D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67A1DC6F-8CBC-476F-9441-CBA46EE501D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67A1DC6F-8CBC-476F-9441-CBA46EE501D6}.Release|x64.ActiveCfg = Release|Any CPU
+		{67A1DC6F-8CBC-476F-9441-CBA46EE501D6}.Release|x64.Build.0 = Release|Any CPU
+		{67A1DC6F-8CBC-476F-9441-CBA46EE501D6}.Release|x86.ActiveCfg = Release|Any CPU
+		{67A1DC6F-8CBC-476F-9441-CBA46EE501D6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

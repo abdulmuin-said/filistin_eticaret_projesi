@@ -80,8 +80,8 @@ namespace FilistinProje.Core.Helpers
                     ["@type"] = "ContactPoint",
                     ["telephone"] = phone,
                     ["contactType"] = "customer service",
-                    ["areaServed"] = "TR",
-                    ["availableLanguage"] = "Turkish"
+                    ["areaServed"] = "PS",
+                    ["availableLanguage"] = new[] { "Arabic", "English" }
                 };
             }
 

@@ -91,7 +91,6 @@
     left: auto;
     right: 2rem;
   }
-}
 [dir="rtl"] #heroNext {
   right: auto;
   left: 0.75rem;
@@ -1684,6 +1683,8 @@ header nav.w-full.hidden.md\\:block {
 
 .btn-danger-soft:hover {
   color: #fff;
+  background: #991b1b;
+}
 
   .auth-footer {
     margin-top: 22px;

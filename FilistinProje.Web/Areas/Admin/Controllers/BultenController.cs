@@ -67,7 +67,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .ToListAsync();
             var model = await BuildSubscriberListAsync(aboneler);
 
-            ExcelPackage.License.SetNonCommercialOrganization("7ANRPS48");
             using var package = new ExcelPackage();
             var worksheet = package.Workbook.Worksheets.Add("BÃ¼lten Aboneleri");
             var headers = new[] { "Id", "Durum", "E-Posta", "KayÄ±t Tarihi", "IP Adresi", "Åehir", "Ãœlke", "Cihaz", "TarayÄ±cÄ±", "Ä°ÅŸletim Sistemi" };

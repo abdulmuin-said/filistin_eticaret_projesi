@@ -25,7 +25,9 @@ namespace FilistinProje.Service.Services
 
             var bolgeFiyat = await _context.KargoBolgeler
                 .Where(x => !x.SilindiMi && x.Fiyat > 0)
-                .Where(x => x.Sehirler.Any(s => s.SehirAdi == sehir && !s.SilindiMi))
+                .Where(x => x.Sehirler.Any(s =>
+                    !s.SilindiMi &&
+                    (s.SehirAdi == sehir || s.SehirAdiEn == sehir || s.SehirAdiAr == sehir)))
                 .Select(x => (decimal?)x.Fiyat)
                 .FirstOrDefaultAsync();
 
@@ -34,7 +36,9 @@ namespace FilistinProje.Service.Services
 
             var firmaFiyati = await _context.KargoBolgeFiyatlari
                 .Where(x => !x.SilindiMi && x.Fiyat > 0)
-                .Where(x => x.Bolge.Sehirler.Any(s => s.SehirAdi == sehir && !s.SilindiMi))
+                .Where(x => x.Bolge.Sehirler.Any(s =>
+                    !s.SilindiMi &&
+                    (s.SehirAdi == sehir || s.SehirAdiEn == sehir || s.SehirAdiAr == sehir)))
                 .Where(x => x.KargoFirmasi.AktifMi && !x.KargoFirmasi.SilindiMi)
                 .Select(x => (decimal?)x.Fiyat)
                 .FirstOrDefaultAsync();
@@ -49,7 +53,9 @@ namespace FilistinProje.Service.Services
 
             var bolgeFiyatVar = await _context.KargoBolgeler
                 .Where(x => !x.SilindiMi)
-                .Where(x => x.Sehirler.Any(s => s.SehirAdi == sehir && !s.SilindiMi))
+                .Where(x => x.Sehirler.Any(s =>
+                    !s.SilindiMi &&
+                    (s.SehirAdi == sehir || s.SehirAdiEn == sehir || s.SehirAdiAr == sehir)))
                 .AnyAsync(x => x.Fiyat > 0);
 
             if (bolgeFiyatVar)
@@ -57,7 +63,9 @@ namespace FilistinProje.Service.Services
 
             var firmaFiyatVar = await _context.KargoBolgeFiyatlari
                 .Where(x => !x.SilindiMi && x.Fiyat > 0)
-                .Where(x => x.Bolge.Sehirler.Any(s => s.SehirAdi == sehir && !s.SilindiMi))
+                .Where(x => x.Bolge.Sehirler.Any(s =>
+                    !s.SilindiMi &&
+                    (s.SehirAdi == sehir || s.SehirAdiEn == sehir || s.SehirAdiAr == sehir)))
                 .Where(x => x.KargoFirmasi.AktifMi && !x.KargoFirmasi.SilindiMi)
                 .AnyAsync();
 

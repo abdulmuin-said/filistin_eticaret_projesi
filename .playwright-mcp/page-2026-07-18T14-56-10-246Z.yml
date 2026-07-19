@@ -1,0 +1,259 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e3]:
+    - generic [ref=f4e4]:
+      - generic [ref=f4e5]:
+        - generic [ref=f4e6]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f4e7]:
+        - generic [ref=f4e8]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f4e9]:
+        - generic [ref=f4e10]: 
+        - text: Pay on delivery option
+      - generic [ref=f4e11]:
+        - generic [ref=f4e12]: 
+        - text: Fast Production
+      - generic [ref=f4e13]:
+        - generic [ref=f4e14]: 
+        - text: Careful Packaging
+      - generic [ref=f4e15]:
+        - generic [ref=f4e16]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f4e17]:
+        - generic [ref=f4e18]: 
+        - text: 14 Days Return
+      - generic [ref=f4e19]:
+        - generic [ref=f4e20]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f4e21]:
+        - generic [ref=f4e22]: 
+        - text: WhatsApp Support
+    - generic [ref=f4e23]:
+      - generic [ref=f4e24]:
+        - generic [ref=f4e25]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f4e26]:
+        - generic [ref=f4e27]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f4e28]:
+        - generic [ref=f4e29]: 
+        - text: Pay on delivery option
+      - generic [ref=f4e30]:
+        - generic [ref=f4e31]: 
+        - text: Fast Production
+      - generic [ref=f4e32]:
+        - generic [ref=f4e33]: 
+        - text: Careful Packaging
+      - generic [ref=f4e34]:
+        - generic [ref=f4e35]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f4e36]:
+        - generic [ref=f4e37]: 
+        - text: 14 Days Return
+      - generic [ref=f4e38]:
+        - generic [ref=f4e39]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f4e40]:
+        - generic [ref=f4e41]: 
+        - text: WhatsApp Support
+  - banner [ref=f4e42]:
+    - generic [ref=f4e43]:
+      - generic [ref=f4e44]:
+        - generic [ref=f4e45]: 
+        - link "العربية" [ref=f4e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FProfil
+        - link "English" [ref=f4e48] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FProfil
+      - link "7ANRPS48" [ref=f4e49] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f4e50]
+      - generic [ref=f4e51]:
+        - button "Search" [ref=f4e52] [cursor=pointer]
+        - link "My Account" [ref=f4e55] [cursor=pointer]:
+          - /url: /Profil
+        - link "My Favorites" [ref=f4e58] [cursor=pointer]:
+          - /url: /Favori
+        - link "Cart" [ref=f4e61] [cursor=pointer]:
+          - /url: /Sepet
+          - generic [ref=f4e64]: "1"
+      - navigation [ref=f4e65]:
+        - list [ref=f4e66]:
+          - listitem [ref=f4e67] [cursor=pointer]:
+            - link "beauty" [ref=f4e68]:
+              - /url: /Urun?k=89
+          - listitem [ref=f4e71] [cursor=pointer]:
+            - link "fragrances" [ref=f4e72]:
+              - /url: /Urun?k=90
+          - listitem [ref=f4e75] [cursor=pointer]:
+            - link "furniture" [ref=f4e76]:
+              - /url: /Urun?k=91
+          - listitem [ref=f4e79] [cursor=pointer]:
+            - link "groceries" [ref=f4e80]:
+              - /url: /Urun?k=92
+          - listitem [ref=f4e83] [cursor=pointer]:
+            - link "Home Furniture" [ref=f4e84]:
+              - /url: /Urun?k=78
+          - listitem [ref=f4e87] [cursor=pointer]:
+            - link "Electronics" [ref=f4e88]:
+              - /url: /Urun?k=79
+          - listitem [ref=f4e91] [cursor=pointer]:
+            - link "Fashion" [ref=f4e92]:
+              - /url: /Urun?k=80
+          - listitem [ref=f4e95] [cursor=pointer]:
+            - link "Contact" [ref=f4e96]:
+              - /url: /Kurumsal/Iletisim
+  - main [ref=f4e97]:
+    - generic [ref=f4e99]:
+      - link "Home Page" [ref=f4e100] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f4e101]: /
+      - generic [ref=f4e102]: My Account
+    - generic [ref=f4e104]:
+      - complementary [ref=f4e105]:
+        - generic [ref=f4e106]:
+          - generic [ref=f4e107]:
+            - generic [ref=f4e108]: "7"
+            - paragraph [ref=f4e109]: 7ANRPS48 Admin
+            - paragraph [ref=f4e110]: admin@7anrps48.com
+          - navigation [ref=f4e111]:
+            - link " My Account" [ref=f4e112] [cursor=pointer]:
+              - /url: /Profil
+              - generic [ref=f4e113]: 
+              - text: My Account
+            - link " My Orders" [ref=f4e114] [cursor=pointer]:
+              - /url: /Profil/Siparislerim
+              - generic [ref=f4e115]: 
+              - text: My Orders
+            - link " My Addresses" [ref=f4e116] [cursor=pointer]:
+              - /url: /Profil/Adreslerim
+              - generic [ref=f4e117]: 
+              - text: My Addresses
+            - link " My Favorites" [ref=f4e118] [cursor=pointer]:
+              - /url: /Favori
+              - generic [ref=f4e119]: 
+              - text: My Favorites
+            - separator [ref=f4e120]
+            - button " Logout" [ref=f4e122] [cursor=pointer]:
+              - generic [ref=f4e123]: 
+              - text: Logout
+      - main [ref=f4e124]:
+        - generic [ref=f4e126]:
+          - generic [ref=f4e127]:
+            - heading "HelloUser" [level=1] [ref=f4e128]
+            - paragraph [ref=f4e129]: Welcome to Your Account
+          - generic [ref=f4e130]:
+            - link "Orders" [ref=f4e131] [cursor=pointer]:
+              - /url: /Profil/Siparislerim
+            - link "Addresses" [ref=f4e132] [cursor=pointer]:
+              - /url: /Profil/Adreslerim
+        - generic [ref=f4e133]:
+          - generic [ref=f4e134]:
+            - generic [ref=f4e135]: "0"
+            - generic [ref=f4e136]: Total Orders
+          - generic [ref=f4e137]:
+            - generic [ref=f4e138]: 0.00 ₪
+            - generic [ref=f4e139]: Total Spent
+          - link "0 My Favorites" [ref=f4e140] [cursor=pointer]:
+            - /url: /Favori
+            - generic [ref=f4e141]: "0"
+            - generic [ref=f4e142]: My Favorites
+        - generic [ref=f4e143]:
+          - heading "Account Info" [level=2] [ref=f4e144]
+          - generic [ref=f4e145]:
+            - generic [ref=f4e146]:
+              - generic [ref=f4e147]: 
+              - generic [ref=f4e149]:
+                - generic [ref=f4e150]: Full Name
+                - generic [ref=f4e151]: 7ANRPS48 Admin
+            - generic [ref=f4e152]:
+              - generic [ref=f4e153]: 
+              - generic [ref=f4e155]:
+                - generic [ref=f4e156]: Email
+                - generic [ref=f4e157]: admin@7anrps48.com
+            - generic [ref=f4e158]:
+              - generic [ref=f4e159]: 
+              - generic [ref=f4e161]:
+                - generic [ref=f4e162]: Phone
+                - generic [ref=f4e163]: Not Specified
+            - generic [ref=f4e164]:
+              - generic [ref=f4e165]: 
+              - generic [ref=f4e167]:
+                - generic [ref=f4e168]: National ID
+                - generic [ref=f4e169]: Not Specified
+            - generic [ref=f4e170]:
+              - generic [ref=f4e171]: 
+              - generic [ref=f4e173]:
+                - generic [ref=f4e174]: Date of Birth
+                - generic [ref=f4e175]: Not Specified
+            - generic [ref=f4e176]:
+              - generic [ref=f4e177]: 
+              - generic [ref=f4e179]:
+                - generic [ref=f4e180]: District
+                - generic [ref=f4e181]: Ramallah
+            - generic [ref=f4e182]:
+              - generic [ref=f4e183]: 
+              - generic [ref=f4e185]:
+                - generic [ref=f4e186]: Address
+                - generic [ref=f4e187]: Not Specified
+            - generic [ref=f4e188]:
+              - generic [ref=f4e189]: 
+              - generic [ref=f4e191]:
+                - generic [ref=f4e192]: Identity Photo
+                - generic [ref=f4e193]: Not Specified
+  - contentinfo [ref=f4e194]:
+    - generic [ref=f4e196]:
+      - generic [ref=f4e201]:
+        - generic [ref=f4e202]: Across Palestine
+        - generic [ref=f4e203]: Free Shipping
+      - generic [ref=f4e208]:
+        - generic [ref=f4e209]: Bank Transfer
+        - generic [ref=f4e210]: 256 Bit SSL
+      - generic [ref=f4e215]:
+        - generic [ref=f4e216]: Bank Transfer
+        - generic [ref=f4e217]: Easy payment by IBAN
+    - generic [ref=f4e218]:
+      - generic [ref=f4e219]:
+        - generic [ref=f4e220]:
+          - heading "Subscribe to newsletter" [level=3] [ref=f4e221]
+          - paragraph [ref=f4e222]: Get new arrivals, Palestinian market picks, and special offers in your inbox.
+          - generic [ref=f4e223]:
+            - textbox "Email Address" [ref=f4e224]
+            - button "Subscribe" [ref=f4e225] [cursor=pointer]
+        - generic [ref=f4e226]:
+          - heading "Corporate" [level=4] [ref=f4e227]
+          - list [ref=f4e228]:
+            - listitem [ref=f4e229]:
+              - link "About Us" [ref=f4e230] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=f4e231]:
+              - link "Contact" [ref=f4e232] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=f4e233]:
+              - link "All Products" [ref=f4e234] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=f4e235]:
+              - link "Privacy Policy" [ref=f4e236] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f4e237]:
+              - link "Distance Sales Contract" [ref=f4e238] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=f4e240] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=f4e241]: 
+      - generic [ref=f4e242]:
+        - paragraph [ref=f4e244]: © 2026 7ANRPS48 — All rights reserved.
+        - generic [ref=f4e245]:
+          - link "Privacy Policy" [ref=f4e246] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "Return and Exchange" [ref=f4e247] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+          - text: "|"
+          - link "About Us" [ref=f4e248] [cursor=pointer]:
+            - /url: /Kurumsal/Hakkimizda
+  - link "WhatsApp Contact" [ref=f4e249] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=f4e252]: WhatsApp
+  - link "Cart" [ref=f4e253] [cursor=pointer]:
+    - /url: /Sepet
+    - generic [ref=f4e256]: "1"

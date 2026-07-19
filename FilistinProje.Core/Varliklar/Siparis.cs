@@ -49,7 +49,7 @@ namespace FilistinProje.Core.Varliklar
         public string? EmailHashKodu { get; set; } // Örn: abc123def456 (unique)
 
         // --- FATURA ALANLARI ---
-        public string? FaturaDosyaYolu { get; set; } // Örn: /uploads/invoices/12345_abc123.pdf
+        public string? FaturaDosyaYolu { get; set; } // private://faturalar/<guid>.pdf
         public string? FaturaDosyaAdi { get; set; } // Örn: 12345_abc123.pdf
         public bool FaturaYuklendiMi { get; set; } = false;
         public DateTime? FaturaYuklenmeTarihi { get; set; }

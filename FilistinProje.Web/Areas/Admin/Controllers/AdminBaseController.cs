@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Caching.Memory;
+using FilistinProje.Web.Caching;
 namespace FilistinProje.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -131,17 +132,45 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (dbContext != null)
             {
-                ViewBag.BekleyenSiparis = await dbContext.Siparisler
-                    .CountAsync(x => !x.SilindiMi && (int)x.Durum == 0);
+                var cache = httpContext.RequestServices.GetService<IMemoryCache>();
+                if (cache != null)
+                {
+                    ViewBag.BekleyenSiparis = await AdminCounterCache.GetOrCreateAsync(
+                        cache,
+                        AdminCounterCacheKeys.PendingOrders,
+                        () => dbContext.Siparisler.CountAsync(x => !x.SilindiMi && (int)x.Durum == 0));
 
-                ViewBag.OkunmamisIletisim = await dbContext.IletisimMesajlari
-                    .CountAsync(x => !x.OkunduMu);
+                    ViewBag.OkunmamisIletisim = await AdminCounterCache.GetOrCreateAsync(
+                        cache,
+                        AdminCounterCacheKeys.UnreadMessages,
+                        () => dbContext.IletisimMesajlari.CountAsync(x => !x.OkunduMu));
 
-                var son10Dakika = DateTime.UtcNow.AddMinutes(-10);
-                ViewBag.OnlineZiyaretci = await dbContext.ZiyaretciLoglari
-                    .Where(x => x.OlusturulmaTarihi >= son10Dakika)
-                    .GroupBy(x => x.IpAdresi)
-                    .CountAsync();
+                    ViewBag.OnlineZiyaretci = await AdminCounterCache.GetOrCreateAsync(
+                        cache,
+                        AdminCounterCacheKeys.OnlineVisitors,
+                        async () =>
+                        {
+                        var son10Dakika = DateTime.UtcNow.AddMinutes(-10);
+                        return await dbContext.ZiyaretciLoglari
+                            .Where(x => x.OlusturulmaTarihi >= son10Dakika)
+                            .GroupBy(x => x.IpAdresi)
+                            .CountAsync();
+                        });
+                }
+                else
+                {
+                    ViewBag.BekleyenSiparis = await dbContext.Siparisler
+                        .CountAsync(x => !x.SilindiMi && (int)x.Durum == 0);
+
+                    ViewBag.OkunmamisIletisim = await dbContext.IletisimMesajlari
+                        .CountAsync(x => !x.OkunduMu);
+
+                    var son10Dakika = DateTime.UtcNow.AddMinutes(-10);
+                    ViewBag.OnlineZiyaretci = await dbContext.ZiyaretciLoglari
+                        .Where(x => x.OlusturulmaTarihi >= son10Dakika)
+                        .GroupBy(x => x.IpAdresi)
+                        .CountAsync();
+                }
             }
 
             await next();

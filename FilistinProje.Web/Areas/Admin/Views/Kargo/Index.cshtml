@@ -346,6 +346,20 @@
         }
     }
 
+    function showPanelMessage(container, message, cssClass) {
+        const node = document.createElement('div');
+        node.className = cssClass;
+        node.textContent = String(message || '');
+        container.replaceChildren(node);
+    }
+
+    function setRegionFormTitle(iconClass, text) {
+        const title = document.getElementById('bolgeFormTitle');
+        const icon = document.createElement('i');
+        icon.className = iconClass;
+        title.replaceChildren(icon, document.createTextNode(String(text || '')));
+    }
+
     function loadBolgeler() {
         fetch('/Admin/Kargo/BolgeListesi')
             .then(r => r.json())
@@ -354,7 +368,7 @@
                 populateBolgeSelect(data);
             })
              .catch(() => {
-                 document.getElementById('bolgeListesi').innerHTML = '<div class="col-12 text-center text-danger py-4">' + loadErrorText + '</div>';
+                 showPanelMessage(document.getElementById('bolgeListesi'), loadErrorText, 'col-12 text-center text-danger py-4');
              });
 
     }
@@ -364,7 +378,7 @@
             .then(r => r.json())
             .then(renderBolgeFiyatlari)
              .catch(() => {
-                 document.getElementById('bolgeFiyatListesi').innerHTML = '<div class="text-center text-danger py-4">' + priceLoadErrorText + '</div>';
+                 showPanelMessage(document.getElementById('bolgeFiyatListesi'), priceLoadErrorText, 'text-center text-danger py-4');
              });
 
     }
@@ -376,30 +390,59 @@
         const fiyatlar = data.fiyatlar || [];
 
         if (!firmalar.length || !bolgeler.length) {
-             container.innerHTML = '<div class="text-center text-muted py-4">' + noCarrierProvinceText + '</div>';
-
+            showPanelMessage(container, noCarrierProvinceText, 'text-center text-muted py-4');
             return;
         }
 
         const fiyatMap = new Map(fiyatlar.map(f => [f.kargoFirmasiId + '-' + f.bolgeId, f.fiyat]));
-        const rows = bolgeler.map(bolge => {
-            const cells = firmalar.map(firma => {
+        const table = document.createElement('table');
+        table.className = 'ca-table';
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        const provinceHeader = document.createElement('th');
+        provinceHeader.className = 'ps-4';
+        provinceHeader.textContent = provinceText;
+        headerRow.appendChild(provinceHeader);
+        firmalar.forEach(firma => {
+            const th = document.createElement('th');
+            th.textContent = String(firma.ad || '');
+            headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+        const tbody = document.createElement('tbody');
+
+        bolgeler.forEach(bolge => {
+            const row = document.createElement('tr');
+            const regionCell = document.createElement('td');
+            regionCell.className = 'ps-4 ca-fw-bold';
+            regionCell.textContent = String(bolge.ad || '');
+            row.appendChild(regionCell);
+            firmalar.forEach(firma => {
                 const value = fiyatMap.has(firma.id + '-' + bolge.id) ? fiyatMap.get(firma.id + '-' + bolge.id) : firma.fiyat;
-                return `<td>
-                    <div class="input-group input-group-sm" style="min-width:130px;">
-                        <input class="form-control bolge-fiyat-input" type="number" min="0" step="0.01" value="${Number(value || 0).toFixed(2)}" data-firma-id="${firma.id}" data-bolge-id="${bolge.id}" />
-                        <span class="input-group-text">₪</span>
-                    </div>
-                </td>`;
-            }).join('');
+                const cell = document.createElement('td');
+                const group = document.createElement('div');
+                group.className = 'input-group input-group-sm';
+                group.style.minWidth = '130px';
+                const input = document.createElement('input');
+                input.className = 'form-control bolge-fiyat-input';
+                input.type = 'number';
+                input.min = '0';
+                input.step = '0.01';
+                input.value = Number(value || 0).toFixed(2);
+                input.dataset.firmaId = String(firma.id);
+                input.dataset.bolgeId = String(bolge.id);
+                const currency = document.createElement('span');
+                currency.className = 'input-group-text';
+                currency.textContent = '₪';
+                group.append(input, currency);
+                cell.appendChild(group);
+                row.appendChild(cell);
+            });
+            tbody.appendChild(row);
+        });
 
-            return `<tr><td class="ps-4 ca-fw-bold">${bolge.ad}</td>${cells}</tr>`;
-        }).join('');
-
-        container.innerHTML = `<table class="ca-table">
-            <thead><tr><th class="ps-4">${provinceText}</th>${firmalar.map(f => `<th>${f.ad}</th>`).join('')}</tr></thead>
-            <tbody>${rows}</tbody>
-        </table>`;
+        table.append(thead, tbody);
+        container.replaceChildren(table);
     }
 
     function saveBolgeFiyat(input) {
@@ -420,61 +463,101 @@
         const filtered = ulkeFilter ? bolgeler.filter(b => b.ulke === ulkeFilter) : bolgeler;
 
         if (!filtered.length) {
-             container.innerHTML = '<div class="col-12 text-center text-muted py-4">' + noRegionText + '</div>';
-
+            showPanelMessage(container, noRegionText, 'col-12 text-center text-muted py-4');
             return;
         }
 
-        container.innerHTML = filtered.map(b => {
-            const sehirlerHtml = b.sehirler && b.sehirler.length
-                ? b.sehirler.map(s =>
-                    `<span class="badge fs-6 fw-normal py-2 px-3 me-1 mb-1" style="background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:20px;">
-                        <i class="fas fa-location-dot me-1" style="font-size:0.65rem;"></i>\${s.sehirAdi}
-                        <button type="button" class="btn-close btn-close-sm ms-2" style="font-size:0.6rem;" onclick="window.bolgeApp.silSehir(\${s.id}, '\${s.sehirAdi.replace(/'/g, "\\'")}')" title="@Localizer["Admin_Sil"]"></button>
-                    </span>`
-                ).join('')
-                 : '<span class="text-muted small">' + noCityText + '</span>';
+        const fragment = document.createDocumentFragment();
+        filtered.forEach(b => {
+            const column = document.createElement('div');
+            column.className = 'col-md-6';
+            const card = document.createElement('div');
+            card.className = 'ca-card h-100';
+            const header = document.createElement('div');
+            header.className = 'ca-card-header py-2 px-3 d-flex justify-content-between align-items-center';
+            const heading = document.createElement('div');
+            const name = document.createElement('strong');
+            name.textContent = String(b.ad || '');
+            heading.appendChild(name);
+            if (b.ulke) {
+                const country = document.createElement('span');
+                country.className = 'ca-badge ca-badge-info ms-1';
+                country.textContent = String(b.ulke);
+                heading.appendChild(country);
+            }
+            const description = document.createElement('div');
+            description.className = 'small text-muted';
+            description.textContent = String(b.aciklama || '');
+            heading.appendChild(description);
 
+            const actions = document.createElement('div');
+            actions.className = 'd-flex gap-1';
+            const edit = document.createElement('button');
+            edit.type = 'button';
+            edit.className = 'ca-btn-icon';
+            edit.title = '@Localizer["Admin_Duzenle"]';
+            edit.appendChild(Object.assign(document.createElement('i'), { className: 'fas fa-pen' }));
+            edit.addEventListener('click', () => window.bolgeApp.duzenleBolge(b.id, b.ad || '', b.ulke || '', b.aciklama || '', b.sira, b.fiyat));
+            const remove = document.createElement('button');
+            remove.type = 'button';
+            remove.className = 'ca-btn-icon text-danger';
+            remove.title = '@Localizer["Admin_Sil"]';
+            remove.appendChild(Object.assign(document.createElement('i'), { className: 'fas fa-trash' }));
+            remove.addEventListener('click', () => window.bolgeApp.silBolge(b.id, b.ad || ''));
+            actions.append(edit, remove);
+            header.append(heading, actions);
 
-            const ulkeBadge = b.ulke
-                ? `<span class="ca-badge ca-badge-info me-1">\${b.ulke}</span>`
-                : '';
-
-            return `
-            <div class="col-md-6">
-                <div class="ca-card h-100">
-                    <div class="ca-card-header py-2 px-3 d-flex justify-content-between align-items-center">
-                        <div>
-                            <strong>\${b.ad}</strong>
-                            \${ulkeBadge}
-                            <div class="small text-muted">\${b.aciklama || ''}</div>
-                        </div>
-                        <div class="d-flex gap-1">
-                            <button class="ca-btn-icon" onclick="window.bolgeApp.duzenleBolge(\${b.id}, '\${b.ad.replace(/'/g, "\\'")}', '\${(b.ulke||'').replace(/'/g, "\\'")}', '\${(b.aciklama||'').replace(/'/g, "\\'")}', \${b.sira}, \${b.fiyat})" title="@Localizer["Admin_Duzenle"]">
-                                <i class="fas fa-pen"></i>
-                            </button>
-                            <button class="ca-btn-icon text-danger" onclick="window.bolgeApp.silBolge(\${b.id}, '\${b.ad.replace(/'/g, "\\'")}')" title="@Localizer["Admin_Sil"]">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="ca-card-body py-2 px-3">
-                        <div class="d-flex justify-content-between mb-2">
-                            <div class="small text-muted"><i class="fas fa-city me-1"></i>' + cityCountText.replace('{0}', b.sehirSayisi || 0) + '</div>
-                            <div class="ca-fw-bold small text-primary"><i class="fas fa-shekel-sign me-1"></i>\${Number(b.fiyat || 0).toFixed(2)} ₪</div>
-                        </div>
-                        <div class="sehir-list d-flex flex-wrap gap-1">\${sehirlerHtml}</div>
-                    </div>
-                </div>
-            </div>`;
-        }).join('');
+            const body = document.createElement('div');
+            body.className = 'ca-card-body py-2 px-3';
+            const summary = document.createElement('div');
+            summary.className = 'd-flex justify-content-between mb-2';
+            const count = document.createElement('div');
+            count.className = 'small text-muted';
+            count.textContent = cityCountText.replace('{0}', b.sehirSayisi || 0);
+            const price = document.createElement('div');
+            price.className = 'ca-fw-bold small text-primary';
+            price.textContent = Number(b.fiyat || 0).toFixed(2) + ' ₪';
+            summary.append(count, price);
+            const cityList = document.createElement('div');
+            cityList.className = 'sehir-list d-flex flex-wrap gap-1';
+            if (Array.isArray(b.sehirler) && b.sehirler.length) {
+                b.sehirler.forEach(s => {
+                    const badge = document.createElement('span');
+                    badge.className = 'badge fs-6 fw-normal py-2 px-3 me-1 mb-1';
+                    badge.style.cssText = 'background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:20px;';
+                    badge.appendChild(document.createTextNode(String(s.sehirAdi || '')));
+                    const cityRemove = document.createElement('button');
+                    cityRemove.type = 'button';
+                    cityRemove.className = 'btn-close btn-close-sm ms-2';
+                    cityRemove.style.fontSize = '0.6rem';
+                    cityRemove.title = '@Localizer["Admin_Sil"]';
+                    cityRemove.addEventListener('click', () => window.bolgeApp.silSehir(s.id, s.sehirAdi || ''));
+                    badge.appendChild(cityRemove);
+                    cityList.appendChild(badge);
+                });
+            } else {
+                const empty = document.createElement('span');
+                empty.className = 'text-muted small';
+                empty.textContent = noCityText;
+                cityList.appendChild(empty);
+            }
+            body.append(summary, cityList);
+            card.append(header, body);
+            column.appendChild(card);
+            fragment.appendChild(column);
+        });
+        container.replaceChildren(fragment);
     }
 
     function populateBolgeSelect(bolgeler) {
         const select = document.getElementById('SehirBolgeId');
         if (!select) return;
         const currentVal = select.value;
-        select.innerHTML = '<option value="">@Localizer["Admin_SelectRegion"]</option>';
+        select.replaceChildren();
+        const placeholder = document.createElement('option');
+        placeholder.value = '';
+        placeholder.textContent = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_SelectRegion"].Value));
+        select.appendChild(placeholder);
         bolgeler.forEach(b => {
             const opt = document.createElement('option');
             opt.value = b.id;
@@ -492,7 +575,7 @@
             document.getElementById('BolgeAciklama').value = aciklama || '';
             document.getElementById('BolgeSira').value = sira;
             document.getElementById('BolgeFiyat').value = Number(fiyat || 0).toFixed(2);
-             document.getElementById('bolgeFormTitle').innerHTML = '<i class="fas fa-pen me-2"></i>' + editRegionText;
+            setRegionFormTitle('fas fa-pen me-2', editRegionText);
 
             document.getElementById('bolgeIptalBtn').style.display = 'inline-block';
             document.getElementById('BolgeAd').focus();
@@ -557,7 +640,7 @@
                 if (d.success) {
                     this.reset();
                     document.getElementById('BolgeId').value = '0';
-                    document.getElementById('bolgeFormTitle').innerHTML = '<i class="fas fa-plus me-2"></i>@Localizer["Admin_NewRegion"]';
+                    setRegionFormTitle('fas fa-plus me-2', '@Localizer["Admin_NewRegion"]');
                     document.getElementById('bolgeIptalBtn').style.display = 'none';
                     loadBolgeler();
                 }
@@ -567,7 +650,7 @@
     document.getElementById('bolgeIptalBtn').addEventListener('click', function() {
         document.getElementById('bolgeForm').reset();
         document.getElementById('BolgeId').value = '0';
-        document.getElementById('bolgeFormTitle').innerHTML = '<i class="fas fa-plus me-2"></i>@Localizer["Admin_NewRegion"]';
+        setRegionFormTitle('fas fa-plus me-2', '@Localizer["Admin_NewRegion"]');
         this.style.display = 'none';
     });
 

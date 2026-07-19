@@ -21,6 +21,39 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
     [Area("Admin")]
     public class UrunController : AdminBaseController
     {
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SecenekEkle(UrunSecenek secenek)
+        {
+            var urunVarMi = await _context.Urunler.AnyAsync(x => x.Id == secenek.UrunId && !x.SilindiMi);
+            if (!urunVarMi || secenek.SatisFiyati <= 0)
+            {
+                return RedirectToAction("Secenekler", "Urun", new { area = "", id = secenek.UrunId });
+            }
+
+            secenek.Id = 0;
+            secenek.OlusturulmaTarihi = DateTime.UtcNow;
+            secenek.SilindiMi = false;
+            _context.UrunSecenekleri.Add(secenek);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Secenekler", "Urun", new { area = "", id = secenek.UrunId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SecenekSil(int id)
+        {
+            var secenek = await _context.UrunSecenekleri.FirstOrDefaultAsync(x => x.Id == id && !x.SilindiMi);
+            if (secenek == null)
+            {
+                return NotFound();
+            }
+
+            secenek.SilindiMi = true;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Secenekler", "Urun", new { area = "", id = secenek.UrunId });
+        }
+
         private static readonly HashSet<string> AllowedImageExtensions = new(StringComparer.OrdinalIgnoreCase)
         {
             ".jpg",
@@ -39,19 +72,23 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         private const long MaxImageFileBytes = 10 * 1024 * 1024;
         private const long MaxVideoFileBytes = 150 * 1024 * 1024;
         private const long MaxExcelFileBytes = 20 * 1024 * 1024;
+        private const int MaxExcelImportRows = 5_000;
 
         private readonly KanvasDbContext _context;
         private readonly IWebHostEnvironment _webHost;
         private readonly IStringLocalizer<SharedResource> _localizer;
+        private readonly ILogger<UrunController> _logger;
 
         public UrunController(
             KanvasDbContext context,
             IWebHostEnvironment webHost,
-            IStringLocalizer<SharedResource> localizer)
+            IStringLocalizer<SharedResource> localizer,
+            ILogger<UrunController> logger)
         {
             _context = context;
             _webHost = webHost;
             _localizer = localizer;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index(string? search, int? kategoriId, int page = 1, int pageSize = 20)
@@ -587,6 +624,7 @@ await _context.SaveChangesAsync();
             _context.Urunler.RemoveRange(products);
 
             await _context.SaveChangesAsync();
+            await CleanupDeletedProductMediaAsync(media);
 
             if (blockedIds.Count > 0)
             {
@@ -594,6 +632,57 @@ await _context.SaveChangesAsync();
             }
 
             return (products.Count, 0, $"{products.Count} Ã¼rÃ¼n kalÄ±cÄ± olarak silindi.");
+        }
+
+        private async Task CleanupDeletedProductMediaAsync(IEnumerable<UrunResim> deletedMedia)
+        {
+            var candidates = deletedMedia
+                .SelectMany(x => new[] { x.ResimYolu, x.ThumbnailYolu, x.MobilResimYolu })
+                .Where(x => !string.IsNullOrWhiteSpace(x) && x.StartsWith('/'))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            if (candidates.Count == 0)
+            {
+                return;
+            }
+
+            var sharedMedia = await _context.UrunResimleri
+                .AsNoTracking()
+                .Where(x => candidates.Contains(x.ResimYolu) ||
+                            candidates.Contains(x.ThumbnailYolu) ||
+                            candidates.Contains(x.MobilResimYolu))
+                .ToListAsync();
+            var sharedPaths = sharedMedia
+                .SelectMany(x => new[] { x.ResimYolu, x.ThumbnailYolu, x.MobilResimYolu })
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            var webRoot = Path.GetFullPath(_webHost.WebRootPath);
+            var uploadsRoot = Path.GetFullPath(Path.Combine(webRoot, "uploads"));
+            foreach (var relativePath in candidates.Except(sharedPaths, StringComparer.OrdinalIgnoreCase))
+            {
+                try
+                {
+                    var fullPath = Path.GetFullPath(Path.Combine(
+                        webRoot,
+                        relativePath.TrimStart('/', '\\').Replace('/', Path.DirectorySeparatorChar)));
+                    if (!fullPath.StartsWith(uploadsRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+                    {
+                        _logger.LogWarning("Urun medya temizligi guvenli uploads kokunun disinda oldugu icin atlandi.");
+                        continue;
+                    }
+
+                    if (System.IO.File.Exists(fullPath))
+                    {
+                        System.IO.File.Delete(fullPath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Urun medya dosyasi silinemedi; orphan cleanup gerekli. Yol={RelativePath}", relativePath);
+                }
+            }
         }
 
         public async Task<IActionResult> ResimSil(int id)
@@ -795,7 +884,7 @@ await _context.SaveChangesAsync();
             try
             {
                 await ProcessProductExcelImportAsync(savedPath, operation, report);
-                report.Status = report.ErrorCount > 0 ? "KÄ±smi BaÅŸarÄ±lÄ±" : "BaÅŸarÄ±lÄ±";
+                report.Status = report.ErrorCount > 0 ? "Hatalı - Geri Alındı" : "Başarılı";
                 ViewBag.Mesaj = $"{report.OperationLabel} tamamlandÄ±. BaÅŸarÄ±lÄ±: {report.SuccessCount}, HatalÄ±: {report.ErrorCount}.";
             }
             catch (Exception ex)
@@ -816,7 +905,6 @@ await _context.SaveChangesAsync();
         public async Task<IActionResult> ExcelSablon(string tip)
         {
             var operation = NormalizeExcelOperation(tip);
-            ExcelPackage.License.SetNonCommercialOrganization("7ANRPS48");
             using var package = new ExcelPackage();
 
             var infoSheet = package.Workbook.Worksheets.Add("Bilgilendirme");
@@ -1034,7 +1122,6 @@ await _context.SaveChangesAsync();
         [NonAction]
         public async Task<IActionResult> UrunExcelExport()
         {
-            ExcelPackage.License.SetNonCommercialOrganization("7ANRPS48");
             using var package = new ExcelPackage();
             var worksheet = package.Workbook.Worksheets.Add("ÃœrÃ¼nler");
 
@@ -1120,12 +1207,16 @@ await _context.SaveChangesAsync();
 
         private async Task ProcessProductExcelImportAsync(string filePath, string operation, ProductExcelImportReport report)
         {
-            ExcelPackage.License.SetNonCommercialOrganization("7ANRPS48");
             using var package = new ExcelPackage(new FileInfo(filePath));
             var worksheet = SelectProductImportWorksheet(package);
             if (worksheet?.Dimension == null)
             {
                 throw new InvalidOperationException("Excel dosyasÄ±nda okunabilir veri bulunamadÄ±.");
+            }
+
+            if (worksheet.Dimension.End.Row - 1 > MaxExcelImportRows)
+            {
+                throw new InvalidOperationException($"Excel dosyasi en fazla {MaxExcelImportRows} veri satiri icerebilir.");
             }
 
             var headers = BuildHeaderMap(worksheet);
@@ -1134,6 +1225,7 @@ await _context.SaveChangesAsync();
                 .Where(x => !x.SilindiMi && x.AktifMi)
                 .ToListAsync();
 
+            await using var transaction = await _context.Database.BeginTransactionAsync();
             for (var row = 2; row <= worksheet.Dimension.End.Row; row++)
             {
                 if (IsExcelRowEmpty(worksheet, row) ||
@@ -1168,6 +1260,17 @@ await _context.SaveChangesAsync();
                     report.Errors.Add($"SatÄ±r {row}: {ex.Message}");
                 }
             }
+
+            if (report.Errors.Count > 0)
+            {
+                await transaction.RollbackAsync();
+                _context.ChangeTracker.Clear();
+                report.SuccessCount = 0;
+                report.Errors.Add("Dosyada hata bulunduğu için tüm satırlar geri alındı; kısmi veri kaydedilmedi.");
+                return;
+            }
+
+            await transaction.CommitAsync();
         }
 
         private async Task<(bool Success, string Message)> ImportProductCreateRowAsync(
@@ -2337,19 +2440,19 @@ await _context.SaveChangesAsync();
 
         private void NormalizeProductInput(Urun urun)
         {
-            urun.Baslik = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.Baslik);
-            urun.KisaAd = string.IsNullOrWhiteSpace(urun.KisaAd) ? urun.Baslik : TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.KisaAd);
+            urun.Baslik = urun.Baslik?.Trim() ?? string.Empty;
+            urun.KisaAd = string.IsNullOrWhiteSpace(urun.KisaAd) ? urun.Baslik : urun.KisaAd.Trim();
             urun.SKU = urun.SKU?.Trim() ?? string.Empty;
             urun.Barkod = urun.Barkod?.Trim() ?? string.Empty;
-            urun.Marka = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.Marka);
+            urun.Marka = urun.Marka?.Trim() ?? string.Empty;
             urun.UrunTipi = UrunOzellikCatalog.NormalizeProductType(urun.UrunTipi);
-            urun.Etiketler = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.Etiketler);
-            urun.KisaAciklama = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.KisaAciklama);
-            urun.Aciklama = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.Aciklama);
-            urun.TeknikOzellikler = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.TeknikOzellikler);
-            urun.MalzemeBilgisi = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.MalzemeBilgisi);
-            urun.BakimTalimati = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.BakimTalimati);
-            urun.PaketlemeBilgisi = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.PaketlemeBilgisi);
+            urun.Etiketler = urun.Etiketler?.Trim() ?? string.Empty;
+            urun.KisaAciklama = urun.KisaAciklama?.Trim() ?? string.Empty;
+            urun.Aciklama = urun.Aciklama?.Trim() ?? string.Empty;
+            urun.TeknikOzellikler = urun.TeknikOzellikler?.Trim() ?? string.Empty;
+            urun.MalzemeBilgisi = urun.MalzemeBilgisi?.Trim() ?? string.Empty;
+            urun.BakimTalimati = urun.BakimTalimati?.Trim() ?? string.Empty;
+            urun.PaketlemeBilgisi = urun.PaketlemeBilgisi?.Trim() ?? string.Empty;
             urun.StokDurumu = NormalizeStockStatus(urun.StokDurumu);
             urun.KdvOrani = urun.KdvOrani < 0 ? 0 : urun.KdvOrani;
             urun.HediyePaketFiyati = Math.Max(0, urun.HediyePaketFiyati);
@@ -2362,46 +2465,46 @@ await _context.SaveChangesAsync();
             urun.IndirimliFiyat = urun.IndirimliFiyat.HasValue && urun.IndirimliFiyat.Value <= 0
                 ? null
                 : urun.IndirimliFiyat;
-            urun.SeoTitle = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.SeoTitle);
-            urun.SeoDescription = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.SeoDescription);
-            urun.SeoKeywords = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.SeoKeywords);
+            urun.SeoTitle = urun.SeoTitle?.Trim() ?? string.Empty;
+            urun.SeoDescription = urun.SeoDescription?.Trim() ?? string.Empty;
+            urun.SeoKeywords = urun.SeoKeywords?.Trim() ?? string.Empty;
         }
 
         private static void RepairProductTextForDisplay(Urun urun)
         {
-            urun.Baslik = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.Baslik);
-            urun.KisaAd = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.KisaAd);
-            urun.Marka = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.Marka);
-            urun.Etiketler = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.Etiketler);
-            urun.KisaAciklama = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.KisaAciklama);
-            urun.Aciklama = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.Aciklama);
-            urun.TeknikOzellikler = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.TeknikOzellikler);
-            urun.MalzemeBilgisi = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.MalzemeBilgisi);
-            urun.BakimTalimati = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.BakimTalimati);
-            urun.PaketlemeBilgisi = TurkishTextRepairHelper.RepairKnownBrokenTurkish(urun.PaketlemeBilgisi);
+            urun.Baslik = urun.Baslik?.Trim() ?? string.Empty;
+            urun.KisaAd = urun.KisaAd?.Trim() ?? string.Empty;
+            urun.Marka = urun.Marka?.Trim() ?? string.Empty;
+            urun.Etiketler = urun.Etiketler?.Trim() ?? string.Empty;
+            urun.KisaAciklama = urun.KisaAciklama?.Trim() ?? string.Empty;
+            urun.Aciklama = urun.Aciklama?.Trim() ?? string.Empty;
+            urun.TeknikOzellikler = urun.TeknikOzellikler?.Trim() ?? string.Empty;
+            urun.MalzemeBilgisi = urun.MalzemeBilgisi?.Trim() ?? string.Empty;
+            urun.BakimTalimati = urun.BakimTalimati?.Trim() ?? string.Empty;
+            urun.PaketlemeBilgisi = urun.PaketlemeBilgisi?.Trim() ?? string.Empty;
 
             foreach (var variant in urun.UrunSecenek ?? Enumerable.Empty<UrunSecenek>())
             {
-                variant.Olcu = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.Olcu);
-                variant.CerceveTipi = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.CerceveTipi);
-                variant.CerceveRengi = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.CerceveRengi);
-                variant.CerceveKalinligi = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.CerceveKalinligi);
-                variant.MalzemeTuru = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.MalzemeTuru);
-                variant.Yon = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.Yon);
-                variant.KisilestirmeMetni = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.KisilestirmeMetni);
-                variant.OzelTasarimNotu = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.OzelTasarimNotu);
+                variant.Olcu = variant.Olcu?.Trim() ?? string.Empty;
+                variant.CerceveTipi = variant.CerceveTipi?.Trim() ?? string.Empty;
+                variant.CerceveRengi = variant.CerceveRengi?.Trim() ?? string.Empty;
+                variant.CerceveKalinligi = variant.CerceveKalinligi?.Trim() ?? string.Empty;
+                variant.MalzemeTuru = variant.MalzemeTuru?.Trim() ?? string.Empty;
+                variant.Yon = variant.Yon?.Trim() ?? string.Empty;
+                variant.KisilestirmeMetni = variant.KisilestirmeMetni?.Trim() ?? string.Empty;
+                variant.OzelTasarimNotu = variant.OzelTasarimNotu?.Trim() ?? string.Empty;
             }
 
             foreach (var media in urun.UrunResimleri ?? Enumerable.Empty<UrunResim>())
             {
-                media.Baslik = TurkishTextRepairHelper.RepairKnownBrokenTurkish(media.Baslik);
-                media.AltMetin = TurkishTextRepairHelper.RepairKnownBrokenTurkish(media.AltMetin);
-                media.Etiketler = TurkishTextRepairHelper.RepairKnownBrokenTurkish(media.Etiketler);
+                media.Baslik = media.Baslik?.Trim() ?? string.Empty;
+                media.AltMetin = media.AltMetin?.Trim() ?? string.Empty;
+                media.Etiketler = media.Etiketler?.Trim() ?? string.Empty;
             }
 
             foreach (var feature in urun.UrunOzellikleri ?? Enumerable.Empty<UrunOzellikDegeri>())
             {
-                feature.Deger = TurkishTextRepairHelper.RepairKnownBrokenTurkish(feature.Deger);
+                feature.Deger = feature.Deger?.Trim() ?? string.Empty;
             }
         }
 
@@ -2565,14 +2668,14 @@ await _context.SaveChangesAsync();
             IFormFile? onizlemeDosyasi,
             IFormFile? mobilGorselDosyasi)
         {
-            medya.Baslik = TurkishTextRepairHelper.RepairKnownBrokenTurkish(model.Baslik);
-            medya.AltMetin = TurkishTextRepairHelper.RepairKnownBrokenTurkish(model.AltMetin);
+            medya.Baslik = (model.Baslik ?? string.Empty).Trim();
+            medya.AltMetin = (model.AltMetin ?? string.Empty).Trim();
             medya.MedyaTipi = string.Equals(model.MedyaTipi, UrunMedyaCatalog.Video, StringComparison.OrdinalIgnoreCase)
                 ? UrunMedyaCatalog.Video
                 : UrunMedyaCatalog.Gorsel;
             medya.MedyaAlani = string.IsNullOrWhiteSpace(model.MedyaAlani) ? UrunMedyaCatalog.Galeri : model.MedyaAlani.Trim();
             medya.VideoUrl = model.VideoUrl?.Trim() ?? string.Empty;
-            medya.Etiketler = TurkishTextRepairHelper.RepairKnownBrokenTurkish(model.Etiketler);
+            medya.Etiketler = (model.Etiketler ?? string.Empty).Trim();
             medya.Sira = model.Sira > 0 ? model.Sira : (medya.Sira > 0 ? medya.Sira : await GetNextMediaOrderAsync(urun.Id));
             medya.VarsayilanMi = model.VarsayilanMi;
             medya.UrunSecenekId = model.UrunSecenekId;
@@ -2903,15 +3006,15 @@ await _context.SaveChangesAsync();
 
         private static void NormalizeVariantInput(UrunSecenek variant, int index)
         {
-            variant.Olcu = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.Olcu);
-            variant.CerceveTipi = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.CerceveTipi);
-            variant.CerceveRengi = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.CerceveRengi);
-            variant.CerceveKalinligi = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.CerceveKalinligi);
-            variant.MalzemeTuru = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.MalzemeTuru);
-            variant.Yon = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.Yon);
+            variant.Olcu = (variant.Olcu ?? string.Empty).Trim();
+            variant.CerceveTipi = (variant.CerceveTipi ?? string.Empty).Trim();
+            variant.CerceveRengi = (variant.CerceveRengi ?? string.Empty).Trim();
+            variant.CerceveKalinligi = (variant.CerceveKalinligi ?? string.Empty).Trim();
+            variant.MalzemeTuru = (variant.MalzemeTuru ?? string.Empty).Trim();
+            variant.Yon = (variant.Yon ?? string.Empty).Trim();
             variant.VaryantSku = variant.VaryantSku?.Trim() ?? string.Empty;
-            variant.KisilestirmeMetni = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.KisilestirmeMetni);
-            variant.OzelTasarimNotu = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.OzelTasarimNotu);
+            variant.KisilestirmeMetni = (variant.KisilestirmeMetni ?? string.Empty).Trim();
+            variant.OzelTasarimNotu = (variant.OzelTasarimNotu ?? string.Empty).Trim();
             variant.GorselUrl = variant.GorselUrl?.Trim() ?? string.Empty;
             variant.ParcaSayisi = variant.ParcaSayisi < 1 ? 1 : variant.ParcaSayisi;
             variant.StokAdedi = variant.StokAdedi < 0 ? 0 : variant.StokAdedi;
@@ -2998,7 +3101,7 @@ await _context.SaveChangesAsync();
 
         private static string NormalizeFeatureValue(string? rawValue)
         {
-            var value = TurkishTextRepairHelper.RepairKnownBrokenTurkish(rawValue);
+            var value = (rawValue ?? string.Empty).Trim();
             if (string.IsNullOrWhiteSpace(value))
             {
                 return string.Empty;
@@ -3006,8 +3109,8 @@ await _context.SaveChangesAsync();
 
             return value.ToLowerInvariant() switch
             {
-                "evet" => "true",
-                "hayir" => "false",
+                "yes" => "true",
+                "no" => "false",
                 _ => value
             };
         }

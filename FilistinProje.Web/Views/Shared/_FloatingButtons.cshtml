@@ -26,7 +26,15 @@
     @@media (max-width: 767px) {
         .whatsapp-btn,
         .floating-cart-btn {
-            bottom: 16px !important;
+            bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+        }
+
+        .product-detail-page .floating-cart-btn {
+            display: none !important;
+        }
+
+        .product-detail-page .whatsapp-btn {
+            bottom: calc(88px + env(safe-area-inset-bottom, 0px)) !important;
         }
     }
 

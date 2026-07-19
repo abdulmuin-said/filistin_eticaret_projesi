@@ -1,0 +1,840 @@
+- generic [ref=f5e2]:
+  - text:          +                    
+  - banner [ref=f5e3]:
+    - generic [ref=f5e4]:
+      - link "7ANRPS48 Admin Panel" [ref=f5e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f5e6]
+      - generic [ref=f5e7]: Admin Panel
+    - navigation "Admin main menu" [ref=f5e8]:
+      - link " Dashboard" [ref=f5e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f5e10]: 
+        - text: Dashboard
+      - generic [ref=f5e11]:
+        - button " Order Management" [ref=f5e12] [cursor=pointer]:
+          - generic [ref=f5e13]: 
+          - text: Order Management
+        - text:      
+      - generic [ref=f5e14]:
+        - button " Product Management" [ref=f5e15] [cursor=pointer]:
+          - generic [ref=f5e16]: 
+          - text: Product Management
+        - text:  +  
+      - generic [ref=f5e17]:
+        - button " Store Content" [ref=f5e18] [cursor=pointer]:
+          - generic [ref=f5e19]: 
+          - text: Store Content
+        - text:        
+      - link " Members" [ref=f5e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f5e21]: 
+        - text: Members
+      - link " Staff" [ref=f5e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f5e23]: 
+        - text: Staff
+      - link " Wholesalers" [ref=f5e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f5e25]: 
+        - text: Wholesalers
+      - link " Wholesale Groups" [ref=f5e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f5e27]: 
+        - text: Wholesale Groups
+      - generic [ref=f5e28]:
+        - button " Reports" [ref=f5e29] [cursor=pointer]:
+          - generic [ref=f5e30]: 
+          - text: Reports
+        - text:  
+      - link " Bank Accounts" [ref=f5e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f5e32]: 
+        - text: Bank Accounts
+      - link " Settings" [ref=f5e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f5e34]: 
+        - text: Settings
+    - generic [ref=f5e35]:
+      - text: 
+      - combobox "Language" [ref=f5e37]:
+        - option "AR"
+        - option "EN" [selected]
+      - generic [ref=f5e38]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f5e39] [cursor=pointer]:
+          - generic [ref=f5e40]:
+            - strong [ref=f5e41]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f5e42]: "7"
+        - text:  
+  - generic [ref=f5e43]:
+    - main [ref=f5e44]:
+      - generic [ref=f5e45]:
+        - generic [ref=f5e46]:
+          - generic [ref=f5e47]:
+            - heading "Product Catalog" [level=1] [ref=f5e48]
+            - paragraph [ref=f5e49]: Manage products in a fast paginated admin screen with light visual load.
+          - generic [ref=f5e50]:
+            - link " All Products XLSX" [ref=f5e51] [cursor=pointer]:
+              - /url: /Admin/Urun/UrunExcelExport
+              - generic [ref=f5e52]: 
+              - text: All Products XLSX
+            - link " Excel Operations" [ref=f5e53] [cursor=pointer]:
+              - /url: /Admin/Urun/Excel
+              - generic [ref=f5e54]: 
+              - text: Excel Operations
+            - button " Complete SKUs" [ref=f5e56] [cursor=pointer]:
+              - generic [ref=f5e57]: 
+              - text: Complete SKUs
+            - link "+ New Product" [ref=f5e58] [cursor=pointer]:
+              - /url: /Admin/Urun/Ekle
+              - generic [ref=f5e59]: +
+              - text: New Product
+        - generic [ref=f5e62]:
+          - generic [ref=f5e63]:
+            - generic [ref=f5e64]: 
+            - textbox "Search title, SKU, barcode or ID" [ref=f5e65]
+          - combobox [ref=f5e66]:
+            - option "All Categories" [selected]
+            - option "furniture"
+            - option "fragrances"
+            - option "groceries"
+            - option "beauty"
+            - option "Home Furniture"
+            - option "Electronics"
+            - option "Fashion"
+          - combobox [ref=f5e67]:
+            - option "20" [selected]
+            - option "50"
+            - option "100"
+          - button "" [ref=f5e68] [cursor=pointer]
+          - button " Activate Selected" [disabled] [ref=f5e70] [cursor=pointer]:
+            - generic [ref=f5e71]: 
+            - text: Activate Selected
+          - button " Deactivate Selected" [disabled] [ref=f5e72] [cursor=pointer]:
+            - generic [ref=f5e73]: 
+            - text: Deactivate Selected
+          - button " Delete Selected Products" [disabled] [ref=f5e74] [cursor=pointer]:
+            - generic [ref=f5e75]: 
+            - text: Delete Selected Products
+          - button " Permanent Delete" [disabled] [ref=f5e76] [cursor=pointer]:
+            - generic [ref=f5e77]: 
+            - text: Permanent Delete
+          - generic [ref=f5e78]: No selected products.
+          - generic [ref=f5e79]:
+            - text: المجموع
+            - strong [ref=f5e80]: "30"
+            - text: products
+        - generic [ref=f5e81]:
+          - table [ref=f5e83]:
+            - rowgroup [ref=f5e84]:
+              - row [ref=f5e85]:
+                - columnheader "Image" [ref=f5e86]
+                - columnheader "منتج" [ref=f5e87]
+                - columnheader "الفئة" [ref=f5e88]
+                - columnheader "السعر" [ref=f5e89]
+                - columnheader "Publish Status" [ref=f5e90]
+                - columnheader "Actions" [ref=f5e91]
+                - columnheader [ref=f5e92]:
+                  - checkbox "Select products on this page" [ref=f5e93]
+            - rowgroup [ref=f5e94]:
+              - row [ref=f5e95]:
+                - cell [ref=f5e96]:
+                  - img "Essence Mascara Lash Princess" [ref=f5e97]
+                - 'cell "Essence Mascara Lash Princess SKU: BEA-ESS-ESS-001 New Campaign Ana Sayfa" [ref=f5e98]':
+                  - generic [ref=f5e99]:
+                    - generic [ref=f5e100]: Essence Mascara Lash Princess
+                    - generic [ref=f5e101]: "SKU: BEA-ESS-ESS-001"
+                    - generic [ref=f5e102]:
+                      - generic [ref=f5e103]: New
+                      - generic [ref=f5e104]: Campaign
+                      - generic [ref=f5e105]: Ana Sayfa
+                - 'cell "beauty Brand: Essence" [ref=f5e106]':
+                  - generic [ref=f5e107]: beauty
+                  - text: "Brand: Essence"
+                - cell "8.94 ₪ 9.99 ₪" [ref=f5e108]:
+                  - generic [ref=f5e109]: 8.94 ₪
+                  - text: 9.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e110]':
+                  - generic [ref=f5e112]:
+                    - generic [ref=f5e113]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e114]:
+                  - generic [ref=f5e115]:
+                    - link "" [ref=f5e116] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-1-essence-mascara-lash-princess-112
+                    - link "" [ref=f5e118] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/112
+                    - button "" [ref=f5e121] [cursor=pointer]
+                    - button "" [ref=f5e124] [cursor=pointer]
+                    - button "" [ref=f5e127] [cursor=pointer]
+                    - button "" [ref=f5e130] [cursor=pointer]
+                - cell [ref=f5e132]:
+                  - checkbox "Select product Essence Mascara Lash Princess" [ref=f5e133]
+              - row [ref=f5e134]:
+                - cell [ref=f5e135]:
+                  - img "Eyeshadow Palette with Mirror" [ref=f5e136]
+                - 'cell "Eyeshadow Palette with Mirror SKU: BEA-GLA-EYE-002 New Campaign Ana Sayfa" [ref=f5e137]':
+                  - generic [ref=f5e138]:
+                    - generic [ref=f5e139]: Eyeshadow Palette with Mirror
+                    - generic [ref=f5e140]: "SKU: BEA-GLA-EYE-002"
+                    - generic [ref=f5e141]:
+                      - generic [ref=f5e142]: New
+                      - generic [ref=f5e143]: Campaign
+                      - generic [ref=f5e144]: Ana Sayfa
+                - 'cell "beauty Brand: Glamour Beauty" [ref=f5e145]':
+                  - generic [ref=f5e146]: beauty
+                  - text: "Brand: Glamour Beauty"
+                - cell "16.35 ₪ 19.99 ₪" [ref=f5e147]:
+                  - generic [ref=f5e148]: 16.35 ₪
+                  - text: 19.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e149]':
+                  - generic [ref=f5e151]:
+                    - generic [ref=f5e152]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e153]:
+                  - generic [ref=f5e154]:
+                    - link "" [ref=f5e155] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-2-eyeshadow-palette-with-mirror-113
+                    - link "" [ref=f5e157] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/113
+                    - button "" [ref=f5e160] [cursor=pointer]
+                    - button "" [ref=f5e163] [cursor=pointer]
+                    - button "" [ref=f5e166] [cursor=pointer]
+                    - button "" [ref=f5e169] [cursor=pointer]
+                - cell [ref=f5e171]:
+                  - checkbox "Select product Eyeshadow Palette with Mirror" [ref=f5e172]
+              - row [ref=f5e173]:
+                - cell [ref=f5e174]:
+                  - img "Powder Canister" [ref=f5e175]
+                - 'cell "Powder Canister SKU: BEA-VEL-POW-003 Featured New Campaign Ana Sayfa" [ref=f5e176]':
+                  - generic [ref=f5e177]:
+                    - generic [ref=f5e178]: Powder Canister
+                    - generic [ref=f5e179]: "SKU: BEA-VEL-POW-003"
+                    - generic [ref=f5e180]:
+                      - generic [ref=f5e181]: Featured
+                      - generic [ref=f5e182]: New
+                      - generic [ref=f5e183]: Campaign
+                      - generic [ref=f5e184]: Ana Sayfa
+                - 'cell "beauty Brand: Velvet Touch" [ref=f5e185]':
+                  - generic [ref=f5e186]: beauty
+                  - text: "Brand: Velvet Touch"
+                - cell "13.51 ₪ 14.99 ₪" [ref=f5e187]:
+                  - generic [ref=f5e188]: 13.51 ₪
+                  - text: 14.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e189]':
+                  - generic [ref=f5e191]:
+                    - generic [ref=f5e192]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e193]:
+                  - generic [ref=f5e194]:
+                    - link "" [ref=f5e195] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-3-powder-canister-114
+                    - link "" [ref=f5e197] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/114
+                    - button "" [ref=f5e200] [cursor=pointer]
+                    - button "" [ref=f5e203] [cursor=pointer]
+                    - button "" [ref=f5e206] [cursor=pointer]
+                    - button "" [ref=f5e209] [cursor=pointer]
+                - cell [ref=f5e211]:
+                  - checkbox "Select product Powder Canister" [ref=f5e212]
+              - row [ref=f5e213]:
+                - cell [ref=f5e214]:
+                  - img "Red Lipstick" [ref=f5e215]
+                - 'cell "Red Lipstick SKU: BEA-CHI-LIP-004 Featured New Campaign Ana Sayfa" [ref=f5e216]':
+                  - generic [ref=f5e217]:
+                    - generic [ref=f5e218]: Red Lipstick
+                    - generic [ref=f5e219]: "SKU: BEA-CHI-LIP-004"
+                    - generic [ref=f5e220]:
+                      - generic [ref=f5e221]: Featured
+                      - generic [ref=f5e222]: New
+                      - generic [ref=f5e223]: Campaign
+                      - generic [ref=f5e224]: Ana Sayfa
+                - 'cell "beauty Brand: Chic Cosmetics" [ref=f5e225]':
+                  - generic [ref=f5e226]: beauty
+                  - text: "Brand: Chic Cosmetics"
+                - cell "11.41 ₪ 12.99 ₪" [ref=f5e227]:
+                  - generic [ref=f5e228]: 11.41 ₪
+                  - text: 12.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e229]':
+                  - generic [ref=f5e231]:
+                    - generic [ref=f5e232]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e233]:
+                  - generic [ref=f5e234]:
+                    - link "" [ref=f5e235] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-4-red-lipstick-115
+                    - link "" [ref=f5e237] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/115
+                    - button "" [ref=f5e240] [cursor=pointer]
+                    - button "" [ref=f5e243] [cursor=pointer]
+                    - button "" [ref=f5e246] [cursor=pointer]
+                    - button "" [ref=f5e249] [cursor=pointer]
+                - cell [ref=f5e251]:
+                  - checkbox "Select product Red Lipstick" [ref=f5e252]
+              - row [ref=f5e253]:
+                - cell [ref=f5e254]:
+                  - img "Red Nail Polish" [ref=f5e255]
+                - 'cell "Red Nail Polish SKU: BEA-NAI-NAI-005 Featured New Campaign Ana Sayfa" [ref=f5e256]':
+                  - generic [ref=f5e257]:
+                    - generic [ref=f5e258]: Red Nail Polish
+                    - generic [ref=f5e259]: "SKU: BEA-NAI-NAI-005"
+                    - generic [ref=f5e260]:
+                      - generic [ref=f5e261]: Featured
+                      - generic [ref=f5e262]: New
+                      - generic [ref=f5e263]: Campaign
+                      - generic [ref=f5e264]: Ana Sayfa
+                - 'cell "beauty Brand: Nail Couture" [ref=f5e265]':
+                  - generic [ref=f5e266]: beauty
+                  - text: "Brand: Nail Couture"
+                - cell "7.96 ₪ 8.99 ₪" [ref=f5e267]:
+                  - generic [ref=f5e268]: 7.96 ₪
+                  - text: 8.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e269]':
+                  - generic [ref=f5e271]:
+                    - generic [ref=f5e272]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e273]:
+                  - generic [ref=f5e274]:
+                    - link "" [ref=f5e275] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-5-red-nail-polish-116
+                    - link "" [ref=f5e277] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/116
+                    - button "" [ref=f5e280] [cursor=pointer]
+                    - button "" [ref=f5e283] [cursor=pointer]
+                    - button "" [ref=f5e286] [cursor=pointer]
+                    - button "" [ref=f5e289] [cursor=pointer]
+                - cell [ref=f5e291]:
+                  - checkbox "Select product Red Nail Polish" [ref=f5e292]
+              - row [ref=f5e293]:
+                - cell [ref=f5e294]:
+                  - img "Calvin Klein CK One" [ref=f5e295]
+                - 'cell "Calvin Klein CK One SKU: FRA-CAL-CAL-006 Featured New Campaign Ana Sayfa" [ref=f5e296]':
+                  - generic [ref=f5e297]:
+                    - generic [ref=f5e298]: Calvin Klein CK One
+                    - generic [ref=f5e299]: "SKU: FRA-CAL-CAL-006"
+                    - generic [ref=f5e300]:
+                      - generic [ref=f5e301]: Featured
+                      - generic [ref=f5e302]: New
+                      - generic [ref=f5e303]: Campaign
+                      - generic [ref=f5e304]: Ana Sayfa
+                - 'cell "fragrances Brand: Calvin Klein" [ref=f5e305]':
+                  - generic [ref=f5e306]: fragrances
+                  - text: "Brand: Calvin Klein"
+                - cell "49.05 ₪ 49.99 ₪" [ref=f5e307]:
+                  - generic [ref=f5e308]: 49.05 ₪
+                  - text: 49.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e309]':
+                  - generic [ref=f5e311]:
+                    - generic [ref=f5e312]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e313]:
+                  - generic [ref=f5e314]:
+                    - link "" [ref=f5e315] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-6-calvin-klein-ck-one-117
+                    - link "" [ref=f5e317] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/117
+                    - button "" [ref=f5e320] [cursor=pointer]
+                    - button "" [ref=f5e323] [cursor=pointer]
+                    - button "" [ref=f5e326] [cursor=pointer]
+                    - button "" [ref=f5e329] [cursor=pointer]
+                - cell [ref=f5e331]:
+                  - checkbox "Select product Calvin Klein CK One" [ref=f5e332]
+              - row [ref=f5e333]:
+                - cell [ref=f5e334]:
+                  - img "Chanel Coco Noir Eau De" [ref=f5e335]
+                - 'cell "Chanel Coco Noir Eau De SKU: FRA-CHA-CHA-007 Featured New Campaign Ana Sayfa" [ref=f5e336]':
+                  - generic [ref=f5e337]:
+                    - generic [ref=f5e338]: Chanel Coco Noir Eau De
+                    - generic [ref=f5e339]: "SKU: FRA-CHA-CHA-007"
+                    - generic [ref=f5e340]:
+                      - generic [ref=f5e341]: Featured
+                      - generic [ref=f5e342]: New
+                      - generic [ref=f5e343]: Campaign
+                      - generic [ref=f5e344]: Ana Sayfa
+                - 'cell "fragrances Brand: Chanel" [ref=f5e345]':
+                  - generic [ref=f5e346]: fragrances
+                  - text: "Brand: Chanel"
+                - cell "108.53 ₪ 129.99 ₪" [ref=f5e347]:
+                  - generic [ref=f5e348]: 108.53 ₪
+                  - text: 129.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e349]':
+                  - generic [ref=f5e351]:
+                    - generic [ref=f5e352]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e353]:
+                  - generic [ref=f5e354]:
+                    - link "" [ref=f5e355] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-7-chanel-coco-noir-eau-de-118
+                    - link "" [ref=f5e357] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/118
+                    - button "" [ref=f5e360] [cursor=pointer]
+                    - button "" [ref=f5e363] [cursor=pointer]
+                    - button "" [ref=f5e366] [cursor=pointer]
+                    - button "" [ref=f5e369] [cursor=pointer]
+                - cell [ref=f5e371]:
+                  - checkbox "Select product Chanel Coco Noir Eau De" [ref=f5e372]
+              - row [ref=f5e373]:
+                - cell [ref=f5e374]:
+                  - img "Dior J'adore" [ref=f5e375]
+                - 'cell "Dior J''adore SKU: FRA-DIO-DIO-008 New Campaign Ana Sayfa" [ref=f5e376]':
+                  - generic [ref=f5e377]:
+                    - generic [ref=f5e378]: Dior J'adore
+                    - generic [ref=f5e379]: "SKU: FRA-DIO-DIO-008"
+                    - generic [ref=f5e380]:
+                      - generic [ref=f5e381]: New
+                      - generic [ref=f5e382]: Campaign
+                      - generic [ref=f5e383]: Ana Sayfa
+                - 'cell "fragrances Brand: Dior" [ref=f5e384]':
+                  - generic [ref=f5e385]: fragrances
+                  - text: "Brand: Dior"
+                - cell "76.74 ₪ 89.99 ₪" [ref=f5e386]:
+                  - generic [ref=f5e387]: 76.74 ₪
+                  - text: 89.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e388]':
+                  - generic [ref=f5e390]:
+                    - generic [ref=f5e391]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e392]:
+                  - generic [ref=f5e393]:
+                    - link "" [ref=f5e394] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-8-dior-jadore-119
+                    - link "" [ref=f5e396] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/119
+                    - button "" [ref=f5e399] [cursor=pointer]
+                    - button "" [ref=f5e402] [cursor=pointer]
+                    - button "" [ref=f5e405] [cursor=pointer]
+                    - button "" [ref=f5e408] [cursor=pointer]
+                - cell [ref=f5e410]:
+                  - checkbox "Select product Dior J'adore" [ref=f5e411]
+              - row [ref=f5e412]:
+                - cell [ref=f5e413]:
+                  - img "Dolce Shine Eau de" [ref=f5e414]
+                - 'cell "Dolce Shine Eau de SKU: FRA-DOL-DOL-009 New Campaign Ana Sayfa" [ref=f5e415]':
+                  - generic [ref=f5e416]:
+                    - generic [ref=f5e417]: Dolce Shine Eau de
+                    - generic [ref=f5e418]: "SKU: FRA-DOL-DOL-009"
+                    - generic [ref=f5e419]:
+                      - generic [ref=f5e420]: New
+                      - generic [ref=f5e421]: Campaign
+                      - generic [ref=f5e422]: Ana Sayfa
+                - 'cell "fragrances Brand: Dolce & Gabbana" [ref=f5e423]':
+                  - generic [ref=f5e424]: fragrances
+                  - text: "Brand: Dolce & Gabbana"
+                - cell "69.56 ₪ 69.99 ₪" [ref=f5e425]:
+                  - generic [ref=f5e426]: 69.56 ₪
+                  - text: 69.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e427]':
+                  - generic [ref=f5e429]:
+                    - generic [ref=f5e430]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e431]:
+                  - generic [ref=f5e432]:
+                    - link "" [ref=f5e433] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-9-dolce-shine-eau-de-120
+                    - link "" [ref=f5e435] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/120
+                    - button "" [ref=f5e438] [cursor=pointer]
+                    - button "" [ref=f5e441] [cursor=pointer]
+                    - button "" [ref=f5e444] [cursor=pointer]
+                    - button "" [ref=f5e447] [cursor=pointer]
+                - cell [ref=f5e449]:
+                  - checkbox "Select product Dolce Shine Eau de" [ref=f5e450]
+              - row [ref=f5e451]:
+                - cell [ref=f5e452]:
+                  - img "Gucci Bloom Eau de" [ref=f5e453]
+                - 'cell "Gucci Bloom Eau de SKU: FRA-GUC-GUC-010 New Campaign Ana Sayfa" [ref=f5e454]':
+                  - generic [ref=f5e455]:
+                    - generic [ref=f5e456]: Gucci Bloom Eau de
+                    - generic [ref=f5e457]: "SKU: FRA-GUC-GUC-010"
+                    - generic [ref=f5e458]:
+                      - generic [ref=f5e459]: New
+                      - generic [ref=f5e460]: Campaign
+                      - generic [ref=f5e461]: Ana Sayfa
+                - 'cell "fragrances Brand: Gucci" [ref=f5e462]':
+                  - generic [ref=f5e463]: fragrances
+                  - text: "Brand: Gucci"
+                - cell "68.48 ₪ 79.99 ₪" [ref=f5e464]:
+                  - generic [ref=f5e465]: 68.48 ₪
+                  - text: 79.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e466]':
+                  - generic [ref=f5e468]:
+                    - generic [ref=f5e469]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e470]:
+                  - generic [ref=f5e471]:
+                    - link "" [ref=f5e472] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-10-gucci-bloom-eau-de-121
+                    - link "" [ref=f5e474] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/121
+                    - button "" [ref=f5e477] [cursor=pointer]
+                    - button "" [ref=f5e480] [cursor=pointer]
+                    - button "" [ref=f5e483] [cursor=pointer]
+                    - button "" [ref=f5e486] [cursor=pointer]
+                - cell [ref=f5e488]:
+                  - checkbox "Select product Gucci Bloom Eau de" [ref=f5e489]
+              - row [ref=f5e490]:
+                - cell [ref=f5e491]:
+                  - img "Annibale Colombo Bed" [ref=f5e492]
+                - 'cell "Annibale Colombo Bed SKU: FUR-ANN-ANN-011 Featured New Campaign Ana Sayfa" [ref=f5e493]':
+                  - generic [ref=f5e494]:
+                    - generic [ref=f5e495]: Annibale Colombo Bed
+                    - generic [ref=f5e496]: "SKU: FUR-ANN-ANN-011"
+                    - generic [ref=f5e497]:
+                      - generic [ref=f5e498]: Featured
+                      - generic [ref=f5e499]: New
+                      - generic [ref=f5e500]: Campaign
+                      - generic [ref=f5e501]: Ana Sayfa
+                - 'cell "furniture Brand: Annibale Colombo" [ref=f5e502]':
+                  - generic [ref=f5e503]: furniture
+                  - text: "Brand: Annibale Colombo"
+                - cell "1,737.16 ₪ 1,899.99 ₪" [ref=f5e504]:
+                  - generic [ref=f5e505]: 1,737.16 ₪
+                  - text: 1,899.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e506]':
+                  - generic [ref=f5e508]:
+                    - generic [ref=f5e509]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e510]:
+                  - generic [ref=f5e511]:
+                    - link "" [ref=f5e512] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-11-annibale-colombo-bed-122
+                    - link "" [ref=f5e514] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/122
+                    - button "" [ref=f5e517] [cursor=pointer]
+                    - button "" [ref=f5e520] [cursor=pointer]
+                    - button "" [ref=f5e523] [cursor=pointer]
+                    - button "" [ref=f5e526] [cursor=pointer]
+                - cell [ref=f5e528]:
+                  - checkbox "Select product Annibale Colombo Bed" [ref=f5e529]
+              - row [ref=f5e530]:
+                - cell [ref=f5e531]:
+                  - img "Annibale Colombo Sofa" [ref=f5e532]
+                - 'cell "Annibale Colombo Sofa SKU: FUR-ANN-ANN-012 New Campaign Ana Sayfa" [ref=f5e533]':
+                  - generic [ref=f5e534]:
+                    - generic [ref=f5e535]: Annibale Colombo Sofa
+                    - generic [ref=f5e536]: "SKU: FUR-ANN-ANN-012"
+                    - generic [ref=f5e537]:
+                      - generic [ref=f5e538]: New
+                      - generic [ref=f5e539]: Campaign
+                      - generic [ref=f5e540]: Ana Sayfa
+                - 'cell "furniture Brand: Annibale Colombo" [ref=f5e541]':
+                  - generic [ref=f5e542]: furniture
+                  - text: "Brand: Annibale Colombo"
+                - cell "2,139.99 ₪ 2,499.99 ₪" [ref=f5e543]:
+                  - generic [ref=f5e544]: 2,139.99 ₪
+                  - text: 2,499.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e545]':
+                  - generic [ref=f5e547]:
+                    - generic [ref=f5e548]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e549]:
+                  - generic [ref=f5e550]:
+                    - link "" [ref=f5e551] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-12-annibale-colombo-sofa-123
+                    - link "" [ref=f5e553] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/123
+                    - button "" [ref=f5e556] [cursor=pointer]
+                    - button "" [ref=f5e559] [cursor=pointer]
+                    - button "" [ref=f5e562] [cursor=pointer]
+                    - button "" [ref=f5e565] [cursor=pointer]
+                - cell [ref=f5e567]:
+                  - checkbox "Select product Annibale Colombo Sofa" [ref=f5e568]
+              - row [ref=f5e569]:
+                - cell [ref=f5e570]:
+                  - img "Bedside Table African Cherry" [ref=f5e571]
+                - 'cell "Bedside Table African Cherry SKU: FUR-FUR-BED-013 New Campaign Ana Sayfa" [ref=f5e572]':
+                  - generic [ref=f5e573]:
+                    - generic [ref=f5e574]: Bedside Table African Cherry
+                    - generic [ref=f5e575]: "SKU: FUR-FUR-BED-013"
+                    - generic [ref=f5e576]:
+                      - generic [ref=f5e577]: New
+                      - generic [ref=f5e578]: Campaign
+                      - generic [ref=f5e579]: Ana Sayfa
+                - 'cell "furniture Brand: Furniture Co." [ref=f5e580]':
+                  - generic [ref=f5e581]: furniture
+                  - text: "Brand: Furniture Co."
+                - cell "242.72 ₪ 299.99 ₪" [ref=f5e582]:
+                  - generic [ref=f5e583]: 242.72 ₪
+                  - text: 299.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e584]':
+                  - generic [ref=f5e586]:
+                    - generic [ref=f5e587]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e588]:
+                  - generic [ref=f5e589]:
+                    - link "" [ref=f5e590] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-13-bedside-table-african-cherry-124
+                    - link "" [ref=f5e592] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/124
+                    - button "" [ref=f5e595] [cursor=pointer]
+                    - button "" [ref=f5e598] [cursor=pointer]
+                    - button "" [ref=f5e601] [cursor=pointer]
+                    - button "" [ref=f5e604] [cursor=pointer]
+                - cell [ref=f5e606]:
+                  - checkbox "Select product Bedside Table African Cherry" [ref=f5e607]
+              - row [ref=f5e608]:
+                - cell [ref=f5e609]:
+                  - img "Knoll Saarinen Executive Conference Chair" [ref=f5e610]
+                - 'cell "Knoll Saarinen Executive Conference Chair SKU: FUR-KNO-KNO-014 Featured New Campaign Ana Sayfa" [ref=f5e611]':
+                  - generic [ref=f5e612]:
+                    - generic [ref=f5e613]: Knoll Saarinen Executive Conference Chair
+                    - generic [ref=f5e614]: "SKU: FUR-KNO-KNO-014"
+                    - generic [ref=f5e615]:
+                      - generic [ref=f5e616]: Featured
+                      - generic [ref=f5e617]: New
+                      - generic [ref=f5e618]: Campaign
+                      - generic [ref=f5e619]: Ana Sayfa
+                - 'cell "furniture Brand: Knoll" [ref=f5e620]':
+                  - generic [ref=f5e621]: furniture
+                  - text: "Brand: Knoll"
+                - cell "489.94 ₪ 499.99 ₪" [ref=f5e622]:
+                  - generic [ref=f5e623]: 489.94 ₪
+                  - text: 499.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e624]':
+                  - generic [ref=f5e626]:
+                    - generic [ref=f5e627]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e628]:
+                  - generic [ref=f5e629]:
+                    - link "" [ref=f5e630] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-14-knoll-saarinen-executive-conference-chair-125
+                    - link "" [ref=f5e632] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/125
+                    - button "" [ref=f5e635] [cursor=pointer]
+                    - button "" [ref=f5e638] [cursor=pointer]
+                    - button "" [ref=f5e641] [cursor=pointer]
+                    - button "" [ref=f5e644] [cursor=pointer]
+                - cell [ref=f5e646]:
+                  - checkbox "Select product Knoll Saarinen Executive Conference Chair" [ref=f5e647]
+              - row [ref=f5e648]:
+                - cell [ref=f5e649]:
+                  - img "Wooden Bathroom Sink With Mirror" [ref=f5e650]
+                - 'cell "Wooden Bathroom Sink With Mirror SKU: FUR-BAT-WOO-015 New Campaign Ana Sayfa" [ref=f5e651]':
+                  - generic [ref=f5e652]:
+                    - generic [ref=f5e653]: Wooden Bathroom Sink With Mirror
+                    - generic [ref=f5e654]: "SKU: FUR-BAT-WOO-015"
+                    - generic [ref=f5e655]:
+                      - generic [ref=f5e656]: New
+                      - generic [ref=f5e657]: Campaign
+                      - generic [ref=f5e658]: Ana Sayfa
+                - 'cell "furniture Brand: Bath Trends" [ref=f5e659]':
+                  - generic [ref=f5e660]: furniture
+                  - text: "Brand: Bath Trends"
+                - cell "729.59 ₪ 799.99 ₪" [ref=f5e661]:
+                  - generic [ref=f5e662]: 729.59 ₪
+                  - text: 799.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e663]':
+                  - generic [ref=f5e665]:
+                    - generic [ref=f5e666]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e667]:
+                  - generic [ref=f5e668]:
+                    - link "" [ref=f5e669] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-15-wooden-bathroom-sink-with-mirror-126
+                    - link "" [ref=f5e671] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/126
+                    - button "" [ref=f5e674] [cursor=pointer]
+                    - button "" [ref=f5e677] [cursor=pointer]
+                    - button "" [ref=f5e680] [cursor=pointer]
+                    - button "" [ref=f5e683] [cursor=pointer]
+                - cell [ref=f5e685]:
+                  - checkbox "Select product Wooden Bathroom Sink With Mirror" [ref=f5e686]
+              - row [ref=f5e687]:
+                - cell [ref=f5e688]:
+                  - img "Apple" [ref=f5e689]
+                - 'cell "Apple SKU: GRO-BRD-APP-016 Featured New Campaign Ana Sayfa" [ref=f5e690]':
+                  - generic [ref=f5e691]:
+                    - generic [ref=f5e692]: Apple
+                    - generic [ref=f5e693]: "SKU: GRO-BRD-APP-016"
+                    - generic [ref=f5e694]:
+                      - generic [ref=f5e695]: Featured
+                      - generic [ref=f5e696]: New
+                      - generic [ref=f5e697]: Campaign
+                      - generic [ref=f5e698]: Ana Sayfa
+                - 'cell "groceries Brand: -" [ref=f5e699]':
+                  - generic [ref=f5e700]: groceries
+                  - text: "Brand: -"
+                - cell "1.74 ₪ 1.99 ₪" [ref=f5e701]:
+                  - generic [ref=f5e702]: 1.74 ₪
+                  - text: 1.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e703]':
+                  - generic [ref=f5e705]:
+                    - generic [ref=f5e706]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e707]:
+                  - generic [ref=f5e708]:
+                    - link "" [ref=f5e709] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-16-apple-127
+                    - link "" [ref=f5e711] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/127
+                    - button "" [ref=f5e714] [cursor=pointer]
+                    - button "" [ref=f5e717] [cursor=pointer]
+                    - button "" [ref=f5e720] [cursor=pointer]
+                    - button "" [ref=f5e723] [cursor=pointer]
+                - cell [ref=f5e725]:
+                  - checkbox "Select product Apple" [ref=f5e726]
+              - row [ref=f5e727]:
+                - cell [ref=f5e728]:
+                  - img "Beef Steak" [ref=f5e729]
+                - 'cell "Beef Steak SKU: GRO-BRD-BEE-017 Featured New Campaign Ana Sayfa" [ref=f5e730]':
+                  - generic [ref=f5e731]:
+                    - generic [ref=f5e732]: Beef Steak
+                    - generic [ref=f5e733]: "SKU: GRO-BRD-BEE-017"
+                    - generic [ref=f5e734]:
+                      - generic [ref=f5e735]: Featured
+                      - generic [ref=f5e736]: New
+                      - generic [ref=f5e737]: Campaign
+                      - generic [ref=f5e738]: Ana Sayfa
+                - 'cell "groceries Brand: -" [ref=f5e739]':
+                  - generic [ref=f5e740]: groceries
+                  - text: "Brand: -"
+                - cell "11.74 ₪ 12.99 ₪" [ref=f5e741]:
+                  - generic [ref=f5e742]: 11.74 ₪
+                  - text: 12.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e743]':
+                  - generic [ref=f5e745]:
+                    - generic [ref=f5e746]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e747]:
+                  - generic [ref=f5e748]:
+                    - link "" [ref=f5e749] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-17-beef-steak-128
+                    - link "" [ref=f5e751] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/128
+                    - button "" [ref=f5e754] [cursor=pointer]
+                    - button "" [ref=f5e757] [cursor=pointer]
+                    - button "" [ref=f5e760] [cursor=pointer]
+                    - button "" [ref=f5e763] [cursor=pointer]
+                - cell [ref=f5e765]:
+                  - checkbox "Select product Beef Steak" [ref=f5e766]
+              - row [ref=f5e767]:
+                - cell [ref=f5e768]:
+                  - img "Cat Food" [ref=f5e769]
+                - 'cell "Cat Food SKU: GRO-BRD-FOO-018 New Campaign Ana Sayfa" [ref=f5e770]':
+                  - generic [ref=f5e771]:
+                    - generic [ref=f5e772]: Cat Food
+                    - generic [ref=f5e773]: "SKU: GRO-BRD-FOO-018"
+                    - generic [ref=f5e774]:
+                      - generic [ref=f5e775]: New
+                      - generic [ref=f5e776]: Campaign
+                      - generic [ref=f5e777]: Ana Sayfa
+                - 'cell "groceries Brand: -" [ref=f5e778]':
+                  - generic [ref=f5e779]: groceries
+                  - text: "Brand: -"
+                - cell "8.13 ₪ 8.99 ₪" [ref=f5e780]:
+                  - generic [ref=f5e781]: 8.13 ₪
+                  - text: 8.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e782]':
+                  - generic [ref=f5e784]:
+                    - generic [ref=f5e785]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e786]:
+                  - generic [ref=f5e787]:
+                    - link "" [ref=f5e788] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-18-cat-food-129
+                    - link "" [ref=f5e790] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/129
+                    - button "" [ref=f5e793] [cursor=pointer]
+                    - button "" [ref=f5e796] [cursor=pointer]
+                    - button "" [ref=f5e799] [cursor=pointer]
+                    - button "" [ref=f5e802] [cursor=pointer]
+                - cell [ref=f5e804]:
+                  - checkbox "Select product Cat Food" [ref=f5e805]
+              - row [ref=f5e806]:
+                - cell [ref=f5e807]:
+                  - img "Chicken Meat" [ref=f5e808]
+                - 'cell "Chicken Meat SKU: GRO-BRD-CHI-019 New Campaign Ana Sayfa" [ref=f5e809]':
+                  - generic [ref=f5e810]:
+                    - generic [ref=f5e811]: Chicken Meat
+                    - generic [ref=f5e812]: "SKU: GRO-BRD-CHI-019"
+                    - generic [ref=f5e813]:
+                      - generic [ref=f5e814]: New
+                      - generic [ref=f5e815]: Campaign
+                      - generic [ref=f5e816]: Ana Sayfa
+                - 'cell "groceries Brand: -" [ref=f5e817]':
+                  - generic [ref=f5e818]: groceries
+                  - text: "Brand: -"
+                - cell "8.62 ₪ 9.99 ₪" [ref=f5e819]:
+                  - generic [ref=f5e820]: 8.62 ₪
+                  - text: 9.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e821]':
+                  - generic [ref=f5e823]:
+                    - generic [ref=f5e824]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e825]:
+                  - generic [ref=f5e826]:
+                    - link "" [ref=f5e827] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-19-chicken-meat-130
+                    - link "" [ref=f5e829] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/130
+                    - button "" [ref=f5e832] [cursor=pointer]
+                    - button "" [ref=f5e835] [cursor=pointer]
+                    - button "" [ref=f5e838] [cursor=pointer]
+                    - button "" [ref=f5e841] [cursor=pointer]
+                - cell [ref=f5e843]:
+                  - checkbox "Select product Chicken Meat" [ref=f5e844]
+              - row [ref=f5e845]:
+                - cell [ref=f5e846]:
+                  - img "Cooking Oil" [ref=f5e847]
+                - 'cell "Cooking Oil SKU: GRO-BRD-COO-020 Featured New Campaign Ana Sayfa" [ref=f5e848]':
+                  - generic [ref=f5e849]:
+                    - generic [ref=f5e850]: Cooking Oil
+                    - generic [ref=f5e851]: "SKU: GRO-BRD-COO-020"
+                    - generic [ref=f5e852]:
+                      - generic [ref=f5e853]: Featured
+                      - generic [ref=f5e854]: New
+                      - generic [ref=f5e855]: Campaign
+                      - generic [ref=f5e856]: Ana Sayfa
+                - 'cell "groceries Brand: -" [ref=f5e857]':
+                  - generic [ref=f5e858]: groceries
+                  - text: "Brand: -"
+                - cell "4.52 ₪ 4.99 ₪" [ref=f5e859]:
+                  - generic [ref=f5e860]: 4.52 ₪
+                  - text: 4.99 ₪
+                - 'cell " Published Status: Stokta" [ref=f5e861]':
+                  - generic [ref=f5e863]:
+                    - generic [ref=f5e864]: 
+                    - text: Published
+                  - text: "Status: Stokta"
+                - cell [ref=f5e865]:
+                  - generic [ref=f5e866]:
+                    - link "" [ref=f5e867] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-20-cooking-oil-131
+                    - link "" [ref=f5e869] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/131
+                    - button "" [ref=f5e872] [cursor=pointer]
+                    - button "" [ref=f5e875] [cursor=pointer]
+                    - button "" [ref=f5e878] [cursor=pointer]
+                    - button "" [ref=f5e881] [cursor=pointer]
+                - cell [ref=f5e883]:
+                  - checkbox "Select product Cooking Oil" [ref=f5e884]
+          - generic [ref=f5e885]:
+            - generic [ref=f5e886]: Page 1 / 2 - 20 products shown on this page.
+            - generic [ref=f5e887]:
+              - generic [ref=f5e888]: "1"
+              - link "2" [ref=f5e889] [cursor=pointer]:
+                - /url: /Admin/Urun?page=2&pageSize=20
+              - link "Next" [ref=f5e890] [cursor=pointer]:
+                - /url: /Admin/Urun?page=2&pageSize=20
+                - generic [ref=f5e891]: 
+    - contentinfo [ref=f5e892]: © 2026 7ANRPS48 Admin Panel. All rights reserved.

@@ -50,6 +50,7 @@ namespace FilistinProje.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.HasPostgresExtension("citext");
 
             modelBuilder.Entity<SiteAyarlari>(entity =>
             {
@@ -64,6 +65,7 @@ namespace FilistinProje.Data
             modelBuilder.Entity<Kategori>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.HasIndex(e => e.ParentKategoriId);
                 entity.HasIndex(e => e.Slug).HasFilter("\"Slug\" IS NOT NULL AND \"Slug\" <> ''");
                 entity.HasOne(e => e.ParentKategori)
                     .WithMany(e => e.AltKategoriler)
@@ -132,6 +134,12 @@ namespace FilistinProje.Data
             {
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.AppUserId);
+                entity.HasIndex(e => e.SiparisNo)
+                    .IsUnique()
+                    .HasFilter("\"SiparisNo\" <> ''");
+                entity.HasIndex(e => e.EmailHashKodu)
+                    .IsUnique()
+                    .HasFilter("\"EmailHashKodu\" IS NOT NULL AND \"EmailHashKodu\" <> ''");
                 entity.HasOne(e => e.AppUser)
                     .WithMany()
                     .HasForeignKey(e => e.AppUserId);
@@ -159,7 +167,12 @@ namespace FilistinProje.Data
             modelBuilder.Entity<Sepet>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.HasIndex(e => e.AppUserId);
+                entity.HasIndex(e => e.AppUserId)
+                    .IsUnique()
+                    .HasFilter("\"SilindiMi\" = false AND \"AppUserId\" IS NOT NULL");
+                entity.HasIndex(e => e.SessionId)
+                    .IsUnique()
+                    .HasFilter("\"SilindiMi\" = false AND \"SessionId\" IS NOT NULL");
                 entity.HasOne(e => e.AppUser)
                     .WithMany()
                     .HasForeignKey(e => e.AppUserId);
@@ -199,6 +212,9 @@ namespace FilistinProje.Data
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.AppUserId);
                 entity.HasIndex(e => e.UrunId);
+                entity.HasIndex(e => new { e.AppUserId, e.UrunId })
+                    .IsUnique()
+                    .HasFilter("\"SilindiMi\" = false");
                 entity.HasOne(e => e.AppUser)
                     .WithMany()
                     .HasForeignKey(e => e.AppUserId)
@@ -240,6 +256,10 @@ namespace FilistinProje.Data
             modelBuilder.Entity<Kupon>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Kod).HasColumnType("citext");
+                entity.HasIndex(e => e.Kod)
+                    .IsUnique()
+                    .HasFilter("\"SilindiMi\" = false");
             });
 
             modelBuilder.Entity<IadeTalebi>(entity =>
@@ -262,6 +282,7 @@ namespace FilistinProje.Data
             modelBuilder.Entity<KargoBolge>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.HasIndex(e => e.Ad).IsUnique();
                 entity.Property(e => e.Ulke).HasMaxLength(100);
                 entity.Property(e => e.Aciklama).HasMaxLength(500);
             });

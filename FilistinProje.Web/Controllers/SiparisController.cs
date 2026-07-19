@@ -1,4 +1,7 @@
 using FilistinProje.Core.DTOs;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
 using FilistinProje.Core.Interfaces;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
@@ -7,18 +10,26 @@ using FilistinProje.Service.Services;
 using FilistinProje.Web.Resources;
 using FilistinProje.Web.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Http;
+using System.Globalization;
 
 
 namespace FilistinProje.Web.Controllers
 {
     public class SiparisController : Controller
     {
+        private const string UploadTokenHashSessionKey = "CheckoutUploadTokenHash";
+        private const string UploadTokenValueSessionKey = "CheckoutUploadTokenValue";
+        private const string UploadTokenExpirySessionKey = "CheckoutUploadTokenExpiry";
+        private const string UploadCountSessionKey = "CheckoutUploadCount";
+        private const string UploadBytesSessionKey = "CheckoutUploadBytes";
+        private const string UploadedReferencesSessionKey = "CheckoutUploadedReferences";
+        private const int MaxCheckoutUploadCount = 4;
+        private const long MaxCheckoutUploadBytes = 32L * 1024 * 1024;
         private readonly UserManager<AppUser> _userManager;
         private readonly IService<Adres> _adresService;
         private readonly KanvasDbContext _context;
@@ -26,7 +37,6 @@ namespace FilistinProje.Web.Controllers
         private readonly ISepetService _sepetService;
         private readonly ISiteSettingsService _siteSettingsService;
         private readonly ILogger<SiparisController> _logger;
-        private readonly IWebHostEnvironment _env;
         private readonly IStringLocalizer<SharedResource> _localizer;
         private readonly IKargoHesaplamaServisi _kargoHesaplama;
         private readonly IDosyaServisi _dosyaServisi;
@@ -40,7 +50,6 @@ namespace FilistinProje.Web.Controllers
             ISepetService sepetService,
             ISiteSettingsService siteSettingsService,
             ILogger<SiparisController> logger,
-            IWebHostEnvironment env,
             IStringLocalizer<SharedResource> localizer,
             IKargoHesaplamaServisi kargoHesaplama,
             IDosyaServisi dosyaServisi,
@@ -53,7 +62,6 @@ namespace FilistinProje.Web.Controllers
             _sepetService = sepetService;
             _siteSettingsService = siteSettingsService;
             _logger = logger;
-            _env = env;
             _localizer = localizer;
             _kargoHesaplama = kargoHesaplama;
             _dosyaServisi = dosyaServisi;
@@ -118,12 +126,12 @@ namespace FilistinProje.Web.Controllers
                 .Where(u => urunIds.Contains(u.Id) && !u.SilindiMi)
                 .AnyAsync(u => u.Kategori != null && u.Kategori.ReceteGerekliMi);
 
-            if (receteZorunluMu && !IsSafeUploadedPath(dto.ReceteDosyaYolu, "uploads/receteler", allowPdf: true))
+            if (receteZorunluMu && !IsSafeUploadedPath(dto.ReceteDosyaYolu, HassasBelgeKategorisi.Recete, allowPdf: true, sessionId))
             {
                 ModelState.AddModelError(nameof(dto.ReceteDosyaYolu), _localizer["Siparis_PrescriptionRequired"].Value);
             }
 
-            if (!string.IsNullOrWhiteSpace(dto.KimlikFotoYolu) && !IsSafeUploadedPath(dto.KimlikFotoYolu, "uploads/kimlikler", allowPdf: false))
+            if (!string.IsNullOrWhiteSpace(dto.KimlikFotoYolu) && !IsSafeUploadedPath(dto.KimlikFotoYolu, HassasBelgeKategorisi.Kimlik, allowPdf: false, sessionId))
             {
                 ModelState.AddModelError(nameof(dto.KimlikFotoYolu), _localizer["Siparis_FileUploadError"].Value);
             }
@@ -146,6 +154,26 @@ namespace FilistinProje.Web.Controllers
                 return View(dto);
             }
 
+            var temporaryReceteReference = dto.ReceteDosyaYolu;
+            var temporaryKimlikReference = dto.KimlikFotoYolu;
+            var recetePromoted = PromoteCheckoutDocument(
+                temporaryReceteReference, sessionId, HassasBelgeKategorisi.Recete, out var receteReference);
+            string? kimlikReference = null;
+            var kimlikPromoted = recetePromoted && PromoteCheckoutDocument(
+                temporaryKimlikReference, sessionId, HassasBelgeKategorisi.Kimlik, out kimlikReference);
+
+            if (!recetePromoted || !kimlikPromoted)
+            {
+                RollBackPromotedDocument(receteReference, sessionId, HassasBelgeKategorisi.Recete);
+                ModelState.AddModelError(string.Empty, _localizer["Siparis_FileUploadError"].Value);
+                await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
+                ViewBag.FormHata = _localizer["Siparis_FileUploadError"].Value;
+                return View(dto);
+            }
+
+            dto.ReceteDosyaYolu = receteReference;
+            dto.KimlikFotoYolu = kimlikReference;
+
             var placeOrderResult = await _purchaseOrderService.PlaceOrderAsync(new PlaceOrderRequest
             {
                 Checkout = dto,
@@ -163,6 +191,11 @@ namespace FilistinProje.Web.Controllers
 
             if (!placeOrderResult.Succeeded)
             {
+                RollBackPromotedDocument(receteReference, sessionId, HassasBelgeKategorisi.Recete);
+                RollBackPromotedDocument(kimlikReference, sessionId, HassasBelgeKategorisi.Kimlik);
+                dto.ReceteDosyaYolu = temporaryReceteReference;
+                dto.KimlikFotoYolu = temporaryKimlikReference;
+
                 if (placeOrderResult.Status == PlaceOrderStatus.InvalidCoupon)
                 {
                     HttpContext.Session.Remove("UygulananKupon");
@@ -176,6 +209,7 @@ namespace FilistinProje.Web.Controllers
             }
 
             HttpContext.Session.Remove("UygulananKupon");
+            ClearCheckoutUploadCapability();
 
             // Fiyat değişti ise kullanıcıya bildir (B3: sessizce farklı tahsil etmemek)
             if (placeOrderResult.Pricing?.FiyatDegistiMi == true)
@@ -252,7 +286,7 @@ namespace FilistinProje.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("general")]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("checkout-upload")]
         public async Task<IActionResult> YukleKimlikFoto(IFormFile? dosya)
         {
             try
@@ -262,12 +296,21 @@ namespace FilistinProje.Web.Controllers
                     return Json(new { success = false, message = _localizer["Siparis_FileNotSelected"].Value });
                 }
 
-                var sonuc = await _dosyaServisi.KaydetAsync(dosya, "uploads/kimlikler");
+                if (!await ValidateCheckoutUploadCapabilityAsync(dosya.Length))
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden, new { success = false, message = _localizer["Siparis_FileUploadError"].Value });
+                }
+
+                var sonuc = await _dosyaServisi.GeciciHassasBelgeKaydetAsync(
+                    dosya,
+                    HassasBelgeKategorisi.Kimlik,
+                    GetCheckoutStorageKey(HttpContext.Session.Id));
                 if (!sonuc.Success)
                 {
                     return Json(new { success = false, message = sonuc.ErrorMessage });
                 }
 
+                RegisterSuccessfulCheckoutUpload(sonuc.Url!, dosya.Length);
                 return Json(new { success = true, url = sonuc.Url });
             }
             catch (Exception ex)
@@ -279,7 +322,7 @@ namespace FilistinProje.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("general")]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("checkout-upload")]
         public async Task<IActionResult> YukleRecete(IFormFile? dosya)
         {
             try
@@ -289,12 +332,21 @@ namespace FilistinProje.Web.Controllers
                     return Json(new { success = false, message = _localizer["Siparis_FileNotSelected"].Value });
                 }
 
-                var sonuc = await _dosyaServisi.KaydetAsync(dosya, "uploads/receteler", pdfDestegi: true);
+                if (!await ValidateCheckoutUploadCapabilityAsync(dosya.Length))
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden, new { success = false, message = _localizer["Siparis_FileUploadError"].Value });
+                }
+
+                var sonuc = await _dosyaServisi.GeciciHassasBelgeKaydetAsync(
+                    dosya,
+                    HassasBelgeKategorisi.Recete,
+                    GetCheckoutStorageKey(HttpContext.Session.Id));
                 if (!sonuc.Success)
                 {
                     return Json(new { success = false, message = sonuc.ErrorMessage });
                 }
 
+                RegisterSuccessfulCheckoutUpload(sonuc.Url!, dosya.Length);
                 return Json(new { success = true, url = sonuc.Url });
             }
             catch (Exception ex)
@@ -347,15 +399,7 @@ namespace FilistinProje.Web.Controllers
                 return NotFound(_localizer["Siparis_InvoiceNotUploaded"].Value);
             }
 
-            var filePath = Path.Combine(_env.WebRootPath, siparis.FaturaDosyaYolu.TrimStart('/'));
-
-            if (!System.IO.File.Exists(filePath))
-            {
-                return NotFound(_localizer["Siparis_InvoiceFileNotFound"].Value);
-            }
-
-            var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
-            return File(fileBytes, "application/pdf", siparis.FaturaDosyaAdi ?? $"fatura_{id}.pdf");
+            return RedirectToAction("Fatura", "Belge", new { siparisId = id, indir = true });
         }
 
         private async Task PrepareCheckoutViewDataAsync(string? userId, string sessionId, List<SepetItem>? sepetItems = null)
@@ -405,13 +449,19 @@ namespace FilistinProje.Web.Controllers
             ViewBag.ToplamTutar = Math.Max(0, sepetToplamiIndirimli + gosterilecekKargoBedeli);
             ViewBag.SepetItems = sepetItems;
 
-            ViewBag.Sehirler = await _context.KargoBolgeSehirler
+            var sehirKayitlari = await _context.KargoBolgeSehirler
                 .IgnoreQueryFilters()
                 .Where(s => !s.SilindiMi)
-                .Select(s => s.SehirAdi)
-                .Distinct()
-                .OrderBy(s => s)
+                .Select(s => new { s.SehirAdi, s.SehirAdiEn, s.SehirAdiAr })
                 .ToListAsync();
+            var dil = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+            ViewBag.Sehirler = sehirKayitlari
+                .Select(s => dil == "ar"
+                    ? (string.IsNullOrWhiteSpace(s.SehirAdiAr) ? s.SehirAdiEn ?? s.SehirAdi : s.SehirAdiAr)
+                    : (string.IsNullOrWhiteSpace(s.SehirAdiEn) ? s.SehirAdi : s.SehirAdiEn))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(s => s, StringComparer.CurrentCulture)
+                .ToList();
 
             ViewBag.BankaHesaplari = await _context.BankaHesaplari
                 .Where(x => !x.SilindiMi && x.AktifMi)
@@ -425,6 +475,7 @@ namespace FilistinProje.Web.Controllers
             ViewBag.KapidaOdemeAktifMi = settings.KapidaOdemeAktifMi && (sepetToplamiIndirimli <= settings.KapidaOdemeLimiti);
             ViewBag.KapidaOdemeHizmetBedeli = settings.KapidaOdemeHizmetBedeli;
             ViewBag.ToptanciMinSiparisTutari = settings.ToptanciMinSiparisTutari;
+            ViewBag.CheckoutUploadToken = IssueCheckoutUploadCapability();
 
             if (!string.IsNullOrWhiteSpace(userId))
             {
@@ -508,20 +559,22 @@ namespace FilistinProje.Web.Controllers
             }
         }
 
-        private static bool IsSafeUploadedPath(string? path, string expectedFolder, bool allowPdf)
+        private bool IsSafeUploadedPath(
+            string? path,
+            HassasBelgeKategorisi expectedCategory,
+            bool allowPdf,
+            string sessionId)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
                 return false;
             }
 
-            if (DosyaServisi.TryParsePrivateReference(path, out var kategori, out var belgeAdi))
+            if (DosyaServisi.TryParseTemporaryReference(path, out var kategori, out var storageKey, out var belgeAdi))
             {
-                var expectedKategori = expectedFolder.Contains("recete", StringComparison.OrdinalIgnoreCase)
-                    ? HassasBelgeKategorisi.Recete
-                    : HassasBelgeKategorisi.Kimlik;
-
-                if (kategori != expectedKategori || !DosyaServisi.IsSafeStoredFileName(belgeAdi))
+                if (kategori != expectedCategory ||
+                    !string.Equals(storageKey, GetCheckoutStorageKey(sessionId), StringComparison.Ordinal) ||
+                    !GetUploadedReferences().Contains(path, StringComparer.Ordinal))
                 {
                     return false;
                 }
@@ -534,21 +587,160 @@ namespace FilistinProje.Web.Controllers
                 return allowedPrivateExtensions.Contains(privateExtension, StringComparer.OrdinalIgnoreCase);
             }
 
-            var normalizedPath = path.Trim().Replace('\\', '/');
-            var normalizedFolder = "/" + expectedFolder.Trim('/').Replace('\\', '/') + "/";
-            if (!normalizedPath.StartsWith(normalizedFolder, StringComparison.OrdinalIgnoreCase) ||
-                normalizedPath.Contains("..", StringComparison.Ordinal) ||
-                Uri.TryCreate(normalizedPath, UriKind.Absolute, out _))
+            return false;
+        }
+
+        private string IssueCheckoutUploadCapability()
+        {
+            var existingToken = HttpContext.Session.GetString(UploadTokenValueSessionKey);
+            var expiryRaw = HttpContext.Session.GetString(UploadTokenExpirySessionKey);
+            if (!string.IsNullOrWhiteSpace(existingToken) &&
+                long.TryParse(expiryRaw, out var existingExpiry) &&
+                DateTimeOffset.UtcNow.ToUnixTimeSeconds() <= existingExpiry)
+            {
+                return existingToken;
+            }
+
+            var token = Microsoft.AspNetCore.WebUtilities.WebEncoders.Base64UrlEncode(RandomNumberGenerator.GetBytes(32));
+            HttpContext.Session.SetString(UploadTokenValueSessionKey, token);
+            HttpContext.Session.SetString(UploadTokenHashSessionKey, Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(token))));
+            HttpContext.Session.SetString(UploadTokenExpirySessionKey, DateTimeOffset.UtcNow.AddMinutes(20).ToUnixTimeSeconds().ToString());
+            HttpContext.Session.SetInt32(UploadCountSessionKey, 0);
+            HttpContext.Session.SetString(UploadBytesSessionKey, "0");
+            HttpContext.Session.SetString(UploadedReferencesSessionKey, "[]");
+            return token;
+        }
+
+        private async Task<bool> ValidateCheckoutUploadCapabilityAsync(long incomingBytes)
+        {
+            var token = Request.Headers["X-Checkout-Upload-Token"].ToString();
+            var storedHashHex = HttpContext.Session.GetString(UploadTokenHashSessionKey);
+            var expiryRaw = HttpContext.Session.GetString(UploadTokenExpirySessionKey);
+            if (string.IsNullOrWhiteSpace(token) ||
+                string.IsNullOrWhiteSpace(storedHashHex) ||
+                !long.TryParse(expiryRaw, out var expiry) ||
+                DateTimeOffset.UtcNow.ToUnixTimeSeconds() > expiry)
             {
                 return false;
             }
 
-            var extension = Path.GetExtension(normalizedPath);
-            var allowedExtensions = allowPdf
-                ? new[] { ".jpg", ".jpeg", ".png", ".webp", ".pdf" }
-                : new[] { ".jpg", ".jpeg", ".png", ".webp" };
+            byte[] storedHash;
+            try
+            {
+                storedHash = Convert.FromHexString(storedHashHex);
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
 
-            return allowedExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase);
+            if (!CryptographicOperations.FixedTimeEquals(
+                    storedHash,
+                    SHA256.HashData(Encoding.UTF8.GetBytes(token))))
+            {
+                return false;
+            }
+
+            var count = HttpContext.Session.GetInt32(UploadCountSessionKey) ?? 0;
+            _ = long.TryParse(HttpContext.Session.GetString(UploadBytesSessionKey), out var usedBytes);
+            if (count >= MaxCheckoutUploadCount ||
+                incomingBytes <= 0 ||
+                usedBytes + incomingBytes > MaxCheckoutUploadBytes)
+            {
+                return false;
+            }
+
+            var userId = User.Identity?.IsAuthenticated == true ? _userManager.GetUserId(User) : null;
+            var cart = await _sepetService.GetSepetItemsAsync(userId, HttpContext.Session.Id);
+            return cart.Count > 0;
+        }
+
+        private void RegisterSuccessfulCheckoutUpload(string reference, long bytes)
+        {
+            var references = GetUploadedReferences();
+            references.Add(reference);
+            HttpContext.Session.SetString(
+                UploadedReferencesSessionKey,
+                JsonSerializer.Serialize(references.Distinct(StringComparer.Ordinal)));
+            HttpContext.Session.SetInt32(
+                UploadCountSessionKey,
+                (HttpContext.Session.GetInt32(UploadCountSessionKey) ?? 0) + 1);
+            _ = long.TryParse(HttpContext.Session.GetString(UploadBytesSessionKey), out var usedBytes);
+            HttpContext.Session.SetString(UploadBytesSessionKey, (usedBytes + bytes).ToString());
+        }
+
+        private List<string> GetUploadedReferences()
+        {
+            var raw = HttpContext.Session.GetString(UploadedReferencesSessionKey);
+            if (string.IsNullOrWhiteSpace(raw))
+            {
+                return new List<string>();
+            }
+
+            try
+            {
+                return JsonSerializer.Deserialize<List<string>>(raw) ?? new List<string>();
+            }
+            catch (JsonException)
+            {
+                return new List<string>();
+            }
+        }
+
+        private bool PromoteCheckoutDocument(
+            string? temporaryReference,
+            string sessionId,
+            HassasBelgeKategorisi category,
+            out string? privateReference)
+        {
+            privateReference = null;
+            if (string.IsNullOrWhiteSpace(temporaryReference))
+            {
+                return true;
+            }
+
+            return _dosyaServisi.GeciciBelgeyiKaliciYap(
+                temporaryReference,
+                GetCheckoutStorageKey(sessionId),
+                category,
+                out privateReference);
+        }
+
+        private void RollBackPromotedDocument(
+            string? privateReference,
+            string sessionId,
+            HassasBelgeKategorisi category)
+        {
+            if (string.IsNullOrWhiteSpace(privateReference))
+            {
+                return;
+            }
+
+            if (!_dosyaServisi.KaliciBelgeyiGeciciyeGeriAl(
+                    privateReference,
+                    GetCheckoutStorageKey(sessionId),
+                    category,
+                    out _))
+            {
+                _logger.LogError(
+                    "Checkout belge terfisi geri alinamadi. Kategori={Category}",
+                    category);
+            }
+        }
+
+        private void ClearCheckoutUploadCapability()
+        {
+            HttpContext.Session.Remove(UploadTokenValueSessionKey);
+            HttpContext.Session.Remove(UploadTokenHashSessionKey);
+            HttpContext.Session.Remove(UploadTokenExpirySessionKey);
+            HttpContext.Session.Remove(UploadCountSessionKey);
+            HttpContext.Session.Remove(UploadBytesSessionKey);
+            HttpContext.Session.Remove(UploadedReferencesSessionKey);
+        }
+
+        private static string GetCheckoutStorageKey(string sessionId)
+        {
+            return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(sessionId)))[..32];
         }
 
         private string BuildPlaceOrderErrorMessage(PlaceOrderResult result)

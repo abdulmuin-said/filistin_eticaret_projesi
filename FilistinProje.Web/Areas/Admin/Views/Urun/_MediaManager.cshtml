@@ -107,9 +107,9 @@
             <div class="ca-media-list">
                 @foreach (var medya in medyaListesi)
                 {
-                    var temizBaslik = TurkishTextRepairHelper.RepairKnownBrokenTurkish(medya.Baslik);
-                    var temizAltMetin = TurkishTextRepairHelper.RepairKnownBrokenTurkish(medya.AltMetin);
-                    var temizEtiketler = TurkishTextRepairHelper.RepairKnownBrokenTurkish(medya.Etiketler);
+                    var temizBaslik = (medya.Baslik ?? string.Empty).Trim();
+                    var temizAltMetin = (medya.AltMetin ?? string.Empty).Trim();
+                    var temizEtiketler = (medya.Etiketler ?? string.Empty).Trim();
                     var medyaVaryantOptions = variantOptions
                         .Select(x => new SelectListItem
                         {

@@ -18,7 +18,6 @@ namespace FilistinProje.Core.Models
         public string FooterAciklamasi { get; set; } = "متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن";
         public string FooterAciklamasiEn { get; set; } = "A Palestinian e-commerce site offering varied products at competitive prices with fast delivery to all cities.";
         public string FooterAciklamasiAr { get; set; } = "متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن";
-        public string FooterAciklamasiTr { get; set; } = "Rekabetçi fiyatlarla çeşitli ürünler sunan ve tüm şehirlere hızlı teslimat yapan bir Filistin e-ticaret sitesi.";
 
         public string Telefon { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
@@ -76,10 +75,8 @@ namespace FilistinProje.Core.Models
 
         public string HeroBaslikAr { get; set; } = "جلب الفن الفلسطيني إلى منزلك";
         public string HeroBaslikEn { get; set; } = "Bring Palestinian Art to Your Home";
-        public string HeroBaslikTr { get; set; } = "Filistin Sanatını Evinize Getirin";
         public string HeroAltBaslikAr { get; set; } = "تصاميم فريدة تجمع بين التراث والحداثة";
         public string HeroAltBaslikEn { get; set; } = "Unique designs blending heritage and modernity";
-        public string HeroAltBaslikTr { get; set; } = "Mirasa modern bir dokunuş katan özel tasarımlar";
         public string HeroGorselUrl { get; set; } = "/slider-demo.jpg";
     }
 }

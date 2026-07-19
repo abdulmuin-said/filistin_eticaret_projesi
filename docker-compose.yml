@@ -40,6 +40,8 @@ services:
       - DATA_PROTECTION_KEYS_PATH=/app/secure-storage/dataprotection-keys
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=${POSTGRES_DB:-filistindb};Username=${POSTGRES_USER:-kanvasuser};Password=${POSTGRES_PASSWORD:-changeme_in_production}
       - EmailSettings__Host=${EMAIL_HOST:-host.docker.internal}
+      - EmailSettings__Enabled=${EMAIL_ENABLED:-false}
+      - EmailSettings__TestMode=${EMAIL_TEST_MODE:-false}
       - EmailSettings__Port=${EMAIL_PORT:-587}
       - EmailSettings__EnableSSL=${EMAIL_ENABLE_SSL:-true}
       - EmailSettings__Username=${EMAIL_USERNAME:-}

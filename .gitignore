@@ -5,14 +5,34 @@
 
 # dotenv files
 .env
-KanvasProje.Web/secrets.json
-KanvasProje.Web/publish-linux/
+secrets.json
+**/secrets.json
+FilistinProje.Web/publish-linux/
 .dotnet-cli/
 .dotnet-home/
 .dotnet_home/
 .dotnetcli/
 scratch/verify-obj/
 _ProjDökümanveScriptler/VeriCekme/çekilen_veriler/
+
+# Runtime data, private storage, generated uploads and sensitive exports
+**/App_Data/**
+**/secure-storage/**
+**/wwwroot/uploads/**
+!FilistinProje.Web/wwwroot/uploads/
+!FilistinProje.Web/wwwroot/uploads/test-products/
+!FilistinProje.Web/wwwroot/uploads/test-products/*.webp
+**/keys/**
+**/DataProtection-Keys/**
+**/DataProtectionKeys/**
+*.dump
+*.backup
+*.bak
+*.sql
+*.xlsx
+*.csv
+*.log
+repomix-output.*
 
 # User-specific files
 *.rsuser

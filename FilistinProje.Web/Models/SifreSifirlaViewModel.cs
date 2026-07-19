@@ -4,6 +4,10 @@ namespace FilistinProje.Web.Models
 {
     public class SifreSifirlaViewModel
     {
+        [Required]
+        public string UserId { get; set; } = string.Empty;
+
+        [Required]
         public string Token { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Yeni şifre zorunludur")]

@@ -1,0 +1,347 @@
+- generic [ref=f9e2]:
+  - text:          +                    
+  - banner [ref=f9e3]:
+    - generic [ref=f9e4]:
+      - link "7ANRPS48 Admin Panel" [ref=f9e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f9e6]
+      - generic [ref=f9e7]: Admin Panel
+    - navigation "Admin main menu" [ref=f9e8]:
+      - link " Dashboard" [ref=f9e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f9e10]: 
+        - text: Dashboard
+      - generic [ref=f9e11]:
+        - button " Order Management" [ref=f9e12] [cursor=pointer]:
+          - generic [ref=f9e13]: 
+          - text: Order Management
+        - text:      
+      - generic [ref=f9e14]:
+        - button " Product Management" [ref=f9e15] [cursor=pointer]:
+          - generic [ref=f9e16]: 
+          - text: Product Management
+        - text:  +  
+      - generic [ref=f9e17]:
+        - button " Store Content" [ref=f9e18] [cursor=pointer]:
+          - generic [ref=f9e19]: 
+          - text: Store Content
+        - text:        
+      - link " Members" [ref=f9e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f9e21]: 
+        - text: Members
+      - link " Staff" [ref=f9e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f9e23]: 
+        - text: Staff
+      - link " Wholesalers" [ref=f9e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f9e25]: 
+        - text: Wholesalers
+      - link " Wholesale Groups" [ref=f9e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f9e27]: 
+        - text: Wholesale Groups
+      - generic [ref=f9e28]:
+        - button " Reports" [ref=f9e29] [cursor=pointer]:
+          - generic [ref=f9e30]: 
+          - text: Reports
+        - text:  
+      - link " Bank Accounts" [ref=f9e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f9e32]: 
+        - text: Bank Accounts
+      - link " Settings" [ref=f9e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f9e34]: 
+        - text: Settings
+    - generic [ref=f9e35]:
+      - text: 
+      - combobox "Language" [ref=f9e37]:
+        - option "AR"
+        - option "EN" [selected]
+      - generic [ref=f9e38]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f9e39] [cursor=pointer]:
+          - generic [ref=f9e40]:
+            - strong [ref=f9e41]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f9e42]: "7"
+        - text:  
+  - generic [ref=f9e43]:
+    - main [ref=f9e44]:
+      - generic [ref=f9e45]:
+        - generic [ref=f9e46]:
+          - generic [ref=f9e47]:
+            - heading "Order Management" [level=1] [ref=f9e48]
+            - paragraph [ref=f9e49]: Track orders with operation, shipping and customer details from one screen.
+          - generic [ref=f9e50]:
+            - generic [ref=f9e51]:
+              - generic [ref=f9e52]: 
+              - textbox "Search order no, customer, phone or email" [ref=f9e53]
+            - button "" [ref=f9e54] [cursor=pointer]
+            - link " XLSX" [ref=f9e56] [cursor=pointer]:
+              - /url: /Admin/Siparis/ExcelExport
+              - generic [ref=f9e57]: 
+              - text: XLSX
+        - generic [ref=f9e58]:
+          - link "All 5" [ref=f9e59] [cursor=pointer]:
+            - /url: /Admin/Siparis
+            - text: All
+            - generic [ref=f9e60]: "5"
+          - link " New 0" [ref=f9e61] [cursor=pointer]:
+            - /url: /Admin/Siparis?durum=0
+            - generic [ref=f9e62]: 
+            - text: New
+            - generic [ref=f9e63]: "0"
+          - link " Preparing 1" [ref=f9e64] [cursor=pointer]:
+            - /url: /Admin/Siparis?durum=1
+            - generic [ref=f9e65]: 
+            - text: Preparing
+            - generic [ref=f9e66]: "1"
+          - link " Packing 0" [ref=f9e67] [cursor=pointer]:
+            - /url: /Admin/Siparis?durum=8
+            - generic [ref=f9e68]: 
+            - text: Packing
+            - generic [ref=f9e69]: "0"
+          - link " Shipped 1" [ref=f9e70] [cursor=pointer]:
+            - /url: /Admin/Siparis?durum=2
+            - generic [ref=f9e71]: 
+            - text: Shipped
+            - generic [ref=f9e72]: "1"
+          - link " Delivered 1" [ref=f9e73] [cursor=pointer]:
+            - /url: /Admin/Siparis?durum=3
+            - generic [ref=f9e74]: 
+            - text: Delivered
+            - generic [ref=f9e75]: "1"
+        - generic [ref=f9e76]:
+          - generic [ref=f9e77]:
+            - generic [ref=f9e78]: 
+            - text: "Admin_Prescription:"
+          - link " Pending 0" [ref=f9e79] [cursor=pointer]:
+            - /url: /Admin/Siparis?receteDurum=0
+            - generic [ref=f9e80]: 
+            - text: Pending
+            - generic [ref=f9e81]: "0"
+          - link " Approved 0" [ref=f9e82] [cursor=pointer]:
+            - /url: /Admin/Siparis?receteDurum=1
+            - generic [ref=f9e83]: 
+            - text: Approved
+            - generic [ref=f9e84]: "0"
+          - link " Admin_Rejected 0" [ref=f9e85] [cursor=pointer]:
+            - /url: /Admin/Siparis?receteDurum=2
+            - generic [ref=f9e86]: 
+            - text: Admin_Rejected
+            - generic [ref=f9e87]: "0"
+        - generic [ref=f9e88]:
+          - generic [ref=f9e89]:
+            - generic [ref=f9e90]:
+              - button " Print Label" [disabled]:
+                - generic: 
+                - text: Print Label
+              - button " Mark as Shipped" [ref=f9e91] [cursor=pointer]:
+                - generic [ref=f9e92]: 
+                - text: Mark as Shipped
+              - button " Mark as Packing" [ref=f9e93] [cursor=pointer]:
+                - generic [ref=f9e94]: 
+                - text: Mark as Packing
+              - button " Cancel" [ref=f9e95] [cursor=pointer]:
+                - generic [ref=f9e96]: 
+                - text: Cancel
+              - generic [ref=f9e97]: No selected orders.
+              - generic [ref=f9e98]: Showing 5 records among 5 orders.
+            - generic [ref=f9e99]:
+              - generic [ref=f9e100]: Per page
+              - combobox [ref=f9e101]:
+                - option "20" [selected]
+                - option "50"
+                - option "100"
+          - table [ref=f9e103]:
+            - rowgroup [ref=f9e104]:
+              - row [ref=f9e105]:
+                - columnheader "Order" [ref=f9e106]
+                - columnheader "العميل" [ref=f9e107]
+                - columnheader "Delivery" [ref=f9e108]
+                - columnheader "Content" [ref=f9e109]
+                - columnheader "Total" [ref=f9e110]
+                - columnheader "Status / Shipping" [ref=f9e111]
+                - columnheader "Invoice" [ref=f9e112]
+                - columnheader "Actions" [ref=f9e113]
+                - columnheader [ref=f9e114]:
+                  - checkbox "Select orders on this page" [ref=f9e115]
+            - rowgroup [ref=f9e116]:
+              - row [ref=f9e117]:
+                - 'cell "VET-202606-1006 ID: #7 27.06.2026 10:40" [ref=f9e118]':
+                  - text: VET-202606-1006
+                  - generic [ref=f9e119]: "ID: #7"
+                  - generic [ref=f9e120]: 27.06.2026 10:40
+                - cell "A Ahmet El-Filistini +970599111111 ahmet@example.com" [ref=f9e121]:
+                  - generic [ref=f9e122]:
+                    - generic [ref=f9e123]: A
+                    - generic [ref=f9e124]:
+                      - generic [ref=f9e125]: Ahmet El-Filistini
+                      - generic [ref=f9e126]: "+970599111111"
+                      - generic [ref=f9e127]: ahmet@example.com
+                - cell "Ramallah / Al-Bireh Ramallah, Filistin" [ref=f9e128]:
+                  - generic [ref=f9e129]: Ramallah / Al-Bireh
+                  - generic [ref=f9e130]: Ramallah, Filistin
+                - cell "No product detail" [ref=f9e131]
+                - cell "450.00 ₪" [ref=f9e133]
+                - cell " Delivered - - tracking number pending" [ref=f9e134]:
+                  - generic [ref=f9e135]:
+                    - generic [ref=f9e136]: 
+                    - text: Delivered
+                  - generic [ref=f9e137]: "- - tracking number pending"
+                - cell "Admin_NotExists  PDF Invoice" [ref=f9e138]:
+                  - generic [ref=f9e139]: Admin_NotExists
+                  - link " PDF Invoice" [ref=f9e141] [cursor=pointer]:
+                    - /url: /Admin/Siparis/FaturaPdf/7
+                    - generic [ref=f9e142]: 
+                    - text: PDF Invoice
+                - cell [ref=f9e143]:
+                  - generic [ref=f9e144]:
+                    - button "" [ref=f9e145] [cursor=pointer]
+                    - text: 
+                - cell [ref=f9e147]:
+                  - checkbox "Select order VET-202606-1006" [ref=f9e148]
+              - row [ref=f9e149]:
+                - 'cell "VET-202606-1007 ID: #8 27.06.2026 10:40" [ref=f9e150]':
+                  - text: VET-202606-1007
+                  - generic [ref=f9e151]: "ID: #8"
+                  - generic [ref=f9e152]: 27.06.2026 10:40
+                - cell "F Fatima Hassan +970599222222 fatima@example.com" [ref=f9e153]:
+                  - generic [ref=f9e154]:
+                    - generic [ref=f9e155]: F
+                    - generic [ref=f9e156]:
+                      - generic [ref=f9e157]: Fatima Hassan
+                      - generic [ref=f9e158]: "+970599222222"
+                      - generic [ref=f9e159]: fatima@example.com
+                - cell "Hebron / Halhul Hebron, Filistin" [ref=f9e160]:
+                  - generic [ref=f9e161]: Hebron / Halhul
+                  - generic [ref=f9e162]: Hebron, Filistin
+                - cell "No product detail" [ref=f9e163]
+                - cell "280.00 ₪" [ref=f9e165]
+                - cell " Preparing - - tracking number pending" [ref=f9e166]:
+                  - generic [ref=f9e167]:
+                    - generic [ref=f9e168]: 
+                    - text: Preparing
+                  - generic [ref=f9e169]: "- - tracking number pending"
+                - cell "Admin_NotExists  PDF Invoice" [ref=f9e170]:
+                  - generic [ref=f9e171]: Admin_NotExists
+                  - link " PDF Invoice" [ref=f9e173] [cursor=pointer]:
+                    - /url: /Admin/Siparis/FaturaPdf/8
+                    - generic [ref=f9e174]: 
+                    - text: PDF Invoice
+                - cell [ref=f9e175]:
+                  - generic [ref=f9e176]:
+                    - button "" [ref=f9e177] [cursor=pointer]
+                    - text:    
+                - cell [ref=f9e179]:
+                  - checkbox "Select order VET-202606-1007" [ref=f9e180]
+              - row [ref=f9e181]:
+                - 'cell "VET-202606-1008 ID: #9 27.06.2026 10:40" [ref=f9e182]':
+                  - text: VET-202606-1008
+                  - generic [ref=f9e183]: "ID: #9"
+                  - generic [ref=f9e184]: 27.06.2026 10:40
+                - cell "M Mahmoud Abbas +970599333333 mahmoud@example.com" [ref=f9e185]:
+                  - generic [ref=f9e186]:
+                    - generic [ref=f9e187]: M
+                    - generic [ref=f9e188]:
+                      - generic [ref=f9e189]: Mahmoud Abbas
+                      - generic [ref=f9e190]: "+970599333333"
+                      - generic [ref=f9e191]: mahmoud@example.com
+                - cell "Nablus / Rafidia Nablus, Filistin" [ref=f9e192]:
+                  - generic [ref=f9e193]: Nablus / Rafidia
+                  - generic [ref=f9e194]: Nablus, Filistin
+                - 'cell "No product detail Coupon: WELCOME10 (-10.00 ₪)" [ref=f9e195]':
+                  - generic [ref=f9e196]: No product detail
+                  - generic [ref=f9e197]: "Coupon: WELCOME10 (-10.00 ₪)"
+                - cell "620.00 ₪" [ref=f9e198]
+                - cell " Shipped - - tracking number pending" [ref=f9e199]:
+                  - generic [ref=f9e200]:
+                    - generic [ref=f9e201]: 
+                    - text: Shipped
+                  - generic [ref=f9e202]: "- - tracking number pending"
+                - cell "Admin_NotExists  PDF Invoice" [ref=f9e203]:
+                  - generic [ref=f9e204]: Admin_NotExists
+                  - link " PDF Invoice" [ref=f9e206] [cursor=pointer]:
+                    - /url: /Admin/Siparis/FaturaPdf/9
+                    - generic [ref=f9e207]: 
+                    - text: PDF Invoice
+                - cell [ref=f9e208]:
+                  - generic [ref=f9e209]:
+                    - button "" [ref=f9e210] [cursor=pointer]
+                    - text: 
+                - cell [ref=f9e212]:
+                  - checkbox "Select order VET-202606-1008" [ref=f9e213]
+              - row [ref=f9e214]:
+                - 'cell "VET-202606-1009 ID: #10 27.06.2026 10:40" [ref=f9e215]':
+                  - text: VET-202606-1009
+                  - generic [ref=f9e216]: "ID: #10"
+                  - generic [ref=f9e217]: 27.06.2026 10:40
+                - cell "L Layla Khoury +970599444444 layla@example.com" [ref=f9e218]:
+                  - generic [ref=f9e219]:
+                    - generic [ref=f9e220]: L
+                    - generic [ref=f9e221]:
+                      - generic [ref=f9e222]: Layla Khoury
+                      - generic [ref=f9e223]: "+970599444444"
+                      - generic [ref=f9e224]: layla@example.com
+                - cell "Gaza / Al-Rimal Gaza, Filistin" [ref=f9e225]:
+                  - generic [ref=f9e226]: Gaza / Al-Rimal
+                  - generic [ref=f9e227]: Gaza, Filistin
+                - cell "No product detail" [ref=f9e228]
+                - cell "195.00 ₪" [ref=f9e230]
+                - cell " Cancel / Return - - tracking number pending" [ref=f9e231]:
+                  - generic [ref=f9e232]:
+                    - generic [ref=f9e233]: 
+                    - text: Cancel / Return
+                  - generic [ref=f9e234]: "- - tracking number pending"
+                - cell "Admin_NotExists  PDF Invoice" [ref=f9e235]:
+                  - generic [ref=f9e236]: Admin_NotExists
+                  - link " PDF Invoice" [ref=f9e238] [cursor=pointer]:
+                    - /url: /Admin/Siparis/FaturaPdf/10
+                    - generic [ref=f9e239]: 
+                    - text: PDF Invoice
+                - cell [ref=f9e240]:
+                  - generic [ref=f9e241]:
+                    - button "" [ref=f9e242] [cursor=pointer]
+                    - text: 
+                - cell [ref=f9e244]:
+                  - checkbox "Select order VET-202606-1009" [ref=f9e245]
+              - row [ref=f9e246]:
+                - 'cell "VET-202606-1010 ID: #11 27.06.2026 10:40" [ref=f9e247]':
+                  - text: VET-202606-1010
+                  - generic [ref=f9e248]: "ID: #11"
+                  - generic [ref=f9e249]: 27.06.2026 10:40
+                - cell "Y Yusuf Ibrahim +970599555555 yusuf@example.com" [ref=f9e250]:
+                  - generic [ref=f9e251]:
+                    - generic [ref=f9e252]: "Y"
+                    - generic [ref=f9e253]:
+                      - generic [ref=f9e254]: Yusuf Ibrahim
+                      - generic [ref=f9e255]: "+970599555555"
+                      - generic [ref=f9e256]: yusuf@example.com
+                - cell "Jenin / Jenin Camp Jenin, Filistin" [ref=f9e257]:
+                  - generic [ref=f9e258]: Jenin / Jenin Camp
+                  - generic [ref=f9e259]: Jenin, Filistin
+                - 'cell "No product detail Coupon: KURBAN25 (-25.00 ₪)" [ref=f9e260]':
+                  - generic [ref=f9e261]: No product detail
+                  - generic [ref=f9e262]: "Coupon: KURBAN25 (-25.00 ₪)"
+                - cell "540.00 ₪" [ref=f9e263]
+                - cell " Cancel / Return - - tracking number pending" [ref=f9e264]:
+                  - generic [ref=f9e265]:
+                    - generic [ref=f9e266]: 
+                    - text: Cancel / Return
+                  - generic [ref=f9e267]: "- - tracking number pending"
+                - cell "Admin_NotExists  PDF Invoice" [ref=f9e268]:
+                  - generic [ref=f9e269]: Admin_NotExists
+                  - link " PDF Invoice" [ref=f9e271] [cursor=pointer]:
+                    - /url: /Admin/Siparis/FaturaPdf/11
+                    - generic [ref=f9e272]: 
+                    - text: PDF Invoice
+                - cell [ref=f9e273]:
+                  - generic [ref=f9e274]:
+                    - button "" [ref=f9e275] [cursor=pointer]
+                    - text:  
+                - cell [ref=f9e277]:
+                  - checkbox "Select order VET-202606-1010" [ref=f9e278]
+          - generic [ref=f9e279]: Page 1 / 1 - 5 products shown on this page.
+    - contentinfo [ref=f9e281]: © 2026 7ANRPS48 Admin Panel. All rights reserved.

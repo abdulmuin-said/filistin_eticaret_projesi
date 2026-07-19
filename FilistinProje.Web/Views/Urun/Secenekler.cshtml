@@ -4,6 +4,7 @@
 @{
     var siteSettings = SiteSettingsService.GetSettings();
     var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
+    var canManageOptions = FilistinProje.Web.Security.AdminPermissionMatrix.CanAccess(User, "Urun", "POST");
 }
 
 <div class="container mt-4">
@@ -13,11 +14,13 @@
     </div>
 
     <div class="row">
+        @if (canManageOptions)
+        {
         <div class="col-md-4">
             <div class="card shadow">
                 <div class="card-header bg-success text-white">@Localizer["AddNewOption"]</div>
                 <div class="card-body">
-                    <form asp-action="SecenekEkle" method="post">
+                    <form asp-area="Admin" asp-controller="Urun" asp-action="SecenekEkle" method="post">
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="UrunId" value="@ViewBag.UrunId" />
 
@@ -56,6 +59,7 @@
                 </div>
             </div>
         </div>
+        }
 
         <div class="col-md-8">
             <div class="card">
@@ -92,11 +96,14 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <form asp-action="SecenekSil" method="post" class="d-inline">
+                                            @if (canManageOptions)
+                                            {
+                                            <form asp-area="Admin" asp-controller="Urun" asp-action="SecenekSil" method="post" class="d-inline">
                                                 @Html.AntiForgeryToken()
                                                 <input type="hidden" name="id" value="@item.Id" />
                                                 <button type="submit" class="btn btn-sm btn-outline-danger">@Localizer["Delete"]</button>
                                             </form>
+                                            }
                                         </td>
                                     </tr>
                                 }

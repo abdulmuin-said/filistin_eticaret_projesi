@@ -159,6 +159,11 @@ try
 
         private bool IsSmtpConfigured()
         {
+            if (!_config.GetValue<bool>("EmailSettings:Enabled"))
+            {
+                return false;
+            }
+
             var username = _config["EmailSettings:Username"];
             var password = _config["EmailSettings:Password"];
             return IsValidEmail(username) && !string.IsNullOrWhiteSpace(password);

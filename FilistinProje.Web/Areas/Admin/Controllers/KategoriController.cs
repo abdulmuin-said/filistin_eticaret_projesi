@@ -59,7 +59,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> ExcelExport(string? arama, string? durum, string? tip)
         {
-            ExcelPackage.License.SetNonCommercialOrganization("7ANRPS48");
             var kategoriler = await BuildCategoryListQuery(arama, durum, tip).ToListAsync();
             var categoryLookup = kategoriler.ToDictionary(x => x.Id);
 
@@ -247,6 +246,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .Include(x => x.ParentKategori)
                 .Include(x => x.AltKategoriler)
                 .Include(x => x.Urunler)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(x => x.Id == id);
             if (kategori == null)
             {
@@ -345,6 +345,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .Include(x => x.AltKategoriler)
                 .Include(x => x.Urunler)
                 .AsNoTracking()
+                .AsSplitQuery()
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(arama))

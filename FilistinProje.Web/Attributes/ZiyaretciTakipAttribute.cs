@@ -1,22 +1,21 @@
 using System.IO;
 using System.Text.RegularExpressions;
-using FilistinProje.Core.Varliklar;
-using FilistinProje.Data;
+using FilistinProje.Web.Services;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace FilistinProje.Web.Attributes
 {
     public class ZiyaretciTakipAttribute : ActionFilterAttribute
     {
-        private readonly KanvasDbContext _context;
+        private readonly IVisitorTrackingQueue _queue;
 
         private static readonly Regex SensitiveQueryParamPattern = new(
             @"\b(token|password|sifre|secret|key|code|auth|hash|signature|reset|confirm|verif|credential)\b",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        public ZiyaretciTakipAttribute(KanvasDbContext context)
+        public ZiyaretciTakipAttribute(IVisitorTrackingQueue queue)
         {
-            _context = context;
+            _queue = queue;
         }
 
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -31,31 +30,22 @@ namespace FilistinProje.Web.Attributes
             var ipAdresi = ResolveIpAddress(context);
             var userAgent = request.Headers.UserAgent.ToString();
             var cihazBilgi = CihazModeliBul(userAgent);
-            var ulke = request.Headers["CF-IPCountry"].FirstOrDefault();
-            var sehir = request.Headers["CF-IPCity"].FirstOrDefault();
-
             var sanitizedPath = SanitizeLogPath(request);
-
-            _context.ZiyaretciLoglari.Add(new ZiyaretciLog
-            {
-                IpAdresi = ipAdresi,
-                Url = sanitizedPath,
-                Metod = request.Method,
-                ReferansUrl = request.Headers.Referer.ToString(),
-                CihazBilgisi = userAgent,
-                Tarayici = cihazBilgi.Tarayici,
-                IsletimSistemi = cihazBilgi.OS,
-                CihazModeli = cihazBilgi.Model,
-                Sehir = string.IsNullOrWhiteSpace(sehir) ? "-" : sehir,
-                Ulke = string.IsNullOrWhiteSpace(ulke) ? "-" : ulke,
-                OlusturulmaTarihi = DateTime.UtcNow,
-                KullaniciAdi = context.HttpContext.User.Identity?.IsAuthenticated == true
-                    ? context.HttpContext.User.Identity.Name
-                    : "Misafir"
-            });
-
-            await _context.SaveChangesAsync();
             await next();
+
+            _queue.TryEnqueue(new VisitorTrackingEntry(
+                ipAdresi,
+                Truncate(sanitizedPath, 1000) ?? string.Empty,
+                request.Method,
+                Truncate(request.Headers.Referer.ToString(), 500),
+                Truncate(userAgent, 512) ?? string.Empty,
+                cihazBilgi.Tarayici,
+                cihazBilgi.OS,
+                cihazBilgi.Model,
+                context.HttpContext.User.Identity?.IsAuthenticated == true
+                    ? Truncate(context.HttpContext.User.Identity.Name, 256)
+                    : "Misafir",
+                DateTime.UtcNow));
         }
 
         private static string SanitizeLogPath(HttpRequest request)
@@ -77,22 +67,33 @@ namespace FilistinProje.Web.Attributes
             var path = request.Path.Value ?? string.Empty;
             return path.Contains("/admin", StringComparison.OrdinalIgnoreCase)
                 || path.StartsWith("/api", StringComparison.OrdinalIgnoreCase)
+                || path.StartsWith("/health", StringComparison.OrdinalIgnoreCase)
                 || !HttpMethods.IsGet(request.Method)
-                || Path.HasExtension(path);
+                || Path.HasExtension(path)
+                || IsLikelyBot(request.Headers.UserAgent.ToString());
         }
 
         private static string ResolveIpAddress(FilterContext context)
         {
-            var forwardedFor = context.HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
-            if (!string.IsNullOrWhiteSpace(forwardedFor))
-            {
-                return forwardedFor.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Trim();
-            }
-
-            return context.HttpContext.Request.Headers["CF-Connecting-IP"].FirstOrDefault()
-                ?? context.HttpContext.Connection.RemoteIpAddress?.ToString()
+            return context.HttpContext.Connection.RemoteIpAddress?.ToString()
                 ?? "Bilinmiyor";
         }
+
+        private static bool IsLikelyBot(string userAgent)
+        {
+            if (string.IsNullOrWhiteSpace(userAgent))
+            {
+                return true;
+            }
+
+            string[] markers = ["bot", "crawler", "spider", "slurp", "headless", "monitor", "healthcheck"];
+            return markers.Any(marker => userAgent.Contains(marker, StringComparison.OrdinalIgnoreCase));
+        }
+
+        private static string? Truncate(string? value, int maximumLength) =>
+            string.IsNullOrEmpty(value)
+                ? value
+                : value.Length <= maximumLength ? value : value[..maximumLength];
 
         private static (string Tarayici, string OS, string Model) CihazModeliBul(string agent)
         {

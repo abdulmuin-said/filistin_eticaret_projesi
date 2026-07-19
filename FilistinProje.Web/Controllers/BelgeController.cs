@@ -109,6 +109,30 @@ namespace FilistinProje.Web.Controllers
             return await ReturnSensitiveDocumentAsync(siparis.ReceteDosyaYolu, HassasBelgeKategorisi.Recete, indir, $"recete_{siparis.Id}");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Fatura(int siparisId, bool indir = true)
+        {
+            var siparis = await _context.Siparisler
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == siparisId && !x.SilindiMi);
+
+            if (siparis == null || string.IsNullOrWhiteSpace(siparis.FaturaDosyaYolu))
+            {
+                return NotFound();
+            }
+
+            if (!await CanAccessOrderDocumentAsync(siparis))
+            {
+                return Forbid();
+            }
+
+            return await ReturnSensitiveDocumentAsync(
+                siparis.FaturaDosyaYolu,
+                HassasBelgeKategorisi.Fatura,
+                indir,
+                $"fatura_{siparis.Id}");
+        }
+
         private async Task<bool> CanAccessOrderDocumentAsync(Siparis siparis)
         {
             var currentUserId = _userManager.GetUserId(User);
@@ -154,14 +178,14 @@ namespace FilistinProje.Web.Controllers
             Response.Headers["Expires"] = "0";
             Response.Headers["X-Content-Type-Options"] = "nosniff";
 
-            var bytes = await System.IO.File.ReadAllBytesAsync(path);
+            var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 64 * 1024, FileOptions.Asynchronous | FileOptions.SequentialScan);
             if (download)
             {
-                return File(bytes, contentType, downloadName);
+                return File(stream, contentType, downloadName, enableRangeProcessing: false);
             }
 
             Response.Headers["Content-Disposition"] = $"inline; filename=\"{downloadName}\"";
-            return File(bytes, contentType);
+            return File(stream, contentType, enableRangeProcessing: false);
         }
 
         private string? ResolveSensitiveDocumentPath(string storedReference, HassasBelgeKategorisi expectedCategory, out string storedFileName)
@@ -179,9 +203,12 @@ namespace FilistinProje.Web.Controllers
                 return BuildSafePrivatePath(kategori, privateFileName);
             }
 
-            var expectedLegacyFolder = expectedCategory == HassasBelgeKategorisi.Recete
-                ? "uploads/receteler"
-                : "uploads/kimlikler";
+            var expectedLegacyFolder = expectedCategory switch
+            {
+                HassasBelgeKategorisi.Recete => "uploads/receteler",
+                HassasBelgeKategorisi.Fatura => "uploads/invoices",
+                _ => "uploads/kimlikler"
+            };
 
             if (!_dosyaServisi.EskiWebRootYoluGecerliMi(storedReference, expectedLegacyFolder))
             {

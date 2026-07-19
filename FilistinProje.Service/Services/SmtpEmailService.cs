@@ -33,6 +33,11 @@ namespace FilistinProje.Service.Services
 
         private async Task SendMailInternalAsync(string to, string subject, string body, string? inlineLogoPath = null)
         {
+            if (!_config.GetValue<bool>("EmailSettings:Enabled"))
+            {
+                throw new InvalidOperationException("E-posta gonderimi yapilandirmada devre disi.");
+            }
+
             var host = _config["EmailSettings:Host"] ?? string.Empty;
             var port = int.TryParse(_config["EmailSettings:Port"], out var parsedPort) ? parsedPort : 587;
             var enableSsl = bool.TryParse(_config["EmailSettings:EnableSSL"], out var parsedSsl) ? parsedSsl : true;
@@ -94,7 +99,31 @@ namespace FilistinProje.Service.Services
             }
 
             mailMessage.To.Add(toAddress);
-            await client.SendMailAsync(mailMessage).WaitAsync(TimeSpan.FromSeconds(30));
+            await SendWithBoundedRetryAsync(client, mailMessage);
+        }
+
+        private async Task SendWithBoundedRetryAsync(SmtpClient client, MailMessage mailMessage)
+        {
+            const int maxAttempts = 3;
+            for (var attempt = 1; attempt <= maxAttempts; attempt++)
+            {
+                try
+                {
+                    await client.SendMailAsync(mailMessage).WaitAsync(TimeSpan.FromSeconds(30));
+                    return;
+                }
+                catch (Exception ex) when (
+                    attempt < maxAttempts &&
+                    (ex is SmtpException || ex is TimeoutException))
+                {
+                    _logger.LogWarning(
+                        "SMTP gonderimi gecici olarak basarisiz. Deneme={Attempt}/{MaxAttempts}, HataTuru={ErrorType}",
+                        attempt,
+                        maxAttempts,
+                        ex.GetType().Name);
+                    await Task.Delay(TimeSpan.FromSeconds(Math.Pow(2, attempt)));
+                }
+            }
         }
 
         public async Task SendTemplateMailAsync(string to, string baslik, string adSoyad, string icerik, string btnLink = "", string btnYazi = "", string culture = "")
@@ -237,6 +266,12 @@ namespace FilistinProje.Service.Services
         {
             try
             {
+                if (!_config.GetValue<bool>("EmailSettings:Enabled"))
+                {
+                    _logger.LogWarning("E-posta devre disi oldugu icin fatura maili gonderilmedi.");
+                    return false;
+                }
+
                 if (!File.Exists(filePath))
                 {
                     _logger.LogWarning("Fatura dosyasi bulunamadi: {FilePath}", filePath);
@@ -318,7 +353,7 @@ namespace FilistinProje.Service.Services
                 }
                 mailMessage.Attachments.Add(attachment);
 
-                await client.SendMailAsync(mailMessage);
+                await SendWithBoundedRetryAsync(client, mailMessage);
                 _logger.LogInformation("Fatura maili basariyla gonderildi. SiparisNo={SiparisNo}, To={To}", siparisNo, toEmail);
                 return true;
             }

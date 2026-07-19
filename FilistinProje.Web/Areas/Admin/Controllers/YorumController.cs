@@ -59,7 +59,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .OrderByDescending(x => x.OlusturulmaTarihi)
                 .ToListAsync();
 
-            ExcelPackage.License.SetNonCommercialOrganization("7ANRPS48");
             using var package = new ExcelPackage();
             var worksheet = package.Workbook.Worksheets.Add(_localizer["Admin_ReviewsWorksheet"].Value);
             var headers = new[] { "Id", _localizer["Admin_Status"].Value, _localizer["Admin_Urun"].Value, _localizer["Admin_Musteri"].Value, _localizer["Admin_Rating"].Value, _localizer["Admin_Review"].Value, _localizer["Admin_Tarih"].Value };

@@ -17,9 +17,10 @@ namespace FilistinProje.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "8.0.29")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "citext");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("FilistinProje.Core.Models.SiteAyarlari", b =>
@@ -85,10 +86,6 @@ namespace FilistinProje.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("FooterAciklamasiTr")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<bool>("GirisZorunluMu")
                         .HasColumnType("boolean");
 
@@ -104,19 +101,11 @@ namespace FilistinProje.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("HeroAltBaslikTr")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("HeroBaslikAr")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("HeroBaslikEn")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("HeroBaslikTr")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -180,36 +169,6 @@ namespace FilistinProje.Data.Migrations
                     b.Property<string>("ParaBirimi")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<bool>("PaytrAktifMi")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("PaytrBasariliDonusUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PaytrBasarisizDonusUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PaytrCallbackUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PaytrMerchantId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PaytrMerchantKeyProtected")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PaytrMerchantSaltProtected")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PaytrTestModu")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("PinterestUrl")
                         .IsRequired()
@@ -515,107 +474,6 @@ namespace FilistinProje.Data.Migrations
                     b.ToTable("BultenAbonelikleri");
                 });
 
-            modelBuilder.Entity("FilistinProje.Core.Varliklar.CarkKazanimi", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AppUserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("CarkOdulId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("KuponId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("OlusturulmaTarihi")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("SilindiMi")
-                        .HasColumnType("boolean");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId")
-                        .IsUnique();
-
-                    b.HasIndex("CarkOdulId");
-
-                    b.HasIndex("KuponId");
-
-                    b.ToTable("CarkKazanimlari");
-                });
-
-            modelBuilder.Entity("FilistinProje.Core.Varliklar.CarkOdul", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("Deger")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("LabelAr")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("LabelEn")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("LabelTr")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("MesajAr")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<string>("MesajEn")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<string>("MesajTr")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<DateTime>("OlusturulmaTarihi")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Renk")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)");
-
-                    b.Property<bool>("SilindiMi")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("Sira")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Tip")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CarkOdulleri");
-                });
-
             modelBuilder.Entity("FilistinProje.Core.Varliklar.Favori", b =>
                 {
                     b.Property<int>("Id")
@@ -651,6 +509,10 @@ namespace FilistinProje.Data.Migrations
                     b.HasIndex("AppUserId");
 
                     b.HasIndex("UrunId");
+
+                    b.HasIndex("AppUserId", "UrunId")
+                        .IsUnique()
+                        .HasFilter("\"SilindiMi\" = false");
 
                     b.ToTable("Favoriler");
                 });
@@ -844,6 +706,9 @@ namespace FilistinProje.Data.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Ad")
+                        .IsUnique();
 
                     b.ToTable("KargoBolgeler");
                 });
@@ -1135,13 +1000,16 @@ namespace FilistinProje.Data.Migrations
                     b.Property<bool>("AktifMi")
                         .HasColumnType("boolean");
 
+                    b.Property<DateTime?>("BaslangicTarihi")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<decimal>("Deger")
                         .HasColumnType("numeric");
 
                     b.Property<string>("Kod")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("citext");
 
                     b.Property<int>("KullanilanMiktar")
                         .HasColumnType("integer");
@@ -1165,6 +1033,10 @@ namespace FilistinProje.Data.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Kod")
+                        .IsUnique()
+                        .HasFilter("\"SilindiMi\" = false");
 
                     b.ToTable("Kuponlar");
                 });
@@ -1339,7 +1211,13 @@ namespace FilistinProje.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("AppUserId")
+                        .IsUnique()
+                        .HasFilter("\"SilindiMi\" = false AND \"AppUserId\" IS NOT NULL");
+
+                    b.HasIndex("SessionId")
+                        .IsUnique()
+                        .HasFilter("\"SilindiMi\" = false AND \"SessionId\" IS NOT NULL");
 
                     b.ToTable("Sepetler");
                 });
@@ -1528,6 +1406,14 @@ namespace FilistinProje.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
+
+                    b.HasIndex("EmailHashKodu")
+                        .IsUnique()
+                        .HasFilter("\"EmailHashKodu\" IS NOT NULL AND \"EmailHashKodu\" <> ''");
+
+                    b.HasIndex("SiparisNo")
+                        .IsUnique()
+                        .HasFilter("\"SiparisNo\" <> ''");
 
                     b.ToTable("Siparisler");
                 });
@@ -2551,32 +2437,6 @@ namespace FilistinProje.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("FilistinProje.Core.Varliklar.CarkKazanimi", b =>
-                {
-                    b.HasOne("FilistinProje.Core.Varliklar.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FilistinProje.Core.Varliklar.CarkOdul", "CarkOdul")
-                        .WithMany()
-                        .HasForeignKey("CarkOdulId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("FilistinProje.Core.Varliklar.Kupon", "Kupon")
-                        .WithMany()
-                        .HasForeignKey("KuponId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("AppUser");
-
-                    b.Navigation("CarkOdul");
-
-                    b.Navigation("Kupon");
                 });
 
             modelBuilder.Entity("FilistinProje.Core.Varliklar.Favori", b =>

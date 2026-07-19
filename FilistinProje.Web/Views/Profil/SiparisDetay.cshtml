@@ -347,7 +347,7 @@
                                 <div class="text-[10px] uppercase tracking-widest text-brand-mutedtext mb-0.5">@Localizer["Invoice"]</div>
                                 @if (Model.FaturaYuklendiMi)
                                 {
-                                    <a href="/Siparis/FaturaIndir?id=@Model.Id" target="_blank" class="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-medium">
+                                    <a href="/Belge/Fatura?siparisId=@Model.Id&amp;indir=true" target="_blank" class="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-medium">
                                         <i class="fas fa-file-pdf"></i> @Localizer["DownloadInvoice"]
                                     </a>
                                     @if (Model.FaturaMailGonderildiMi)

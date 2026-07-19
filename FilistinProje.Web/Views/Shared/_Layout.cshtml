@@ -127,7 +127,7 @@
             animation: none;
         }
         
-        /* Kategori menÃ¼ dropdown - Canvasia tarzÄ± opacity/visibility geÃ§iÅŸi */
+        /* Kategori menusu dropdown opacity/visibility gecisi */
         [data-category-dropdown] {
             opacity: 0;
             visibility: hidden;
@@ -297,7 +297,12 @@
     @* site.css legacy — removed, all styles in storefront.css *@
     @await RenderSectionAsync("Styles", required: false)
 </head>
-<body class="bg-brand-cream overflow-x-hidden antialiased flex flex-col min-h-screen">
+@{
+    var isProductDetailPage =
+        string.Equals(ViewContext.RouteData.Values["controller"]?.ToString(), "Urun", StringComparison.OrdinalIgnoreCase) &&
+        string.Equals(ViewContext.RouteData.Values["action"]?.ToString(), "Detay", StringComparison.OrdinalIgnoreCase);
+}
+<body class="bg-brand-cream overflow-x-hidden antialiased flex flex-col min-h-screen @(isProductDetailPage ? "product-detail-page" : string.Empty)">
     <form id="globalAntiForgeryForm" class="hidden">
         @Html.AntiForgeryToken()
     </form>

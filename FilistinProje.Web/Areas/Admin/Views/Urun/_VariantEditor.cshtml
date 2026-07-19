@@ -29,16 +29,16 @@
             @for (var i = 0; i < variants.Count; i++)
             {
                 var variant = variants[i];
-                var temizOlcu = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.Olcu);
-                var temizCerceveTipi = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.CerceveTipi);
-                var temizCerceveRengi = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.CerceveRengi);
-                var temizCerceveKalinligi = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.CerceveKalinligi);
-                var temizMalzemeTuru = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.MalzemeTuru);
-                var temizYon = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.Yon);
-                var temizKisilestirmeMetni = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.KisilestirmeMetni);
-                var temizOzelTasarimNotu = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.OzelTasarimNotu);
-                var temizVaryantBasligi = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.VaryantBasligi);
-                var temizVaryantOzeti = TurkishTextRepairHelper.RepairKnownBrokenTurkish(variant.VaryantOzeti);
+                var temizOlcu = (variant.Olcu ?? string.Empty).Trim();
+                var temizCerceveTipi = (variant.CerceveTipi ?? string.Empty).Trim();
+                var temizCerceveRengi = (variant.CerceveRengi ?? string.Empty).Trim();
+                var temizCerceveKalinligi = (variant.CerceveKalinligi ?? string.Empty).Trim();
+                var temizMalzemeTuru = (variant.MalzemeTuru ?? string.Empty).Trim();
+                var temizYon = (variant.Yon ?? string.Empty).Trim();
+                var temizKisilestirmeMetni = (variant.KisilestirmeMetni ?? string.Empty).Trim();
+                var temizOzelTasarimNotu = (variant.OzelTasarimNotu ?? string.Empty).Trim();
+                var temizVaryantBasligi = (variant.VaryantBasligi ?? string.Empty).Trim();
+                var temizVaryantOzeti = (variant.VaryantOzeti ?? string.Empty).Trim();
                 <div class="ca-variant-card" data-variant-card data-index="@i">
                     <div class="ca-variant-card-head">
                         <div>

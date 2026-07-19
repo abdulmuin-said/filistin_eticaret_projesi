@@ -103,7 +103,7 @@ namespace FilistinProje.Service.Services
                 };
             }
 
-            if (dto.TeslimatTipi != "MagazadanTeslim" && sepetToplamiIndirimli < settings.UcretsizKargoLimiti)
+            if (dto.TeslimatTipi != "MagazadanTeslim")
             {
                 var aktifKargoVarMi = await _kargoHesaplama.SehirdeAktifKargoVarMiAsync(dto.Sehir);
                 if (!aktifKargoVarMi)
@@ -198,10 +198,27 @@ namespace FilistinProje.Service.Services
 
                 if (!string.IsNullOrWhiteSpace(siparis.KuponKodu))
                 {
-                    var kupon = await _context.Kuponlar.FirstOrDefaultAsync(x => x.Kod == siparis.KuponKodu);
-                    if (kupon != null)
+                    var now = DateTime.UtcNow;
+                    var affected = await _context.Kuponlar
+                        .Where(x =>
+                            x.Kod == siparis.KuponKodu &&
+                            !x.SilindiMi &&
+                            x.AktifMi &&
+                            (!x.BaslangicTarihi.HasValue || x.BaslangicTarihi <= now) &&
+                            x.SonKullanmaTarihi > now &&
+                            (x.KullanimLimiti <= 0 || x.KullanilanMiktar < x.KullanimLimiti))
+                        .ExecuteUpdateAsync(setters => setters
+                            .SetProperty(x => x.KullanilanMiktar, x => x.KullanilanMiktar + 1));
+
+                    if (affected != 1)
                     {
-                        kupon.KullanilanMiktar++;
+                        await transaction.RollbackAsync();
+                        return new PlaceOrderResult
+                        {
+                            Status = PlaceOrderStatus.InvalidCoupon,
+                            Pricing = pricing,
+                            MessageKey = "Sepet_InvalidCoupon"
+                        };
                     }
                 }
 

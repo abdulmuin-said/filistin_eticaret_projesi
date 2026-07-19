@@ -3,10 +3,10 @@ using FilistinProje.Core.Helpers;
 using FilistinProje.Core.Interfaces;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
+using FilistinProje.Service.Interfaces;
 using FilistinProje.Service.Services;
 using FilistinProje.Web.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -24,7 +24,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         private readonly ISiteSettingsService _siteSettingsService;
         private readonly IFaturaPdfService _faturaPdfService;
         private readonly KanvasDbContext _context;
-        private readonly IWebHostEnvironment _env;
+        private readonly IDosyaServisi _dosyaServisi;
         private readonly ILogger<SiparisController> _logger;
 
         public SiparisController(
@@ -36,7 +36,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             ISiteSettingsService siteSettingsService,
             IFaturaPdfService faturaPdfService,
             KanvasDbContext context,
-            IWebHostEnvironment env,
+            IDosyaServisi dosyaServisi,
             ILogger<SiparisController> logger)
         {
             _siparisService = siparisService;
@@ -47,7 +47,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             _siteSettingsService = siteSettingsService;
             _faturaPdfService = faturaPdfService;
             _context = context;
-            _env = env;
+            _dosyaServisi = dosyaServisi;
             _logger = logger;
         }
 
@@ -245,7 +245,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> ExcelExport()
         {
-            ExcelPackage.License.SetNonCommercialOrganization("7ANRPS48");
             var siparisler = await _siparisService.GetAllAsync();
             using var package = new ExcelPackage();
             var worksheet = package.Workbook.Worksheets.Add("SipariÅŸler");
@@ -891,26 +890,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return RedirectToAction("Detay", new { id = siparisId });
             }
 
-            // Sadece PDF kontrolÃ¼ - hem iÃ§erik tipi hem uzantÄ±
-            var allowedContentTypes = new[] { "application/pdf" };
-            var allowedExtensions = new[] { ".pdf" };
-            var fileExtension = Path.GetExtension(faturaDosyasi.FileName).ToLowerInvariant();
-            var contentType = faturaDosyasi.ContentType?.ToLowerInvariant();
-
-            if (!allowedContentTypes.Contains(contentType) || !allowedExtensions.Contains(fileExtension))
-            {
-                TempData["Hata"] = "Sadece PDF dosyalarÄ± yÃ¼klenebilir.";
-                return RedirectToAction("Detay", new { id = siparisId });
-            }
-
-            // Dosya boyutu kontrolÃ¼ (5MB max)
-            const long maxFileSize = 5 * 1024 * 1024;
-            if (faturaDosyasi.Length > maxFileSize)
-            {
-                TempData["Hata"] = "Dosya boyutu maksimum 5 MB olabilir.";
-                return RedirectToAction("Detay", new { id = siparisId });
-            }
-
             var siparis = await _context.Siparisler.FindAsync(siparisId);
             if (siparis == null)
             {
@@ -918,39 +897,23 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Upload klasÃ¶rÃ¼ oluÅŸtur
-            var uploadsPath = Path.Combine(_env.WebRootPath, "uploads", "invoices");
-
-            if (!Directory.Exists(uploadsPath))
+            var kayit = await _dosyaServisi.HassasBelgeKaydetAsync(faturaDosyasi, HassasBelgeKategorisi.Fatura);
+            if (!kayit.Success)
             {
-                Directory.CreateDirectory(uploadsPath);
+                TempData["Hata"] = kayit.ErrorMessage ?? "Fatura güvenli biçimde kaydedilemedi.";
+                return RedirectToAction("Detay", new { id = siparisId });
             }
 
-            // GÃ¼venli dosya adÄ±: siparisId_benzersizGuid.pdf
-            var safeFileName = $"{siparisId}_{Guid.NewGuid():N}.pdf";
-            var filePath = Path.Combine(uploadsPath, safeFileName);
-            var relativePath = $"/uploads/invoices/{safeFileName}";
+            var oncekiReferans = siparis.FaturaDosyaYolu;
+            var privateReference = DosyaServisi.BuildPrivateReference(HassasBelgeKategorisi.Fatura, kayit.BelgeAdi);
+            var filePath = Path.Combine(
+                _dosyaServisi.GetPrivateStorageRoot(),
+                "hassas",
+                DosyaServisi.GetCategorySegment(HassasBelgeKategorisi.Fatura),
+                kayit.BelgeAdi);
 
-            // Eski fatura varsa sil
-            if (!string.IsNullOrWhiteSpace(siparis.FaturaDosyaYolu))
-            {
-                var oldFilePath = Path.Combine(_env.WebRootPath, siparis.FaturaDosyaYolu.TrimStart('/'));
-                if (System.IO.File.Exists(oldFilePath))
-                {
-                    try { System.IO.File.Delete(oldFilePath); }
-                    catch { /* Silinemezse ignore */ }
-                }
-            }
-
-            // DosyayÄ± kaydet
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await faturaDosyasi.CopyToAsync(stream);
-            }
-
-            // SipariÅŸ fatura bilgilerini gÃ¼ncelle
-            siparis.FaturaDosyaYolu = relativePath;
-            siparis.FaturaDosyaAdi = faturaDosyasi.FileName;
+            siparis.FaturaDosyaYolu = privateReference;
+            siparis.FaturaDosyaAdi = $"fatura_{siparis.Id}.pdf";
             siparis.FaturaYuklendiMi = true;
             siparis.FaturaYuklenmeTarihi = DateTime.UtcNow;
 
@@ -971,7 +934,21 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 }
             }
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                _dosyaServisi.HassasBelgeSil(HassasBelgeKategorisi.Fatura, kayit.BelgeAdi);
+                throw;
+            }
+
+            if (!string.IsNullOrWhiteSpace(oncekiReferans) &&
+                !string.Equals(oncekiReferans, privateReference, StringComparison.Ordinal))
+            {
+                _dosyaServisi.Sil(oncekiReferans);
+            }
 
             TempData["Basarili"] = mailGonderildi
                 ? "Fatura baÅŸarÄ±yla yÃ¼klendi ve mÃ¼ÅŸteriye e-posta gÃ¶nderildi."
@@ -983,21 +960,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> FaturaIndir(int id)
         {
-            var siparis = await _context.Siparisler.FindAsync(id);
-            if (siparis == null || string.IsNullOrWhiteSpace(siparis.FaturaDosyaYolu))
-            {
-                return NotFound("Fatura bulunamadÄ±.");
-            }
-
-            var filePath = Path.Combine(_env.WebRootPath, siparis.FaturaDosyaYolu.TrimStart('/'));
-
-            if (!System.IO.File.Exists(filePath))
-            {
-                return NotFound("Fatura dosyasÄ± bulunamadÄ±.");
-            }
-
-            var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
-            return File(fileBytes, "application/pdf", siparis.FaturaDosyaAdi ?? $"fatura_{id}.pdf");
+            return RedirectToAction("Fatura", "Belge", new { area = "", siparisId = id, indir = true });
         }
 
         /// <summary>

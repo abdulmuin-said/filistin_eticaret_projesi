@@ -358,6 +358,7 @@ namespace FilistinProje.Service
                     i.UrunSecenekId == item.UrunSecenekId &&
                     i.CerceveModeli == item.CerceveModeli &&
                     NormalizeCustomerNote(i.MusteriNotu) == NormalizeCustomerNote(item.MusteriNotu) &&
+                    i.HediyePaketi == item.HediyePaketi &&
                     !i.SilindiMi);
 
                 if (mevcutItem != null)
@@ -378,6 +379,8 @@ namespace FilistinProje.Service
                         SecenekAdi = item.SecenekAdi,
                         CerceveModeli = item.CerceveModeli,
                         MusteriNotu = item.MusteriNotu,
+                        HediyePaketi = item.HediyePaketi,
+                        HediyePaketFiyati = item.HediyePaketFiyati,
                         OlusturulmaTarihi = DateTime.UtcNow,
                         SilindiMi = false
                     };

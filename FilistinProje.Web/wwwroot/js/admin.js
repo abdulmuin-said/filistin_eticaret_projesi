@@ -213,7 +213,11 @@ function showToast(message, type) {
 
     var toast = document.createElement('div');
     toast.className = 'ca-toast ' + type;
-    toast.innerHTML = '<i class="' + (iconMap[type] || iconMap.info) + '"></i><span>' + message + '</span>';
+    var icon = document.createElement('i');
+    icon.className = iconMap[type] || iconMap.info;
+    var text = document.createElement('span');
+    text.textContent = String(message ?? '');
+    toast.append(icon, text);
     container.appendChild(toast);
 
     setTimeout(function () {

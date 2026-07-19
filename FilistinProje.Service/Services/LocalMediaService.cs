@@ -30,18 +30,18 @@ namespace FilistinProje.Service.Services
             {
                 if (imageBytes == null || imageBytes.Length == 0)
                 {
-                    return new FileSaveResultDto { Success = false, ErrorMessage = "Bos dosya." };
+                    return new FileSaveResultDto { Success = false, ErrorMessage = "Empty file." };
                 }
 
                 if (imageBytes.Length > MaxImageSizeBytes)
                 {
-                    return new FileSaveResultDto { Success = false, ErrorMessage = $"Dosya boyutu en fazla 5MB olabilir." };
+                    return new FileSaveResultDto { Success = false, ErrorMessage = $"File size cannot exceed 5MB." };
                 }
 
                 var extension = Path.GetExtension(fileName);
                 if (!AllowedImageExtensions.Contains(extension))
                 {
-                    return new FileSaveResultDto { Success = false, ErrorMessage = "Desteklenmeyen gorsel formati." };
+                    return new FileSaveResultDto { Success = false, ErrorMessage = "Unsupported image format." };
                 }
 
                 var folder = Path.Combine(_env.WebRootPath, "img", "products");
@@ -86,7 +86,7 @@ namespace FilistinProje.Service.Services
                 var extension = Path.GetExtension(fileName);
                 if (!AllowedVideoExtensions.Contains(extension))
                 {
-                    return new FileSaveResultDto { Success = false, ErrorMessage = "Desteklenmeyen video formati." };
+                    return new FileSaveResultDto { Success = false, ErrorMessage = "Unsupported video format." };
                 }
 
                 var folder = Path.Combine(_env.WebRootPath, "media", "products", "videos");

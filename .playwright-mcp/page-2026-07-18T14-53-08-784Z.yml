@@ -1,0 +1,348 @@
+- generic [ref=e2]:
+  - text:          +                    
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "7ANRPS48 Admin Panel" [ref=e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=e6]
+      - generic [ref=e7]: Admin Panel
+    - navigation "Admin main menu" [ref=e8]:
+      - link " Dashboard" [ref=e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=e10]: 
+        - text: Dashboard
+      - generic [ref=e11]:
+        - button " Order Management" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]: 
+          - text: Order Management
+        - text:      
+      - generic [ref=e14]:
+        - button " Product Management" [ref=e15] [cursor=pointer]:
+          - generic [ref=e16]: 
+          - text: Product Management
+        - text:  +  
+      - generic [ref=e17]:
+        - button " Store Content" [ref=e18] [cursor=pointer]:
+          - generic [ref=e19]: 
+          - text: Store Content
+        - text:        
+      - link " Members" [ref=e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=e21]: 
+        - text: Members
+      - link " Staff" [ref=e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=e23]: 
+        - text: Staff
+      - link " Wholesalers" [ref=e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=e25]: 
+        - text: Wholesalers
+      - link " Wholesale Groups" [ref=e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=e27]: 
+        - text: Wholesale Groups
+      - generic [ref=e28]:
+        - button " Reports" [ref=e29] [cursor=pointer]:
+          - generic [ref=e30]: 
+          - text: Reports
+        - text:  
+      - link " Bank Accounts" [ref=e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=e32]: 
+        - text: Bank Accounts
+      - link " Settings" [ref=e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=e34]: 
+        - text: Settings
+    - generic [ref=e35]:
+      - text: 
+      - combobox "Language" [ref=e37]:
+        - option "AR"
+        - option "EN" [selected]
+      - generic [ref=e38]:
+        - button "7ANRPS48 Admin Admin 7" [ref=e39] [cursor=pointer]:
+          - generic [ref=e40]:
+            - strong [ref=e41]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=e42]: "7"
+        - text:  
+  - generic [ref=e43]:
+    - main [ref=e44]:
+      - generic [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - heading "Dashboard" [level=1] [ref=e48]
+            - paragraph [ref=e49]: A single view of orders, stock and traffic.
+          - generic [ref=e50]:
+            - generic [ref=e51]: 
+            - text: 18 July 2026, Saturday
+        - generic [ref=e52]:
+          - generic [ref=e54]:
+            - generic [ref=e55]: Total Revenue
+            - generic [ref=e56]: 1,350.00 ₪
+            - generic [ref=e57]: "Monthly: 0.00 ₪"
+          - generic [ref=e59]:
+            - generic [ref=e60]: Today's Revenue
+            - generic [ref=e61]: 0.00 ₪
+            - generic [ref=e62]: "Weekly: 0.00 ₪"
+          - generic [ref=e64]:
+            - generic [ref=e65]: Total Orders
+            - generic [ref=e66]: "5"
+            - generic [ref=e67]: "Today: 0 orders"
+          - generic [ref=e69]:
+            - generic [ref=e70]: Pending
+            - generic [ref=e71]: "0"
+            - generic [ref=e72]: "Ready to ship: 1"
+          - generic [ref=e74]:
+            - generic [ref=e75]: Shipped / Returned
+            - generic [ref=e76]: 1 / 2
+            - generic [ref=e77]: Operations summary
+          - generic [ref=e79]:
+            - generic [ref=e80]: Messages / Active Products
+            - generic [ref=e81]: 0 / 30
+            - generic [ref=e82]: Operation tracking
+        - generic [ref=e83]:
+          - generic [ref=e84]:
+            - heading " Revenue for the last 7 days" [level=3] [ref=e87]:
+              - generic [ref=e88]: 
+              - text: Revenue for the last 7 days
+            - heading " 12-Month Revenue Trend" [level=3] [ref=e94]:
+              - generic [ref=e95]: 
+              - text: 12-Month Revenue Trend
+            - generic [ref=e99]:
+              - heading " Quick actions" [level=3] [ref=e101]:
+                - generic [ref=e102]: 
+                - text: Quick actions
+              - generic [ref=e104]:
+                - link " Add product" [ref=e106] [cursor=pointer]:
+                  - /url: /Admin/Urun/Ekle
+                  - generic [ref=e107]:
+                    - generic [ref=e108]: 
+                    - generic [ref=e110]: Add product
+                - link " Orders" [ref=e112] [cursor=pointer]:
+                  - /url: /Admin/Siparis
+                  - generic [ref=e113]:
+                    - generic [ref=e114]: 
+                    - generic [ref=e116]: Orders
+                - link " Attribute fields" [ref=e118] [cursor=pointer]:
+                  - /url: /Admin/UrunOzellik
+                  - generic [ref=e119]:
+                    - generic [ref=e120]: 
+                    - generic [ref=e122]: Attribute fields
+                - link " Message inbox" [ref=e124] [cursor=pointer]:
+                  - /url: /Admin/Iletisim
+                  - generic [ref=e125]:
+                    - generic [ref=e126]: 
+                    - generic [ref=e128]: Message inbox
+            - generic [ref=e129]:
+              - generic [ref=e131]:
+                - heading " Best Sellers" [level=3] [ref=e133]:
+                  - generic [ref=e134]: 
+                  - text: Best Sellers
+                - generic [ref=e136]:
+                  - generic [ref=e137]: 
+                  - paragraph [ref=e138]: No sales data yet.
+              - generic [ref=e140]:
+                - heading " Most Viewed" [level=3] [ref=e142]:
+                  - generic [ref=e143]: 
+                  - text: Most Viewed
+                - generic [ref=e145]:
+                  - link "ايسنس ماسكارا لاش برينسيس ايسنس ماسكارا لاش برينسيس 5 views " [ref=e146] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/112
+                    - img "ايسنس ماسكارا لاش برينسيس" [ref=e147]
+                    - generic [ref=e148]:
+                      - generic [ref=e149]: ايسنس ماسكارا لاش برينسيس
+                      - generic [ref=e150]: 5 views
+                    - generic [ref=e151]: 
+                  - link "فلفل أخضر حار فلفل أخضر حار 2 views " [ref=e152] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/137
+                    - img "فلفل أخضر حار" [ref=e153]
+                    - generic [ref=e154]:
+                      - generic [ref=e155]: فلفل أخضر حار
+                      - generic [ref=e156]: 2 views
+                    - generic [ref=e157]: 
+                  - link "لوحة ظلال العيون مع مرآة لوحة ظلال العيون مع مرآة 0 views " [ref=e158] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/113
+                    - img "لوحة ظلال العيون مع مرآة" [ref=e159]
+                    - generic [ref=e160]:
+                      - generic [ref=e161]: لوحة ظلال العيون مع مرآة
+                      - generic [ref=e162]: 0 views
+                    - generic [ref=e163]: 
+                  - link "علبة مسحوق علبة مسحوق 0 views " [ref=e164] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/114
+                    - img "علبة مسحوق" [ref=e165]
+                    - generic [ref=e166]:
+                      - generic [ref=e167]: علبة مسحوق
+                      - generic [ref=e168]: 0 views
+                    - generic [ref=e169]: 
+                  - link "أحمر الشفاه أحمر الشفاه 0 views " [ref=e170] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/115
+                    - img "أحمر الشفاه" [ref=e171]
+                    - generic [ref=e172]:
+                      - generic [ref=e173]: أحمر الشفاه
+                      - generic [ref=e174]: 0 views
+                    - generic [ref=e175]: 
+            - generic [ref=e176]:
+              - generic [ref=e178]:
+                - heading " Recently Added Products" [level=3] [ref=e180]:
+                  - generic [ref=e181]: 
+                  - text: Recently Added Products
+                - generic [ref=e183]:
+                  - link "كيوي GRO-BRD-KIW-030 | 2.11 ₪ 14.07.2026 19:29" [ref=e184] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/141
+                    - generic [ref=e185]: كيوي
+                    - generic [ref=e186]: GRO-BRD-KIW-030 | 2.11 ₪
+                    - generic [ref=e187]: 14.07.2026 19:29
+                  - link "عصير GRO-BRD-JUI-029 | 3.51 ₪ 14.07.2026 19:29" [ref=e188] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/140
+                    - generic [ref=e189]: عصير
+                    - generic [ref=e190]: GRO-BRD-JUI-029 | 3.51 ₪
+                    - generic [ref=e191]: 14.07.2026 19:29
+                  - link "بوظة GRO-BRD-CRE-028 | 5.01 ₪ 14.07.2026 19:29" [ref=e192] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/139
+                    - generic [ref=e193]: بوظة
+                    - generic [ref=e194]: GRO-BRD-CRE-028 | 5.01 ₪
+                    - generic [ref=e195]: 14.07.2026 19:29
+                  - link "جرة العسل GRO-BRD-HON-027 | 5.98 ₪ 14.07.2026 19:29" [ref=e196] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/138
+                    - generic [ref=e197]: جرة العسل
+                    - generic [ref=e198]: GRO-BRD-HON-027 | 5.98 ₪
+                    - generic [ref=e199]: 14.07.2026 19:29
+                  - link "فلفل أخضر حار GRO-BRD-GRE-026 | 0.98 ₪ 14.07.2026 19:29" [ref=e200] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/137
+                    - generic [ref=e201]: فلفل أخضر حار
+                    - generic [ref=e202]: GRO-BRD-GRE-026 | 0.98 ₪
+                    - generic [ref=e203]: 14.07.2026 19:29
+              - generic [ref=e205]:
+                - heading " Recent Customer Reviews" [level=3] [ref=e207]:
+                  - generic [ref=e208]: 
+                  - text: Recent Customer Reviews
+                - generic [ref=e210]:
+                  - generic [ref=e211]: 
+                  - paragraph [ref=e212]: No reviews yet.
+          - generic [ref=e213]:
+            - generic [ref=e214]:
+              - heading " System Alerts" [level=3] [ref=e216]:
+                - generic [ref=e217]: 
+                - text: System Alerts
+              - generic [ref=e218]: No critical system alerts.
+            - generic [ref=e220]:
+              - heading " Operation Summary" [level=3] [ref=e222]:
+                - generic [ref=e223]: 
+                - text: Operation Summary
+              - generic [ref=e224]:
+                - generic [ref=e225]:
+                  - generic [ref=e226]: Pending orders
+                  - strong [ref=e227]: "0"
+                - generic [ref=e228]:
+                  - generic [ref=e229]: Ready to ship
+                  - strong [ref=e230]: "1"
+                - generic [ref=e231]:
+                  - generic [ref=e232]: Shipped
+                  - strong [ref=e233]: "1"
+                - generic [ref=e234]:
+                  - generic [ref=e235]: Cancel / Return
+                  - strong [ref=e236]: "2"
+            - generic [ref=e237]:
+              - heading " City-Based Sales" [level=3] [ref=e239]:
+                - generic [ref=e240]: 
+                - text: City-Based Sales
+              - generic [ref=e242]:
+                - generic [ref=e243]:
+                  - generic [ref=e244]: "1"
+                  - generic [ref=e245]:
+                    - generic [ref=e246]: Nablus
+                    - generic [ref=e247]: 620.00 ₪
+                - generic [ref=e248]:
+                  - generic [ref=e249]: "1"
+                  - generic [ref=e250]:
+                    - generic [ref=e251]: Ramallah
+                    - generic [ref=e252]: 450.00 ₪
+                - generic [ref=e253]:
+                  - generic [ref=e254]: "1"
+                  - generic [ref=e255]:
+                    - generic [ref=e256]: Hebron
+                    - generic [ref=e257]: 280.00 ₪
+                - generic [ref=e258]:
+                  - generic [ref=e259]: "1"
+                  - generic [ref=e260]:
+                    - generic [ref=e261]: Gaza
+                    - generic [ref=e262]: 0.00 ₪
+                - generic [ref=e263]:
+                  - generic [ref=e264]: "1"
+                  - generic [ref=e265]:
+                    - generic [ref=e266]: Jenin
+                    - generic [ref=e267]: 0.00 ₪
+            - generic [ref=e268]:
+              - heading " Traffic Area" [level=3] [ref=e270]:
+                - generic [ref=e271]: 
+                - text: Traffic Area
+              - generic [ref=e272]:
+                - generic [ref=e273]:
+                  - generic [ref=e274]: Last 7 days visits
+                  - strong [ref=e275]: "137"
+                - generic [ref=e276]:
+                  - generic [ref=e277]: Unique visitors
+                  - strong [ref=e278]: "2"
+            - generic [ref=e279]:
+              - heading " Category Performance" [level=3] [ref=e281]:
+                - generic [ref=e282]: 
+                - text: Category Performance
+              - generic [ref=e284]:
+                - generic [ref=e285]: 
+                - paragraph [ref=e286]: No category sales data yet.
+            - generic [ref=e287]:
+              - heading " Recent Activities" [level=3] [ref=e289]:
+                - generic [ref=e290]: 
+                - text: Recent Activities
+              - generic [ref=e291]:
+                - generic [ref=e292]:
+                  - generic [ref=e293]: 
+                  - generic [ref=e295]:
+                    - generic [ref=e296]: New product added
+                    - generic [ref=e297]: كيوي
+                  - generic [ref=e298]: 19:29
+                - generic [ref=e299]:
+                  - generic [ref=e300]: 
+                  - generic [ref=e302]:
+                    - generic [ref=e303]: New product added
+                    - generic [ref=e304]: عصير
+                  - generic [ref=e305]: 19:29
+                - generic [ref=e306]:
+                  - generic [ref=e307]: 
+                  - generic [ref=e309]:
+                    - generic [ref=e310]: New product added
+                    - generic [ref=e311]: بوظة
+                  - generic [ref=e312]: 19:29
+                - generic [ref=e313]:
+                  - generic [ref=e314]: 
+                  - generic [ref=e316]:
+                    - generic [ref=e317]: New product added
+                    - generic [ref=e318]: جرة العسل
+                  - generic [ref=e319]: 19:29
+                - generic [ref=e320]:
+                  - generic [ref=e321]: 
+                  - generic [ref=e323]:
+                    - generic [ref=e324]: New product added
+                    - generic [ref=e325]: فلفل أخضر حار
+                  - generic [ref=e326]: 19:29
+                - generic [ref=e327]:
+                  - generic [ref=e328]: 
+                  - generic [ref=e330]:
+                    - generic [ref=e331]: "New order #7"
+                    - generic [ref=e332]: Ahmet El-Filistini - 450.00 ₪
+                  - generic [ref=e333]: 07:40
+                - generic [ref=e334]:
+                  - generic [ref=e335]: 
+                  - generic [ref=e337]:
+                    - generic [ref=e338]: "New order #8"
+                    - generic [ref=e339]: Fatima Hassan - 280.00 ₪
+                  - generic [ref=e340]: 07:40
+                - generic [ref=e341]:
+                  - generic [ref=e342]: 
+                  - generic [ref=e344]:
+                    - generic [ref=e345]: "New order #9"
+                    - generic [ref=e346]: Mahmoud Abbas - 620.00 ₪
+                  - generic [ref=e347]: 07:40
+    - contentinfo [ref=e348]: © 2026 7ANRPS48 Admin Panel. All rights reserved.

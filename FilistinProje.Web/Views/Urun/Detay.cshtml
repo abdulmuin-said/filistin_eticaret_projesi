@@ -551,7 +551,7 @@
                     </div>
                 }
 
-                <div class="flex items-end gap-3">
+                <div class="product-purchase-actions flex items-end gap-3">
                     <div><label class="mb-2 block text-xs font-medium uppercase tracking-widest text-brand-darktext">@Localizer["Quantity"]</label><div class="flex h-12 items-center border border-brand-border bg-white"><button type="button" class="flex h-full w-10 items-center justify-center hover:bg-brand-cream" onclick="decreaseQuantity()">-</button><input id="productQuantity" type="number" min="@minSiparisAdedi" max="@maxSiparisAdedi" value="@minSiparisAdedi" class="h-full w-12 border-0 bg-transparent p-0 text-center text-sm font-semibold focus:ring-0" readonly /><button type="button" class="flex h-full w-10 items-center justify-center hover:bg-brand-cream" onclick="increaseQuantity()">+</button></div></div>
                     <button id="ajaxSepetBtn" type="button" class="flex h-12 min-w-0 flex-1 items-center justify-center gap-2 bg-brand-olive px-4 text-xs font-bold uppercase tracking-widest text-white transition-colors hover:bg-[#1c2001] disabled:cursor-wait disabled:opacity-70"><i class="fas fa-shopping-bag add-to-cart-icon"></i><span class="add-to-cart-text">@Localizer["AddToCart"]</span></button>
                     <a href="/Sepet" class="flex h-12 w-12 items-center justify-center bg-brand-gold text-white transition-colors hover:bg-[#8e6a28]" aria-label="@Localizer["Cart"]"><i class="fas fa-shopping-cart"></i></a>
@@ -739,6 +739,22 @@
     .product-benefit-card p { color: #47473d; font-size: .75rem; line-height: 1.5; margin-top: .35rem; }
     .product-detail-sections { margin-top: 5rem; }
     @@media (max-width: 1023px) { .product-detail-sections { margin-top: 3.5rem; } }
+    @@media (max-width: 767px) {
+        .product-purchase-actions {
+            position: sticky;
+            bottom: 0;
+            z-index: 40;
+            margin-inline: -1rem;
+            padding: .75rem 1rem calc(.75rem + env(safe-area-inset-bottom, 0px));
+            background: rgba(255, 250, 240, .97);
+            border-top: 1px solid #d8ceb8;
+            box-shadow: 0 -10px 25px rgba(49, 53, 17, .09);
+            backdrop-filter: blur(10px);
+        }
+    }
+    @@media (max-width: 767px) and (max-height: 500px) {
+        .product-purchase-actions { position: static; margin-inline: 0; }
+    }
 </style>
 
 <script>

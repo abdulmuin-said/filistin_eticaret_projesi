@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 
 namespace FilistinProje.Web.Controllers
@@ -21,13 +22,20 @@ namespace FilistinProje.Web.Controllers
         private readonly KanvasDbContext _context;
         private readonly ISiteSettingsService _siteSettingsService;
         private readonly IStringLocalizer<SharedResource> _localizer;
+        private readonly ILogger<UrunController> _logger;
 
-        public UrunController(UserManager<AppUser> userManager, KanvasDbContext context, ISiteSettingsService siteSettingsService, IStringLocalizer<SharedResource> localizer)
+        public UrunController(
+            UserManager<AppUser> userManager,
+            KanvasDbContext context,
+            ISiteSettingsService siteSettingsService,
+            IStringLocalizer<SharedResource> localizer,
+            ILogger<UrunController> logger)
         {
             _userManager = userManager;
             _context = context;
             _siteSettingsService = siteSettingsService;
             _localizer = localizer;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -368,37 +376,6 @@ namespace FilistinProje.Web.Controllers
             return View(secenekler);
         }
 
-        [HttpPost]
-        [Authorize(Policy = AdminPolicyNames.AdminPanelAccess)]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SecenekEkle(UrunSecenek secenek)
-        {
-            if (secenek.SatisFiyati <= 0)
-            {
-                return RedirectToAction("Secenekler", new { id = secenek.UrunId });
-            }
-
-            _context.UrunSecenekleri.Add(secenek);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Secenekler", new { id = secenek.UrunId });
-        }
-
-        [HttpPost]
-        [Authorize(Policy = AdminPolicyNames.AdminPanelAccess)]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SecenekSil(int id)
-        {
-            var secenek = await _context.UrunSecenekleri.FirstOrDefaultAsync(x => x.Id == id);
-            if (secenek != null)
-            {
-                secenek.SilindiMi = true;
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Secenekler", new { id = secenek.UrunId });
-            }
-
-            return RedirectToAction("Index");
-        }
-
         public async Task<IActionResult> Detay(string? id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -450,8 +427,30 @@ namespace FilistinProje.Web.Controllers
                 return NotFound();
             }
 
-            urun.GoruntulenmeSayisi += 1;
-            await _context.SaveChangesAsync();
+            if (!IsLikelyCrawler(Request.Headers.UserAgent.ToString()))
+            {
+                try
+                {
+                    var affectedRows = await _context.Urunler
+                        .Where(x => x.Id == urun.Id)
+                        .ExecuteUpdateAsync(
+                            setters => setters.SetProperty(
+                                x => x.GoruntulenmeSayisi,
+                                x => x.GoruntulenmeSayisi + 1),
+                            CancellationToken.None);
+
+                    if (affectedRows == 1)
+                    {
+                        // ExecuteUpdate change tracker'ı güncellemez; yalnızca ekrandaki değer eşitlenir.
+                        urun.GoruntulenmeSayisi++;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Sayaç analitiktir; başarısızlığı ürün görüntülemeyi engellememelidir.
+                    _logger.LogWarning(ex, "Urun goruntulenme sayaci artirilamadi. UrunId={UrunId}", urun.Id);
+                }
+            }
 
             var tumMedya = urun.UrunResimleri
                 .Where(x => !x.SilindiMi)
@@ -562,6 +561,23 @@ namespace FilistinProje.Web.Controllers
             ViewBag.BenzerUrunler = benzerUrunler;
 
             return View(urun);
+        }
+
+        private static bool IsLikelyCrawler(string userAgent)
+        {
+            if (string.IsNullOrWhiteSpace(userAgent))
+            {
+                return true;
+            }
+
+            string[] crawlerMarkers =
+            [
+                "bot", "crawler", "spider", "slurp", "bingpreview",
+                "facebookexternalhit", "whatsapp", "telegrambot", "headless"
+            ];
+
+            return crawlerMarkers.Any(marker =>
+                userAgent.Contains(marker, StringComparison.OrdinalIgnoreCase));
         }
 
         [HttpPost]

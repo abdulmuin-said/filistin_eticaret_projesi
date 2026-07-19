@@ -147,7 +147,7 @@
                                             </span>
                                             @if (item.FaturaYuklendiMi)
                                             {
-                                                <a href="/Siparis/FaturaIndir?id=@item.Id" target="_blank" class="text-xs bg-green-50 text-green-700 border border-green-200 px-2 py-0.5 rounded hover:bg-green-100 transition-colors" title="@Localizer["DownloadInvoice"]">
+                                                <a href="/Belge/Fatura?siparisId=@item.Id&amp;indir=true" target="_blank" class="text-xs bg-green-50 text-green-700 border border-green-200 px-2 py-0.5 rounded hover:bg-green-100 transition-colors" title="@Localizer["DownloadInvoice"]">
                                                     <i class="fas fa-file-pdf mr-1"></i>@Localizer["Invoice"]
                                                 </a>
                                             }

@@ -14,7 +14,9 @@ namespace FilistinProje.Core.Varliklar
         public decimal Deger { get; set; } // %10 veya 100 ILS
         
         public decimal MinSepetTutari { get; set; } // Alt limit (Örn: 500 ILS üzeri)
-        
+
+        public DateTime? BaslangicTarihi { get; set; }
+
         public DateTime SonKullanmaTarihi { get; set; }
         
         public int KullanimLimiti { get; set; } // Kaç kişi kullanabilir?

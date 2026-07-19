@@ -123,6 +123,7 @@ namespace FilistinProje.Web.Data
                 ("48 İç Bölge (Merkez)", "Filistin", "Yafa - Lydda - Ramla - Taybe (48 merkez)", 2),
                 ("Batı Şeria (Kuzey / Merkez)", "Filistin", "Cenin - Nablus - Ramallah - El-Halil - Beytüllahim - Salfit - Tubas - Tulkarim - Kalkilya - Eriha", 3),
                 ("Kudüs", "Filistin", "El-Kudüs (ayrı bölge)", 4),
+                ("Gazze Şeridi", "Filistin", "Gazze - Han Yunus - Refah - Kuzey Gazze - Deyr el-Balah", 5),
             };
 
             var bolgeLookup = await db.KargoBolgeler.IgnoreQueryFilters().ToDictionaryAsync(x => x.Ad, x => x);
@@ -153,67 +154,51 @@ namespace FilistinProje.Web.Data
             await db.SaveChangesAsync();
 
             // Şehirler
-            var sehirBolgeMap = new Dictionary<string, string>
+            var sehirler = new (string SehirAdi, string SehirAdiEn, string SehirAdiAr, string BolgeAdi)[]
             {
-                ["Hayfa (Haifa)"] = "48 İç Bölge (Kuzey)",
-                ["Nasıra (Nazareth)"] = "48 İç Bölge (Kuzey)",
-                ["Akka (Acre)"] = "48 İç Bölge (Kuzey)",
-                ["Ümmü'l-Fahm"] = "48 İç Bölge (Kuzey)",
-                ["Yafa (Jaffa)"] = "48 İç Bölge (Merkez)",
-                ["Lydda"] = "48 İç Bölge (Merkez)",
-                ["Ramla"] = "48 İç Bölge (Merkez)",
-                ["Taybe"] = "48 İç Bölge (Merkez)",
-                ["Cenin (Jenin)"] = "Batı Şeria (Kuzey / Merkez)",
-                ["Nablus"] = "Batı Şeria (Kuzey / Merkez)",
-                ["Ramallah & El-Bireh"] = "Batı Şeria (Kuzey / Merkez)",
-                ["El-Halil (Hebron)"] = "Batı Şeria (Kuzey / Merkez)",
-                ["Beytüllahim (Bethlehem)"] = "Batı Şeria (Kuzey / Merkez)",
-                ["Salfit"] = "Batı Şeria (Kuzey / Merkez)",
-                ["Tubas"] = "Batı Şeria (Kuzey / Merkez)",
-                ["Tulkarim"] = "Batı Şeria (Kuzey / Merkez)",
-                ["Kalkilya (Qalqilya)"] = "Batı Şeria (Kuzey / Merkez)",
-                ["Eriha (Jericho)"] = "Batı Şeria (Kuzey / Merkez)",
-                ["El-Kudüs (Jerusalem)"] = "Kudüs",
-            };
-
-            var sehirArMap = new Dictionary<string, string>
-            {
-                ["Hayfa (Haifa)"] = "حيفا",
-                ["Nasıra (Nazareth)"] = "الناصرة",
-                ["Akka (Acre)"] = "عكا",
-                ["Ümmü'l-Fahm"] = "أم الفحم",
-                ["Yafa (Jaffa)"] = "يافا",
-                ["Lydda"] = "اللد",
-                ["Ramla"] = "الرملة",
-                ["Taybe"] = "الطيبة",
-                ["Cenin (Jenin)"] = "جنين",
-                ["Nablus"] = "نابلس",
-                ["Ramallah & El-Bireh"] = "رام الله والبيرة",
-                ["El-Halil (Hebron)"] = "الخليل",
-                ["Beytüllahim (Bethlehem)"] = "بيت لحم",
-                ["Salfit"] = "سلفيت",
-                ["Tubas"] = "طوباس",
-                ["Tulkarim"] = "طولكرم",
-                ["Kalkilya (Qalqilya)"] = "قلقيلية",
-                ["Eriha (Jericho)"] = "أريحا",
-                ["El-Kudüs (Jerusalem)"] = "القدس",
+                ("Hayfa", "Haifa", "حيفا", "48 İç Bölge (Kuzey)"),
+                ("Nasıra", "Nazareth", "الناصرة", "48 İç Bölge (Kuzey)"),
+                ("Akka", "Acre", "عكا", "48 İç Bölge (Kuzey)"),
+                ("Ümmü'l-Fahm", "Umm al-Fahm", "أم الفحم", "48 İç Bölge (Kuzey)"),
+                ("Yafa", "Jaffa", "يافا", "48 İç Bölge (Merkez)"),
+                ("Lydda", "Lydda", "اللد", "48 İç Bölge (Merkez)"),
+                ("Ramla", "Ramla", "الرملة", "48 İç Bölge (Merkez)"),
+                ("Taybe", "Tayibe", "الطيبة", "48 İç Bölge (Merkez)"),
+                ("Cenin", "Jenin", "جنين", "Batı Şeria (Kuzey / Merkez)"),
+                ("Nablus", "Nablus", "نابلس", "Batı Şeria (Kuzey / Merkez)"),
+                ("Ramallah ve El-Bireh", "Ramallah and al-Bireh", "رام الله والبيرة", "Batı Şeria (Kuzey / Merkez)"),
+                ("El-Halil", "Hebron", "الخليل", "Batı Şeria (Kuzey / Merkez)"),
+                ("Beytüllahim", "Bethlehem", "بيت لحم", "Batı Şeria (Kuzey / Merkez)"),
+                ("Salfit", "Salfit", "سلفيت", "Batı Şeria (Kuzey / Merkez)"),
+                ("Tubas", "Tubas", "طوباس", "Batı Şeria (Kuzey / Merkez)"),
+                ("Tulkarim", "Tulkarm", "طولكرم", "Batı Şeria (Kuzey / Merkez)"),
+                ("Kalkilya", "Qalqilya", "قلقيلية", "Batı Şeria (Kuzey / Merkez)"),
+                ("Eriha", "Jericho", "أريحا", "Batı Şeria (Kuzey / Merkez)"),
+                ("El-Kudüs", "Jerusalem", "القدس", "Kudüs"),
+                ("Gazze", "Gaza", "غزة", "Gazze Şeridi"),
+                ("Han Yunus", "Khan Yunis", "خان يونس", "Gazze Şeridi"),
+                ("Refah", "Rafah", "رفح", "Gazze Şeridi"),
+                ("Kuzey Gazze", "North Gaza", "شمال غزة", "Gazze Şeridi"),
+                ("Deyr el-Balah", "Deir al-Balah", "دير البلح", "Gazze Şeridi"),
             };
 
             var bolgeler = await db.KargoBolgeler.IgnoreQueryFilters().Where(x => !x.SilindiMi).ToListAsync();
-            var sehirLookup = await db.KargoBolgeSehirler.IgnoreQueryFilters().Include(x => x.Bolge).ToDictionaryAsync(x => x.SehirAdi, x => x);
+            var mevcutSehirler = await db.KargoBolgeSehirler.IgnoreQueryFilters().ToListAsync();
 
-            foreach (var (sehirAdi, bolgeAdi) in sehirBolgeMap)
+            foreach (var (sehirAdi, sehirAdiEn, sehirAdiAr, bolgeAdi) in sehirler)
             {
                 var bolge = bolgeler.FirstOrDefault(x => x.Ad == bolgeAdi);
                 if (bolge == null) continue;
 
-                var sehirAr = sehirArMap.TryGetValue(sehirAdi, out var ar) ? ar : null;
-
-                if (sehirLookup.TryGetValue(sehirAdi, out var mevcutSehir))
+                var mevcutSehir = mevcutSehirler.FirstOrDefault(x =>
+                    x.BolgeId == bolge.Id &&
+                    (x.SehirAdi == sehirAdi || x.SehirAdiEn == sehirAdiEn));
+                if (mevcutSehir != null)
                 {
-                    mevcutSehir.BolgeId = bolge.Id;
+                    mevcutSehir.SehirAdi = sehirAdi;
+                    mevcutSehir.SehirAdiEn = sehirAdiEn;
+                    mevcutSehir.SehirAdiAr = sehirAdiAr;
                     mevcutSehir.SilindiMi = false;
-                    if (string.IsNullOrWhiteSpace(mevcutSehir.SehirAdiAr)) mevcutSehir.SehirAdiAr = sehirAr;
                 }
                 else
                 {
@@ -221,18 +206,18 @@ namespace FilistinProje.Web.Data
                     {
                         BolgeId = bolge.Id,
                         SehirAdi = sehirAdi,
-                        SehirAdiEn = sehirAdi,
-                        SehirAdiAr = sehirAr,
+                        SehirAdiEn = sehirAdiEn,
+                        SehirAdiAr = sehirAdiAr,
                         OlusturulmaTarihi = DateTime.UtcNow,
                         SilindiMi = false
                     });
                 }
             }
 
-            // Gazze şehirleri ayrı bölgeye eklenmedi - proje sahibi kararı bekleniyor.
-            // ponytail: Gazze bölge+şehir eklemesi, proje sahibi "Gazze dahil" dediğinde yapılacak.
+            // Gazze şehirleri ayrı bölgeye eklendi.
+
             await db.SaveChangesAsync();
-            logger.LogInformation("[Seed] {N} sehir {R} bolgeye eklendi.", sehirBolgeMap.Count, bolgeAdlari.Length);
+            logger.LogInformation("[Seed] {N} sehir {R} bolge icin dogrulandi.", sehirler.Length, bolgeAdlari.Length);
         }
     }
 }

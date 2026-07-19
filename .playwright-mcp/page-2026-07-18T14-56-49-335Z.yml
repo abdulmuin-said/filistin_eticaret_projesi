@@ -1,0 +1,180 @@
+- generic [active] [ref=f12e1]:
+  - generic [ref=f12e3]:
+    - generic [ref=f12e4]:
+      - generic [ref=f12e5]:
+        - generic [ref=f12e6]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f12e7]:
+        - generic [ref=f12e8]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f12e9]:
+        - generic [ref=f12e10]: 
+        - text: Pay on delivery option
+      - generic [ref=f12e11]:
+        - generic [ref=f12e12]: 
+        - text: Fast Production
+      - generic [ref=f12e13]:
+        - generic [ref=f12e14]: 
+        - text: Careful Packaging
+      - generic [ref=f12e15]:
+        - generic [ref=f12e16]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f12e17]:
+        - generic [ref=f12e18]: 
+        - text: 14 Days Return
+      - generic [ref=f12e19]:
+        - generic [ref=f12e20]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f12e21]:
+        - generic [ref=f12e22]: 
+        - text: WhatsApp Support
+    - generic [ref=f12e23]:
+      - generic [ref=f12e24]:
+        - generic [ref=f12e25]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f12e26]:
+        - generic [ref=f12e27]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f12e28]:
+        - generic [ref=f12e29]: 
+        - text: Pay on delivery option
+      - generic [ref=f12e30]:
+        - generic [ref=f12e31]: 
+        - text: Fast Production
+      - generic [ref=f12e32]:
+        - generic [ref=f12e33]: 
+        - text: Careful Packaging
+      - generic [ref=f12e34]:
+        - generic [ref=f12e35]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f12e36]:
+        - generic [ref=f12e37]: 
+        - text: 14 Days Return
+      - generic [ref=f12e38]:
+        - generic [ref=f12e39]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f12e40]:
+        - generic [ref=f12e41]: 
+        - text: WhatsApp Support
+  - banner [ref=f12e42]:
+    - generic [ref=f12e43]:
+      - generic [ref=f12e44]:
+        - generic [ref=f12e45]: 
+        - link "العربية" [ref=f12e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FFavori
+        - link "English" [ref=f12e48] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FFavori
+      - link "7ANRPS48" [ref=f12e49] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f12e50]
+      - generic [ref=f12e51]:
+        - button "Search" [ref=f12e52] [cursor=pointer]
+        - link "My Account" [ref=f12e55] [cursor=pointer]:
+          - /url: /Profil
+        - link "My Favorites" [ref=f12e58] [cursor=pointer]:
+          - /url: /Favori
+        - link "Cart" [ref=f12e61] [cursor=pointer]:
+          - /url: /Sepet
+          - generic [ref=f12e64]: "1"
+      - navigation [ref=f12e65]:
+        - list [ref=f12e66]:
+          - listitem [ref=f12e67] [cursor=pointer]:
+            - link "beauty" [ref=f12e68]:
+              - /url: /Urun?k=89
+          - listitem [ref=f12e71] [cursor=pointer]:
+            - link "fragrances" [ref=f12e72]:
+              - /url: /Urun?k=90
+          - listitem [ref=f12e75] [cursor=pointer]:
+            - link "furniture" [ref=f12e76]:
+              - /url: /Urun?k=91
+          - listitem [ref=f12e79] [cursor=pointer]:
+            - link "groceries" [ref=f12e80]:
+              - /url: /Urun?k=92
+          - listitem [ref=f12e83] [cursor=pointer]:
+            - link "Home Furniture" [ref=f12e84]:
+              - /url: /Urun?k=78
+          - listitem [ref=f12e87] [cursor=pointer]:
+            - link "Electronics" [ref=f12e88]:
+              - /url: /Urun?k=79
+          - listitem [ref=f12e91] [cursor=pointer]:
+            - link "Fashion" [ref=f12e92]:
+              - /url: /Urun?k=80
+          - listitem [ref=f12e95] [cursor=pointer]:
+            - link "Contact" [ref=f12e96]:
+              - /url: /Kurumsal/Iletisim
+  - main [ref=f12e97]:
+    - generic [ref=f12e99]:
+      - link "Home Page" [ref=f12e100] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f12e101]: /
+      - link "My Account" [ref=f12e102] [cursor=pointer]:
+        - /url: /Profil
+      - generic [ref=f12e103]: /
+      - generic [ref=f12e104]: My Favorites
+    - generic [ref=f12e105]:
+      - generic [ref=f12e106]:
+        - heading "My Favorite Collection" [level=1] [ref=f12e107]
+        - paragraph [ref=f12e108]: Add products you like to your favorites
+      - generic [ref=f12e109]:
+        - generic [ref=f12e110]: 
+        - heading "No favorite products" [level=4] [ref=f12e111]
+        - paragraph [ref=f12e112]: Explore Favorite Collection
+        - link "Explore Collection" [ref=f12e113] [cursor=pointer]:
+          - /url: /Urun
+  - contentinfo [ref=f12e114]:
+    - generic [ref=f12e116]:
+      - generic [ref=f12e121]:
+        - generic [ref=f12e122]: Across Palestine
+        - generic [ref=f12e123]: Free Shipping
+      - generic [ref=f12e128]:
+        - generic [ref=f12e129]: Bank Transfer
+        - generic [ref=f12e130]: 256 Bit SSL
+      - generic [ref=f12e135]:
+        - generic [ref=f12e136]: Bank Transfer
+        - generic [ref=f12e137]: Easy payment by IBAN
+    - generic [ref=f12e138]:
+      - generic [ref=f12e139]:
+        - generic [ref=f12e140]:
+          - heading "Subscribe to newsletter" [level=3] [ref=f12e141]
+          - paragraph [ref=f12e142]: Get new arrivals, Palestinian market picks, and special offers in your inbox.
+          - generic [ref=f12e143]:
+            - textbox "Email Address" [ref=f12e144]
+            - button "Subscribe" [ref=f12e145] [cursor=pointer]
+        - generic [ref=f12e146]:
+          - heading "Corporate" [level=4] [ref=f12e147]
+          - list [ref=f12e148]:
+            - listitem [ref=f12e149]:
+              - link "About Us" [ref=f12e150] [cursor=pointer]:
+                - /url: /Kurumsal/Hakkimizda
+            - listitem [ref=f12e151]:
+              - link "Contact" [ref=f12e152] [cursor=pointer]:
+                - /url: /Kurumsal/Iletisim
+            - listitem [ref=f12e153]:
+              - link "All Products" [ref=f12e154] [cursor=pointer]:
+                - /url: /Urun
+            - listitem [ref=f12e155]:
+              - link "Privacy Policy" [ref=f12e156] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f12e157]:
+              - link "Distance Sales Contract" [ref=f12e158] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - link "WhatsApp" [ref=f12e160] [cursor=pointer]:
+            - /url: https://wa.me/970599000000
+            - generic [ref=f12e161]: 
+      - generic [ref=f12e162]:
+        - paragraph [ref=f12e164]: © 2026 7ANRPS48 — All rights reserved.
+        - generic [ref=f12e165]:
+          - link "Privacy Policy" [ref=f12e166] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "Return and Exchange" [ref=f12e167] [cursor=pointer]:
+            - /url: /Kurumsal/IadeKosullari
+          - text: "|"
+          - link "About Us" [ref=f12e168] [cursor=pointer]:
+            - /url: /Kurumsal/Hakkimizda
+  - link "WhatsApp Contact" [ref=f12e169] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=f12e172]: WhatsApp
+  - link "Cart" [ref=f12e173] [cursor=pointer]:
+    - /url: /Sepet
+    - generic [ref=f12e176]: "1"

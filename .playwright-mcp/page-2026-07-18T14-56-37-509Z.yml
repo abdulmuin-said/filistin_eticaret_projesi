@@ -1,0 +1,385 @@
+- generic [ref=f8e2]:
+  - text:          +                    
+  - banner [ref=f8e3]:
+    - generic [ref=f8e4]:
+      - link "7ANRPS48 Admin Panel" [ref=f8e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f8e6]
+      - generic [ref=f8e7]: Admin Panel
+    - navigation "Admin main menu" [ref=f8e8]:
+      - link " Dashboard" [ref=f8e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f8e10]: 
+        - text: Dashboard
+      - generic [ref=f8e11]:
+        - button " Order Management" [ref=f8e12] [cursor=pointer]:
+          - generic [ref=f8e13]: 
+          - text: Order Management
+        - text:      
+      - generic [ref=f8e14]:
+        - button " Product Management" [ref=f8e15] [cursor=pointer]:
+          - generic [ref=f8e16]: 
+          - text: Product Management
+        - text:  +  
+      - generic [ref=f8e17]:
+        - button " Store Content" [ref=f8e18] [cursor=pointer]:
+          - generic [ref=f8e19]: 
+          - text: Store Content
+        - text:        
+      - link " Members" [ref=f8e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f8e21]: 
+        - text: Members
+      - link " Staff" [ref=f8e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f8e23]: 
+        - text: Staff
+      - link " Wholesalers" [ref=f8e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f8e25]: 
+        - text: Wholesalers
+      - link " Wholesale Groups" [ref=f8e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f8e27]: 
+        - text: Wholesale Groups
+      - generic [ref=f8e28]:
+        - button " Reports" [ref=f8e29] [cursor=pointer]:
+          - generic [ref=f8e30]: 
+          - text: Reports
+        - text:  
+      - link " Bank Accounts" [ref=f8e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f8e32]: 
+        - text: Bank Accounts
+      - link " Settings" [ref=f8e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f8e34]: 
+        - text: Settings
+    - generic [ref=f8e35]:
+      - text: 
+      - combobox "Language" [ref=f8e37]:
+        - option "AR"
+        - option "EN" [selected]
+      - generic [ref=f8e38]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f8e39] [cursor=pointer]:
+          - generic [ref=f8e40]:
+            - strong [ref=f8e41]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f8e42]: "7"
+        - text:  
+  - generic [ref=f8e43]:
+    - main [ref=f8e44]:
+      - generic [ref=f8e45]:
+        - generic [ref=f8e46]:
+          - generic [ref=f8e47]:
+            - heading "Category Management" [level=1] [ref=f8e48]
+            - paragraph [ref=f8e49]: Manage parent categories, subcategories, SEO and store visibility from a single screen.
+          - generic [ref=f8e50]:
+            - link " PDF" [ref=f8e51] [cursor=pointer]:
+              - /url: /Admin/Kategori/PdfExport
+              - generic [ref=f8e52]: 
+              - text: PDF
+            - link " XLSX" [ref=f8e53] [cursor=pointer]:
+              - /url: /Admin/Kategori/ExcelExport
+              - generic [ref=f8e54]: 
+              - text: XLSX
+            - link "+ Yeni Kategori" [ref=f8e55] [cursor=pointer]:
+              - /url: /Admin/Kategori/Ekle
+              - generic [ref=f8e56]: +
+              - text: Yeni Kategori
+        - generic [ref=f8e57]:
+          - generic [ref=f8e58]:
+            - generic [ref=f8e59]: 
+            - generic [ref=f8e61]:
+              - generic [ref=f8e62]: Total Categories
+              - strong [ref=f8e63]: "7"
+          - generic [ref=f8e64]:
+            - generic [ref=f8e65]: 
+            - generic [ref=f8e67]:
+              - generic [ref=f8e68]: Active Categories
+              - strong [ref=f8e69]: "7"
+          - generic [ref=f8e70]:
+            - generic [ref=f8e71]: 
+            - generic [ref=f8e73]:
+              - generic [ref=f8e74]: Parent Categories
+              - strong [ref=f8e75]: "7"
+          - generic [ref=f8e76]:
+            - generic [ref=f8e77]: 
+            - generic [ref=f8e79]:
+              - generic [ref=f8e80]: Child Categories
+              - strong [ref=f8e81]: "0"
+        - generic [ref=f8e82]:
+          - generic [ref=f8e84]:
+            - generic [ref=f8e85]:
+              - generic [ref=f8e86]: Arama
+              - textbox "Category name, slug or SEO title" [ref=f8e87]
+            - generic [ref=f8e88]:
+              - generic [ref=f8e89]: الحالة
+              - combobox [ref=f8e90]:
+                - option "All statuses" [selected]
+                - option "نشط"
+                - option "غير نشط"
+            - generic [ref=f8e91]:
+              - generic [ref=f8e92]: Kategori Tipi
+              - combobox [ref=f8e93]:
+                - option "All types" [selected]
+                - option "Parent Categories"
+                - option "Child Categories"
+            - generic [ref=f8e94]:
+              - button " تصفية" [ref=f8e95] [cursor=pointer]:
+                - generic [ref=f8e96]: 
+                - text: تصفية
+              - link "" [ref=f8e97] [cursor=pointer]:
+                - /url: /Admin/Kategori
+          - generic [ref=f8e99]: 7 categories listed
+          - table [ref=f8e102]:
+            - rowgroup [ref=f8e103]:
+              - row [ref=f8e104]:
+                - columnheader "الفئة" [ref=f8e105]
+                - columnheader "Parent Categories" [ref=f8e106]
+                - columnheader "Store Data" [ref=f8e107]
+                - columnheader "SEO" [ref=f8e108]
+                - columnheader "الترتيب" [ref=f8e109]
+                - columnheader "الحالة" [ref=f8e110]
+                - columnheader "Actions" [ref=f8e111]
+            - rowgroup [ref=f8e112]:
+              - row [ref=f8e113]:
+                - cell "أ أثاث furniture أثاث  /test-furniture" [ref=f8e114]:
+                  - generic [ref=f8e115]:
+                    - generic [ref=f8e116]: أ
+                    - generic [ref=f8e117]:
+                      - generic [ref=f8e118]: أثاث
+                      - generic [ref=f8e119]: furniture
+                      - text: أثاث
+                      - generic [ref=f8e121]:
+                        - generic [ref=f8e122]: 
+                        - text: /test-furniture
+                - cell "Parent Categories" [ref=f8e123]
+                - cell " 5 products  0 subcategories" [ref=f8e124]:
+                  - generic [ref=f8e125]:
+                    - generic [ref=f8e126]:
+                      - generic [ref=f8e127]: 
+                      - text: 5 products
+                    - generic [ref=f8e128]:
+                      - generic [ref=f8e129]: 
+                      - text: 0 subcategories
+                - cell "Ready أثاث" [ref=f8e130]:
+                  - generic [ref=f8e131]: Ready
+                  - generic [ref=f8e132]: أثاث
+                - cell "#0" [ref=f8e133]
+                - cell " نشط" [ref=f8e134]:
+                  - generic [ref=f8e135]:
+                    - generic [ref=f8e136]: 
+                    - text: نشط
+                - cell [ref=f8e137]:
+                  - generic [ref=f8e138]:
+                    - link "" [ref=f8e139] [cursor=pointer]:
+                      - /url: /Urun?k=91
+                    - link "" [ref=f8e141] [cursor=pointer]:
+                      - /url: /Admin/Kategori/Duzenle/91
+                    - button "" [ref=f8e144] [cursor=pointer]
+              - row [ref=f8e146]:
+                - cell "ا العطور fragrances العطور  /test-fragrances" [ref=f8e147]:
+                  - generic [ref=f8e148]:
+                    - generic [ref=f8e149]: ا
+                    - generic [ref=f8e150]:
+                      - generic [ref=f8e151]: العطور
+                      - generic [ref=f8e152]: fragrances
+                      - text: العطور
+                      - generic [ref=f8e154]:
+                        - generic [ref=f8e155]: 
+                        - text: /test-fragrances
+                - cell "Parent Categories" [ref=f8e156]
+                - cell " 5 products  0 subcategories" [ref=f8e157]:
+                  - generic [ref=f8e158]:
+                    - generic [ref=f8e159]:
+                      - generic [ref=f8e160]: 
+                      - text: 5 products
+                    - generic [ref=f8e161]:
+                      - generic [ref=f8e162]: 
+                      - text: 0 subcategories
+                - cell "Ready العطور" [ref=f8e163]:
+                  - generic [ref=f8e164]: Ready
+                  - generic [ref=f8e165]: العطور
+                - cell "#0" [ref=f8e166]
+                - cell " نشط" [ref=f8e167]:
+                  - generic [ref=f8e168]:
+                    - generic [ref=f8e169]: 
+                    - text: نشط
+                - cell [ref=f8e170]:
+                  - generic [ref=f8e171]:
+                    - link "" [ref=f8e172] [cursor=pointer]:
+                      - /url: /Urun?k=90
+                    - link "" [ref=f8e174] [cursor=pointer]:
+                      - /url: /Admin/Kategori/Duzenle/90
+                    - button "" [ref=f8e177] [cursor=pointer]
+              - row [ref=f8e179]:
+                - cell "ب بقالة groceries بقالة  /test-groceries" [ref=f8e180]:
+                  - generic [ref=f8e181]:
+                    - generic [ref=f8e182]: ب
+                    - generic [ref=f8e183]:
+                      - generic [ref=f8e184]: بقالة
+                      - generic [ref=f8e185]: groceries
+                      - text: بقالة
+                      - generic [ref=f8e187]:
+                        - generic [ref=f8e188]: 
+                        - text: /test-groceries
+                - cell "Parent Categories" [ref=f8e189]
+                - cell " 15 products  0 subcategories" [ref=f8e190]:
+                  - generic [ref=f8e191]:
+                    - generic [ref=f8e192]:
+                      - generic [ref=f8e193]: 
+                      - text: 15 products
+                    - generic [ref=f8e194]:
+                      - generic [ref=f8e195]: 
+                      - text: 0 subcategories
+                - cell "Ready بقالة" [ref=f8e196]:
+                  - generic [ref=f8e197]: Ready
+                  - generic [ref=f8e198]: بقالة
+                - cell "#0" [ref=f8e199]
+                - cell " نشط" [ref=f8e200]:
+                  - generic [ref=f8e201]:
+                    - generic [ref=f8e202]: 
+                    - text: نشط
+                - cell [ref=f8e203]:
+                  - generic [ref=f8e204]:
+                    - link "" [ref=f8e205] [cursor=pointer]:
+                      - /url: /Urun?k=92
+                    - link "" [ref=f8e207] [cursor=pointer]:
+                      - /url: /Admin/Kategori/Duzenle/92
+                    - button "" [ref=f8e210] [cursor=pointer]
+              - row [ref=f8e212]:
+                - cell "ج جمال beauty جمال  /test-beauty" [ref=f8e213]:
+                  - generic [ref=f8e214]:
+                    - generic [ref=f8e215]: ج
+                    - generic [ref=f8e216]:
+                      - generic [ref=f8e217]: جمال
+                      - generic [ref=f8e218]: beauty
+                      - text: جمال
+                      - generic [ref=f8e220]:
+                        - generic [ref=f8e221]: 
+                        - text: /test-beauty
+                - cell "Parent Categories" [ref=f8e222]
+                - cell " 5 products  0 subcategories" [ref=f8e223]:
+                  - generic [ref=f8e224]:
+                    - generic [ref=f8e225]:
+                      - generic [ref=f8e226]: 
+                      - text: 5 products
+                    - generic [ref=f8e227]:
+                      - generic [ref=f8e228]: 
+                      - text: 0 subcategories
+                - cell "Ready جمال" [ref=f8e229]:
+                  - generic [ref=f8e230]: Ready
+                  - generic [ref=f8e231]: جمال
+                - cell "#0" [ref=f8e232]
+                - cell " نشط" [ref=f8e233]:
+                  - generic [ref=f8e234]:
+                    - generic [ref=f8e235]: 
+                    - text: نشط
+                - cell [ref=f8e236]:
+                  - generic [ref=f8e237]:
+                    - link "" [ref=f8e238] [cursor=pointer]:
+                      - /url: /Urun?k=89
+                    - link "" [ref=f8e240] [cursor=pointer]:
+                      - /url: /Admin/Kategori/Duzenle/89
+                    - button "" [ref=f8e243] [cursor=pointer]
+              - row [ref=f8e245]:
+                - cell "أ أثاث منزلي Home Furniture أثاث منزلي عصري  /home-furniture" [ref=f8e246]:
+                  - generic [ref=f8e247]:
+                    - generic [ref=f8e248]: أ
+                    - generic [ref=f8e249]:
+                      - generic [ref=f8e250]: أثاث منزلي
+                      - generic [ref=f8e251]: Home Furniture
+                      - text: أثاث منزلي عصري
+                      - generic [ref=f8e253]:
+                        - generic [ref=f8e254]: 
+                        - text: /home-furniture
+                - cell "Parent Categories" [ref=f8e255]
+                - cell " 0 products  0 subcategories" [ref=f8e256]:
+                  - generic [ref=f8e257]:
+                    - generic [ref=f8e258]:
+                      - generic [ref=f8e259]: 
+                      - text: 0 products
+                    - generic [ref=f8e260]:
+                      - generic [ref=f8e261]: 
+                      - text: 0 subcategories
+                - cell "Missing" [ref=f8e262]
+                - cell "#1" [ref=f8e263]
+                - cell " نشط" [ref=f8e264]:
+                  - generic [ref=f8e265]:
+                    - generic [ref=f8e266]: 
+                    - text: نشط
+                - cell [ref=f8e267]:
+                  - generic [ref=f8e268]:
+                    - link "" [ref=f8e269] [cursor=pointer]:
+                      - /url: /Urun?k=78
+                    - link "" [ref=f8e271] [cursor=pointer]:
+                      - /url: /Admin/Kategori/Duzenle/78
+                    - button "" [ref=f8e274] [cursor=pointer]
+              - row [ref=f8e276]:
+                - cell "إ إلكترونيات Electronics إلكترونيات حديثة  /electronics" [ref=f8e277]:
+                  - generic [ref=f8e278]:
+                    - generic [ref=f8e279]: إ
+                    - generic [ref=f8e280]:
+                      - generic [ref=f8e281]: إلكترونيات
+                      - generic [ref=f8e282]: Electronics
+                      - text: إلكترونيات حديثة
+                      - generic [ref=f8e284]:
+                        - generic [ref=f8e285]: 
+                        - text: /electronics
+                - cell "Parent Categories" [ref=f8e286]
+                - cell " 0 products  0 subcategories" [ref=f8e287]:
+                  - generic [ref=f8e288]:
+                    - generic [ref=f8e289]:
+                      - generic [ref=f8e290]: 
+                      - text: 0 products
+                    - generic [ref=f8e291]:
+                      - generic [ref=f8e292]: 
+                      - text: 0 subcategories
+                - cell "Missing" [ref=f8e293]
+                - cell "#2" [ref=f8e294]
+                - cell " نشط" [ref=f8e295]:
+                  - generic [ref=f8e296]:
+                    - generic [ref=f8e297]: 
+                    - text: نشط
+                - cell [ref=f8e298]:
+                  - generic [ref=f8e299]:
+                    - link "" [ref=f8e300] [cursor=pointer]:
+                      - /url: /Urun?k=79
+                    - link "" [ref=f8e302] [cursor=pointer]:
+                      - /url: /Admin/Kategori/Duzenle/79
+                    - button "" [ref=f8e305] [cursor=pointer]
+              - row [ref=f8e307]:
+                - cell "أ أزياء Fashion أزياء عصرية  /fashion" [ref=f8e308]:
+                  - generic [ref=f8e309]:
+                    - generic [ref=f8e310]: أ
+                    - generic [ref=f8e311]:
+                      - generic [ref=f8e312]: أزياء
+                      - generic [ref=f8e313]: Fashion
+                      - text: أزياء عصرية
+                      - generic [ref=f8e315]:
+                        - generic [ref=f8e316]: 
+                        - text: /fashion
+                - cell "Parent Categories" [ref=f8e317]
+                - cell " 0 products  0 subcategories" [ref=f8e318]:
+                  - generic [ref=f8e319]:
+                    - generic [ref=f8e320]:
+                      - generic [ref=f8e321]: 
+                      - text: 0 products
+                    - generic [ref=f8e322]:
+                      - generic [ref=f8e323]: 
+                      - text: 0 subcategories
+                - cell "Missing" [ref=f8e324]
+                - cell "#3" [ref=f8e325]
+                - cell " نشط" [ref=f8e326]:
+                  - generic [ref=f8e327]:
+                    - generic [ref=f8e328]: 
+                    - text: نشط
+                - cell [ref=f8e329]:
+                  - generic [ref=f8e330]:
+                    - link "" [ref=f8e331] [cursor=pointer]:
+                      - /url: /Urun?k=80
+                    - link "" [ref=f8e333] [cursor=pointer]:
+                      - /url: /Admin/Kategori/Duzenle/80
+                    - button "" [ref=f8e336] [cursor=pointer]
+    - contentinfo [ref=f8e338]: © 2026 7ANRPS48 Admin Panel. All rights reserved.

@@ -49,6 +49,7 @@ namespace FilistinProje.Web.Controllers
                 .Include(u => u.Kategori)
                 .Include(u => u.UrunSecenek)
                 .Include(u => u.UrunResimleri)
+                .AsSplitQuery()
                 .Where(u =>
                     u.AktifMi &&
                     u.YayindaMi &&

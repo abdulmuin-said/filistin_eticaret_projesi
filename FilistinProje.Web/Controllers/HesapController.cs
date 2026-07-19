@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text;
 using FilistinProje.Core.Enums;
 using FilistinProje.Core.Interfaces;
 using FilistinProje.Core.Varliklar;
@@ -12,6 +13,7 @@ using FilistinProje.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
@@ -28,6 +30,7 @@ namespace FilistinProje.Web.Controllers
         private readonly IAdminSessionStateService _adminSessionStateService;
         private readonly IAdminSecurityAuditService _adminSecurityAuditService;
         private readonly IStringLocalizer<SharedResource> _localizer;
+        private readonly ILogger<HesapController> _logger;
 
         public HesapController(
             UserManager<AppUser> userManager,
@@ -38,7 +41,8 @@ namespace FilistinProje.Web.Controllers
             ISiteSettingsService siteSettingsService,
             IAdminSessionStateService adminSessionStateService,
             IAdminSecurityAuditService adminSecurityAuditService,
-            IStringLocalizer<SharedResource> localizer)
+            IStringLocalizer<SharedResource> localizer,
+            ILogger<HesapController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -49,6 +53,7 @@ namespace FilistinProje.Web.Controllers
             _adminSessionStateService = adminSessionStateService;
             _adminSecurityAuditService = adminSecurityAuditService;
             _localizer = localizer;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -305,27 +310,10 @@ namespace FilistinProje.Web.Controllers
         [EnableRateLimiting("auth")]
         public async Task<IActionResult> SifremiUnuttum(string eposta)
         {
-            ViewBag.Eposta = eposta;
-            if (string.IsNullOrWhiteSpace(eposta))
-            {
-                ViewBag.Hata = _localizer["Hesap_EnterRegisteredEmail"].Value;
-                TempData["Hata"] = ViewBag.Hata;
-                return View();
-            }
-
-            var user = await _userManager.FindByEmailAsync(eposta);
-            if (user == null)
-            {
-                ViewBag.Mesaj = _localizer["Hesap_PasswordResetLinkSent"].Value;
-                TempData["Basari"] = ViewBag.Mesaj;
-                return View();
-            }
-
-            user.SifreSifirlamaToken = Guid.NewGuid().ToString();
-            user.SifreSifirlamaGecerlilik = DateTime.UtcNow.AddHours(1);
-            await _userManager.UpdateAsync(user);
-
-            var link = Url.Action("SifreSifirla", "Hesap", new { token = user.SifreSifirlamaToken }, Request.Scheme) ?? string.Empty;
+            ViewBag.Eposta = eposta?.Trim();
+            var user = string.IsNullOrWhiteSpace(eposta)
+                ? null
+                : await _userManager.FindByEmailAsync(eposta.Trim());
 
             var culture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
             var (subject, content, buttonText) = culture switch
@@ -347,46 +335,62 @@ namespace FilistinProje.Web.Controllers
                 )
             };
 
-            try
+            if (user != null && !string.IsNullOrWhiteSpace(user.Email))
             {
-                await _emailService.SendTemplateMailAsync(
-                    user.Email ?? string.Empty,
-                    subject,
-                    user.AdSoyad,
-                    content,
-                    link,
-                    buttonText,
-                    culture);
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Hata = _localizer["Hesap_PasswordResetFailed"].Value + ex.Message;
-                TempData["Hata"] = ViewBag.Hata;
-                return View();
+                try
+                {
+                    var identityToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(identityToken));
+                    var link = Url.Action(
+                        "SifreSifirla",
+                        "Hesap",
+                        new { userId = user.Id, token = encodedToken },
+                        Request.Scheme) ?? string.Empty;
+
+                    await _emailService.SendTemplateMailAsync(
+                        user.Email,
+                        subject,
+                        user.AdSoyad,
+                        content,
+                        link,
+                        buttonText,
+                        culture);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Parola sıfırlama e-postası gönderilemedi. UserId={UserId}", user.Id);
+                }
             }
 
-            ViewBag.Mesaj = _localizer["Hesap_PasswordResetSuccess"].Value;
+            ViewBag.Mesaj = _localizer["Hesap_PasswordResetLinkSent"].Value;
             TempData["Basari"] = ViewBag.Mesaj;
             return View();
         }
 
         [HttpGet]
-        public async Task<IActionResult> SifreSifirla(string token)
+        public async Task<IActionResult> SifreSifirla(string userId, string token)
         {
-            if (string.IsNullOrWhiteSpace(token))
+            var decodedToken = TryDecodePasswordResetToken(token);
+            if (string.IsNullOrWhiteSpace(userId) || decodedToken == null)
             {
-                return RedirectToAction("GirisYap");
-            }
-
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.SifreSifirlamaToken == token && x.SifreSifirlamaGecerlilik > DateTime.UtcNow);
-            if (user == null)
-            {
-                ViewBag.Hata = _localizer["Hesap_InvalidOrExpiredLink"].Value;
-                TempData["Hata"] = ViewBag.Hata;
+                TempData["Hata"] = _localizer["Hesap_InvalidOrExpiredLink"].Value;
                 return RedirectToAction("SifremiUnuttum");
             }
 
-            return View(new SifreSifirlaViewModel { Token = token });
+            var user = await _userManager.FindByIdAsync(userId);
+            var valid = user != null && await _userManager.VerifyUserTokenAsync(
+                user,
+                TokenOptions.DefaultProvider,
+                UserManager<AppUser>.ResetPasswordTokenPurpose,
+                decodedToken);
+
+            if (!valid)
+            {
+                TempData["Hata"] = _localizer["Hesap_InvalidOrExpiredLink"].Value;
+                return RedirectToAction("SifremiUnuttum");
+            }
+
+            return View(new SifreSifirlaViewModel { UserId = userId, Token = token });
         }
 
         [HttpPost]
@@ -399,16 +403,15 @@ namespace FilistinProje.Web.Controllers
                 return View(model);
             }
 
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.SifreSifirlamaToken == model.Token && x.SifreSifirlamaGecerlilik > DateTime.UtcNow);
-            if (user == null)
+            var user = await _userManager.FindByIdAsync(model.UserId);
+            var decodedToken = TryDecodePasswordResetToken(model.Token);
+            if (user == null || decodedToken == null)
             {
-                ViewBag.Hata = _localizer["Hesap_LinkExpired"].Value;
-                TempData["Hata"] = ViewBag.Hata;
+                ModelState.AddModelError(string.Empty, _localizer["Hesap_LinkExpired"].Value);
                 return View(model);
             }
 
-            await _userManager.RemovePasswordAsync(user);
-            var result = await _userManager.AddPasswordAsync(user, model.YeniSifre);
+            var result = await _userManager.ResetPasswordAsync(user, decodedToken, model.YeniSifre);
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -419,12 +422,25 @@ namespace FilistinProje.Web.Controllers
                 return View(model);
             }
 
-            user.SifreSifirlamaToken = null;
-            user.SifreSifirlamaGecerlilik = null;
-            await _userManager.UpdateAsync(user);
-
             TempData["Basari"] = _localizer["Hesap_PasswordUpdated"].Value;
             return RedirectToAction("GirisYap");
+        }
+
+        private static string? TryDecodePasswordResetToken(string? encodedToken)
+        {
+            if (string.IsNullOrWhiteSpace(encodedToken) || encodedToken.Length > 4096)
+            {
+                return null;
+            }
+
+            try
+            {
+                return Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(encodedToken));
+            }
+            catch (FormatException)
+            {
+                return null;
+            }
         }
 
         public IActionResult ErisimEngellendi()

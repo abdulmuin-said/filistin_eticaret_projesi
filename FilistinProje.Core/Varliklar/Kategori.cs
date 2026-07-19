@@ -72,14 +72,14 @@ namespace FilistinProje.Core.Varliklar
         [NotMapped]
         public string LocalizedKampanyaEtiketi => GetLocalized(KampanyaEtiketi, KampanyaEtiketiEn, KampanyaEtiketiAr);
 
-        private static string GetLocalized(string tr, string en, string ar)
+        private static string GetLocalized(string legacyValue, string en, string ar)
         {
             var culture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
             return culture switch
             {
-                "ar" => !string.IsNullOrWhiteSpace(ar) ? ar : (!string.IsNullOrWhiteSpace(en) ? en : tr),
-                "en" => !string.IsNullOrWhiteSpace(en) ? en : (!string.IsNullOrWhiteSpace(ar) ? ar : tr),
-                _ => !string.IsNullOrWhiteSpace(ar) ? ar : (!string.IsNullOrWhiteSpace(en) ? en : tr)
+                "ar" => !string.IsNullOrWhiteSpace(ar) ? ar : (!string.IsNullOrWhiteSpace(en) ? en : legacyValue),
+                "en" => !string.IsNullOrWhiteSpace(en) ? en : (!string.IsNullOrWhiteSpace(ar) ? ar : legacyValue),
+                _ => !string.IsNullOrWhiteSpace(ar) ? ar : (!string.IsNullOrWhiteSpace(en) ? en : legacyValue)
             };
         }
     }

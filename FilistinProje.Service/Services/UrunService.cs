@@ -66,6 +66,7 @@ namespace FilistinProje.Service.Services
                 .Include(x => x.UrunOzellikleri)
                     .ThenInclude(x => x.UrunOzellikTanimi)
                 .Include(x => x.UrunResimleri)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 

@@ -9,16 +9,16 @@
     var currentValues = (Model.UrunOzellikleri ?? Enumerable.Empty<FilistinProje.Core.Varliklar.UrunOzellikDegeri>())
         .Where(x => !x.SilindiMi)
         .GroupBy(x => x.UrunOzellikTanimiId)
-        .ToDictionary(x => x.Key.ToString(), x => TurkishTextRepairHelper.RepairKnownBrokenTurkish(x.Last().Deger));
+        .ToDictionary(x => x.Key.ToString(), x => (x.Last().Deger ?? string.Empty).Trim());
 
     var definitionPayload = definitions.Select(x => new
     {
         id = x.Id,
-        ad = TurkishTextRepairHelper.RepairKnownBrokenTurkish(x.Ad),
+        ad = (x.Ad ?? string.Empty).Trim(),
         urunTipi = x.UrunTipi,
         alanTipi = x.AlanTipi,
-        yardimMetni = TurkishTextRepairHelper.RepairKnownBrokenTurkish(x.YardimMetni),
-        secenekler = x.SecenekListesi.Select(TurkishTextRepairHelper.RepairKnownBrokenTurkish).ToList(),
+        yardimMetni = (x.YardimMetni ?? string.Empty).Trim(),
+        secenekler = x.SecenekListesi.Select(s => (s ?? string.Empty).Trim()).ToList(),
         filtredeGoster = x.FiltredeGoster,
         detaySayfasindaGoster = x.DetaySayfasindaGoster,
         teknikTablodaGoster = x.TeknikTablodaGoster,

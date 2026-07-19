@@ -23,6 +23,7 @@
 
         <div class="bg-white border border-brand-border rounded-lg p-8 shadow-sm">
             <form asp-action="SifreSifirla" method="post" class="space-y-5">
+                <input asp-for="UserId" type="hidden" />
                 <input asp-for="Token" type="hidden" />
 
                 <div>

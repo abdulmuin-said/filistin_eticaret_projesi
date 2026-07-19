@@ -164,7 +164,7 @@ namespace FilistinProje.Service.Services
                 {
                     if (secenek.StokAdedi < adetToplam)
                     {
-                        line.StokSorunu = $"Stok yetersiz: {ornek.UrunBaslik} — istenen {adetToplam}, mevcut {secenek.StokAdedi}";
+                        line.StokSorunu = $"Insufficient stock: {ornek.UrunBaslik} — requested {adetToplam}, available {secenek.StokAdedi}";
                         result.StokYetersizlikleri.Add(new StockShortageEntry
                         {
                             SepetItemId = sepetItemId,
@@ -246,7 +246,7 @@ namespace FilistinProje.Service.Services
                     {
                         Basarili = false,
                         BasarisizUrunSecenekId = satir.UrunSecenekId,
-                        HataMesaji = $"Geçersiz adet: {satir.Adet}",
+                        HataMesaji = $"Invalid quantity: {satir.Adet}",
                     };
                 }
 
@@ -267,7 +267,7 @@ namespace FilistinProje.Service.Services
                     {
                         Basarili = false,
                         BasarisizUrunSecenekId = secenekId,
-                        HataMesaji = "Stok yetersiz veya ürün başka bir siparişle tükendi.",
+                        HataMesaji = "Insufficient stock or product depleted by another order.",
                     };
                 }
             }
@@ -296,6 +296,7 @@ namespace FilistinProje.Service.Services
         {
             return kupon != null
                 && kupon.AktifMi
+                && (!kupon.BaslangicTarihi.HasValue || kupon.BaslangicTarihi <= System.DateTime.UtcNow)
                 && kupon.SonKullanmaTarihi > System.DateTime.UtcNow
                 && (kupon.KullanimLimiti <= 0 || kupon.KullanilanMiktar < kupon.KullanimLimiti)
                 && sepetTutari >= kupon.MinSepetTutari;

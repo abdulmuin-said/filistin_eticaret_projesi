@@ -455,51 +455,96 @@
                 var statusClass = d.wholesaleStatus === 'Pending' ? 'pending' : d.wholesaleStatus === 'Approved' ? 'approved' : 'rejected';
                 var statusIcon = d.wholesaleStatus === 'Pending' ? 'fa-clock' : d.wholesaleStatus === 'Approved' ? 'fa-check-circle' : 'fa-times-circle';
 
-                var html = '<div class="ca-detail-grid">';
-                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_Ad_Soyad"]</div><div class="ca-detail-value">' + (d.adSoyad || '-') + '</div></div>';
-                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_Durum"]</div><div><span class="ca-ws-status ' + statusClass + '"><i class="fas ' + statusIcon + '"></i> ' + d.statusLabel + '</span></div></div>';
-                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_E_posta"]</div><div class="ca-detail-value">' + (d.email || '-') + '</div></div>';
-                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_Telefon"]</div><div class="ca-detail-value">' + (d.phoneNumber || '-') + '</div></div>';
-                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_KimlikNo"]</div><div class="ca-detail-value">' + (d.kimlikNo || '-') + '</div></div>';
-                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_DogumTarihi"]</div><div class="ca-detail-value">' + (d.dogumTarihi || '-') + '</div></div>';
-                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_Sehir"]</div><div class="ca-detail-value">' + (d.sehir || '-') + '</div></div>';
-                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_BasvuruTarihi"]</div><div class="ca-detail-value">' + (d.basvuruTarihi || '-') + '</div></div>';
-                html += '<div class="ca-detail-item full"><div class="ca-detail-label">@Localizer["Admin_Adres"]</div><div class="ca-detail-value ' + (!d.adres ? 'empty' : '') + '">' + (d.adres || '@Localizer["Admin_Belirtilmemis"]') + '</div></div>';
-                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_SiparisSayisi"]</div><div class="ca-detail-value">' + d.siparisSayisi + '</div></div>';
-                html += '<div class="ca-detail-item"><div class="ca-detail-label">@Localizer["Admin_ToptanciRolu"]</div><div class="ca-detail-value">' + (d.isWholesaleRole ? '<span style="color:#166534;"><i class="fas fa-check"></i> @Localizer["Admin_Evet"]</span>' : '<span style="color:#991b1b;"><i class="fas fa-times"></i> @Localizer["Admin_Hayir"]</span>') + '</div></div>';
+                const grid = document.createElement('div');
+                grid.className = 'ca-detail-grid';
+                const addItem = (label, value, full, empty) => {
+                    const item = document.createElement('div');
+                    item.className = 'ca-detail-item' + (full ? ' full' : '');
+                    const labelNode = document.createElement('div');
+                    labelNode.className = 'ca-detail-label';
+                    labelNode.textContent = label;
+                    const valueNode = document.createElement('div');
+                    valueNode.className = 'ca-detail-value' + (empty ? ' empty' : '');
+                    valueNode.textContent = value == null || value === '' ? '-' : String(value);
+                    item.append(labelNode, valueNode);
+                    grid.appendChild(item);
+                    return valueNode;
+                };
 
-                if (d.kimlikFotografYolu) {
-                    html += '<div class="ca-detail-item full"><div class="ca-detail-label">@Localizer["Admin_KimlikFotografi"]</div>';
-                    html += '<a href="' + d.kimlikFotografYolu + '" target="_blank" class="ca-detail-photo-link"><i class="fas fa-external-link-alt"></i> @Localizer["Admin_FotografiYeniSekmede"]</a>';
-                    html += '<br/><img src="' + d.kimlikFotografYolu + '" class="ca-detail-photo" alt="@Localizer["Admin_KimlikFotografi"]" />';
-                    html += '</div>';
-                } else {
-                    html += '<div class="ca-detail-item full"><div class="ca-detail-label">@Localizer["Admin_KimlikFotografi"]</div><div class="ca-detail-value empty">@Localizer["Admin_YuklenmemisText"]</div></div>';
+                addItem('@Localizer["Admin_Ad_Soyad"]', d.adSoyad || '-');
+                const statusValue = addItem('@Localizer["Admin_Durum"]', '');
+                const status = document.createElement('span');
+                status.className = 'ca-ws-status ' + statusClass;
+                const statusGlyph = document.createElement('i');
+                statusGlyph.className = 'fas ' + statusIcon;
+                status.append(statusGlyph, document.createTextNode(' ' + (d.statusLabel || '-')));
+                statusValue.replaceChildren(status);
+                addItem('@Localizer["Admin_E_posta"]', d.email || '-');
+                addItem('@Localizer["Admin_Telefon"]', d.phoneNumber || '-');
+                addItem('@Localizer["Admin_KimlikNo"]', d.kimlikNo || '-');
+                addItem('@Localizer["Admin_DogumTarihi"]', d.dogumTarihi || '-');
+                addItem('@Localizer["Admin_Sehir"]', d.sehir || '-');
+                addItem('@Localizer["Admin_BasvuruTarihi"]', d.basvuruTarihi || '-');
+                addItem('@Localizer["Admin_Adres"]', d.adres || '@Localizer["Admin_Belirtilmemis"]', true, !d.adres);
+                addItem('@Localizer["Admin_SiparisSayisi"]', d.siparisSayisi ?? 0);
+                addItem('@Localizer["Admin_ToptanciRolu"]', d.isWholesaleRole ? '@Localizer["Admin_Evet"]' : '@Localizer["Admin_Hayir"]');
+
+                const photoValue = addItem('@Localizer["Admin_KimlikFotografi"]', '@Localizer["Admin_YuklenmemisText"]', true, !d.kimlikFotografYolu);
+                if (typeof d.kimlikFotografYolu === 'string' && d.kimlikFotografYolu.startsWith('/Belge/')) {
+                    const photoLink = document.createElement('a');
+                    photoLink.href = d.kimlikFotografYolu;
+                    photoLink.target = '_blank';
+                    photoLink.rel = 'noopener';
+                    photoLink.className = 'ca-detail-photo-link';
+                    photoLink.textContent = '@Localizer["Admin_FotografiYeniSekmede"]';
+                    const photo = document.createElement('img');
+                    photo.src = d.kimlikFotografYolu;
+                    photo.className = 'ca-detail-photo';
+                    photo.alt = '@Localizer["Admin_KimlikFotografi"]';
+                    photoValue.replaceChildren(photoLink, document.createElement('br'), photo);
                 }
-                html += '</div>';
+                body.replaceChildren(grid);
 
-                body.innerHTML = html;
+                const antiforgery = document.querySelector('input[name="__RequestVerificationToken"]');
+                const createActionForm = (action, cssClass, label, confirmText) => {
+                    const form = document.createElement('form');
+                    form.action = action;
+                    form.method = 'post';
+                    form.className = 'ws-ajax-form';
+                    form.style.margin = '0';
+                    const idInput = document.createElement('input');
+                    idInput.type = 'hidden';
+                    idInput.name = 'id';
+                    idInput.value = String(d.id || '');
+                    const button = document.createElement('button');
+                    button.type = 'submit';
+                    button.className = cssClass;
+                    button.dataset.confirm = (d.adSoyad || '') + ' ' + confirmText;
+                    button.textContent = label;
+                    form.append(idInput);
+                    if (antiforgery) form.append(antiforgery.cloneNode(true));
+                    form.append(button);
+                    return form;
+                };
 
-                // Footer actions
-                var footerHtml = '';
+                footer.replaceChildren();
                 if (d.wholesaleStatus !== 'Approved') {
-                    footerHtml += '<form asp-action="Onayla" method="post" class="ws-ajax-form" style="margin:0;">';
-                    footerHtml += '<input type="hidden" name="id" value="' + d.id + '" />';
-                    footerHtml += document.querySelector('input[name="__RequestVerificationToken"]').outerHTML;
-                    footerHtml += '<button type="submit" class="ca-ws-btn approve" data-confirm="' + (d.adSoyad || '') + ' @Localizer["Admin_OnaylaConfirmJS"]"><i class="fas fa-check"></i> @Localizer["Admin_Onayla"]</button>';
-                    footerHtml += '</form>';
+                    footer.append(createActionForm('/Admin/Toptanci/Onayla', 'ca-ws-btn approve', '@Localizer["Admin_Onayla"]', '@Localizer["Admin_OnaylaConfirmJS"]'));
                 }
                 if (d.wholesaleStatus !== 'Rejected') {
-                    footerHtml += '<button type="button" class="ca-ws-btn reject" onclick="closeDetailModal();showRejectModal(\'' + d.id + '\',\'' + (d.adSoyad || '') + '\')"><i class="fas fa-times"></i> @Localizer["Admin_Reddet"]</button>';
+                    const rejectButton = document.createElement('button');
+                    rejectButton.type = 'button';
+                    rejectButton.className = 'ca-ws-btn reject';
+                    rejectButton.textContent = '@Localizer["Admin_Reddet"]';
+                    rejectButton.addEventListener('click', () => {
+                        closeDetailModal();
+                        showRejectModal(String(d.id || ''), d.adSoyad || '');
+                    });
+                    footer.append(rejectButton);
                 }
                 if (d.wholesaleStatus !== 'Pending') {
-                    footerHtml += '<form asp-action="Beklemede" method="post" class="ws-ajax-form" style="margin:0;">';
-                    footerHtml += '<input type="hidden" name="id" value="' + d.id + '" />';
-                    footerHtml += document.querySelector('input[name="__RequestVerificationToken"]').outerHTML;
-                    footerHtml += '<button type="submit" class="ca-ws-btn pending-btn" data-confirm="' + (d.adSoyad || '') + ' @Localizer["Admin_BeklemedeyeConfirmJS"]"><i class="fas fa-undo"></i> @Localizer["Admin_BeklemedeyeAl"]</button>';
-                    footerHtml += '</form>';
+                    footer.append(createActionForm('/Admin/Toptanci/Beklemede', 'ca-ws-btn pending-btn', '@Localizer["Admin_BeklemedeyeAl"]', '@Localizer["Admin_BeklemedeyeConfirmJS"]'));
                 }
-                footer.innerHTML = footerHtml;
                 footer.style.display = 'flex';
 
                 // Re-bind AJAX forms
@@ -587,7 +632,9 @@
 
         var toast = document.createElement('div');
         toast.className = 'ca-toast ' + type;
-        toast.innerHTML = '<i class="fas ' + (type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle') + '"></i> ' + message;
+        var icon = document.createElement('i');
+        icon.className = 'fas ' + (type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle');
+        toast.append(icon, document.createTextNode(' ' + String(message || '')));
         document.body.appendChild(toast);
         setTimeout(function() { toast.remove(); }, 3000);
     }
