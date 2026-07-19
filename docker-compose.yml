@@ -54,6 +54,7 @@ services:
       - filistin_app_logs:/app/logs
       - filistin_app_data:/app/App_Data
       - filistin_app_secure_storage:/app/secure-storage
+      - filistin_app_wwwroot_uploads:/app/wwwroot/uploads
     depends_on:
       db:
         condition: service_healthy
@@ -70,4 +71,6 @@ volumes:
   filistin_app_data:
     driver: local
   filistin_app_secure_storage:
+    driver: local
+  filistin_app_wwwroot_uploads:
     driver: local
