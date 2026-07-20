@@ -142,9 +142,9 @@ namespace FilistinProje.Web.Controllers
                     "ØªØ­Ù‚Ù‚ Ù…Ù† Ø­Ø³Ø§Ø¨ÙŠ"
                 ),
                 _ => (
-                    "HesabÄ±nÄ±zÄ± doÄŸrulayÄ±n",
-                    $"{brandName} hesabÄ±nÄ±z oluÅŸturuldu. HesabÄ±nÄ±zÄ± gÃ¼venli ÅŸekilde kullanabilmek iÃ§in e-posta adresinizi doÄŸrulamanÄ±z gerekiyor.",
-                    "HesabÄ±mÄ± DoÄŸrula"
+                    "تحقق من عنوان بريدك الإلكتروني",
+                    $"تم إنشاء حسابك في {brandName}. يرجى التحقق من عنوان بريدك الإلكتروني لاستخدام حسابك بأمان.",
+                    "تحقق من حسابي"
                 )
             };
 
@@ -332,9 +332,9 @@ namespace FilistinProje.Web.Controllers
                     "Ø¥Ø¹Ø§Ø¯Ø© ØªØ¹ÙŠÙŠÙ† ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±"
                 ),
                 _ => (
-                    "Åifre sÄ±fÄ±rlama talebi",
-                    "HesabÄ±nÄ±z iÃ§in bir ÅŸifre sÄ±fÄ±rlama talebi aldÄ±k. Bu iÅŸlemi siz yapmadÄ±ysanÄ±z mesajÄ± yok sayabilirsiniz.",
-                    "Åifremi SÄ±fÄ±rla"
+                    "طلب إعادة تعيين كلمة المرور",
+                    "لقد تلقينا طلباً لإعادة تعيين كلمة المرور لحسابك. إذا لم تقم بهذا الطلب، يمكنك تجاهل هذه الرسالة.",
+                    "إعادة تعيين كلمة المرور"
                 )
             };
 

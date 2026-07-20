@@ -24,7 +24,7 @@
     if (string.IsNullOrWhiteSpace(metaDescription))
     {
         metaDescription = string.IsNullOrWhiteSpace(siteSettings.MetaDescription)
-            ? (string.IsNullOrWhiteSpace(siteSettings.SiteAciklamasi) ? "Profesyonel premium dekorasyon Ã¼rÃ¼nleri." : siteSettings.SiteAciklamasi)
+            ? (string.IsNullOrWhiteSpace(siteSettings.SiteAciklamasi) ? "منتجات ديكور احترافية متميزة." : siteSettings.SiteAciklamasi)
             : siteSettings.MetaDescription;
     }
     var metaKeywords = ViewData["MetaKeywords"]?.ToString();

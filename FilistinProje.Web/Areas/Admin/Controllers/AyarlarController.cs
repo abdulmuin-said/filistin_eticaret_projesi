@@ -180,7 +180,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             return new List<KargoFirmasi>
             {
-                new() { Ad = "ØªÙˆØµÙŠÙ„ Ù…Ø­Ù„ÙŠ", Kod = "local-delivery", TakipUrl = string.Empty }
+                new() { Ad = "توصيل محلي", Kod = "local-delivery", TakipUrl = string.Empty }
             };
         }
 
@@ -204,5 +204,3 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
     }
 }
-
-

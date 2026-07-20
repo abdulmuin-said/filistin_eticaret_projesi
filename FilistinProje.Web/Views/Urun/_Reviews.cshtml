@@ -85,7 +85,7 @@
     bool cerceveSecimiGerekli = (Model.UrunTipi ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase)
         || (Model.Kategori?.Ad ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase)
         || (Model.Kategori?.ParentKategori?.Ad ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase);
-    var cerceveModelleri = new[] { "Ã‡erÃ§evesiz", "Siyah", "Beyaz", "Gold", "GÃ¼mÃ¼ÅŸ", "MeÅŸe", "Ceviz" };
+    var cerceveModelleri = new[] { "Çerçevesiz", "Siyah", "Beyaz", "Gold", "Gümüş", "Meşe", "Ceviz" };
 
     var teknikSatirlari = (Model.TeknikOzellikler ?? string.Empty)
         .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
@@ -186,7 +186,7 @@
         Model.Marka,
         "dekorasyon",
         "premium dekorasyon",
-        "sipariÅŸe Ã¶zel Ã¼retim"
+        "إنتاج بالطلب"
     };
     keywordParts.AddRange((Model.Etiketler ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
 

@@ -42,9 +42,9 @@ namespace FilistinProje.Web.Attributes
                 cihazBilgi.Tarayici,
                 cihazBilgi.OS,
                 cihazBilgi.Model,
-                context.HttpContext.User.Identity?.IsAuthenticated == true
-                    ? Truncate(context.HttpContext.User.Identity.Name, 256)
-                    : "Misafir",
+                    context.HttpContext.User.Identity?.IsAuthenticated == true
+                        ? Truncate(context.HttpContext.User.Identity.Name, 256)
+                        : "زائر",
                 DateTime.UtcNow));
         }
 
@@ -76,7 +76,7 @@ namespace FilistinProje.Web.Attributes
         private static string ResolveIpAddress(FilterContext context)
         {
             return context.HttpContext.Connection.RemoteIpAddress?.ToString()
-                ?? "Bilinmiyor";
+                ?? "غير معروف";
         }
 
         private static bool IsLikelyBot(string userAgent)
@@ -97,9 +97,9 @@ namespace FilistinProje.Web.Attributes
 
         private static (string Tarayici, string OS, string Model) CihazModeliBul(string agent)
         {
-            var os = "Bilinmiyor";
-            var browser = "Bilinmiyor";
-            var model = "PC / Bilinmiyor";
+            var os = "غير معروف";
+            var browser = "غير معروف";
+            var model = "PC / غير معروف";
 
             if (agent.Contains("Windows", StringComparison.OrdinalIgnoreCase)) os = "Windows";
             else if (agent.Contains("Android", StringComparison.OrdinalIgnoreCase)) os = "Android";
@@ -116,7 +116,7 @@ namespace FilistinProje.Web.Attributes
             if (os == "Android")
             {
                 var match = Regex.Match(agent, @";\s?([^;]+)\sBuild");
-                model = match.Success ? match.Groups[1].Value.Trim() : "Android Cihaz";
+                model = match.Success ? match.Groups[1].Value.Trim() : "جهاز Android";
             }
             else if (os == "iOS")
             {

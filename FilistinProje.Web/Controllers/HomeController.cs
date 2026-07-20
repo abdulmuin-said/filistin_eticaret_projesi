@@ -61,22 +61,7 @@ namespace FilistinProje.Web.Controllers
 
             var besParcaliKoleksiyon = await aktifUrunler
                 .Where(u =>
-                    (EF.Functions.ILike(u.Baslik, "%5 ParÃ§a%") ||
-                     EF.Functions.ILike(u.Baslik, "%5 ParÃ§alÄ±%") ||
-                     EF.Functions.ILike(u.Aciklama ?? string.Empty, "%5 ParÃ§a%") ||
-                     EF.Functions.ILike(u.Etiketler ?? string.Empty, "%5 ParÃ§a%")) &&
-                    (EF.Functions.ILike(u.Baslik, "%gÃ¼zel ahlak%") ||
-                     EF.Functions.ILike(u.Baslik, "%islam%") ||
-                     EF.Functions.ILike(u.Baslik, "%islami%") ||
-                     EF.Functions.ILike(u.Baslik, "%tarihi%") ||
-                     EF.Functions.ILike(u.Baslik, "%osmanlÄ±%") ||
-                     EF.Functions.ILike(u.Baslik, "%ayet%") ||
-                     EF.Functions.ILike(u.Baslik, "%hadis%") ||
-                     EF.Functions.ILike(u.Etiketler ?? string.Empty, "%islam%") ||
-                     EF.Functions.ILike(u.Etiketler ?? string.Empty, "%tarihi%") ||
-                     (u.Kategori != null &&
-                      (EF.Functions.ILike(u.Kategori.Ad, "%islam%") ||
-                       EF.Functions.ILike(u.Kategori.Ad, "%tarihi%")))))
+                    u.OneCikanMi || u.AnaSayfadaGoster)
                 .OrderBy(u => u.Sira)
                 .ThenByDescending(u => u.OneCikanMi)
                 .ThenByDescending(u => u.GoruntulenmeSayisi)
@@ -88,11 +73,6 @@ namespace FilistinProje.Web.Controllers
             await TamamlayiciUrunleriEkleAsync(
                 besParcaliKoleksiyon,
                 aktifUrunler
-                    .Where(u =>
-                        EF.Functions.ILike(u.Baslik, "%5 ParÃ§a%") ||
-                        EF.Functions.ILike(u.Baslik, "%5 ParÃ§alÄ±%") ||
-                        EF.Functions.ILike(u.Aciklama ?? string.Empty, "%5 ParÃ§a%") ||
-                        EF.Functions.ILike(u.Etiketler ?? string.Empty, "%5 ParÃ§a%"))
                     .OrderBy(u => u.Sira)
                     .ThenByDescending(u => u.GoruntulenmeSayisi)
                     .ThenByDescending(u => u.OlusturulmaTarihi),

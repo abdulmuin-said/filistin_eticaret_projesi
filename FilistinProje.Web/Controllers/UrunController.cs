@@ -296,7 +296,7 @@ namespace FilistinProje.Web.Controllers
 
             var culture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
             var siteSettings = _siteSettingsService.GetSettings();
-            var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "â‚ª" : siteSettings.ParaBirimi;
+            var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
 
             var baseQuery = _context.Urunler
                 .AsNoTracking()

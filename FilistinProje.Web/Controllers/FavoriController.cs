@@ -48,7 +48,7 @@ namespace FilistinProje.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Toggle(int urunId)
         {
-            // GiriÅŸ yapmamÄ±ÅŸsa hata dÃ¶ndÃ¼r (Opsiyonel: JSON ile bildir)
+            // GiriÅŸ yapmamÄ±ÅŸsa hata döndürür -  (Opsiyonel: JSON ile bildir)
             if (User.Identity?.IsAuthenticated != true)
             {
                 return Json(new { success = false, message = _localizer["Favori_LoginRequired"].Value });

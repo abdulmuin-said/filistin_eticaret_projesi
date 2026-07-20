@@ -64,7 +64,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (durum == 1 && !IadeTalebiZamanindaMi(talep))
             {
-                TempData["Hata"] = $"{IadeHakkiGun} gunluk iade suresi disindaki talep onaylanamaz.";
+                TempData["Hata"] = $"لا يمكن قبول الطلب خارج مهلة {IadeHakkiGun} يوماً للإرجاع.";
                 return RedirectToAction(nameof(Detay), new { id });
             }
 
@@ -80,7 +80,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             await _context.SaveChangesAsync();
-            TempData["Mesaj"] = "Iade talebi guncellendi.";
+            TempData["Mesaj"] = "تم تحديث طلب الإرجاع.";
             return RedirectToAction(nameof(Detay), new { id });
         }
 

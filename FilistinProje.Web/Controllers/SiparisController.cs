@@ -118,7 +118,7 @@ namespace FilistinProje.Web.Controllers
                 return RedirectToAction("Index", "Sepet");
             }
 
-            // === B27: Bind attribute ile sadece gÃ¼venli alanlar alÄ±ndÄ± (DTO).
+            // === B27: Bind attribute ile sadece güvenli alanlar alındı (DTO).
             if (!dto.SozlesmeOnaylandi)
             {
                 ModelState.AddModelError(nameof(dto.SozlesmeOnaylandi), _localizer["Siparis_TermsRequired"].Value);
@@ -214,7 +214,7 @@ namespace FilistinProje.Web.Controllers
             HttpContext.Session.Remove("UygulananKupon");
             ClearCheckoutUploadCapability();
 
-            // Fiyat deÄŸiÅŸti ise kullanÄ±cÄ±ya bildir (B3: sessizce farklÄ± tahsil etmemek)
+            // Fiyat değişti ise kullanıcıya bildir (B3: sessizce farklı tahsil etmemek)
             if (placeOrderResult.Pricing?.FiyatDegistiMi == true)
             {
                 TempData["Siparis_FiyatDegisti"] = string.Format(
@@ -281,8 +281,8 @@ namespace FilistinProje.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Kargo hesaplama hatasÄ±");
-                return Json(new { success = false, message = "Kargo hesaplanamadÄ±." });
+                _logger.LogError(ex, "Kargo hesaplama hatası");
+                return Json(new { success = false, message = "تعذّر حساب تكلفة الشحن." });
             }
         }
 
@@ -353,7 +353,7 @@ namespace FilistinProje.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "ReÃ§ete yÃ¼klenirken hata oluÅŸtu");
+                _logger.LogError(ex, "Reçete yüklenirken hata oluştu");
                 return Json(new { success = false, message = _localizer["Siparis_FileUploadError"].Value });
             }
         }
@@ -392,7 +392,7 @@ namespace FilistinProje.Web.Controllers
                 return NotFound(_localizer["Siparis_OrderNotFound"].Value);
             }
 
-            // GÃ¼venlik: Sadece kendi sipariÅŸinin faturasÄ±nÄ± indirebilir
+            // Güvenlik: Sadece kendi siparişinin faturasını indirebilir
             if (siparis.AppUserId != user.Id)
             {
                 return Forbid();
@@ -1016,7 +1016,7 @@ namespace FilistinProje.Web.Controllers
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(item.CerceveModeli) && item.CerceveModeli != "Ã‡erÃ§evesiz")
+            if (!string.IsNullOrWhiteSpace(item.CerceveModeli) && item.CerceveModeli != "Çerçevesiz")
             {
                 details.Add(string.Format(_localizer["Siparis_EmailFrame"].Value, item.CerceveModeli));
             }

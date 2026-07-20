@@ -205,7 +205,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             await _context.SaveChangesAsync();
             await EnsureVariantSkusAsync(urun.Id);
 
-            TempData["Mesaj"] = "ÃœrÃ¼n baÅŸarÄ±yla eklendi.";
+            TempData["Mesaj"] = "تم إضافة المنتج بنجاح.";
             return RedirectToAction(nameof(Duzenle), new { id = urun.Id });
         }
 
@@ -309,7 +309,7 @@ await _context.SaveChangesAsync();
 
             await SyncProductPricesWithVariantsAsync(urun, model);
 
-            TempData["Mesaj"] = "ÃœrÃ¼n baÅŸarÄ±yla gÃ¼ncellendi.";
+            TempData["Mesaj"] = "تم تحديث المنتج بنجاح.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -349,7 +349,7 @@ await _context.SaveChangesAsync();
                 await _context.SaveChangesAsync();
             }
 
-            TempData["Mesaj"] = "ÃœrÃ¼n arÅŸive alÄ±ndÄ±.";
+            TempData["Mesaj"] = "تم أرشفة المنتج.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -364,7 +364,7 @@ await _context.SaveChangesAsync();
 
             if (!urunIds.Any())
             {
-                TempData["Mesaj"] = "Silmek iÃ§in en az bir Ã¼rÃ¼n seÃ§melisiniz.";
+                TempData["Mesaj"] = "اختر منتجاً واحداً على الأقل للحذف.";
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -381,7 +381,7 @@ await _context.SaveChangesAsync();
 
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{urunler.Count} Ã¼rÃ¼n arÅŸive alÄ±ndÄ±.";
+            TempData["Mesaj"] = $"{urunler.Count} منتج تم أرشفته.";
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -393,7 +393,7 @@ await _context.SaveChangesAsync();
             var urun = await _context.Urunler.FirstOrDefaultAsync(x => x.Id == id);
             if (urun == null)
             {
-                TempData["Mesaj"] = "ÃœrÃ¼n bulunamadÄ±.";
+                TempData["Mesaj"] = "لم يتم العثور على المنتج.";
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -401,7 +401,7 @@ await _context.SaveChangesAsync();
             urun.YayindaMi = yayinda;
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = yayinda ? "ÃœrÃ¼n vitrine Ã§Ä±karÄ±ldÄ±." : "ÃœrÃ¼n vitrinden gizlendi.";
+            TempData["Mesaj"] = yayinda ? "تم عرض المنتج." : "تم إخفاء المنتج.";
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -413,7 +413,7 @@ await _context.SaveChangesAsync();
             var urun = await _context.Urunler.FirstOrDefaultAsync(x => x.Id == id);
             if (urun == null)
             {
-                TempData["Mesaj"] = "ÃœrÃ¼n bulunamadÄ±.";
+                TempData["Mesaj"] = "لم يتم العثور على المنتج.";
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -421,7 +421,7 @@ await _context.SaveChangesAsync();
             urun.AktifMi = aktif;
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = aktif ? "ÃœrÃ¼n aktif hale getirildi." : "ÃœrÃ¼n pasif hale getirildi.";
+            TempData["Mesaj"] = aktif ? "تم تفعيل المنتج." : "تم تعطيل المنتج.";
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -437,7 +437,7 @@ await _context.SaveChangesAsync();
 
             if (!urunIds.Any())
             {
-                TempData["Mesaj"] = "Ä°ÅŸlem iÃ§in en az bir Ã¼rÃ¼n seÃ§melisiniz.";
+                TempData["Mesaj"] = "اختر منتجاً واحداً على الأقل.";
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -454,8 +454,8 @@ await _context.SaveChangesAsync();
             await _context.SaveChangesAsync();
 
             TempData["Mesaj"] = aktif
-                ? $"{urunler.Count} Ã¼rÃ¼n aktif hale getirildi."
-                : $"{urunler.Count} Ã¼rÃ¼n pasif hale getirildi.";
+                ? $"{urunler.Count} منتج تم تفعيله."
+                : $"{urunler.Count} منتج تم تعطيله.";
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -482,7 +482,7 @@ await _context.SaveChangesAsync();
 
             if (!urunIds.Any())
             {
-                TempData["Mesaj"] = "KalÄ±cÄ± silmek iÃ§in en az bir Ã¼rÃ¼n seÃ§melisiniz.";
+                TempData["Mesaj"] = "اختر منتجاً واحداً على الأقل للحذف.";
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -535,7 +535,7 @@ await _context.SaveChangesAsync();
 
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{updatedProducts} Ã¼rÃ¼n SKU ve {updatedVariants} varyasyon SKU tamamlandÄ±.";
+            TempData["Mesaj"] = $"{updatedProducts} منتج SKU و {updatedVariants} تنويع تم تحديثها.";
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -549,7 +549,7 @@ await _context.SaveChangesAsync();
 
             if (!ids.Any())
             {
-                return (0, 0, "Silinecek Ã¼rÃ¼n bulunamadÄ±.");
+                return (0, 0, "لم يُعثر على منتج للحذف.");
             }
 
             var blockedIds = new HashSet<int>();
@@ -601,7 +601,7 @@ await _context.SaveChangesAsync();
             var deletableIds = ids.Except(blockedIds).ToList();
             if (!deletableIds.Any())
             {
-                return (0, blockedIds.Count, "SeÃ§ili Ã¼rÃ¼nler sipariÅŸ, sepet, favori veya yorum kayÄ±tlarÄ±nda kullanÄ±ldÄ±ÄŸÄ± iÃ§in kalÄ±cÄ± silinemedi. Bu Ã¼rÃ¼nleri pasif yapabilirsiniz.");
+                return (0, blockedIds.Count, "لا يمكن حذف المنتجات المرتبطة بطلبات.");
             }
 
             var media = await _context.UrunResimleri
@@ -629,10 +629,10 @@ await _context.SaveChangesAsync();
 
             if (blockedIds.Count > 0)
             {
-                return (products.Count, blockedIds.Count, $"{products.Count} Ã¼rÃ¼n kalÄ±cÄ± silindi. {blockedIds.Count} Ã¼rÃ¼n iliÅŸkili kayÄ±tlarÄ± olduÄŸu iÃ§in silinemedi.");
+                return (products.Count, blockedIds.Count, $"{products.Count} منتج تم حذفه. {blockedIds.Count} منتج لم يمكن حذفه.");
             }
 
-            return (products.Count, 0, $"{products.Count} Ã¼rÃ¼n kalÄ±cÄ± olarak silindi.");
+            return (products.Count, 0, $"{products.Count} منتج تم حذفه نهائياً.");
         }
 
         private async Task CleanupDeletedProductMediaAsync(IEnumerable<UrunResim> deletedMedia)
@@ -747,7 +747,7 @@ await _context.SaveChangesAsync();
             await EnsureDefaultProductMediaAsync(urun, medya.VarsayilanMi ? medya : null);
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = "Urun medyasi eklendi.";
+            TempData["Mesaj"] = "تم إضافة وسائط المنتج.";
             return RedirectToAction(nameof(Duzenle), new { id = model.UrunId });
         }
 
@@ -786,7 +786,7 @@ await _context.SaveChangesAsync();
             await EnsureDefaultProductMediaAsync(medya.Urun, medya.VarsayilanMi ? medya : null);
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = "Urun medyasi guncellendi.";
+            TempData["Mesaj"] = "تم تحديث وسائط المنتج.";
             return RedirectToAction(nameof(Duzenle), new { id = model.UrunId });
         }
 
@@ -808,7 +808,7 @@ await _context.SaveChangesAsync();
             await EnsureDefaultProductMediaAsync(medya.Urun);
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = "Urun medyasi silindi.";
+            TempData["Mesaj"] = "تم حذف وسائط المنتج.";
             return RedirectToAction(nameof(Duzenle), new { id = urunId });
         }
 
@@ -842,7 +842,7 @@ await _context.SaveChangesAsync();
 
             if (excelDosyasi == null || excelDosyasi.Length == 0)
             {
-                ViewBag.Hata = "LÃ¼tfen bir Excel dosyasÄ± seÃ§in.";
+                ViewBag.Hata = "يرجى اختيار ملف Excel.";
                 ViewBag.ImportHistory = history;
                 return View("Excel");
             }
@@ -857,7 +857,7 @@ await _context.SaveChangesAsync();
             var extension = Path.GetExtension(excelDosyasi.FileName);
             if (!string.Equals(extension, ".xlsx", StringComparison.OrdinalIgnoreCase))
             {
-                ViewBag.Hata = "Sadece .xlsx formatÄ±nda Excel dosyasÄ± yÃ¼kleyebilirsiniz.";
+                ViewBag.Hata = "يُسمح فقط بملفات Excel بصيغة .xlsx";
                 ViewBag.ImportHistory = history;
                 return View("Excel");
             }
@@ -886,13 +886,13 @@ await _context.SaveChangesAsync();
             {
                 await ProcessProductExcelImportAsync(savedPath, operation, report);
                 report.Status = report.ErrorCount > 0 ? "Hatalı - Geri Alındı" : "Başarılı";
-                ViewBag.Mesaj = $"{report.OperationLabel} tamamlandÄ±. BaÅŸarÄ±lÄ±: {report.SuccessCount}, HatalÄ±: {report.ErrorCount}.";
+                ViewBag.Mesaj = $"{report.OperationLabel} اكتملت. نجح: {report.SuccessCount}, فشل: {report.ErrorCount}.";
             }
             catch (Exception ex)
             {
-                report.Status = "HatalÄ±";
-                report.Errors.Add("Dosya iÅŸlenemedi: " + ex.Message);
-                ViewBag.Hata = "Dosya iÅŸlenemedi: " + ex.Message;
+                report.Status = "خطأ";
+                report.Errors.Add("تعذّر معالجة الملف: " + ex.Message);
+                ViewBag.Hata = "تعذّر معالجة الملف: " + ex.Message;
             }
 
             history.Insert(0, report);
@@ -954,7 +954,7 @@ await _context.SaveChangesAsync();
                         ("ZORUNLU ALAN", new[] {
                             "Id â€” GÃ¼ncellenecek Ã¼rÃ¼nÃ¼n veritabanÄ± numarasÄ±. Bu alan kesinlikle doldurulmalÄ±dÄ±r.",
                             "Id boÅŸ bÄ±rakÄ±lÄ±rsa veya veritabanÄ±nda bulunamazsa o satÄ±r ATLANIR.",
-                            "ÃœrÃ¼n Id'yi, Ã¼rÃ¼n listesi sayfasÄ±ndan veya 'TÃ¼m ÃœrÃ¼nleri Excele Aktar' fonksiyonundan Ã¶ÄŸrenebilirsiniz.",
+                            "ÃœrÃ¼n Id'yi, Ã¼rÃ¼n listesi sayfasÄ±ndan veya 'TÃ¼m المنتجاتi Excele Aktar' fonksiyonundan Ã¶ÄŸrenebilirsiniz.",
                         }),
                         ("AKTÄ°F MÄ° KULLANIMI", new[] {
                             "DeÄŸerler: 'Evet' veya 'HayÄ±r' olarak yazÄ±lmalÄ±dÄ±r.",
@@ -962,15 +962,15 @@ await _context.SaveChangesAsync();
                             "BoÅŸ bÄ±rakÄ±lÄ±rsa gÃ¼ncellenmez.",
                         }),
                         ("KATEGORÄ° DEÄÄ°ÅTÄ°RME", new[] {
-                            "Kategori Id veya Kategori AdÄ±'ndan en az biri doldurulmalÄ±dÄ±r.",
+                            "Kategori Id veya اسم الفئة'ndan en az biri doldurulmalÄ±dÄ±r.",
                             "Her ikisi de doluysa Kategori Id Ã¶ncelikli olarak kullanÄ±lÄ±r.",
                             "GeÃ§ersiz kategori bilgisi verilirse gÃ¼ncelleme HATA verir â€” dikkat edin!",
                             "Mevcut kategorileri gÃ¶rmek iÃ§in 'Kategori Rehberi' sayfasÄ±na bakÄ±n.",
                         }),
                         ("FÄ°YAT GÃœNCELLEME KURALLARI", new[] {
-                            "SatÄ±ÅŸ FiyatÄ± sÄ±fÄ±rdan bÃ¼yÃ¼k olmalÄ±dÄ±r.",
-                            "Ä°ndirimli Fiyat boÅŸ bÄ±rakÄ±lÄ±rsa Ã¼rÃ¼nÃ¼n indirimi kaldÄ±rÄ±lÄ±r.",
-                            "Ä°ndirimli Fiyat, SatÄ±ÅŸ FiyatÄ±'na eÅŸit veya bÃ¼yÃ¼k olursa indirim uygulanmaz.",
+                            "سعر البيع sÄ±fÄ±rdan bÃ¼yÃ¼k olmalÄ±dÄ±r.",
+                            "السعر المخفَّض boÅŸ bÄ±rakÄ±lÄ±rsa Ã¼rÃ¼nÃ¼n indirimi kaldÄ±rÄ±lÄ±r.",
+                            "السعر المخفَّض, سعر البيع'na eÅŸit veya bÃ¼yÃ¼k olursa indirim uygulanmaz.",
                         }),
                     }
                 ),
@@ -982,8 +982,8 @@ await _context.SaveChangesAsync();
                         ("NASIL KULLANILIR?", new[] {
                             "1. Åablon sayfasÄ±na gidin.",
                             "2. 'Id' veya 'SKU' sÃ¼tununa Ã¼rÃ¼n bilgisini yazÄ±n.",
-                            "3. Yeni 'SatÄ±ÅŸ FiyatÄ±'nÄ± yazÄ±n.",
-                            "4. Ä°ndirimli fiyat kullanmak istiyorsanÄ±z 'Ä°ndirimli Fiyat' sÃ¼tununu da doldurun.",
+                            "3. Yeni 'سعر البيع'nÄ± yazÄ±n.",
+                            "4. Ä°ndirimli fiyat kullanmak istiyorsanÄ±z 'السعر المخفَّض' sÃ¼tununu da doldurun.",
                             "5. DosyayÄ± kaydedin ve Excel Ä°ÅŸlemleri sayfasÄ±ndan 'Fiyat GÃ¼ncelleme' seÃ§eneÄŸiyle yÃ¼kleyin.",
                         }),
                         ("ÃœRÃœN BULMA", new[] {
@@ -993,9 +993,9 @@ await _context.SaveChangesAsync();
                             "SKU: ÃœrÃ¼nÃ¼n stok yÃ¶netim kodu â€” Ã¼rÃ¼n dÃ¼zenleme sayfasÄ±ndan Ã¶ÄŸrenilebilir.",
                         }),
                         ("Ä°NDÄ°RÄ°M KURALLARI", new[] {
-                            "Ä°ndirimli Fiyat boÅŸ bÄ±rakÄ±lÄ±rsa: ÃœrÃ¼nÃ¼n mevcut indirimi varsa KALDIRILIR.",
-                            "Ä°ndirimli Fiyat â‰¥ SatÄ±ÅŸ FiyatÄ± olursa: Ä°ndirim UYGULANMAZ.",
-                            "GeÃ§erli Ã¶rnek: SatÄ±ÅŸ FiyatÄ± = 500, Ä°ndirimli Fiyat = 399 âœ“",
+                            "السعر المخفَّض boÅŸ bÄ±rakÄ±lÄ±rsa: ÃœrÃ¼nÃ¼n mevcut indirimi varsa KALDIRILIR.",
+                            "السعر المخفَّض â‰¥ سعر البيع olursa: Ä°ndirim UYGULANMAZ.",
+                            "GeÃ§erli Ã¶rnek: سعر البيع = 500, السعر المخفَّض = 399 âœ“",
                         }),
                         ("DÄ°KKAT", new[] {
                             "Bu ÅŸablon sadece fiyat gÃ¼nceller â€” Ã¼rÃ¼n adÄ±, kategori, aÃ§Ä±klama DEÄÄ°ÅMEZ.",
@@ -1013,27 +1013,27 @@ await _context.SaveChangesAsync();
                             "1. SarÄ± renkli Ã¶rnek satÄ±rÄ± ASLA deÄŸiÅŸtirmeyin â€” bu referans satÄ±rÄ±dÄ±r.",
                             "2. Ã–rnek satÄ±rÄ±n ALTINA kendi verilerinizi ekleyin (satÄ±r 3'ten itibaren).",
                             "3. Zorunlu alanlarÄ± mutlaka doldurun.",
-                            "4. Kategori Id veya Kategori AdÄ±'ndan en az birini mutlaka yazÄ±n.",
+                            "4. Kategori Id veya اسم الفئة'ndan en az birini mutlaka yazÄ±n.",
                             "5. DosyayÄ± kaydedin ve Excel Ä°ÅŸlemleri sayfasÄ±ndan 'ÃœrÃ¼n YÃ¼kleme' seÃ§eneÄŸiyle yÃ¼kleyin.",
                         }),
                         ("ZORUNLU ALANLAR", new[] {
-                            "ÃœrÃ¼n AdÄ± â€” ÃœrÃ¼nÃ¼n baÅŸlÄ±ÄŸÄ±. BoÅŸ bÄ±rakÄ±lamaz.",
-                            "SatÄ±ÅŸ FiyatÄ± â€” SÄ±fÄ±rdan bÃ¼yÃ¼k bir sayÄ± olmalÄ±dÄ±r.",
-                            "Ana GÃ¶rsel URL â€” ÃœrÃ¼nÃ¼n ana gÃ¶rselinin URL'i. BoÅŸ bÄ±rakÄ±lamaz.",
-                            "Kategori â€” Kategori Id veya Kategori AdÄ±'ndan en az biri doldurulmalÄ±dÄ±r.",
+                            "اسم المنتج â€” ÃœrÃ¼nÃ¼n baÅŸlÄ±ÄŸÄ±. BoÅŸ bÄ±rakÄ±lamaz.",
+                            "سعر البيع â€” SÄ±fÄ±rdan bÃ¼yÃ¼k bir sayÄ± olmalÄ±dÄ±r.",
+                            "رابط الصورة الرئيسية â€” ÃœrÃ¼nÃ¼n ana gÃ¶rselinin URL'i. BoÅŸ bÄ±rakÄ±lamaz.",
+                            "Kategori â€” Kategori Id veya اسم الفئة'ndan en az biri doldurulmalÄ±dÄ±r.",
                         }),
                         ("KATEGORÄ° SÄ°STEMÄ°", new[] {
                             "Kategori Id: SayÄ±sal ID (Ã¶rn: 1, 2, 3). VeritabanÄ± numarasÄ±dÄ±r.",
-                            "Kategori AdÄ±: Kategorinin adÄ± (Ã¶rn: 'Soyut Kanvas', 'Modern Tablolar').",
+                            "اسم الفئة: Kategorinin adÄ± (Ã¶rn: 'Soyut Kanvas', 'Modern Tablolar').",
                             "Her ikisi de doluysa Kategori Id Ã¶ncelikli olarak kullanÄ±lÄ±r.",
                             "GeÃ§ersiz kategori verilirse Ã¼rÃ¼n HATA verir.",
                             "Mevcut kategorileri gÃ¶rmek iÃ§in 'Kategori Rehberi' sayfasÄ±nÄ± aÃ§Ä±n.",
                         }),
                         ("FÄ°YAT VE Ä°NDÄ°RÄ°M", new[] {
-                            "SatÄ±ÅŸ FiyatÄ±: Ana Ã¼rÃ¼n fiyatÄ±. SÄ±fÄ±rdan bÃ¼yÃ¼k olmalÄ±dÄ±r.",
-                            "Ä°ndirimli Fiyat: Opsiyoneldir. SatÄ±ÅŸ FiyatÄ±'ndan KÃœÃ‡ÃœK olmalÄ±dÄ±r.",
-                            "Ä°ndirimli Fiyat â‰¥ SatÄ±ÅŸ FiyatÄ± olursa indirim uygulanmaz.",
-                            "Varyant SatÄ±ÅŸ FiyatÄ±: BoÅŸ bÄ±rakÄ±lÄ±rsa ana Ã¼rÃ¼n fiyatÄ± varyant iÃ§in kullanÄ±lÄ±r.",
+                            "سعر البيع: Ana Ã¼rÃ¼n fiyatÄ±. SÄ±fÄ±rdan bÃ¼yÃ¼k olmalÄ±dÄ±r.",
+                            "السعر المخفَّض: Opsiyoneldir. سعر البيع'ndan KÃœÃ‡ÃœK olmalÄ±dÄ±r.",
+                            "السعر المخفَّض â‰¥ سعر البيع olursa indirim uygulanmaz.",
+                            "Varyant سعر البيع: BoÅŸ bÄ±rakÄ±lÄ±rsa ana Ã¼rÃ¼n fiyatÄ± varyant iÃ§in kullanÄ±lÄ±r.",
                         }),
                         ("EBAT VE STOK", new[] {
                             "Ebat: Ã–rn: '50x70cm', '40x30cm', '60x40 cm'. BoÅŸ bÄ±rakÄ±lÄ±rsa 'Standart' olarak kaydedilir.",
@@ -1054,7 +1054,7 @@ await _context.SaveChangesAsync();
                             "Aktif olmayan Ã¼rÃ¼nler site dÄ±ÅŸÄ±nda gÃ¶rÃ¼nmez.",
                         }),
                         ("VARYANT GÃ–RSEL", new[] {
-                            "Varyant GÃ¶rsel URL: Opsiyoneldir. BoÅŸ bÄ±rakÄ±lÄ±rsa Ana GÃ¶rsel URL kullanÄ±lÄ±r.",
+                            "Varyant GÃ¶rsel URL: Opsiyoneldir. BoÅŸ bÄ±rakÄ±lÄ±rsa رابط الصورة الرئيسية kullanÄ±lÄ±r.",
                             "Her varyant iÃ§in farklÄ± bir gÃ¶rsel URL'i girilebilir.",
                             "GÃ¶rsel URL'si geÃ§erli bir internet adresi olmalÄ±dÄ±r.",
                         }),
@@ -1124,32 +1124,32 @@ await _context.SaveChangesAsync();
         public async Task<IActionResult> UrunExcelExport()
         {
             using var package = new ExcelPackage();
-            var worksheet = package.Workbook.Worksheets.Add("ÃœrÃ¼nler");
+            var worksheet = package.Workbook.Worksheets.Add("المنتجات");
 
             var headers = new[]
             {
                 "Id",
-                "ÃœrÃ¼n AdÄ±",
-                "Kategori Id",
-                "Kategori",
-                "SatÄ±ÅŸ FiyatÄ±",
-                "Ä°ndirimli Fiyat",
-                "Ana GÃ¶rsel URL",
-                "KÄ±sa AÃ§Ä±klama",
-                "DetaylÄ± AÃ§Ä±klama",
-                "Aktif Mi",
+                "اسم المنتج",
+                "معرّف الفئة",
+                "الفئة",
+                "سعر البيع",
+                "السعر المخفَّض",
+                "رابط الصورة الرئيسية",
+                "وصف مختصر",
+                "وصف تفصيلي",
+                "نشط",
                 "Slug",
-                "SEO URL",
+                "رابط SEO",
                 "SKU",
-                "Barkod",
-                "Marka",
-                "ÃœrÃ¼n Tipi",
-                "Etiketler",
-                "KDV OranÄ±",
-                "Ãœretim SÃ¼resi GÃ¼n",
-                "Kargoya VeriliÅŸ GÃ¼n",
-                "SÄ±ra",
-                "OluÅŸturulma Tarihi"
+                "الباركود",
+                "الماركة",
+                "نوع المنتج",
+                "الوسوم",
+                "نسبة الضريبة",
+                "مدة الإنتاج (يوم)",
+                "مدة التسليم للشحن (يوم)",
+                "الترتيب",
+                "تاريخ الإنشاء"
             };
 
             for (var i = 0; i < headers.Length; i++)
@@ -1176,7 +1176,7 @@ await _context.SaveChangesAsync();
                 worksheet.Cells[row, 7].Value = product.AnaGorselUrl;
                 worksheet.Cells[row, 8].Value = product.KisaAciklama;
                 worksheet.Cells[row, 9].Value = product.Aciklama;
-                worksheet.Cells[row, 10].Value = product.AktifMi ? "Evet" : "HayÄ±r";
+                worksheet.Cells[row, 10].Value = product.AktifMi ? "نعم" : "لا";
                 worksheet.Cells[row, 11].Value = product.Slug;
                 worksheet.Cells[row, 12].Value = product.UrlYolu;
                 worksheet.Cells[row, 13].Value = product.SKU;
@@ -1287,7 +1287,7 @@ await _context.SaveChangesAsync();
 
             if (string.IsNullOrWhiteSpace(title))
             {
-                return (false, "ÃœrÃ¼n adÄ± zorunludur.");
+                return (false, "اسم المنتجÄ± zorunludur.");
             }
 
             if (!categoryId.HasValue)
@@ -1302,7 +1302,7 @@ await _context.SaveChangesAsync();
 
             if (string.IsNullOrWhiteSpace(imageUrl))
             {
-                return (false, "Ana GÃ¶rsel URL zorunludur.");
+                return (false, "رابط الصورة الرئيسية zorunludur.");
             }
 
             var discount = GetExcelDecimal(worksheet, headers, row, "indirimlifiyat", "indirimlifiyatÄ±");
@@ -1668,9 +1668,9 @@ await _context.SaveChangesAsync();
         {
             return operation switch
             {
-                "update" => "Toplu ÃœrÃ¼n GÃ¼ncelleme",
-                "price" => "Toplu Fiyat GÃ¼ncelleme",
-                _ => "Toplu ÃœrÃ¼n YÃ¼kleme"
+                "update" => "تحديث المنتجات بالجملة",
+                "price" => "تحديث الأسعار بالجملة",
+                _ => "استيراد المنتجات بالجملة"
             };
         }
 
@@ -1681,42 +1681,42 @@ await _context.SaveChangesAsync();
                 "update" => new[]
                 {
                     "Id",
-                    "ÃœrÃ¼n AdÄ±",
-                    "Kategori Id",
-                    "Kategori AdÄ±",
-                    "SatÄ±ÅŸ FiyatÄ±",
-                    "Ä°ndirimli Fiyat",
-                    "Ana GÃ¶rsel URL",
-                    "KÄ±sa AÃ§Ä±klama",
-                    "DetaylÄ± AÃ§Ä±klama",
-                    "Aktif Mi"
+                    "اسم المنتج",
+                    "معرّف الفئة",
+                    "اسم الفئة",
+                    "سعر البيع",
+                    "السعر المخفَّض",
+                    "رابط الصورة الرئيسية",
+                    "وصف مختصر",
+                    "وصف تفصيلي",
+                    "نشط"
                 },
                 "price" => new[]
                 {
                     "Id",
                     "SKU",
-                    "SatÄ±ÅŸ FiyatÄ±",
-                    "Ä°ndirimli Fiyat"
+                    "سعر البيع",
+                    "السعر المخفَّض"
                 },
                 _ => new[]
                 {
-                    "ÃœrÃ¼n AdÄ±",
-                    "Kategori Id",
-                    "Kategori AdÄ±",
-                    "SatÄ±ÅŸ FiyatÄ±",
-                    "Ä°ndirimli Fiyat",
-                    "Ana GÃ¶rsel URL",
-                    "KÄ±sa AÃ§Ä±klama",
-                    "DetaylÄ± AÃ§Ä±klama",
-                    "Aktif Mi",
-                    "Ebat",
-                    "Stok",
-                    "Varyant Satis Fiyati",
-                    "Varyant SKU",
-                    "Varyant Gorsel URL",
-                    "Cerceve Tipi",
-                    "Cerceve Rengi",
-                    "Malzeme Turu"
+                    "اسم المنتج",
+                    "معرّف الفئة",
+                    "اسم الفئة",
+                    "سعر البيع",
+                    "السعر المخفَّض",
+                    "رابط الصورة الرئيسية",
+                    "وصف مختصر",
+                    "وصف تفصيلي",
+                    "نشط",
+                    "المقاس",
+                    "المخزون",
+                    "سعر المتغير",
+                    "SKU المتغير",
+                    "رابط صورة المتغير",
+                    "نوع الإطار",
+                    "لون الإطار",
+                    "نوع المادة"
                 }
             };
         }
@@ -1770,7 +1770,7 @@ await _context.SaveChangesAsync();
         {
             var categorySheet = package.Workbook.Worksheets.Add("Kategori Rehberi");
             categorySheet.Cells[1, 1].Value = "Kategori Id";
-            categorySheet.Cells[1, 2].Value = "Kategori AdÄ±";
+            categorySheet.Cells[1, 2].Value = "اسم الفئة";
             categorySheet.Cells[1, 3].Value = "Ãœst Kategori";
 
             var categories = await _context.Kategoriler
@@ -1864,17 +1864,17 @@ await _context.SaveChangesAsync();
                 "create" => new[]
                 {
                     "â–  ÅABLON KULLANIM NOTLARI",
-                    "â€¢ Zorunlu alanlar: ÃœrÃ¼n AdÄ±, Kategori Id veya Kategori AdÄ±, SatÄ±ÅŸ FiyatÄ±, Ana GÃ¶rsel URL",
-                    "â€¢ Kategori Id veya Kategori AdÄ±'ndan en az biri doldurulmalÄ±dÄ±r.",
-                    "â€¢ SatÄ±ÅŸ FiyatÄ± sÄ±fÄ±rdan bÃ¼yÃ¼k olmalÄ±dÄ±r. Ä°ndirimli Fiyat, SatÄ±ÅŸ FiyatÄ±'ndan kÃ¼Ã§Ã¼k olmalÄ±dÄ±r.",
-                    "â€¢ Aktif Mi: 'Evet' veya 'HayÄ±r' olarak yazÄ±lmalÄ±dÄ±r. BoÅŸ bÄ±rakÄ±lÄ±rsa 'Evet' kabul edilir.",
+                    "â€¢ Zorunlu alanlar: اسم المنتج, Kategori Id veya اسم الفئة, سعر البيع, رابط الصورة الرئيسية",
+                    "â€¢ Kategori Id veya اسم الفئة'ndan en az biri doldurulmalÄ±dÄ±r.",
+                    "â€¢ سعر البيع sÄ±fÄ±rdan bÃ¼yÃ¼k olmalÄ±dÄ±r. السعر المخفَّض, سعر البيع'ndan kÃ¼Ã§Ã¼k olmalÄ±dÄ±r.",
+                    "â€¢ نشط: 'Evet' veya 'HayÄ±r' olarak yazÄ±lmalÄ±dÄ±r. BoÅŸ bÄ±rakÄ±lÄ±rsa 'Evet' kabul edilir.",
                     "â€¢ Ebat: Ã–rn: '50x70cm', '40x30cm' â€” BoÅŸ bÄ±rakÄ±lÄ±rsa otomatik 'Standart' olarak kaydedilir.",
                     "â€¢ Stok: BoÅŸ bÄ±rakÄ±lÄ±rsa 100 adet olarak kabul edilir.",
                     "â€¢ Cerceve Tipi: 'Cercevesiz', 'AhÅŸap Ã‡erÃ§eve', 'Metal Ã‡erÃ§eve' â€” BoÅŸ bÄ±rakÄ±lÄ±rsa otomatik 'Cercevesiz' atanÄ±r.",
                     "â€¢ Cerceve Rengi: Sadece Ã§erÃ§evesi olan Ã¼rÃ¼nlerde 'Siyah', 'Beyaz', 'Gold', 'GÃ¼mÃ¼ÅŸ', 'MeÅŸe', 'Ceviz' olarak yazÄ±labilir.",
                     "â€¢ Malzeme Turu: Ã‡erÃ§eve tÃ¼rÃ¼ne gÃ¶re opsiyoneldir.",
-                    "â€¢ Varyant SatÄ±ÅŸ FiyatÄ± boÅŸ bÄ±rakÄ±lÄ±rsa ana Ã¼rÃ¼n fiyatÄ± kullanÄ±lÄ±r.",
-                    "â€¢ Varyant GÃ¶rsel URL boÅŸ bÄ±rakÄ±lÄ±rsa Ana GÃ¶rsel URL kullanÄ±lÄ±r.",
+                    "â€¢ Varyant سعر البيع boÅŸ bÄ±rakÄ±lÄ±rsa ana Ã¼rÃ¼n fiyatÄ± kullanÄ±lÄ±r.",
+                    "â€¢ Varyant GÃ¶rsel URL boÅŸ bÄ±rakÄ±lÄ±rsa رابط الصورة الرئيسية kullanÄ±lÄ±r.",
                     "â€¢ Kategoriler iÃ§in 'Kategori Rehberi' sayfasÄ±na bakÄ±nÄ±z."
                 },
                 "update" => new[]
@@ -1883,17 +1883,17 @@ await _context.SaveChangesAsync();
                     "â€¢ Zorunlu alan: Id (Ã¼rÃ¼nÃ¼n veritabanÄ± numarasÄ±)",
                     "â€¢ Id ile bulunan Ã¼rÃ¼n gÃ¼ncellenir. Id boÅŸ veya geÃ§ersizse satÄ±r atlanÄ±r.",
                     "â€¢ BoÅŸ bÄ±rakÄ±lan alanlar gÃ¼ncellenmez (deÄŸiÅŸiklik yapÄ±lmaz).",
-                    "â€¢ Aktif Mi: 'Evet' veya 'HayÄ±r' olarak yazÄ±lmalÄ±dÄ±r.",
-                    "â€¢ Kategori Id veya Kategori AdÄ±'ndan en az biri doldurulmalÄ±dÄ±r.",
+                    "â€¢ نشط: 'Evet' veya 'HayÄ±r' olarak yazÄ±lmalÄ±dÄ±r.",
+                    "â€¢ Kategori Id veya اسم الفئة'ndan en az biri doldurulmalÄ±dÄ±r.",
                     "â€¢ Kategoriler iÃ§in 'Kategori Rehberi' sayfasÄ±na bakÄ±nÄ±z."
                 },
                 "price" => new[]
                 {
                     "â–  ÅABLON KULLANIM NOTLARI",
-                    "â€¢ Zorunlu alanlar: Id veya SKU + SatÄ±ÅŸ FiyatÄ±",
+                    "â€¢ Zorunlu alanlar: Id veya SKU + سعر البيع",
                     "â€¢ Id veya SKU ile Ã¼rÃ¼n bulunur. Her ikisi de doluysa Id Ã¶ncelikli olarak kullanÄ±lÄ±r.",
-                    "â€¢ Ä°ndirimli Fiyat boÅŸ bÄ±rakÄ±lÄ±rsa indirim kaldÄ±rÄ±lÄ±r.",
-                    "â€¢ Ä°ndirimli Fiyat, SatÄ±ÅŸ FiyatÄ±'ndan bÃ¼yÃ¼k veya eÅŸit olursa indirim uygulanmaz."
+                    "â€¢ السعر المخفَّض boÅŸ bÄ±rakÄ±lÄ±rsa indirim kaldÄ±rÄ±lÄ±r.",
+                    "â€¢ السعر المخفَّض, سعر البيع'ndan bÃ¼yÃ¼k veya eÅŸit olursa indirim uygulanmaz."
                 },
                 _ => Array.Empty<string>()
             };
@@ -2359,38 +2359,38 @@ await _context.SaveChangesAsync();
         {
             if (string.IsNullOrWhiteSpace(urun.Baslik))
             {
-                ModelState.AddModelError(nameof(Urun.Baslik), "ÃœrÃ¼n adÄ± zorunludur.");
+                ModelState.AddModelError(nameof(Urun.Baslik), "اسم المنتج إلزامي.");
             }
 
             if (urun.KategoriId <= 0 || !await _context.Kategoriler.AnyAsync(x => x.Id == urun.KategoriId))
             {
-                ModelState.AddModelError(nameof(Urun.KategoriId), "GeÃ§erli bir kategori seÃ§melisiniz.");
+                ModelState.AddModelError(nameof(Urun.KategoriId), "يرجى اختيار فئة صالحة.");
             }
 
             if (urun.Fiyat <= 0)
             {
-                ModelState.AddModelError(nameof(Urun.Fiyat), "SatÄ±ÅŸ fiyatÄ± sÄ±fÄ±rdan bÃ¼yÃ¼k olmalÄ±dÄ±r.");
+                ModelState.AddModelError(nameof(Urun.Fiyat), "سعر البيع يجب أن يكون أكبر من صفر.");
             }
 
             if (urun.IndirimliFiyat.HasValue &&
                 (urun.IndirimliFiyat.Value <= 0 || urun.IndirimliFiyat.Value >= urun.Fiyat))
             {
-                ModelState.AddModelError(nameof(Urun.IndirimliFiyat), "Ä°ndirimli fiyat ana fiyattan kÃ¼Ã§Ã¼k olmalÄ±dÄ±r.");
+                ModelState.AddModelError(nameof(Urun.IndirimliFiyat), "السعر المخفَّض يجب أن يكون أقل من السعر الأصلي.");
             }
 
             if (urun.MinSiparisAdedi < 1)
             {
-                ModelState.AddModelError(nameof(Urun.MinSiparisAdedi), "Minimum sipariÅŸ adedi en az 1 olmalÄ±dÄ±r.");
+                ModelState.AddModelError(nameof(Urun.MinSiparisAdedi), "الحد الأدنى للطلب يجب أن يكون 1 على الأقل.");
             }
 
             if (urun.MaxSiparisAdedi.HasValue && urun.MaxSiparisAdedi.Value < urun.MinSiparisAdedi)
             {
-                ModelState.AddModelError(nameof(Urun.MaxSiparisAdedi), "Maksimum sipariÅŸ adedi minimum sipariÅŸ adedinden kÃ¼Ã§Ã¼k olamaz.");
+                ModelState.AddModelError(nameof(Urun.MaxSiparisAdedi), "الحد الأقصى للطلب لا يمكن أن يكون أقل من الحد الأدنى.");
             }
 
             if (currentId == null && imageFile == null && string.IsNullOrWhiteSpace(urun.AnaGorselUrl))
             {
-                ModelState.AddModelError(nameof(Urun.AnaGorselUrl), "Ana gÃ¶rsel yÃ¼kleyin veya gÃ¶rsel URL girin.");
+                ModelState.AddModelError(nameof(Urun.AnaGorselUrl), "يرجى رفع صورة رئيسية أو إدخال رابط صورة.");
             }
 
             await ValidateImageUploadAsync(imageFile, nameof(Urun.AnaGorselUrl));
@@ -3132,5 +3132,8 @@ await _context.SaveChangesAsync();
         }
     }
 }
+
+
+
 
 

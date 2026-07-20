@@ -32,15 +32,15 @@ namespace FilistinProje.Web.Controllers
             // Statik kurumsal sayfalar
             var staticPages = new (string Url, string Changefreq, string Priority)[]
             {
-                ("/Kurumsal/Hakkimizda", "monthly", "0.6"),
-                ("/Kurumsal/Iletisim", "monthly", "0.6"),
-                ("/Kurumsal/SSS", "monthly", "0.5"),
-                ("/Kurumsal/Gizlilik", "monthly", "0.4"),
-                ("/Kurumsal/KullaniciSozlesmesi", "monthly", "0.4"),
-                ("/Kurumsal/MesafeliSatis", "monthly", "0.4"),
-                ("/Kurumsal/IadeKosullari", "monthly", "0.4"),
-                ("/Urun", "daily", "0.9"),
-                ("/Favori", "weekly", "0.5"),
+                ("/pages/about", "monthly", "0.6"),
+                ("/pages/contact", "monthly", "0.6"),
+                ("/pages/faq", "monthly", "0.5"),
+                ("/pages/privacy", "monthly", "0.4"),
+                ("/pages/terms", "monthly", "0.4"),
+                ("/pages/distance-sales", "monthly", "0.4"),
+                ("/pages/return-policy", "monthly", "0.4"),
+                ("/products", "daily", "0.9"),
+                ("/favorites", "weekly", "0.5"),
             };
 
             foreach (var (url, freq, priority) in staticPages)
@@ -56,7 +56,7 @@ namespace FilistinProje.Web.Controllers
 
             foreach (var kategori in kategoriler)
             {
-                AppendUrl(sitemap, $"{baseUrl}/Urun?k={kategori.Id}", "weekly", "0.8", DateTime.UtcNow);
+                AppendUrl(sitemap, $"{baseUrl}/products?k={kategori.Id}", "weekly", "0.8", DateTime.UtcNow);
             }
 
             // ÃœrÃ¼nler (ilk 2000 Ã¼rÃ¼n - performans iÃ§in)
@@ -71,7 +71,7 @@ namespace FilistinProje.Web.Controllers
             {
                 var detailSegment = string.IsNullOrWhiteSpace(urun.Slug) ? urun.Id.ToString() : $"{urun.Slug}-{urun.Id}";
                 var lastMod = urun.OlusturulmaTarihi;
-                AppendUrl(sitemap, $"{baseUrl}/Urun/Detay/{detailSegment}", "monthly", "0.7", lastMod);
+                AppendUrl(sitemap, $"{baseUrl}/products/{detailSegment}", "monthly", "0.7", lastMod);
             }
 
             sitemap.AppendLine("</urlset>");

@@ -72,13 +72,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (model.Tur == "Video" && Video == null && string.IsNullOrWhiteSpace(model.VideoUrl))
             {
-                ModelState.AddModelError("Video", "Video tipinde slayt iÃ§in video yÃ¼klemeniz veya video URL'si girmeniz gerekir.");
+                ModelState.AddModelError("Video", "يتطلب السلايد من نوع فيديو رفع فيديو أو إدخال رابط الفيديو.");
                 return View(model);
             }
 
             if (model.Tur == "Resim" && Resim == null && string.IsNullOrWhiteSpace(model.ResimUrl))
             {
-                ModelState.AddModelError("Resim", "Resim tipinde slayt iÃ§in gÃ¶rsel yÃ¼klemeniz veya gÃ¶rsel URL'si girmeniz gerekir.");
+                ModelState.AddModelError("Resim", "يتطلب السلايد من نوع صورة رفع صورة أو إدخال رابط الصورة.");
                 return View(model);
             }
 
@@ -279,7 +279,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             await _db.SaveChangesAsync();
-            TempData["Basari"] = _localizer["Admin_IslemBasarili"] + (sira - 1) + " slayt iÃ§e aktarÄ±ldÄ±.";
+            TempData["Basari"] = _localizer["Admin_IslemBasarili"] + (sira - 1) + " سلايد مستورد.";
             return RedirectToAction(nameof(Index));
         }
 

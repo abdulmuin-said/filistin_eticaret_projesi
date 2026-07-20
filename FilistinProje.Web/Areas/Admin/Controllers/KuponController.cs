@@ -60,7 +60,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             _context.Kuponlar.Add(model);
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{model.Kod} kuponu oluÅŸturuldu.";
+            TempData["Mesaj"] = $"تم إنشاء كوبون {model.Kod}.";
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -107,7 +107,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{kupon.Kod} kuponu gÃ¼ncellendi.";
+            TempData["Mesaj"] = $"تم تحديث كوبون {kupon.Kod}.";
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -126,8 +126,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             await _context.SaveChangesAsync();
 
             TempData["Mesaj"] = kupon.AktifMi
-                ? $"{kupon.Kod} kuponu aktif edildi."
-                : $"{kupon.Kod} kuponu pasife alÄ±ndÄ±.";
+                ? $"تم تفعيل كوبون {kupon.Kod}."
+                : $"تم تعطيل كوبون {kupon.Kod}.";
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -146,7 +146,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             kupon.AktifMi = false;
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{kupon.Kod} kuponu arÅŸive alÄ±ndÄ±.";
+            TempData["Mesaj"] = $"تم أرشفة كوبون {kupon.Kod}.";
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -165,32 +165,32 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (model.Tip is not (0 or 1))
             {
-                ModelState.AddModelError(nameof(Kupon.Tip), "GeÃ§erli bir indirim tipi seÃ§in.");
+                ModelState.AddModelError(nameof(Kupon.Tip), "يرجى اختيار نوع خصم صالح.");
             }
 
             if (model.Deger <= 0)
             {
-                ModelState.AddModelError(nameof(Kupon.Deger), "Ä°ndirim deÄŸeri sÄ±fÄ±rdan bÃ¼yÃ¼k olmalÄ±dÄ±r.");
+                ModelState.AddModelError(nameof(Kupon.Deger), "قيمة الخصم يجب أن تكون أكبر من صفر.");
             }
 
             if (model.Tip == 0 && model.Deger > 100)
             {
-                ModelState.AddModelError(nameof(Kupon.Deger), "YÃ¼zde indirim 100'den bÃ¼yÃ¼k olamaz.");
+                ModelState.AddModelError(nameof(Kupon.Deger), "لا يمكن أن يتجاوز خصم النسبة 100%.");
             }
 
             if (model.MinSepetTutari < 0)
             {
-                ModelState.AddModelError(nameof(Kupon.MinSepetTutari), "Minimum sepet tutarÄ± negatif olamaz.");
+                ModelState.AddModelError(nameof(Kupon.MinSepetTutari), "الحد الأدنى لسلة التسوق لا يمكن أن يكون سالبًا.");
             }
 
             if (model.KullanimLimiti < 0)
             {
-                ModelState.AddModelError(nameof(Kupon.KullanimLimiti), "KullanÄ±m limiti negatif olamaz. SÄ±nÄ±rsÄ±z iÃ§in 0 yazabilirsiniz.");
+                ModelState.AddModelError(nameof(Kupon.KullanimLimiti), "لا يمكن أن يكون حد الاستخدام سالبًا. للاستخدام غير المحدود أدخل 0.");
             }
 
             if (model.SonKullanmaTarihi.Year < 2020)
             {
-                ModelState.AddModelError(nameof(Kupon.SonKullanmaTarihi), "GeÃ§erli bir son kullanÄ±m tarihi seÃ§in.");
+                ModelState.AddModelError(nameof(Kupon.SonKullanmaTarihi), "يرجى اختيار تاريخ صلاحية صالح.");
             }
 
             var duplicateExists = await _context.Kuponlar.AnyAsync(x =>
@@ -200,7 +200,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (duplicateExists)
             {
-                ModelState.AddModelError(nameof(Kupon.Kod), "Bu kupon kodu zaten kullanÄ±lÄ±yor.");
+                ModelState.AddModelError(nameof(Kupon.Kod), "كود الخصم هذا مستخدم بالفعل.");
             }
 
             return ModelState.IsValid;

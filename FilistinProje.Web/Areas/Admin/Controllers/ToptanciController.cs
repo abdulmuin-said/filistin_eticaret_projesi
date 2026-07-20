@@ -107,11 +107,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
-                TempData["Hata"] = "Onaylama sÄ±rasÄ±nda hata oluÅŸtu.";
+                TempData["Hata"] = "حدث خطأ أثناء الموافقة.";
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["Basari"] = $"{user.AdSoyad} toptancÄ± olarak onaylandÄ±.";
+            TempData["Basari"] = $"{user.AdSoyad} تم الموافقة.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -135,11 +135,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
-                TempData["Hata"] = "Reddetme sÄ±rasÄ±nda hata oluÅŸtu.";
+                TempData["Hata"] = "حدث خطأ أثناء الرفض.";
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["Basari"] = $"{user.AdSoyad} toptancÄ± baÅŸvurusu reddedildi.";
+            TempData["Basari"] = $"{user.AdSoyad} تم الرفض.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -194,11 +194,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
-                TempData["Hata"] = "Durum gÃ¼ncellenirken hata oluÅŸtu.";
+                TempData["Hata"] = "حدث خطأ أثناء تحديث الحالة.";
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["Basari"] = $"{user.AdSoyad} toptancÄ± durumu beklemedeye alÄ±ndÄ±.";
+            TempData["Basari"] = $"{user.AdSoyad} تم وضع المستخدم في قائمة الانتظار.";
             return RedirectToAction(nameof(Index));
         }
 
@@ -343,10 +343,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         private static string GetStatusLabel(WholesaleStatus status) => status switch
         {
-            WholesaleStatus.Pending => "Beklemede",
-            WholesaleStatus.Approved => "OnaylÄ±",
-            WholesaleStatus.Rejected => "Reddedildi",
-            _ => "Bilinmiyor"
+            WholesaleStatus.Pending => "قيد الانتظار",
+            WholesaleStatus.Approved => "موافق عليه",
+            WholesaleStatus.Rejected => "مرفوض",
+            _ => "غير معروف"
         };
     }
 

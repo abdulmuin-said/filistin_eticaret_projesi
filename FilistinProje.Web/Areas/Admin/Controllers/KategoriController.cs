@@ -67,17 +67,17 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var headers = new[]
             {
                 "ID",
-                "Kategori",
-                "HiyerarÅŸi",
-                "Ãœst Kategori",
+                "الفئة",
+                "التسلسل الهرمي",
+                "الفئة الأم",
                 "Slug",
-                "KÄ±sa AÃ§Ä±klama",
-                "ÃœrÃ¼n SayÄ±sÄ±",
-                "Alt Kategori SayÄ±sÄ±",
-                "SÄ±ra",
-                "Durum",
-                "SEO BaÅŸlÄ±ÄŸÄ±",
-                "SEO AÃ§Ä±klamasÄ±"
+                "وصف مختصر",
+                "عدد المنتجات",
+                "عدد الفئات الفرعية",
+                "الترتيب",
+                "الحالة",
+                "عنوان SEO",
+                "وصف SEO"
             };
 
             for (var i = 0; i < headers.Length; i++)
@@ -91,13 +91,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 worksheet.Cells[row, 1].Value = kategori.Id;
                 worksheet.Cells[row, 2].Value = kategori.Ad;
                 worksheet.Cells[row, 3].Value = CategoryPresentationHelper.BuildHierarchyLabel(kategori, categoryLookup);
-                worksheet.Cells[row, 4].Value = kategori.ParentKategori?.Ad ?? "Ana kategori";
+                worksheet.Cells[row, 4].Value = kategori.ParentKategori?.Ad ?? "فئة رئيسية";
                 worksheet.Cells[row, 5].Value = kategori.Slug;
                 worksheet.Cells[row, 6].Value = kategori.KisaAciklama;
                 worksheet.Cells[row, 7].Value = kategori.Urunler.Count(x => !x.SilindiMi);
                 worksheet.Cells[row, 8].Value = kategori.AltKategoriler.Count(x => !x.SilindiMi);
                 worksheet.Cells[row, 9].Value = kategori.Sira;
-                worksheet.Cells[row, 10].Value = kategori.AktifMi && !kategori.SilindiMi ? "Aktif" : "Pasif";
+                worksheet.Cells[row, 10].Value = kategori.AktifMi && !kategori.SilindiMi ? "نشط" : "غير نشط";
                 worksheet.Cells[row, 11].Value = kategori.SeoTitle;
                 worksheet.Cells[row, 12].Value = kategori.SeoDescription;
                 row++;
@@ -158,14 +158,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                         table.Header(header =>
                         {
                             AddPdfHeader(header, "ID");
-                            AddPdfHeader(header, "Kategori");
-                            AddPdfHeader(header, "HiyerarÅŸi");
-                            AddPdfHeader(header, "Ãœst Kategori");
+                            AddPdfHeader(header, "الفئة");
+                            AddPdfHeader(header, "التسلسل الهرمي");
+                            AddPdfHeader(header, "الفئة الأم");
                             AddPdfHeader(header, "Slug");
-                            AddPdfHeader(header, "ÃœrÃ¼n");
-                            AddPdfHeader(header, "Alt");
-                            AddPdfHeader(header, "SÄ±ra");
-                            AddPdfHeader(header, "Durum");
+                            AddPdfHeader(header, "المنتجات");
+                            AddPdfHeader(header, "الفروع");
+                            AddPdfHeader(header, "الترتيب");
+                            AddPdfHeader(header, "الحالة");
                         });
 
                         foreach (var kategori in kategoriler)
@@ -173,12 +173,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                             AddPdfCell(table, kategori.Id.ToString());
                             AddPdfCell(table, kategori.Ad);
                             AddPdfCell(table, CategoryPresentationHelper.BuildHierarchyLabel(kategori, categoryLookup));
-                            AddPdfCell(table, kategori.ParentKategori?.Ad ?? "Ana kategori");
+                            AddPdfCell(table, kategori.ParentKategori?.Ad ?? "فئة رئيسية");
                             AddPdfCell(table, kategori.Slug ?? "-");
                             AddPdfCell(table, kategori.Urunler.Count(x => !x.SilindiMi).ToString());
                             AddPdfCell(table, kategori.AltKategoriler.Count(x => !x.SilindiMi).ToString());
                             AddPdfCell(table, kategori.Sira.ToString());
-                            AddPdfCell(table, kategori.AktifMi && !kategori.SilindiMi ? "Aktif" : "Pasif");
+                            AddPdfCell(table, kategori.AktifMi && !kategori.SilindiMi ? "نشط" : "غير نشط");
                         }
                     });
 
@@ -411,7 +411,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             ViewBag.UrunSayisi = kategori.Urunler?.Count(x => !x.SilindiMi) ?? 0;
             ViewBag.AltKategoriSayisi = kategori.AltKategoriler?.Count(x => !x.SilindiMi) ?? 0;
-            ViewBag.UstKategoriAdi = kategori.ParentKategori?.Ad ?? "Ana kategori";
+            ViewBag.UstKategoriAdi = kategori.ParentKategori?.Ad ?? "فئة رئيسية";
         }
 
         private async Task<List<SelectListItem>> BuildParentCategoryOptionsAsync(int? excludedId)
@@ -423,7 +423,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             var optionList = new List<SelectListItem>
             {
-                new() { Value = string.Empty, Text = "Ana kategori" }
+                new() { Value = string.Empty, Text = "فئة رئيسية" }
             };
 
             foreach (var (category, depth) in CategoryTreeHelper.FlattenHierarchy(kategoriler, excludedId))
@@ -442,12 +442,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             if (string.IsNullOrWhiteSpace(kategori.Ad))
             {
-                ModelState.AddModelError(nameof(Kategori.Ad), "Kategori adÄ± zorunludur.");
+                ModelState.AddModelError(nameof(Kategori.Ad), "اسم الفئة إلزامي.");
             }
 
             if (kategori.ParentKategoriId == kategori.Id && kategori.Id != 0)
             {
-                ModelState.AddModelError(nameof(Kategori.ParentKategoriId), "Bir kategori kendisinin Ã¼st kategorisi olamaz.");
+                ModelState.AddModelError(nameof(Kategori.ParentKategoriId), "لا يمكن أن تكون الفئة فرعًا لنفسها.");
             }
 
             if (kategori.ParentKategoriId.HasValue)
@@ -459,11 +459,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 var parentExists = categories.Any(x => x.Id == kategori.ParentKategoriId.Value);
                 if (!parentExists)
                 {
-                    ModelState.AddModelError(nameof(Kategori.ParentKategoriId), "SeÃ§ilen Ã¼st kategori bulunamadÄ±.");
+                    ModelState.AddModelError(nameof(Kategori.ParentKategoriId), "الفئة الرئيسية المحددة غير موجودة.");
                 }
                 else if (kategori.Id != 0 && CategoryTreeHelper.IsDescendant(categories, kategori.Id, kategori.ParentKategoriId.Value))
                 {
-                    ModelState.AddModelError(nameof(Kategori.ParentKategoriId), "Bir kategori kendi alt dalÄ±nÄ±n altÄ±na taÅŸÄ±namaz.");
+                    ModelState.AddModelError(nameof(Kategori.ParentKategoriId), "لا يمكن نقل فئة تحت أحد فروعها.");
                 }
             }
 

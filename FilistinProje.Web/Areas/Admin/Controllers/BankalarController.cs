@@ -36,7 +36,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     string.IsNullOrWhiteSpace(model.HesapSahibi) ||
                     string.IsNullOrWhiteSpace(model.IBAN))
                 {
-                    TempData["Mesaj"] = "Banka adÄ±, hesap sahibi ve IBAN zorunludur.";
+                    TempData["Mesaj"] = "اسم البنك وصاحب الحساب وIBAN إلزامية.";
                     TempData["Durum"] = "danger";
                     return RedirectToAction(nameof(Index));
                 }
@@ -49,7 +49,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 {
                     model.OlusturulmaTarihi = DateTime.UtcNow;
                     _context.BankaHesaplari.Add(model);
-                    TempData["Mesaj"] = $"{model.BankaAdi} banka hesabÄ± eklendi.";
+                    TempData["Mesaj"] = $"تمت إضافة حساب {model.BankaAdi}.";
                 }
                 else
                 {
@@ -59,7 +59,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
                     if (hesap == null)
                     {
-                        TempData["Mesaj"] = "Banka hesabÄ± bulunamadÄ±.";
+                        TempData["Mesaj"] = "لم يتم العثور على الحساب البنكي.";
                         TempData["Durum"] = "danger";
                         return RedirectToAction(nameof(Index));
                     }
@@ -71,7 +71,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     hesap.HesapNo = model.HesapNo;
                     hesap.AktifMi = model.AktifMi;
                     hesap.Sira = model.Sira;
-                    TempData["Mesaj"] = $"{model.BankaAdi} banka hesabÄ± gÃ¼ncellendi.";
+                    TempData["Mesaj"] = $"تم تحديث حساب {model.BankaAdi}.";
                 }
 
                 await _context.SaveChangesAsync();
@@ -80,7 +80,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Mesaj"] = "Hata: " + ex.Message;
+                TempData["Mesaj"] = "خطأ: " + ex.Message;
                 TempData["Durum"] = "danger";
                 return RedirectToAction(nameof(Index));
             }
@@ -96,7 +96,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (hesap == null)
             {
-                TempData["Mesaj"] = "Banka hesabÄ± bulunamadÄ±.";
+                TempData["Mesaj"] = "لم يتم العثور على الحساب البنكي.";
                 TempData["Durum"] = "danger";
                 return RedirectToAction(nameof(Index));
             }
@@ -104,7 +104,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             hesap.SilindiMi = true;
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{hesap.BankaAdi} banka hesabÄ± silindi.";
+            TempData["Mesaj"] = $"تم حذف حساب {hesap.BankaAdi}.";
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }

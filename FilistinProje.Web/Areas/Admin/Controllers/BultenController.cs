@@ -69,8 +69,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var model = await BuildSubscriberListAsync(aboneler);
 
             using var package = new ExcelPackage();
-            var worksheet = package.Workbook.Worksheets.Add("BÃ¼lten Aboneleri");
-            var headers = new[] { "Id", "Durum", "E-Posta", "KayÄ±t Tarihi", "IP Adresi", "Åehir", "Ãœlke", "Cihaz", "TarayÄ±cÄ±", "Ä°ÅŸletim Sistemi" };
+            var worksheet = package.Workbook.Worksheets.Add("المشتركون في النشرة");
+            var headers = new[] { "Id", "الحالة", "E-Posta", "تاريخ التسجيل", "عنوان IP", "المدينة", "الدولة", "الجهاز", "المتصفح", "نظام التشغيل" };
 
             for (var i = 0; i < headers.Length; i++)
             {
@@ -90,7 +90,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 var item = model[i];
                 var row = i + 2;
                 worksheet.Cells[row, 1].Value = item.Id;
-                worksheet.Cells[row, 2].Value = item.AktifMi ? "Aktif" : "Pasif";
+                worksheet.Cells[row, 2].Value = item.AktifMi ? "نشط" : "غير نشط";
                 worksheet.Cells[row, 3].Value = SafeSpreadsheetText(item.Email);
                 worksheet.Cells[row, 4].Value = item.KayitTarihi.ToString("dd.MM.yyyy HH:mm");
                 worksheet.Cells[row, 5].Value = SafeSpreadsheetText(item.IpAdresi);
@@ -121,7 +121,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 abone.AktifMi = false;
                 await _context.SaveChangesAsync();
-                TempData["Mesaj"] = "BÃ¼lten aboneliÄŸi pasif hale getirildi.";
+                TempData["Mesaj"] = "تم إلغاء تفعيل الاشتراك.";
                 TempData["Durum"] = "success";
             }
 
@@ -137,7 +137,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 abone.AktifMi = true;
                 await _context.SaveChangesAsync();
-                TempData["Mesaj"] = "BÃ¼lten aboneliÄŸi tekrar aktif hale getirildi.";
+                TempData["Mesaj"] = "تم تفعيل الاشتراك مجدداً.";
                 TempData["Durum"] = "success";
             }
 
@@ -151,7 +151,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             aboneIds = aboneIds.Where(x => x > 0).Distinct().ToList();
             if (!aboneIds.Any())
             {
-                TempData["Hata"] = "Ä°ÅŸlem yapmak iÃ§in en az bir abone seÃ§in.";
+                TempData["Hata"] = "اختر مشتركاً واحداً على الأقل.";
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index), new { durum, q, page, pageSize });
             }
@@ -166,7 +166,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             await _context.SaveChangesAsync();
-            TempData["Mesaj"] = $"{aboneler.Count} bÃ¼lten aboneliÄŸi pasif hale getirildi.";
+            TempData["Mesaj"] = $"تم إلغاء تفعيل {aboneler.Count} اشتراك.";
             TempData["Durum"] = "success";
 
             return RedirectToAction(nameof(Index), new { durum, q, page, pageSize });
@@ -193,7 +193,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (string.IsNullOrWhiteSpace(baslik) || string.IsNullOrWhiteSpace(icerik))
             {
-                TempData["Hata"] = "Mail baÅŸlÄ±ÄŸÄ± ve mesaj iÃ§eriÄŸi zorunludur.";
+                TempData["Hata"] = "عنوان البريد ومحتوى الرسالة إلزاميان.";
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index), new { durum, q, page, pageSize });
             }
@@ -204,7 +204,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 mailAboneIds = (mailAboneIds ?? new List<int>()).Where(x => x > 0).Distinct().ToList();
                 if (!mailAboneIds.Any())
                 {
-                    TempData["Hata"] = "SeÃ§ili abonelere mail gÃ¶ndermek iÃ§in en az bir abone seÃ§in.";
+                    TempData["Hata"] = "اختر مشتركاً واحداً على الأقل للإرسال.";
                     TempData["Durum"] = "warning";
                     return RedirectToAction(nameof(Index), new { durum, q, page, pageSize });
                 }
@@ -253,10 +253,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     await _emailService.SendTemplateMailAsync(
                         email,
                         baslik,
-                        "DeÄŸerli Abonemiz",
+                        "مشتركنا العزيز",
                         htmlIcerik,
                         normalizedButtonLink,
-                        string.IsNullOrWhiteSpace(butonYazi) ? "Koleksiyonu Ä°ncele" : butonYazi);
+                        string.IsNullOrWhiteSpace(butonYazi) ? "تصفح المجموعة" : butonYazi);
                     sent++;
                 }
                 catch
@@ -266,9 +266,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             TempData["Mesaj"] = failed == 0
-                ? $"BÃ¼lten maili {sent} aktif aboneye gÃ¶nderildi."
-                : $"BÃ¼lten maili {sent} aboneye gÃ¶nderildi, {failed} gÃ¶nderim baÅŸarÄ±sÄ±z oldu.";
-            TempData["Durum"] = failed == 0 ? "success" : "warning";
+                ? $"تم إرسال البريد إلى {sent} مشترك."
+                : $"تم الإرسال إلى {sent}، فشل {failed}";
 
             return RedirectToAction(nameof(Index), new { durum, q, page, pageSize });
         }
@@ -358,10 +357,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     Email = abone.Email,
                     KayitTarihi = abone.KayitTarihi,
                     AktifMi = abone.AktifMi,
-                    IpAdresi = string.IsNullOrWhiteSpace(abone.IpAdresi) ? "Bilinmiyor" : abone.IpAdresi,
+                    IpAdresi = string.IsNullOrWhiteSpace(abone.IpAdresi) ? "غير معروف" : abone.IpAdresi,
                     Sehir = string.IsNullOrWhiteSpace(logDetay?.Sehir) ? "-" : logDetay.Sehir,
                     Ulke = string.IsNullOrWhiteSpace(logDetay?.Ulke) ? "-" : logDetay.Ulke,
-                    Cihaz = string.IsNullOrWhiteSpace(logDetay?.CihazModeli) ? "Bilinmiyor" : logDetay.CihazModeli,
+                    Cihaz = string.IsNullOrWhiteSpace(logDetay?.CihazModeli) ? "غير معروف" : logDetay.CihazModeli,
                     IsletimSistemi = string.IsNullOrWhiteSpace(logDetay?.IsletimSistemi) ? "-" : logDetay.IsletimSistemi,
                     Tarayici = string.IsNullOrWhiteSpace(logDetay?.Tarayici) ? "-" : logDetay.Tarayici
                 };
