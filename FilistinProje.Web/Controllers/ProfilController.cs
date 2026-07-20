@@ -46,6 +46,7 @@ namespace FilistinProje.Web.Controllers
 
         [HttpGet("")]
         [HttpGet("/Profil")]
+        [HttpGet("/profile/Index")]
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -80,6 +81,7 @@ namespace FilistinProje.Web.Controllers
 
         [HttpGet("orders")]
         [HttpGet("/Profil/Siparislerim")]
+        [HttpGet("/profile/orderslerim")]
         public async Task<IActionResult> Siparislerim()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -97,6 +99,7 @@ namespace FilistinProje.Web.Controllers
 
         [HttpGet("orders/{id}")]
         [HttpGet("/Profil/SiparisDetay/{id}")]
+        [HttpGet("/profile/ordersDetay/{id}")]
         public async Task<IActionResult> SiparisDetay(int id)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -159,7 +162,7 @@ namespace FilistinProje.Web.Controllers
             return View(siparis);
         }
 
-        [HttpGet("create-return/{siparisId?}")] public async Task<IActionResult> IadeOlustur(int siparisId)
+        [HttpGet("create-return/{siparisId?}")] [HttpGet("/profile/IadeOlustur")] public async Task<IActionResult> IadeOlustur(int siparisId)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -264,6 +267,9 @@ namespace FilistinProje.Web.Controllers
             return RedirectToAction(nameof(SiparisDetay), new { id = talep.SiparisId });
         }
 
+        [HttpGet("addresses")]
+        [HttpGet("/Profil/Adreslerim")]
+        [HttpGet("/profile/Adreslerim")]
         public async Task<IActionResult> Adreslerim()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -324,7 +330,7 @@ namespace FilistinProje.Web.Controllers
             return RedirectToAction(nameof(Adreslerim));
         }
 
-        [HttpPost("delete-address")] [ValidateAntiForgeryToken] public async Task<IActionResult> AdresSil(int id)
+        [HttpPost("delete-address")] [HttpPost("/profile/AdresSil")] [ValidateAntiForgeryToken] public async Task<IActionResult> AdresSil(int id)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -345,7 +351,9 @@ namespace FilistinProje.Web.Controllers
             return RedirectToAction(nameof(Adreslerim));
         }
 
-        [HttpPost]
+        [HttpPost("cancel-order")]
+        [HttpPost("/Profil/SiparisIptal")]
+        [HttpPost("/profile/ordersIptal")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SiparisIptal(int id)
         {
@@ -413,7 +421,7 @@ namespace FilistinProje.Web.Controllers
             return RedirectToAction(nameof(SiparisDetay), new { id });
         }
 
-        [HttpGet("delete-account")] public IActionResult HesabiSil()
+        [HttpGet("delete-account")] [HttpGet("/profile/HesabiSil")] public IActionResult HesabiSil()
         {
             return View();
         }

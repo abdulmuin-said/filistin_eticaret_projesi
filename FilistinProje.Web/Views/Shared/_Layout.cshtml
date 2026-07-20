@@ -645,7 +645,7 @@ document.addEventListener('keydown', function(event) {
                     window.showToast(quickAddAddedText, 'success');
 
                     // Sepet sayısını güncelle
-                    fetch('/cart/GetSepetSayisi')
+                    fetch('/cart/count')
                     .then(r => r.json())
                     .then(countData => {
                         const newCount = countData.count;

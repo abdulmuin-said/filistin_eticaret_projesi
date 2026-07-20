@@ -68,7 +68,7 @@
     private static bool IsGenericCartOption(string value)
     {
         var normalized = value.Trim().ToLowerInvariant();
-        return normalized is "standart" or "standard" or "varsayilan" or "varsayýlan" or "varsayilan varyasyon" or "varsayýlan varyasyon" or "default variant";
+        return normalized is "standart" or "standard" or "varsayilan" or "varsayï¿½lan" or "varsayilan varyasyon" or "varsayï¿½lan varyasyon" or "default variant";
     }
 }
 
@@ -89,7 +89,7 @@
         </div>
         @if (Model.Any())
         {
-            <form method="post" action="/cart/Temizle" onsubmit="return confirm('@Localizer["ClearCartConfirm"]');">
+            <form method="post" action="/cart/clear" onsubmit="return confirm('@Localizer["ClearCartConfirm"]');">
                 @Html.AntiForgeryToken()
                 <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-full border border-red-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-red-600 transition-colors hover:border-red-300 hover:bg-red-50">
                     <i class="fas fa-trash-alt text-[11px]"></i>
@@ -144,7 +144,7 @@
 
                     <article class="bg-white border border-brand-border rounded-lg p-4 flex gap-4 relative">
                         <!-- Sil Butonu -->
-                        <form method="post" action="/cart/Sil" class="absolute end-3 top-3">
+                        <form method="post" action="/cart/remove" class="absolute end-3 top-3">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="sepetItemId" value="@item.Id" />
                             <button type="submit" class="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors rounded-full hover:bg-red-50" title="@Localizer["RemoveProduct"]">
@@ -174,7 +174,7 @@
                             }
 
                             <div class="mt-3">
-                                <form method="post" action="/cart/NotGuncelle" class="flex flex-col gap-1">
+                                <form method="post" action="/cart/update-note" class="flex flex-col gap-1">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="sepetItemId" value="@item.Id" />
                                     <label class="text-[10px] uppercase tracking-widest text-brand-mutedtext font-medium">@Localizer["NoteSpecialRequest"]</label>
@@ -203,7 +203,7 @@
                                 <div class="flex items-center border border-brand-border rounded overflow-hidden">
                                     @if (item.Adet > 1)
                                     {
-                                        <form method="post" action="/cart/AdetGuncelle">
+                                        <form method="post" action="/cart/update-qty">
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="sepetItemId" value="@item.Id" />
                                             <input type="hidden" name="yeniAdet" value="@(item.Adet - 1)" />
@@ -214,7 +214,7 @@
                                     }
                                     else
                                     {
-                                        <form method="post" action="/cart/Sil">
+                                        <form method="post" action="/cart/remove">
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="sepetItemId" value="@item.Id" />
                                             <button type="submit" class="w-8 h-8 flex items-center justify-center text-red-400 hover:bg-red-50 transition-colors text-xs">
@@ -223,7 +223,7 @@
                                         </form>
                                     }
                                     <span class="w-8 h-8 flex items-center justify-center text-sm font-medium text-brand-darktext border-x border-brand-border">@item.Adet</span>
-                                    <form method="post" action="/cart/AdetGuncelle">
+                                    <form method="post" action="/cart/update-qty">
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="sepetItemId" value="@item.Id" />
                                         <input type="hidden" name="yeniAdet" value="@(item.Adet + 1)" />
@@ -406,7 +406,7 @@
                         {
                             var kargoList = (List<FilistinProje.Core.Varliklar.KargoFirmasi>)ViewBag.KargoFirmalari;
                             <div class="py-2 border-t border-dashed border-brand-border">
-                                <form id="kargoSecimForm" method="post" action="/cart/SecilenKargoGuncelle" class="flex flex-col gap-1">
+                                <form id="kargoSecimForm" method="post" action="/cart/update-shipping" class="flex flex-col gap-1">
                                     @Html.AntiForgeryToken()
                                     <label class="text-[10px] uppercase tracking-widest text-brand-mutedtext font-medium">@Localizer["SelectShippingCompany"]</label>
                                     <select name="kargoId" onchange="this.form.submit()" class="w-full border border-brand-border rounded px-2.5 py-1.5 text-xs text-brand-darktext bg-brand-cream focus:ring-1 focus:ring-[#b58735] focus:outline-none outline-none">
@@ -435,7 +435,7 @@
                     {
                         <div class="flex items-center justify-between bg-green-50 border border-green-200 rounded px-3 py-2 mb-4 text-sm text-green-700">
                             <span><i class="fas fa-check-circle me-1"></i>@ViewBag.KuponKodu</span>
-                            <form method="post" action="/cart/KuponKaldir">
+                            <form method="post" action="/cart/remove-coupon">
                                 @Html.AntiForgeryToken()
                                 <button type="submit" class="text-red-400 hover:text-red-600"><i class="fas fa-times"></i></button>
                             </form>
@@ -443,7 +443,7 @@
                     }
                     else
                     {
-                        <form action="/cart/KuponUygula" method="post" class="flex mb-4">
+                        <form action="/cart/apply-coupon" method="post" class="flex mb-4">
                             @Html.AntiForgeryToken()
                             <input type="text" name="kuponKodu" placeholder="@Localizer["DiscountCode"]" required
                                    class="flex-1 border border-brand-border border-e-0 rounded-s px-3 py-2 text-xs focus:ring-1 focus:ring-[#b58735] outline-none bg-brand-cream" />

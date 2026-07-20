@@ -46,7 +46,7 @@
                         <i class="fas fa-heart w-4"></i> @Localizer["MyFavorites"]
                     </a>
                     <hr class="border-brand-border my-2" />
-                    <form action="/account/CikisYap" method="post" class="m-0">
+                    <form action="/Hesap/CikisYap" method="post" class="m-0">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded text-sm text-red-500 hover:bg-red-50 transition-colors text-left">
                             <i class="fas fa-right-from-bracket w-4"></i> @Localizer["Logout"]
@@ -204,7 +204,7 @@
                             @if (!string.IsNullOrEmpty(Model.KimlikFotografYolu))
                             {
                                 <div class="mt-2">
-                                    <img src="@Url.Action("Kimlik", "Belge", new { userId = Model.Id })" alt="Kimlik Fotoðrafý"
+                                    <img src="@Url.Action("Kimlik", "Belge", new { userId = Model.Id })" alt="Kimlik Fotoï¿½rafï¿½"
                                          class="w-48 h-32 object-cover rounded border border-brand-border cursor-pointer hover:opacity-90 transition-opacity"
                                          onclick="window.open('@Url.Action("Kimlik", "Belge", new { userId = Model.Id })', '_blank')" />
                                     <p class="text-xs text-brand-mutedtext mt-1">@Localizer["ClickToViewFull"]</p>

@@ -59,6 +59,7 @@ namespace FilistinProje.Web.Controllers
 
         [HttpGet("register")]
         [HttpGet("/Hesap/KayitOl")]
+        [HttpGet("/account/KayitOl")]
         public IActionResult KayitOl()
         {
             return View();
@@ -198,6 +199,7 @@ namespace FilistinProje.Web.Controllers
 
         [HttpGet("login")]
         [HttpGet("/Hesap/GirisYap")]
+        [HttpGet("/account/GirisYap")]
         public IActionResult GirisYap(string? returnUrl = null)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -275,6 +277,7 @@ namespace FilistinProje.Web.Controllers
         [HttpPost("logout")]
         [HttpPost("/Hesap/CikisYap")]
         [ValidateAntiForgeryToken]
+        [HttpGet("/Hesap/CikisYap")]
         public async Task<IActionResult> CikisYap()
         {
             if (User.Identity?.IsAuthenticated == true)
@@ -303,7 +306,7 @@ namespace FilistinProje.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet("forgot-password")] public IActionResult SifremiUnuttum()
+        [HttpGet("forgot-password")] [HttpGet("/Hesap/SifremiUnuttum")] [HttpGet("/account/SifremiUnuttum")] public IActionResult SifremiUnuttum()
         {
             return View();
         }

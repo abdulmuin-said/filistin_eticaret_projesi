@@ -51,6 +51,7 @@ namespace FilistinProje.Web.Controllers
 
         [HttpGet("contact")]
         [HttpGet("/Kurumsal/Iletisim")]
+        [HttpGet("/pages/Iletisim")]
         public IActionResult Iletisim()
         {
             var settings = _siteSettingsService.GetSettings();
@@ -122,10 +123,12 @@ namespace FilistinProje.Web.Controllers
         
         [HttpGet("privacy-policy")]
         [HttpGet("/Kurumsal/Gizlilik")]
+        [HttpGet("/pages/Gizlilik")]
         public IActionResult Gizlilik() => View();
         
         [HttpGet("terms-of-service")]
         [HttpGet("/Kurumsal/KullaniciSozlesmesi")]
+        [HttpGet("/pages/KullaniciSozlesmesi")]
         public IActionResult KullaniciSozlesmesi() => View();
         
         [HttpGet("distance-selling-contract")]
