@@ -315,13 +315,13 @@ namespace FilistinProje.Web.Controllers
                 var ipAddress = Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "-";
                 var adminMailIcerik = $@"
                     <p>{_localizer["Home_AdminNewSubscriberBody"].Value}</p>
-                    <p><b>Abone e-posta:</b> {WebUtility.HtmlEncode(email)}</p>
+                    <p><b>البريد الإلكتروني:</b> {WebUtility.HtmlEncode(email)}</p>
                     <p><b>IP:</b> {WebUtility.HtmlEncode(ipAddress)}</p>";
 
                 await _emailService.SendTemplateMailAsync(
                     recipientEmail,
                     _localizer["Home_AdminNewSubscriber"].Value,
-                    "Operasyon Ekibi",
+                    "فريق العمليات",
                     adminMailIcerik,
                     siteUrl,
                     _localizer["Home_BrowseSite"].Value);

@@ -176,36 +176,36 @@ namespace FilistinProje.Service.Services
         {
             try
             {
-                var subject = $"Sipari\u015Finiz Kargoya Verildi - {siparisNo}";
+                var subject = $"تم شحن طلبك - {siparisNo}";
                 var safeSiparisNo = WebUtility.HtmlEncode(siparisNo);
                 var safeKargoFirmasi = WebUtility.HtmlEncode(kargoFirmasi);
                 var safeKargoTakipNo = WebUtility.HtmlEncode(kargoTakipNo);
                 var trackingLinkHtml = GetKargoTrackingLink(kargoTakipNo);
                 var trackingLinkBlock = string.IsNullOrWhiteSpace(trackingLinkHtml)
                     ? string.Empty
-                    : $"<p>Kargonuzu a&#351;a&#287;&#305;daki ba&#287;lant&#305;dan takip edebilirsiniz.</p><div style='text-align:center; margin:24px 0;'>{trackingLinkHtml}</div>";
+                    : $"<p>يمكنك تتبع شحنتك عبر الرابط أدناه.</p><div style='text-align:center; margin:24px 0;'>{trackingLinkHtml}</div>";
                 var content = $@"
-                    <p>Sipari&#351; numaran&#305;z <strong>{safeSiparisNo}</strong> olan &uuml;r&uuml;n&uuml;n&uuml;z kargoya verildi.</p>
+                    <p>تم شحن طلبك رقم <strong>{safeSiparisNo}</strong>.</p>
                     <table role='presentation' width='100%' cellpadding='0' cellspacing='0' style='border:1px solid #e5e2dc; border-radius:12px; background:#fffaf0; margin:18px 0;'>
                         <tr>
                             <td style='padding:16px; border-bottom:1px solid #e5e2dc; color:#47473d;'>
-                                <strong style='color:#313511;'>Kargo Firmas&#305;:</strong> {safeKargoFirmasi}
+                                <strong style='color:#313511;'>شركة الشحن:</strong> {safeKargoFirmasi}
                             </td>
                         </tr>
                         <tr>
                             <td style='padding:16px; color:#47473d;'>
-                                <strong style='color:#313511;'>Takip Numaras&#305;:</strong> <span style='font-size:18px; color:#b58735; font-weight:700;'>{safeKargoTakipNo}</span>
+                                <strong style='color:#313511;'>رقم التتبع:</strong> <span style='font-size:18px; color:#b58735; font-weight:700;'>{safeKargoTakipNo}</span>
                             </td>
                         </tr>
                     </table>
                     {trackingLinkBlock}";
 
-                await SendTemplateMailAsync(toEmail, subject, musteriAdi, content, "", "");
+                await SendTemplateMailAsync(toEmail, subject, musteriAdi, content, "", "", "ar");
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Kargo email hatasi: {ex.Message}");
+                _logger.LogError(ex, "Kargo email gonderim hatasi. SiparisNo={SiparisNo}", siparisNo);
                 return false;
             }
         }
@@ -238,7 +238,7 @@ namespace FilistinProje.Service.Services
             }
 
             var safeTrackingUrl = WebUtility.HtmlEncode(trackingUri.ToString());
-            return $"<a href='{safeTrackingUrl}' style='display:inline-block; background:#313511; color:#ffffff; padding:13px 24px; text-decoration:none; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;'>Kargoyu takip et</a>";
+            return $"<a href='{safeTrackingUrl}' style='display:inline-block; background:#313511; color:#ffffff; padding:13px 24px; text-decoration:none; border-radius:999px; font-size:12px; font-weight:700; letter-spacing:.08em;'>تتبع الشحنة</a>";
         }
 
         private static bool TryCreateMailAddress(string? address, string? displayName, out MailAddress mailAddress)
@@ -281,15 +281,9 @@ namespace FilistinProje.Service.Services
                 var siteSettings = _siteSettingsService.GetSettings();
                 var brandName = string.IsNullOrWhiteSpace(siteSettings.MarkaAdi) ? siteSettings.SiteAdi : siteSettings.MarkaAdi;
                 var fromEmail = _config["EmailSettings:FromEmail"];
-                if (string.IsNullOrWhiteSpace(fromEmail))
-                {
-                    fromEmail = siteSettings.Email;
-                }
+                if (string.IsNullOrWhiteSpace(fromEmail)) fromEmail = siteSettings.Email;
                 var fromName = _config["EmailSettings:FromName"];
-                if (string.IsNullOrWhiteSpace(fromName))
-                {
-                    fromName = brandName;
-                }
+                if (string.IsNullOrWhiteSpace(fromName)) fromName = brandName;
 
                 var host = _config["EmailSettings:Host"] ?? string.Empty;
                 var port = int.TryParse(_config["EmailSettings:Port"], out var parsedPort) ? parsedPort : 587;
@@ -309,24 +303,34 @@ namespace FilistinProje.Service.Services
                     return false;
                 }
 
-                var subject = $"SipariÅŸ FaturanÄ±z HazÄ±r - {siparisNo}";
-                var body = $@"
-                    <div style='font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;'>
-                        <h2 style='color: #313511; margin-bottom: 20px;'>Merhaba {musteriAdi},</h2>
-                        <p style='color: #47473d; line-height: 1.6;'>
-                            SipariÅŸiniz iÃ§in fatura hazÄ±rlanmÄ±ÅŸtÄ±r. AÅŸaÄŸÄ±daki ekten fatura belgesini indirebilirsiniz.
-                        </p>
-                        <div style='background: #fcf9f3; border-radius: 12px; padding: 20px; margin: 20px 0; border: 1px solid #e5e2dc;'>
-                            <p style='margin: 0;'><strong>SipariÅŸ No:</strong> {siparisNo}</p>
-                        </div>
-                        <p style='color: #7a766a; font-size: 14px;'>
-                            Herhangi bir sorunuz olursa bizimle iletiÅŸime geÃ§ebilirsiniz.
-                        </p>
-                        <p style='color: #313511; margin-top: 30px;'>
-                            SaygÄ±larÄ±mÄ±zla,<br/>
-                            <strong>{brandName}</strong>
-                        </p>
-                    </div>";
+                var safeSiparisNo = WebUtility.HtmlEncode(siparisNo);
+                var subject = $"فاتورة طلبك جاهزة - {siparisNo}";
+                var content = $@"
+                    <p>تم إعداد فاتورة طلبك رقم <strong>{safeSiparisNo}</strong>. يمكنك تنزيل الفاتورة من المرفق أدناه.</p>
+                    <p style='color:#7a766a; font-size:14px;'>إذا كان لديك أي استفسار، لا تتردد في التواصل معنا.</p>";
+
+                var siteUrl = _siteSettingsService.BuildAbsoluteUrl(string.Empty);
+                var logoUrl = "cid:7anrps48-logo";
+                var inlineLogoPath = Path.Combine(_env.WebRootPath, "EmailTemplates", "7anrps48-email-logo.png");
+                var instagramUrl = string.IsNullOrWhiteSpace(siteSettings.InstagramUrl) ? siteUrl : siteSettings.InstagramUrl;
+                var contactSeparator = !string.IsNullOrWhiteSpace(siteSettings.Email) && !string.IsNullOrWhiteSpace(siteSettings.Telefon) ? "|" : string.Empty;
+
+                var sablonPath = Path.Combine(_env.WebRootPath, "EmailTemplates", "Sablon.ar.html");
+                var body = await File.ReadAllTextAsync(sablonPath);
+                body = body.Replace("{BASLIK}", subject)
+                           .Replace("{ADSOYAD}", WebUtility.HtmlEncode(musteriAdi))
+                           .Replace("{ICERIK}", content)
+                           .Replace("{BUTON_GORUNUM}", "none")
+                           .Replace("{BUTON_LINK}", "")
+                           .Replace("{BUTON_YAZI}", "")
+                           .Replace("{SITE_ADI}", siteSettings.SiteAdi)
+                           .Replace("{MARKA_ADI}", brandName)
+                           .Replace("{SITE_URL}", siteUrl)
+                           .Replace("{SITE_LOGO_URL}", logoUrl)
+                           .Replace("{SITE_EMAIL}", siteSettings.Email)
+                           .Replace("{SITE_PHONE}", siteSettings.Telefon)
+                           .Replace("{SITE_CONTACT_SEPARATOR}", contactSeparator)
+                           .Replace("{INSTAGRAM_URL}", instagramUrl);
 
                 using var client = new SmtpClient(host, port)
                 {
@@ -335,15 +339,22 @@ namespace FilistinProje.Service.Services
                     Timeout = 30000
                 };
 
-                using var mailMessage = new MailMessage
-                {
-                    From = fromAddress,
-                    Subject = subject,
-                    Body = body,
-                    IsBodyHtml = true
-                };
-
+                using var mailMessage = new MailMessage { From = fromAddress, Subject = subject, IsBodyHtml = true };
                 mailMessage.To.Add(toAddress);
+
+                if (File.Exists(inlineLogoPath))
+                {
+                    var htmlView = AlternateView.CreateAlternateViewFromString(body, null, MediaTypeNames.Text.Html);
+                    var logoResource = new LinkedResource(inlineLogoPath, "image/png") { ContentId = "7anrps48-logo", TransferEncoding = TransferEncoding.Base64 };
+                    logoResource.ContentType.Name = "7anrps48-logo.png";
+                    logoResource.ContentLink = new Uri("cid:7anrps48-logo");
+                    htmlView.LinkedResources.Add(logoResource);
+                    mailMessage.AlternateViews.Add(htmlView);
+                }
+                else
+                {
+                    mailMessage.Body = body;
+                }
 
                 var attachment = new Attachment(filePath, "application/pdf");
                 if (attachment.ContentDisposition != null)
