@@ -1,7 +1,10 @@
-@inject IStringLocalizer<SharedResource> Localizer
+﻿@inject IStringLocalizer<SharedResource> Localizer
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @{
+    var siteSettings = SiteSettingsService.GetSettings();
+    var markaAdi = string.IsNullOrWhiteSpace(siteSettings.MarkaAdi) ? siteSettings.SiteAdi : siteSettings.MarkaAdi;
     ViewData["Title"] = Localizer["ReturnExchange"];
-    ViewData["SeoTitle"] = Localizer["ReturnExchange"] + " - 7ANRPS48";
+    ViewData["SeoTitle"] = Localizer["ReturnExchange"] + " - " + markaAdi;
 }
 
 <div class="bg-brand-cream border-b border-brand-border py-3">
@@ -41,3 +44,5 @@
 
     </div>
 </div>
+
+
