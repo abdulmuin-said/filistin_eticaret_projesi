@@ -10,9 +10,6 @@ using QuestPDF.Infrastructure;
 
 namespace FilistinProje.Web.Services
 {
-    /// <summary>
-    /// QuestPDF ile sipariş verisinden profesyonel PDF faturası oluşturur.
-    /// </summary>
     public interface IFaturaPdfService
     {
         Task<byte[]> GenerateInvoicePdfAsync(int siparisId);
@@ -22,22 +19,24 @@ namespace FilistinProje.Web.Services
     {
         private readonly KanvasDbContext _context;
         private readonly ISiteSettingsService _siteSettings;
+        private readonly IWebHostEnvironment _env;
         private readonly ILogger<FaturaPdfService> _logger;
 
         public FaturaPdfService(
             KanvasDbContext context,
             ISiteSettingsService siteSettings,
+            IWebHostEnvironment env,
             ILogger<FaturaPdfService> logger)
         {
             _context = context;
             _siteSettings = siteSettings;
+            _env = env;
             _logger = logger;
             QuestPDF.Settings.License = LicenseType.Community;
         }
 
         public async Task<byte[]> GenerateInvoicePdfAsync(int siparisId)
         {
-            // Sipariş ve ilişkili verileri yükle
             var siparis = await _context.Siparisler
                 .AsNoTracking()
                 .Include(s => s.SiparisDetaylari.Where(d => !d.SilindiMi))
@@ -53,21 +52,18 @@ namespace FilistinProje.Web.Services
             var brandName = string.IsNullOrWhiteSpace(settings.MarkaAdi) ? settings.SiteAdi : settings.MarkaAdi;
             var siparisNo = string.IsNullOrWhiteSpace(siparis.SiparisNo) ? $"#{siparis.Id}" : siparis.SiparisNo;
 
+            byte[]? logoBytes = TryLoadLogo(settings.SiteLogoUrl);
+
             var document = Document.Create(container =>
             {
                 container.Page(page =>
                 {
                     page.Size(PageSizes.A4);
-                    page.Margin(35, Unit.Millimetre);
+                    page.Margin(30, Unit.Millimetre);
                     page.DefaultTextStyle(x => x.FontSize(9).FontFamily("Arial"));
 
-                    // ========== HEADER ==========
-                    page.Header().Element(c => ComposeHeader(c, settings, brandName, siparis, siparisNo));
-
-                    // ========== CONTENT ==========
-                    page.Content().Element(c => ComposeContent(c, settings, siparis, brandName));
-
-                    // ========== FOOTER ==========
+                    page.Header().Element(c => ComposeHeader(c, settings, brandName, siparis, siparisNo, logoBytes));
+                    page.Content().Element(c => ComposeContent(c, siparis));
                     page.Footer().Element(c => ComposeFooter(c, settings, brandName, siparisNo));
                 });
             });
@@ -77,287 +73,294 @@ namespace FilistinProje.Web.Services
             return pdfBytes;
         }
 
-        private void ComposeHeader(IContainer container, SiteAyarlari settings, string brandName, Siparis siparis, string siparisNo)
+        private byte[]? TryLoadLogo(string? logoUrl)
+        {
+            if (string.IsNullOrWhiteSpace(logoUrl)) return null;
+            try
+            {
+                var relativePath = logoUrl.TrimStart('/');
+                var fullPath = Path.Combine(_env.WebRootPath, relativePath);
+                var ext = Path.GetExtension(fullPath).ToLowerInvariant();
+                if ((ext == ".png" || ext == ".jpg" || ext == ".jpeg") && File.Exists(fullPath))
+                    return File.ReadAllBytes(fullPath);
+            }
+            catch { }
+            return null;
+        }
+
+        private static string DurumLabel(int durum) => durum switch
+        {
+            0 => "تم استلام الطلب / Order Received",
+            1 => "قيد التحضير / Preparing",
+            2 => "تم الشحن / Shipped",
+            3 => "تم التسليم / Delivered",
+            4 => "ملغي / Cancelled",
+            8 => "قيد التعبئة / Packing",
+            _ => "أخرى / Other"
+        };
+
+        private static string OdemeLabel(string? yontem) => yontem switch
+        {
+            "KapidaOdeme" => "الدفع عند الاستلام / Cash on Delivery",
+            "BankaHavalesi" => "تحويل بنكي / Bank Transfer",
+            "Kredi" or "KrediKarti" => "بطاقة ائتمان / Credit Card",
+            null or "" => "غير محدد / N/A",
+            _ => yontem
+        };
+
+        private static string TeslimatLabel(string? tip) => tip switch
+        {
+            "Magazadan" or "magazadan" => "استلام من المتجر / Store Pickup",
+            _ => "توصيل للمنزل / Home Delivery"
+        };
+
+        private void ComposeHeader(IContainer container, SiteAyarlari settings, string brandName,
+            Siparis siparis, string siparisNo, byte[]? logoBytes)
         {
             container.Column(col =>
             {
-                // Üst şerit — marka adı + "FATURA" başlığı
                 col.Item().Row(row =>
                 {
-                    // Sol: Logo ve marka
-                    row.RelativeItem().Column(logoCol =>
+                    row.RelativeItem().Column(left =>
                     {
-                        logoCol.Item().Text(brandName)
-                            .FontSize(20).Bold().FontColor(Colors.Black);
+                        if (logoBytes != null)
+                        {
+                            left.Item().Height(50).Image(logoBytes).FitHeight();
+                        }
+                        else
+                        {
+                            left.Item().Text(brandName)
+                                .FontSize(20).Bold().FontColor(Colors.Black);
+                        }
 
                         if (!string.IsNullOrWhiteSpace(settings.SiteAciklamasi))
-                        {
-                            logoCol.Item().Text(settings.SiteAciklamasi)
-                                .FontSize(8).FontColor(Colors.Grey.Medium);
-                        }
+                            left.Item().PaddingTop(2).Text(settings.SiteAciklamasi)
+                                .FontSize(7).FontColor(Colors.Grey.Medium);
+
+                        if (!string.IsNullOrWhiteSpace(settings.Adres))
+                            left.Item().PaddingTop(4).Text(settings.Adres)
+                                .FontSize(7).FontColor(Colors.Grey.Darken1);
+                        if (!string.IsNullOrWhiteSpace(settings.Telefon))
+                            left.Item().Text($"📞 {settings.Telefon}")
+                                .FontSize(7).FontColor(Colors.Grey.Darken1);
+                        if (!string.IsNullOrWhiteSpace(settings.Email))
+                            left.Item().Text(settings.Email)
+                                .FontSize(7).FontColor(Colors.Grey.Darken1);
+                        if (!string.IsNullOrWhiteSpace(settings.BaseUrl))
+                            left.Item().Text(settings.BaseUrl)
+                                .FontSize(7).FontColor(Colors.Blue.Darken2);
                     });
 
-                    // Sağ: FATURA etiketi
-                    row.ConstantItem(120).Column(right =>
+                    row.ConstantItem(160).Column(right =>
                     {
-                        right.Item().Text("FATURA")
-                            .FontSize(28).Bold().FontColor(Colors.Black).AlignRight();
-                        right.Item().Text(siparisNo)
+                        right.Item().Text("فاتورة / INVOICE")
+                            .FontSize(24).Bold().FontColor(Colors.Black).AlignRight();
+                        right.Item().PaddingTop(4).Text(siparisNo)
                             .FontSize(11).Bold().FontColor(Colors.Grey.Darken3).AlignRight();
+                        right.Item().PaddingTop(2).Text(siparis.OlusturulmaTarihi.ToString("dd/MM/yyyy"))
+                            .FontSize(9).FontColor(Colors.Grey.Darken1).AlignRight();
                     });
                 });
 
-                // Ayırıcı çizgi
-                col.Item().PaddingVertical(8).LineHorizontal(1).LineColor(Colors.Grey.Lighten2);
+                col.Item().PaddingVertical(8).LineHorizontal(1.5f).LineColor(Colors.Black);
 
-                // İletişim bilgileri + müşteri bilgileri
                 col.Item().Row(row =>
                 {
-                    // Sol: Şirket bilgileri
-                    row.RelativeItem().Column(companyCol =>
-                    {
-                        if (!string.IsNullOrWhiteSpace(settings.Adres))
-                            companyCol.Item().Text(settings.Adres).FontSize(8).FontColor(Colors.Grey.Darken1);
-                        if (!string.IsNullOrWhiteSpace(settings.Telefon))
-                            companyCol.Item().Text($"Tel: {settings.Telefon}").FontSize(8).FontColor(Colors.Grey.Darken1);
-                        if (!string.IsNullOrWhiteSpace(settings.Email))
-                            companyCol.Item().Text($"E-posta: {settings.Email}").FontSize(8).FontColor(Colors.Grey.Darken1);
-                        if (!string.IsNullOrWhiteSpace(settings.BaseUrl))
-                            companyCol.Item().Text(settings.BaseUrl).FontSize(8).FontColor(Colors.Blue.Darken2);
-                    });
-
-                    // Sağ: Müşteri bilgileri
-                    row.ConstantItem(220).Column(custCol =>
-                    {
-                        custCol.Item().Background(Colors.Grey.Lighten5).Border(1)
-                            .BorderColor(Colors.Grey.Lighten2).Padding(8).Column(c =>
-                            {
-                                c.Item().Text("MÜŞTERİ BİLGİLERİ")
-                                    .FontSize(7).Bold().FontColor(Colors.Grey.Darken2);
-                                c.Item().PaddingTop(4).Text(siparis.MusteriAdSoyad)
-                                    .FontSize(10).Bold().FontColor(Colors.Black);
-                                if (!string.IsNullOrWhiteSpace(siparis.Telefon))
-                                    c.Item().Text($"Tel: {siparis.Telefon}").FontSize(8).FontColor(Colors.Grey.Darken1);
-                                if (!string.IsNullOrWhiteSpace(siparis.Eposta))
-                                    c.Item().Text(siparis.Eposta).FontSize(8).FontColor(Colors.Grey.Darken1);
-                                c.Item().PaddingTop(4).Text($"{siparis.AcikAdres}")
-                                    .FontSize(8).FontColor(Colors.Grey.Darken1);
-                                c.Item().Text($"{siparis.Ilce} / {siparis.Sehir}")
-                                    .FontSize(8).FontColor(Colors.Grey.Darken1);
-                            });
-                    });
-                });
-
-                // Sipariş özeti
-                col.Item().PaddingTop(8).Row(row =>
-                {
-                    var durumLabel = siparis.Durum switch
-                    {
-                        0 => "Sipariş Alındı",
-                        1 => "Hazırlanıyor",
-                        2 => "Kargoya Verildi",
-                        3 => "Teslim Edildi",
-                        4 => "İptal Edildi",
-                        8 => "Paketleniyor",
-                        _ => "Diğer"
-                    };
-
                     row.RelativeItem().Column(metaCol =>
                     {
-                        metaCol.Item().Row(r =>
+                        void MetaRow(string ar, string en, string val)
                         {
-                            r.ConstantItem(130).Text("Sipariş No:").FontSize(8).Bold();
-                            r.RelativeItem().Text(siparisNo).FontSize(8);
-                        });
-                        metaCol.Item().Row(r =>
-                        {
-                            r.ConstantItem(130).Text("Sipariş Tarihi:").FontSize(8).Bold();
-                            r.RelativeItem().Text(siparis.OlusturulmaTarihi.ToString("dd.MM.yyyy HH:mm")).FontSize(8);
-                        });
-                        metaCol.Item().Row(r =>
-                        {
-                            r.ConstantItem(130).Text("Durum:").FontSize(8).Bold();
-                            r.RelativeItem().Text(durumLabel).FontSize(8);
-                        });
-                        metaCol.Item().Row(r =>
-                        {
-                            r.ConstantItem(130).Text("Ödeme Yöntemi:").FontSize(8).Bold();
-                            r.RelativeItem().Text(siparis.OdemeYontemi).FontSize(8);
-                        });
+                            metaCol.Item().Row(r =>
+                            {
+                                r.ConstantItem(130).Text($"{ar} / {en}:")
+                                    .FontSize(8).Bold().FontColor(Colors.Grey.Darken2);
+                                r.RelativeItem().Text(val).FontSize(8);
+                            });
+                        }
+
+                        MetaRow("رقم الطلب", "Order No", siparisNo);
+                        MetaRow("تاريخ الطلب", "Order Date", siparis.OlusturulmaTarihi.ToString("dd/MM/yyyy HH:mm"));
+                        MetaRow("الحالة", "Status", DurumLabel(siparis.Durum));
+                        MetaRow("طريقة الدفع", "Payment", OdemeLabel(siparis.OdemeYontemi));
+                        MetaRow("طريقة التسليم", "Delivery", TeslimatLabel(siparis.TeslimatTipi));
                     });
 
-                    row.ConstantItem(100); // boşluk
+                    row.ConstantItem(220).Column(custCol =>
+                    {
+                        custCol.Item()
+                            .Background(Colors.Grey.Lighten4)
+                            .Border(1).BorderColor(Colors.Grey.Lighten2)
+                            .Padding(8).Column(c =>
+                            {
+                                c.Item().Text("معلومات العميل / Customer Info")
+                                    .FontSize(7).Bold().FontColor(Colors.Grey.Darken2);
+                                c.Item().PaddingTop(4).Text(siparis.MusteriAdSoyad)
+                                    .FontSize(10).Bold();
+                                if (!string.IsNullOrWhiteSpace(siparis.Telefon))
+                                    c.Item().Text($"📞 {siparis.Telefon}").FontSize(8).FontColor(Colors.Grey.Darken1);
+                                if (!string.IsNullOrWhiteSpace(siparis.Eposta))
+                                    c.Item().Text(siparis.Eposta).FontSize(8).FontColor(Colors.Grey.Darken1);
+                                if (!string.IsNullOrWhiteSpace(siparis.AcikAdres))
+                                    c.Item().PaddingTop(4).Text(siparis.AcikAdres)
+                                        .FontSize(8).FontColor(Colors.Grey.Darken1);
+                                if (!string.IsNullOrWhiteSpace(siparis.Sehir))
+                                    c.Item().Text($"{siparis.Ilce} / {siparis.Sehir}")
+                                        .FontSize(8).FontColor(Colors.Grey.Darken1);
+                            });
+                    });
                 });
             });
         }
 
-        private void ComposeContent(IContainer container, SiteAyarlari settings, Siparis siparis, string brandName)
+        private void ComposeContent(IContainer container, Siparis siparis)
         {
             container.Column(col =>
             {
-                // ========== ÜRÜN TABLOSU ==========
                 col.Item().PaddingVertical(12).Table(table =>
                 {
                     table.ColumnsDefinition(c =>
                     {
-                        c.RelativeColumn(3);  // Ürün adı
-                        c.RelativeColumn(1);  // Varyant
-                        c.ConstantColumn(60); // Adet
-                        c.ConstantColumn(90); // Birim Fiyat
-                        c.ConstantColumn(90); // Toplam
+                        c.RelativeColumn(3);
+                        c.RelativeColumn(1.5f);
+                        c.ConstantColumn(50);
+                        c.ConstantColumn(80);
+                        c.ConstantColumn(85);
                     });
 
-                    // Tablo başlıkları
                     table.Header(header =>
                     {
-                        header.Cell().Background(Colors.Black).Padding(6)
-                            .Text("Ürün").FontSize(8).Bold().FontColor(Colors.White);
-                        header.Cell().Background(Colors.Black).Padding(6)
-                            .Text("Varyant").FontSize(8).Bold().FontColor(Colors.White);
-                        header.Cell().Background(Colors.Black).Padding(6)
-                            .Text("Adet").FontSize(8).Bold().FontColor(Colors.White).AlignCenter();
-                        header.Cell().Background(Colors.Black).Padding(6)
-                            .Text("Birim Fiyat").FontSize(8).Bold().FontColor(Colors.White).AlignRight();
-                        header.Cell().Background(Colors.Black).Padding(6)
-                            .Text("Toplam").FontSize(8).Bold().FontColor(Colors.White).AlignRight();
+                        void Hdr(string ar, string en, bool right = false)
+                        {
+                            var cell = header.Cell().Background(Colors.Black).Padding(6);
+                            if (right)
+                                cell.Text($"{ar}\n{en}").FontSize(7).Bold().FontColor(Colors.White).AlignRight();
+                            else
+                                cell.Text($"{ar}\n{en}").FontSize(7).Bold().FontColor(Colors.White);
+                        }
+                        Hdr("المنتج", "Product");
+                        Hdr("المتغير", "Variant");
+                        Hdr("الكمية", "Qty", true);
+                        Hdr("سعر الوحدة", "Unit Price", true);
+                        Hdr("المجموع", "Total", true);
                     });
 
-                    // Tablo satırları
-                    var detaylar = siparis.SiparisDetaylari
-                        .Where(d => !d.SilindiMi)
-                        .ToList();
+                    var detaylar = siparis.SiparisDetaylari.Where(d => !d.SilindiMi).ToList();
+                    bool isEven = false;
 
                     foreach (var item in detaylar)
                     {
-                        var urunAdi = item.Urun?.LocalizedBaslik ?? "Ürün";
+                        isEven = !isEven;
+                        var bg = isEven ? Colors.White : Colors.Grey.Lighten5;
+
+                        var urunAdi = item.Urun?.LocalizedBaslik ?? "—";
                         var varyant = item.UrunSecenek?.VaryantBasligi
                                       ?? item.UrunSecenek?.Olcu
-                                      ?? "Standart";
+                                      ?? "—";
                         var birimFiyat = item.BirimFiyat;
-                        var toplam = (item.Adet * birimFiyat) + (item.HediyePaketi ? item.HediyePaketFiyati * item.Adet : 0);
+                        var hediyeEk = item.HediyePaketi ? item.HediyePaketFiyati * item.Adet : 0;
+                        var satirToplam = (item.Adet * birimFiyat) + hediyeEk;
 
-                        table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten3).Padding(4)
+                        table.Cell().Background(bg).BorderBottom(1).BorderColor(Colors.Grey.Lighten3).Padding(5)
                             .Text(urunAdi).FontSize(8);
-                        table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten3).Padding(4)
+                        table.Cell().Background(bg).BorderBottom(1).BorderColor(Colors.Grey.Lighten3).Padding(5)
                             .Text(varyant).FontSize(7).FontColor(Colors.Grey.Darken1);
-                        table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten3).Padding(4)
-                            .Text(item.Adet.ToString()).FontSize(8).AlignCenter();
-                        table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten3).Padding(4)
-                            .Text($"{birimFiyat:N2} ₪").FontSize(8).AlignRight();
-                        table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten3).Padding(4)
-                            .Text($"{toplam:N2} ₪").FontSize(8).AlignRight().Bold();
+                        table.Cell().Background(bg).BorderBottom(1).BorderColor(Colors.Grey.Lighten3).Padding(5)
+                            .Text(item.Adet.ToString()).FontSize(8).AlignRight();
+                        table.Cell().Background(bg).BorderBottom(1).BorderColor(Colors.Grey.Lighten3).Padding(5)
+                            .Text($"₪ {birimFiyat:N2}").FontSize(8).AlignRight();
+                        table.Cell().Background(bg).BorderBottom(1).BorderColor(Colors.Grey.Lighten3).Padding(5)
+                            .Text($"₪ {satirToplam:N2}").FontSize(8).AlignRight().Bold();
+
+                        if (item.HediyePaketi && item.HediyePaketFiyati > 0)
+                        {
+                            table.Cell().ColumnSpan(4).Padding(2).PaddingLeft(10)
+                                .Text("🎁 تغليف هدية / Gift Wrap").FontSize(7).FontColor(Colors.Grey.Darken1).Italic();
+                            table.Cell().Padding(2)
+                                .Text($"₪ {hediyeEk:N2}").FontSize(7).FontColor(Colors.Grey.Darken1).AlignRight();
+                        }
                     }
                 });
 
-                // ========== ÖZET ==========
-                col.Item().AlignRight().Width(250).PaddingTop(8).Column(summary =>
+                col.Item().AlignRight().Width(260).PaddingTop(8).Column(summary =>
                 {
                     var araToplam = siparis.SiparisDetaylari
                         .Where(d => !d.SilindiMi)
                         .Sum(d => (d.Adet * d.BirimFiyat) + (d.HediyePaketi ? d.HediyePaketFiyati * d.Adet : 0));
 
-                    summary.Item().Row(r =>
+                    void SummaryRow(string label, decimal amount, string? color = null, bool bold = false)
                     {
-                        r.RelativeItem().Text("Ara Toplam:").FontSize(9).FontColor(Colors.Grey.Darken2);
-                        r.ConstantItem(90).AlignRight().Text($"{araToplam:N2} ₪").FontSize(9);
-                    });
+                        summary.Item().PaddingVertical(2).Row(r =>
+                        {
+                            var labelText = r.RelativeItem().Text(label).FontSize(9);
+                            if (color != null) labelText.FontColor(color);
+                            var valText = r.ConstantItem(90).AlignRight().Text($"₪ {amount:N2}").FontSize(9);
+                            if (bold) valText.Bold();
+                            if (color != null) valText.FontColor(color);
+                        });
+                    }
+
+                    SummaryRow("المجموع الفرعي / Subtotal", araToplam);
 
                     if (siparis.IndirimTutari > 0)
-                    {
-                        summary.Item().PaddingTop(4).Row(r =>
-                        {
-                            r.RelativeItem().Text("İndirim:").FontSize(9).FontColor(Colors.Red.Medium);
-                            r.ConstantItem(90).AlignRight().Text($"-{siparis.IndirimTutari:N2} ₪").FontSize(9).FontColor(Colors.Red.Medium);
-                        });
-                    }
+                        SummaryRow("الخصم / Discount", -siparis.IndirimTutari, Colors.Red.Medium);
 
                     if (siparis.KargoUcreti > 0)
-                    {
-                        summary.Item().PaddingTop(4).Row(r =>
-                        {
-                            r.RelativeItem().Text("Kargo:").FontSize(9).FontColor(Colors.Grey.Darken2);
-                            r.ConstantItem(90).AlignRight().Text($"{siparis.KargoUcreti:N2} ₪").FontSize(9);
-                        });
-                    }
-
-                    var hediyeToplami = siparis.SiparisDetaylari
-                        .Where(d => !d.SilindiMi && d.HediyePaketi)
-                        .Sum(d => d.HediyePaketFiyati * d.Adet);
-                    if (hediyeToplami > 0)
-                    {
-                        summary.Item().PaddingTop(4).Row(r =>
-                        {
-                            r.RelativeItem().Text("Hediye Paketi:").FontSize(9).FontColor(Colors.Grey.Darken2);
-                            r.ConstantItem(90).AlignRight().Text($"{hediyeToplami:N2} ₪").FontSize(9);
-                        });
-                    }
+                        SummaryRow("الشحن / Shipping", siparis.KargoUcreti);
 
                     if (siparis.KapidaOdemeHizmetBedeli > 0)
-                    {
-                        summary.Item().PaddingTop(4).Row(r =>
-                        {
-                            r.RelativeItem().Text("Kapıda Ödeme Bedeli:").FontSize(9).FontColor(Colors.Grey.Darken2);
-                            r.ConstantItem(90).AlignRight().Text($"{siparis.KapidaOdemeHizmetBedeli:N2} ₪").FontSize(9);
-                        });
-                    }
+                        SummaryRow("رسوم الدفع عند الاستلام / COD Fee", siparis.KapidaOdemeHizmetBedeli);
 
-                    // Kesintisiz çizgi
-                    summary.Item().PaddingVertical(4).LineHorizontal(1).LineColor(Colors.Grey.Lighten2);
+                    summary.Item().PaddingVertical(4).LineHorizontal(1.5f).LineColor(Colors.Black);
 
-                    // Genel Toplam
                     summary.Item().Row(r =>
                     {
-                        r.RelativeItem().Text("GENEL TOPLAM:").FontSize(11).Bold();
-                        r.ConstantItem(90).AlignRight().Text($"{siparis.ToplamTutar:N2} ₪")
+                        r.RelativeItem().Text("المجموع الكلي / GRAND TOTAL")
+                            .FontSize(11).Bold();
+                        r.ConstantItem(90).AlignRight().Text($"₪ {siparis.ToplamTutar:N2}")
                             .FontSize(14).Bold().FontColor(Colors.Black);
                     });
                 });
 
-                // Ödeme bilgisi
-                if (siparis.OdemeYontemi == "KapidaOdeme")
+                col.Item().PaddingTop(16).Row(infoRow =>
                 {
-                    col.Item().PaddingTop(16).Background(Colors.Grey.Lighten5)
-                        .Border(1).BorderColor(Colors.Grey.Lighten2).Padding(8).Text(text =>
-                        {
-                            text.Span("Ödeme Şekli: ").FontSize(8).Bold();
-                            text.Span("Kapıda Ödeme").FontSize(8);
-                            if (siparis.KapidaOdemeHizmetBedeli > 0)
+                    infoRow.RelativeItem().Column(left =>
+                    {
+                        left.Item().Background(Colors.Grey.Lighten4).Border(1).BorderColor(Colors.Grey.Lighten2)
+                            .Padding(8).Column(c =>
                             {
-                                text.Span($" (Hizmet Bedeli: {siparis.KapidaOdemeHizmetBedeli:N2} ₪)").FontSize(7).FontColor(Colors.Grey.Darken1);
-                            }
-                        });
-                }
-                else if (siparis.OdemeYontemi == "BankaHavalesi")
-                {
-                    col.Item().PaddingTop(16).Background(Colors.Grey.Lighten5)
-                        .Border(1).BorderColor(Colors.Grey.Lighten2).Padding(8).Text(text =>
-                        {
-                            text.Span("Ödeme Şekli: ").FontSize(8).Bold();
-                            text.Span("Banka Havalesi / EFT").FontSize(8);
-                        });
-                }
-                else
-                {
-                    col.Item().PaddingTop(16).Background(Colors.Grey.Lighten5)
-                        .Border(1).BorderColor(Colors.Grey.Lighten2).Padding(8).Text(text =>
-                        {
-                            text.Span("Ödeme Şekli: ").FontSize(8).Bold();
-                            text.Span(siparis.OdemeYontemi).FontSize(8);
-                        });
-                }
+                                c.Item().Text("طريقة الدفع / Payment Method")
+                                    .FontSize(7).Bold().FontColor(Colors.Grey.Darken2);
+                                c.Item().PaddingTop(3).Text(OdemeLabel(siparis.OdemeYontemi)).FontSize(8);
+                                if (siparis.KapidaOdemeHizmetBedeli > 0)
+                                    c.Item().Text($"رسوم / Fee: ₪ {siparis.KapidaOdemeHizmetBedeli:N2}")
+                                        .FontSize(7).FontColor(Colors.Grey.Darken1);
+                            });
+                    });
 
-                // Teslimat bilgisi
-                if (!string.IsNullOrWhiteSpace(siparis.KargoFirmasi))
-                {
-                    col.Item().PaddingTop(4).Background(Colors.Grey.Lighten5)
-                        .Border(1).BorderColor(Colors.Grey.Lighten2).Padding(8).Text(text =>
-                        {
-                            text.Span("Kargo: ").FontSize(8).Bold();
-                            text.Span(siparis.KargoFirmasi).FontSize(8);
-                            if (!string.IsNullOrWhiteSpace(siparis.KargoTakipNo))
+                    if (!string.IsNullOrWhiteSpace(siparis.KargoFirmasi))
+                    {
+                        infoRow.ConstantItem(8);
+                        infoRow.RelativeItem().Background(Colors.Grey.Lighten4).Border(1).BorderColor(Colors.Grey.Lighten2)
+                            .Padding(8).Column(c =>
                             {
-                                text.Span($" | Takip No: {siparis.KargoTakipNo}").FontSize(7).FontColor(Colors.Grey.Darken1);
-                            }
+                                c.Item().Text("معلومات الشحن / Shipping Info")
+                                    .FontSize(7).Bold().FontColor(Colors.Grey.Darken2);
+                                c.Item().PaddingTop(3).Text(siparis.KargoFirmasi).FontSize(8);
+                                if (!string.IsNullOrWhiteSpace(siparis.KargoTakipNo))
+                                    c.Item().Text($"رقم التتبع / Tracking: {siparis.KargoTakipNo}")
+                                        .FontSize(7).FontColor(Colors.Grey.Darken1);
+                            });
+                    }
+                });
+
+                if (!string.IsNullOrWhiteSpace(siparis.Aciklama))
+                {
+                    col.Item().PaddingTop(8).Background(Colors.Yellow.Lighten4).Border(1)
+                        .BorderColor(Colors.Yellow.Lighten2).Padding(8).Column(c =>
+                        {
+                            c.Item().Text("ملاحظات الطلب / Order Notes")
+                                .FontSize(7).Bold().FontColor(Colors.Grey.Darken2);
+                            c.Item().PaddingTop(3).Text(siparis.Aciklama).FontSize(8);
                         });
                 }
             });
@@ -367,23 +370,27 @@ namespace FilistinProje.Web.Services
         {
             container.Column(col =>
             {
-                col.Item().PaddingTop(8).LineHorizontal(1).LineColor(Colors.Grey.Lighten2);
+                col.Item().LineHorizontal(1).LineColor(Colors.Grey.Lighten2);
 
-                col.Item().PaddingTop(8).Row(row =>
+                col.Item().PaddingTop(6).Row(row =>
                 {
-                    row.RelativeItem().Column(footerCol =>
+                    row.RelativeItem().Column(left =>
                     {
-                        footerCol.Item().Text($"Bu fatura {brandName} tarafından oluşturulmuştur.")
+                        left.Item().Text($"تم إنشاء هذه الفاتورة بواسطة {brandName}")
                             .FontSize(7).FontColor(Colors.Grey.Medium);
-
-                        footerCol.Item().Text($"Fatura No: {siparisNo} | Tarih: {DateTime.Now:dd.MM.yyyy HH:mm}")
+                        left.Item().Text($"Generated by {brandName} | رقم الفاتورة / Invoice: {siparisNo}")
                             .FontSize(7).FontColor(Colors.Grey.Medium);
                     });
 
-                    row.ConstantItem(100).AlignRight().Column(pageCol =>
+                    row.ConstantItem(100).AlignRight().Column(right =>
                     {
-                        pageCol.Item().Text("Sayfa {page} / {totalPages}")
-                            .FontSize(7).FontColor(Colors.Grey.Medium).AlignRight();
+                        right.Item().AlignRight().Text(x =>
+                        {
+                            x.Span("صفحة / Page ").FontSize(7).FontColor(Colors.Grey.Medium);
+                            x.CurrentPageNumber().FontSize(7).FontColor(Colors.Grey.Medium);
+                            x.Span(" / ").FontSize(7).FontColor(Colors.Grey.Medium);
+                            x.TotalPages().FontSize(7).FontColor(Colors.Grey.Medium);
+                        });
                     });
                 });
             });

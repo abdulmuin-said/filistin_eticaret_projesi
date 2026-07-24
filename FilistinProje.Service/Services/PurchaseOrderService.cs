@@ -52,6 +52,13 @@ namespace FilistinProje.Service.Services
                 request.IsWholesale,
                 request.KuponKodu);
 
+            // Store pickup has neither shipping nor cash-on-delivery handling costs.
+            if (dto.TeslimatTipi == "MagazadanTeslim")
+            {
+                pricing.KargoUcreti = 0;
+                pricing.KapidaOdemeHizmetBedeli = 0;
+            }
+
             if (pricing.StokSorunuVar)
             {
                 return new PlaceOrderResult
@@ -105,7 +112,7 @@ namespace FilistinProje.Service.Services
 
             if (dto.TeslimatTipi != "MagazadanTeslim")
             {
-                var aktifKargoVarMi = await _kargoHesaplama.SehirdeAktifKargoVarMiAsync(dto.Sehir);
+                var aktifKargoVarMi = await _kargoHesaplama.SehirdeAktifKargoVarMiAsync(dto.Sehir ?? string.Empty);
                 if (!aktifKargoVarMi)
                 {
                     return new PlaceOrderResult

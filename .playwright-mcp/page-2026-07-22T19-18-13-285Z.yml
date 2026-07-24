@@ -1,0 +1,454 @@
+- generic [active] [ref=f17e1]:
+  - generic [ref=f17e3]:
+    - generic [ref=f17e4]:
+      - generic [ref=f17e5]:
+        - generic [ref=f17e6]: 
+        - text: شحن مجاني للطلبات فوق 1٬500 ₪
+      - generic [ref=f17e7]:
+        - generic [ref=f17e8]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f17e9]:
+        - generic [ref=f17e10]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f17e11]:
+        - generic [ref=f17e12]: 
+        - text: إنتاج سريع
+      - generic [ref=f17e13]:
+        - generic [ref=f17e14]: 
+        - text: تغليف دقيق
+      - generic [ref=f17e15]:
+        - generic [ref=f17e16]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f17e17]:
+        - generic [ref=f17e18]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f17e19]:
+        - generic [ref=f17e20]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f17e21]:
+        - generic [ref=f17e22]: 
+        - text: دعم واتساب
+    - generic [ref=f17e23]:
+      - generic [ref=f17e24]:
+        - generic [ref=f17e25]: 
+        - text: شحن مجاني للطلبات فوق 1٬500 ₪
+      - generic [ref=f17e26]:
+        - generic [ref=f17e27]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f17e28]:
+        - generic [ref=f17e29]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f17e30]:
+        - generic [ref=f17e31]: 
+        - text: إنتاج سريع
+      - generic [ref=f17e32]:
+        - generic [ref=f17e33]: 
+        - text: تغليف دقيق
+      - generic [ref=f17e34]:
+        - generic [ref=f17e35]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f17e36]:
+        - generic [ref=f17e37]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f17e38]:
+        - generic [ref=f17e39]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f17e40]:
+        - generic [ref=f17e41]: 
+        - text: دعم واتساب
+  - banner [ref=f17e42]:
+    - generic [ref=f17e43]:
+      - generic [ref=f17e44]:
+        - generic [ref=f17e45]: 
+        - link "العربية" [ref=f17e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2F
+        - link "English" [ref=f17e48] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2F
+      - link "7ANRPS48" [ref=f17e49] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f17e50]
+      - generic [ref=f17e51]:
+        - button "بحث" [ref=f17e52] [cursor=pointer]
+        - link "حسابي" [ref=f17e55] [cursor=pointer]:
+          - /url: /profile
+        - link "المفضلة" [ref=f17e58] [cursor=pointer]:
+          - /url: /favorites
+        - link "السلة" [ref=f17e61] [cursor=pointer]:
+          - /url: /cart
+          - generic [ref=f17e64]: "3"
+      - navigation [ref=f17e65]:
+        - list [ref=f17e66]:
+          - listitem [ref=f17e67] [cursor=pointer]:
+            - link "أثاث" [ref=f17e68]:
+              - /url: /products?k=91
+          - listitem [ref=f17e71] [cursor=pointer]:
+            - link "العطور" [ref=f17e72]:
+              - /url: /products?k=90
+          - listitem [ref=f17e75] [cursor=pointer]:
+            - link "بقالة" [ref=f17e76]:
+              - /url: /products?k=92
+          - listitem [ref=f17e79] [cursor=pointer]:
+            - link "جمال" [ref=f17e80]:
+              - /url: /products?k=89
+          - listitem [ref=f17e83] [cursor=pointer]:
+            - link "أثاث منزلي" [ref=f17e84]:
+              - /url: /products?k=78
+          - listitem [ref=f17e87] [cursor=pointer]:
+            - link "إلكترونيات" [ref=f17e88]:
+              - /url: /products?k=79
+          - listitem [ref=f17e91] [cursor=pointer]:
+            - link "أزياء" [ref=f17e92]:
+              - /url: /products?k=80
+          - listitem [ref=f17e95] [cursor=pointer]:
+            - link "اتصل بنا" [ref=f17e96]:
+              - /url: /pages/Iletisim
+  - main [ref=f17e97]:
+    - region "Hero Banner" [ref=f17e98]:
+      - generic [ref=f17e99]:
+        - generic [ref=f17e100]:
+          - img "7ANRPS48 Banner" [ref=f17e102]
+          - img "7ANRPS48 Banner" [ref=f17e104]
+        - button "Previous Slide" [ref=f17e105] [cursor=pointer]
+        - button "Next Slide" [ref=f17e108] [cursor=pointer]
+        - generic [ref=f17e111]:
+          - button "Go to slide 1" [ref=f17e112] [cursor=pointer]
+          - button "Go to slide 2" [ref=f17e113] [cursor=pointer]
+    - region "TrustBar" [ref=f17e114]:
+      - generic [ref=f17e116]:
+        - generic [ref=f17e117]: شحن مجاني للطلبات فوق 1٬500 ₪
+        - generic [ref=f17e120]: دفع آمن ومضمون
+        - generic [ref=f17e123]: منتجات أصلية 100%
+        - generic [ref=f17e126]: دعم على مدار الساعة
+    - region [ref=f17e129]:
+      - generic [ref=f17e130]:
+        - generic [ref=f17e131]:
+          - generic [ref=f17e132]:
+            - separator [ref=f17e133]
+            - heading "تسوق حسب الفئة" [level=2] [ref=f17e134]
+            - separator [ref=f17e135]
+          - link "عرض جميع الفئات" [ref=f17e136] [cursor=pointer]:
+            - /url: /products
+        - generic [ref=f17e139]:
+          - link "أثاث" [ref=f17e140] [cursor=pointer]:
+            - /url: /products?k=91
+            - img "أثاث" [ref=f17e142]
+            - heading "أثاث" [level=3] [ref=f17e144]
+          - link "العطور" [ref=f17e145] [cursor=pointer]:
+            - /url: /products?k=90
+            - img "العطور" [ref=f17e147]
+            - heading "العطور" [level=3] [ref=f17e149]
+          - link "بقالة" [ref=f17e150] [cursor=pointer]:
+            - /url: /products?k=92
+            - img "بقالة" [ref=f17e152]
+            - heading "بقالة" [level=3] [ref=f17e154]
+          - link "جمال" [ref=f17e155] [cursor=pointer]:
+            - /url: /products?k=89
+            - img "جمال" [ref=f17e157]
+            - heading "جمال" [level=3] [ref=f17e159]
+          - link "أثاث منزلي" [ref=f17e160] [cursor=pointer]:
+            - /url: /products?k=78
+            - img "أثاث منزلي" [ref=f17e162]
+            - heading "أثاث منزلي" [level=3] [ref=f17e164]
+          - link "إلكترونيات" [ref=f17e165] [cursor=pointer]:
+            - /url: /products?k=79
+            - img "إلكترونيات" [ref=f17e167]
+            - heading "إلكترونيات" [level=3] [ref=f17e169]
+          - link "أزياء" [ref=f17e170] [cursor=pointer]:
+            - /url: /products?k=80
+            - img "أزياء" [ref=f17e172]
+            - heading "أزياء" [level=3] [ref=f17e174]
+    - generic [ref=f17e175]:
+      - generic [ref=f17e177]:
+        - separator [ref=f17e178]
+        - heading "منتجات مميزة" [level=2] [ref=f17e179]
+        - separator [ref=f17e180]
+      - generic [ref=f17e181]:
+        - article [ref=f17e182]:
+          - generic [ref=f17e183]:
+            - link [ref=f17e184] [cursor=pointer]:
+              - /url: /products/test-16-apple-127
+            - generic [ref=f17e186]: "-13%"
+            - button "أضف إلى المفضلة" [ref=f17e187] [cursor=pointer]
+          - generic [ref=f17e190]:
+            - heading [level=3] [ref=f17e191]:
+              - link "تفاحة" [ref=f17e192] [cursor=pointer]:
+                - /url: /products/test-16-apple-127
+            - generic [ref=f17e193]:
+              - generic [ref=f17e194]:
+                - paragraph [ref=f17e195]: 2 ₪
+                - paragraph [ref=f17e196]: 2 ₪
+              - button "أضف إلى السلة" [ref=f17e197] [cursor=pointer]:
+                - generic [ref=f17e198]: 
+        - article [ref=f17e200]:
+          - generic [ref=f17e201]:
+            - link [ref=f17e202] [cursor=pointer]:
+              - /url: /products/test-17-beef-steak-128
+            - generic [ref=f17e204]: "-10%"
+            - button "أضف إلى المفضلة" [ref=f17e205] [cursor=pointer]
+          - generic [ref=f17e208]:
+            - heading [level=3] [ref=f17e209]:
+              - link "شريحة لحم البقر" [ref=f17e210] [cursor=pointer]:
+                - /url: /products/test-17-beef-steak-128
+            - generic [ref=f17e211]:
+              - generic [ref=f17e212]:
+                - paragraph [ref=f17e213]: 12 ₪
+                - paragraph [ref=f17e214]: 13 ₪
+              - button "أضف إلى السلة" [ref=f17e215] [cursor=pointer]:
+                - generic [ref=f17e216]: 
+        - article [ref=f17e218]:
+          - generic [ref=f17e219]:
+            - link [ref=f17e220] [cursor=pointer]:
+              - /url: /products/test-18-cat-food-129
+            - generic [ref=f17e222]: "-10%"
+            - button "أضف إلى المفضلة" [ref=f17e223] [cursor=pointer]
+          - generic [ref=f17e226]:
+            - heading [level=3] [ref=f17e227]:
+              - link "طعام القطط" [ref=f17e228] [cursor=pointer]:
+                - /url: /products/test-18-cat-food-129
+            - generic [ref=f17e229]:
+              - generic [ref=f17e230]:
+                - paragraph [ref=f17e231]: 8 ₪
+                - paragraph [ref=f17e232]: 9 ₪
+              - button "أضف إلى السلة" [ref=f17e233] [cursor=pointer]:
+                - generic [ref=f17e234]: 
+        - article [ref=f17e236]:
+          - generic [ref=f17e237]:
+            - link [ref=f17e238] [cursor=pointer]:
+              - /url: /products/test-19-chicken-meat-130
+            - generic [ref=f17e240]: "-14%"
+            - button "أضف إلى المفضلة" [ref=f17e241] [cursor=pointer]
+          - generic [ref=f17e244]:
+            - heading [level=3] [ref=f17e245]:
+              - link "لحم دجاج" [ref=f17e246] [cursor=pointer]:
+                - /url: /products/test-19-chicken-meat-130
+            - generic [ref=f17e247]:
+              - generic [ref=f17e248]:
+                - paragraph [ref=f17e249]: 9 ₪
+                - paragraph [ref=f17e250]: 10 ₪
+              - button "أضف إلى السلة" [ref=f17e251] [cursor=pointer]:
+                - generic [ref=f17e252]: 
+        - article [ref=f17e254]:
+          - generic [ref=f17e255]:
+            - link [ref=f17e256] [cursor=pointer]:
+              - /url: /products/test-20-cooking-oil-131
+            - generic [ref=f17e258]: "-9%"
+            - button "أضف إلى المفضلة" [ref=f17e259] [cursor=pointer]
+          - generic [ref=f17e262]:
+            - heading [level=3] [ref=f17e263]:
+              - link "زيت الطبخ" [ref=f17e264] [cursor=pointer]:
+                - /url: /products/test-20-cooking-oil-131
+            - generic [ref=f17e265]:
+              - generic [ref=f17e266]:
+                - paragraph [ref=f17e267]: 5 ₪
+                - paragraph [ref=f17e268]: 5 ₪
+              - button "أضف إلى السلة" [ref=f17e269] [cursor=pointer]:
+                - generic [ref=f17e270]: 
+        - article [ref=f17e272]:
+          - generic [ref=f17e273]:
+            - link [ref=f17e274] [cursor=pointer]:
+              - /url: /products/test-21-cucumber-132
+            - generic [ref=f17e276]: جديد
+            - button "أضف إلى المفضلة" [ref=f17e277] [cursor=pointer]
+          - generic [ref=f17e280]:
+            - heading [level=3] [ref=f17e281]:
+              - link "خيار" [ref=f17e282] [cursor=pointer]:
+                - /url: /products/test-21-cucumber-132
+            - generic [ref=f17e283]:
+              - paragraph [ref=f17e285]: 1 ₪
+              - button "أضف إلى السلة" [ref=f17e286] [cursor=pointer]:
+                - generic [ref=f17e287]: 
+        - article [ref=f17e289]:
+          - generic [ref=f17e290]:
+            - link [ref=f17e291] [cursor=pointer]:
+              - /url: /products/test-22-dog-food-133
+            - generic [ref=f17e293]: "-10%"
+            - button "أضف إلى المفضلة" [ref=f17e294] [cursor=pointer]
+          - generic [ref=f17e297]:
+            - heading [level=3] [ref=f17e298]:
+              - link "طعام الكلاب" [ref=f17e299] [cursor=pointer]:
+                - /url: /products/test-22-dog-food-133
+            - generic [ref=f17e300]:
+              - generic [ref=f17e301]:
+                - paragraph [ref=f17e302]: 10 ₪
+                - paragraph [ref=f17e303]: 11 ₪
+              - button "أضف إلى السلة" [ref=f17e304] [cursor=pointer]:
+                - generic [ref=f17e305]: 
+        - article [ref=f17e307]:
+          - generic [ref=f17e308]:
+            - link [ref=f17e309] [cursor=pointer]:
+              - /url: /products/test-23-eggs-134
+            - generic [ref=f17e311]: "-11%"
+            - button "أضف إلى المفضلة" [ref=f17e312] [cursor=pointer]
+          - generic [ref=f17e315]:
+            - heading [level=3] [ref=f17e316]:
+              - link "بيض" [ref=f17e317] [cursor=pointer]:
+                - /url: /products/test-23-eggs-134
+            - generic [ref=f17e318]:
+              - generic [ref=f17e319]:
+                - paragraph [ref=f17e320]: 3 ₪
+                - paragraph [ref=f17e321]: 3 ₪
+              - button "أضف إلى السلة" [ref=f17e322] [cursor=pointer]:
+                - generic [ref=f17e323]: 
+      - link "عرض الكل" [ref=f17e326] [cursor=pointer]:
+        - /url: /Urun
+    - generic [ref=f17e327]:
+      - generic [ref=f17e328]:
+        - paragraph [ref=f17e329]: الأكثر مبيعاً
+        - generic [ref=f17e330]:
+          - separator [ref=f17e331]
+          - heading "الأكثر تفضيلاً" [level=2] [ref=f17e332]
+          - separator [ref=f17e333]
+        - link "عرض الكل" [ref=f17e334] [cursor=pointer]:
+          - /url: /Urun?sort=popularity
+      - generic [ref=f17e337]:
+        - article [ref=f17e338]:
+          - generic [ref=f17e339]:
+            - link [ref=f17e340] [cursor=pointer]:
+              - /url: /products/test-30-kiwi-141
+            - generic [ref=f17e342]: الأكثر مبيعاً
+            - button "أضف إلى المفضلة" [ref=f17e343] [cursor=pointer]
+          - generic [ref=f17e346]:
+            - heading [level=3] [ref=f17e347]:
+              - link "كيوي" [ref=f17e348] [cursor=pointer]:
+                - /url: /products/test-30-kiwi-141
+            - generic [ref=f17e349]:
+              - generic [ref=f17e350]:
+                - paragraph [ref=f17e351]: 2 ₪
+                - paragraph [ref=f17e352]: 2 ₪
+              - button "أضف إلى السلة" [ref=f17e353] [cursor=pointer]:
+                - generic [ref=f17e354]: 
+        - article [ref=f17e356]:
+          - generic [ref=f17e357]:
+            - link [ref=f17e358] [cursor=pointer]:
+              - /url: /products/test-26-green-chili-pepper-137
+            - generic [ref=f17e360]: الأكثر مبيعاً
+            - button "أضف إلى المفضلة" [ref=f17e361] [cursor=pointer]
+          - generic [ref=f17e364]:
+            - heading [level=3] [ref=f17e365]:
+              - link "فلفل أخضر حار" [ref=f17e366] [cursor=pointer]:
+                - /url: /products/test-26-green-chili-pepper-137
+            - generic [ref=f17e367]:
+              - generic [ref=f17e368]:
+                - paragraph [ref=f17e369]: 1 ₪
+                - paragraph [ref=f17e370]: 1 ₪
+              - button "أضف إلى السلة" [ref=f17e371] [cursor=pointer]:
+                - generic [ref=f17e372]: 
+        - article [ref=f17e374]:
+          - generic [ref=f17e375]:
+            - link [ref=f17e376] [cursor=pointer]:
+              - /url: /products/test-27-honey-jar-138
+            - generic [ref=f17e378]: الأكثر مبيعاً
+            - button "أضف إلى المفضلة" [ref=f17e379] [cursor=pointer]
+          - generic [ref=f17e382]:
+            - heading [level=3] [ref=f17e383]:
+              - link "جرة العسل" [ref=f17e384] [cursor=pointer]:
+                - /url: /products/test-27-honey-jar-138
+            - generic [ref=f17e385]:
+              - generic [ref=f17e386]:
+                - paragraph [ref=f17e387]: 6 ₪
+                - paragraph [ref=f17e388]: 7 ₪
+              - button "أضف إلى السلة" [ref=f17e389] [cursor=pointer]:
+                - generic [ref=f17e390]: 
+        - article [ref=f17e392]:
+          - generic [ref=f17e393]:
+            - link [ref=f17e394] [cursor=pointer]:
+              - /url: /products/test-28-ice-cream-139
+            - generic [ref=f17e396]: الأكثر مبيعاً
+            - button "أضف إلى المفضلة" [ref=f17e397] [cursor=pointer]
+          - generic [ref=f17e400]:
+            - heading [level=3] [ref=f17e401]:
+              - link "بوظة" [ref=f17e402] [cursor=pointer]:
+                - /url: /products/test-28-ice-cream-139
+            - generic [ref=f17e403]:
+              - generic [ref=f17e404]:
+                - paragraph [ref=f17e405]: 5 ₪
+                - paragraph [ref=f17e406]: 5 ₪
+              - button "أضف إلى السلة" [ref=f17e407] [cursor=pointer]:
+                - generic [ref=f17e408]: 
+        - article [ref=f17e410]:
+          - generic [ref=f17e411]:
+            - link [ref=f17e412] [cursor=pointer]:
+              - /url: /products/test-29-juice-140
+            - generic [ref=f17e414]: الأكثر مبيعاً
+            - button "أضف إلى المفضلة" [ref=f17e415] [cursor=pointer]
+          - generic [ref=f17e418]:
+            - heading [level=3] [ref=f17e419]:
+              - link "عصير" [ref=f17e420] [cursor=pointer]:
+                - /url: /products/test-29-juice-140
+            - generic [ref=f17e421]:
+              - generic [ref=f17e422]:
+                - paragraph [ref=f17e423]: 4 ₪
+                - paragraph [ref=f17e424]: 4 ₪
+              - button "أضف إلى السلة" [ref=f17e425] [cursor=pointer]:
+                - generic [ref=f17e426]: 
+    - generic [ref=f17e430]:
+      - generic [ref=f17e431]:
+        - heading "تحويل بنكي" [level=4] [ref=f17e434]
+        - paragraph [ref=f17e435]: دفع سهل عبر بيانات الآيبان
+      - generic [ref=f17e436]:
+        - heading "توصيل سريع" [level=4] [ref=f17e439]
+        - paragraph [ref=f17e440]: تصل طلباتك بسرعة
+      - generic [ref=f17e441]:
+        - heading "رضا العملاء" [level=4] [ref=f17e444]
+        - paragraph [ref=f17e445]: خدمة تركز على رضا العملاء 100%
+  - contentinfo [ref=f17e446]:
+    - generic [ref=f17e448]:
+      - generic [ref=f17e453]:
+        - generic [ref=f17e454]: في جميع مناطق فلسطين
+        - generic [ref=f17e455]: شحن مجاني
+      - generic [ref=f17e460]:
+        - generic [ref=f17e461]: تحويل بنكي
+        - generic [ref=f17e462]: 256 Bit SSL
+      - generic [ref=f17e467]:
+        - generic [ref=f17e468]: تحويل بنكي
+        - generic [ref=f17e469]: دفع سهل عبر الآيبان
+    - generic [ref=f17e470]:
+      - generic [ref=f17e471]:
+        - generic [ref=f17e472]:
+          - heading "اشترك في النشرة البريدية" [level=3] [ref=f17e473]
+          - paragraph [ref=f17e474]: استقبل أحدث المنتجات المختارة من السوق الفلسطيني والعروض الخاصة على بريدك.
+          - generic [ref=f17e475]:
+            - textbox "عنوان البريد الإلكتروني" [ref=f17e476]
+            - button "اشتراك" [ref=f17e477] [cursor=pointer]
+        - generic [ref=f17e478]:
+          - heading "مؤسسي" [level=4] [ref=f17e479]
+          - list [ref=f17e480]:
+            - listitem [ref=f17e481]:
+              - link "من نحن" [ref=f17e482] [cursor=pointer]:
+                - /url: /pages/about
+            - listitem [ref=f17e483]:
+              - link "اتصل بنا" [ref=f17e484] [cursor=pointer]:
+                - /url: /pages/contact
+            - listitem [ref=f17e485]:
+              - link "جميع المنتجات" [ref=f17e486] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=f17e487]:
+              - link "سياسة الخصوصية" [ref=f17e488] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f17e489]:
+              - link "عقد البيع عن بعد" [ref=f17e490] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - generic [ref=f17e491]:
+            - link "Facebook" [ref=f17e492] [cursor=pointer]:
+              - /url: https://www.facebook.com/7anrps48
+              - generic [ref=f17e493]: 
+            - link "X / Twitter" [ref=f17e494] [cursor=pointer]:
+              - /url: https://x.com/7anrps48?s=21
+              - generic [ref=f17e495]: 
+      - generic [ref=f17e496]:
+        - paragraph [ref=f17e498]: © 2026 7ANRPS48 — جميع الحقوق محفوظة.
+        - generic [ref=f17e499]:
+          - link "سياسة الخصوصية" [ref=f17e500] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "الإرجاع والاستبدال" [ref=f17e501] [cursor=pointer]:
+            - /url: /pages/return-policy
+          - text: "|"
+          - link "من نحن" [ref=f17e502] [cursor=pointer]:
+            - /url: /pages/about
+  - link "اتصال واتساب" [ref=f17e503] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=f17e506]: WhatsApp
+  - link "السلة" [ref=f17e507] [cursor=pointer]:
+    - /url: /cart
+    - generic [ref=f17e510]: "3"

@@ -134,7 +134,7 @@
                 }
                 @if (canManageWholesale)
                 {
-                    <a href="/Admin/Toptanci" class="ca-mobile-nav-link @(currentController == "Toptanci" ? "active" : "")">
+                    <a href="/Admin/Toptanci" class="ca-mobile-nav-link @(currentController == "Toptanci" && currentAction != "UrunGruplari" ? "active" : "")">
                         <i class="fas fa-handshake"></i> @Localizer["Wholesalers"]
                     </a>
                     <a href="/Admin/Toptanci/UrunGruplari" class="ca-mobile-nav-link @(currentController == "Toptanci" && currentAction == "UrunGruplari" ? "active" : "")">
@@ -193,7 +193,7 @@
                 @if (canManageOrders)
                 {
                     <div class="dropdown">
-                        <button class="ca-partner-nav-link dropdown-toggle @(currentController == "Siparis" || currentController == "Iade" || currentController == "Kargo" ? "active" : "")" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="ca-partner-nav-link dropdown-toggle @(currentController == "Siparis" || currentController == "Iade" || currentController == "Kargo" ? "active" : "")" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-popper-config='{"strategy":"fixed"}'>
                             <i class="fas fa-bag-shopping"></i> @Localizer["OrderManagement"]
                             @if (ViewBag.BekleyenSiparis != null && (int)ViewBag.BekleyenSiparis > 0)
                             {
@@ -214,8 +214,8 @@
                 @if (canManageProducts)
                 {
                     <div class="dropdown">
-                        <button class="ca-partner-nav-link dropdown-toggle @(currentController == "Siparis" || currentController == "Iade" || currentController == "Kargo" ? "active" : "")" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-popper-config='{"strategy":"fixed"}'>
-                            <i class="fas fa-bag-shopping"></i> @Localizer["OrderManagement"]
+                        <button class="ca-partner-nav-link dropdown-toggle @(currentController == "Urun" || currentController == "Kategori" || currentController == "UrunOzellik" ? "active" : "")" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-popper-config='{"strategy":"fixed"}'>
+                            <i class="fas fa-cubes"></i> @Localizer["ProductManagement"]
                         </button>
                         <ul class="dropdown-menu ca-top-menu">
                             <li><a class="dropdown-item" href="/Admin/Urun"><i class="fas fa-box-open"></i> @Localizer["Products"]</a></li>
@@ -229,7 +229,7 @@
                 @if (canManageContent)
                 {
                     <div class="dropdown">
-                        <button class="ca-partner-nav-link dropdown-toggle @(contentControllers.Contains(currentController) ? "active" : "")" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="ca-partner-nav-link dropdown-toggle @(contentControllers.Contains(currentController) ? "active" : "")" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-popper-config='{"strategy":"fixed"}'>
                             <i class="fas fa-store"></i> @Localizer["StoreContent"]
                             @if (ViewBag.OkunmamisIletisim != null && (int)ViewBag.OkunmamisIletisim > 0)
                             {
@@ -261,7 +261,7 @@
 
                 @if (canManageWholesale)
                 {
-                    <a href="/Admin/Toptanci" class="ca-partner-nav-link @(currentController == "Toptanci" ? "active" : "")">
+                    <a href="/Admin/Toptanci" class="ca-partner-nav-link @(currentController == "Toptanci" && currentAction != "UrunGruplari" ? "active" : "")">
                         <i class="fas fa-handshake"></i> @Localizer["Wholesalers"]
                     </a>
                     <a href="/Admin/Toptanci/UrunGruplari" class="ca-partner-nav-link @(currentController == "Toptanci" && currentAction == "UrunGruplari" ? "active" : "")">

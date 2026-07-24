@@ -1,0 +1,283 @@
+- generic [active] [ref=f10e1]:
+  - generic [ref=f10e3]:
+    - generic [ref=f10e4]:
+      - generic [ref=f10e5]:
+        - generic [ref=f10e6]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f10e7]:
+        - generic [ref=f10e8]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f10e9]:
+        - generic [ref=f10e10]: 
+        - text: Pay on delivery option
+      - generic [ref=f10e11]:
+        - generic [ref=f10e12]: 
+        - text: Fast Production
+      - generic [ref=f10e13]:
+        - generic [ref=f10e14]: 
+        - text: Careful Packaging
+      - generic [ref=f10e15]:
+        - generic [ref=f10e16]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f10e17]:
+        - generic [ref=f10e18]: 
+        - text: 14 Days Return
+      - generic [ref=f10e19]:
+        - generic [ref=f10e20]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f10e21]:
+        - generic [ref=f10e22]: 
+        - text: WhatsApp Support
+    - generic [ref=f10e23]:
+      - generic [ref=f10e24]:
+        - generic [ref=f10e25]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f10e26]:
+        - generic [ref=f10e27]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f10e28]:
+        - generic [ref=f10e29]: 
+        - text: Pay on delivery option
+      - generic [ref=f10e30]:
+        - generic [ref=f10e31]: 
+        - text: Fast Production
+      - generic [ref=f10e32]:
+        - generic [ref=f10e33]: 
+        - text: Careful Packaging
+      - generic [ref=f10e34]:
+        - generic [ref=f10e35]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f10e36]:
+        - generic [ref=f10e37]: 
+        - text: 14 Days Return
+      - generic [ref=f10e38]:
+        - generic [ref=f10e39]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f10e40]:
+        - generic [ref=f10e41]: 
+        - text: WhatsApp Support
+  - banner [ref=f10e42]:
+    - generic [ref=f10e43]:
+      - generic [ref=f10e44]:
+        - generic [ref=f10e45]: 
+        - link "العربية" [ref=f10e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2Fcart
+        - link "English" [ref=f10e48] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2Fcart
+      - link "7ANRPS48" [ref=f10e49] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f10e50]
+      - generic [ref=f10e51]:
+        - button "Search" [ref=f10e52] [cursor=pointer]
+        - link "Login" [ref=f10e55] [cursor=pointer]:
+          - /url: /account/GirisYap
+        - link "My Favorites" [ref=f10e58] [cursor=pointer]:
+          - /url: /favorites
+        - link "Cart" [ref=f10e61] [cursor=pointer]:
+          - /url: /cart
+          - generic [ref=f10e64]: "1"
+      - navigation [ref=f10e65]:
+        - list [ref=f10e66]:
+          - listitem [ref=f10e67] [cursor=pointer]:
+            - link "beauty" [ref=f10e68]:
+              - /url: /products?k=89
+          - listitem [ref=f10e71] [cursor=pointer]:
+            - link "fragrances" [ref=f10e72]:
+              - /url: /products?k=90
+          - listitem [ref=f10e75] [cursor=pointer]:
+            - link "furniture" [ref=f10e76]:
+              - /url: /products?k=91
+          - listitem [ref=f10e79] [cursor=pointer]:
+            - link "groceries" [ref=f10e80]:
+              - /url: /products?k=92
+          - listitem [ref=f10e83] [cursor=pointer]:
+            - link "Home Furniture" [ref=f10e84]:
+              - /url: /products?k=78
+          - listitem [ref=f10e87] [cursor=pointer]:
+            - link "Electronics" [ref=f10e88]:
+              - /url: /products?k=79
+          - listitem [ref=f10e91] [cursor=pointer]:
+            - link "Fashion" [ref=f10e92]:
+              - /url: /products?k=80
+          - listitem [ref=f10e95] [cursor=pointer]:
+            - link "Contact" [ref=f10e96]:
+              - /url: /pages/Iletisim
+  - main [ref=f10e97]:
+    - generic [ref=f10e99]:
+      - link "Home Page" [ref=f10e100] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f10e101]: /
+      - generic [ref=f10e102]: My Cart
+    - generic [ref=f10e103]:
+      - generic [ref=f10e104]:
+        - generic [ref=f10e105]:
+          - heading "My Cart" [level=1] [ref=f10e106]
+          - paragraph [ref=f10e107]: 1 products
+        - button " Clear Cart" [ref=f10e109] [cursor=pointer]:
+          - generic [ref=f10e110]: 
+          - text: Clear Cart
+      - generic [ref=f10e111]:
+        - generic [ref=f10e112]:
+          - article [ref=f10e113]:
+            - button "" [ref=f10e115] [cursor=pointer]
+            - link [ref=f10e117] [cursor=pointer]:
+              - /url: /products/141
+              - img "كيوي" [ref=f10e118]
+            - generic [ref=f10e119]:
+              - link "كيوي" [ref=f10e120] [cursor=pointer]:
+                - /url: /products/141
+              - text: "SKU: GRO-BRD-KIW-030-STD"
+              - generic [ref=f10e122]:
+                - generic [ref=f10e123]: Special request note
+                - textbox "Note about your order" [ref=f10e124]
+                - generic [ref=f10e125]:
+                  - generic [ref=f10e126]: Maximum 500 characters
+                  - button " Save" [ref=f10e127] [cursor=pointer]:
+                    - generic [ref=f10e128]: 
+                    - text: Save
+              - generic [ref=f10e129]:
+                - generic [ref=f10e130]:
+                  - button "" [ref=f10e132] [cursor=pointer]
+                  - generic [ref=f10e134]: "1"
+                  - button "+" [ref=f10e136] [cursor=pointer]
+                - generic [ref=f10e138]: ₪2.11
+          - generic [ref=f10e139]:
+            - heading "Special Selections" [level=3] [ref=f10e140]
+            - generic [ref=f10e141]:
+              - generic [ref=f10e142]:
+                - generic [ref=f10e143]:
+                  - link [ref=f10e144] [cursor=pointer]:
+                    - /url: /products/test-12-annibale-colombo-sofa-123
+                    - img "أريكة أنيبال كولومبو" [ref=f10e145]
+                  - link [ref=f10e146] [cursor=pointer]:
+                    - /url: /products/test-12-annibale-colombo-sofa-123
+                    - heading "أريكة أنيبال كولومبو" [level=4] [ref=f10e147]
+                  - paragraph [ref=f10e148]: 2,140 ₪
+                - button "Add to Cart" [ref=f10e149] [cursor=pointer]
+              - generic [ref=f10e150]:
+                - generic [ref=f10e151]:
+                  - link [ref=f10e152] [cursor=pointer]:
+                    - /url: /products/test-11-annibale-colombo-bed-122
+                    - img "سرير أنيبال كولومبو" [ref=f10e153]
+                  - link [ref=f10e154] [cursor=pointer]:
+                    - /url: /products/test-11-annibale-colombo-bed-122
+                    - heading "سرير أنيبال كولومبو" [level=4] [ref=f10e155]
+                  - paragraph [ref=f10e156]: 1,737 ₪
+                - button "Add to Cart" [ref=f10e157] [cursor=pointer]
+              - generic [ref=f10e158]:
+                - generic [ref=f10e159]:
+                  - link [ref=f10e160] [cursor=pointer]:
+                    - /url: /products/test-15-wooden-bathroom-sink-with-mirror-126
+                    - img "حوض حمام خشبي مع مرآة" [ref=f10e161]
+                  - link [ref=f10e162] [cursor=pointer]:
+                    - /url: /products/test-15-wooden-bathroom-sink-with-mirror-126
+                    - heading "حوض حمام خشبي مع مرآة" [level=4] [ref=f10e163]
+                  - paragraph [ref=f10e164]: 730 ₪
+                - button "Add to Cart" [ref=f10e165] [cursor=pointer]
+              - generic [ref=f10e166]:
+                - generic [ref=f10e167]:
+                  - link [ref=f10e168] [cursor=pointer]:
+                    - /url: /products/test-14-knoll-saarinen-executive-conference-chair-125
+                    - img "نول سارينن رئيس المؤتمر التنفيذي" [ref=f10e169]
+                  - link [ref=f10e170] [cursor=pointer]:
+                    - /url: /products/test-14-knoll-saarinen-executive-conference-chair-125
+                    - heading "نول سارينن رئيس المؤتمر التنفيذي" [level=4] [ref=f10e171]
+                  - paragraph [ref=f10e172]: 490 ₪
+                - button "Add to Cart" [ref=f10e173] [cursor=pointer]
+        - complementary [ref=f10e174]:
+          - generic [ref=f10e175]:
+            - heading "Order Summary" [level=2] [ref=f10e176]
+            - generic [ref=f10e177]:
+              - generic [ref=f10e178]:
+                - generic [ref=f10e179]: 
+                - generic [ref=f10e180]: Add ₪1,497.89 more for free shipping!
+              - generic [ref=f10e182]:
+                - generic [ref=f10e183]: ₪0
+                - generic [ref=f10e184]: ₪1,497.89 away from free shipping
+                - generic [ref=f10e185]: ₪1,500.00
+            - generic [ref=f10e186]:
+              - generic [ref=f10e187]:
+                - generic [ref=f10e188]: Subtotal
+                - generic [ref=f10e189]: ₪2.11
+              - generic [ref=f10e190]:
+                - generic [ref=f10e191]: Shipping
+                - generic [ref=f10e192]: Free
+              - generic [ref=f10e194]:
+                - generic [ref=f10e195]: Select Shipping Company
+                - combobox [ref=f10e196]:
+                  - option "United Express (Free)" [selected]
+              - generic [ref=f10e197]:
+                - generic [ref=f10e198]: Total
+                - generic [ref=f10e199]: ₪2.11
+            - generic [ref=f10e200]:
+              - textbox "Discount Code" [ref=f10e201]
+              - button "Apply" [ref=f10e202] [cursor=pointer]
+            - link " Proceed to Checkout" [ref=f10e203] [cursor=pointer]:
+              - /url: /Siparis/Odeme
+              - generic [ref=f10e204]: 
+              - text: Proceed to Checkout
+            - paragraph [ref=f10e205]:
+              - generic [ref=f10e206]: 
+              - text: SSL Secure Payment
+      - text: 
+  - contentinfo [ref=f10e207]:
+    - generic [ref=f10e209]:
+      - generic [ref=f10e214]:
+        - generic [ref=f10e215]: Across Palestine
+        - generic [ref=f10e216]: Free Shipping
+      - generic [ref=f10e221]:
+        - generic [ref=f10e222]: Bank Transfer
+        - generic [ref=f10e223]: 256 Bit SSL
+      - generic [ref=f10e228]:
+        - generic [ref=f10e229]: Bank Transfer
+        - generic [ref=f10e230]: Easy payment by IBAN
+    - generic [ref=f10e231]:
+      - generic [ref=f10e232]:
+        - generic [ref=f10e233]:
+          - heading "Subscribe to newsletter" [level=3] [ref=f10e234]
+          - paragraph [ref=f10e235]: Get new arrivals, Palestinian market picks, and special offers in your inbox.
+          - generic [ref=f10e236]:
+            - textbox "Email Address" [ref=f10e237]
+            - button "Subscribe" [ref=f10e238] [cursor=pointer]
+        - generic [ref=f10e239]:
+          - heading "Corporate" [level=4] [ref=f10e240]
+          - list [ref=f10e241]:
+            - listitem [ref=f10e242]:
+              - link "About Us" [ref=f10e243] [cursor=pointer]:
+                - /url: /pages/about
+            - listitem [ref=f10e244]:
+              - link "Contact" [ref=f10e245] [cursor=pointer]:
+                - /url: /pages/contact
+            - listitem [ref=f10e246]:
+              - link "All Products" [ref=f10e247] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=f10e248]:
+              - link "Privacy Policy" [ref=f10e249] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f10e250]:
+              - link "Distance Sales Contract" [ref=f10e251] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - generic [ref=f10e252]:
+            - link "Facebook" [ref=f10e253] [cursor=pointer]:
+              - /url: https://www.facebook.com/7anrps48
+              - generic [ref=f10e254]: 
+            - link "X / Twitter" [ref=f10e255] [cursor=pointer]:
+              - /url: https://x.com/7anrps48?s=21
+              - generic [ref=f10e256]: 
+      - generic [ref=f10e257]:
+        - paragraph [ref=f10e259]: © 2026 7ANRPS48 — All rights reserved.
+        - generic [ref=f10e260]:
+          - link "Privacy Policy" [ref=f10e261] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "Return and Exchange" [ref=f10e262] [cursor=pointer]:
+            - /url: /pages/return-policy
+          - text: "|"
+          - link "About Us" [ref=f10e263] [cursor=pointer]:
+            - /url: /pages/about
+  - link "WhatsApp Contact" [ref=f10e264] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=f10e267]: WhatsApp
+  - link "Cart" [ref=f10e268] [cursor=pointer]:
+    - /url: /cart
+    - generic [ref=f10e271]: "1"

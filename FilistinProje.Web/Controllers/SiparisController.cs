@@ -358,6 +358,8 @@ namespace FilistinProje.Web.Controllers
             }
         }
 
+        [HttpGet("pending")]
+        [HttpGet("/Siparis/Beklemede")]
         public IActionResult Beklemede(string siparisNo)
         {
             ViewBag.SiparisNo = siparisNo;
@@ -372,6 +374,8 @@ namespace FilistinProje.Web.Controllers
             return View();
         }
 
+        [HttpGet("failed")]
+        [HttpGet("/Siparis/Basarisiz")]
         public IActionResult Basarisiz()
         {
             return View();
@@ -524,7 +528,7 @@ namespace FilistinProje.Web.Controllers
                 ModelState.AddModelError(nameof(dto.Telefon), _localizer["Siparis_PhoneRequired"].Value);
             }
 
-            if (dto.MusteriAdSoyad.Length > 150 || dto.Ilce.Length > 100 || dto.AcikAdres.Length > 500)
+            if (dto.MusteriAdSoyad.Length > 150 || (dto.Ilce?.Length ?? 0) > 100 || (dto.AcikAdres?.Length ?? 0) > 500)
             {
                 ModelState.AddModelError(string.Empty, _localizer["Siparis_FormValidationError"].Value);
             }
@@ -541,7 +545,7 @@ namespace FilistinProje.Web.Controllers
                     ModelState.AddModelError(nameof(dto.Ilce), _localizer["Siparis_DistrictRequired"].Value);
                 }
 
-                if (string.IsNullOrWhiteSpace(dto.AcikAdres) || dto.AcikAdres.Length < 10)
+                if (string.IsNullOrWhiteSpace(dto.AcikAdres) || (dto.AcikAdres?.Length ?? 0) < 10)
                 {
                     ModelState.AddModelError(nameof(dto.AcikAdres), _localizer["Siparis_AddressRequired"].Value);
                 }

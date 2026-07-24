@@ -22,48 +22,91 @@
 
     var kayitliAdresler = ViewBag.KayitliAdresler as List<FilistinProje.Core.Varliklar.Adres>;
     bool girisYapmis = User.Identity?.IsAuthenticated == true;
-    // �ehir listesi veritaban�ndaki KargoBolgeSehirler'den gelir
+    // Sehir listesi veritabanindaki KargoBolgeSehirler'den gelir.
     var sehirListesi = ViewBag.Sehirler as List<string> ?? new List<string>();
     var sehirler = sehirListesi;
 }
 
-<!-- Breadcrumb -->
-<div class="bg-brand-cream border-b border-brand-border py-4">
-    <div class="container mx-auto px-4 flex items-center justify-center gap-4 text-xs tracking-widest uppercase">
-        <a href="/cart" class="text-brand-mutedtext hover:text-brand-olive transition-colors flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-brand-border text-brand-mutedtext flex items-center justify-center font-bold">1</span> @Localizer["Cart"]
-        </a>
-        <span class="text-brand-border">/</span>
-        <span class="text-brand-olive font-bold flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-brand-olive text-white flex items-center justify-center font-bold">2</span> @Localizer["PaymentAndDelivery"]
-        </span>
+<style>
+    .checkout-page { background: radial-gradient(circle at 12% 10%, rgba(181,135,53,.09), transparent 28rem), linear-gradient(180deg, #fbfaf6 0%, #f5f2ea 100%); }
+    .checkout-shell { width: 100%; max-width: 1280px; margin-inline: auto; }
+    .checkout-hero { max-width: 42rem; }
+    .checkout-layout { display: grid; align-items: start; gap: 1.5rem; }
+    .checkout-card, .checkout-summary-card { border: 1px solid #e5dfd3; border-radius: 1.1rem; background: rgba(255,255,255,.94); box-shadow: 0 18px 55px rgba(49,53,17,.055); }
+    .checkout-card { padding: clamp(1.15rem, 3vw, 2rem); }
+    .checkout-summary-card { padding: clamp(1.15rem, 2.5vw, 1.75rem); }
+    .checkout-section-heading { display: flex; align-items: flex-start; gap: .9rem; margin-bottom: 1.6rem; }
+    .checkout-section-heading h2 { color: #313511; font-family: ui-serif, Georgia, serif; font-size: clamp(1.3rem, 2vw, 1.65rem); line-height: 1.15; }
+    .checkout-section-heading p { color: #7a766d; font-size: .75rem; line-height: 1.5; margin-top: .3rem; }
+    .checkout-step { display: inline-flex; height: 2.35rem; width: 2.35rem; flex: 0 0 auto; align-items: center; justify-content: center; border-radius: 999px; background: #313511; color: #fff; font-size: .68rem; font-weight: 700; letter-spacing: .08em; box-shadow: 0 7px 18px rgba(49,53,17,.18); }
+    .checkout-label { display: block; margin-bottom: .45rem; color: #383a29; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .checkout-label span { color: #b58735; }
+    .checkout-input { display: block; width: 100%; border: 1px solid #ded8cb; border-radius: .75rem; background: #fbfaf7; padding: .78rem .9rem; color: #292b1d; font-size: .875rem; outline: none; transition: border-color .2s, box-shadow .2s, background .2s; }
+    .checkout-input:focus { border-color: #b58735; background: #fff; box-shadow: 0 0 0 3px rgba(181,135,53,.12); }
+    .checkout-input[aria-invalid="true"] { border-color: #dc2626; background: #fff7f7; box-shadow: 0 0 0 3px rgba(220,38,38,.08); }
+    .checkout-field-error { display: block; margin-top: .35rem; color: #b91c1c; font-size: .7rem; line-height: 1.4; }
+    .checkout-choice { position: relative; display: flex; min-height: 5.35rem; cursor: pointer; align-items: center; gap: .8rem; overflow: hidden; border: 1px solid #ded8cb; border-radius: .85rem; background: #fff; padding: 1rem; transition: transform .2s, border-color .2s, background .2s, box-shadow .2s; }
+    .checkout-choice:hover { border-color: #b58735; transform: translateY(-1px); }
+    .checkout-choice:has(.peer:checked) { border-color: #313511; background: #f7f8ed; box-shadow: inset 3px 0 0 #b58735; }
+    [dir="rtl"] .checkout-choice:has(.peer:checked) { box-shadow: inset -3px 0 0 #b58735; }
+    .checkout-choice-icon, .checkout-mini-icon { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; border-radius: .7rem; background: #f2eee4; color: #b58735; }
+    .checkout-choice-icon { height: 2.6rem; width: 2.6rem; }
+    .checkout-mini-icon { height: 2.25rem; width: 2.25rem; }
+    .checkout-choice-check { position: absolute; inset-inline-end: .7rem; top: .7rem; display: none; height: 1.25rem; width: 1.25rem; align-items: center; justify-content: center; border-radius: 999px; background: #313511; color: white; font-size: .55rem; }
+    .checkout-choice:has(.peer:checked) .checkout-choice-check { display: inline-flex; }
+    .checkout-dropzone { display: flex; min-height: 8rem; cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: .45rem; border: 1px dashed #bdb5a5; border-radius: .9rem; background: #fbfaf7; padding: 1rem; text-align: center; transition: border-color .2s, background .2s; }
+    .checkout-dropzone:hover { border-color: #b58735; background: #fff; }
+    .checkout-secondary-button { border-radius: .7rem; background: #313511; padding: .7rem 1.1rem; color: #fff; font-size: .72rem; font-weight: 600; transition: background .2s; }
+    .checkout-secondary-button:hover { background: #1c2001; }
+    @@media (min-width: 1180px) { .checkout-layout { grid-template-columns: minmax(0, 1fr) 400px; gap: 2rem; } .checkout-summary { position: sticky; top: 6rem; } }
+    @@media (max-width: 639px) { .checkout-card, .checkout-summary-card { border-radius: .9rem; } .checkout-choice { min-height: 4.75rem; } }
+</style>
+
+<div class="border-b border-brand-border bg-white/80 py-3 backdrop-blur">
+    <div class="mx-auto flex max-w-7xl items-center justify-center gap-3 px-4 text-[10px] font-semibold uppercase tracking-[.16em] sm:text-xs">
+        <a href="/cart" class="flex items-center gap-2 text-brand-mutedtext transition hover:text-brand-olive"><span class="flex h-6 w-6 items-center justify-center rounded-full border border-brand-border">1</span>@Localizer["Cart"]</a>
+        <span class="h-px w-8 bg-brand-border sm:w-16"></span>
+        <span class="flex items-center gap-2 text-brand-olive"><span class="flex h-6 w-6 items-center justify-center rounded-full bg-brand-olive text-white">2</span>@Localizer["PaymentAndDelivery"]</span>
     </div>
 </div>
 
-<div class="container mx-auto px-4 py-12 md:py-16">
-    <div class="text-center mb-12">
-        <h1 class="font-serif text-3xl md:text-5xl text-brand-olive mb-4">@Localizer["SecurePayment"]</h1>
-        <p class="text-sm text-brand-mutedtext max-w-2xl mx-auto">@Localizer["VerifyDeliveryInfo"]</p>
-    </div>
+<main class="checkout-page px-3 py-7 sm:px-5 sm:py-10 lg:py-14">
+    <div class="checkout-shell">
+        <header class="checkout-hero mb-7 sm:mb-10">
+            <span class="mb-3 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.22em] text-brand-gold"><i class="fas fa-shield-halved"></i>@Localizer["256BitSslEncryption"]</span>
+            <h1 class="font-serif text-3xl leading-tight text-brand-olive sm:text-4xl lg:text-5xl">@Localizer["SecurePayment"]</h1>
+            <p class="mt-3 text-sm leading-relaxed text-brand-mutedtext">@Localizer["VerifyDeliveryInfo"]</p>
+        </header>
 
-    <div class="flex flex-col lg:flex-row gap-12 lg:gap-16 max-w-6xl mx-auto">
-        <!-- Sol Form Alanı -->
-        <div class="lg:w-2/3 space-y-12">
-            
-                <form asp-action="Odeme" method="post" id="odemeForm">
+        <div class="checkout-layout">
+            <form asp-action="Odeme" method="post" id="odemeForm" class="space-y-5" novalidate>
+                @if ((ViewBag.FormHata is string formHata && !string.IsNullOrWhiteSpace(formHata)) || !ViewData.ModelState.IsValid)
+                {
+                    <div role="alert" class="rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-800 shadow-sm">
+                        <div class="flex items-start gap-3"><i class="fas fa-circle-exclamation mt-0.5"></i><div><strong class="block">@(ViewBag.FormHata as string ?? Localizer["Checkout_ReviewErrors"].Value)</strong><div asp-validation-summary="All" class="mt-2 text-xs leading-relaxed"></div></div></div>
+                    </div>
+                }
+                <div id="checkoutClientAlert" role="alert" tabindex="-1" class="hidden rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-800 shadow-sm">
+                    <div class="flex items-start gap-3"><i class="fas fa-circle-exclamation mt-0.5"></i><div><strong>@Localizer["Checkout_ReviewErrors"]</strong><ul id="checkoutClientErrors" class="mt-2 list-disc space-y-1 ps-5 text-xs"></ul></div></div>
+                </div>
                 @await Html.PartialAsync("_AddressForm")
                 @await Html.PartialAsync("_PaymentOptions")
                 @await Html.PartialAsync("_IdentityVerification")
-                </form>
-        </div><!-- /lg:w-2/3 -->
-
-        <div class="lg:w-1/3">
-            <div class="sticky top-8 bg-white border border-brand-border rounded-lg p-6 lg:p-8">
-            @await Html.PartialAsync("_OrderSummary")
-            </div>
+            </form>
+            <aside class="checkout-summary">@await Html.PartialAsync("_OrderSummary")</aside>
         </div>
+    </div>
+</main>
 <script>
     const checkoutUploadToken = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.CheckoutUploadToken as string ?? string.Empty));
+    const currencySymbol = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(currencySymbol));
+
+    function formatCheckoutNumber(amount) {
+        return Number(amount).toLocaleString(document.documentElement.lang === 'ar' ? 'ar-PS' : 'en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
     function selectAddress(ad, tel, sehir, ilce, acikAdres) {
         document.getElementById("MusteriAdSoyad").value = ad;
         document.getElementById("Telefon").value = tel;
@@ -156,50 +199,68 @@
     }
 
     function toggleDeliveryType() {
-        var isStorePickup = document.querySelector('input[name="TeslimatTipi"]:checked').value === 'MagazadanTeslim';
+        var isStorePickup = document.querySelector('input[name="TeslimatTipi"]:checked')?.value === 'MagazadanTeslim';
         var adresAlanlari = document.getElementById('adresAlanlari');
+        var shippingAddressFields = [
+            document.getElementById('adresSehirAlani'),
+            document.getElementById('adresIlceAlani'),
+            document.getElementById('adresAcikAdresAlani'),
+            document.getElementById('adresKaydetAlani')
+        ];
+        var requiredShippingInputs = [
+            document.getElementById('Sehir'),
+            document.getElementById('Ilce'),
+            document.getElementById('AcikAdres')
+        ];
         var kargoAlanlari = document.getElementById('kargoAlanlari');
         var storePickupInfo = document.getElementById('storePickupInfo');
         var checkoutKargoSatiri = document.getElementById('checkoutKargoSatiri');
         var checkoutFreeShippingBanner = document.getElementById('checkoutFreeShippingBanner');
         var checkoutKargoDisplay = document.getElementById('checkoutKargoUcreti');
+        var checkoutCodSurchargeSatiri = document.getElementById('checkoutCodSurchargeSatiri');
         var totalDisplay = document.getElementById('checkoutGenelToplam');
         var btnTotalDisplay = document.getElementById('checkoutBtnTotal');
         var codPaymentOption = document.getElementById('codPaymentOption');
 
         if (isStorePickup) {
-            if (adresAlanlari) adresAlanlari.classList.add('hidden');
+            if (adresAlanlari) adresAlanlari.classList.remove('hidden');
+            shippingAddressFields.forEach(function(field) { if (field) field.classList.add('hidden'); });
+            requiredShippingInputs.forEach(function(input) { if (input) input.required = false; });
             if (kargoAlanlari) kargoAlanlari.classList.add('hidden');
             if (storePickupInfo) storePickupInfo.classList.remove('hidden');
             if (checkoutKargoSatiri) checkoutKargoSatiri.classList.add('hidden');
+            if (checkoutCodSurchargeSatiri) checkoutCodSurchargeSatiri.classList.add('hidden');
             if (checkoutFreeShippingBanner) checkoutFreeShippingBanner.classList.add('hidden');
-            if (codPaymentOption) {
-                codPaymentOption.classList.add('hidden');
-                var bankRadio = document.querySelector('input[name="odemeYontemi"][value="BankaHavalesi"]');
-                if (bankRadio) {
-                    bankRadio.checked = true;
-                    togglePaymentMethod('BankaHavalesi');
-                }
-            }
+            if (codPaymentOption) codPaymentOption.classList.remove('hidden');
 
             var subtotal = parseFloat("@((araToplam - indirim).ToString(System.Globalization.CultureInfo.InvariantCulture))");
             if (totalDisplay) {
-                totalDisplay.innerHTML = window.formatMoney(subtotal) + ' <span class="text-lg font-normal text-brand-mutedtext">' + currencySymbol + '</span>';
+                totalDisplay.innerHTML = formatCheckoutNumber(subtotal) + ' <span class="text-lg font-normal text-brand-mutedtext">' + currencySymbol + '</span>';
             }
             if (btnTotalDisplay) {
-                btnTotalDisplay.textContent = window.formatMoney(subtotal);
+                btnTotalDisplay.textContent = formatCheckoutNumber(subtotal);
             }
         } else {
             if (adresAlanlari) adresAlanlari.classList.remove('hidden');
+            shippingAddressFields.forEach(function(field) { if (field) field.classList.remove('hidden'); });
+            requiredShippingInputs.forEach(function(input) { if (input) input.required = true; });
             if (kargoAlanlari) kargoAlanlari.classList.remove('hidden');
             if (storePickupInfo) storePickupInfo.classList.add('hidden');
             if (checkoutKargoSatiri) checkoutKargoSatiri.classList.remove('hidden');
+            var selectedPayment = document.querySelector('input[name="odemeYontemi"]:checked')?.value;
+            if (checkoutCodSurchargeSatiri) checkoutCodSurchargeSatiri.classList.toggle('hidden', selectedPayment !== 'KapidaOdeme');
             if (checkoutFreeShippingBanner) checkoutFreeShippingBanner.classList.remove('hidden');
             if (codPaymentOption) codPaymentOption.classList.remove('hidden');
             if (typeof sehirKargoHesapla === 'function') {
                 sehirKargoHesapla();
             }
         }
+
+        requiredShippingInputs.forEach(function(input) {
+            if (input && typeof clearCheckoutFieldError === 'function') clearCheckoutFieldError(input);
+        });
+        var clientAlert = document.getElementById('checkoutClientAlert');
+        if (clientAlert) clientAlert.classList.add('hidden');
     }
 
     const adresKaydetCheckbox = document.getElementById('AdresiKaydet');
@@ -216,28 +277,97 @@
         });
     }
 
+    const checkoutValidationMessages = {
+        MusteriAdSoyad: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Siparis_NameRequired"].Value)),
+        Eposta: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Siparis_EmailRequired"].Value)),
+        Telefon: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Siparis_PhoneRequired"].Value)),
+        Sehir: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Siparis_CityRequired"].Value)),
+        Ilce: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Siparis_DistrictRequired"].Value)),
+        AcikAdres: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Siparis_AddressRequired"].Value)),
+        OdemeYontemi: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Checkout_PaymentRequired"].Value)),
+        SozlesmeOnaylandi: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Siparis_TermsRequired"].Value)),
+        ReceteDosyaYolu: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Siparis_PrescriptionRequired"].Value))
+    };
+
+    function setCheckoutFieldError(fieldName, message) {
+        const field = document.getElementById(fieldName) || document.querySelector('[name="' + fieldName + '"]');
+        const messageEl = form.querySelector('[data-valmsg-for="' + fieldName + '"]');
+        if (field) field.setAttribute('aria-invalid', 'true');
+        if (messageEl && !messageEl.textContent.trim()) {
+            messageEl.textContent = message;
+            messageEl.dataset.clientError = 'true';
+        }
+    }
+
+    function clearCheckoutFieldError(field) {
+        field.removeAttribute('aria-invalid');
+        const fieldName = field.name;
+        const messageEl = fieldName ? form.querySelector('[data-valmsg-for="' + fieldName + '"]') : null;
+        if (messageEl?.dataset.clientError === 'true') {
+            messageEl.textContent = '';
+            delete messageEl.dataset.clientError;
+        }
+    }
+
     // Form submission validation UI
     const form = document.getElementById('odemeForm');
     form.addEventListener('submit', function(e) {
+        const errors = [];
+        let firstInvalidField = null;
+        const requiredFields = ['MusteriAdSoyad', 'Eposta', 'Telefon', 'Sehir', 'Ilce', 'AcikAdres'];
+
+        requiredFields.forEach(function(fieldName) {
+            const field = document.getElementById(fieldName);
+            if (!field || field.disabled || !field.required) return;
+            const empty = !field.value.trim();
+            const invalidEmail = fieldName === 'Eposta' && !empty && !field.validity.valid;
+            const shortAddress = fieldName === 'AcikAdres' && !empty && field.value.trim().length < 10;
+            if (empty || invalidEmail || shortAddress) {
+                errors.push(checkoutValidationMessages[fieldName]);
+                setCheckoutFieldError(fieldName, checkoutValidationMessages[fieldName]);
+                firstInvalidField = firstInvalidField || field;
+            }
+        });
+
+        if (!form.querySelector('input[name="odemeYontemi"]:checked')) {
+            errors.push(checkoutValidationMessages.OdemeYontemi);
+            setCheckoutFieldError('OdemeYontemi', checkoutValidationMessages.OdemeYontemi);
+            firstInvalidField = firstInvalidField || form.querySelector('input[name="odemeYontemi"]');
+        }
+
+        const terms = document.getElementById('SozlesmeOnaylandi');
+        if (!terms?.checked) {
+            errors.push(checkoutValidationMessages.SozlesmeOnaylandi);
+            setCheckoutFieldError('SozlesmeOnaylandi', checkoutValidationMessages.SozlesmeOnaylandi);
+            firstInvalidField = firstInvalidField || terms;
+        }
+
         const receteZorunlu = @(receteZorunlu ? "true" : "false");
         if (receteZorunlu) {
             const receteYolu = document.getElementById('ReceteDosyaYolu')?.value;
             if (!receteYolu || receteYolu.trim() === '') {
-                e.preventDefault();
-                if (window.showToast) {
-                    window.showToast('@Localizer["Siparis_PrescriptionRequired"]', 'error');
-                }
-                return;
+                errors.push(checkoutValidationMessages.ReceteDosyaYolu);
+                setCheckoutFieldError('ReceteDosyaYolu', checkoutValidationMessages.ReceteDosyaYolu);
             }
         }
 
-        if (!form.checkValidity()) {
+        if (errors.length) {
             e.preventDefault();
-            if (window.showToast) {
-                window.showToast('@Localizer["FillRequiredFields"]', 'error');
-            }
+            const alert = document.getElementById('checkoutClientAlert');
+            const list = document.getElementById('checkoutClientErrors');
+            list.replaceChildren(...[...new Set(errors)].map(function(message) {
+                const item = document.createElement('li');
+                item.textContent = message;
+                return item;
+            }));
+            alert.classList.remove('hidden');
+            alert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            window.setTimeout(function() { (firstInvalidField || alert).focus({ preventScroll: true }); }, 350);
         }
     });
+
+    form.addEventListener('input', function(event) { clearCheckoutFieldError(event.target); });
+    form.addEventListener('change', function(event) { clearCheckoutFieldError(event.target); });
 
     // Address radio button visual update
     document.querySelectorAll('input[name="kayitliAdresSecimi"]').forEach(function(radio) {
@@ -260,13 +390,13 @@
 
     var cameraMessages = (document.documentElement.lang || '').toLowerCase().startsWith('ar')
         ? {
-            unsupported: '???????? ??? ?????? ?? ??? ???????. ???? ??? ???? ?? ??????.',
-            insecure: '???? ????? ??? HTTPS ???????? ????????. ???? ??? ???? ?? ??????.',
-            denied: '?? ??? ??? ????????. ????? ??? ???? ?????? ?? ??????.',
-            notFound: '?? ??? ?????? ??? ??????. ???? ??? ???? ?? ??????.',
-            busy: '???? ????? ????????. ???? ????????? ?????? ?? ???? ???? ?? ??????.',
-            failed: '???? ????? ????????. ???? ???????? ??? ???? ?? ??? ????.',
-            uploadFailed: '???? ??? ?????. ???? ?? ????? ?????? ?? ???? ??? ????.'
+            unsupported: 'الكاميرا غير مدعومة في هذا المتصفح. يرجى رفع ملف بدلاً منها.',
+            insecure: 'يلزم اتصال HTTPS آمن لاستخدام الكاميرا. يرجى رفع ملف بدلاً منها.',
+            denied: 'تم رفض إذن الكاميرا. يمكنك رفع صورة الهوية بدلاً منها.',
+            notFound: 'لم يتم العثور على كاميرا. يرجى رفع ملف بدلاً منها.',
+            busy: 'تعذر تشغيل الكاميرا. أغلق التطبيقات الأخرى أو ارفع ملفاً بدلاً منها.',
+            failed: 'تعذر تشغيل الكاميرا. حاول مرة أخرى أو ارفع ملفاً.',
+            uploadFailed: 'تعذر رفع الملف. تحقق من نوع الملف وحجمه ثم حاول مرة أخرى.'
         }
         : {
             unsupported: 'Camera is not supported in this browser. Please upload a file instead.',
@@ -441,7 +571,8 @@
             if (checkoutCodSurchargeSatiri) checkoutCodSurchargeSatiri.classList.add('hidden');
         }
 
-        if (typeof sehirKargoHesapla === 'function') {
+        var isStorePickup = document.querySelector('input[name="TeslimatTipi"]:checked')?.value === 'MagazadanTeslim';
+        if (!isStorePickup && typeof sehirKargoHesapla === 'function') {
             sehirKargoHesapla();
         }
     }
@@ -517,6 +648,9 @@
 
     // --- Dinamik Kargo Hesaplama (Şehir Bazlı) ---
     function sehirKargoHesapla() {
+        const isStorePickup = document.querySelector('input[name="TeslimatTipi"]:checked')?.value === 'MagazadanTeslim';
+        if (isStorePickup) return;
+
         const sehir = document.getElementById("Sehir")?.value;
         if (!sehir) return;
 
@@ -525,6 +659,9 @@
         fetch(url)
             .then(r => r.json())
             .then(data => {
+                const pickupSelected = document.querySelector('input[name="TeslimatTipi"]:checked')?.value === 'MagazadanTeslim';
+                if (pickupSelected) return;
+
                 if (data.success) {
                     const kargoDisplay = document.getElementById("checkoutKargoUcreti");
                     const totalDisplay = document.getElementById("checkoutGenelToplam");
@@ -546,7 +683,7 @@
                             kargoDisplay.textContent = '@Localizer["Free"]';
                             kargoDisplay.className = "text-green-600 font-bold uppercase";
                         } else {
-                            kargoDisplay.textContent = currencySymbol + window.formatMoney(gecerliKargoUcreti);
+                            kargoDisplay.textContent = currencySymbol + formatCheckoutNumber(gecerliKargoUcreti);
                             kargoDisplay.className = "text-brand-olive font-medium";
                         }
                     }
@@ -558,7 +695,7 @@
                             checkoutFreeShippingBanner.innerHTML =
                                 '<div class="flex items-center gap-2 text-xs text-amber-800 mb-3">' +
                                 '<i class="fas fa-truck text-brand-gold"></i>' +
-                                '<span>' + window.formatMoney(kalanTutar) + ' ' + currencySymbol + ' @Localizer["FreeShippingAbove"]</span></div>' +
+                                '<span>' + formatCheckoutNumber(kalanTutar) + ' ' + currencySymbol + ' @Localizer["FreeShippingAbove"]</span></div>' +
                                 '<div class="w-full h-2 bg-amber-200 rounded-full overflow-hidden">' +
                                 '<div class="h-full bg-gradient-to-r from-[#b58735] to-[#d4a84b] rounded-full" style="width: ' + Math.min(100, Math.round((araToplam / data.ucretsizKargoLimiti) * 100)) + '%"></div></div>';
                             checkoutFreeShippingBanner.className = "mb-5 bg-amber-50 border border-amber-200 rounded-lg p-4";
@@ -575,10 +712,10 @@
                     // Total güncelle
                     const genelToplamVal = araToplam + gecerliKargoUcreti + codPrice;
                     if (totalDisplay) {
-totalDisplay.innerHTML = window.formatMoney(genelToplamVal) + ' <span class="text-lg font-normal text-brand-mutedtext">' + currencySymbol + '</span>';
+                        totalDisplay.innerHTML = formatCheckoutNumber(genelToplamVal) + ' <span class="text-lg font-normal text-brand-mutedtext">' + currencySymbol + '</span>';
                     }
                     if (btnTotalDisplay) {
-                        btnTotalDisplay.textContent = window.formatMoney(genelToplamVal);
+                        btnTotalDisplay.textContent = formatCheckoutNumber(genelToplamVal);
                     }
                 }
             })
@@ -597,8 +734,6 @@ totalDisplay.innerHTML = window.formatMoney(genelToplamVal) + ' <span class="tex
         const kargoDisplay = document.getElementById("checkoutKargoUcreti");
         const totalDisplay = document.getElementById("checkoutGenelToplam");
         const btnTotalDisplay = document.getElementById("checkoutBtnTotal");
-        const currencySymbol = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(currencySymbol));
-
         const subtotal = parseFloat("@((araToplam - indirim).ToString(System.Globalization.CultureInfo.InvariantCulture))");
         const codBedel = parseFloat("@codBedel.ToString(System.Globalization.CultureInfo.InvariantCulture)");
         const codLimit = parseFloat("@codLimit.ToString(System.Globalization.CultureInfo.InvariantCulture)");
@@ -635,17 +770,17 @@ totalDisplay.innerHTML = window.formatMoney(genelToplamVal) + ' <span class="tex
 
             if (kargoDisplay) {
                 if (isStorePickup) {
-                    kargoDisplay.textContent = '0.00 ' + currencySymbol;
+                    kargoDisplay.textContent = currencySymbol + formatCheckoutNumber(0);
                     kargoDisplay.className = "text-brand-olive font-medium";
                 }
             }
 
             if (totalDisplay) {
-                totalDisplay.innerHTML = window.formatMoney(genelToplamVal) + ' <span class="text-lg font-normal text-brand-mutedtext">' + currencySymbol + '</span>';
+                totalDisplay.innerHTML = formatCheckoutNumber(genelToplamVal) + ' <span class="text-lg font-normal text-brand-mutedtext">' + currencySymbol + '</span>';
             }
 
             if (btnTotalDisplay) {
-                btnTotalDisplay.textContent = window.formatMoney(genelToplamVal);
+                btnTotalDisplay.textContent = formatCheckoutNumber(genelToplamVal);
             }
         }
 
@@ -660,6 +795,8 @@ totalDisplay.innerHTML = window.formatMoney(genelToplamVal) + ' <span class="tex
 
         updateCheckoutTotals();
         toggleDeliveryType();
+        const selectedPayment = document.querySelector('input[name="odemeYontemi"]:checked');
+        if (selectedPayment) togglePaymentMethod(selectedPayment.value);
     });
 
     function copyIban(elementId, btn) {

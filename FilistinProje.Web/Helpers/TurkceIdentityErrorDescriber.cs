@@ -1,70 +1,80 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
+using FilistinProje.Web.Resources;
 
 namespace FilistinProje.Core.Helpers
 {
-    /// <summary>
-    /// ASP.NET Identity hata mesajlarını Türkçeye çevirir.
-    /// </summary>
+    /// <summary>Localizes ASP.NET Identity errors using the active storefront culture.</summary>
     public class TurkceIdentityErrorDescriber : IdentityErrorDescriber
     {
+        private readonly IStringLocalizer<SharedResource> _localizer;
+
+        public TurkceIdentityErrorDescriber(IStringLocalizer<SharedResource> localizer)
+        {
+            _localizer = localizer;
+        }
+
         public override IdentityError DuplicateEmail(string email)
-            => new() { Code = nameof(DuplicateEmail), Description = $"'{email}' e-posta adresi zaten kayıtlı." };
+            => Error(nameof(DuplicateEmail), "Identity_DuplicateEmail", email);
 
         public override IdentityError DuplicateUserName(string userName)
-            => new() { Code = nameof(DuplicateUserName), Description = $"'{userName}' kullanıcı adı zaten kullanılıyor." };
+            => Error(nameof(DuplicateUserName), "Identity_DuplicateUserName", userName);
 
         public override IdentityError InvalidEmail(string? email)
-            => new() { Code = nameof(InvalidEmail), Description = $"'{email}' geçersiz bir e-posta adresidir." };
+            => Error(nameof(InvalidEmail), "Identity_InvalidEmail", email ?? string.Empty);
 
         public override IdentityError InvalidUserName(string? userName)
-            => new() { Code = nameof(InvalidUserName), Description = $"'{userName}' geçersiz bir kullanıcı adıdır. Sadece harf ve rakam kullanılabilir." };
+            => Error(nameof(InvalidUserName), "Identity_InvalidUserName", userName ?? string.Empty);
 
         public override IdentityError PasswordMismatch()
-            => new() { Code = nameof(PasswordMismatch), Description = "Şifre hatalı." };
+            => Error(nameof(PasswordMismatch), "Identity_PasswordMismatch");
 
         public override IdentityError PasswordRequiresDigit()
-            => new() { Code = nameof(PasswordRequiresDigit), Description = "Şifre en az bir rakam (0-9) içermelidir." };
+            => Error(nameof(PasswordRequiresDigit), "Identity_PasswordRequiresDigit");
 
         public override IdentityError PasswordRequiresLower()
-            => new() { Code = nameof(PasswordRequiresLower), Description = "Şifre en az bir küçük harf (a-z) içermelidir." };
+            => Error(nameof(PasswordRequiresLower), "Identity_PasswordRequiresLower");
 
         public override IdentityError PasswordRequiresUpper()
-            => new() { Code = nameof(PasswordRequiresUpper), Description = "Şifre en az bir büyük harf (A-Z) içermelidir." };
+            => Error(nameof(PasswordRequiresUpper), "Identity_PasswordRequiresUpper");
 
         public override IdentityError PasswordRequiresNonAlphanumeric()
-            => new() { Code = nameof(PasswordRequiresNonAlphanumeric), Description = "Şifre en az bir özel karakter (!@#$%^&* vb.) içermelidir." };
+            => Error(nameof(PasswordRequiresNonAlphanumeric), "Identity_PasswordRequiresNonAlphanumeric");
 
         public override IdentityError PasswordTooShort(int length)
-            => new() { Code = nameof(PasswordTooShort), Description = $"Şifre en az {length} karakter uzunluğunda olmalıdır." };
+            => Error(nameof(PasswordTooShort), "Identity_PasswordTooShort", length);
 
         public override IdentityError PasswordRequiresUniqueChars(int uniqueChars)
-            => new() { Code = nameof(PasswordRequiresUniqueChars), Description = $"Şifre en az {uniqueChars} farklı karakter içermelidir." };
+            => Error(nameof(PasswordRequiresUniqueChars), "Identity_PasswordRequiresUniqueChars", uniqueChars);
 
         public override IdentityError UserAlreadyHasPassword()
-            => new() { Code = nameof(UserAlreadyHasPassword), Description = "Kullanıcının zaten bir şifresi var." };
+            => Error(nameof(UserAlreadyHasPassword), "Identity_UserAlreadyHasPassword");
 
         public override IdentityError UserAlreadyInRole(string role)
-            => new() { Code = nameof(UserAlreadyInRole), Description = $"Kullanıcı zaten '{role}' rolünde." };
+            => Error(nameof(UserAlreadyInRole), "Identity_UserAlreadyInRole", role);
 
         public override IdentityError UserNotInRole(string role)
-            => new() { Code = nameof(UserNotInRole), Description = $"Kullanıcı '{role}' rolünde değil." };
+            => Error(nameof(UserNotInRole), "Identity_UserNotInRole", role);
 
         public override IdentityError UserLockoutNotEnabled()
-            => new() { Code = nameof(UserLockoutNotEnabled), Description = "Bu kullanıcı için kilit özelliği aktif değil." };
+            => Error(nameof(UserLockoutNotEnabled), "Identity_UserLockoutNotEnabled");
 
         public override IdentityError DefaultError()
-            => new() { Code = nameof(DefaultError), Description = "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin." };
+            => Error(nameof(DefaultError), "Identity_DefaultError");
 
         public override IdentityError ConcurrencyFailure()
-            => new() { Code = nameof(ConcurrencyFailure), Description = "Eşzamanlılık hatası. Lütfen tekrar deneyin." };
+            => Error(nameof(ConcurrencyFailure), "Identity_ConcurrencyFailure");
 
         public override IdentityError RecoveryCodeRedemptionFailed()
-            => new() { Code = nameof(RecoveryCodeRedemptionFailed), Description = "Kurtarma kodu doğrulaması başarısız." };
+            => Error(nameof(RecoveryCodeRedemptionFailed), "Identity_RecoveryCodeRedemptionFailed");
 
         public override IdentityError LoginAlreadyAssociated()
-            => new() { Code = nameof(LoginAlreadyAssociated), Description = "Bu dış giriş zaten başka bir hesapla ilişkili." };
+            => Error(nameof(LoginAlreadyAssociated), "Identity_LoginAlreadyAssociated");
 
         public override IdentityError InvalidToken()
-            => new() { Code = nameof(InvalidToken), Description = "Geçersiz doğrulama kodu." };
+            => Error(nameof(InvalidToken), "Identity_InvalidToken");
+
+        private IdentityError Error(string code, string resourceKey, params object[] arguments)
+            => new() { Code = code, Description = _localizer[resourceKey, arguments].Value };
     }
 }

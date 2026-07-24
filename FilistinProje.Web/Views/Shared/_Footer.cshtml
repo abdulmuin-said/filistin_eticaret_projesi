@@ -77,13 +77,29 @@
                     <li><a class="hover:text-white transition-colors" href="/Sozlesmeler/MesafeliSatis">@Localizer["DistanceSalesContract"]</a></li>
                 </ul>
                 <div class="mt-6 flex gap-3 text-gray-100">
-                    @if (!string.IsNullOrEmpty(siteSettings.InstagramUrl))
+                    @if (!string.IsNullOrWhiteSpace(siteSettings.InstagramUrl))
                     {
                         <a href="@siteSettings.InstagramUrl" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:border-white/40 hover:bg-white/10"><i class="fab fa-instagram text-lg"></i></a>
                     }
-                    @if (!string.IsNullOrEmpty(siteSettings.FacebookUrl))
+                    @if (!string.IsNullOrWhiteSpace(siteSettings.FacebookUrl))
                     {
                         <a href="@siteSettings.FacebookUrl" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:border-white/40 hover:bg-white/10"><i class="fab fa-facebook text-lg"></i></a>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(siteSettings.TiktokUrl))
+                    {
+                        <a href="@siteSettings.TiktokUrl" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:border-white/40 hover:bg-white/10"><i class="fab fa-tiktok text-lg"></i></a>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(siteSettings.YoutubeUrl))
+                    {
+                        <a href="@siteSettings.YoutubeUrl" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:border-white/40 hover:bg-white/10"><i class="fab fa-youtube text-lg"></i></a>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(siteSettings.PinterestUrl))
+                    {
+                        <a href="@siteSettings.PinterestUrl" target="_blank" rel="noopener noreferrer" aria-label="Pinterest" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:border-white/40 hover:bg-white/10"><i class="fab fa-pinterest-p text-lg"></i></a>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(siteSettings.TwitterUrl))
+                    {
+                        <a href="@siteSettings.TwitterUrl" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter" class="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:border-white/40 hover:bg-white/10"><i class="fab fa-twitter text-lg"></i></a>
                     }
                 </div>
             </div>

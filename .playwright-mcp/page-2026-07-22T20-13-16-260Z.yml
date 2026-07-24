@@ -1,0 +1,263 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=e7]:
+        - generic [ref=e8]: 
+        - text: Easy payment by IBAN
+      - generic [ref=e9]:
+        - generic [ref=e10]: 
+        - text: Pay on delivery option
+      - generic [ref=e11]:
+        - generic [ref=e12]: 
+        - text: Fast Production
+      - generic [ref=e13]:
+        - generic [ref=e14]: 
+        - text: Careful Packaging
+      - generic [ref=e15]:
+        - generic [ref=e16]: 
+        - text: Delivery Across Palestine
+      - generic [ref=e17]:
+        - generic [ref=e18]: 
+        - text: 14 Days Return
+      - generic [ref=e19]:
+        - generic [ref=e20]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=e21]:
+        - generic [ref=e22]: 
+        - text: WhatsApp Support
+    - generic [ref=e23]:
+      - generic [ref=e24]:
+        - generic [ref=e25]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=e26]:
+        - generic [ref=e27]: 
+        - text: Easy payment by IBAN
+      - generic [ref=e28]:
+        - generic [ref=e29]: 
+        - text: Pay on delivery option
+      - generic [ref=e30]:
+        - generic [ref=e31]: 
+        - text: Fast Production
+      - generic [ref=e32]:
+        - generic [ref=e33]: 
+        - text: Careful Packaging
+      - generic [ref=e34]:
+        - generic [ref=e35]: 
+        - text: Delivery Across Palestine
+      - generic [ref=e36]:
+        - generic [ref=e37]: 
+        - text: 14 Days Return
+      - generic [ref=e38]:
+        - generic [ref=e39]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=e40]:
+        - generic [ref=e41]: 
+        - text: WhatsApp Support
+  - banner [ref=e42]:
+    - generic [ref=e43]:
+      - generic [ref=e44]:
+        - generic [ref=e45]: 
+        - link "العربية" [ref=e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2Faccount%2Fregister
+        - link "English" [ref=e48] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2Faccount%2Fregister
+      - link "7ANRPS48" [ref=e49] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=e50]
+      - generic [ref=e51]:
+        - button "Search" [ref=e52] [cursor=pointer]
+        - link "Login" [ref=e55] [cursor=pointer]:
+          - /url: /account/GirisYap
+        - link "My Favorites" [ref=e58] [cursor=pointer]:
+          - /url: /favorites
+        - link "Cart" [ref=e61] [cursor=pointer]:
+          - /url: /cart
+          - generic [ref=e64]: "0"
+      - navigation [ref=e65]:
+        - list [ref=e66]:
+          - listitem [ref=e67] [cursor=pointer]:
+            - link "beauty" [ref=e68]:
+              - /url: /products?k=89
+          - listitem [ref=e71] [cursor=pointer]:
+            - link "fragrances" [ref=e72]:
+              - /url: /products?k=90
+          - listitem [ref=e75] [cursor=pointer]:
+            - link "furniture" [ref=e76]:
+              - /url: /products?k=91
+          - listitem [ref=e79] [cursor=pointer]:
+            - link "groceries" [ref=e80]:
+              - /url: /products?k=92
+          - listitem [ref=e83] [cursor=pointer]:
+            - link "Home Furniture" [ref=e84]:
+              - /url: /products?k=78
+          - listitem [ref=e87] [cursor=pointer]:
+            - link "Electronics" [ref=e88]:
+              - /url: /products?k=79
+          - listitem [ref=e91] [cursor=pointer]:
+            - link "Fashion" [ref=e92]:
+              - /url: /products?k=80
+          - listitem [ref=e95] [cursor=pointer]:
+            - link "Contact" [ref=e96]:
+              - /url: /pages/Iletisim
+  - main [ref=e97]:
+    - generic [ref=e99]:
+      - generic [ref=e100]:
+        - link "7ANRPS48" [ref=e101] [cursor=pointer]:
+          - /url: /
+        - paragraph [ref=e102]: Create New Account
+      - generic [ref=e103]:
+        - generic [ref=e104]:
+          - generic [ref=e105]:
+            - generic [ref=e106]:
+              - generic [ref=e107]: Full Name
+              - textbox "Full Name" [ref=e108]:
+                - /placeholder: Your Full Name
+            - generic [ref=e109]:
+              - generic [ref=e110]: National ID
+              - textbox "National ID" [ref=e111]:
+                - /placeholder: National ID No
+          - generic [ref=e112]:
+            - generic [ref=e113]:
+              - generic [ref=e114]: Date of Birth
+              - textbox "Date of Birth" [ref=e115]
+            - generic [ref=e116]:
+              - generic [ref=e117]: Phone
+              - textbox "Phone" [ref=e118]:
+                - /placeholder: +970 5XX XXX XXX
+          - generic [ref=e119]:
+            - generic [ref=e120]: Email
+            - textbox "Email" [ref=e121]:
+              - /placeholder: example@email.com
+          - generic [ref=e122]:
+            - generic [ref=e123]: Address
+            - textbox "Address" [ref=e124]:
+              - /placeholder: Neighborhood, Street, Building No, Apartment No...
+          - generic [ref=e125]:
+            - paragraph [ref=e129]: An identity photo is required for registration. Registration cannot be completed without an identity photo.
+            - generic [ref=e130]:
+              - generic [ref=e131]: Identity Photo *
+              - generic [ref=e132]:
+                - button "Identity Photo * Choose file No file selected" [ref=e133]
+                - generic [ref=e134] [cursor=pointer]:
+                  - generic [ref=e135]:
+                    - generic [ref=e136]: 
+                    - text: Choose file
+                  - generic [ref=e137]: No file selected
+              - paragraph [ref=e138]: Upload the front of your ID in PNG, JPEG or WebP format
+          - generic [ref=e139]:
+            - generic [ref=e140]: District
+            - combobox "District" [ref=e141]:
+              - option "Select City" [selected]
+              - option "Gaza"
+              - option "North Gaza"
+              - option "Beit Hanoun"
+              - option "Beit Lahiya"
+              - option "Jabalia"
+              - option "Ramallah"
+              - option "El-Bireh"
+              - option "Birzeit"
+              - option "Abu Dis"
+              - option "Nablus"
+              - option "Tubas"
+              - option "Qalqilya"
+              - option "Salfit"
+              - option "Jenin"
+              - option "Hebron"
+              - option "Yatta"
+              - option "Dura"
+              - option "Halhul"
+              - option "Bethlehem"
+              - option "Beit Jala"
+              - option "Artas"
+              - option "Tulkarm"
+              - option "Ajjah"
+              - option "Jericho"
+              - option "Jerusalem"
+              - option "Al-Ram"
+              - option "Al-Eizariya"
+          - generic [ref=e142]:
+            - generic [ref=e143]:
+              - generic [ref=e144]: Password
+              - textbox "Password" [ref=e145]:
+                - /placeholder: At least 6 characters
+            - generic [ref=e146]:
+              - generic [ref=e147]: Repeat Password
+              - textbox "Repeat Password" [ref=e148]:
+                - /placeholder: Enter Your Password Again
+          - generic [ref=e150] [cursor=pointer]:
+            - checkbox "Register as Wholesale Your wholesale registration will be activated after admin approval. You can view wholesale prices after approval." [ref=e151]
+            - generic [ref=e152]:
+              - text: Register as Wholesale
+              - paragraph [ref=e153]: Your wholesale registration will be activated after admin approval. You can view wholesale prices after approval.
+          - button "Create Membership" [ref=e154] [cursor=pointer]
+        - generic [ref=e155]:
+          - generic [ref=e156]: Or
+          - link "RegisterWithGoogle" [ref=e162] [cursor=pointer]:
+            - /url: "#"
+      - paragraph [ref=e168]:
+        - text: Already have an account?
+        - link "Login" [ref=e169] [cursor=pointer]:
+          - /url: /account/GirisYap
+  - contentinfo [ref=e170]:
+    - generic [ref=e172]:
+      - generic [ref=e177]:
+        - generic [ref=e178]: Across Palestine
+        - generic [ref=e179]: Free Shipping
+      - generic [ref=e184]:
+        - generic [ref=e185]: Bank Transfer
+        - generic [ref=e186]: 256 Bit SSL
+      - generic [ref=e191]:
+        - generic [ref=e192]: Bank Transfer
+        - generic [ref=e193]: Easy payment by IBAN
+    - generic [ref=e194]:
+      - generic [ref=e195]:
+        - generic [ref=e196]:
+          - heading "Subscribe to newsletter" [level=3] [ref=e197]
+          - paragraph [ref=e198]: Get new arrivals, Palestinian market picks, and special offers in your inbox.
+          - generic [ref=e199]:
+            - textbox "Email Address" [ref=e200]
+            - button "Subscribe" [ref=e201] [cursor=pointer]
+        - generic [ref=e202]:
+          - heading "Corporate" [level=4] [ref=e203]
+          - list [ref=e204]:
+            - listitem [ref=e205]:
+              - link "About Us" [ref=e206] [cursor=pointer]:
+                - /url: /pages/about
+            - listitem [ref=e207]:
+              - link "Contact" [ref=e208] [cursor=pointer]:
+                - /url: /pages/contact
+            - listitem [ref=e209]:
+              - link "All Products" [ref=e210] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=e211]:
+              - link "Privacy Policy" [ref=e212] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=e213]:
+              - link "Distance Sales Contract" [ref=e214] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - generic [ref=e215]:
+            - link "Facebook" [ref=e216] [cursor=pointer]:
+              - /url: https://www.facebook.com/7anrps48
+              - generic [ref=e217]: 
+            - link "X / Twitter" [ref=e218] [cursor=pointer]:
+              - /url: https://x.com/7anrps48?s=21
+              - generic [ref=e219]: 
+      - generic [ref=e220]:
+        - paragraph [ref=e222]: © 2026 7ANRPS48 — All rights reserved.
+        - generic [ref=e223]:
+          - link "Privacy Policy" [ref=e224] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "Return and Exchange" [ref=e225] [cursor=pointer]:
+            - /url: /pages/return-policy
+          - text: "|"
+          - link "About Us" [ref=e226] [cursor=pointer]:
+            - /url: /pages/about
+  - link "WhatsApp Contact" [ref=e227] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=e230]: WhatsApp
+  - link "Cart" [ref=e231] [cursor=pointer]:
+    - /url: /cart

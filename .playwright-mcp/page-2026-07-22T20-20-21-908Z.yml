@@ -1,0 +1,904 @@
+- generic [active] [ref=f8e1]:
+  - generic [ref=f8e3]:
+    - generic [ref=f8e4]:
+      - generic [ref=f8e5]:
+        - generic [ref=f8e6]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f8e7]:
+        - generic [ref=f8e8]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f8e9]:
+        - generic [ref=f8e10]: 
+        - text: Pay on delivery option
+      - generic [ref=f8e11]:
+        - generic [ref=f8e12]: 
+        - text: Fast Production
+      - generic [ref=f8e13]:
+        - generic [ref=f8e14]: 
+        - text: Careful Packaging
+      - generic [ref=f8e15]:
+        - generic [ref=f8e16]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f8e17]:
+        - generic [ref=f8e18]: 
+        - text: 14 Days Return
+      - generic [ref=f8e19]:
+        - generic [ref=f8e20]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f8e21]:
+        - generic [ref=f8e22]: 
+        - text: WhatsApp Support
+    - generic [ref=f8e23]:
+      - generic [ref=f8e24]:
+        - generic [ref=f8e25]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f8e26]:
+        - generic [ref=f8e27]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f8e28]:
+        - generic [ref=f8e29]: 
+        - text: Pay on delivery option
+      - generic [ref=f8e30]:
+        - generic [ref=f8e31]: 
+        - text: Fast Production
+      - generic [ref=f8e32]:
+        - generic [ref=f8e33]: 
+        - text: Careful Packaging
+      - generic [ref=f8e34]:
+        - generic [ref=f8e35]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f8e36]:
+        - generic [ref=f8e37]: 
+        - text: 14 Days Return
+      - generic [ref=f8e38]:
+        - generic [ref=f8e39]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f8e40]:
+        - generic [ref=f8e41]: 
+        - text: WhatsApp Support
+  - banner [ref=f8e42]:
+    - generic [ref=f8e43]:
+      - generic [ref=f8e44]:
+        - generic [ref=f8e45]: 
+        - link "العربية" [ref=f8e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FUrun
+        - link "English" [ref=f8e48] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FUrun
+      - link "7ANRPS48" [ref=f8e49] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f8e50]
+      - generic [ref=f8e51]:
+        - button "Search" [ref=f8e52] [cursor=pointer]
+        - link "Login" [ref=f8e55] [cursor=pointer]:
+          - /url: /account/GirisYap
+        - link "My Favorites" [ref=f8e58] [cursor=pointer]:
+          - /url: /favorites
+        - link "Cart" [ref=f8e61] [cursor=pointer]:
+          - /url: /cart
+          - generic [ref=f8e64]: "0"
+      - navigation [ref=f8e65]:
+        - list [ref=f8e66]:
+          - listitem [ref=f8e67] [cursor=pointer]:
+            - link "beauty" [ref=f8e68]:
+              - /url: /products?k=89
+          - listitem [ref=f8e71] [cursor=pointer]:
+            - link "fragrances" [ref=f8e72]:
+              - /url: /products?k=90
+          - listitem [ref=f8e75] [cursor=pointer]:
+            - link "furniture" [ref=f8e76]:
+              - /url: /products?k=91
+          - listitem [ref=f8e79] [cursor=pointer]:
+            - link "groceries" [ref=f8e80]:
+              - /url: /products?k=92
+          - listitem [ref=f8e83] [cursor=pointer]:
+            - link "Home Furniture" [ref=f8e84]:
+              - /url: /products?k=78
+          - listitem [ref=f8e87] [cursor=pointer]:
+            - link "Electronics" [ref=f8e88]:
+              - /url: /products?k=79
+          - listitem [ref=f8e91] [cursor=pointer]:
+            - link "Fashion" [ref=f8e92]:
+              - /url: /products?k=80
+          - listitem [ref=f8e95] [cursor=pointer]:
+            - link "Contact" [ref=f8e96]:
+              - /url: /pages/Iletisim
+  - main [ref=f8e97]:
+    - generic [ref=f8e99]:
+      - link "Home Page" [ref=f8e100] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f8e101]: /
+      - generic [ref=f8e102]: All Collections
+    - generic [ref=f8e104]:
+      - complementary [ref=f8e105]:
+        - heading "Categories" [level=3] [ref=f8e106]
+        - list [ref=f8e107]:
+          - listitem [ref=f8e108]:
+            - link "All Collections (30)" [ref=f8e109] [cursor=pointer]:
+              - /url: /products?sort=yeni
+              - generic [ref=f8e110]: All Collections
+              - generic [ref=f8e111]: (30)
+          - listitem [ref=f8e112]:
+            - link "beauty (5)" [ref=f8e113] [cursor=pointer]:
+              - /url: /products?sort=yeni&k=89
+              - generic [ref=f8e114]: beauty
+              - generic [ref=f8e115]: (5)
+          - listitem [ref=f8e116]:
+            - link "fragrances (5)" [ref=f8e117] [cursor=pointer]:
+              - /url: /products?sort=yeni&k=90
+              - generic [ref=f8e118]: fragrances
+              - generic [ref=f8e119]: (5)
+          - listitem [ref=f8e120]:
+            - link "furniture (5)" [ref=f8e121] [cursor=pointer]:
+              - /url: /products?sort=yeni&k=91
+              - generic [ref=f8e122]: furniture
+              - generic [ref=f8e123]: (5)
+          - listitem [ref=f8e124]:
+            - link "groceries (15)" [ref=f8e125] [cursor=pointer]:
+              - /url: /products?sort=yeni&k=92
+              - generic [ref=f8e126]: groceries
+              - generic [ref=f8e127]: (15)
+          - listitem [ref=f8e128]:
+            - link "Home Furniture (0)" [ref=f8e129] [cursor=pointer]:
+              - /url: /products?sort=yeni&k=78
+              - generic [ref=f8e130]: Home Furniture
+              - generic [ref=f8e131]: (0)
+          - listitem [ref=f8e132]:
+            - link "Electronics (0)" [ref=f8e133] [cursor=pointer]:
+              - /url: /products?sort=yeni&k=79
+              - generic [ref=f8e134]: Electronics
+              - generic [ref=f8e135]: (0)
+          - listitem [ref=f8e136]:
+            - link "Fashion (0)" [ref=f8e137] [cursor=pointer]:
+              - /url: /products?sort=yeni&k=80
+              - generic [ref=f8e138]: Fashion
+              - generic [ref=f8e139]: (0)
+        - heading "Price Range" [level=3] [ref=f8e140]
+        - generic [ref=f8e141]:
+          - generic [ref=f8e142]:
+            - generic [ref=f8e143]: ₪₪0.00
+            - generic [ref=f8e144]: ₪₪2,140.00
+          - generic [ref=f8e146]:
+            - slider [ref=f8e149] [cursor=pointer]
+            - slider [ref=f8e151] [cursor=pointer]
+          - button "Apply" [ref=f8e153] [cursor=pointer]
+        - heading "Brand" [level=3] [ref=f8e154]
+        - list [ref=f8e155]:
+          - listitem [ref=f8e156]:
+            - link "All Brands" [ref=f8e157] [cursor=pointer]:
+              - /url: /products?sort=yeni
+          - listitem [ref=f8e159]:
+            - link "Annibale Colombo (2)" [ref=f8e160] [cursor=pointer]:
+              - /url: /products?sort=yeni&marka=Annibale%20Colombo
+              - generic [ref=f8e161]: Annibale Colombo
+              - generic [ref=f8e162]: (2)
+          - listitem [ref=f8e163]:
+            - link "Bath Trends (1)" [ref=f8e164] [cursor=pointer]:
+              - /url: /products?sort=yeni&marka=Bath%20Trends
+              - generic [ref=f8e165]: Bath Trends
+              - generic [ref=f8e166]: (1)
+          - listitem [ref=f8e167]:
+            - link "Calvin Klein (1)" [ref=f8e168] [cursor=pointer]:
+              - /url: /products?sort=yeni&marka=Calvin%20Klein
+              - generic [ref=f8e169]: Calvin Klein
+              - generic [ref=f8e170]: (1)
+          - listitem [ref=f8e171]:
+            - link "Chanel (1)" [ref=f8e172] [cursor=pointer]:
+              - /url: /products?sort=yeni&marka=Chanel
+              - generic [ref=f8e173]: Chanel
+              - generic [ref=f8e174]: (1)
+          - listitem [ref=f8e175]:
+            - link "Chic Cosmetics (1)" [ref=f8e176] [cursor=pointer]:
+              - /url: /products?sort=yeni&marka=Chic%20Cosmetics
+              - generic [ref=f8e177]: Chic Cosmetics
+              - generic [ref=f8e178]: (1)
+          - listitem [ref=f8e179]:
+            - link "Dior (1)" [ref=f8e180] [cursor=pointer]:
+              - /url: /products?sort=yeni&marka=Dior
+              - generic [ref=f8e181]: Dior
+              - generic [ref=f8e182]: (1)
+          - listitem [ref=f8e183]:
+            - link "Dolce & Gabbana (1)" [ref=f8e184] [cursor=pointer]:
+              - /url: /products?sort=yeni&marka=Dolce%20%26%20Gabbana
+              - generic [ref=f8e185]: Dolce & Gabbana
+              - generic [ref=f8e186]: (1)
+          - listitem [ref=f8e187]:
+            - link "Essence (1)" [ref=f8e188] [cursor=pointer]:
+              - /url: /products?sort=yeni&marka=Essence
+              - generic [ref=f8e189]: Essence
+              - generic [ref=f8e190]: (1)
+          - listitem [ref=f8e191]:
+            - link "Furniture Co. (1)" [ref=f8e192] [cursor=pointer]:
+              - /url: /products?sort=yeni&marka=Furniture%20Co.
+              - generic [ref=f8e193]: Furniture Co.
+              - generic [ref=f8e194]: (1)
+          - listitem [ref=f8e195]:
+            - link "Glamour Beauty (1)" [ref=f8e196] [cursor=pointer]:
+              - /url: /products?sort=yeni&marka=Glamour%20Beauty
+              - generic [ref=f8e197]: Glamour Beauty
+              - generic [ref=f8e198]: (1)
+          - listitem [ref=f8e199]:
+            - link "Gucci (1)" [ref=f8e200] [cursor=pointer]:
+              - /url: /products?sort=yeni&marka=Gucci
+              - generic [ref=f8e201]: Gucci
+              - generic [ref=f8e202]: (1)
+          - listitem [ref=f8e203]:
+            - link "Knoll (1)" [ref=f8e204] [cursor=pointer]:
+              - /url: /products?sort=yeni&marka=Knoll
+              - generic [ref=f8e205]: Knoll
+              - generic [ref=f8e206]: (1)
+          - listitem [ref=f8e207]:
+            - link "Nail Couture (1)" [ref=f8e208] [cursor=pointer]:
+              - /url: /products?sort=yeni&marka=Nail%20Couture
+              - generic [ref=f8e209]: Nail Couture
+              - generic [ref=f8e210]: (1)
+          - listitem [ref=f8e211]:
+            - link "Velvet Touch (1)" [ref=f8e212] [cursor=pointer]:
+              - /url: /products?sort=yeni&marka=Velvet%20Touch
+              - generic [ref=f8e213]: Velvet Touch
+              - generic [ref=f8e214]: (1)
+      - main [ref=f8e215]:
+        - generic [ref=f8e216]:
+          - generic [ref=f8e217]:
+            - heading "All Collections" [level=1] [ref=f8e218]
+            - paragraph [ref=f8e219]: 30 products listed
+          - generic [ref=f8e220]:
+            - combobox [ref=f8e221]:
+              - option "Newest" [selected]
+              - option "Price Low to High"
+              - option "Price High to Low"
+              - option "Best Sellers"
+            - generic [ref=f8e222]:
+              - button "" [ref=f8e223] [cursor=pointer]
+              - button "" [ref=f8e225] [cursor=pointer]
+        - generic [ref=f8e227]:
+          - article [ref=f8e228]:
+            - generic [ref=f8e229]:
+              - link [ref=f8e230] [cursor=pointer]:
+                - /url: /products/test-30-kiwi-141
+              - generic: "%15"
+              - button "Add to Favorites" [ref=f8e232] [cursor=pointer]:
+                - generic [ref=f8e233]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-30-kiwi-141
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e234]:
+              - heading [level=3] [ref=f8e235]:
+                - link "Kiwi" [ref=f8e236] [cursor=pointer]:
+                  - /url: /products/test-30-kiwi-141
+              - generic [ref=f8e237]:
+                - generic [ref=f8e238]: 2 ₪
+                - generic [ref=f8e239]: 2 ₪
+          - article [ref=f8e240]:
+            - generic [ref=f8e241]:
+              - link [ref=f8e242] [cursor=pointer]:
+                - /url: /products/test-29-juice-140
+              - generic: "%12"
+              - button "Add to Favorites" [ref=f8e244] [cursor=pointer]:
+                - generic [ref=f8e245]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-29-juice-140
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e246]:
+              - heading [level=3] [ref=f8e247]:
+                - link "Juice" [ref=f8e248] [cursor=pointer]:
+                  - /url: /products/test-29-juice-140
+              - generic [ref=f8e249]:
+                - generic [ref=f8e250]: 4 ₪
+                - generic [ref=f8e251]: 4 ₪
+          - article [ref=f8e252]:
+            - generic [ref=f8e253]:
+              - link [ref=f8e254] [cursor=pointer]:
+                - /url: /products/test-28-ice-cream-139
+              - generic: "%9"
+              - button "Add to Favorites" [ref=f8e256] [cursor=pointer]:
+                - generic [ref=f8e257]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-28-ice-cream-139
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e258]:
+              - heading [level=3] [ref=f8e259]:
+                - link "Ice Cream" [ref=f8e260] [cursor=pointer]:
+                  - /url: /products/test-28-ice-cream-139
+              - generic [ref=f8e261]:
+                - generic [ref=f8e262]: 5 ₪
+                - generic [ref=f8e263]: 5 ₪
+          - article [ref=f8e264]:
+            - generic [ref=f8e265]:
+              - link [ref=f8e266] [cursor=pointer]:
+                - /url: /products/test-27-honey-jar-138
+              - generic: "%14"
+              - button "Add to Favorites" [ref=f8e268] [cursor=pointer]:
+                - generic [ref=f8e269]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-27-honey-jar-138
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e270]:
+              - heading [level=3] [ref=f8e271]:
+                - link "Honey Jar" [ref=f8e272] [cursor=pointer]:
+                  - /url: /products/test-27-honey-jar-138
+              - generic [ref=f8e273]:
+                - generic [ref=f8e274]: 6 ₪
+                - generic [ref=f8e275]: 7 ₪
+          - article [ref=f8e276]:
+            - generic [ref=f8e277]:
+              - link [ref=f8e278] [cursor=pointer]:
+                - /url: /products/test-26-green-chili-pepper-137
+              - generic: Last 3
+              - button "Add to Favorites" [ref=f8e280] [cursor=pointer]:
+                - generic [ref=f8e281]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-26-green-chili-pepper-137
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e282]:
+              - heading [level=3] [ref=f8e283]:
+                - link "Green Chili Pepper" [ref=f8e284] [cursor=pointer]:
+                  - /url: /products/test-26-green-chili-pepper-137
+              - generic [ref=f8e285]:
+                - generic [ref=f8e286]: 1 ₪
+                - generic [ref=f8e287]: 1 ₪
+          - article [ref=f8e288]:
+            - generic [ref=f8e289]:
+              - link [ref=f8e290] [cursor=pointer]:
+                - /url: /products/test-25-green-bell-pepper-136
+              - generic: New
+              - button "Add to Favorites" [ref=f8e292] [cursor=pointer]:
+                - generic [ref=f8e293]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-25-green-bell-pepper-136
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e294]:
+              - heading [level=3] [ref=f8e295]:
+                - link "Green Bell Pepper" [ref=f8e296] [cursor=pointer]:
+                  - /url: /products/test-25-green-bell-pepper-136
+              - generic [ref=f8e297]: 1 ₪
+          - article [ref=f8e299]:
+            - generic [ref=f8e300]:
+              - link [ref=f8e301] [cursor=pointer]:
+                - /url: /products/test-24-fish-steak-135
+              - generic: "%4"
+              - button "Add to Favorites" [ref=f8e303] [cursor=pointer]:
+                - generic [ref=f8e304]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-24-fish-steak-135
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e305]:
+              - heading [level=3] [ref=f8e306]:
+                - link "Fish Steak" [ref=f8e307] [cursor=pointer]:
+                  - /url: /products/test-24-fish-steak-135
+              - generic [ref=f8e308]:
+                - generic [ref=f8e309]: 14 ₪
+                - generic [ref=f8e310]: 15 ₪
+          - article [ref=f8e311]:
+            - generic [ref=f8e312]:
+              - link [ref=f8e313] [cursor=pointer]:
+                - /url: /products/test-23-eggs-134
+              - generic: "%11"
+              - button "Add to Favorites" [ref=f8e315] [cursor=pointer]:
+                - generic [ref=f8e316]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-23-eggs-134
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e317]:
+              - heading [level=3] [ref=f8e318]:
+                - link "Eggs" [ref=f8e319] [cursor=pointer]:
+                  - /url: /products/test-23-eggs-134
+              - generic [ref=f8e320]:
+                - generic [ref=f8e321]: 3 ₪
+                - generic [ref=f8e322]: 3 ₪
+          - article [ref=f8e323]:
+            - generic [ref=f8e324]:
+              - link [ref=f8e325] [cursor=pointer]:
+                - /url: /products/test-22-dog-food-133
+              - generic: "%10"
+              - button "Add to Favorites" [ref=f8e327] [cursor=pointer]:
+                - generic [ref=f8e328]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-22-dog-food-133
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e329]:
+              - heading [level=3] [ref=f8e330]:
+                - link "Dog Food" [ref=f8e331] [cursor=pointer]:
+                  - /url: /products/test-22-dog-food-133
+              - generic [ref=f8e332]:
+                - generic [ref=f8e333]: 10 ₪
+                - generic [ref=f8e334]: 11 ₪
+          - article [ref=f8e335]:
+            - generic [ref=f8e336]:
+              - link [ref=f8e337] [cursor=pointer]:
+                - /url: /products/test-21-cucumber-132
+              - generic: New
+              - button "Add to Favorites" [ref=f8e339] [cursor=pointer]:
+                - generic [ref=f8e340]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-21-cucumber-132
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e341]:
+              - heading [level=3] [ref=f8e342]:
+                - link "Cucumber" [ref=f8e343] [cursor=pointer]:
+                  - /url: /products/test-21-cucumber-132
+              - generic [ref=f8e344]: 1 ₪
+          - article [ref=f8e346]:
+            - generic [ref=f8e347]:
+              - link [ref=f8e348] [cursor=pointer]:
+                - /url: /products/test-20-cooking-oil-131
+              - generic: "%9"
+              - button "Add to Favorites" [ref=f8e350] [cursor=pointer]:
+                - generic [ref=f8e351]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-20-cooking-oil-131
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e352]:
+              - heading [level=3] [ref=f8e353]:
+                - link "Cooking Oil" [ref=f8e354] [cursor=pointer]:
+                  - /url: /products/test-20-cooking-oil-131
+              - generic [ref=f8e355]:
+                - generic [ref=f8e356]: 5 ₪
+                - generic [ref=f8e357]: 5 ₪
+          - article [ref=f8e358]:
+            - generic [ref=f8e359]:
+              - link [ref=f8e360] [cursor=pointer]:
+                - /url: /products/test-19-chicken-meat-130
+              - generic: "%14"
+              - button "Add to Favorites" [ref=f8e362] [cursor=pointer]:
+                - generic [ref=f8e363]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-19-chicken-meat-130
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e364]:
+              - heading [level=3] [ref=f8e365]:
+                - link "Chicken Meat" [ref=f8e366] [cursor=pointer]:
+                  - /url: /products/test-19-chicken-meat-130
+              - generic [ref=f8e367]:
+                - generic [ref=f8e368]: 9 ₪
+                - generic [ref=f8e369]: 10 ₪
+          - article [ref=f8e370]:
+            - generic [ref=f8e371]:
+              - link [ref=f8e372] [cursor=pointer]:
+                - /url: /products/test-18-cat-food-129
+              - generic: "%10"
+              - button "Add to Favorites" [ref=f8e374] [cursor=pointer]:
+                - generic [ref=f8e375]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-18-cat-food-129
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e376]:
+              - heading [level=3] [ref=f8e377]:
+                - link "Cat Food" [ref=f8e378] [cursor=pointer]:
+                  - /url: /products/test-18-cat-food-129
+              - generic [ref=f8e379]:
+                - generic [ref=f8e380]: 8 ₪
+                - generic [ref=f8e381]: 9 ₪
+          - article [ref=f8e382]:
+            - generic [ref=f8e383]:
+              - link [ref=f8e384] [cursor=pointer]:
+                - /url: /products/test-17-beef-steak-128
+              - generic: "%10"
+              - button "Add to Favorites" [ref=f8e386] [cursor=pointer]:
+                - generic [ref=f8e387]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-17-beef-steak-128
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e388]:
+              - heading [level=3] [ref=f8e389]:
+                - link "Beef Steak" [ref=f8e390] [cursor=pointer]:
+                  - /url: /products/test-17-beef-steak-128
+              - generic [ref=f8e391]:
+                - generic [ref=f8e392]: 12 ₪
+                - generic [ref=f8e393]: 13 ₪
+          - article [ref=f8e394]:
+            - generic [ref=f8e395]:
+              - link [ref=f8e396] [cursor=pointer]:
+                - /url: /products/test-16-apple-127
+              - generic: "%13"
+              - button "Add to Favorites" [ref=f8e398] [cursor=pointer]:
+                - generic [ref=f8e399]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-16-apple-127
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e400]:
+              - heading [level=3] [ref=f8e401]:
+                - link "Apple" [ref=f8e402] [cursor=pointer]:
+                  - /url: /products/test-16-apple-127
+              - generic [ref=f8e403]:
+                - generic [ref=f8e404]: 2 ₪
+                - generic [ref=f8e405]: 2 ₪
+          - article [ref=f8e406]:
+            - generic [ref=f8e407]:
+              - link [ref=f8e408] [cursor=pointer]:
+                - /url: /products/test-15-wooden-bathroom-sink-with-mirror-126
+              - generic: "%9"
+              - button "Add to Favorites" [ref=f8e410] [cursor=pointer]:
+                - generic [ref=f8e411]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-15-wooden-bathroom-sink-with-mirror-126
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e412]:
+              - heading [level=3] [ref=f8e413]:
+                - link "Wooden Bathroom Sink With Mirror" [ref=f8e414] [cursor=pointer]:
+                  - /url: /products/test-15-wooden-bathroom-sink-with-mirror-126
+              - generic [ref=f8e415]:
+                - generic [ref=f8e416]: 730 ₪
+                - generic [ref=f8e417]: 800 ₪
+          - article [ref=f8e418]:
+            - generic [ref=f8e419]:
+              - link [ref=f8e420] [cursor=pointer]:
+                - /url: /products/test-14-knoll-saarinen-executive-conference-chair-125
+              - generic: "%2"
+              - button "Add to Favorites" [ref=f8e422] [cursor=pointer]:
+                - generic [ref=f8e423]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-14-knoll-saarinen-executive-conference-chair-125
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e424]:
+              - heading [level=3] [ref=f8e425]:
+                - link "Knoll Saarinen Executive Conference Chair" [ref=f8e426] [cursor=pointer]:
+                  - /url: /products/test-14-knoll-saarinen-executive-conference-chair-125
+              - generic [ref=f8e427]:
+                - generic [ref=f8e428]: 490 ₪
+                - generic [ref=f8e429]: 500 ₪
+          - article [ref=f8e430]:
+            - generic [ref=f8e431]:
+              - link [ref=f8e432] [cursor=pointer]:
+                - /url: /products/test-13-bedside-table-african-cherry-124
+              - generic: "%19"
+              - button "Add to Favorites" [ref=f8e434] [cursor=pointer]:
+                - generic [ref=f8e435]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-13-bedside-table-african-cherry-124
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e436]:
+              - heading [level=3] [ref=f8e437]:
+                - link "Bedside Table African Cherry" [ref=f8e438] [cursor=pointer]:
+                  - /url: /products/test-13-bedside-table-african-cherry-124
+              - generic [ref=f8e439]:
+                - generic [ref=f8e440]: 243 ₪
+                - generic [ref=f8e441]: 300 ₪
+          - article [ref=f8e442]:
+            - generic [ref=f8e443]:
+              - link [ref=f8e444] [cursor=pointer]:
+                - /url: /products/test-12-annibale-colombo-sofa-123
+              - generic: "%14"
+              - button "Add to Favorites" [ref=f8e446] [cursor=pointer]:
+                - generic [ref=f8e447]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-12-annibale-colombo-sofa-123
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e448]:
+              - heading [level=3] [ref=f8e449]:
+                - link "Annibale Colombo Sofa" [ref=f8e450] [cursor=pointer]:
+                  - /url: /products/test-12-annibale-colombo-sofa-123
+              - generic [ref=f8e451]:
+                - generic [ref=f8e452]: 2,140 ₪
+                - generic [ref=f8e453]: 2,500 ₪
+          - article [ref=f8e454]:
+            - generic [ref=f8e455]:
+              - link [ref=f8e456] [cursor=pointer]:
+                - /url: /products/test-11-annibale-colombo-bed-122
+              - generic: "%9"
+              - button "Add to Favorites" [ref=f8e458] [cursor=pointer]:
+                - generic [ref=f8e459]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-11-annibale-colombo-bed-122
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e460]:
+              - heading [level=3] [ref=f8e461]:
+                - link "Annibale Colombo Bed" [ref=f8e462] [cursor=pointer]:
+                  - /url: /products/test-11-annibale-colombo-bed-122
+              - generic [ref=f8e463]:
+                - generic [ref=f8e464]: 1,737 ₪
+                - generic [ref=f8e465]: 1,900 ₪
+          - article [ref=f8e466]:
+            - generic [ref=f8e467]:
+              - link [ref=f8e468] [cursor=pointer]:
+                - /url: /products/test-10-gucci-bloom-eau-de-121
+              - generic: "%14"
+              - button "Add to Favorites" [ref=f8e470] [cursor=pointer]:
+                - generic [ref=f8e471]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-10-gucci-bloom-eau-de-121
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e472]:
+              - heading [level=3] [ref=f8e473]:
+                - link "Gucci Bloom Eau de" [ref=f8e474] [cursor=pointer]:
+                  - /url: /products/test-10-gucci-bloom-eau-de-121
+              - generic [ref=f8e475]:
+                - generic [ref=f8e476]: 68 ₪
+                - generic [ref=f8e477]: 80 ₪
+          - article [ref=f8e478]:
+            - generic [ref=f8e479]:
+              - link [ref=f8e480] [cursor=pointer]:
+                - /url: /products/test-9-dolce-shine-eau-de-120
+              - generic: Last 4
+              - button "Add to Favorites" [ref=f8e482] [cursor=pointer]:
+                - generic [ref=f8e483]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-9-dolce-shine-eau-de-120
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e484]:
+              - heading [level=3] [ref=f8e485]:
+                - link "Dolce Shine Eau de" [ref=f8e486] [cursor=pointer]:
+                  - /url: /products/test-9-dolce-shine-eau-de-120
+              - generic [ref=f8e487]:
+                - generic [ref=f8e488]: 70 ₪
+                - generic [ref=f8e489]: 70 ₪
+          - article [ref=f8e490]:
+            - generic [ref=f8e491]:
+              - link [ref=f8e492] [cursor=pointer]:
+                - /url: /products/test-8-dior-jadore-119
+              - generic: "%15"
+              - button "Add to Favorites" [ref=f8e494] [cursor=pointer]:
+                - generic [ref=f8e495]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-8-dior-jadore-119
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e496]:
+              - heading [level=3] [ref=f8e497]:
+                - link "Dior J'adore" [ref=f8e498] [cursor=pointer]:
+                  - /url: /products/test-8-dior-jadore-119
+              - generic [ref=f8e499]:
+                - generic [ref=f8e500]: 77 ₪
+                - generic [ref=f8e501]: 90 ₪
+          - article [ref=f8e502]:
+            - generic [ref=f8e503]:
+              - link [ref=f8e504] [cursor=pointer]:
+                - /url: /products/test-7-chanel-coco-noir-eau-de-118
+              - generic: "%17"
+              - button "Add to Favorites" [ref=f8e506] [cursor=pointer]:
+                - generic [ref=f8e507]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-7-chanel-coco-noir-eau-de-118
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e508]:
+              - heading [level=3] [ref=f8e509]:
+                - link "Chanel Coco Noir Eau De" [ref=f8e510] [cursor=pointer]:
+                  - /url: /products/test-7-chanel-coco-noir-eau-de-118
+              - generic [ref=f8e511]:
+                - generic [ref=f8e512]: 109 ₪
+                - generic [ref=f8e513]: 130 ₪
+          - article [ref=f8e514]:
+            - generic [ref=f8e515]:
+              - link [ref=f8e516] [cursor=pointer]:
+                - /url: /products/test-6-calvin-klein-ck-one-117
+              - generic: "%2"
+              - button "Add to Favorites" [ref=f8e518] [cursor=pointer]:
+                - generic [ref=f8e519]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-6-calvin-klein-ck-one-117
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e520]:
+              - heading [level=3] [ref=f8e521]:
+                - link "Calvin Klein CK One" [ref=f8e522] [cursor=pointer]:
+                  - /url: /products/test-6-calvin-klein-ck-one-117
+              - generic [ref=f8e523]:
+                - generic [ref=f8e524]: 49 ₪
+                - generic [ref=f8e525]: 50 ₪
+          - article [ref=f8e526]:
+            - generic [ref=f8e527]:
+              - link [ref=f8e528] [cursor=pointer]:
+                - /url: /products/test-5-red-nail-polish-116
+              - generic: "%11"
+              - button "Add to Favorites" [ref=f8e530] [cursor=pointer]:
+                - generic [ref=f8e531]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-5-red-nail-polish-116
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e532]:
+              - heading [level=3] [ref=f8e533]:
+                - link "Red Nail Polish" [ref=f8e534] [cursor=pointer]:
+                  - /url: /products/test-5-red-nail-polish-116
+              - generic [ref=f8e535]:
+                - generic [ref=f8e536]: 8 ₪
+                - generic [ref=f8e537]: 9 ₪
+          - article [ref=f8e538]:
+            - generic [ref=f8e539]:
+              - link [ref=f8e540] [cursor=pointer]:
+                - /url: /products/test-4-red-lipstick-115
+              - generic: "%12"
+              - button "Add to Favorites" [ref=f8e542] [cursor=pointer]:
+                - generic [ref=f8e543]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-4-red-lipstick-115
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e544]:
+              - heading [level=3] [ref=f8e545]:
+                - link "Red Lipstick" [ref=f8e546] [cursor=pointer]:
+                  - /url: /products/test-4-red-lipstick-115
+              - generic [ref=f8e547]:
+                - generic [ref=f8e548]: 11 ₪
+                - generic [ref=f8e549]: 13 ₪
+          - article [ref=f8e550]:
+            - generic [ref=f8e551]:
+              - link [ref=f8e552] [cursor=pointer]:
+                - /url: /products/test-3-powder-canister-114
+              - generic: "%10"
+              - button "Add to Favorites" [ref=f8e554] [cursor=pointer]:
+                - generic [ref=f8e555]: 
+              - generic:
+                - button "Add to Cart":
+                  - generic: 
+                - link " Quick View":
+                  - /url: /products/test-3-powder-canister-114
+                  - generic: 
+                  - text: Quick View
+            - generic [ref=f8e556]:
+              - heading [level=3] [ref=f8e557]:
+                - link "Powder Canister" [ref=f8e558] [cursor=pointer]:
+                  - /url: /products/test-3-powder-canister-114
+              - generic [ref=f8e559]:
+                - generic [ref=f8e560]: 14 ₪
+                - generic [ref=f8e561]: 15 ₪
+        - generic [ref=f8e562]:
+          - link "1" [ref=f8e563] [cursor=pointer]:
+            - /url: /products?sort=yeni&page=1
+          - link "2" [ref=f8e564] [cursor=pointer]:
+            - /url: /products?sort=yeni&page=2
+          - link "" [ref=f8e565] [cursor=pointer]:
+            - /url: /products?sort=yeni&page=2
+  - contentinfo [ref=f8e567]:
+    - generic [ref=f8e569]:
+      - generic [ref=f8e574]:
+        - generic [ref=f8e575]: Across Palestine
+        - generic [ref=f8e576]: Free Shipping
+      - generic [ref=f8e581]:
+        - generic [ref=f8e582]: Bank Transfer
+        - generic [ref=f8e583]: 256 Bit SSL
+      - generic [ref=f8e588]:
+        - generic [ref=f8e589]: Bank Transfer
+        - generic [ref=f8e590]: Easy payment by IBAN
+    - generic [ref=f8e591]:
+      - generic [ref=f8e592]:
+        - generic [ref=f8e593]:
+          - heading "Subscribe to newsletter" [level=3] [ref=f8e594]
+          - paragraph [ref=f8e595]: Get new arrivals, Palestinian market picks, and special offers in your inbox.
+          - generic [ref=f8e596]:
+            - textbox "Email Address" [ref=f8e597]
+            - button "Subscribe" [ref=f8e598] [cursor=pointer]
+        - generic [ref=f8e599]:
+          - heading "Corporate" [level=4] [ref=f8e600]
+          - list [ref=f8e601]:
+            - listitem [ref=f8e602]:
+              - link "About Us" [ref=f8e603] [cursor=pointer]:
+                - /url: /pages/about
+            - listitem [ref=f8e604]:
+              - link "Contact" [ref=f8e605] [cursor=pointer]:
+                - /url: /pages/contact
+            - listitem [ref=f8e606]:
+              - link "All Products" [ref=f8e607] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=f8e608]:
+              - link "Privacy Policy" [ref=f8e609] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f8e610]:
+              - link "Distance Sales Contract" [ref=f8e611] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - generic [ref=f8e612]:
+            - link "Facebook" [ref=f8e613] [cursor=pointer]:
+              - /url: https://www.facebook.com/7anrps48
+              - generic [ref=f8e614]: 
+            - link "X / Twitter" [ref=f8e615] [cursor=pointer]:
+              - /url: https://x.com/7anrps48?s=21
+              - generic [ref=f8e616]: 
+      - generic [ref=f8e617]:
+        - paragraph [ref=f8e619]: © 2026 7ANRPS48 — All rights reserved.
+        - generic [ref=f8e620]:
+          - link "Privacy Policy" [ref=f8e621] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "Return and Exchange" [ref=f8e622] [cursor=pointer]:
+            - /url: /pages/return-policy
+          - text: "|"
+          - link "About Us" [ref=f8e623] [cursor=pointer]:
+            - /url: /pages/about
+  - link "WhatsApp Contact" [ref=f8e624] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=f8e627]: WhatsApp
+  - link "Cart" [ref=f8e628] [cursor=pointer]:
+    - /url: /cart

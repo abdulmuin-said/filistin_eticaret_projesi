@@ -21,6 +21,7 @@ using FilistinProje.Web.Attributes;
 using FilistinProje.Web.Caching;
 using FilistinProje.Web.Diagnostics;
 using FilistinProje.Web.HealthChecks;
+using FilistinProje.Web.Resources;
 using FilistinProje.Web.Security;
 using FilistinProje.Web.Services;
 using System.Net;
@@ -296,6 +297,10 @@ builder.Services.AddControllersWithViews(options =>
 {
     // Bu satÄ±r sayesinde siteye giren herkes otomatik kaydedilir
     options.Filters.Add<ZiyaretciTakipAttribute>(); 
+})
+.AddDataAnnotationsLocalization(options =>
+{
+    options.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(SharedResource));
 });
 
 // 9. Dil ayarlari

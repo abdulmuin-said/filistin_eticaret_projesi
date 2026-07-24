@@ -41,108 +41,198 @@
 }
 
 <style>
+    /* Modern Admin Product Editor Styles */
+    :root {
+        --editor-bg: #f8f9fa;
+        --editor-surface: #ffffff;
+        --editor-border: #e9ecef;
+        --editor-primary: #10b981; /* Brand olive/green */
+        --editor-primary-hover: #059669;
+        --editor-accent: #f59e0b; /* Brand gold */
+        --editor-text: #1f2937;
+        --editor-text-muted: #6b7280;
+        --editor-radius: 12px;
+        --editor-radius-sm: 8px;
+        --editor-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+
     .ca-product-editor {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) 340px;
-        gap: 22px;
+        grid-template-columns: minmax(0, 1fr) 360px;
+        gap: 24px;
         align-items: start;
+        margin-top: 20px;
     }
 
     .ca-product-toolbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 12px;
-        padding: 14px 18px;
-        border: 1px solid var(--ca-border);
-        border-radius: var(--ca-radius);
-        background: #fff;
-        margin-bottom: 16px;
+        gap: 16px;
+        padding: 16px 24px;
+        border: 1px solid var(--editor-border);
+        border-radius: var(--editor-radius);
+        background: var(--editor-surface);
+        box-shadow: var(--editor-shadow);
+        margin-bottom: 24px;
     }
 
     .ca-product-status {
         display: flex;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 10px;
         align-items: center;
     }
 
     .ca-editor-tabs {
         position: sticky;
-        top: 62px;
+        top: 70px;
         z-index: 20;
         display: flex;
-        gap: 6px;
+        gap: 8px;
         flex-wrap: wrap;
         padding: 8px;
-        border: 1px solid var(--ca-border);
-        border-radius: var(--ca-radius);
-        background: rgba(255, 255, 255, .96);
-        backdrop-filter: blur(12px);
-        margin-bottom: 16px;
+        border: 1px solid var(--editor-border);
+        border-radius: var(--editor-radius);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(16px);
+        margin-bottom: 24px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.02);
     }
 
     .ca-editor-tab {
         border: none;
         background: transparent;
-        color: var(--ca-text-secondary);
-        min-height: 36px;
-        padding: 0 12px;
-        border-radius: var(--ca-radius-sm);
-        font-size: .84rem;
-        font-weight: 700;
+        color: var(--editor-text-muted);
+        min-height: 40px;
+        padding: 0 16px;
+        border-radius: var(--editor-radius-sm);
+        font-size: 0.9rem;
+        font-weight: 600;
         display: inline-flex;
         align-items: center;
         gap: 8px;
+        transition: all 0.2s ease;
     }
 
     .ca-editor-tab:hover {
-        background: var(--ca-surface-hover);
-        color: var(--ca-primary);
+        background: var(--editor-bg);
+        color: var(--editor-primary);
     }
 
     .ca-editor-tab.active {
-        background: var(--ca-primary);
+        background: var(--editor-primary);
         color: #fff;
+        box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
     }
 
     .ca-editor-tab.active i {
-        color: var(--ca-accent);
+        color: #fff;
     }
 
     .ca-editor-panel {
         display: none;
+        animation: fadeIn 0.3s ease;
     }
 
     .ca-editor-panel.active {
         display: block;
     }
 
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .ca-card {
+        background: var(--editor-surface);
+        border: 1px solid var(--editor-border);
+        border-radius: var(--editor-radius);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        margin-bottom: 24px;
+        overflow: hidden;
+    }
+
+    .ca-card-header {
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--editor-border);
+        background: #fafafa;
+    }
+
+    .ca-card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--editor-text);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .ca-card-body {
+        padding: 24px;
+    }
+
     .ca-section-note {
-        border: 1px solid var(--ca-border);
-        border-left: 3px solid var(--ca-accent);
-        border-radius: var(--ca-radius);
-        padding: 12px 14px;
-        background: #fffaf0;
-        color: var(--ca-text-secondary);
-        font-size: .86rem;
-        margin-bottom: 18px;
+        border: 1px solid #e0e7ff;
+        border-right: 4px solid #6366f1; /* RTL uyumlu sağ kenarlık */
+        border-radius: var(--editor-radius-sm);
+        padding: 14px 16px;
+        background: #eef2ff;
+        color: #4338ca;
+        font-size: 0.9rem;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .ca-section-note::before {
+        content: '\f05a';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        font-size: 1.2rem;
+    }
+
+    .ca-label {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--editor-text);
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .ca-input, .ca-select, .ca-textarea {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #d1d5db;
+        border-radius: var(--editor-radius-sm);
+        font-size: 0.95rem;
+        color: var(--editor-text);
+        transition: all 0.2s;
+        background: #fff;
+    }
+
+    .ca-input:focus, .ca-select:focus, .ca-textarea:focus {
+        outline: none;
+        border-color: var(--editor-primary);
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
     }
 
     .ca-product-aside {
         position: sticky;
-        top: 84px;
+        top: 90px;
         display: grid;
-        gap: 16px;
+        gap: 20px;
     }
 
     .ca-product-preview {
         position: relative;
         aspect-ratio: 1 / 1;
-        border: 1px solid var(--ca-border);
-        border-radius: var(--ca-radius);
+        border: 1px solid var(--editor-border);
+        border-radius: var(--editor-radius);
         overflow: hidden;
         background: #fff;
+        box-shadow: var(--editor-shadow);
     }
 
     .ca-product-preview img,
@@ -167,94 +257,75 @@
         position: absolute;
         top: 50%;
         z-index: 2;
-        width: 34px;
-        height: 34px;
-        border: 1px solid rgba(255, 255, 255, .65);
+        width: 36px;
+        height: 36px;
+        border: none;
         border-radius: 50%;
-        background: rgba(28, 28, 24, .58);
-        color: #fff;
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--editor-text);
         display: inline-flex;
         align-items: center;
         justify-content: center;
         transform: translateY(-50%);
-        transition: background .2s ease, transform .2s ease;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        cursor: pointer;
     }
 
     .ca-preview-nav:hover {
-        background: rgba(28, 28, 24, .82);
-        transform: translateY(-50%) scale(1.04);
+        background: #fff;
+        transform: translateY(-50%) scale(1.1);
     }
 
-    .ca-preview-prev {
-        left: 10px;
-    }
-
-    .ca-preview-next {
-        right: 10px;
-    }
+    .ca-preview-prev { left: 12px; }
+    .ca-preview-next { right: 12px; }
 
     .ca-preview-counter {
         position: absolute;
-        right: 10px;
-        bottom: 10px;
+        right: 12px;
+        bottom: 12px;
         z-index: 2;
-        padding: 4px 8px;
-        border-radius: 999px;
-        background: rgba(28, 28, 24, .72);
+        padding: 4px 10px;
+        border-radius: 20px;
+        background: rgba(0, 0, 0, 0.6);
         color: #fff;
-        font-size: .72rem;
-        font-weight: 700;
-    }
-
-    .ca-preview-video-chip {
-        position: absolute;
-        left: 10px;
-        bottom: 10px;
-        z-index: 2;
-        padding: 4px 8px;
-        border-radius: 999px;
-        background: rgba(181, 135, 53, .92);
-        color: #fff;
-        font-size: .72rem;
-        font-weight: 700;
+        font-size: 0.75rem;
+        font-weight: 600;
+        backdrop-filter: blur(4px);
     }
 
     .ca-mini-stat-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
+        gap: 12px;
     }
 
     .ca-mini-stat {
-        border: 1px solid var(--ca-border);
-        border-radius: var(--ca-radius-sm);
-        padding: 10px;
+        border: 1px solid var(--editor-border);
+        border-radius: var(--editor-radius-sm);
+        padding: 14px;
+        background: #fafafa;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+    
+    .ca-mini-stat:hover {
+        transform: translateY(-2px);
         background: #fff;
+        box-shadow: var(--editor-shadow);
     }
 
     .ca-mini-stat span {
         display: block;
-        color: var(--ca-text-muted);
-        font-size: .72rem;
+        color: var(--editor-text-muted);
+        font-size: 0.8rem;
+        margin-bottom: 4px;
     }
 
     .ca-mini-stat strong {
-        color: var(--ca-text);
-        font-size: 1rem;
-    }
-
-    .ca-switch-grid {
-        display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-        gap: 10px;
-    }
-
-    .ca-switch-tile {
-        border: 1px solid var(--ca-border);
-        border-radius: var(--ca-radius);
-        padding: 12px;
-        background: #fff;
-        min-height: 72px;
+        color: var(--editor-text);
+        font-size: 1.1rem;
+        font-weight: 700;
     }
 
     .ca-save-rail {
@@ -263,10 +334,13 @@
         z-index: 30;
         display: flex;
         justify-content: flex-end;
-        gap: 10px;
-        padding: 14px 0 0;
-        margin-top: 18px;
-        background: linear-gradient(180deg, rgba(247, 244, 238, 0), #f7f4ee 34%);
+        gap: 12px;
+        padding: 20px 24px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid var(--editor-border);
+        margin: 20px -24px -24px -24px;
+        border-radius: 0 0 var(--editor-radius) var(--editor-radius);
     }
 
     @@media (max-width: 1180px) {
@@ -278,10 +352,6 @@
             position: static;
             grid-row: 1;
         }
-
-        .ca-switch-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
     }
 
     @@media (max-width: 768px) {
@@ -289,14 +359,11 @@
             top: 112px;
             overflow-x: auto;
             flex-wrap: nowrap;
+            padding-bottom: 12px;
         }
 
         .ca-editor-tab {
             white-space: nowrap;
-        }
-
-        .ca-switch-grid {
-            grid-template-columns: 1fr;
         }
     }
 </style>
@@ -322,6 +389,16 @@
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="OlusturulmaTarihi" />
         <input type="hidden" asp-for="SilindiMi" />
+        <!-- Hidden inputs for display:none panel checkboxes -->
+        <input type="hidden" id="hiddenHediyePaketiVarMi" name="HediyePaketiVarMi" value="@(Model.HediyePaketiVarMi ? "true" : "false")" />
+        <input type="hidden" id="hiddenAktifMi" name="AktifMi" value="@(Model.AktifMi ? "true" : "false")" />
+        <input type="hidden" id="hiddenYayindaMi" name="YayindaMi" value="@(Model.YayindaMi ? "true" : "false")" />
+        <input type="hidden" id="hiddenOneCikanMi" name="OneCikanMi" value="@(Model.OneCikanMi ? "true" : "false")" />
+        <input type="hidden" id="hiddenYeniUrunMu" name="YeniUrunMu" value="@(Model.YeniUrunMu ? "true" : "false")" />
+        <input type="hidden" id="hiddenAnaSayfadaGoster" name="AnaSayfadaGoster" value="@(Model.AnaSayfadaGoster ? "true" : "false")" />
+        <input type="hidden" id="hiddenWhatsappSiparisVarMi" name="WhatsappSiparisVarMi" value="@(Model.WhatsappSiparisVarMi ? "true" : "false")" />
+        <input type="hidden" id="hiddenFiyatGizliMi" name="FiyatGizliMi" value="@(Model.FiyatGizliMi ? "true" : "false")" />
+        <input type="hidden" id="hiddenKampanyaliMi" name="KampanyaliMi" value="@(Model.KampanyaliMi ? "true" : "false")" />
 
         @if (!ViewData.ModelState.IsValid)
         {
@@ -807,8 +884,45 @@
         const file = event.target.files && event.target.files[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onload = () => document.getElementById(id).src = reader.result;
+        reader.onload = function(e) {
+            document.getElementById(id).src = e.target.result;
+        };
         reader.readAsDataURL(file);
+    }
+
+    // Checkbox-Hidden input sync
+    function syncHidden(cbId, hiddenId) {
+        const cb = document.getElementById(cbId);
+        const hid = document.getElementById(hiddenId);
+        if (cb && hid) {
+            cb.addEventListener('change', function() { hid.value = this.checked ? 'true' : 'false'; });
+        }
+    }
+    syncHidden('giftWrapToggle', 'hiddenHediyePaketiVarMi');
+    syncHidden('cbAktifMi', 'hiddenAktifMi');
+    syncHidden('cbYayindaMi', 'hiddenYayindaMi');
+    syncHidden('cbOneCikanMi', 'hiddenOneCikanMi');
+    syncHidden('cbYeniUrunMu', 'hiddenYeniUrunMu');
+    syncHidden('cbAnaSayfadaGoster', 'hiddenAnaSayfadaGoster');
+    syncHidden('cbWhatsappSiparisVarMi', 'hiddenWhatsappSiparisVarMi');
+    syncHidden('cbFiyatGizliMi', 'hiddenFiyatGizliMi');
+    syncHidden('cbKampanyaliMi', 'hiddenKampanyaliMi');
+
+    // Gift wrap UI
+    const giftToggle = document.getElementById('giftWrapToggle');
+    const giftContainer = document.getElementById('giftPriceContainer');
+    const giftInput = document.getElementById('HediyePaketFiyati');
+    if (giftToggle && giftContainer && giftInput) {
+        giftToggle.addEventListener('change', function() {
+            if (this.checked) {
+                giftContainer.style.opacity = '1';
+                giftContainer.style.pointerEvents = 'auto';
+                giftInput.focus();
+            } else {
+                giftContainer.style.opacity = '0.5';
+                giftContainer.style.pointerEvents = 'none';
+            }
+        });
     }
 
     function updatePreviewFromUrl(inputId, previewId) {

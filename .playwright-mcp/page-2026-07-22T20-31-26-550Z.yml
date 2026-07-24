@@ -1,0 +1,394 @@
+- generic [ref=f16e1]:
+  - generic [ref=f16e3]:
+    - generic [ref=f16e4]:
+      - generic [ref=f16e5]:
+        - generic [ref=f16e6]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f16e7]:
+        - generic [ref=f16e8]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f16e9]:
+        - generic [ref=f16e10]: 
+        - text: Pay on delivery option
+      - generic [ref=f16e11]:
+        - generic [ref=f16e12]: 
+        - text: Fast Production
+      - generic [ref=f16e13]:
+        - generic [ref=f16e14]: 
+        - text: Careful Packaging
+      - generic [ref=f16e15]:
+        - generic [ref=f16e16]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f16e17]:
+        - generic [ref=f16e18]: 
+        - text: 14 Days Return
+      - generic [ref=f16e19]:
+        - generic [ref=f16e20]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f16e21]:
+        - generic [ref=f16e22]: 
+        - text: WhatsApp Support
+    - generic [ref=f16e23]:
+      - generic [ref=f16e24]:
+        - generic [ref=f16e25]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f16e26]:
+        - generic [ref=f16e27]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f16e28]:
+        - generic [ref=f16e29]: 
+        - text: Pay on delivery option
+      - generic [ref=f16e30]:
+        - generic [ref=f16e31]: 
+        - text: Fast Production
+      - generic [ref=f16e32]:
+        - generic [ref=f16e33]: 
+        - text: Careful Packaging
+      - generic [ref=f16e34]:
+        - generic [ref=f16e35]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f16e36]:
+        - generic [ref=f16e37]: 
+        - text: 14 Days Return
+      - generic [ref=f16e38]:
+        - generic [ref=f16e39]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f16e40]:
+        - generic [ref=f16e41]: 
+        - text: WhatsApp Support
+  - banner [ref=f16e42]:
+    - generic [ref=f16e43]:
+      - generic [ref=f16e44]:
+        - generic [ref=f16e45]: 
+        - link "العربية" [ref=f16e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FSiparis%2FOdeme
+        - link "English" [ref=f16e48] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FSiparis%2FOdeme
+      - link "7ANRPS48" [ref=f16e49] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f16e50]
+      - generic [ref=f16e51]:
+        - button "Search" [ref=f16e52] [cursor=pointer]
+        - link "Login" [ref=f16e55] [cursor=pointer]:
+          - /url: /account/GirisYap
+        - link "My Favorites" [ref=f16e58] [cursor=pointer]:
+          - /url: /favorites
+        - link "Cart" [ref=f16e61] [cursor=pointer]:
+          - /url: /cart
+          - generic [ref=f16e64]: "1"
+      - navigation [ref=f16e65]:
+        - list [ref=f16e66]:
+          - listitem [ref=f16e67] [cursor=pointer]:
+            - link "beauty" [ref=f16e68]:
+              - /url: /products?k=89
+          - listitem [ref=f16e71] [cursor=pointer]:
+            - link "fragrances" [ref=f16e72]:
+              - /url: /products?k=90
+          - listitem [ref=f16e75] [cursor=pointer]:
+            - link "furniture" [ref=f16e76]:
+              - /url: /products?k=91
+          - listitem [ref=f16e79] [cursor=pointer]:
+            - link "groceries" [ref=f16e80]:
+              - /url: /products?k=92
+          - listitem [ref=f16e83] [cursor=pointer]:
+            - link "Home Furniture" [ref=f16e84]:
+              - /url: /products?k=78
+          - listitem [ref=f16e87] [cursor=pointer]:
+            - link "Electronics" [ref=f16e88]:
+              - /url: /products?k=79
+          - listitem [ref=f16e91] [cursor=pointer]:
+            - link "Fashion" [ref=f16e92]:
+              - /url: /products?k=80
+          - listitem [ref=f16e95] [cursor=pointer]:
+            - link "Contact" [ref=f16e96]:
+              - /url: /pages/Iletisim
+  - main [ref=f16e97]:
+    - generic [ref=f16e99]:
+      - link "1 Cart" [ref=f16e100] [cursor=pointer]:
+        - /url: /cart
+        - generic [ref=f16e101]: "1"
+        - text: Cart
+      - generic [ref=f16e103]:
+        - generic [ref=f16e104]: "2"
+        - text: Payment and Delivery
+    - main [ref=f16e105]:
+      - generic [ref=f16e106]:
+        - generic [ref=f16e107]:
+          - generic [ref=f16e108]:
+            - generic [ref=f16e109]: 
+            - text: 256 Bit SSL Encryption
+          - heading "Secure Checkout" [level=1] [ref=f16e110]
+          - paragraph [ref=f16e111]: Verify delivery information
+        - generic [ref=f16e112]:
+          - generic [ref=f16e113]:
+            - alert [ref=f16e321]:
+              - generic [ref=f16e322]:
+                - generic [ref=f16e323]: 
+                - generic [ref=f16e324]:
+                  - strong [ref=f16e325]: Please review the highlighted fields before creating your order.
+                  - list [ref=f16e326]:
+                    - listitem [ref=f16e327]: Full name is required.
+                    - listitem [ref=f16e328]: A valid email address must be entered.
+                    - listitem [ref=f16e329]: Enter a valid Palestinian phone number, for example +970 599 123 456 or 0599 123 456.
+                    - listitem [ref=f16e330]: City is required.
+                    - listitem [ref=f16e331]: District is required.
+                    - listitem [ref=f16e332]: Address must be at least 10 characters.
+                    - listitem [ref=f16e333]: You must accept the terms and conditions to proceed.
+            - region [ref=f16e114]:
+              - generic [ref=f16e115]:
+                - generic [ref=f16e116]: "01"
+                - generic [ref=f16e117]:
+                  - heading "Delivery information" [level=2] [ref=f16e118]
+                  - paragraph [ref=f16e119]: Verify delivery information
+              - radiogroup "Delivery type" [ref=f16e120]:
+                - generic [ref=f16e121] [cursor=pointer]:
+                  - radio " Deliver to Address Your order will be shipped to your address " [checked] [ref=f16e122]
+                  - generic [ref=f16e123]: 
+                  - generic [ref=f16e125]:
+                    - generic [ref=f16e126]: Deliver to Address
+                    - generic [ref=f16e127]: Your order will be shipped to your address
+                  - generic [ref=f16e128]: 
+                - generic [ref=f16e130] [cursor=pointer]:
+                  - radio " Store Pickup Pick up your order from our store" [ref=f16e131]
+                  - generic [ref=f16e132]: 
+                  - generic [ref=f16e134]:
+                    - generic [ref=f16e135]: Store Pickup
+                    - generic [ref=f16e136]: Pick up your order from our store
+                  - text: 
+              - text: 
+              - generic [ref=f16e137]:
+                - generic [ref=f16e138]:
+                  - generic [ref=f16e139]: Full Name *
+                  - textbox "Full Name" [active] [invalid] [ref=f16e140]:
+                    - /placeholder: Your name and surname
+                  - generic [ref=f16e334]: Full name is required.
+                - generic [ref=f16e141]:
+                  - generic [ref=f16e142]: Email *
+                  - textbox "Email" [invalid] [ref=f16e143]:
+                    - /placeholder: example@email.com
+                  - generic [ref=f16e335]: A valid email address must be entered.
+                - generic [ref=f16e144]:
+                  - generic [ref=f16e145]: Phone *
+                  - textbox "Phone" [invalid] [ref=f16e146]:
+                    - /placeholder: +970 5XX XXX XXX
+                  - generic [ref=f16e336]: Enter a valid Palestinian phone number, for example +970 599 123 456 or 0599 123 456.
+                - generic [ref=f16e147]:
+                  - generic [ref=f16e148]: City *
+                  - combobox "City" [invalid] [ref=f16e149]:
+                    - option "Select City" [selected]
+                    - option "Acre"
+                    - option "Akka (Acre)"
+                    - option "Bethlehem"
+                    - option "Beytüllahim (Bethlehem)"
+                    - option "Cenin (Jenin)"
+                    - option "Deir al-Balah"
+                    - option "El-Halil (Hebron)"
+                    - option "El-Kudüs (Jerusalem)"
+                    - option "Eriha (Jericho)"
+                    - option "Gaza"
+                    - option "Haifa"
+                    - option "Hayfa (Haifa)"
+                    - option "Hebron"
+                    - option "Jaffa"
+                    - option "Jenin"
+                    - option "Jericho"
+                    - option "Jerusalem"
+                    - option "Kalkilya (Qalqilya)"
+                    - option "Khan Yunis"
+                    - option "Lydda"
+                    - option "Nablus"
+                    - option "Nasıra (Nazareth)"
+                    - option "Nazareth"
+                    - option "North Gaza"
+                    - option "Qalqilya"
+                    - option "Rafah"
+                    - option "Ramallah & El-Bireh"
+                    - option "Ramallah and al-Bireh"
+                    - option "Ramla"
+                    - option "Salfit"
+                    - option "Tayibe"
+                    - option "Tubas"
+                    - option "Tulkarm"
+                    - option "Umm al-Fahm"
+                    - option "Yafa (Jaffa)"
+                  - generic [ref=f16e337]: City is required.
+                - generic [ref=f16e150]:
+                  - generic [ref=f16e151]: Neighborhood *
+                  - textbox "Neighborhood" [invalid] [ref=f16e152]:
+                    - /placeholder: Neighborhood name
+                  - generic [ref=f16e338]: District is required.
+                - generic [ref=f16e153]:
+                  - generic [ref=f16e154]: Full Address *
+                  - textbox "Full Address" [invalid] [ref=f16e155]:
+                    - /placeholder: Street, avenue, building no, apartment no...
+                  - generic [ref=f16e339]: Address must be at least 10 characters.
+              - generic [ref=f16e157]:
+                - generic [ref=f16e158]: 
+                - generic [ref=f16e160]:
+                  - strong [ref=f16e161]: Shipping Fee
+                  - paragraph [ref=f16e162]: The shipping fee is calculated automatically after you select your city.
+            - region [ref=f16e163]:
+              - generic [ref=f16e164]:
+                - generic [ref=f16e165]: "02"
+                - generic [ref=f16e166]:
+                  - heading "Payment Method" [level=2] [ref=f16e167]
+                  - paragraph [ref=f16e168]: Choose how you would like to pay for this order.
+                - text: 
+              - radiogroup "Payment Method" [ref=f16e169]:
+                - generic [ref=f16e170] [cursor=pointer]:
+                  - radio " Bank Transfer Pay using bank account details." [disabled] [ref=f16e171]
+                  - generic [ref=f16e172]: 
+                  - generic [ref=f16e174]:
+                    - generic [ref=f16e175]: Bank Transfer
+                    - generic [ref=f16e176]: Pay using bank account details.
+                  - text: 
+                - generic [ref=f16e177] [cursor=pointer]:
+                  - radio " Cash on Delivery Pay in cash upon delivery. (+15.00 ₪) " [checked] [ref=f16e178]
+                  - generic [ref=f16e179]: 
+                  - generic [ref=f16e181]:
+                    - generic [ref=f16e182]: Cash on Delivery
+                    - generic [ref=f16e183]: Pay in cash upon delivery. (+15.00 ₪)
+                  - generic [ref=f16e184]: 
+              - text: 
+            - region [ref=f16e186]:
+              - generic [ref=f16e187]:
+                - generic [ref=f16e188]: "03"
+                - generic [ref=f16e189]:
+                  - heading "Identity Verification" [level=2] [ref=f16e190]
+                  - paragraph [ref=f16e191]: Take or upload an identity photo for payment confirmation
+              - generic [ref=f16e192]:
+                - button " Open Camera" [ref=f16e193] [cursor=pointer]:
+                  - generic [ref=f16e194]: 
+                  - text: Open Camera
+                - button " Upload File" [ref=f16e195] [cursor=pointer]:
+                  - generic [ref=f16e196]: 
+                  - text: Upload File
+              - text:    
+              - generic [ref=f16e198] [cursor=pointer]:
+                - generic [ref=f16e199]: 
+                - generic [ref=f16e200]: Upload File
+                - generic [ref=f16e201]: JPEG, PNG, WebP · 5 MB
+                - button " Upload File JPEG, PNG, WebP · 5 MB" [ref=f16e202]
+              - text: 
+              - generic [ref=f16e203]:
+                - generic [ref=f16e204]: Order Note
+                - textbox "Order Note" [ref=f16e205]:
+                  - /placeholder: Write a note about your order...
+                - paragraph [ref=f16e206]: Max 1000 characters
+              - generic [ref=f16e207]:
+                - generic [ref=f16e208] [cursor=pointer]:
+                  - checkbox "Privacy Policy and User Agreement I accept the terms" [invalid] [ref=f16e209]
+                  - generic [ref=f16e210]:
+                    - link "Privacy Policy" [ref=f16e211]:
+                      - /url: /pages/Gizlilik
+                    - text: and
+                    - link "User Agreement" [ref=f16e212]:
+                      - /url: /pages/KullaniciSozlesmesi
+                    - text: I accept the terms
+                - generic [ref=f16e340]: You must accept the terms and conditions to proceed.
+              - button " Create Order · 17.11 ₪" [ref=f16e213] [cursor=pointer]:
+                - generic [ref=f16e214]: 
+                - generic [ref=f16e215]: Create Order
+                - generic [ref=f16e216]: ·
+                - generic [ref=f16e217]: 17.11 ₪
+          - complementary [ref=f16e218]:
+            - generic [ref=f16e219]:
+              - generic [ref=f16e220]:
+                - heading "Order Summary" [level=2] [ref=f16e221]
+                - link "Edit cart" [ref=f16e222] [cursor=pointer]:
+                  - /url: /cart
+              - generic [ref=f16e224]:
+                - generic [ref=f16e225]:
+                  - img "كيوي" [ref=f16e226]
+                  - generic [ref=f16e227]: "1"
+                - generic [ref=f16e228]:
+                  - heading "كيوي" [level=3] [ref=f16e229]
+                  - paragraph [ref=f16e230]: "SKU: GRO-BRD-KIW-030-STD"
+                  - paragraph [ref=f16e231]: 2.11 ₪
+              - generic [ref=f16e233]:
+                - generic [ref=f16e234]: 
+                - generic [ref=f16e235]: Add ₪1,497.89 more for free shipping!
+              - generic [ref=f16e236]:
+                - generic [ref=f16e237]:
+                  - term [ref=f16e238]: Subtotal
+                  - definition [ref=f16e239]: 2.11 ₪
+                - generic [ref=f16e240]:
+                  - term [ref=f16e241]: Shipping Fee
+                  - definition [ref=f16e242]: Free
+                - generic [ref=f16e243]:
+                  - term [ref=f16e244]: COD Service Fee
+                  - definition [ref=f16e245]: 15.00 ₪
+              - generic [ref=f16e246]:
+                - generic [ref=f16e247]: Grand Total
+                - generic [ref=f16e248]: 17.11 ₪
+              - generic [ref=f16e249]:
+                - generic [ref=f16e250]:
+                  - generic [ref=f16e251]: 
+                  - text: 256 Bit SSL Encryption
+                - generic [ref=f16e252]:
+                  - generic [ref=f16e253]: 
+                  - text: Undamaged Delivery
+                - generic [ref=f16e254]:
+                  - generic [ref=f16e255]: 
+                  - text: Easy Returns
+  - contentinfo [ref=f16e256]:
+    - generic [ref=f16e258]:
+      - generic [ref=f16e263]:
+        - generic [ref=f16e264]: Across Palestine
+        - generic [ref=f16e265]: Free Shipping
+      - generic [ref=f16e270]:
+        - generic [ref=f16e271]: Secure Checkout
+        - generic [ref=f16e272]: 256 Bit SSL
+      - generic [ref=f16e277]:
+        - generic [ref=f16e278]: Bank Transfer
+        - generic [ref=f16e279]: Easy payment by IBAN
+    - generic [ref=f16e280]:
+      - generic [ref=f16e281]:
+        - generic [ref=f16e282]:
+          - heading "Subscribe to newsletter" [level=3] [ref=f16e283]
+          - paragraph [ref=f16e284]: Get new arrivals, Palestinian market picks, and special offers in your inbox.
+          - generic [ref=f16e285]:
+            - textbox "Email Address" [ref=f16e286]
+            - button "Subscribe" [ref=f16e287] [cursor=pointer]
+        - generic [ref=f16e288]:
+          - heading "Corporate" [level=4] [ref=f16e289]
+          - list [ref=f16e290]:
+            - listitem [ref=f16e291]:
+              - link "About Us" [ref=f16e292] [cursor=pointer]:
+                - /url: /pages/about
+            - listitem [ref=f16e293]:
+              - link "Contact" [ref=f16e294] [cursor=pointer]:
+                - /url: /pages/contact
+            - listitem [ref=f16e295]:
+              - link "All Products" [ref=f16e296] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=f16e297]:
+              - link "Privacy Policy" [ref=f16e298] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f16e299]:
+              - link "Distance Sales Contract" [ref=f16e300] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - generic [ref=f16e301]:
+            - link "Facebook" [ref=f16e302] [cursor=pointer]:
+              - /url: https://www.facebook.com/7anrps48
+              - generic [ref=f16e303]: 
+            - link "X / Twitter" [ref=f16e304] [cursor=pointer]:
+              - /url: https://x.com/7anrps48?s=21
+              - generic [ref=f16e305]: 
+      - generic [ref=f16e306]:
+        - paragraph [ref=f16e308]: © 2026 7ANRPS48 — All rights reserved.
+        - generic [ref=f16e309]:
+          - link "Privacy Policy" [ref=f16e310] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "Return and Exchange" [ref=f16e311] [cursor=pointer]:
+            - /url: /pages/return-policy
+          - text: "|"
+          - link "About Us" [ref=f16e312] [cursor=pointer]:
+            - /url: /pages/about
+  - link "WhatsApp Contact" [ref=f16e313] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=f16e316]: WhatsApp
+  - link "Cart" [ref=f16e317] [cursor=pointer]:
+    - /url: /cart
+    - generic [ref=f16e320]: "1"

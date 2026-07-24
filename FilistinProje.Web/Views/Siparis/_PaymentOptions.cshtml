@@ -1,12 +1,8 @@
 @functions {
     string FormatIban(string iban)
     {
-        if (string.IsNullOrWhiteSpace(iban)) return "";
-        var clean = iban.Replace(" ", "");
-        var parts = new List<string>();
-        for (int i = 0; i < clean.Length; i += 4)
-            parts.Add(clean.Substring(i, Math.Min(4, clean.Length - i)));
-        return string.Join(" ", parts);
+        var clean = (iban ?? string.Empty).Replace(" ", "");
+        return string.Join(" ", Enumerable.Range(0, (clean.Length + 3) / 4).Select(i => clean.Substring(i * 4, Math.Min(4, clean.Length - i * 4))));
     }
 }
 @model FilistinProje.Core.DTOs.CheckoutRequestDto
@@ -14,181 +10,75 @@
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @inject IStringLocalizer<SharedResource> Localizer
 @{
-    var siteSettings = SiteSettingsService.GetSettings();
-    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
+    var currencySymbol = string.IsNullOrWhiteSpace(SiteSettingsService.GetSettings().ParaBirimi) ? "₪" : SiteSettingsService.GetSettings().ParaBirimi;
     bool codAktif = ViewBag.KapidaOdemeAktifMi is bool codAccess && codAccess;
-    decimal codBedel = (decimal)(ViewBag.KapidaOdemelHizmetBedeli ?? 0);
+    decimal codBedel = (decimal)(ViewBag.KapidaOdemeHizmetBedeli ?? 0);
     bool receteZorunlu = ViewBag.ReceteZorunluMu is bool rxRequired && rxRequired;
     bool bankaHavaleAktifMi = ViewBag.BankaHavaleAktifMi as bool? ?? false;
     var bankaHesaplari = ViewBag.BankaHesaplari as List<BankaHesap>;
 }
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                                <label class="relative border border-brand-border rounded-lg p-5 cursor-pointer transition-all hover:border-brand-gold has-[:checked]:border-brand-olive has-[:checked]:bg-brand-cream group block">
-                                    <input type="radio" name="odemeYontemi" value="BankaHavalesi" class="absolute opacity-0 w-0 h-0 peer" checked onchange="togglePaymentMethod('BankaHavalesi')">
-                                    <div class="flex items-center gap-3">
-                                        <span class="w-5 h-5 rounded-full border-2 border-brand-gold flex items-center justify-center bg-white transition-all peer-checked:border-brand-olive">
-                                            <span class="w-2.5 h-2.5 rounded-full bg-brand-olive scale-0 transition-all peer-checked:scale-100"></span>
-                                        </span>
-                                        <div>
-                                            <div class="text-sm font-semibold text-brand-darktext">@Localizer["BankTransfer"]</div>
-                                            <div class="text-[11px] text-brand-mutedtext">@Localizer["BankTransferDescShort"]</div>
-                                        </div>
-                                    </div>
-                                </label>
+<section class="checkout-card" aria-labelledby="payment-heading">
+    <div class="checkout-section-heading">
+        <span class="checkout-step">02</span>
+        <div><h2 id="payment-heading">@Localizer["PaymentMethod"]</h2><p>@Localizer["Checkout_PaymentMethodHelp"]</p></div>
+        <span class="ms-auto hidden items-center gap-2 rounded-full bg-[#f7f8ed] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-brand-olive sm:inline-flex"><i class="fas fa-lock text-brand-gold"></i>@Localizer["256BitSSL"]</span>
+    </div>
 
-                                @if (codAktif)
-                                {
-                                    <label class="relative border border-brand-border rounded-lg p-5 cursor-pointer transition-all hover:border-brand-gold has-[:checked]:border-brand-olive has-[:checked]:bg-brand-cream group block" id="codPaymentOption">
-                                        <input type="radio" name="odemeYontemi" value="KapidaOdeme" class="absolute opacity-0 w-0 h-0 peer" onchange="togglePaymentMethod('KapidaOdeme')">
-                                        <div class="flex items-center gap-3">
-                                            <span class="w-5 h-5 rounded-full border-2 border-brand-gold flex items-center justify-center bg-white transition-all peer-checked:border-brand-olive">
-                                                <span class="w-2.5 h-2.5 rounded-full bg-brand-olive scale-0 transition-all peer-checked:scale-100"></span>
-                                            </span>
-                                            <div>
-                                                <div class="text-sm font-semibold text-brand-darktext">@Localizer["CashOnDelivery"]</div>
-                                                <div class="text-[11px] text-brand-mutedtext">
-                                                    @Localizer["CashOnDeliveryDescShort"]
-                                                    @if (codBedel > 0) { <span>(+ @codBedel.ToString("N0") @currencySymbol)</span> }
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </label>
-                                }
-                            </div>
+    <div class="grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="@Localizer["PaymentMethod"]">
+        <label class="checkout-choice @(bankaHavaleAktifMi ? "" : "cursor-not-allowed opacity-50")">
+            <input type="radio" name="odemeYontemi" value="BankaHavalesi" class="peer sr-only" checked="@(Model.OdemeYontemi == "BankaHavalesi" && bankaHavaleAktifMi)" disabled="@(!bankaHavaleAktifMi)" onchange="togglePaymentMethod('BankaHavalesi')">
+            <span class="checkout-choice-icon"><i class="fas fa-building-columns"></i></span>
+            <span><span class="block text-sm font-semibold text-brand-darktext">@Localizer["BankTransfer"]</span><span class="mt-1 block text-xs text-brand-mutedtext">@Localizer["BankTransferDescShort"]</span></span>
+            <span class="checkout-choice-check"><i class="fas fa-check"></i></span>
+        </label>
+        @if (codAktif)
+        {
+            <label id="codPaymentOption" class="checkout-choice">
+                <input type="radio" name="odemeYontemi" value="KapidaOdeme" class="peer sr-only" checked="@(Model.OdemeYontemi == "KapidaOdeme" || !bankaHavaleAktifMi)" onchange="togglePaymentMethod('KapidaOdeme')">
+                <span class="checkout-choice-icon"><i class="fas fa-hand-holding-dollar"></i></span>
+                <span><span class="block text-sm font-semibold text-brand-darktext">@Localizer["CashOnDelivery"]</span><span class="mt-1 block text-xs text-brand-mutedtext">@Localizer["CashOnDeliveryDescShort"] @if (codBedel > 0) { <text>(+@codBedel.ToString("N2") @currencySymbol)</text> }</span></span>
+                <span class="checkout-choice-check"><i class="fas fa-check"></i></span>
+            </label>
+        }
+    </div>
+    <span asp-validation-for="OdemeYontemi" class="checkout-field-error mt-2"></span>
 
-                            @if (bankaHesaplari != null && bankaHesaplari.Any())
-                            {
-                                <div id="bankAccountsSection" class="mb-6">
-                                    <div class="flex items-center gap-2 mb-3">
-                                        <i class="fas fa-university text-brand-gold"></i>
-                                        <h6 class="text-sm font-bold text-brand-darktext uppercase tracking-wider">@Localizer["BankTransferInfo"]</h6>
-                                    </div>
-                                    <p class="text-xs text-brand-mutedtext mb-4">@Localizer["BankTransferDesc"]</p>
-                                    <div class="space-y-3">
-                                        @foreach (var banka in bankaHesaplari)
-                                        {
-                                            <div class="border border-brand-border rounded-lg p-4 bg-brand-cream hover:border-[#cbd3a3] transition-colors">
-                                                <div class="flex items-start justify-between gap-4 flex-wrap">
-                                                    <div class="flex-1 min-w-0">
-                                                        <div class="text-sm font-bold text-brand-olive mb-1">@banka.BankaAdi</div>
-                                                        <div class="text-xs text-brand-mutedtext mb-2">@banka.HesapSahibi</div>
-                                                        <div class="flex items-center gap-2">
-                                                            <code class="text-xs font-mono tracking-wider text-brand-darktext bg-white px-2 py-1 rounded border border-brand-border select-all" id="iban-@banka.Id">@FormatIban(banka.IBAN)</code>
-                                                            <button type="button" class="text-brand-gold hover:text-brand-olive transition-colors" onclick="copyIban('iban-@banka.Id', this)" title="@Localizer["CopyIBAN"]">
-                                                                <i class="fas fa-copy text-sm"></i>
-                                                            </button>
-                                                        </div>
-                                                         @if (!string.IsNullOrWhiteSpace(banka.SubeKodu) || !string.IsNullOrWhiteSpace(banka.HesapNo))
-                                                         {
-                                                             <div class="flex gap-4 mt-2 text-[10px] text-brand-mutedtext uppercase tracking-wider">
-                                                                 @if (!string.IsNullOrWhiteSpace(banka.SubeKodu))
-                                                                 {
-                                                                     <span>@Localizer["BranchCode"]: @banka.SubeKodu</span>
-                                                                 }
-                                                                 @if (!string.IsNullOrWhiteSpace(banka.HesapNo))
-                                                                 {
-                                                                     <span>@Localizer["AccountNo"]: @banka.HesapNo</span>
-                                                                 }
-                                                             </div>
-                                                         }
-                                                     </div>
-                                                 </div>
-                                             </div>
-                                         }
-                                     </div>
-                                 </div>
-                             }
-                            else
-                            {
-                                <div id="bankAccountsSection" class="mb-6 bg-amber-50 border border-amber-200 rounded-lg p-5">
-                                    <div class="flex items-start gap-3">
-                                        <i class="fas fa-exclamation-triangle text-amber-600 mt-0.5"></i>
-                                        <div>
-                                            <p class="text-sm font-bold text-amber-800 mb-1">@Localizer["BankTransferPayment"] @Localizer["TemporarilyUnavailable"]</p>
-                                            <p class="text-xs text-amber-700 leading-relaxed">@Localizer["Siparis_NoActiveBankAccount"]</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-
-
-                              <!-- Reçete Yükle -->
-                              @if (receteZorunlu)
-                              {
-                                  <div class="mt-12 bg-[#fdfaf6] border border-[#f5efe6] rounded-lg p-6">
-                                      <h2 class="font-serif text-2xl text-brand-olive mb-2 flex items-center gap-3">
-                                          <i class="fas fa-file-prescription text-brand-gold"></i> @Localizer["PrescriptionVerification"]
-                                      </h2>
-                                      <p class="text-xs text-brand-mutedtext mb-6">@Localizer["PrescriptionPhotoDesc"]</p>
-
-                                      <input type="hidden" name="ReceteDosyaYolu" id="ReceteDosyaYolu" value="" />
-
-                                      <div class="border-2 border-dashed border-brand-border rounded-lg p-8 text-center hover:border-brand-gold transition-colors cursor-pointer bg-white" onclick="document.getElementById('receteFileInput').click()">
-                                          <i class="fas fa-file-medical fa-3x text-brand-gold mb-3"></i>
-                                          <p class="text-sm font-semibold text-brand-darktext mb-1">@Localizer["UploadPrescription"]</p>
-                                          <p class="text-[10px] text-brand-mutedtext">PDF, JPEG, PNG, WebP (max 5MB)</p>
-                                          <input type="file" id="receteFileInput" accept="image/jpeg,image/png,image/webp,application/pdf" class="hidden" onchange="handleReceteFileUpload(this)" />
-                                      </div>
-
-                                      <div id="recetePreviewContainer" class="hidden mt-4 max-w-xs mx-auto">
-                                          <div class="relative rounded-lg overflow-hidden border border-[#cbd3a3] bg-[#f7f8ed] p-2">
-                                              <div id="recetePdfPlaceholder" class="hidden text-center py-6">
-                                                  <i class="fas fa-file-pdf text-red-500 fa-3x mb-2"></i>
-                                                  <div class="text-xs font-semibold text-brand-darktext" id="recetePdfName">@Localizer["PdfFile"]</div>
-                                              </div>
-                                              <img id="recetePreview" class="hidden w-full aspect-[4/3] object-contain rounded" alt="@Localizer["PrescriptionVerification"]" />
-                                              <div class="absolute top-3 end-3 bg-green-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full">
-                                                  <i class="fas fa-check-circle me-1"></i>@Localizer["PrescriptionUploaded"]
-                                              </div>
-                                          </div>
-                                      </div>
-
-                                      @{
-                                          var rxErrors = ViewData.ModelState.ContainsKey("ReceteDosyaYolu") ? ViewData.ModelState["ReceteDosyaYolu"]?.Errors : null;
-                                      }
-                                      @if (rxErrors != null && rxErrors.Any())
-                                      {
-                                          <div class="mt-2 text-xs text-red-600 flex items-center gap-1">
-                                              <i class="fas fa-exclamation-circle"></i>
-                                              @foreach (var error in rxErrors)
-                                              {
-                                                  <span>@error.ErrorMessage</span>
-                                              }
-                                          </div>
-                                      }
-                                  </div>
-                              }
-
-
-                            <label class="flex items-start gap-3 cursor-pointer group mt-4 bg-brand-cream p-4 rounded border border-brand-border has-[:checked]:border-[#cbd3a3]">
-                                <input type="checkbox" name="sozlesmeOnaylandi" value="true" class="w-4 h-4 mt-0.5 text-brand-olive border-brand-border rounded focus:ring-[#313511]">
-                                <span class="text-sm leading-relaxed text-brand-mutedtext">
-                                    <a href="/pages/Gizlilik" class="text-brand-olive font-semibold hover:text-brand-gold transition-colors underline decoration-1 underline-offset-2">@Localizer["PrivacyPolicy"]</a> @Localizer["And"]
-                                    <a href="/pages/KullaniciSozlesmesi" class="text-brand-olive font-semibold hover:text-brand-gold transition-colors underline decoration-1 underline-offset-2">@Localizer["UserAgreement"]</a> @Localizer["TermsAccepted"]
-                                </span>
-                            </label>
-                            @{
-                                var termsErrors = ViewData.ModelState.ContainsKey("sozlesmeOnaylandi") ? ViewData.ModelState["sozlesmeOnaylandi"]?.Errors : null;
-                            }
-                            @if (termsErrors != null && termsErrors.Any())
-                            {
-                                <div class="mt-2 text-xs text-red-600 flex items-center gap-1">
-                                    <i class="fas fa-exclamation-circle"></i>
-                                    @foreach (var error in termsErrors)
-                                    {
-                                        <span>@error.ErrorMessage</span>
-                                    }
-                                </div>
-                            }
-                        </div>
+    @if (bankaHesaplari?.Any() == true)
+    {
+        <div id="bankAccountsSection" class="mt-5 space-y-3">
+            @foreach (var banka in bankaHesaplari)
+            {
+                <div class="rounded-xl border border-brand-border bg-brand-cream/50 p-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div><strong class="text-sm text-brand-olive">@banka.BankaAdi</strong><span class="ms-2 text-xs text-brand-mutedtext">@banka.HesapSahibi</span></div>
+                        <div class="flex items-center gap-2"><code id="iban-@banka.Id" class="rounded bg-white px-2 py-1 text-xs text-brand-darktext">@FormatIban(banka.IBAN)</code><button type="button" onclick="copyIban('iban-@banka.Id', this)" class="text-brand-gold" title="@Localizer["CopyIBAN"]"><i class="fas fa-copy"></i></button></div>
                     </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div id="bankAccountsSection" class="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800">
+            <div class="flex items-start gap-3"><i class="fas fa-circle-info mt-0.5"></i><div><strong class="block text-sm">@Localizer["BankTransferPayment"] @Localizer["TemporarilyUnavailable"]</strong><p class="mt-1 text-xs leading-relaxed">@Localizer["Siparis_NoActiveBankAccount"]</p></div></div>
+        </div>
+    }
 
-                    <!-- Sipariş Notu -->
-                    <div class="mt-8">
-                        <h2 class="font-serif text-xl text-brand-olive mb-4 flex items-center gap-3 border-b border-brand-border pb-3">
-                            <i class="fas fa-pen text-brand-gold"></i> @Localizer["OrderNote"]
-                        </h2>
-                        <textarea asp-for="Aciklama" rows="3" maxlength="1000" class="w-full border border-brand-border rounded-lg px-4 py-3 text-sm text-brand-darktext bg-white focus:ring-1 focus:ring-[#b58735] focus:outline-none resize-none placeholder:text-brand-mutedtext transition-colors" placeholder="@Localizer["OrderNotePlaceholder"]"></textarea>
-                        <p class="text-[10px] text-brand-mutedtext mt-1">@string.Format(Localizer["MaxChars"].Value, 1000)</p>
-                    </div>
+    @if (receteZorunlu)
+    {
+        <div class="mt-7 border-t border-brand-border pt-6">
+            <h3 class="font-serif text-xl text-brand-olive">@Localizer["PrescriptionVerification"]</h3>
+            <p class="mb-4 mt-1 text-xs text-brand-mutedtext">@Localizer["PrescriptionPhotoDesc"]</p>
+            <input type="hidden" name="ReceteDosyaYolu" id="ReceteDosyaYolu" value="@Model.ReceteDosyaYolu">
+            <label for="receteFileInput" class="checkout-dropzone">
+                <i class="fas fa-file-medical text-2xl text-brand-gold"></i><span class="font-semibold text-brand-darktext">@Localizer["UploadPrescription"]</span><span class="text-[11px] text-brand-mutedtext">PDF, JPEG, PNG, WebP · 5 MB</span>
+                <input type="file" id="receteFileInput" accept="image/jpeg,image/png,image/webp,application/pdf" class="sr-only" onchange="handleReceteFileUpload(this)">
+            </label>
+            <div id="recetePreviewContainer" class="mt-4 hidden max-w-xs">
+                <div class="relative rounded-xl border border-[#cbd3a3] bg-[#f7f8ed] p-2"><div id="recetePdfPlaceholder" class="hidden py-5 text-center"><i class="fas fa-file-pdf text-3xl text-red-500"></i><div id="recetePdfName" class="mt-2 text-xs font-semibold">@Localizer["PdfFile"]</div></div><img id="recetePreview" class="hidden aspect-[4/3] w-full rounded object-contain" alt="@Localizer["PrescriptionVerification"]"></div>
+            </div>
+            <span asp-validation-for="ReceteDosyaYolu" class="checkout-field-error"></span>
+        </div>
+    }
+</section>

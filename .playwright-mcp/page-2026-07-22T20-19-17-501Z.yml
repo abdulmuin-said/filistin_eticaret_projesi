@@ -1,0 +1,272 @@
+- generic [active] [ref=f5e1]:
+  - generic [ref=f5e3]:
+    - generic [ref=f5e4]:
+      - generic [ref=f5e5]:
+        - generic [ref=f5e6]: 
+        - text: شحن مجاني للطلبات فوق 1٬500 ₪
+      - generic [ref=f5e7]:
+        - generic [ref=f5e8]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f5e9]:
+        - generic [ref=f5e10]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f5e11]:
+        - generic [ref=f5e12]: 
+        - text: إنتاج سريع
+      - generic [ref=f5e13]:
+        - generic [ref=f5e14]: 
+        - text: تغليف دقيق
+      - generic [ref=f5e15]:
+        - generic [ref=f5e16]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f5e17]:
+        - generic [ref=f5e18]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f5e19]:
+        - generic [ref=f5e20]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f5e21]:
+        - generic [ref=f5e22]: 
+        - text: دعم واتساب
+    - generic [ref=f5e23]:
+      - generic [ref=f5e24]:
+        - generic [ref=f5e25]: 
+        - text: شحن مجاني للطلبات فوق 1٬500 ₪
+      - generic [ref=f5e26]:
+        - generic [ref=f5e27]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f5e28]:
+        - generic [ref=f5e29]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f5e30]:
+        - generic [ref=f5e31]: 
+        - text: إنتاج سريع
+      - generic [ref=f5e32]:
+        - generic [ref=f5e33]: 
+        - text: تغليف دقيق
+      - generic [ref=f5e34]:
+        - generic [ref=f5e35]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f5e36]:
+        - generic [ref=f5e37]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f5e38]:
+        - generic [ref=f5e39]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f5e40]:
+        - generic [ref=f5e41]: 
+        - text: دعم واتساب
+  - banner [ref=f5e42]:
+    - generic [ref=f5e43]:
+      - generic [ref=f5e44]:
+        - generic [ref=f5e45]: 
+        - link "العربية" [ref=f5e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FHesap%2FKayitOl
+        - link "English" [ref=f5e48] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FHesap%2FKayitOl
+      - link "7ANRPS48" [ref=f5e49] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f5e50]
+      - generic [ref=f5e51]:
+        - button "بحث" [ref=f5e52] [cursor=pointer]
+        - link "تسجيل الدخول" [ref=f5e55] [cursor=pointer]:
+          - /url: /account/GirisYap
+        - link "المفضلة" [ref=f5e58] [cursor=pointer]:
+          - /url: /favorites
+        - link "السلة" [ref=f5e61] [cursor=pointer]:
+          - /url: /cart
+          - generic [ref=f5e64]: "0"
+      - navigation [ref=f5e65]:
+        - list [ref=f5e66]:
+          - listitem [ref=f5e67] [cursor=pointer]:
+            - link "أثاث" [ref=f5e68]:
+              - /url: /products?k=91
+          - listitem [ref=f5e71] [cursor=pointer]:
+            - link "العطور" [ref=f5e72]:
+              - /url: /products?k=90
+          - listitem [ref=f5e75] [cursor=pointer]:
+            - link "بقالة" [ref=f5e76]:
+              - /url: /products?k=92
+          - listitem [ref=f5e79] [cursor=pointer]:
+            - link "جمال" [ref=f5e80]:
+              - /url: /products?k=89
+          - listitem [ref=f5e83] [cursor=pointer]:
+            - link "أثاث منزلي" [ref=f5e84]:
+              - /url: /products?k=78
+          - listitem [ref=f5e87] [cursor=pointer]:
+            - link "إلكترونيات" [ref=f5e88]:
+              - /url: /products?k=79
+          - listitem [ref=f5e91] [cursor=pointer]:
+            - link "أزياء" [ref=f5e92]:
+              - /url: /products?k=80
+          - listitem [ref=f5e95] [cursor=pointer]:
+            - link "اتصل بنا" [ref=f5e96]:
+              - /url: /pages/Iletisim
+  - main [ref=f5e97]:
+    - generic [ref=f5e99]:
+      - generic [ref=f5e100]:
+        - link "7ANRPS48" [ref=f5e101] [cursor=pointer]:
+          - /url: /
+        - paragraph [ref=f5e102]: إنشاء حساب جديد
+      - generic [ref=f5e103]:
+        - generic [ref=f5e104]:
+          - generic [ref=f5e105]:
+            - generic [ref=f5e106]:
+              - generic [ref=f5e107]: الاسم الكامل
+              - textbox "الاسم الكامل" [ref=f5e108]:
+                - /placeholder: اسمك الكامل
+              - generic [ref=f5e109]: الاسم الكامل مطلوب.
+            - generic [ref=f5e110]:
+              - generic [ref=f5e111]: رقم الهوية
+              - textbox "رقم الهوية" [ref=f5e112]
+              - generic [ref=f5e113]: رقم الهوية مطلوب.
+          - generic [ref=f5e114]:
+            - generic [ref=f5e115]:
+              - generic [ref=f5e116]: تاريخ الميلاد
+              - textbox "تاريخ الميلاد" [ref=f5e117]
+              - generic [ref=f5e118]: تاريخ الميلاد مطلوب.
+            - generic [ref=f5e119]:
+              - generic [ref=f5e120]: الهاتف
+              - textbox "الهاتف" [ref=f5e121]:
+                - /placeholder: +970 5XX XXX XXX
+              - generic [ref=f5e122]: رقم الهاتف مطلوب.
+          - generic [ref=f5e123]:
+            - generic [ref=f5e124]: البريد الإلكتروني
+            - textbox "البريد الإلكتروني" [ref=f5e125]:
+              - /placeholder: example@email.com
+            - generic [ref=f5e126]: البريد الإلكتروني مطلوب.
+          - generic [ref=f5e127]:
+            - generic [ref=f5e128]: العنوان
+            - textbox "العنوان" [ref=f5e129]:
+              - /placeholder: الحي، الشارع، رقم المبنى، رقم الشقة...
+            - generic [ref=f5e130]: العنوان مطلوب.
+          - generic [ref=f5e131]:
+            - paragraph [ref=f5e135]: مطلوب تحميل صورة الهوية للتسجيل. لا يمكن إكمال التسجيل بدون صورة الهوية.
+            - generic [ref=f5e136]:
+              - generic [ref=f5e137]: صورة الهوية *
+              - generic [ref=f5e138]:
+                - button "صورة الهوية * اختيار ملف لم يتم اختيار ملف" [ref=f5e139]
+                - generic [ref=f5e140] [cursor=pointer]:
+                  - generic [ref=f5e141]:
+                    - generic [ref=f5e142]: 
+                    - text: اختيار ملف
+                  - generic [ref=f5e143]: لم يتم اختيار ملف
+              - paragraph [ref=f5e144]: قم بتحميل وجه الهوية الخاص بك بصيغة PNG أو JPEG أو WebP
+              - generic [ref=f5e145]: صورة الهوية مطلوبة.
+          - generic [ref=f5e146]:
+            - generic [ref=f5e147]: المدينة
+            - combobox "المدينة" [ref=f5e148]:
+              - option "اختر المدينة" [selected]
+              - option "Gaza"
+              - option "North Gaza"
+              - option "Beit Hanoun"
+              - option "Beit Lahiya"
+              - option "Jabalia"
+              - option "Ramallah"
+              - option "El-Bireh"
+              - option "Birzeit"
+              - option "Abu Dis"
+              - option "Nablus"
+              - option "Tubas"
+              - option "Qalqilya"
+              - option "Salfit"
+              - option "Jenin"
+              - option "Hebron"
+              - option "Yatta"
+              - option "Dura"
+              - option "Halhul"
+              - option "Bethlehem"
+              - option "Beit Jala"
+              - option "Artas"
+              - option "Tulkarm"
+              - option "Ajjah"
+              - option "Jericho"
+              - option "Jerusalem"
+              - option "Al-Ram"
+              - option "Al-Eizariya"
+            - generic [ref=f5e149]: المدينة مطلوبة.
+          - generic [ref=f5e150]:
+            - generic [ref=f5e151]:
+              - generic [ref=f5e152]: كلمة المرور
+              - textbox "كلمة المرور" [ref=f5e153]:
+                - /placeholder: 8 أحرف على الأقل
+              - generic [ref=f5e154]: كلمة المرور مطلوبة.
+            - generic [ref=f5e155]:
+              - generic [ref=f5e156]: تكرار كلمة المرور
+              - textbox "تكرار كلمة المرور" [ref=f5e157]:
+                - /placeholder: أدخل كلمة المرور مرة أخرى
+              - generic [ref=f5e158]: يرجى إدخال كلمة المرور مرة أخرى.
+          - generic [ref=f5e160] [cursor=pointer]:
+            - checkbox "التسجيل كتاجر جملة سيتم تفعيل تسجيل الجملة بعد موافقة المسؤول. يمكنك عرض أسعار الجملة بعد الموافقة." [ref=f5e161]
+            - generic [ref=f5e162]:
+              - text: التسجيل كتاجر جملة
+              - paragraph [ref=f5e163]: سيتم تفعيل تسجيل الجملة بعد موافقة المسؤول. يمكنك عرض أسعار الجملة بعد الموافقة.
+          - button "إنشاء عضوية" [ref=f5e164] [cursor=pointer]
+        - generic [ref=f5e165]:
+          - generic [ref=f5e166]: Or
+          - link "RegisterWithGoogle" [ref=f5e172] [cursor=pointer]:
+            - /url: "#"
+      - paragraph [ref=f5e178]:
+        - text: هل لديك حساب بالفعل؟
+        - link "تسجيل الدخول" [ref=f5e179] [cursor=pointer]:
+          - /url: /account/GirisYap
+  - contentinfo [ref=f5e180]:
+    - generic [ref=f5e182]:
+      - generic [ref=f5e187]:
+        - generic [ref=f5e188]: في جميع مناطق فلسطين
+        - generic [ref=f5e189]: شحن مجاني
+      - generic [ref=f5e194]:
+        - generic [ref=f5e195]: تحويل بنكي
+        - generic [ref=f5e196]: 256 Bit SSL
+      - generic [ref=f5e201]:
+        - generic [ref=f5e202]: تحويل بنكي
+        - generic [ref=f5e203]: دفع سهل عبر الآيبان
+    - generic [ref=f5e204]:
+      - generic [ref=f5e205]:
+        - generic [ref=f5e206]:
+          - heading "اشترك في النشرة البريدية" [level=3] [ref=f5e207]
+          - paragraph [ref=f5e208]: استقبل أحدث المنتجات المختارة من السوق الفلسطيني والعروض الخاصة على بريدك.
+          - generic [ref=f5e209]:
+            - textbox "عنوان البريد الإلكتروني" [ref=f5e210]
+            - button "اشتراك" [ref=f5e211] [cursor=pointer]
+        - generic [ref=f5e212]:
+          - heading "مؤسسي" [level=4] [ref=f5e213]
+          - list [ref=f5e214]:
+            - listitem [ref=f5e215]:
+              - link "من نحن" [ref=f5e216] [cursor=pointer]:
+                - /url: /pages/about
+            - listitem [ref=f5e217]:
+              - link "اتصل بنا" [ref=f5e218] [cursor=pointer]:
+                - /url: /pages/contact
+            - listitem [ref=f5e219]:
+              - link "جميع المنتجات" [ref=f5e220] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=f5e221]:
+              - link "سياسة الخصوصية" [ref=f5e222] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f5e223]:
+              - link "عقد البيع عن بعد" [ref=f5e224] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - generic [ref=f5e225]:
+            - link "Facebook" [ref=f5e226] [cursor=pointer]:
+              - /url: https://www.facebook.com/7anrps48
+              - generic [ref=f5e227]: 
+            - link "X / Twitter" [ref=f5e228] [cursor=pointer]:
+              - /url: https://x.com/7anrps48?s=21
+              - generic [ref=f5e229]: 
+      - generic [ref=f5e230]:
+        - paragraph [ref=f5e232]: © 2026 7ANRPS48 — جميع الحقوق محفوظة.
+        - generic [ref=f5e233]:
+          - link "سياسة الخصوصية" [ref=f5e234] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "الإرجاع والاستبدال" [ref=f5e235] [cursor=pointer]:
+            - /url: /pages/return-policy
+          - text: "|"
+          - link "من نحن" [ref=f5e236] [cursor=pointer]:
+            - /url: /pages/about
+  - link "اتصال واتساب" [ref=f5e237] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=f5e240]: WhatsApp
+  - link "السلة" [ref=f5e241] [cursor=pointer]:
+    - /url: /cart

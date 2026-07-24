@@ -21,13 +21,13 @@ namespace FilistinProje.Core.DTOs
         public string Telefon { get; set; } = string.Empty;
 
         [MaxLength(100)]
-        public string Sehir { get; set; } = string.Empty;
+        public string? Sehir { get; set; }
 
         [MaxLength(100)]
-        public string Ilce { get; set; } = string.Empty;
+        public string? Ilce { get; set; }
 
         [MaxLength(500)]
-        public string AcikAdres { get; set; } = string.Empty;
+        public string? AcikAdres { get; set; }
 
         public string TeslimatTipi { get; set; } = "AdreseTeslim";
 
@@ -68,9 +68,9 @@ namespace FilistinProje.Core.DTOs
                 MusteriAdSoyad = MusteriAdSoyad.Trim(),
                 Eposta = Eposta.Trim(),
                 Telefon = Telefon.Trim(),
-                Sehir = Sehir.Trim(),
-                Ilce = Ilce.Trim(),
-                AcikAdres = AcikAdres.Trim(),
+                Sehir = Sehir?.Trim() ?? string.Empty,
+                Ilce = Ilce?.Trim() ?? string.Empty,
+                AcikAdres = AcikAdres?.Trim() ?? string.Empty,
                 TeslimatTipi = TeslimatTipi == "MagazadanTeslim" ? "MagazadanTeslim" : "AdreseTeslim",
                 Aciklama = Aciklama?.Trim(),
                 ReceteDosyaYolu = ReceteDosyaYolu?.Trim(),

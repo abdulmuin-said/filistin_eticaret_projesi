@@ -27,5 +27,6 @@ namespace FilistinProje.Web.Models
         public string? BadgeText { get; set; }      // Özel rozet metni (ör: "5 Parça")
         public bool ShowFavori { get; set; } = true; // Favori butonu gösterilsin mi?
         public bool ShowQuickAdd { get; set; } = true; // Sepete Ekle overlay gösterilsin mi?
+        public bool WhatsappSiparisVarMi { get; set; }
     }
 }

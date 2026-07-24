@@ -1,0 +1,150 @@
+- generic [ref=e2]:
+  - text:          +                    
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "7ANRPS48 لوحة التحكم" [ref=e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=e6]
+      - generic [ref=e7]: لوحة التحكم
+    - navigation "القائمة الرئيسية للإدارة" [ref=e8]:
+      - link " لوحة البيانات" [ref=e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=e10]: 
+        - text: لوحة البيانات
+      - generic [ref=e11]:
+        - button " إدارة الطلبات" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]: 
+          - text: إدارة الطلبات
+        - text:      
+      - generic [ref=e14]:
+        - button " إدارة المنتجات" [ref=e15] [cursor=pointer]:
+          - generic [ref=e16]: 
+          - text: إدارة المنتجات
+        - text:  +  
+      - generic [ref=e17]:
+        - button " محتوى المتجر" [ref=e18] [cursor=pointer]:
+          - generic [ref=e19]: 
+          - text: محتوى المتجر
+        - text:        
+      - link " الأعضاء" [ref=e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=e21]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=e23]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=e25]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=e27]: 
+        - text: مجموعات الجملة
+      - generic [ref=e28]:
+        - button " التقارير" [ref=e29] [cursor=pointer]:
+          - generic [ref=e30]: 
+          - text: التقارير
+        - text:  
+      - link " الحسابات البنكية" [ref=e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=e32]: 
+        - text: الحسابات البنكية
+      - link " الإعدادات" [ref=e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=e34]: 
+        - text: الإعدادات
+    - generic [ref=e35]:
+      - text: 
+      - generic [ref=e36]:
+        - generic [ref=e37]: 
+        - link "العربية" [ref=e39] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FAdmin%2FToptanci%2FUrunGruplari
+        - link "English" [ref=e40] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FAdmin%2FToptanci%2FUrunGruplari
+      - text: 
+      - generic [ref=e41]:
+        - button "7ANRPS48 Admin Admin 7" [ref=e42] [cursor=pointer]:
+          - generic [ref=e43]:
+            - strong [ref=e44]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=e45]: "7"
+        - text:  
+  - generic [ref=e46]:
+    - main [ref=e47]:
+      - generic [ref=e48]:
+        - generic [ref=e50]:
+          - heading "مجموعات منتجات الجملة" [level=1] [ref=e51]
+          - paragraph [ref=e52]: إدارة مجموعات المنتجات الخاصة بتجار الجملة ونسب الخصم.
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - heading "+ مجموعة منتجات جديدة" [level=3] [ref=e57]:
+                - generic [ref=e58]: +
+                - text: مجموعة منتجات جديدة
+              - generic [ref=e60]:
+                - generic [ref=e61]:
+                  - generic [ref=e62]:
+                    - generic [ref=e63]: اسم المجموعة
+                    - 'textbox "مثال: منسوجات، إلكترونيات، غذاء" [ref=e64]'
+                  - generic [ref=e65]:
+                    - generic [ref=e66]: الوصف
+                    - textbox "وصف مختصر للمجموعة..." [ref=e67]
+                  - generic [ref=e68]:
+                    - generic [ref=e69]: الترتيب
+                    - spinbutton [ref=e70]: "0"
+                  - generic [ref=e71]:
+                    - generic [ref=e72]: الحالة
+                    - combobox [ref=e73]:
+                      - option "نشط" [selected]
+                      - option "غير نشط"
+                - button " حفظ المجموعة" [ref=e74] [cursor=pointer]:
+                  - generic [ref=e75]: 
+                  - text: حفظ المجموعة
+            - generic [ref=e76]:
+              - heading "% إضافة نسبة خصم" [level=3] [ref=e78]:
+                - generic [ref=e79]: "%"
+                - text: إضافة نسبة خصم
+              - generic [ref=e81]:
+                - generic [ref=e82]:
+                  - generic [ref=e83]:
+                    - generic [ref=e84]: مجموعة المنتجات
+                    - combobox [ref=e85]:
+                      - option "-- اختر المجموعة --" [selected]
+                      - option "???????????? ???????????? ????????????????"
+                  - generic [ref=e86]:
+                    - generic [ref=e87]: الحد الأدنى للكمية
+                    - spinbutton [ref=e88]: "10"
+                  - generic [ref=e89]:
+                    - generic [ref=e90]: نسبة الخصم (%)
+                    - spinbutton [ref=e91]: "5"
+                - button " حفظ الخصم" [ref=e92] [cursor=pointer]:
+                  - generic [ref=e93]: 
+                  - text: حفظ الخصم
+          - generic [ref=e95]:
+            - heading " المجموعات المسجلة (1)" [level=3] [ref=e97]:
+              - generic [ref=e98]: 
+              - text: المجموعات المسجلة (1)
+            - table [ref=e100]:
+              - rowgroup [ref=e101]:
+                - row [ref=e102]:
+                  - columnheader "اسم المجموعة" [ref=e103]
+                  - columnheader "الوصف" [ref=e104]
+                  - columnheader "الحالة" [ref=e105]
+                  - columnheader "عدد الخصومات" [ref=e106]
+                  - columnheader "الإجراء" [ref=e107]
+              - rowgroup [ref=e108]:
+                - row [ref=e109]:
+                  - 'cell "???????????? ???????????? ???????????????? الترتيب: 1 · 0 منتج" [ref=e110]':
+                    - generic [ref=e111]: "???????????? ???????????? ????????????????"
+                    - generic [ref=e112]: "الترتيب: 1 · 0 منتج"
+                  - cell "Basic wholesale group" [ref=e113]
+                  - cell "نشط" [ref=e114]
+                  - cell "2 نشط" [ref=e116]
+                  - cell [ref=e118]:
+                    - generic [ref=e119]:
+                      - button "" [ref=e120] [cursor=pointer]
+                      - text:  % 
+                - text:  %   +
+    - contentinfo [ref=e122]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

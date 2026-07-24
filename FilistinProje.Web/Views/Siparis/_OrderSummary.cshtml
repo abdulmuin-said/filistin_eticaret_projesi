@@ -3,168 +3,52 @@
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @inject IStringLocalizer<SharedResource> Localizer
 @{
-    ViewData["Title"] = Localizer["SecurePayment"];
-    var siteSettings = SiteSettingsService.GetSettings();
-    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "â‚ª" : siteSettings.ParaBirimi;
-
+    var currencySymbol = string.IsNullOrWhiteSpace(SiteSettingsService.GetSettings().ParaBirimi) ? "₪" : SiteSettingsService.GetSettings().ParaBirimi;
     decimal araToplam = ViewBag.AraToplam ?? 0;
     decimal indirim = ViewBag.IndirimTutari ?? 0;
     decimal genelToplam = ViewBag.ToplamTutar ?? 0;
     string? kuponKodu = ViewBag.KuponKodu as string;
     var sepetItems = ViewBag.SepetItems as List<FilistinProje.Core.Varliklar.SepetItem> ?? new List<FilistinProje.Core.Varliklar.SepetItem>();
-    var ucretsizKargoLimiti = (decimal)(ViewBag.UcretsizKargoLimiti ?? 500);
-    bool codAktif = ViewBag.KapidaOdemeAktifMi is bool codAccess && codAccess;
+    decimal ucretsizKargoLimiti = (decimal)(ViewBag.UcretsizKargoLimiti ?? 500);
     decimal codBedel = (decimal)(ViewBag.KapidaOdemeHizmetBedeli ?? 0);
-    decimal codLimit = (decimal)(ViewBag.KapidaOdemeLimiti ?? 2000);
-    bool receteZorunlu = ViewBag.ReceteZorunluMu is bool rxRequired && rxRequired;
-    bool isWholesale = User.IsInRole("Wholesale");
-    decimal toptanciMinTutar = (decimal)(ViewBag.ToptanciMinSiparisTutari ?? 500);
-
-    var kayitliAdresler = ViewBag.KayitliAdresler as List<FilistinProje.Core.Varliklar.Adres>;
-    bool girisYapmis = User.Identity?.IsAuthenticated == true;
-    // Şehir listesi veritabanındaki KargoBolgeSehirler'den gelir
-    var sehirListesi = ViewBag.Sehirler as List<string> ?? new List<string>();
-    var sehirler = sehirListesi;
+    decimal indirimliToplam = araToplam - indirim;
+    decimal kalanTutar = Math.Max(0, ucretsizKargoLimiti - indirimliToplam);
+    int shippingProgress = ucretsizKargoLimiti > 0 ? Math.Min(100, (int)(indirimliToplam / ucretsizKargoLimiti * 100)) : 100;
 }
 
-<!-- Breadcrumb -->
-<div class="bg-brand-cream border-b border-brand-border py-4">
-    <div class="container mx-auto px-4 flex items-center justify-center gap-4 text-xs tracking-widest uppercase">
-        <a href="/cart" class="text-brand-mutedtext hover:text-brand-olive transition-colors flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-brand-border text-brand-mutedtext flex items-center justify-center font-bold">1</span> @Localizer["Cart"]
-        </a>
-        <span class="text-brand-border">/</span>
-        <span class="text-brand-olive font-bold flex items-center gap-2">
-            <span class="w-5 h-5 rounded-full bg-brand-olive text-white flex items-center justify-center font-bold">2</span> @Localizer["PaymentAndDelivery"]
-        </span>
-    </div>
-</div>
-
-<div class="container mx-auto px-4 py-12 md:py-16">
-    <div class="text-center mb-12">
-        <h1 class="font-serif text-3xl md:text-5xl text-brand-olive mb-4">@Localizer["SecurePayment"]</h1>
-        <p class="text-sm text-brand-mutedtext max-w-2xl mx-auto">@Localizer["VerifyDeliveryInfo"]</p>
+<div class="checkout-summary-card">
+    <div class="flex items-center justify-between border-b border-brand-border pb-5">
+        <h2 class="font-serif text-2xl text-brand-olive">@Localizer["OrderSummary"]</h2>
+        <a href="/cart" class="text-[11px] font-semibold uppercase tracking-wider text-brand-gold hover:text-brand-olive">@Localizer["Checkout_EditCart"]</a>
     </div>
 
-                <h3 class="font-serif text-2xl text-brand-olive mb-6 pb-4 border-b border-brand-border">@Localizer["OrderSummary"]</h3>
-                
-                @if (sepetItems.Any())
-                {
-                    <div class="mb-6 space-y-3 border-b border-brand-border pb-5">
-                        @foreach (var item in sepetItems)
-                        {
-                            <div class="flex gap-3">
-                                <div class="h-14 w-14 shrink-0 overflow-hidden rounded bg-brand-cream">
-                                    <img src="@item.UrunResimUrl" alt="@item.UrunBaslik" class="h-full w-full object-cover" loading="lazy" decoding="async" />
-                                </div>
-                                <div class="min-w-0 flex-1">
-                                    <div class="line-clamp-2 text-xs font-semibold text-brand-darktext">@item.UrunBaslik</div>
-                                    @if (!string.IsNullOrWhiteSpace(item.SecenekAdi))
-                                    {
-                                        <div class="mt-1 text-[11px] leading-snug text-brand-mutedtext">@item.SecenekAdi</div>
-                                    }
-                                    @if (item.HediyePaketi)
-                                    {
-                                        <div class="mt-0.5 text-[10px] text-brand-olive font-medium">
-                                            <i class="fas fa-gift mr-0.5"></i> @Localizer["GiftWrapShort"]
-                                        </div>
-                                    }
-                                    <div class="mt-1 flex justify-between gap-2 text-xs text-brand-mutedtext">
-                                        <span>x @item.Adet</span>
-                                        <span>@item.Toplam.ToString("N2") @currencySymbol</span>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
-
-                @{
-                    var sepetToplamiIndirimliCheckout = araToplam - indirim;
-                    var kalanTutarCheckout = ucretsizKargoLimiti - sepetToplamiIndirimliCheckout;
-                    var shippingProgressCheckout = Math.Min(100, (int)(((double)sepetToplamiIndirimliCheckout / (double)ucretsizKargoLimiti) * 100));
-                }
-                @if (kalanTutarCheckout > 0)
-                {
-                    <div id="checkoutFreeShippingBanner" class="mb-5 bg-amber-50 border border-amber-200 rounded-lg p-4">
-                        <div class="flex items-center gap-2 text-xs text-amber-800 mb-3">
-                            <i class="fas fa-truck text-brand-gold"></i>
-                            <span>@Localizer["FreeShippingNotice", currencySymbol + kalanTutarCheckout.ToString("N2")]</span>
-                        </div>
-                        <div class="w-full h-2 bg-amber-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-gradient-to-r from-[#b58735] to-[#d4a84b] rounded-full transition-all duration-700" style="width: @(shippingProgressCheckout)%"></div>
-                        </div>
-                        <div class="flex justify-between text-[10px] text-amber-700 mt-1">
-                            <span>@currencySymbol@("0")</span>
-                            <span>@Localizer["FreeShippingProgress", currencySymbol + kalanTutarCheckout.ToString("N2")]</span>
-                            <span>@currencySymbol@ucretsizKargoLimiti.ToString("N2")</span>
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <div id="checkoutFreeShippingBanner" class="mb-5 bg-green-50 border border-green-200 rounded-lg p-4">
-                        <div class="flex items-center gap-2 text-xs text-green-800">
-                            <i class="fas fa-check-circle text-green-500"></i>
-                            <span class="font-semibold">@Localizer["FreeShippingReached"]</span>
-                        </div>
-                    </div>
-                }
-
-                <div class="space-y-4 mb-6 text-sm">
-                    <div class="flex justify-between text-brand-mutedtext">
-                        <span>@Localizer["Subtotal"]</span>
-                        <span>@araToplam.ToString("N2") @currencySymbol</span>
-                    </div>
-
-                    @if (indirim > 0)
-                    {
-                        <div class="flex justify-between text-brand-gold font-medium">
-                            <span>@Localizer["Discount"] (@kuponKodu)</span>
-                            <span>-@indirim.ToString("N2") @currencySymbol</span>
-                        </div>
-                    }
-
-                    <div id="checkoutKargoSatiri" class="flex justify-between text-brand-mutedtext">
-                        <span>@Localizer["ShippingFee"]</span>
-                        <span id="checkoutKargoUcreti" class="text-brand-olive font-medium">@((ViewBag.GosterilecekKargoBedeli == 0) ? Localizer["Free"].Value : $"{currencySymbol}{((decimal)ViewBag.GosterilecekKargoBedeli).ToString("N2")}")</span>
-                    </div>
-
-                    <div id="checkoutCodSurchargeSatiri" class="flex justify-between text-brand-mutedtext hidden">
-                        <span>@Localizer["CODServiceFee"]</span>
-                        <span id="checkoutCodSurchargeUcreti" class="text-brand-gold font-semibold">@currencySymbol@codBedel.ToString("N2")</span>
-                    </div>
-                </div>
-
-                <div class="flex justify-between items-end border-t border-brand-border pt-6 mb-8">
-                    <span class="text-sm text-brand-mutedtext uppercase tracking-wider font-medium">@Localizer["GrandTotal"]</span>
-                    <span id="checkoutGenelToplam" class="text-4xl font-bold text-brand-olive tracking-tight">@genelToplam.ToString("N2") <span class="text-lg font-normal text-brand-mutedtext">@currencySymbol</span></span>
-                </div>
-
-                <div class="space-y-4 pt-6 border-t border-brand-border">
-                    <div class="flex items-start gap-3">
-                        <i class="fas fa-shield-check text-brand-gold mt-1"></i>
-                        <div>
-                            <p class="text-xs font-bold text-brand-darktext uppercase tracking-wider mb-1">@Localizer["256BitSslEncryption"]</p>
-                            <p class="text-[10px] text-brand-mutedtext">@Localizer["256BitSslDescription"]</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <i class="fas fa-box-open text-brand-gold mt-1"></i>
-                        <div>
-                            <p class="text-xs font-bold text-brand-darktext uppercase tracking-wider mb-1">@Localizer["UndamagedDelivery"]</p>
-                            <p class="text-[10px] text-brand-mutedtext">@Localizer["UndamagedDeliveryDescription"]</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                        <i class="fas fa-undo text-brand-gold mt-1"></i>
-                        <div>
-                            <p class="text-xs font-bold text-brand-darktext uppercase tracking-wider mb-1">@Localizer["EasyReturns"]</p>
-                            <p class="text-[10px] text-brand-mutedtext">@Localizer["EasyReturnsDescription"]</p>
-                        </div>
-                    </div>
-                </div>
+    <div class="max-h-[310px] space-y-4 overflow-y-auto py-5 pe-1">
+        @foreach (var item in sepetItems)
+        {
+            <div class="flex gap-3">
+                <div class="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-brand-cream"><img src="@item.UrunResimUrl" alt="@item.UrunBaslik" class="h-full w-full object-cover" loading="lazy"><span class="absolute end-1 top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-olive px-1 text-[10px] font-bold text-white">@item.Adet</span></div>
+                <div class="min-w-0 flex-1"><h3 class="line-clamp-2 text-xs font-semibold leading-relaxed text-brand-darktext">@item.UrunBaslik</h3>@if (!string.IsNullOrWhiteSpace(item.SecenekAdi)) { <p class="mt-0.5 truncate text-[11px] text-brand-mutedtext">@item.SecenekAdi</p> }<p class="mt-1 text-xs font-semibold text-brand-olive">@item.Toplam.ToString("N2") @currencySymbol</p></div>
             </div>
-        </div>
+        }
     </div>
+
+    <div id="checkoutFreeShippingBanner" class="mb-5 rounded-xl border p-4 @(kalanTutar > 0 ? "border-amber-200 bg-amber-50" : "border-green-200 bg-green-50")">
+        @if (kalanTutar > 0)
+        {
+            <div class="mb-2 flex items-center gap-2 text-xs text-amber-800"><i class="fas fa-truck-fast text-brand-gold"></i><span>@Localizer["FreeShippingNotice", currencySymbol + kalanTutar.ToString("N2")]</span></div><div class="h-1.5 overflow-hidden rounded-full bg-amber-200"><div class="h-full rounded-full bg-brand-gold transition-all" style="width:@shippingProgress%"></div></div>
+        }
+        else
+        {
+            <div class="flex items-center gap-2 text-xs font-semibold text-green-800"><i class="fas fa-circle-check"></i>@Localizer["FreeShippingReached"]</div>
+        }
+    </div>
+
+    <dl class="space-y-3 text-sm">
+        <div class="flex justify-between text-brand-mutedtext"><dt>@Localizer["Subtotal"]</dt><dd>@araToplam.ToString("N2") @currencySymbol</dd></div>
+        @if (indirim > 0) { <div class="flex justify-between font-medium text-brand-gold"><dt>@Localizer["Discount"] (@kuponKodu)</dt><dd>-@indirim.ToString("N2") @currencySymbol</dd></div> }
+        <div id="checkoutKargoSatiri" class="flex justify-between text-brand-mutedtext"><dt>@Localizer["ShippingFee"]</dt><dd id="checkoutKargoUcreti" class="font-medium text-brand-olive">@((ViewBag.GosterilecekKargoBedeli == 0) ? Localizer["Free"].Value : $"{((decimal)ViewBag.GosterilecekKargoBedeli):N2} {currencySymbol}")</dd></div>
+        <div id="checkoutCodSurchargeSatiri" class="hidden justify-between text-brand-mutedtext"><dt>@Localizer["CODServiceFee"]</dt><dd id="checkoutCodSurchargeUcreti" class="font-medium text-brand-gold">@codBedel.ToString("N2") @currencySymbol</dd></div>
+    </dl>
+    <div class="mt-5 flex items-end justify-between border-t border-brand-border pt-5"><span class="text-xs font-semibold uppercase tracking-widest text-brand-mutedtext">@Localizer["GrandTotal"]</span><span id="checkoutGenelToplam" class="font-serif text-3xl text-brand-olive">@genelToplam.ToString("N2") <small class="text-base text-brand-mutedtext">@currencySymbol</small></span></div>
+    <div class="mt-6 grid grid-cols-3 gap-2 border-t border-brand-border pt-5 text-center text-[10px] leading-tight text-brand-mutedtext"><div><i class="fas fa-shield-halved mb-1 block text-brand-gold"></i>@Localizer["256BitSslEncryption"]</div><div><i class="fas fa-box mb-1 block text-brand-gold"></i>@Localizer["UndamagedDelivery"]</div><div><i class="fas fa-rotate-left mb-1 block text-brand-gold"></i>@Localizer["EasyReturns"]</div></div>
 </div>

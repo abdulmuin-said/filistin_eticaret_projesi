@@ -328,7 +328,7 @@
     <value>تحقق من معلومات النموذج</value>
   </data>
   <data name="City" xml:space="preserve">
-    <value>المنطقة</value>
+    <value>المدينة</value>
   </data>
   <data name="ClearCart" xml:space="preserve">
     <value>إفراغ السلة</value>
@@ -709,7 +709,7 @@
     <value>الحد الأدنى</value>
   </data>
   <data name="MinSixChars" xml:space="preserve">
-    <value>6 أحرف على الأقل</value>
+    <value>8 أحرف على الأقل</value>
   </data>
   <data name="MostPreferred" xml:space="preserve">
     <value>الأكثر تفضيلاً</value>
@@ -1138,7 +1138,7 @@
     <value>الباحث غير متاح</value>
   </data>
   <data name="SecurePayment" xml:space="preserve">
-    <value>تحويل بنكي</value>
+    <value>إتمام الطلب بأمان</value>
   </data>
   <data name="SecurePaymentDesc" xml:space="preserve">
     <value>دفع سهل عبر بيانات الآيبان</value>
@@ -3061,7 +3061,7 @@
     <value>التقارير</value>
   </data>
   <data name="Admin_Ana_Sayfa" xml:space="preserve">
-    <value>Ana Sayfa</value>
+    <value>عرض في الصفحة الرئيسية</value>
   </data>
   <data name="Admin_Canli_Siteyi_Goruntule" xml:space="preserve">
     <value>Canlı Siteyi Görüntüle</value>
@@ -3483,7 +3483,12 @@
   <data name="Admin_CampaignHelp" xml:space="preserve">
     <value>يعرض تمييز الحملة.</value>
   </data>
-  <data name="Admin_ShowOnHomeHelp" xml:space="preserve">
+  <data name="Admin_CampaignEndDate" xml:space="preserve">
+    <value>تاريخ انتهاء الحملة</value>
+  </data>
+  <data name="Admin_CampaignEndDateHelp" xml:space="preserve">
+    <value>سيتوقف العداد التنازلي عند هذا التاريخ. اتركه فارغاً إذا لم تكن تريد عداداً.</value>
+  </data>  <data name="Admin_ShowOnHomeHelp" xml:space="preserve">
     <value>يظهر ضمن قوائم الصفحة الرئيسية.</value>
   </data>
   <data name="Admin_WhatsappOrder" xml:space="preserve">
@@ -5634,4 +5639,48 @@
   <data name="Admin_ValidFieldTypeRequired" xml:space="preserve"><value>اختر نوع حقل صالحاً.</value></data>
   <data name="Admin_FeatureOptionsRequired" xml:space="preserve"><value>أدخل خيارات لحقل قائمة الاختيار.</value></data>
   <data name="Admin_FeatureCodeDuplicate" xml:space="preserve"><value>هذا الرمز موجود مسبقاً لنوع المنتج المحدد.</value></data>
+  <data name="ChooseFile" xml:space="preserve"><value>اختيار ملف</value></data>
+  <data name="NoFileSelected" xml:space="preserve"><value>لم يتم اختيار ملف</value></data>
+  <data name="SelectedFile" xml:space="preserve"><value>الملف المختار</value></data>
+  <data name="Validation_FullNameRequired" xml:space="preserve"><value>الاسم الكامل مطلوب.</value></data>
+  <data name="Validation_NationalIdRequired" xml:space="preserve"><value>رقم الهوية مطلوب.</value></data>
+  <data name="Validation_NationalIdLength" xml:space="preserve"><value>يجب أن يتراوح رقم الهوية بين 5 و11 خانة.</value></data>
+  <data name="Validation_DateOfBirthRequired" xml:space="preserve"><value>تاريخ الميلاد مطلوب.</value></data>
+  <data name="Validation_EmailRequired" xml:space="preserve"><value>البريد الإلكتروني مطلوب.</value></data>
+  <data name="Validation_EmailInvalid" xml:space="preserve"><value>أدخل عنوان بريد إلكتروني صالحاً.</value></data>
+  <data name="Validation_AddressRequired" xml:space="preserve"><value>العنوان مطلوب.</value></data>
+  <data name="Validation_IdentityPhotoRequired" xml:space="preserve"><value>صورة الهوية مطلوبة.</value></data>
+  <data name="Validation_CityRequired" xml:space="preserve"><value>المدينة مطلوبة.</value></data>
+  <data name="Validation_PasswordRequired" xml:space="preserve"><value>كلمة المرور مطلوبة.</value></data>
+  <data name="Validation_PasswordLength" xml:space="preserve"><value>يجب ألا تقل كلمة المرور عن 8 أحرف.</value></data>
+  <data name="Validation_PasswordMismatch" xml:space="preserve"><value>كلمتا المرور غير متطابقتين.</value></data>
+  <data name="Identity_DuplicateEmail" xml:space="preserve"><value>البريد الإلكتروني '{0}' مسجل مسبقاً.</value></data>
+  <data name="Identity_DuplicateUserName" xml:space="preserve"><value>اسم المستخدم '{0}' مستخدم مسبقاً.</value></data>
+  <data name="Identity_InvalidEmail" xml:space="preserve"><value>البريد الإلكتروني '{0}' غير صالح.</value></data>
+  <data name="Identity_InvalidUserName" xml:space="preserve"><value>اسم المستخدم '{0}' غير صالح.</value></data>
+  <data name="Identity_PasswordMismatch" xml:space="preserve"><value>كلمة المرور غير صحيحة.</value></data>
+  <data name="Identity_PasswordRequiresDigit" xml:space="preserve"><value>يجب أن تحتوي كلمة المرور على رقم واحد على الأقل.</value></data>
+  <data name="Identity_PasswordRequiresLower" xml:space="preserve"><value>يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل.</value></data>
+  <data name="Identity_PasswordRequiresUpper" xml:space="preserve"><value>يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل.</value></data>
+  <data name="Identity_PasswordRequiresNonAlphanumeric" xml:space="preserve"><value>يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل.</value></data>
+  <data name="Identity_PasswordTooShort" xml:space="preserve"><value>يجب ألا تقل كلمة المرور عن {0} أحرف.</value></data>
+  <data name="Identity_PasswordRequiresUniqueChars" xml:space="preserve"><value>يجب أن تحتوي كلمة المرور على {0} أحرف مختلفة على الأقل.</value></data>
+  <data name="Identity_UserAlreadyHasPassword" xml:space="preserve"><value>لدى هذا المستخدم كلمة مرور بالفعل.</value></data>
+  <data name="Identity_UserAlreadyInRole" xml:space="preserve"><value>لدى هذا المستخدم دور '{0}' بالفعل.</value></data>
+  <data name="Identity_UserNotInRole" xml:space="preserve"><value>ليس لدى هذا المستخدم دور '{0}'.</value></data>
+  <data name="Identity_UserLockoutNotEnabled" xml:space="preserve"><value>قفل الحساب غير مفعّل لهذا المستخدم.</value></data>
+  <data name="Identity_DefaultError" xml:space="preserve"><value>حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.</value></data>
+  <data name="Identity_ConcurrencyFailure" xml:space="preserve"><value>تم تعديل الحساب بواسطة طلب آخر. يرجى المحاولة مرة أخرى.</value></data>
+  <data name="Identity_RecoveryCodeRedemptionFailed" xml:space="preserve"><value>تعذر التحقق من رمز الاسترداد.</value></data>
+  <data name="Identity_LoginAlreadyAssociated" xml:space="preserve"><value>تسجيل الدخول الخارجي هذا مرتبط بحساب آخر.</value></data>
+  <data name="Identity_InvalidToken" xml:space="preserve"><value>رمز التحقق غير صالح.</value></data>
+  <data name="DeliveryInformation" xml:space="preserve"><value>معلومات التوصيل</value></data>
+  <data name="DeliveryType" xml:space="preserve"><value>طريقة الاستلام</value></data>
+  <data name="Checkout_EditCart" xml:space="preserve"><value>تعديل السلة</value></data>
+  <data name="Checkout_ShippingCalculatedByCity" xml:space="preserve"><value>يتم احتساب رسوم الشحن تلقائياً بعد اختيار مدينتك.</value></data>
+  <data name="Checkout_ReviewErrors" xml:space="preserve"><value>يرجى مراجعة الحقول المحددة قبل إنشاء طلبك.</value></data>
+  <data name="Checkout_PaymentRequired" xml:space="preserve"><value>اختر طريقة الدفع.</value></data>
+  <data name="Validation_PhoneRequired" xml:space="preserve"><value>رقم الهاتف مطلوب.</value></data>
+  <data name="Validation_PasswordRepeatRequired" xml:space="preserve"><value>يرجى إدخال كلمة المرور مرة أخرى.</value></data>
+  <data name="Checkout_PaymentMethodHelp" xml:space="preserve"><value>اختر طريقة الدفع المناسبة لهذا الطلب.</value></data>
 </root>

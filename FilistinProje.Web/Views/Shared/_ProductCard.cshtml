@@ -17,7 +17,6 @@
 
     var urunUrl = $"/products/{urlSlug}-{Model.Id}";
 
-    // Fiyat mantığı
     decimal gosterFiyat;
     decimal? eskiFiyat = null;
     if (Model.IsWholesale && Model.TopFiyat.HasValue && Model.TopFiyat.Value > 0)
@@ -38,168 +37,168 @@
     bool satisaAcik = stoktaYokSatisIzni || Model.StoktaVarMi;
     bool azStok = Model.StoktaVarMi && Model.ToplamStok >= 1 && Model.ToplamStok <= 4;
 
-    // Rozet önceliği: stok yok > az stok > özel > indirim > yeni
-    string? badgeBg = null;
     string? badgeText = null;
+    var badgeClass = "bg-brand-olive text-white";
     if (!stoktaYokSatisIzni && !Model.StoktaVarMi)
     {
-        badgeBg = "bg-gray-400";
         badgeText = Localizer["OutOfStock"].Value;
+        badgeClass = "bg-[#77786f] text-white";
     }
     else if (azStok)
     {
-        badgeBg = "bg-red-500";
         badgeText = string.Format(Localizer["LowStockBadge"].Value ?? "Son {0}", Model.ToplamStok);
+        badgeClass = "bg-red-500 text-white";
     }
     else if (!string.IsNullOrWhiteSpace(Model.BadgeText))
     {
-        badgeBg = "bg-brand-olive";
         badgeText = Model.BadgeText;
     }
     else if (Model.IndirimVarMi)
     {
-        badgeBg = "bg-brand-gold";
-        badgeText = "%" + Model.IndirimYuzdesi;
+        badgeText = $"-{Model.IndirimYuzdesi}%";
+        badgeClass = "bg-brand-gold text-white";
     }
     else if (Model.YeniUrunMu)
     {
-        badgeBg = "bg-brand-olive";
         badgeText = Localizer["New"].Value;
     }
 
     bool kampanyaAktif = Model.KampanyaBitisTarihi.HasValue && Model.KampanyaBitisTarihi.Value > DateTime.UtcNow;
 }
 
-<article class="group relative flex flex-col" data-motion-item>
+<article class="home-product-card group flex h-full flex-col overflow-hidden rounded-2xl border border-brand-border bg-white p-2.5 shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-brand-lightgold hover:shadow-2xl md:p-3" data-motion-item>
 
-    @* ─── Görsel Alanı ─── *@
-    @* aspect-square ensures CLS-safe fixed ratio. Skeleton removed on img.onload. If no
-       image exists we render an inline SVG placeholder (never a 404 request). *@
-    <div class="skeleton-container relative overflow-hidden aspect-square bg-[#f8f6f2] mb-3 rounded-sm">
-
-        @* Görsel *@
-        <a href="@urunUrl"
-           class="flex items-center justify-center w-full h-full p-3"
-           tabindex="-1" aria-hidden="true">
+    <div class="relative mb-3 flex aspect-square items-center justify-center overflow-hidden rounded-xl bg-brand-warmcream p-3">
+        <a href="@urunUrl" class="flex h-full w-full items-center justify-center" tabindex="-1" aria-hidden="true">
             @if (!string.IsNullOrWhiteSpace(Model.GorselUrl))
             {
                 <img src="@Model.GorselUrl"
                      alt="@(!string.IsNullOrWhiteSpace(Model.Baslik) ? Model.Baslik : Localizer["ProductImage"].Value)"
                      width="800"
                      height="800"
-                     class="img-lazy-load max-h-full max-w-full object-contain
-                            transition-transform duration-500 group-hover:scale-105"
+                     class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
                      loading="lazy"
                      decoding="async"
-                     onload="this.classList.add('loaded'); this.closest('.skeleton-container')?.classList.remove('skeleton');"
-                     onerror="if(!this.dataset.fallbackApplied){this.dataset.fallbackApplied='true';this.src='/img/products/placeholder.webp';}else{this.closest('.skeleton-container')?.classList.remove('skeleton');this.remove();}" />
+                     onerror="if(!this.dataset.fallbackApplied){this.dataset.fallbackApplied='true';this.src='/img/products/placeholder.webp';}" />
             }
             else
             {
-                <div class="flex h-full w-full items-center justify-center text-brand-border" aria-hidden="true">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" class="opacity-30">
-                        <rect x="35" y="55" width="130" height="100" rx="8" />
-                        <path d="M35 85 L165 85" />
-                        <path d="M85 55 L85 35 L145 35 L145 55" />
-                    </svg>
-                </div>
+                <img src="/img/products/placeholder.webp"
+                     alt=""
+                     class="w-1/2 opacity-20 grayscale"
+                     loading="lazy"
+                     decoding="async" />
             }
         </a>
 
-        @* Sol Üst Rozet (RTL: start-2) *@
-        @if (badgeText != null && badgeBg != null)
+        @if (!string.IsNullOrWhiteSpace(badgeText))
         {
-            <span class="absolute top-2 start-2 z-10
-                         @badgeBg text-white
-                         text-[10px] font-semibold tracking-wide
-                         px-2 py-0.5 rounded-full shadow-sm pointer-events-none">
+            <span class="absolute end-2 top-2 z-10 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow-sm @badgeClass">
                 @badgeText
             </span>
         }
 
-        @* Sağ Üst Favori (RTL: end-2) *@
         @if (Model.ShowFavori)
         {
             <button type="button"
                     onclick="window.toggleFavori(this, @Model.Id)"
+                    class="group/favoriteste absolute start-2 top-2 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-white/95 shadow-md transition-all duration-200 hover:scale-110 active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
                     aria-label="@Localizer["AddToFavorites"]"
-                    class="absolute top-2 end-2 z-30
-                           w-8 h-8 flex items-center justify-center
-                           bg-white/95 hover:bg-white rounded-full shadow-md
-                           transition-all duration-200 hover:scale-110 active:scale-90
-                           focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-1">
-                <i class="far fa-heart text-sm text-brand-mutedtext group-hover/fav:text-red-400 transition-colors"></i>
+                    title="@Localizer["AddToFavorites"]">
+                <svg class="h-3.5 w-3.5 text-brand-mutedtext transition-colors group-hover/favoriteste:text-red-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                </svg>
             </button>
         }
 
-        @* Hover Overlay — Hızlı Ekle + Hızlı Bakış *@
-        <div class="absolute inset-0 z-20
-                    flex flex-col items-center justify-end pb-3 gap-2
-                    bg-gradient-to-t from-black/45 via-black/10 to-transparent
-                    opacity-0 group-hover:opacity-100
-                    pointer-events-none group-hover:pointer-events-auto
-                    transition-opacity duration-200">
-
-            @if (Model.ShowQuickAdd && satisaAcik && !Model.FiyatGizliMi)
-            {
+        @if (Model.WhatsappSiparisVarMi)
+        {
+            <div class="absolute inset-x-0 bottom-0 z-20 flex justify-center pb-3
+                        opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto
+                        transition-opacity duration-200">
+                <a href="@urunUrl"
+                   class="inline-flex items-center gap-2
+                          bg-white/95 hover:bg-white active:scale-95
+                          text-green-600 text-xs font-semibold tracking-wide
+                          px-4 py-2 rounded-full shadow-lg border border-green-200
+                          transition-all duration-200
+                          focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-1">
+                    <i class="fab fa-whatsapp text-[15px]"></i>
+                    <span>@Localizer["Admin_WhatsappOrder"]</span>
+                </a>
+            </div>
+        }
+        else if (Model.ShowQuickAdd && satisaAcik && !Model.FiyatGizliMi)
+        {
+            <div class="absolute inset-x-0 bottom-0 z-20 flex justify-center pb-3
+                        opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto
+                        transition-opacity duration-200">
                 <button type="button"
                         data-urun-id="@Model.Id"
                         data-action="quick-add"
                         aria-label="@Localizer["AddToCart"]"
                         class="js-quick-add-btn
                                inline-flex items-center gap-2
-                               bg-brand-olive hover:bg-[#1c2001] active:scale-95
-                               text-white text-xs font-semibold tracking-wide
-                               px-4 py-2 rounded-full shadow-lg
+                               bg-white/95 hover:bg-white active:scale-95
+                               text-brand-olive text-xs font-semibold tracking-wide
+                               px-4 py-2 rounded-full shadow-lg border border-brand-border
                                transition-all duration-200
                                focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-1">
                     <i class="fas fa-cart-plus text-xs js-quick-add-icon"></i>
                     <span class="js-quick-add-label">@Localizer["AddToCart"]</span>
                 </button>
-            }
-
-            <a href="@urunUrl"
-               class="inline-flex items-center gap-1.5
-                      bg-white/90 hover:bg-white active:scale-95
-                      text-brand-olive text-xs font-medium
-                      px-3 py-1.5 rounded-full shadow
-                      transition-all duration-200
-                      focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-1">
-                <i class="fas fa-eye text-[10px]"></i>
-                @Localizer["QuickView"]
-            </a>
-        </div>
+            </div>
+        }
     </div>
 
-    @* ─── Metin Alanı ─── *@
-    <div class="flex flex-col gap-1 flex-1 px-0.5">
-
-        <h3 class="text-sm font-semibold text-brand-darktext line-clamp-2 leading-snug">
-            <a href="@urunUrl"
-               class="hover:text-brand-gold transition-colors duration-200
-                      focus-visible:outline-none focus-visible:text-brand-gold">
+    <div class="flex flex-1 flex-col px-1 pb-1">
+        <h3 class="mb-2.5 line-clamp-2 min-h-[2.6em] text-sm font-semibold leading-relaxed tracking-tight text-brand-darktext md:text-[15px]">
+            <a href="@urunUrl" class="transition-colors hover:text-brand-gold focus-visible:outline-none focus-visible:text-brand-gold">
                 @Model.Baslik
             </a>
         </h3>
 
-        @if (!Model.FiyatGizliMi)
-        {
-            <div class="flex items-center gap-2 flex-wrap mt-0.5">
-                <span class="text-sm font-bold text-brand-gold">
-                    @gosterFiyat.ToString("N0") @currencySymbol
+        <div class="mt-auto border-t border-brand-border/70 pt-3">
+            @if (!Model.FiyatGizliMi)
+            {
+                <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                    <p class="text-[17px] font-bold text-brand-olive md:text-[18px]">@gosterFiyat.ToString("N0") @currencySymbol</p>
+                    @if (eskiFiyat.HasValue)
+                    {
+                        <p class="text-[11px] text-brand-mutedtext line-through">@eskiFiyat.Value.ToString("N0") @currencySymbol</p>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-sm italic text-brand-mutedtext">@Localizer["PriceOnRequest"]</p>
+            }
+
+            @if (Model.WhatsappSiparisVarMi)
+            {
+                <a href="@urunUrl"
+                   class="mt-3 flex w-full items-center justify-center gap-3 rounded-xl border-2 border-green-500 bg-green-50 px-4 py-2.5 text-xs font-semibold uppercase tracking-widest text-green-600 shadow-[0_0_8px_rgba(34,197,94,0.3)] transition-all duration-300 hover:-translate-y-0.5 hover:border-green-500 hover:bg-green-500 hover:text-white hover:shadow-[0_0_15px_rgba(34,197,94,0.6)]">
+                    <i class="fab fa-whatsapp text-[15px]"></i>
+                    <span>@Localizer["Admin_WhatsappOrder"]</span>
+                </a>
+            }
+            else if (Model.ShowQuickAdd && satisaAcik && !Model.FiyatGizliMi)
+            {
+                <button type="button"
+                        class="js-quick-add-btn mt-3 flex w-full items-center justify-center gap-3 rounded-xl border-2 border-brand-gold bg-brand-cream px-4 py-2.5 text-xs font-semibold uppercase tracking-widest text-brand-gold shadow-[0_0_8px_rgba(181,135,53,0.3)] transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-gold hover:bg-brand-gold hover:text-white hover:shadow-[0_0_15px_rgba(181,135,53,0.6)] disabled:cursor-wait"
+                        data-urun-id="@Model.Id"
+                        aria-label="@Localizer["AddToCart"]">
+                    <i class="js-quick-add-icon fas fa-cart-plus text-[13px]"></i>
+                    <span class="js-quick-add-label">@Localizer["AddToCart"]</span>
+                </button>
+            }
+            else if (!satisaAcik)
+            {
+                <span class="mt-3 flex w-full items-center justify-center rounded-xl bg-brand-warmcream px-4 py-2.5 text-xs font-semibold uppercase tracking-widest text-brand-mutedtext">
+                    @Localizer["OutOfStock"]
                 </span>
-                @if (eskiFiyat.HasValue)
-                {
-                    <span class="text-xs text-gray-400 line-through">
-                        @eskiFiyat.Value.ToString("N0") @currencySymbol
-                    </span>
-                }
-            </div>
-        }
-        else
-        {
-            <p class="text-xs text-brand-mutedtext italic mt-0.5">@Localizer["PriceOnRequest"]</p>
-        }
+            }
+        </div>
 
         @if (kampanyaAktif)
         {

@@ -1,0 +1,447 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e3]:
+    - generic [ref=f4e4]:
+      - generic [ref=f4e5]:
+        - generic [ref=f4e6]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f4e7]:
+        - generic [ref=f4e8]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f4e9]:
+        - generic [ref=f4e10]: 
+        - text: Pay on delivery option
+      - generic [ref=f4e11]:
+        - generic [ref=f4e12]: 
+        - text: Fast Production
+      - generic [ref=f4e13]:
+        - generic [ref=f4e14]: 
+        - text: Careful Packaging
+      - generic [ref=f4e15]:
+        - generic [ref=f4e16]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f4e17]:
+        - generic [ref=f4e18]: 
+        - text: 14 Days Return
+      - generic [ref=f4e19]:
+        - generic [ref=f4e20]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f4e21]:
+        - generic [ref=f4e22]: 
+        - text: WhatsApp Support
+    - generic [ref=f4e23]:
+      - generic [ref=f4e24]:
+        - generic [ref=f4e25]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f4e26]:
+        - generic [ref=f4e27]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f4e28]:
+        - generic [ref=f4e29]: 
+        - text: Pay on delivery option
+      - generic [ref=f4e30]:
+        - generic [ref=f4e31]: 
+        - text: Fast Production
+      - generic [ref=f4e32]:
+        - generic [ref=f4e33]: 
+        - text: Careful Packaging
+      - generic [ref=f4e34]:
+        - generic [ref=f4e35]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f4e36]:
+        - generic [ref=f4e37]: 
+        - text: 14 Days Return
+      - generic [ref=f4e38]:
+        - generic [ref=f4e39]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f4e40]:
+        - generic [ref=f4e41]: 
+        - text: WhatsApp Support
+  - banner [ref=f4e42]:
+    - generic [ref=f4e43]:
+      - generic [ref=f4e44]:
+        - generic [ref=f4e45]: 
+        - link "العربية" [ref=f4e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2F
+        - link "English" [ref=f4e48] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2F
+      - link "7ANRPS48" [ref=f4e49] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f4e50]
+      - generic [ref=f4e51]:
+        - button "Search" [ref=f4e52] [cursor=pointer]
+        - link "My Account" [ref=f4e55] [cursor=pointer]:
+          - /url: /profile
+        - link "My Favorites" [ref=f4e58] [cursor=pointer]:
+          - /url: /favorites
+        - link "Cart" [ref=f4e61] [cursor=pointer]:
+          - /url: /cart
+          - generic [ref=f4e64]: "3"
+      - navigation [ref=f4e65]:
+        - list [ref=f4e66]:
+          - listitem [ref=f4e67] [cursor=pointer]:
+            - link "beauty" [ref=f4e68]:
+              - /url: /products?k=89
+          - listitem [ref=f4e71] [cursor=pointer]:
+            - link "fragrances" [ref=f4e72]:
+              - /url: /products?k=90
+          - listitem [ref=f4e75] [cursor=pointer]:
+            - link "furniture" [ref=f4e76]:
+              - /url: /products?k=91
+          - listitem [ref=f4e79] [cursor=pointer]:
+            - link "groceries" [ref=f4e80]:
+              - /url: /products?k=92
+          - listitem [ref=f4e83] [cursor=pointer]:
+            - link "Home Furniture" [ref=f4e84]:
+              - /url: /products?k=78
+          - listitem [ref=f4e87] [cursor=pointer]:
+            - link "Electronics" [ref=f4e88]:
+              - /url: /products?k=79
+          - listitem [ref=f4e91] [cursor=pointer]:
+            - link "Fashion" [ref=f4e92]:
+              - /url: /products?k=80
+          - listitem [ref=f4e95] [cursor=pointer]:
+            - link "Contact" [ref=f4e96]:
+              - /url: /pages/Iletisim
+  - main [ref=f4e97]:
+    - region "Hero Banner" [ref=f4e98]:
+      - generic [ref=f4e99]:
+        - generic [ref=f4e100]:
+          - img "7ANRPS48 Banner" [ref=f4e102]
+          - img "7ANRPS48 Banner" [ref=f4e104]
+        - button "Previous Slide" [ref=f4e105] [cursor=pointer]
+        - button "Next Slide" [ref=f4e108] [cursor=pointer]
+        - generic [ref=f4e111]:
+          - button "Go to slide 1" [ref=f4e112] [cursor=pointer]
+          - button "Go to slide 2" [ref=f4e113] [cursor=pointer]
+    - region "TrustBar" [ref=f4e114]:
+      - generic [ref=f4e116]:
+        - generic [ref=f4e117]: Free shipping on orders over 1,500 ₪
+        - generic [ref=f4e120]: Secure & Safe Payment
+        - generic [ref=f4e123]: 100% Original Products
+        - generic [ref=f4e126]: 24/7 Customer Support
+    - region [ref=f4e129]:
+      - generic [ref=f4e130]:
+        - generic [ref=f4e131]:
+          - generic [ref=f4e132]:
+            - separator [ref=f4e133]
+            - heading "Shop by category" [level=2] [ref=f4e134]
+            - separator [ref=f4e135]
+          - link "View all categories" [ref=f4e136] [cursor=pointer]:
+            - /url: /products
+        - generic [ref=f4e139]:
+          - link "furniture" [ref=f4e140] [cursor=pointer]:
+            - /url: /products?k=91
+            - img "furniture" [ref=f4e142]
+            - heading "furniture" [level=3] [ref=f4e144]
+          - link "fragrances" [ref=f4e145] [cursor=pointer]:
+            - /url: /products?k=90
+            - img "fragrances" [ref=f4e147]
+            - heading "fragrances" [level=3] [ref=f4e149]
+          - link "groceries" [ref=f4e150] [cursor=pointer]:
+            - /url: /products?k=92
+            - img "groceries" [ref=f4e152]
+            - heading "groceries" [level=3] [ref=f4e154]
+          - link "beauty" [ref=f4e155] [cursor=pointer]:
+            - /url: /products?k=89
+            - img "beauty" [ref=f4e157]
+            - heading "beauty" [level=3] [ref=f4e159]
+          - link "Home Furniture" [ref=f4e160] [cursor=pointer]:
+            - /url: /products?k=78
+            - img "Home Furniture" [ref=f4e162]
+            - heading "Home Furniture" [level=3] [ref=f4e164]
+          - link "Electronics" [ref=f4e165] [cursor=pointer]:
+            - /url: /products?k=79
+            - img "Electronics" [ref=f4e167]
+            - heading "Electronics" [level=3] [ref=f4e169]
+          - link "Fashion" [ref=f4e170] [cursor=pointer]:
+            - /url: /products?k=80
+            - img "Fashion" [ref=f4e172]
+            - heading "Fashion" [level=3] [ref=f4e174]
+    - generic [ref=f4e175]:
+      - generic [ref=f4e177]:
+        - separator [ref=f4e178]
+        - heading "Featured Products" [level=2] [ref=f4e179]
+        - separator [ref=f4e180]
+      - generic [ref=f4e181]:
+        - article [ref=f4e182]:
+          - generic [ref=f4e183]:
+            - link [ref=f4e184] [cursor=pointer]:
+              - /url: /products/test-16-apple-127
+            - generic [ref=f4e186]: "-13%"
+            - button "Add to Favorites" [ref=f4e187] [cursor=pointer]
+          - generic [ref=f4e190]:
+            - heading [level=3] [ref=f4e191]:
+              - link "Apple" [ref=f4e192] [cursor=pointer]:
+                - /url: /products/test-16-apple-127
+            - generic [ref=f4e193]:
+              - generic [ref=f4e194]:
+                - paragraph [ref=f4e195]: 2 ₪
+                - paragraph [ref=f4e196]: 2 ₪
+              - button "Add to Cart" [ref=f4e197] [cursor=pointer]:
+                - generic [ref=f4e198]: 
+        - article [ref=f4e200]:
+          - generic [ref=f4e201]:
+            - link [ref=f4e202] [cursor=pointer]:
+              - /url: /products/test-17-beef-steak-128
+            - generic [ref=f4e204]: "-10%"
+            - button "Add to Favorites" [ref=f4e205] [cursor=pointer]
+          - generic [ref=f4e208]:
+            - heading [level=3] [ref=f4e209]:
+              - link "Beef Steak" [ref=f4e210] [cursor=pointer]:
+                - /url: /products/test-17-beef-steak-128
+            - generic [ref=f4e211]:
+              - generic [ref=f4e212]:
+                - paragraph [ref=f4e213]: 12 ₪
+                - paragraph [ref=f4e214]: 13 ₪
+              - button "Add to Cart" [ref=f4e215] [cursor=pointer]:
+                - generic [ref=f4e216]: 
+        - article [ref=f4e218]:
+          - generic [ref=f4e219]:
+            - link [ref=f4e220] [cursor=pointer]:
+              - /url: /products/test-18-cat-food-129
+            - generic [ref=f4e222]: "-10%"
+            - button "Add to Favorites" [ref=f4e223] [cursor=pointer]
+          - generic [ref=f4e226]:
+            - heading [level=3] [ref=f4e227]:
+              - link "Cat Food" [ref=f4e228] [cursor=pointer]:
+                - /url: /products/test-18-cat-food-129
+            - generic [ref=f4e229]:
+              - generic [ref=f4e230]:
+                - paragraph [ref=f4e231]: 8 ₪
+                - paragraph [ref=f4e232]: 9 ₪
+              - button "Add to Cart" [ref=f4e233] [cursor=pointer]:
+                - generic [ref=f4e234]: 
+        - article [ref=f4e236]:
+          - generic [ref=f4e237]:
+            - link [ref=f4e238] [cursor=pointer]:
+              - /url: /products/test-19-chicken-meat-130
+            - generic [ref=f4e240]: "-14%"
+            - button "Add to Favorites" [ref=f4e241] [cursor=pointer]
+          - generic [ref=f4e244]:
+            - heading [level=3] [ref=f4e245]:
+              - link "Chicken Meat" [ref=f4e246] [cursor=pointer]:
+                - /url: /products/test-19-chicken-meat-130
+            - generic [ref=f4e247]:
+              - generic [ref=f4e248]:
+                - paragraph [ref=f4e249]: 9 ₪
+                - paragraph [ref=f4e250]: 10 ₪
+              - button "Add to Cart" [ref=f4e251] [cursor=pointer]:
+                - generic [ref=f4e252]: 
+        - article [ref=f4e254]:
+          - generic [ref=f4e255]:
+            - link [ref=f4e256] [cursor=pointer]:
+              - /url: /products/test-20-cooking-oil-131
+            - generic [ref=f4e258]: "-9%"
+            - button "Add to Favorites" [ref=f4e259] [cursor=pointer]
+          - generic [ref=f4e262]:
+            - heading [level=3] [ref=f4e263]:
+              - link "Cooking Oil" [ref=f4e264] [cursor=pointer]:
+                - /url: /products/test-20-cooking-oil-131
+            - generic [ref=f4e265]:
+              - generic [ref=f4e266]:
+                - paragraph [ref=f4e267]: 5 ₪
+                - paragraph [ref=f4e268]: 5 ₪
+              - button "Add to Cart" [ref=f4e269] [cursor=pointer]:
+                - generic [ref=f4e270]: 
+        - article [ref=f4e272]:
+          - generic [ref=f4e273]:
+            - link [ref=f4e274] [cursor=pointer]:
+              - /url: /products/test-21-cucumber-132
+            - generic [ref=f4e276]: New
+            - button "Add to Favorites" [ref=f4e277] [cursor=pointer]
+          - generic [ref=f4e280]:
+            - heading [level=3] [ref=f4e281]:
+              - link "Cucumber" [ref=f4e282] [cursor=pointer]:
+                - /url: /products/test-21-cucumber-132
+            - generic [ref=f4e283]:
+              - paragraph [ref=f4e285]: 1 ₪
+              - button "Add to Cart" [ref=f4e286] [cursor=pointer]:
+                - generic [ref=f4e287]: 
+        - article [ref=f4e289]:
+          - generic [ref=f4e290]:
+            - link [ref=f4e291] [cursor=pointer]:
+              - /url: /products/test-22-dog-food-133
+            - generic [ref=f4e293]: "-10%"
+            - button "Add to Favorites" [ref=f4e294] [cursor=pointer]
+          - generic [ref=f4e297]:
+            - heading [level=3] [ref=f4e298]:
+              - link "Dog Food" [ref=f4e299] [cursor=pointer]:
+                - /url: /products/test-22-dog-food-133
+            - generic [ref=f4e300]:
+              - generic [ref=f4e301]:
+                - paragraph [ref=f4e302]: 10 ₪
+                - paragraph [ref=f4e303]: 11 ₪
+              - button "Add to Cart" [ref=f4e304] [cursor=pointer]:
+                - generic [ref=f4e305]: 
+        - article [ref=f4e307]:
+          - generic [ref=f4e308]:
+            - link [ref=f4e309] [cursor=pointer]:
+              - /url: /products/test-23-eggs-134
+            - generic [ref=f4e311]: "-11%"
+            - button "Add to Favorites" [ref=f4e312] [cursor=pointer]
+          - generic [ref=f4e315]:
+            - heading [level=3] [ref=f4e316]:
+              - link "Eggs" [ref=f4e317] [cursor=pointer]:
+                - /url: /products/test-23-eggs-134
+            - generic [ref=f4e318]:
+              - generic [ref=f4e319]:
+                - paragraph [ref=f4e320]: 3 ₪
+                - paragraph [ref=f4e321]: 3 ₪
+              - button "Add to Cart" [ref=f4e322] [cursor=pointer]:
+                - generic [ref=f4e323]: 
+      - link "View All" [ref=f4e326] [cursor=pointer]:
+        - /url: /Urun
+    - generic [ref=f4e327]:
+      - generic [ref=f4e328]:
+        - paragraph [ref=f4e329]: Best Sellers
+        - generic [ref=f4e330]:
+          - separator [ref=f4e331]
+          - heading "Most Preferred" [level=2] [ref=f4e332]
+          - separator [ref=f4e333]
+        - link "View All" [ref=f4e334] [cursor=pointer]:
+          - /url: /Urun?sort=popularity
+      - generic [ref=f4e337]:
+        - article [ref=f4e338]:
+          - generic [ref=f4e339]:
+            - link [ref=f4e340] [cursor=pointer]:
+              - /url: /products/test-30-kiwi-141
+            - generic [ref=f4e342]: Best Seller
+            - button "Add to Favorites" [ref=f4e343] [cursor=pointer]
+          - generic [ref=f4e346]:
+            - heading [level=3] [ref=f4e347]:
+              - link "Kiwi" [ref=f4e348] [cursor=pointer]:
+                - /url: /products/test-30-kiwi-141
+            - generic [ref=f4e349]:
+              - generic [ref=f4e350]:
+                - paragraph [ref=f4e351]: 2 ₪
+                - paragraph [ref=f4e352]: 2 ₪
+              - button "Add to Cart" [ref=f4e353] [cursor=pointer]:
+                - generic [ref=f4e354]: 
+        - article [ref=f4e356]:
+          - generic [ref=f4e357]:
+            - link [ref=f4e358] [cursor=pointer]:
+              - /url: /products/test-26-green-chili-pepper-137
+            - generic [ref=f4e360]: Best Seller
+            - button "Add to Favorites" [ref=f4e361] [cursor=pointer]
+          - generic [ref=f4e364]:
+            - heading [level=3] [ref=f4e365]:
+              - link "Green Chili Pepper" [ref=f4e366] [cursor=pointer]:
+                - /url: /products/test-26-green-chili-pepper-137
+            - generic [ref=f4e367]:
+              - generic [ref=f4e368]:
+                - paragraph [ref=f4e369]: 1 ₪
+                - paragraph [ref=f4e370]: 1 ₪
+              - button "Add to Cart" [ref=f4e371] [cursor=pointer]:
+                - generic [ref=f4e372]: 
+        - article [ref=f4e374]:
+          - generic [ref=f4e375]:
+            - link [ref=f4e376] [cursor=pointer]:
+              - /url: /products/test-27-honey-jar-138
+            - generic [ref=f4e378]: Best Seller
+            - button "Add to Favorites" [ref=f4e379] [cursor=pointer]
+          - generic [ref=f4e382]:
+            - heading [level=3] [ref=f4e383]:
+              - link "Honey Jar" [ref=f4e384] [cursor=pointer]:
+                - /url: /products/test-27-honey-jar-138
+            - generic [ref=f4e385]:
+              - generic [ref=f4e386]:
+                - paragraph [ref=f4e387]: 6 ₪
+                - paragraph [ref=f4e388]: 7 ₪
+              - button "Add to Cart" [ref=f4e389] [cursor=pointer]:
+                - generic [ref=f4e390]: 
+        - article [ref=f4e392]:
+          - generic [ref=f4e393]:
+            - link [ref=f4e394] [cursor=pointer]:
+              - /url: /products/test-28-ice-cream-139
+            - generic [ref=f4e396]: Best Seller
+            - button "Add to Favorites" [ref=f4e397] [cursor=pointer]
+          - generic [ref=f4e400]:
+            - heading [level=3] [ref=f4e401]:
+              - link "Ice Cream" [ref=f4e402] [cursor=pointer]:
+                - /url: /products/test-28-ice-cream-139
+            - generic [ref=f4e403]:
+              - generic [ref=f4e404]:
+                - paragraph [ref=f4e405]: 5 ₪
+                - paragraph [ref=f4e406]: 5 ₪
+              - button "Add to Cart" [ref=f4e407] [cursor=pointer]:
+                - generic [ref=f4e408]: 
+        - article [ref=f4e410]:
+          - generic [ref=f4e411]:
+            - link [ref=f4e412] [cursor=pointer]:
+              - /url: /products/test-29-juice-140
+            - generic [ref=f4e414]: Best Seller
+            - button "Add to Favorites" [ref=f4e415] [cursor=pointer]
+          - generic [ref=f4e418]:
+            - heading [level=3] [ref=f4e419]:
+              - link "Juice" [ref=f4e420] [cursor=pointer]:
+                - /url: /products/test-29-juice-140
+            - generic [ref=f4e421]:
+              - generic [ref=f4e422]:
+                - paragraph [ref=f4e423]: 4 ₪
+                - paragraph [ref=f4e424]: 4 ₪
+              - button "Add to Cart" [ref=f4e425] [cursor=pointer]:
+                - generic [ref=f4e426]: 
+    - generic [ref=f4e430]:
+      - generic [ref=f4e431]:
+        - heading "Bank Transfer" [level=4] [ref=f4e434]
+        - paragraph [ref=f4e435]: Easy payment with IBAN details
+      - generic [ref=f4e436]:
+        - heading "Fast Delivery" [level=4] [ref=f4e439]
+        - paragraph [ref=f4e440]: Your orders arrive quickly
+      - generic [ref=f4e441]:
+        - heading "Customer Satisfaction" [level=4] [ref=f4e444]
+        - paragraph [ref=f4e445]: 100% customer satisfaction focused service
+  - contentinfo [ref=f4e446]:
+    - generic [ref=f4e448]:
+      - generic [ref=f4e453]:
+        - generic [ref=f4e454]: Across Palestine
+        - generic [ref=f4e455]: Free Shipping
+      - generic [ref=f4e460]:
+        - generic [ref=f4e461]: Bank Transfer
+        - generic [ref=f4e462]: 256 Bit SSL
+      - generic [ref=f4e467]:
+        - generic [ref=f4e468]: Bank Transfer
+        - generic [ref=f4e469]: Easy payment by IBAN
+    - generic [ref=f4e470]:
+      - generic [ref=f4e471]:
+        - generic [ref=f4e472]:
+          - heading "Subscribe to newsletter" [level=3] [ref=f4e473]
+          - paragraph [ref=f4e474]: Get new arrivals, Palestinian market picks, and special offers in your inbox.
+          - generic [ref=f4e475]:
+            - textbox "Email Address" [ref=f4e476]
+            - button "Subscribe" [ref=f4e477] [cursor=pointer]
+        - generic [ref=f4e478]:
+          - heading "Corporate" [level=4] [ref=f4e479]
+          - list [ref=f4e480]:
+            - listitem [ref=f4e481]:
+              - link "About Us" [ref=f4e482] [cursor=pointer]:
+                - /url: /pages/about
+            - listitem [ref=f4e483]:
+              - link "Contact" [ref=f4e484] [cursor=pointer]:
+                - /url: /pages/contact
+            - listitem [ref=f4e485]:
+              - link "All Products" [ref=f4e486] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=f4e487]:
+              - link "Privacy Policy" [ref=f4e488] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f4e489]:
+              - link "Distance Sales Contract" [ref=f4e490] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+      - generic [ref=f4e491]:
+        - paragraph [ref=f4e493]: © 2026 7ANRPS48 — All rights reserved.
+        - generic [ref=f4e494]:
+          - link "Privacy Policy" [ref=f4e495] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "Return and Exchange" [ref=f4e496] [cursor=pointer]:
+            - /url: /pages/return-policy
+          - text: "|"
+          - link "About Us" [ref=f4e497] [cursor=pointer]:
+            - /url: /pages/about
+  - link "WhatsApp Contact" [ref=f4e498] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=f4e501]: WhatsApp
+  - link "Cart" [ref=f4e502] [cursor=pointer]:
+    - /url: /cart
+    - generic [ref=f4e505]: "3"

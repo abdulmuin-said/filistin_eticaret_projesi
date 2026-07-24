@@ -1,0 +1,360 @@
+- generic [active] [ref=f13e1]:
+  - generic [ref=f13e3]:
+    - generic [ref=f13e4]:
+      - generic [ref=f13e5]:
+        - generic [ref=f13e6]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f13e7]:
+        - generic [ref=f13e8]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f13e9]:
+        - generic [ref=f13e10]: 
+        - text: Pay on delivery option
+      - generic [ref=f13e11]:
+        - generic [ref=f13e12]: 
+        - text: Fast Production
+      - generic [ref=f13e13]:
+        - generic [ref=f13e14]: 
+        - text: Careful Packaging
+      - generic [ref=f13e15]:
+        - generic [ref=f13e16]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f13e17]:
+        - generic [ref=f13e18]: 
+        - text: 14 Days Return
+      - generic [ref=f13e19]:
+        - generic [ref=f13e20]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f13e21]:
+        - generic [ref=f13e22]: 
+        - text: WhatsApp Support
+    - generic [ref=f13e23]:
+      - generic [ref=f13e24]:
+        - generic [ref=f13e25]: 
+        - text: Free shipping on orders over 1,500 ₪
+      - generic [ref=f13e26]:
+        - generic [ref=f13e27]: 
+        - text: Easy payment by IBAN
+      - generic [ref=f13e28]:
+        - generic [ref=f13e29]: 
+        - text: Pay on delivery option
+      - generic [ref=f13e30]:
+        - generic [ref=f13e31]: 
+        - text: Fast Production
+      - generic [ref=f13e32]:
+        - generic [ref=f13e33]: 
+        - text: Careful Packaging
+      - generic [ref=f13e34]:
+        - generic [ref=f13e35]: 
+        - text: Delivery Across Palestine
+      - generic [ref=f13e36]:
+        - generic [ref=f13e37]: 
+        - text: 14 Days Return
+      - generic [ref=f13e38]:
+        - generic [ref=f13e39]: 
+        - text: Manufacturer Guarantee
+      - generic [ref=f13e40]:
+        - generic [ref=f13e41]: 
+        - text: WhatsApp Support
+  - banner [ref=f13e42]:
+    - generic [ref=f13e43]:
+      - generic [ref=f13e44]:
+        - generic [ref=f13e45]: 
+        - link "العربية" [ref=f13e47] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2Fproducts%2Ftest-30-kiwi-141
+        - link "English" [ref=f13e48] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2Fproducts%2Ftest-30-kiwi-141
+      - link "7ANRPS48" [ref=f13e49] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f13e50]
+      - generic [ref=f13e51]:
+        - button "Search" [ref=f13e52] [cursor=pointer]
+        - link "Login" [ref=f13e55] [cursor=pointer]:
+          - /url: /account/GirisYap
+        - link "My Favorites" [ref=f13e58] [cursor=pointer]:
+          - /url: /favorites
+        - link "Cart" [ref=f13e61] [cursor=pointer]:
+          - /url: /cart
+          - generic [ref=f13e64]: "1"
+      - navigation [ref=f13e65]:
+        - list [ref=f13e66]:
+          - listitem [ref=f13e67] [cursor=pointer]:
+            - link "beauty" [ref=f13e68]:
+              - /url: /products?k=89
+          - listitem [ref=f13e71] [cursor=pointer]:
+            - link "fragrances" [ref=f13e72]:
+              - /url: /products?k=90
+          - listitem [ref=f13e75] [cursor=pointer]:
+            - link "furniture" [ref=f13e76]:
+              - /url: /products?k=91
+          - listitem [ref=f13e79] [cursor=pointer]:
+            - link "groceries" [ref=f13e80]:
+              - /url: /products?k=92
+          - listitem [ref=f13e83] [cursor=pointer]:
+            - link "Home Furniture" [ref=f13e84]:
+              - /url: /products?k=78
+          - listitem [ref=f13e87] [cursor=pointer]:
+            - link "Electronics" [ref=f13e88]:
+              - /url: /products?k=79
+          - listitem [ref=f13e91] [cursor=pointer]:
+            - link "Fashion" [ref=f13e92]:
+              - /url: /products?k=80
+          - listitem [ref=f13e95] [cursor=pointer]:
+            - link "Contact" [ref=f13e96]:
+              - /url: /pages/Iletisim
+  - main [ref=f13e97]:
+    - text:      
+    - generic [ref=f13e99]:
+      - link "Home Page" [ref=f13e100] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f13e101]: /
+      - link "Collection" [ref=f13e102] [cursor=pointer]:
+        - /url: /products
+      - generic [ref=f13e103]: /
+      - generic [ref=f13e104]: Kiwi
+    - generic [ref=f13e105]:
+      - generic [ref=f13e106]:
+        - region "Product Image" [ref=f13e108]:
+          - img "كيوي" [ref=f13e109]
+        - generic [ref=f13e110]:
+          - generic [ref=f13e111]:
+            - link "groceries" [ref=f13e112] [cursor=pointer]:
+              - /url: /products?k=92
+            - heading "Kiwi" [level=1] [ref=f13e113]
+            - generic [ref=f13e114]:
+              - generic "5.0" [ref=f13e115]:
+                - generic [ref=f13e116]: 
+                - generic [ref=f13e117]: 
+                - generic [ref=f13e118]: 
+                - generic [ref=f13e119]: 
+                - generic [ref=f13e120]: 
+              - link "0 reviews" [ref=f13e121] [cursor=pointer]:
+                - /url: "#reviews"
+            - paragraph [ref=f13e122]: ✨ Kiwi - carefully selected for your everyday routine.
+          - generic [ref=f13e123]:
+            - generic [ref=f13e124]: 2.11 ₪
+            - generic [ref=f13e125]: 2.49 ₪
+            - generic [ref=f13e126]: "%15 Discount"
+          - generic [ref=f13e127]:
+            - generic [ref=f13e128]:
+              - generic [ref=f13e129]: 
+              - text: Made to Order
+            - generic [ref=f13e130]:
+              - generic [ref=f13e131]: 
+              - text: 1 days
+          - text: 
+          - generic [ref=f13e132]:
+            - generic [ref=f13e133]:
+              - text: 
+              - generic [ref=f13e135] [cursor=pointer]:
+                - radio "Standard" [checked]
+                - text: Standard
+            - generic [ref=f13e136]:
+              - generic [ref=f13e137]:
+                - generic [ref=f13e138]: Quantity
+                - generic [ref=f13e139]:
+                  - button "-" [ref=f13e140] [cursor=pointer]
+                  - spinbutton [ref=f13e141]: "1"
+                  - button "+" [ref=f13e142] [cursor=pointer]
+              - button " Added" [disabled] [ref=f13e340]:
+                - generic [ref=f13e341]: 
+                - text: Added
+              - link "Cart" [ref=f13e146] [cursor=pointer]:
+                - /url: /cart
+                - generic [ref=f13e147]: 
+          - generic [ref=f13e148]:
+            - generic [ref=f13e149]:
+              - generic [ref=f13e150]: 
+              - paragraph [ref=f13e151]: Secure Checkout
+            - generic [ref=f13e152]:
+              - generic [ref=f13e153]: 
+              - paragraph [ref=f13e154]: Free Shipping
+            - generic [ref=f13e155]:
+              - generic [ref=f13e156]: 
+              - paragraph [ref=f13e157]: Return Guarantee
+          - generic [ref=f13e158]:
+            - generic [ref=f13e159]: 
+            - text: Secure checkout and protected order support
+      - generic [ref=f13e161]:
+        - generic [ref=f13e162]:
+          - generic [ref=f13e163]:
+            - article [ref=f13e164]:
+              - generic [ref=f13e165]: 
+              - heading "Material" [level=3] [ref=f13e166]
+              - paragraph [ref=f13e167]: ✨ Quality-selected product | ✨ منتج مختار بعناية
+            - article [ref=f13e168]:
+              - generic [ref=f13e169]: 
+              - heading "Packaging" [level=3] [ref=f13e170]
+              - paragraph [ref=f13e171]: 📦 Carefully packed for safe handling | 📦 تغليف بعناية لحماية المنتج
+            - article [ref=f13e172]:
+              - generic [ref=f13e173]: 
+              - heading "Care" [level=3] [ref=f13e174]
+              - paragraph [ref=f13e175]: 💡 Follow the product label instructions | 💡 اتبع تعليمات ملصق المنتج
+          - generic [ref=f13e176]:
+            - heading " Product Description" [level=2] [ref=f13e177]:
+              - generic [ref=f13e178]: 
+              - text: Product Description
+            - generic [ref=f13e179]: "✨ Kiwi Nutrient-rich kiwi, perfect for snacking or adding a tropical twist to your dishes. ✅ Carefully selected for a dependable everyday experience. 📦 Packed with care to help your product arrive in great condition. 💡 Browse the product images and details to choose with confidence. 🏷️ Category: groceries."
+          - generic [ref=f13e180]:
+            - heading " Product Details" [level=2] [ref=f13e181]:
+              - generic [ref=f13e182]: 
+              - text: Product Details
+            - table [ref=f13e184]:
+              - rowgroup [ref=f13e185]:
+                - row [ref=f13e186]:
+                  - rowheader "🏷️ Brand" [ref=f13e187]
+                  - 'cell "Selected | العلامة: مختارة" [ref=f13e188]'
+                - row [ref=f13e189]:
+                  - rowheader "🔖 SKU" [ref=f13e190]
+                  - cell "GRO-BRD-KIW-030" [ref=f13e191]
+                - row [ref=f13e192]:
+                  - rowheader "📦 Category" [ref=f13e193]
+                  - 'cell "groceries | الفئة: بقالة" [ref=f13e194]'
+                - row [ref=f13e195]:
+                  - rowheader "✅ Availability" [ref=f13e196]
+                  - 'cell "99 units | المتوفر: 99 قطعة" [ref=f13e197]'
+        - complementary [ref=f13e198]:
+          - heading " Reviews" [level=2] [ref=f13e199]:
+            - generic [ref=f13e200]: 
+            - text: Reviews
+          - generic [ref=f13e201]:
+            - generic [ref=f13e202]: 
+            - paragraph [ref=f13e203]: No reviews yet
+            - button "Write Review" [ref=f13e204] [cursor=pointer]
+      - region [ref=f13e205]:
+        - generic [ref=f13e206]:
+          - generic [ref=f13e207]:
+            - paragraph [ref=f13e208]: Complete your selection
+            - heading "Often chosen together" [level=2] [ref=f13e209]
+          - link "Collection" [ref=f13e210] [cursor=pointer]:
+            - /url: /products?k=92
+        - generic [ref=f13e211]:
+          - link [ref=f13e212] [cursor=pointer]:
+            - /url: /products/test-26-green-chili-pepper-137
+            - img "Green Chili Pepper" [ref=f13e213]
+            - heading "Green Chili Pepper" [level=3] [ref=f13e214]
+            - paragraph [ref=f13e215]: 0.98 ₪
+          - link [ref=f13e216] [cursor=pointer]:
+            - /url: /products/test-17-beef-steak-128
+            - img "Beef Steak" [ref=f13e217]
+            - heading "Beef Steak" [level=3] [ref=f13e218]
+            - paragraph [ref=f13e219]: 11.74 ₪
+          - link [ref=f13e220] [cursor=pointer]:
+            - /url: /products/test-18-cat-food-129
+            - img "Cat Food" [ref=f13e221]
+            - heading "Cat Food" [level=3] [ref=f13e222]
+            - paragraph [ref=f13e223]: 8.13 ₪
+      - region [ref=f13e224]:
+        - generic [ref=f13e225]:
+          - generic [ref=f13e226]:
+            - separator [ref=f13e227]
+            - heading "Similar Products" [level=2] [ref=f13e228]
+            - separator [ref=f13e229]
+          - generic [ref=f13e230]:
+            - link "Green Chili Pepper Green Chili Pepper 0.98 ₪ 0.99 ₪" [ref=f13e231] [cursor=pointer]:
+              - /url: /products/test-26-green-chili-pepper-137
+              - img "Green Chili Pepper" [ref=f13e233]
+              - heading "Green Chili Pepper" [level=3] [ref=f13e234]
+              - generic [ref=f13e235]:
+                - generic [ref=f13e236]: 0.98 ₪
+                - generic [ref=f13e237]: 0.99 ₪
+            - link "Beef Steak Beef Steak 11.74 ₪ 12.99 ₪" [ref=f13e238] [cursor=pointer]:
+              - /url: /products/test-17-beef-steak-128
+              - img "Beef Steak" [ref=f13e240]
+              - heading "Beef Steak" [level=3] [ref=f13e241]
+              - generic [ref=f13e242]:
+                - generic [ref=f13e243]: 11.74 ₪
+                - generic [ref=f13e244]: 12.99 ₪
+            - link "Cat Food Cat Food 8.13 ₪ 8.99 ₪" [ref=f13e245] [cursor=pointer]:
+              - /url: /products/test-18-cat-food-129
+              - img "Cat Food" [ref=f13e247]
+              - heading "Cat Food" [level=3] [ref=f13e248]
+              - generic [ref=f13e249]:
+                - generic [ref=f13e250]: 8.13 ₪
+                - generic [ref=f13e251]: 8.99 ₪
+            - link "Chicken Meat Chicken Meat 8.62 ₪ 9.99 ₪" [ref=f13e252] [cursor=pointer]:
+              - /url: /products/test-19-chicken-meat-130
+              - img "Chicken Meat" [ref=f13e254]
+              - heading "Chicken Meat" [level=3] [ref=f13e255]
+              - generic [ref=f13e256]:
+                - generic [ref=f13e257]: 8.62 ₪
+                - generic [ref=f13e258]: 9.99 ₪
+            - link "Cooking Oil Cooking Oil 4.52 ₪ 4.99 ₪" [ref=f13e259] [cursor=pointer]:
+              - /url: /products/test-20-cooking-oil-131
+              - img "Cooking Oil" [ref=f13e261]
+              - heading "Cooking Oil" [level=3] [ref=f13e262]
+              - generic [ref=f13e263]:
+                - generic [ref=f13e264]: 4.52 ₪
+                - generic [ref=f13e265]: 4.99 ₪
+            - link "Apple Apple 1.74 ₪ 1.99 ₪" [ref=f13e266] [cursor=pointer]:
+              - /url: /products/test-16-apple-127
+              - img "Apple" [ref=f13e268]
+              - heading "Apple" [level=3] [ref=f13e269]
+              - generic [ref=f13e270]:
+                - generic [ref=f13e271]: 1.74 ₪
+                - generic [ref=f13e272]: 1.99 ₪
+  - contentinfo [ref=f13e273]:
+    - generic [ref=f13e275]:
+      - generic [ref=f13e280]:
+        - generic [ref=f13e281]: Across Palestine
+        - generic [ref=f13e282]: Free Shipping
+      - generic [ref=f13e287]:
+        - generic [ref=f13e288]: Secure Checkout
+        - generic [ref=f13e289]: 256 Bit SSL
+      - generic [ref=f13e294]:
+        - generic [ref=f13e295]: Bank Transfer
+        - generic [ref=f13e296]: Easy payment by IBAN
+    - generic [ref=f13e297]:
+      - generic [ref=f13e298]:
+        - generic [ref=f13e299]:
+          - heading "Subscribe to newsletter" [level=3] [ref=f13e300]
+          - paragraph [ref=f13e301]: Get new arrivals, Palestinian market picks, and special offers in your inbox.
+          - generic [ref=f13e302]:
+            - textbox "Email Address" [ref=f13e303]
+            - button "Subscribe" [ref=f13e304] [cursor=pointer]
+        - generic [ref=f13e305]:
+          - heading "Corporate" [level=4] [ref=f13e306]
+          - list [ref=f13e307]:
+            - listitem [ref=f13e308]:
+              - link "About Us" [ref=f13e309] [cursor=pointer]:
+                - /url: /pages/about
+            - listitem [ref=f13e310]:
+              - link "Contact" [ref=f13e311] [cursor=pointer]:
+                - /url: /pages/contact
+            - listitem [ref=f13e312]:
+              - link "All Products" [ref=f13e313] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=f13e314]:
+              - link "Privacy Policy" [ref=f13e315] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f13e316]:
+              - link "Distance Sales Contract" [ref=f13e317] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - generic [ref=f13e318]:
+            - link "Facebook" [ref=f13e319] [cursor=pointer]:
+              - /url: https://www.facebook.com/7anrps48
+              - generic [ref=f13e320]: 
+            - link "X / Twitter" [ref=f13e321] [cursor=pointer]:
+              - /url: https://x.com/7anrps48?s=21
+              - generic [ref=f13e322]: 
+      - generic [ref=f13e323]:
+        - paragraph [ref=f13e325]: © 2026 7ANRPS48 — All rights reserved.
+        - generic [ref=f13e326]:
+          - link "Privacy Policy" [ref=f13e327] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "Return and Exchange" [ref=f13e328] [cursor=pointer]:
+            - /url: /pages/return-policy
+          - text: "|"
+          - link "About Us" [ref=f13e329] [cursor=pointer]:
+            - /url: /pages/about
+  - generic [ref=f13e343]:
+    - generic [ref=f13e344]: 
+    - paragraph [ref=f13e346]: Successfully added to cart
+    - button "" [ref=f13e347] [cursor=pointer]
+  - link "WhatsApp Contact" [ref=f13e330] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=f13e333]: WhatsApp
+  - link "Cart" [ref=f13e334] [cursor=pointer]:
+    - /url: /cart
+  - text:        

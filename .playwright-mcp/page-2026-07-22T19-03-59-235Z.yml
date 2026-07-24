@@ -1,0 +1,219 @@
+- generic [ref=f1e2]:
+  - text:          +                    
+  - banner [ref=f1e3]:
+    - generic [ref=f1e4]:
+      - link "7ANRPS48 لوحة التحكم" [ref=f1e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f1e6]
+      - generic [ref=f1e7]: لوحة التحكم
+    - navigation "القائمة الرئيسية للإدارة" [ref=f1e8]:
+      - link " لوحة البيانات" [ref=f1e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f1e10]: 
+        - text: لوحة البيانات
+      - generic [ref=f1e11]:
+        - button " إدارة الطلبات" [ref=f1e12] [cursor=pointer]:
+          - generic [ref=f1e13]: 
+          - text: إدارة الطلبات
+        - text:      
+      - generic [ref=f1e14]:
+        - button " إدارة المنتجات" [ref=f1e15] [cursor=pointer]:
+          - generic [ref=f1e16]: 
+          - text: إدارة المنتجات
+        - text:  +  
+      - generic [ref=f1e17]:
+        - button " محتوى المتجر" [expanded] [active] [ref=f1e18] [cursor=pointer]:
+          - generic [ref=f1e19]: 
+          - text: محتوى المتجر
+        - list [ref=f1e159]:
+          - listitem [ref=f1e160]:
+            - link " إدارة الشرائح" [ref=f1e161] [cursor=pointer]:
+              - /url: /Admin/Slayt
+              - generic [ref=f1e162]: 
+              - text: إدارة الشرائح
+          - listitem [ref=f1e163]:
+            - link " محتوى الصفحة الرئيسية" [ref=f1e164] [cursor=pointer]:
+              - /url: /Admin/AnaSayfa
+              - generic [ref=f1e165]: 
+              - text: محتوى الصفحة الرئيسية
+          - listitem [ref=f1e166]:
+            - link " أقسام الصفحة الرئيسية" [ref=f1e167] [cursor=pointer]:
+              - /url: /Admin/HomeSections
+              - generic [ref=f1e168]: 
+              - text: أقسام الصفحة الرئيسية
+          - listitem [ref=f1e169]:
+            - link " كوبونات الخصم" [ref=f1e170] [cursor=pointer]:
+              - /url: /Admin/Kupon
+              - generic [ref=f1e171]: 
+              - text: كوبونات الخصم
+          - listitem [ref=f1e172]:
+            - link " الرسائل" [ref=f1e173] [cursor=pointer]:
+              - /url: /Admin/Iletisim
+              - generic [ref=f1e174]: 
+              - text: الرسائل
+          - listitem [ref=f1e175]:
+            - link " تقييمات المنتجات" [ref=f1e176] [cursor=pointer]:
+              - /url: /Admin/Yorum
+              - generic [ref=f1e177]: 
+              - text: تقييمات المنتجات
+          - listitem [ref=f1e178]:
+            - link " مشتركي النشرة البريدية" [ref=f1e179] [cursor=pointer]:
+              - /url: /Admin/Bulten
+              - generic [ref=f1e180]: 
+              - text: مشتركي النشرة البريدية
+          - listitem [ref=f1e181]:
+            - link " الصفحات المؤسسية" [ref=f1e182] [cursor=pointer]:
+              - /url: /Admin/Sayfa
+              - generic [ref=f1e183]: 
+              - text: الصفحات المؤسسية
+      - link " الأعضاء" [ref=f1e20] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f1e21]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=f1e22] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f1e23]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=f1e24] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f1e25]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=f1e26] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f1e27]: 
+        - text: مجموعات الجملة
+      - generic [ref=f1e28]:
+        - button " التقارير" [ref=f1e29] [cursor=pointer]:
+          - generic [ref=f1e30]: 
+          - text: التقارير
+        - text:  
+      - link " الحسابات البنكية" [ref=f1e31] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f1e32]: 
+        - text: الحسابات البنكية
+      - link " الإعدادات" [ref=f1e33] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f1e34]: 
+        - text: الإعدادات
+    - generic [ref=f1e35]:
+      - text: 
+      - generic [ref=f1e36]:
+        - generic [ref=f1e37]: 
+        - link "العربية" [ref=f1e39] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FAdmin%2FAyarlar
+        - link "English" [ref=f1e40] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FAdmin%2FAyarlar
+      - text: 
+      - generic [ref=f1e41]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f1e42] [cursor=pointer]:
+          - generic [ref=f1e43]:
+            - strong [ref=f1e44]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f1e45]: "7"
+        - text:  
+  - generic [ref=f1e46]:
+    - main [ref=f1e47]:
+      - generic [ref=f1e49]:
+        - generic [ref=f1e50]:
+          - generic [ref=f1e51]:
+            - generic [ref=f1e52]: إعدادات المتجر
+            - heading "إعدادات الموقع" [level=1] [ref=f1e53]
+            - paragraph [ref=f1e54]: إدارة واجهة المتجر والاتصال ووسائل التواصل الاجتماعي وSEO والشحن وإشعارات البريد من مكان واحد.
+          - generic [ref=f1e55]:
+            - link " عرض الموقع" [ref=f1e56] [cursor=pointer]:
+              - /url: /
+              - generic [ref=f1e57]: 
+              - text: عرض الموقع
+            - link " إعدادات الصفحة الرئيسية" [ref=f1e58] [cursor=pointer]:
+              - /url: /Admin/AnaSayfa
+              - generic [ref=f1e59]: 
+              - text: إعدادات الصفحة الرئيسية
+        - generic [ref=f1e60]:
+          - tablist "أقسام الإعدادات" [ref=f1e61]:
+            - button " العلامة التجارية" [ref=f1e62] [cursor=pointer]:
+              - generic [ref=f1e63]: 
+              - text: العلامة التجارية
+            - button " الاتصال" [ref=f1e64] [cursor=pointer]:
+              - generic [ref=f1e65]: 
+              - text: الاتصال
+            - button " اجتماعي" [ref=f1e66] [cursor=pointer]:
+              - generic [ref=f1e67]: 
+              - text: اجتماعي
+            - button " المبيعات" [ref=f1e68] [cursor=pointer]:
+              - generic [ref=f1e69]: 
+              - text: المبيعات
+            - button " الدفع" [ref=f1e70] [cursor=pointer]:
+              - generic [ref=f1e71]: 
+              - text: الدفع
+            - button " الدفع عند الاستلام" [ref=f1e72] [cursor=pointer]:
+              - generic [ref=f1e73]: 
+              - text: الدفع عند الاستلام
+            - button " SEO" [ref=f1e74] [cursor=pointer]:
+              - generic [ref=f1e75]: 
+              - text: SEO
+            - button " البريد" [ref=f1e76] [cursor=pointer]:
+              - generic [ref=f1e77]: 
+              - text: البريد
+            - button " الصيانة" [ref=f1e78] [cursor=pointer]:
+              - generic [ref=f1e79]: 
+              - text: الصيانة
+          - generic [ref=f1e80]:
+            - main [ref=f1e81]:
+              - text:  
+              - generic [ref=f1e84]:
+                - generic [ref=f1e85]:
+                  - generic [ref=f1e86]: 
+                  - generic [ref=f1e87]:
+                    - heading "روابط وسائل التواصل الاجتماعي" [level=2] [ref=f1e88]
+                    - paragraph [ref=f1e89]: تظهر في التذييل ومناطق الروابط الاجتماعية.
+                - generic [ref=f1e90]:
+                  - generic [ref=f1e91]:
+                    - generic [ref=f1e92]: Instagram
+                    - textbox "https://instagram.com/7anrps48" [ref=f1e93]
+                  - generic [ref=f1e94]:
+                    - generic [ref=f1e95]: Facebook
+                    - textbox "https://facebook.com/7anrps48" [ref=f1e96]
+                  - generic [ref=f1e97]:
+                    - generic [ref=f1e98]: TikTok
+                    - textbox "7anrps48" [ref=f1e99]:
+                      - /placeholder: " aria-label="
+                  - generic [ref=f1e100]:
+                    - generic [ref=f1e101]: YouTube
+                    - textbox "https://youtube.com/..." [ref=f1e102]
+                  - generic [ref=f1e103]:
+                    - generic [ref=f1e104]: Pinterest
+                    - textbox "https://pinterest.com/7anrps48" [ref=f1e105]
+                  - generic [ref=f1e106]:
+                    - generic [ref=f1e107]: X / Twitter
+                    - textbox "https://x.com/7anrps48" [ref=f1e108]
+              - text:       
+            - complementary [ref=f1e109]:
+              - generic [ref=f1e110]:
+                - heading "ماذا تؤثر هذه الصفحة؟" [level=2] [ref=f1e112]
+                - list [ref=f1e114]:
+                  - listitem [ref=f1e115]:
+                    - generic [ref=f1e116]: 
+                    - generic [ref=f1e117]: الشعار واسم العلامة التجارية والشريط العلوي والتذييل يظهرون في واجهة المتجر.
+                  - listitem [ref=f1e118]:
+                    - generic [ref=f1e119]: 
+                    - generic [ref=f1e120]: تُستخدم معلومات الاتصال ووسائل التواصل الاجتماعي في التذييل والبريد ومناطق الاتصال.
+                  - listitem [ref=f1e121]:
+                    - generic [ref=f1e122]: 
+                    - generic [ref=f1e123]: تغذي حقول SEO محركات البحث ومعلومات المشاركة الاجتماعية.
+                  - listitem [ref=f1e124]:
+                    - generic [ref=f1e125]: 
+                    - generic [ref=f1e126]: تحدد إعدادات الدفع والتسليم خيارات إتمام الطلب المتاحة.
+                  - listitem [ref=f1e127]:
+                    - generic [ref=f1e128]: 
+                    - generic [ref=f1e129]: تنعكس حالة الدفع عند الاستلام ورسوم الخدمة في إجمالي الطلب على صفحة الدفع.
+                  - listitem [ref=f1e130]:
+                    - generic [ref=f1e131]: 
+                    - generic [ref=f1e132]: تُستخدم إشعارات البريد في عمليات الطلبات والتشغيل.
+          - generic [ref=f1e134]:
+            - generic [ref=f1e135]:
+              - generic [ref=f1e136]: 
+              - text: تصبح التغييرات سارية على الموقع بعد الحفظ.
+            - button " حفظ جميع الإعدادات" [ref=f1e137] [cursor=pointer]:
+              - generic [ref=f1e138]: 
+              - text: حفظ جميع الإعدادات
+    - contentinfo [ref=f1e139]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

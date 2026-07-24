@@ -199,7 +199,7 @@
             box-shadow: none;
         }
 
-        /* ¦¦¦ List View Layout overrides ¦¦¦ */
+        /* ï¿½ï¿½ï¿½ List View Layout overrides ï¿½ï¿½ï¿½ */
         .layout-list {
             display: flex !important;
             flex-direction: column !important;
@@ -240,7 +240,7 @@
             padding-bottom: 0.6rem !important;
         }
 
-        /* ¦¦¦ Filter Drawer Animation ¦¦¦ */
+        /* ï¿½ï¿½ï¿½ Filter Drawer Animation ï¿½ï¿½ï¿½ */
         .filter-drawer {
             transform: translateX(100%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -433,7 +433,7 @@
                     {
                         <span class="bg-brand-olive text-white text-xs px-3 py-1 rounded-full flex items-center gap-1">
                             "<span>@aktifArama</span>"
-                            <a href="/products@(aktifKategori.HasValue ? "?k=" + aktifKategori : "")" class="ml-1 opacity-70 hover:opacity-100">×</a>
+                            <a href="/products@(aktifKategori.HasValue ? "?k=" + aktifKategori : "")" class="ml-1 opacity-70 hover:opacity-100">ï¿½</a>
                         </span>
                     }
                     <!-- Mobile Filter Toggle Button -->
@@ -501,7 +501,8 @@
                             YeniUrunMu = urun.YeniUrunMu,
                             StoktaVarMi = urun.StoktaVarMi,
                             ToplamStok = urun.ToplamStok,
-                            FiyatGizliMi = urun.FiyatGizliMi,
+                                    FiyatGizliMi = urun.FiyatGizliMi,
+                                    WhatsappSiparisVarMi = urun.WhatsappSiparisVarMi,
                             KampanyaBitisTarihi = urun.KampanyaBitisTarihi,
                             IsWholesale = isWholesale,
                             ShowFavori = true,
@@ -753,7 +754,7 @@
             }
         });
 
-        // ¦¦¦ Desktop Price Slider ¦¦¦
+        // ï¿½ï¿½ï¿½ Desktop Price Slider ï¿½ï¿½ï¿½
         (function () {
             var slider = document.getElementById('priceSlider');
             var minInput = document.getElementById('minInput');
@@ -788,7 +789,7 @@
             }
         })();
 
-        // ¦¦¦ Mobile Price Slider ¦¦¦
+        // ï¿½ï¿½ï¿½ Mobile Price Slider ï¿½ï¿½ï¿½
         (function () {
             var slider = document.getElementById('mobilePriceSlider');
             var minInput = document.getElementById('mobileMinInput');
@@ -823,7 +824,7 @@
             });
         })();
 
-        // ¦¦¦ Grid / List Layout Toggle ¦¦¦
+        // ï¿½ï¿½ï¿½ Grid / List Layout Toggle ï¿½ï¿½ï¿½
         window.setProductLayout = function(layout) {
             const grid = document.getElementById('productGrid');
             const btnGrid = document.getElementById('btnGridView');

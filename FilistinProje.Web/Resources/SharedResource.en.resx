@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -331,7 +331,7 @@
     <value>Check form information</value>
   </data>
   <data name="City" xml:space="preserve">
-    <value>District</value>
+    <value>City</value>
   </data>
   <data name="ClearCart" xml:space="preserve">
     <value>Clear Cart</value>
@@ -712,7 +712,7 @@
     <value>Min</value>
   </data>
   <data name="MinSixChars" xml:space="preserve">
-    <value>At least 6 characters</value>
+    <value>At least 8 characters</value>
   </data>
   <data name="MostPreferred" xml:space="preserve">
     <value>Most Preferred</value>
@@ -1141,7 +1141,7 @@
     <value>Search unavailable</value>
   </data>
   <data name="SecurePayment" xml:space="preserve">
-    <value>Bank Transfer</value>
+    <value>Secure Checkout</value>
   </data>
   <data name="SecurePaymentDesc" xml:space="preserve">
     <value>Easy payment with IBAN details</value>
@@ -3099,7 +3099,7 @@
     <value>التقارير</value>
   </data>
   <data name="Admin_Ana_Sayfa" xml:space="preserve">
-    <value>Ana Sayfa</value>
+    <value>Show on Homepage</value>
   </data>
   <data name="Admin_Canli_Siteyi_Goruntule" xml:space="preserve">
     <value>Canlı Siteyi Görüntüle</value>
@@ -3520,6 +3520,12 @@
   </data>
   <data name="Admin_CampaignHelp" xml:space="preserve">
     <value>Shows campaign highlight.</value>
+  </data>
+  <data name="Admin_CampaignEndDate" xml:space="preserve">
+    <value>Campaign End Date</value>
+  </data>
+  <data name="Admin_CampaignEndDateHelp" xml:space="preserve">
+    <value>Countdown timer will stop at this date. Leave empty for no timer.</value>
   </data>
   <data name="Admin_ShowOnHomeHelp" xml:space="preserve">
     <value>Included in home page lists.</value>
@@ -5648,5 +5654,49 @@
   <data name="Admin_ValidFieldTypeRequired" xml:space="preserve"><value>Select a valid field type.</value></data>
   <data name="Admin_FeatureOptionsRequired" xml:space="preserve"><value>Enter options for a select-list field.</value></data>
   <data name="Admin_FeatureCodeDuplicate" xml:space="preserve"><value>This code already exists for the selected product type.</value></data>
+  <data name="ChooseFile" xml:space="preserve"><value>Choose file</value></data>
+  <data name="NoFileSelected" xml:space="preserve"><value>No file selected</value></data>
+  <data name="SelectedFile" xml:space="preserve"><value>Selected file</value></data>
+  <data name="Validation_FullNameRequired" xml:space="preserve"><value>Full name is required.</value></data>
+  <data name="Validation_NationalIdRequired" xml:space="preserve"><value>National ID is required.</value></data>
+  <data name="Validation_NationalIdLength" xml:space="preserve"><value>National ID must be between 5 and 11 characters.</value></data>
+  <data name="Validation_DateOfBirthRequired" xml:space="preserve"><value>Date of birth is required.</value></data>
+  <data name="Validation_EmailRequired" xml:space="preserve"><value>Email address is required.</value></data>
+  <data name="Validation_EmailInvalid" xml:space="preserve"><value>Enter a valid email address.</value></data>
+  <data name="Validation_AddressRequired" xml:space="preserve"><value>Address is required.</value></data>
+  <data name="Validation_IdentityPhotoRequired" xml:space="preserve"><value>An identity photo is required.</value></data>
+  <data name="Validation_CityRequired" xml:space="preserve"><value>City is required.</value></data>
+  <data name="Validation_PasswordRequired" xml:space="preserve"><value>Password is required.</value></data>
+  <data name="Validation_PasswordLength" xml:space="preserve"><value>Password must be at least 8 characters.</value></data>
+  <data name="Validation_PasswordMismatch" xml:space="preserve"><value>Passwords do not match.</value></data>
+  <data name="Identity_DuplicateEmail" xml:space="preserve"><value>'{0}' is already registered.</value></data>
+  <data name="Identity_DuplicateUserName" xml:space="preserve"><value>'{0}' is already in use.</value></data>
+  <data name="Identity_InvalidEmail" xml:space="preserve"><value>'{0}' is not a valid email address.</value></data>
+  <data name="Identity_InvalidUserName" xml:space="preserve"><value>'{0}' is not a valid username.</value></data>
+  <data name="Identity_PasswordMismatch" xml:space="preserve"><value>The password is incorrect.</value></data>
+  <data name="Identity_PasswordRequiresDigit" xml:space="preserve"><value>Password must contain at least one number.</value></data>
+  <data name="Identity_PasswordRequiresLower" xml:space="preserve"><value>Password must contain at least one lowercase letter.</value></data>
+  <data name="Identity_PasswordRequiresUpper" xml:space="preserve"><value>Password must contain at least one uppercase letter.</value></data>
+  <data name="Identity_PasswordRequiresNonAlphanumeric" xml:space="preserve"><value>Password must contain at least one special character.</value></data>
+  <data name="Identity_PasswordTooShort" xml:space="preserve"><value>Password must be at least {0} characters.</value></data>
+  <data name="Identity_PasswordRequiresUniqueChars" xml:space="preserve"><value>Password must contain at least {0} different characters.</value></data>
+  <data name="Identity_UserAlreadyHasPassword" xml:space="preserve"><value>This user already has a password.</value></data>
+  <data name="Identity_UserAlreadyInRole" xml:space="preserve"><value>This user already has the '{0}' role.</value></data>
+  <data name="Identity_UserNotInRole" xml:space="preserve"><value>This user does not have the '{0}' role.</value></data>
+  <data name="Identity_UserLockoutNotEnabled" xml:space="preserve"><value>Account lockout is not enabled for this user.</value></data>
+  <data name="Identity_DefaultError" xml:space="preserve"><value>An unexpected error occurred. Please try again.</value></data>
+  <data name="Identity_ConcurrencyFailure" xml:space="preserve"><value>The account was changed by another request. Please try again.</value></data>
+  <data name="Identity_RecoveryCodeRedemptionFailed" xml:space="preserve"><value>The recovery code could not be verified.</value></data>
+  <data name="Identity_LoginAlreadyAssociated" xml:space="preserve"><value>This external login is already linked to another account.</value></data>
+  <data name="Identity_InvalidToken" xml:space="preserve"><value>The verification code is invalid.</value></data>
+  <data name="DeliveryInformation" xml:space="preserve"><value>Delivery information</value></data>
+  <data name="DeliveryType" xml:space="preserve"><value>Delivery type</value></data>
+  <data name="Checkout_EditCart" xml:space="preserve"><value>Edit cart</value></data>
+  <data name="Checkout_ShippingCalculatedByCity" xml:space="preserve"><value>The shipping fee is calculated automatically after you select your city.</value></data>
+  <data name="Checkout_ReviewErrors" xml:space="preserve"><value>Please review the highlighted fields before creating your order.</value></data>
+  <data name="Checkout_PaymentRequired" xml:space="preserve"><value>Select a payment method.</value></data>
+  <data name="Validation_PhoneRequired" xml:space="preserve"><value>Phone number is required.</value></data>
+  <data name="Validation_PasswordRepeatRequired" xml:space="preserve"><value>Please enter the password again.</value></data>
+  <data name="Checkout_PaymentMethodHelp" xml:space="preserve"><value>Choose how you would like to pay for this order.</value></data>
 </root>
 

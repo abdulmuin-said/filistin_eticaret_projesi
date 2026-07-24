@@ -259,13 +259,14 @@
                                     : urun.UrunResimleri?.OrderBy(r => r.Sira).FirstOrDefault()?.ResimYolu;
                                     
                                 var urunUrl = "/products/" + (string.IsNullOrEmpty(urun.Slug) ? (FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(urun.Baslik) + "-" + urun.Id) : urun.Slug + "-" + urun.Id);
+                                var localizedOnerilen = urun.LocalizedBaslik;
 
                                 <div class="bg-white border border-brand-border rounded-lg p-3 flex flex-col justify-between group">
                                     <div>
                                         <a href="@urunUrl" class="block relative aspect-square overflow-hidden bg-[#f8f6f2] rounded mb-3 flex items-center justify-center p-2">
                                             @if (!string.IsNullOrWhiteSpace(gorsel))
                                             {
-                                                <img src="@gorsel" alt="@urun.Baslik" class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
+                                                <img src="@gorsel" alt="@localizedOnerilen" class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" />
                                             }
                                             else
                                             {
@@ -275,7 +276,7 @@
                                             }
                                         </a>
                                         <a href="@urunUrl" class="block">
-                                            <h4 class="text-xs font-semibold tracking-wide text-brand-darktext hover:text-brand-gold transition-colors line-clamp-2 mb-1 min-h-[32px]">@urun.Baslik</h4>
+                                            <h4 class="text-xs font-semibold tracking-wide text-brand-darktext hover:text-brand-gold transition-colors line-clamp-2 mb-1 min-h-[32px]">@localizedOnerilen</h4>
                                         </a>
                                         <p class="text-xs font-medium text-brand-mutedtext mb-3">@urun.EtkinFiyat.ToString("N0") @currencySymbol</p>
                                     </div>
