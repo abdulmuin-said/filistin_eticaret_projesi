@@ -82,10 +82,8 @@
         ? Model.TahminiTeslimSuresiGun
         : siteSettings.SiparisTeslimSuresiGun;
     int iadeSuresi = siteSettings.IadeHakkiGun > 0 ? siteSettings.IadeHakkiGun : 14;
-    bool cerceveSecimiGerekli = (Model.UrunTipi ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase)
-        || (Model.Kategori?.Ad ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase)
-        || (Model.Kategori?.ParentKategori?.Ad ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase);
-    var cerceveModelleri = new[] { "Çerçevesiz", "Siyah", "Beyaz", "Gold", "Gümüş", "Meşe", "Ceviz" };
+    bool cerceveSecimiGerekli = false;
+    var cerceveModelleri = Array.Empty<string>();
 
     var teknikSatirlari = (Model.TeknikOzellikler ?? string.Empty)
         .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
@@ -440,24 +438,8 @@ function changeProductImage(imageUrl, thumbnailElement, altText) {
 
 }
 
-const FRAME_PRICE_PER_METER = 250;
-
-function parseOlcu(olcuText) {
-    if (!olcuText) return null;
-    var match = olcuText.match(/(\d+(?:[.,]\d+)?)\s*(?:cm)?\s*[xXÃ—]\s*(\d+(?:[.,]\d+)?)/i);
-    if (!match) return null;
-    var w = parseFloat(match[1].replace(',', '.'));
-    var h = parseFloat(match[2].replace(',', '.'));
-    if (isNaN(w) || isNaN(h)) return null;
-    return { width: w, height: h };
-}
-
 function calcFrameFiyat(olcuText, cerceve) {
-    if (!cerceve || cerceve === 'Çerçevesiz') return 0;
-    var dims = parseOlcu(olcuText);
-    if (!dims) return 0;
-    var cevreMetre = ((dims.width + dims.height) * 2) / 100;
-    return cevreMetre * FRAME_PRICE_PER_METER;
+    return 0;
 }
 
 function updateSelectionSummary() {

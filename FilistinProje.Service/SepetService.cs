@@ -319,13 +319,20 @@ namespace FilistinProje.Service
 
         public async Task MergeSepetlerAsync(string sessionId, string userId)
         {
+            await MergeSepetlerDetailedAsync(sessionId, userId);
+        }
+
+        public async Task<FilistinProje.Core.DTOs.SepetMergeResult> MergeSepetlerDetailedAsync(string sessionId, string userId)
+        {
+            var result = new FilistinProje.Core.DTOs.SepetMergeResult();
+
             var anonymousSepet = await _context.Sepetler
                 .Include(s => s.SepetItems.Where(i => !i.SilindiMi))
                 .FirstOrDefaultAsync(s => s.SessionId == sessionId && string.IsNullOrEmpty(s.AppUserId) && !s.SilindiMi);
 
             if (anonymousSepet == null || !anonymousSepet.SepetItems.Any())
             {
-                return;
+                return result;
             }
 
             var userSepet = await _context.Sepetler
@@ -348,51 +355,131 @@ namespace FilistinProje.Service
 
             if (userSepet.Id == anonymousSepet.Id)
             {
-                return;
+                return result;
             }
 
-            foreach (var item in anonymousSepet.SepetItems.Where(i => !i.SilindiMi))
+            await using var transaction = await _context.Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
+
+            try
             {
-                var mevcutItem = userSepet.SepetItems.FirstOrDefault(i =>
-                    i.UrunId == item.UrunId &&
-                    i.UrunSecenekId == item.UrunSecenekId &&
-                    i.CerceveModeli == item.CerceveModeli &&
-                    NormalizeCustomerNote(i.MusteriNotu) == NormalizeCustomerNote(item.MusteriNotu) &&
-                    i.HediyePaketi == item.HediyePaketi &&
-                    !i.SilindiMi);
+                var anonItems = anonymousSepet.SepetItems.Where(i => !i.SilindiMi).ToList();
+                var urunIds = anonItems.Select(i => i.UrunId)
+                    .Concat(userSepet.SepetItems.Where(i => !i.SilindiMi).Select(i => i.UrunId))
+                    .Distinct()
+                    .ToList();
 
-                if (mevcutItem != null)
+                var urunler = await _context.Urunler
+                    .AsNoTracking()
+                    .Include(u => u.UrunSecenek)
+                    .Where(u => urunIds.Contains(u.Id))
+                    .ToDictionaryAsync(u => u.Id);
+
+                foreach (var anonItem in anonItems)
                 {
-                    mevcutItem.Adet += item.Adet;
-                }
-                else
-                {
-                    var yeniItem = new SepetItem
+                    if (!urunler.TryGetValue(anonItem.UrunId, out var urun) || !urun.AktifMi || urun.SilindiMi || urun.WhatsappSiparisVarMi || urun.FiyatGizliMi)
                     {
-                        SepetId = userSepet.Id,
-                        UrunId = item.UrunId,
-                        UrunSecenekId = item.UrunSecenekId,
-                        Adet = item.Adet,
-                        Fiyat = item.Fiyat,
-                        UrunBaslik = item.UrunBaslik,
-                        UrunResimUrl = item.UrunResimUrl,
-                        SecenekAdi = item.SecenekAdi,
-                        CerceveModeli = item.CerceveModeli,
-                        MusteriNotu = item.MusteriNotu,
-                        HediyePaketi = item.HediyePaketi,
-                        HediyePaketFiyati = item.HediyePaketFiyati,
-                        OlusturulmaTarihi = DateTime.UtcNow,
-                        SilindiMi = false
-                    };
-                    _context.SepetItems.Add(yeniItem);
+                        await transaction.RollbackAsync();
+                        result.Basarili = false;
+                        result.MessageKey = "Sepet_ProductUnavailable";
+                        result.HataMesaji = $"Urun pasif veya satis disi: {anonItem.UrunBaslik}";
+                        result.EngellenenUrunler.Add(anonItem.UrunBaslik);
+                        return result;
+                    }
+
+                    UrunSecenek? secenek = null;
+                    if (anonItem.UrunSecenekId.HasValue)
+                    {
+                        secenek = urun.UrunSecenek.FirstOrDefault(s => s.Id == anonItem.UrunSecenekId.Value && !s.SilindiMi && s.AktifMi);
+                        if (secenek == null)
+                        {
+                            await transaction.RollbackAsync();
+                            result.Basarili = false;
+                            result.MessageKey = "Sepet_VariantUnavailable";
+                            result.HataMesaji = $"Varyant gecersiz: {anonItem.UrunBaslik}";
+                            result.EngellenenUrunler.Add(anonItem.UrunBaslik);
+                            return result;
+                        }
+                    }
+
+                    var mevcutItem = userSepet.SepetItems.FirstOrDefault(i =>
+                        i.UrunId == anonItem.UrunId &&
+                        i.UrunSecenekId == anonItem.UrunSecenekId &&
+                        i.CerceveModeli == anonItem.CerceveModeli &&
+                        NormalizeCustomerNote(i.MusteriNotu) == NormalizeCustomerNote(anonItem.MusteriNotu) &&
+                        i.HediyePaketi == anonItem.HediyePaketi &&
+                        !i.SilindiMi);
+
+                    var mevcutAdet = mevcutItem?.Adet ?? 0;
+
+                    long candidateLong = (long)mevcutAdet + (long)anonItem.Adet;
+                    if (candidateLong <= 0 || candidateLong > int.MaxValue)
+                    {
+                        await transaction.RollbackAsync();
+                        result.Basarili = false;
+                        result.MessageKey = "Sepet_InvalidQuantity";
+                        result.HataMesaji = $"Gecersiz adet toplami: {anonItem.UrunBaslik}";
+                        result.EngellenenUrunler.Add(anonItem.UrunBaslik);
+                        return result;
+                    }
+
+                    int candidateQty = (int)candidateLong;
+
+                    if (!CanAddQuantity(urun, secenek, candidateQty))
+                    {
+                        await transaction.RollbackAsync();
+                        result.Basarili = false;
+                        result.MessageKey = "Sepet_MaxSiparisAdediAsildi";
+                        result.HataMesaji = $"Siparis veya stok limiti asildi: {anonItem.UrunBaslik}";
+                        result.EngellenenUrunler.Add(anonItem.UrunBaslik);
+                        return result;
+                    }
+
+                    if (mevcutItem != null)
+                    {
+                        mevcutItem.Adet = candidateQty;
+                    }
+                    else
+                    {
+                        var yeniItem = new SepetItem
+                        {
+                            SepetId = userSepet.Id,
+                            UrunId = anonItem.UrunId,
+                            UrunSecenekId = anonItem.UrunSecenekId,
+                            Adet = anonItem.Adet,
+                            Fiyat = anonItem.Fiyat,
+                            UrunBaslik = anonItem.UrunBaslik,
+                            UrunResimUrl = anonItem.UrunResimUrl,
+                            SecenekAdi = anonItem.SecenekAdi,
+                            CerceveModeli = anonItem.CerceveModeli,
+                            MusteriNotu = anonItem.MusteriNotu,
+                            HediyePaketi = anonItem.HediyePaketi,
+                            HediyePaketFiyati = anonItem.HediyePaketFiyati,
+                            OlusturulmaTarihi = DateTime.UtcNow,
+                            SilindiMi = false
+                        };
+                        _context.SepetItems.Add(yeniItem);
+                    }
+
+                    anonItem.SilindiMi = true;
                 }
 
-                item.SilindiMi = true;
-            }
+                anonymousSepet.SilindiMi = true;
+                userSepet.SonGuncellemeTarihi = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
 
-            anonymousSepet.SilindiMi = true;
-            userSepet.SonGuncellemeTarihi = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
+                result.Basarili = true;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Sepet birlestirme hatasi.");
+                await transaction.RollbackAsync();
+                result.Basarili = false;
+                result.MessageKey = "Sepet_MergeFailed";
+                result.HataMesaji = ex.Message;
+                return result;
+            }
         }
 
         public async Task<bool> NotGuncelleAsync(int sepetItemId, string? musteriNotu)
@@ -466,6 +553,10 @@ namespace FilistinProje.Service
 
             if (secenek == null)
             {
+                if (urun.ToplamStok > 0 && toplamAdet > urun.ToplamStok)
+                {
+                    return false;
+                }
                 return true;
             }
 
@@ -571,20 +662,8 @@ namespace FilistinProje.Service
 
         private static decimal CalculateFramePrice(UrunSecenek? secenek, string frameModel)
         {
-            if (secenek == null || string.IsNullOrWhiteSpace(frameModel) || frameModel == "Çerçevesiz")
-            {
-                return 0;
-            }
-
-            var dimensions = ParseDimensions(secenek.Olcu);
-            if (dimensions == null)
-            {
-                return 0;
-            }
-
-            const decimal framePricePerMeter = 250;
-            var perimeterMeters = ((dimensions.Value.Width + dimensions.Value.Height) * 2) / 100;
-            return Math.Round(perimeterMeters * framePricePerMeter, 2);
+            // Frame price calculation is disabled per business directive.
+            return 0m;
         }
 
         private static (decimal Width, decimal Height)? ParseDimensions(string? olcu)

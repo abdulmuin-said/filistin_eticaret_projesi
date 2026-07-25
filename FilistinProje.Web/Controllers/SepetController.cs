@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using FilistinProje.Core.Interfaces; // ISepetService
 using FilistinProje.Data;
 using FilistinProje.Web.Resources;
@@ -281,6 +281,10 @@ namespace FilistinProje.Web.Controllers
             if (yeniAdet < 1) yeniAdet = 1;
             if (yeniAdet > 100) yeniAdet = 100;
             var success = await _sepetService.AdediGuncelleAsync(sepetItemId, yeniAdet);
+            if (!success)
+            {
+                TempData["SepetHata"] = _localizer["Sepet_QuantityUpdateFailed"].Value;
+            }
             return RedirectToAction("Index");
         }
 

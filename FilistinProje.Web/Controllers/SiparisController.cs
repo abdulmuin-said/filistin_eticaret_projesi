@@ -1,4 +1,4 @@
-﻿using FilistinProje.Core.DTOs;
+using FilistinProje.Core.DTOs;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -1000,7 +1000,7 @@ namespace FilistinProje.Web.Controllers
         private string GetCurrencySymbol()
         {
             var settings = _siteSettingsService.GetSettings();
-            return string.IsNullOrWhiteSpace(settings.ParaBirimi) ? "â‚ª" : settings.ParaBirimi;
+            return string.IsNullOrWhiteSpace(settings.ParaBirimi) ? "₺" : settings.ParaBirimi;
         }
 
         private string BuildOrderLineDetail(SiparisDetay item)
@@ -1025,9 +1025,13 @@ namespace FilistinProje.Web.Controllers
                 details.Add(string.Format(_localizer["Siparis_EmailFrame"].Value, item.CerceveModeli));
             }
 
+            if (item.HediyePaketi)
+            {
+                var giftFeeText = item.HediyePaketFiyati > 0 ? $" (+{item.HediyePaketFiyati:N2} {GetCurrencySymbol()})" : string.Empty;
+                details.Add($"🎁 {_localizer["GiftWrap"].Value}{giftFeeText}");
+            }
+
             return string.Join(" | ", details);
         }
     }
 }
-
-

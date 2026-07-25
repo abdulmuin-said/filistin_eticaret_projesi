@@ -17,6 +17,9 @@
 
     var urunUrl = $"/products/{urlSlug}-{Model.Id}";
 
+    // Etiketleri oluştur (ViewModel'in instance method'u)
+    var badges = Model.ToBadges(siteSettings.StoktaYokSatisIzni);
+
     decimal gosterFiyat;
     decimal? eskiFiyat = null;
     if (Model.IsWholesale && Model.TopFiyat.HasValue && Model.TopFiyat.Value > 0)
@@ -32,27 +35,6 @@
     else
     {
         gosterFiyat = Model.Fiyat;
-    }
-
-    string? badgeText = null;
-    var badgeClass = "bg-brand-olive text-white";
-    if (!satisaAcik)
-    {
-        badgeText = Localizer["OutOfStock"].Value;
-        badgeClass = "bg-[#77786f] text-white";
-    }
-    else if (!string.IsNullOrWhiteSpace(Model.BadgeText))
-    {
-        badgeText = Model.BadgeText;
-    }
-    else if (Model.IndirimVarMi)
-    {
-        badgeText = $"-{Model.IndirimYuzdesi}%";
-        badgeClass = "bg-brand-gold text-white";
-    }
-    else if (Model.YeniUrunMu)
-    {
-        badgeText = Localizer["New"].Value;
     }
 
     var kampanyaAktif = Model.KampanyaBitisTarihi.HasValue &&
@@ -83,18 +65,27 @@
             }
         </a>
 
-        @if (!string.IsNullOrWhiteSpace(badgeText))
+        @* ÇOKLU ETİKET GÖSTERİMİ (sol üstte dikey) *@
+        @if (badges.Any())
         {
-            <span class="absolute end-2 top-2 z-10 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow-sm @badgeClass">
-                @badgeText
-            </span>
+            <div class="absolute start-2 top-2 z-10 flex flex-col gap-1.5">
+                @foreach (var badge in badges)
+                {
+                    var badgeText = !string.IsNullOrEmpty(badge.Metin)
+                        ? badge.Metin
+                        : Localizer[badge.LocalizasyonKey].Value;
+                    <span class="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow-sm @badge.CssClass">
+                        @badgeText
+                    </span>
+                }
+            </div>
         }
 
         @if (Model.ShowFavori)
         {
             <button type="button"
                     onclick="window.toggleFavori(this, @Model.Id)"
-                    class="group/favoriteste absolute start-2 top-2 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-white/95 shadow-md transition-all duration-200 hover:scale-110 active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
+                    class="group/favoriteste absolute end-2 top-2 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-white/95 shadow-md transition-all duration-200 hover:scale-110 active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
                     aria-label="@Localizer["AddToFavorites"]"
                     title="@Localizer["AddToFavorites"]">
                 <svg class="h-3.5 w-3.5 text-brand-mutedtext transition-colors group-hover/favoriteste:text-red-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">

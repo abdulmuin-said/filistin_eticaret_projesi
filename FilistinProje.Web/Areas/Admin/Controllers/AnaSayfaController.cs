@@ -1,4 +1,4 @@
-﻿using FilistinProje.Core.Models;
+using FilistinProje.Core.Models;
 using FilistinProje.Service.Services;
 using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +22,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            return View(_homePageSettingsService.GetSettings());
+            return RedirectToAction("Index", "HomeSections");
         }
 
         [HttpPost]

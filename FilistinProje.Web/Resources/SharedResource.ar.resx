@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='utf-8'?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -5683,4 +5683,12 @@
   <data name="Validation_PhoneRequired" xml:space="preserve"><value>رقم الهاتف مطلوب.</value></data>
   <data name="Validation_PasswordRepeatRequired" xml:space="preserve"><value>يرجى إدخال كلمة المرور مرة أخرى.</value></data>
   <data name="Checkout_PaymentMethodHelp" xml:space="preserve"><value>اختر طريقة الدفع المناسبة لهذا الطلب.</value></data>
+  <data name="Badge_NewProduct" xml:space="preserve"><value>جديد</value></data>
+  <data name="Badge_Featured" xml:space="preserve"><value>مميز</value></data>
+  <data name="Badge_Campaign" xml:space="preserve"><value>حملة</value></data>
+  <data name="Badge_WhatsappOrder" xml:space="preserve"><value>طلب واتساب</value></data>
+  <data name="Badge_HiddenPrice" xml:space="preserve"><value>عرض سعر</value></data>
+  <data name="Badge_OutOfStock" xml:space="preserve"><value>نفذ من المخزون</value></data>
+  <data name="Badge_LowStock" xml:space="preserve"><value>كمية محدودة</value></data>
+  <data name="Badge_Discount" xml:space="preserve"><value>خصم</value></data>
 </root>

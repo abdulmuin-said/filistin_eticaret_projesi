@@ -43,6 +43,11 @@
         Localizer["ManufacturerGuarantee"]
     };
 
+    if (!string.IsNullOrWhiteSpace(siteSettings.UstBarMesaji))
+    {
+        trustMessages.Insert(0, siteSettings.UstBarMesaji);
+    }
+
     if (!string.IsNullOrWhiteSpace(siteSettings.WhatsappNumarasi))
     {
         trustMessages.Add(Localizer["WhatsAppSupport"]);

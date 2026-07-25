@@ -1,4 +1,4 @@
-﻿using FilistinProje.Core.Varliklar;
+using FilistinProje.Core.Varliklar;
 using FilistinProje.Core.DTOs;
 using FilistinProje.Data;
 using FilistinProje.Service.Helpers;
@@ -95,6 +95,14 @@ namespace FilistinProje.Web.Controllers
                     .AsNoTracking()
                     .Where(x => !x.SilindiMi)
                     .ToListAsync();
+
+                var seciliKategori = filtreKategorileri.FirstOrDefault(x => x.Id == k.Value);
+                ViewBag.SeciliKategori = seciliKategori;
+
+                if (seciliKategori != null && string.IsNullOrWhiteSpace(sort) && !string.IsNullOrWhiteSpace(seciliKategori.UrunSiralamaTipi) && seciliKategori.UrunSiralamaTipi != "manual")
+                {
+                    sort = seciliKategori.UrunSiralamaTipi;
+                }
 
                 var kategoriIdleri = CategoryTreeHelper.GetDescendantIds(filtreKategorileri, k.Value);
                 if (kategoriIdleri.Count == 0)

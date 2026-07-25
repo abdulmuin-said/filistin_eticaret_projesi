@@ -62,6 +62,7 @@ namespace FilistinProje.Core.DTOs
         public List<OrderLinePricing> Satirlar { get; set; } = new();
         public List<PriceChangedEntry> FiyatDegisiklikleri { get; set; } = new();
         public List<StockShortageEntry> StokYetersizlikleri { get; set; } = new();
+        public List<string> LimitAsimlari { get; set; } = new();
 
         public decimal AraToplam { get; set; }
         public decimal IndirimTutari { get; set; }
@@ -76,6 +77,7 @@ namespace FilistinProje.Core.DTOs
             + KapidaOdemeHizmetBedeli);
 
         public bool StokSorunuVar => StokYetersizlikleri.Count > 0;
+        public bool LimitSorunuVar => LimitAsimlari.Count > 0;
         public bool FiyatDegistiMi => FiyatDegisiklikleri.Count > 0;
     }
 

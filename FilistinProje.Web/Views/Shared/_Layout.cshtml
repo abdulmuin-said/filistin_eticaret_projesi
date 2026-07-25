@@ -48,6 +48,10 @@
         ? currentUrl
         : SiteSettingsService.BuildAbsoluteUrl(canonicalUrl);
     var ogType = string.IsNullOrWhiteSpace(ViewData["OgType"]?.ToString()) ? "website" : ViewData["OgType"]!.ToString();
+    var rawThemeColor = siteSettings.TemaRengi?.Trim();
+    var validThemeColor = !string.IsNullOrWhiteSpace(rawThemeColor) && System.Text.RegularExpressions.Regex.IsMatch(rawThemeColor, @"^#[0-9A-Fa-f]{6}$")
+        ? rawThemeColor
+        : null;
 }
 <!DOCTYPE html>
 <html lang="@currentCulture" dir="@currentDirection">
@@ -84,6 +88,26 @@
     <link rel="stylesheet" href="~/vendor/fonts/local-fonts.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/vendor/fontawesome/css/all.min.css" asp-append-version="true" />
 
+    @if (!string.IsNullOrWhiteSpace(validThemeColor))
+    {
+        <style>
+            :root {
+                --brand-primary: @validThemeColor;
+            }
+            .btn-primary, .bg-brand-olive, .brand-primary-bg {
+                background-color: var(--brand-primary) !important;
+            }
+            .btn-primary:hover {
+                filter: brightness(0.9);
+            }
+            .text-brand-olive, .brand-primary-text {
+                color: var(--brand-primary) !important;
+            }
+            .border-brand-olive, .brand-primary-border {
+                border-color: var(--brand-primary) !important;
+            }
+        </style>
+    }
     <style data-purpose="custom-fonts">
         body { font-family: 'IBM Plex Sans Arabic', 'Inter', -apple-system, sans-serif; color: var(--color-text-dark); padding: 0 !important; margin: 0 !important; background: var(--color-cream) !important; font-size: 14px; line-height: 1.6; }
         h1, h2, h3, h4, h5, h6, .font-serif { font-family: 'IBM Plex Sans Arabic', 'Inter', sans-serif; font-weight: 600; }
@@ -1091,6 +1115,84 @@ document.addEventListener('keydown', function(event) {
 
     @await Html.PartialAsync("_FloatingButtons")
 
-    <!-- Spin the Wheel -->
+    @{
+        var defaultCookieNotice = currentCulture == "ar"
+            ? "نستخدم ملفات تعريف الارتباط لتحسين تجربتك وتحليل حركة الموقع."
+            : "We use cookies to enhance your browsing experience and analyze site traffic.";
+        var cookieMessage = string.IsNullOrWhiteSpace(siteSettings.CookieMetni) 
+            ? defaultCookieNotice 
+            : siteSettings.CookieMetni;
+        var acceptBtnText = currentCulture == "ar" ? "موافق" : "Accept";
+        var declineBtnText = currentCulture == "ar" ? "رفض" : "Decline";
+        var gaId = (siteSettings.GoogleAnalyticsId ?? string.Empty).Trim();
+        var fbId = (siteSettings.FacebookPixelId ?? string.Empty).Trim();
+    }
+
+    <div id="cookieConsentBanner" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl p-4 sm:p-5 rounded-2xl hidden z-[999999] transition-all duration-300" style="background-color: #ffffff !important; color: #25280c !important; border: 1.5px solid #b58735 !important; box-shadow: 0 16px 40px rgba(49, 53, 17, 0.16) !important; opacity: 1 !important;">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div class="flex items-center gap-3 flex-1 min-w-0">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style="background-color: rgba(181, 135, 53, 0.12); border: 1px solid rgba(181, 135, 53, 0.3);">
+                    <i class="fas fa-cookie-bite text-lg" style="color: #b58735 !important;"></i>
+                </div>
+                <p class="text-xs sm:text-sm leading-relaxed font-sans font-medium" style="color: #25280c !important;">@cookieMessage</p>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-end pt-3 sm:pt-0" style="border-top: 1px solid rgba(0,0,0,0.08);">
+                <button type="button" id="declineCookiesBtn" class="px-4 py-2 text-xs rounded-xl transition-colors font-semibold" style="color: #6b6e4e !important; background: #f8f6f0; border: 1px solid #e2dcd0;">@declineBtnText</button>
+                <button type="button" id="acceptCookiesBtn" class="px-5 py-2 text-xs font-bold rounded-xl shadow-md transition-all hover:opacity-90" style="background-color: #b58735 !important; color: #ffffff !important;">@acceptBtnText</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const gaId = '@gaId';
+            const fbId = '@fbId';
+            
+            function loadAnalytics() {
+                if (gaId && (gaId.startsWith('G-') || gaId.startsWith('UA-'))) {
+                    const script = document.createElement('script');
+                    script.async = true;
+                    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(gaId);
+                    document.head.appendChild(script);
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', gaId);
+                }
+                if (fbId && /^\d+$/.test(fbId)) {
+                    !function(f,b,e,v,n,t,s)
+                    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                    n.queue=[];t=b.createElement(e);t.async=!0;
+                    t.src=v;s=b.getElementsByTagName(e)[0];
+                    s.parentNode.insertBefore(t,s)}(window, document,'script',
+                    'https://connect.facebook.net/en_US/fbevents.js');
+                    fbq('init', fbId);
+                    fbq('track', 'PageView');
+                }
+            }
+
+            const consent = localStorage.getItem('cookieConsent');
+            const banner = document.getElementById('cookieConsentBanner');
+
+            if (consent === 'accepted') {
+                loadAnalytics();
+            } else if (consent !== 'declined') {
+                if (banner) banner.classList.remove('hidden');
+            }
+
+            document.getElementById('acceptCookiesBtn')?.addEventListener('click', function () {
+                localStorage.setItem('cookieConsent', 'accepted');
+                if (banner) banner.classList.add('hidden');
+                loadAnalytics();
+            });
+
+            document.getElementById('declineCookiesBtn')?.addEventListener('click', function () {
+                localStorage.setItem('cookieConsent', 'declined');
+                if (banner) banner.classList.add('hidden');
+            });
+        })();
+    </script>
 </body>
 </html>

@@ -89,7 +89,7 @@ namespace FilistinProje.Service.Services
                     .ToDictionary(g => g.Key, g => g.ToList());
             }
 
-            var settings = _siteSettingsService.GetSettings();
+            var settings = _siteSettingsService?.GetSettings() ?? new FilistinProje.Core.Models.SiteAyarlari();
 
             // Sepet satırlarını grupla — aynı varyant birden fazla satırda olabilir.
             var grouped = sepetItems
@@ -102,7 +102,7 @@ namespace FilistinProje.Service.Services
                 var adetToplam = grp.Sum(i => i.Adet);
                 var sepetItemId = ornek.Id;
 
-                if (!urunById.TryGetValue(ornek.UrunId, out var urun))
+                if (!urunById.TryGetValue(ornek.UrunId, out var urun) || !urun.AktifMi || urun.SilindiMi || urun.WhatsappSiparisVarMi || urun.FiyatGizliMi)
                 {
                     var shortage = new StockShortageEntry
                     {
@@ -119,6 +119,30 @@ namespace FilistinProje.Service.Services
                 var secenek = ornek.UrunSecenekId.HasValue && secenekById.TryGetValue(ornek.UrunSecenekId.Value, out var s)
                     ? s
                     : null;
+
+                if (secenek != null && (!secenek.AktifMi || secenek.SilindiMi || !secenek.SatinAlinabilirMi))
+                {
+                    var shortage = new StockShortageEntry
+                    {
+                        SepetItemId = sepetItemId,
+                        UrunBaslik = ornek.UrunBaslik,
+                        UrunSecenekId = ornek.UrunSecenekId,
+                        IstenenAdet = adetToplam,
+                        MevcutStok = 0,
+                    };
+                    result.StokYetersizlikleri.Add(shortage);
+                    continue;
+                }
+
+                // Min / Max siparis adedi doğrulaması (POST-AUDIT-001)
+                if (urun.MinSiparisAdedi > 0 && adetToplam < urun.MinSiparisAdedi)
+                {
+                    result.LimitAsimlari.Add($"MinSiparisAdediNotMet:{ornek.UrunBaslik}:{urun.MinSiparisAdedi}");
+                }
+                if (urun.MaxSiparisAdedi.HasValue && urun.MaxSiparisAdedi.Value > 0 && adetToplam > urun.MaxSiparisAdedi.Value)
+                {
+                    result.LimitAsimlari.Add($"MaxSiparisAdediExceeded:{ornek.UrunBaslik}:{urun.MaxSiparisAdedi.Value}");
+                }
 
                 // Fiyat kaynağı — yalnızca DB. SepetItem.Fiyat değil.
                 decimal birimFiyat = HesaplaBirimFiyat(urun, secenek, isWholesale, adetToplam, toptanciGrupIskonto);
@@ -174,6 +198,18 @@ namespace FilistinProje.Service.Services
                             MevcutStok = secenek.StokAdedi,
                         });
                     }
+                }
+                else if (secenek == null && urun.ToplamStok > 0 && urun.ToplamStok < adetToplam)
+                {
+                    line.StokSorunu = $"Insufficient product stock: {ornek.UrunBaslik} — requested {adetToplam}, available {urun.ToplamStok}";
+                    result.StokYetersizlikleri.Add(new StockShortageEntry
+                    {
+                        SepetItemId = sepetItemId,
+                        UrunBaslik = ornek.UrunBaslik,
+                        UrunSecenekId = null,
+                        IstenenAdet = adetToplam,
+                        MevcutStok = urun.ToplamStok,
+                    });
                 }
 
                 result.Satirlar.Add(line);
@@ -359,20 +395,8 @@ namespace FilistinProje.Service.Services
         /// </summary>
         private static decimal HesaplaCerceveFarki(UrunSecenek? secenek, string? cerceveModeli)
         {
-            if (secenek == null || string.IsNullOrWhiteSpace(cerceveModeli) || cerceveModeli == "Çerçevesiz")
-            {
-                return 0m;
-            }
-
-            var dimensions = ParseDimensions(secenek.Olcu);
-            if (dimensions == null)
-            {
-                return 0m;
-            }
-
-            const decimal framePricePerMeter = 250m;
-            var perimeterMeters = ((dimensions.Value.Width + dimensions.Value.Height) * 2m) / 100m;
-            return System.Math.Round(perimeterMeters * framePricePerMeter, 2);
+            // Frame price calculation is disabled per business directive.
+            return 0m;
         }
 
         private static (decimal Width, decimal Height)? ParseDimensions(string? olcu)

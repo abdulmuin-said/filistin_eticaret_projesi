@@ -75,13 +75,13 @@ namespace FilistinProje.Core.Varliklar
 
         [NotMapped]
         public decimal EtkinFiyat =>
-            IndirimliFiyat.HasValue && IndirimliFiyat.Value > 0 && IndirimliFiyat.Value < Fiyat
+            IndirimliFiyat.HasValue && IndirimliFiyat.Value > 0 && IndirimliFiyat.Value < Fiyat && (!KampanyaBitisTarihi.HasValue || KampanyaBitisTarihi.Value > DateTime.UtcNow)
                 ? IndirimliFiyat.Value
                 : Fiyat;
 
         [NotMapped]
         public bool IndirimVarMi =>
-            IndirimliFiyat.HasValue && IndirimliFiyat.Value > 0 && IndirimliFiyat.Value < Fiyat;
+            IndirimliFiyat.HasValue && IndirimliFiyat.Value > 0 && IndirimliFiyat.Value < Fiyat && (!KampanyaBitisTarihi.HasValue || KampanyaBitisTarihi.Value > DateTime.UtcNow);
 
         [NotMapped]
         public int IndirimYuzdesi =>

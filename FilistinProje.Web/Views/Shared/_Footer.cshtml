@@ -1,4 +1,4 @@
-﻿@using System.Globalization
+@using System.Globalization
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @inject IStringLocalizer<SharedResource> Localizer
 @{
@@ -48,8 +48,27 @@
     <div class="container mx-auto px-8 pt-16">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
 
-            <!-- Newsletter Signup -->
+            <!-- Newsletter Signup & Store Info -->
             <div>
+                @if (!string.IsNullOrWhiteSpace(siteSettings.FooterAciklamasi))
+                {
+                    <p class="text-xs font-light mb-4 text-[#d9ddaa] leading-relaxed max-w-md">
+                        @siteSettings.FooterAciklamasi
+                    </p>
+                }
+                @if (!string.IsNullOrWhiteSpace(siteSettings.Adres) || !string.IsNullOrWhiteSpace(siteSettings.CalismaSaatleri))
+                {
+                    <div class="text-xs text-white/80 space-y-1 mb-6">
+                        @if (!string.IsNullOrWhiteSpace(siteSettings.Adres))
+                        {
+                            <div class="flex items-center gap-2"><i class="fas fa-location-dot text-[#c6ca99]"></i> <span>@siteSettings.Adres</span></div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(siteSettings.CalismaSaatleri))
+                        {
+                            <div class="flex items-center gap-2"><i class="fas fa-clock text-[#c6ca99]"></i> <span>@siteSettings.CalismaSaatleri</span></div>
+                        }
+                    </div>
+                }
                 <h3 class="font-serif text-2xl mb-4 text-white drop-shadow-sm">@Localizer["SubscribeToNewsletter"]</h3>
                 <p class="text-sm font-light mb-6 text-gray-100 leading-relaxed max-w-md">
                     @Localizer["SubscribeToNewsletterDesc"]

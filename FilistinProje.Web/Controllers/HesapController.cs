@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Text;
 using FilistinProje.Core.Enums;
 using FilistinProje.Core.Interfaces;
@@ -229,7 +229,11 @@ namespace FilistinProje.Web.Controllers
                     {
                         var sessionId = HttpContext.Session.Id;
                         var sepetService = HttpContext.RequestServices.GetRequiredService<ISepetService>();
-                        await sepetService.MergeSepetlerAsync(sessionId, user.Id);
+                        var mergeResult = await sepetService.MergeSepetlerDetailedAsync(sessionId, user.Id);
+                        if (!mergeResult.Basarili && !string.IsNullOrWhiteSpace(mergeResult.HataMesaji))
+                        {
+                            TempData["SepetUyari"] = mergeResult.HataMesaji;
+                        }
 
                         HttpContext.Session.Clear();
                         Response.Cookies.Delete(".AspNetCore.Session");

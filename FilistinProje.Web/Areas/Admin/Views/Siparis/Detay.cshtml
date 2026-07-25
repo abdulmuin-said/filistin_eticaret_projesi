@@ -474,7 +474,7 @@
                                                 }
                                                 @if (item.HediyePaketi)
                                                 {
-                                                    <div><span class="ca-badge ca-badge-success" style="font-size:10px;"><i class="fas fa-gift mr-1"></i>@Localizer["Admin_GiftPackage"]</span></div>
+                                                    <div><span class="ca-badge ca-badge-success" style="font-size:11px;"><i class="fas fa-gift me-1"></i>🎁 @Localizer["Admin_GiftPackage"] @(item.HediyePaketFiyati > 0 ? $" (+{item.HediyePaketFiyati:N2} ₪)" : "")</span></div>
                                                 }
                                                 @if (!string.IsNullOrWhiteSpace(item.MusteriNotu))
                                                 {

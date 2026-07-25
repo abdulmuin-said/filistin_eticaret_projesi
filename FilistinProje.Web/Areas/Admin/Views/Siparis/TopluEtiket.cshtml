@@ -270,6 +270,10 @@
                                     {
                                         <br /><small>@Localizer["Admin_Frame"]: @item.CerceveModeli</small>
                                     }
+                                    @if (item.HediyePaketi)
+                                    {
+                                        <br /><small style="color:#b58735; font-weight:bold;">🎁 @Localizer["Admin_GiftPackage"] @(item.HediyePaketFiyati > 0 ? $" (+{item.HediyePaketFiyati:N2} ₪)" : "")</small>
+                                    }
                                     @if (!string.IsNullOrWhiteSpace(item.MusteriNotu))
                                     {
                                         <br /><small style="color:#92400e;"><em>@Localizer["Admin_Note"]: @item.MusteriNotu</em></small>

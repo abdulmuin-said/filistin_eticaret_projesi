@@ -70,6 +70,19 @@ namespace FilistinProje.Service.Services
                 };
             }
 
+            if (pricing.LimitSorunuVar)
+            {
+                var firstLimit = pricing.LimitAsimlari.FirstOrDefault() ?? string.Empty;
+                var isMaxExceeded = firstLimit.StartsWith("MaxSiparisAdediExceeded");
+                var messageKey = isMaxExceeded ? "Sepet_MaxSiparisAdediAsildi" : "Sepet_MinSiparisAdediNotMet";
+                return new PlaceOrderResult
+                {
+                    Status = PlaceOrderStatus.ValidationError,
+                    Pricing = pricing,
+                    MessageKey = messageKey
+                };
+            }
+
             if (!string.IsNullOrWhiteSpace(request.KuponKodu) && string.IsNullOrWhiteSpace(pricing.UygulananKuponKodu))
             {
                 return new PlaceOrderResult

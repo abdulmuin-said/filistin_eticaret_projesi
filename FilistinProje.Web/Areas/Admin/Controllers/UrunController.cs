@@ -1,9 +1,11 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Text.Json;
 using System.Xml.Linq;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Core.Models;
+using FilistinProje.Service.Interfaces;
+using FilistinProje.Service.Services;
 using FilistinProje.Service.Helpers;
 using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Authorization;
@@ -181,6 +183,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             SanitizeVariantScope(postedVariants, supportsCanvasOptions);
 
             urun.OlusturulmaTarihi = DateTime.UtcNow;
+            urun.KampanyaBitisTarihi = BusinessTimeZoneService.ConvertStoreLocalToUtc(urun.KampanyaBitisTarihi);
             urun.Sira = await NormalizeProductOrderAsync(urun.Sira);
             urun.UrlYolu = SlugHelper.GenerateSlug(string.IsNullOrWhiteSpace(urun.UrlYolu) ? (!string.IsNullOrWhiteSpace(urun.BaslikEn) ? urun.BaslikEn : urun.Baslik) : urun.UrlYolu);
             urun.Slug = await GenerateUniqueProductSlugAsync(urun.Slug, urun.Baslik, urun.BaslikEn, null);
@@ -225,6 +228,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             RepairProductTextForDisplay(urun);
+            urun.KampanyaBitisTarihi = BusinessTimeZoneService.ConvertUtcToStoreLocal(urun.KampanyaBitisTarihi);
             await PopulateCategorySelectListAsync(urun.KategoriId);
             await PopulateProductMetadataAsync(urun.UrunTipi);
             PopulateMediaMetadata(urun);
@@ -257,6 +261,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+
+            model.KampanyaBitisTarihi = BusinessTimeZoneService.ConvertStoreLocalToUtc(model.KampanyaBitisTarihi);
 
             NormalizeOptionalProductFieldsForValidation(model);
             RemoveOptionalProductModelStateErrors();

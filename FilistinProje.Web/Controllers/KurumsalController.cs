@@ -1,4 +1,4 @@
-﻿using FilistinProje.Core.Interfaces;
+using FilistinProje.Core.Interfaces;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Service.Services;
@@ -35,19 +35,25 @@ namespace FilistinProje.Web.Controllers
         [Route("Kurumsal/Detay/{slug}")]
         public async Task<IActionResult> Detay(string slug)
         {
-            var sayfa = await _context.KurumsalSayfalar.FirstOrDefaultAsync(x => x.UrlSlug == slug);
+            var normalizedSlug = NormalizeSlug(slug);
+            var sayfalar = await _context.KurumsalSayfalar
+                .AsNoTracking()
+                .Where(x => !x.SilindiMi)
+                .ToListAsync();
+
+            var sayfa = sayfalar.FirstOrDefault(x => NormalizeSlug(x.UrlSlug) == normalizedSlug);
             if (sayfa == null)
             {
                 return NotFound();
             }
 
             ViewData["Title"] = sayfa.Baslik;
-            return View(sayfa);
+            return View("Detay", sayfa);
         }
 
         [HttpGet("about")]
         [HttpGet("/Kurumsal/Hakkimizda")]
-        public IActionResult Hakkimizda() => View();
+        public async Task<IActionResult> Hakkimizda() => await GetDynamicOrFallbackViewAsync("hakkimizda", "Hakkimizda");
 
         [HttpGet("contact")]
         [HttpGet("/Kurumsal/Iletisim")]
@@ -124,20 +130,55 @@ namespace FilistinProje.Web.Controllers
         [HttpGet("privacy-policy")]
         [HttpGet("/Kurumsal/Gizlilik")]
         [HttpGet("/pages/Gizlilik")]
-        public IActionResult Gizlilik() => View();
+        public async Task<IActionResult> Gizlilik() => await GetDynamicOrFallbackViewAsync("gizlilik", "Gizlilik");
         
         [HttpGet("terms-of-service")]
         [HttpGet("/Kurumsal/KullaniciSozlesmesi")]
         [HttpGet("/pages/KullaniciSozlesmesi")]
-        public IActionResult KullaniciSozlesmesi() => View();
+        public async Task<IActionResult> KullaniciSozlesmesi() => await GetDynamicOrFallbackViewAsync("kullanici-sozlesmesi", "KullaniciSozlesmesi");
         
         [HttpGet("distance-selling-contract")]
         [HttpGet("/Kurumsal/MesafeliSatis")]
-        public IActionResult MesafeliSatis() => View();
+        public async Task<IActionResult> MesafeliSatis() => await GetDynamicOrFallbackViewAsync("mesafeli-satis", "MesafeliSatis");
         
         [HttpGet("return-policy")]
         [HttpGet("/Kurumsal/IadeKosullari")]
-        public IActionResult IadeKosullari() => View();
+        public async Task<IActionResult> IadeKosullari() => await GetDynamicOrFallbackViewAsync("iade-kosullari", "IadeKosullari");
+
+        private async Task<IActionResult> GetDynamicOrFallbackViewAsync(string slug, string fallbackView)
+        {
+            var normalizedInput = NormalizeSlug(slug);
+            var normalizedFallback = NormalizeSlug(fallbackView);
+
+            var sayfalar = await _context.KurumsalSayfalar
+                .AsNoTracking()
+                .Where(x => !x.SilindiMi)
+                .ToListAsync();
+
+            var sayfa = sayfalar.FirstOrDefault(x =>
+            {
+                var norm = NormalizeSlug(x.UrlSlug);
+                return norm == normalizedInput || norm == normalizedFallback;
+            });
+
+            if (sayfa != null)
+            {
+                ViewData["Title"] = sayfa.Baslik;
+                return View("Detay", sayfa);
+            }
+
+            return View(fallbackView);
+        }
+
+        private static string NormalizeSlug(string? slug)
+        {
+            if (string.IsNullOrWhiteSpace(slug))
+            {
+                return string.Empty;
+            }
+
+            return slug.Trim('/', ' ').ToLowerInvariant();
+        }
     }
 }
 

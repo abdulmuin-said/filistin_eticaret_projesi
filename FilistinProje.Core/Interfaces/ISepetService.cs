@@ -56,5 +56,10 @@ namespace FilistinProje.Core.Interfaces
         /// Anonymous kullanıcı login olduğunda sepetlerini birleştirir
         /// </summary>
         Task MergeSepetlerAsync(string sessionId, string userId);
+
+        /// <summary>
+        /// Anonymous kullanıcı login olduğunda sepetlerini detaylı doğrulamayla birleştirir
+        /// </summary>
+        Task<FilistinProje.Core.DTOs.SepetMergeResult> MergeSepetlerDetailedAsync(string sessionId, string userId);
     }
 }
