@@ -1,0 +1,326 @@
+- generic [ref=f6e2]:
+  - navigation "القائمة الرئيسية للإدارة" [ref=f6e3]:
+    - generic [ref=f6e4]:
+      - link [ref=f6e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f6e6]
+      - button "Kapat" [ref=f6e7] [cursor=pointer]:
+        - generic [ref=f6e8]: 
+    - generic [ref=f6e9]:
+      - link " لوحة البيانات" [ref=f6e10] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f6e11]: 
+        - text: لوحة البيانات
+      - generic [ref=f6e12]:
+        - generic [ref=f6e13]:
+          - generic [ref=f6e14]: 
+          - text: إدارة الطلبات
+        - link " الطلبات" [ref=f6e15] [cursor=pointer]:
+          - /url: /Admin/Siparis
+          - generic [ref=f6e16]: 
+          - text: الطلبات
+        - link " طلبات جديدة" [ref=f6e17] [cursor=pointer]:
+          - /url: /Admin/Siparis?durum=0
+          - generic [ref=f6e18]: 
+          - text: طلبات جديدة
+        - link " شركات الشحن" [ref=f6e19] [cursor=pointer]:
+          - /url: /Admin/Kargo
+          - generic [ref=f6e20]: 
+          - text: شركات الشحن
+        - link " طلبات الإرجاع" [ref=f6e21] [cursor=pointer]:
+          - /url: /Admin/Iade
+          - generic [ref=f6e22]: 
+          - text: طلبات الإرجاع
+      - generic [ref=f6e23]:
+        - generic [ref=f6e24]:
+          - generic [ref=f6e25]: 
+          - text: إدارة المنتجات
+        - link " المنتجات" [ref=f6e26] [cursor=pointer]:
+          - /url: /Admin/Urun
+          - generic [ref=f6e27]: 
+          - text: المنتجات
+        - link "+ إضافة منتج جديد" [ref=f6e28] [cursor=pointer]:
+          - /url: /Admin/Urun/Ekle
+          - generic [ref=f6e29]: +
+          - text: إضافة منتج جديد
+        - link " التصنيفات" [ref=f6e30] [cursor=pointer]:
+          - /url: /Admin/Kategori
+          - generic [ref=f6e31]: 
+          - text: التصنيفات
+        - link " خصائص المنتج" [ref=f6e32] [cursor=pointer]:
+          - /url: /Admin/UrunOzellik
+          - generic [ref=f6e33]: 
+          - text: خصائص المنتج
+      - generic [ref=f6e34]:
+        - generic [ref=f6e35]:
+          - generic [ref=f6e36]: 
+          - text: محتوى المتجر
+        - link " إدارة الشرائح" [ref=f6e37] [cursor=pointer]:
+          - /url: /Admin/Slayt
+          - generic [ref=f6e38]: 
+          - text: إدارة الشرائح
+        - link " أقسام الصفحة الرئيسية" [ref=f6e39] [cursor=pointer]:
+          - /url: /Admin/HomeSections
+          - generic [ref=f6e40]: 
+          - text: أقسام الصفحة الرئيسية
+        - link " كوبونات الخصم" [ref=f6e41] [cursor=pointer]:
+          - /url: /Admin/Kupon
+          - generic [ref=f6e42]: 
+          - text: كوبونات الخصم
+        - link " الرسائل" [ref=f6e43] [cursor=pointer]:
+          - /url: /Admin/Iletisim
+          - generic [ref=f6e44]: 
+          - text: الرسائل
+        - link " تقييمات المنتجات" [ref=f6e45] [cursor=pointer]:
+          - /url: /Admin/Yorum
+          - generic [ref=f6e46]: 
+          - text: تقييمات المنتجات
+        - link " مشتركي النشرة البريدية" [ref=f6e47] [cursor=pointer]:
+          - /url: /Admin/Bulten
+          - generic [ref=f6e48]: 
+          - text: مشتركي النشرة البريدية
+        - link " الصفحات المؤسسية" [ref=f6e49] [cursor=pointer]:
+          - /url: /Admin/Sayfa
+          - generic [ref=f6e50]: 
+          - text: الصفحات المؤسسية
+      - link " الأعضاء" [ref=f6e51] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f6e52]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=f6e53] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f6e54]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=f6e55] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f6e56]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=f6e57] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f6e58]: 
+        - text: مجموعات الجملة
+      - link " التقارير" [ref=f6e59] [cursor=pointer]:
+        - /url: /Admin/Rapor
+        - generic [ref=f6e60]: 
+        - text: التقارير
+      - link " الحسابات البنكية" [ref=f6e61] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f6e62]: 
+        - text: الحسابات البنكية
+      - link " الإعدادات" [ref=f6e63] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f6e64]: 
+        - text: الإعدادات
+      - generic [ref=f6e65]:
+        - link " عرض الموقع المباشر" [ref=f6e66] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f6e67]: 
+          - text: عرض الموقع المباشر
+        - button " تسجيل الخروج" [ref=f6e69] [cursor=pointer]:
+          - generic [ref=f6e70]: 
+          - text: تسجيل الخروج
+  - banner [ref=f6e71]:
+    - generic [ref=f6e72]:
+      - button "Menü" [ref=f6e73] [cursor=pointer]
+      - link "7ANRPS48 لوحة التحكم" [ref=f6e77] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f6e78]
+    - text:           +                    
+    - generic [ref=f6e79]:
+      - text:  
+      - button " AR" [ref=f6e81] [cursor=pointer]:
+        - generic [ref=f6e82]: 
+        - text: AR
+      - generic [ref=f6e83]:
+        - button "7" [ref=f6e84] [cursor=pointer]
+        - text:  
+  - generic [ref=f6e86]:
+    - main [ref=f6e87]:
+      - generic [ref=f6e88]:
+        - generic [ref=f6e89]:
+          - generic [ref=f6e90]:
+            - heading "تعديل المنتج" [level=1] [ref=f6e91]
+            - paragraph [ref=f6e92]: كيوي
+          - generic [ref=f6e93]:
+            - link " العودة إلى المنتجات" [ref=f6e94] [cursor=pointer]:
+              - /url: /Admin/Urun
+              - generic [ref=f6e95]: 
+              - text: العودة إلى المنتجات
+            - link " عرض في الموقع" [ref=f6e96] [cursor=pointer]:
+              - /url: /Urun/Detay/test-30-kiwi-141
+              - generic [ref=f6e97]: 
+              - text: عرض في الموقع
+        - generic [ref=f6e98]:
+          - generic [ref=f6e99]:
+            - generic [ref=f6e100]:
+              - generic [ref=f6e101]:
+                - generic [ref=f6e102]: 
+                - text: نشط في النظام
+              - generic [ref=f6e103]: مميز
+              - generic [ref=f6e104]: منتج جديد
+              - generic [ref=f6e105]: حملة
+              - generic [ref=f6e106]: "ID: #141"
+            - button " حفظ التغييرات" [ref=f6e107] [cursor=pointer]:
+              - generic [ref=f6e108]: 
+              - text: حفظ التغييرات
+          - generic [ref=f6e109]:
+            - generic [ref=f6e110]:
+              - tablist "أقسام تعديل المنتج" [ref=f6e111]:
+                - button " الأساسيات" [ref=f6e112] [cursor=pointer]:
+                  - generic [ref=f6e113]: 
+                  - text: الأساسيات
+                - button " السعر والعمليات" [ref=f6e114] [cursor=pointer]:
+                  - generic [ref=f6e115]: 
+                  - text: السعر والعمليات
+                - button " المحتوى" [ref=f6e116] [cursor=pointer]:
+                  - generic [ref=f6e117]: 
+                  - text: المحتوى
+                - button " الخصائص" [ref=f6e118] [cursor=pointer]:
+                  - generic [ref=f6e119]: 
+                  - text: الخصائص
+                - button " المتغيرات" [ref=f6e120] [cursor=pointer]:
+                  - generic [ref=f6e121]: 
+                  - text: المتغيرات
+                - button " الصور" [ref=f6e122] [cursor=pointer]:
+                  - generic [ref=f6e123]: 
+                  - text: الصور
+              - text: 
+              - generic [ref=f6e124]:
+                - generic [ref=f6e125]:
+                  - generic [ref=f6e126]: السعر والإنتاج وحالة التوفر
+                  - generic [ref=f6e128]:
+                    - generic [ref=f6e129]:
+                      - generic [ref=f6e130]:
+                        - generic [ref=f6e131]: سعر البيع
+                        - textbox [ref=f6e132]: 2٫49
+                      - generic [ref=f6e133]:
+                        - generic [ref=f6e134]: سعر الخصم
+                        - textbox [ref=f6e135]: 2٫11
+                      - generic [ref=f6e136]:
+                        - generic [ref=f6e137]: التكلفة
+                        - textbox [ref=f6e138]: 1٫49
+                      - generic [ref=f6e139]:
+                        - generic [ref=f6e140]: نسبة الضريبة
+                        - textbox [ref=f6e141]: "0"
+                      - generic [ref=f6e142]:
+                        - generic [ref=f6e143]: حالة المخزون
+                        - combobox [ref=f6e144]:
+                          - option "متوفر" [selected]
+                          - option "نفد المخزون"
+                          - option "طلب مسبق"
+                      - generic [ref=f6e145]:
+                        - generic [ref=f6e146]: الحد الأدنى للطلب
+                        - spinbutton [ref=f6e147]: "1"
+                      - generic [ref=f6e148]:
+                        - generic [ref=f6e149]: الحد الأقصى للطلب
+                        - spinbutton [ref=f6e150]
+                      - generic [ref=f6e151]:
+                        - generic [ref=f6e152]: أيام الإنتاج
+                        - spinbutton [ref=f6e153]: "0"
+                      - generic [ref=f6e154]:
+                        - generic [ref=f6e155]: مدة التجهيز للشحن (يوم)
+                        - spinbutton [ref=f6e156]: "1"
+                      - generic [ref=f6e157]:
+                        - generic [ref=f6e158]: وقت التسليم المقدر (أيام)
+                        - spinbutton [ref=f6e159]: "2"
+                      - generic [ref=f6e161] [cursor=pointer]:
+                        - generic [ref=f6e162]:
+                          - text: توفير تغليف الهدايا
+                          - generic [ref=f6e163]: يمكن للعملاء إضافة تغليف الهدايا من صفحة المنتج.
+                        - checkbox "توفير تغليف الهدايا يمكن للعملاء إضافة تغليف الهدايا من صفحة المنتج." [ref=f6e164]
+                      - generic [ref=f6e165]:
+                        - generic [ref=f6e166]: سعر تغليف الهدية
+                        - textbox "₪ 0.00" [ref=f6e167]: "0"
+                    - separator [ref=f6e168]
+                    - generic [ref=f6e169]:
+                      - generic [ref=f6e170] [cursor=pointer]:
+                        - generic [ref=f6e171]:
+                          - text: نشط في النظام
+                          - generic [ref=f6e172]: يمكن إدارة المنتج في لوحة الإدارة.
+                        - checkbox "نشط في النظام يمكن إدارة المنتج في لوحة الإدارة." [checked] [ref=f6e173]
+                      - generic [ref=f6e174] [cursor=pointer]:
+                        - generic [ref=f6e175]:
+                          - text: إظهار في الواجهة
+                          - generic [ref=f6e176]: المنتج مرئي للعملاء.
+                        - checkbox "إظهار في الواجهة المنتج مرئي للعملاء." [checked] [ref=f6e177]
+                      - generic [ref=f6e178] [cursor=pointer]:
+                        - generic [ref=f6e179]:
+                          - text: مميز
+                          - generic [ref=f6e180]: يظهر مميزاً في مناطق العرض.
+                        - checkbox "مميز يظهر مميزاً في مناطق العرض." [checked] [ref=f6e181]
+                      - generic [ref=f6e182] [cursor=pointer]:
+                        - generic [ref=f6e183]:
+                          - text: منتج جديد
+                          - generic [ref=f6e184]: يحصل على وسم منتج جديد.
+                        - checkbox "منتج جديد يحصل على وسم منتج جديد." [checked] [ref=f6e185]
+                      - generic [ref=f6e186] [cursor=pointer]:
+                        - generic [ref=f6e187]:
+                          - text: حملة
+                          - generic [ref=f6e188]: يعرض تمييز الحملة.
+                        - checkbox "حملة يعرض تمييز الحملة." [checked] [ref=f6e189]
+                      - generic [ref=f6e190]:
+                        - generic [ref=f6e191]: تاريخ انتهاء الحملة
+                        - textbox "تاريخ انتهاء الحملة" [ref=f6e192]
+                        - generic [ref=f6e193]: سيتوقف العداد التنازلي عند هذا التاريخ. اتركه فارغاً إذا لم تكن تريد عداداً.
+                      - generic [ref=f6e194] [cursor=pointer]:
+                        - generic [ref=f6e195]:
+                          - text: عرض في الصفحة الرئيسية
+                          - generic [ref=f6e196]: يظهر ضمن قوائم الصفحة الرئيسية.
+                        - checkbox "عرض في الصفحة الرئيسية يظهر ضمن قوائم الصفحة الرئيسية." [checked] [ref=f6e197]
+                      - generic [ref=f6e198] [cursor=pointer]:
+                        - generic [ref=f6e199]:
+                          - text: طلب واتساب
+                          - generic [ref=f6e200]: يعرض زر واتساب بدلاً من السلة.
+                        - checkbox "طلب واتساب يعرض زر واتساب بدلاً من السلة." [ref=f6e201]
+                      - generic [ref=f6e202] [cursor=pointer]:
+                        - generic [ref=f6e203]:
+                          - text: السعر مخفي
+                          - generic [ref=f6e204]: لا يظهر السعر ويتم طلب عرض سعر.
+                        - checkbox "السعر مخفي لا يظهر السعر ويتم طلب عرض سعر." [ref=f6e205]
+                - generic [ref=f6e206]:
+                  - generic [ref=f6e207]: إعدادات الجملة
+                  - generic [ref=f6e210]:
+                    - generic [ref=f6e211]:
+                      - generic [ref=f6e212]: مجموعة منتج الجملة
+                      - combobox [ref=f6e213]:
+                        - option "-- لا توجد مجموعة --" [selected]
+                        - option "مجموعة الجملة الأساسية"
+                      - generic [ref=f6e214]: اختر مجموعة الجملة التي ينتمي إليها المنتج.
+                    - generic [ref=f6e215]:
+                      - generic [ref=f6e216]: سعر الجملة (₪)
+                      - textbox "سعر بيع الجملة" [ref=f6e217]
+                      - generic [ref=f6e218]: سعر خاص يظهر لتجار الجملة. إذا تُرك فارغاً يتم حسابه تلقائياً.
+              - text:  + 
+              - generic [ref=f6e219]:
+                - link "إلغاء" [ref=f6e220] [cursor=pointer]:
+                  - /url: /Admin/Urun
+                - button " حفظ" [ref=f6e221] [cursor=pointer]:
+                  - generic [ref=f6e222]: 
+                  - text: حفظ
+            - complementary [ref=f6e223]:
+              - generic [ref=f6e224]:
+                - generic [ref=f6e225]: ملخص المنتج
+                - generic [ref=f6e227]:
+                  - img "كيوي - الصورة الرئيسية" [ref=f6e230]
+                  - generic [ref=f6e231]: كيوي
+                  - generic [ref=f6e232]: "SKU: GRO-BRD-KIW-030"
+                  - generic [ref=f6e233]:
+                    - generic [ref=f6e234]:
+                      - generic [ref=f6e235]: السعر الفعلي
+                      - strong [ref=f6e236]: 2٫11 ₪
+                    - generic [ref=f6e237]:
+                      - generic [ref=f6e238]: المبيعات
+                      - strong [ref=f6e239]: "0"
+                    - generic [ref=f6e240]:
+                      - generic [ref=f6e241]: المشاهدات
+                      - strong [ref=f6e242]: "6"
+                    - generic [ref=f6e243]:
+                      - generic [ref=f6e244]: المفضلة
+                      - strong [ref=f6e245]: "0"
+                    - generic [ref=f6e246]:
+                      - generic [ref=f6e247]: Admin_Variation
+                      - strong [ref=f6e248]: "1"
+                    - generic [ref=f6e249]:
+                      - generic [ref=f6e250]: الوسائط
+                      - strong [ref=f6e251]: "1"
+    - contentinfo [ref=f6e252]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

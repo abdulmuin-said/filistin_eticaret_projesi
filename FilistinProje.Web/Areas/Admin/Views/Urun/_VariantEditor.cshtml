@@ -97,15 +97,15 @@
 
                         <div class="col-lg-2 col-md-6">
                             <label class="ca-label" data-label-for="SatisFiyati">@Localizer["Admin_SalePrice"] (₪)</label>
-                            <input class="ca-input" type="number" step="0.01" min="0" data-variant-field="SatisFiyati" name="UrunSecenek[@i].SatisFiyati" value="@variant.SatisFiyati.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" />
+                            <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="SatisFiyati" name="UrunSecenek[@i].SatisFiyati" value="@variant.SatisFiyati.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" />
                         </div>
                         <div class="col-lg-2 col-md-6">
                             <label class="ca-label" data-label-for="FiyatFarki">@Localizer["Admin_PriceDifference"] (₪)</label>
-                            <input class="ca-input" type="number" step="0.01" data-variant-field="FiyatFarki" name="UrunSecenek[@i].FiyatFarki" value="@variant.FiyatFarki.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" />
+                            <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="FiyatFarki" name="UrunSecenek[@i].FiyatFarki" value="@variant.FiyatFarki.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" />
                         </div>
                         <div class="col-lg-2 col-md-6">
                             <label class="ca-label" data-label-for="MaliyetFiyati">@Localizer["Admin_Cost"] (₪)</label>
-                            <input class="ca-input" type="number" step="0.01" min="0" data-variant-field="MaliyetFiyati" name="UrunSecenek[@i].MaliyetFiyati" value="@variant.MaliyetFiyati.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" />
+                            <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="MaliyetFiyati" name="UrunSecenek[@i].MaliyetFiyati" value="@variant.MaliyetFiyati.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" />
                         </div>
                         <div class="col-lg-2 col-md-6">
                             <label class="ca-label" data-label-for="StokAdedi">@Localizer["Admin_Stok"]</label>
@@ -113,7 +113,7 @@
                         </div>
                         <div class="col-lg-2 col-md-6">
                             <label class="ca-label" data-label-for="Desi">Desi</label>
-                            <input class="ca-input" type="number" step="0.01" min="0" data-variant-field="Desi" name="UrunSecenek[@i].Desi" value="@variant.Desi.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" />
+                            <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="Desi" name="UrunSecenek[@i].Desi" value="@variant.Desi.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" />
                         </div>
                         <div class="col-lg-2 col-md-6">
                             <label class="ca-label" data-label-for="GorselUrl">@Localizer["Admin_VariantImage"]</label>
@@ -217,15 +217,15 @@
 
                     <div class="col-lg-2 col-md-6">
                         <label class="ca-label" data-label-for="SatisFiyati">@Localizer["Admin_SalePrice"] (₪)</label>
-                        <input class="ca-input" type="number" step="0.01" min="0" data-variant-field="SatisFiyati" name="UrunSecenek[__index__].SatisFiyati" value="0" />
+                        <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="SatisFiyati" name="UrunSecenek[__index__].SatisFiyati" value="0" />
                     </div>
                     <div class="col-lg-2 col-md-6">
                         <label class="ca-label" data-label-for="FiyatFarki">@Localizer["Admin_PriceDifference"] (₪)</label>
-                        <input class="ca-input" type="number" step="0.01" data-variant-field="FiyatFarki" name="UrunSecenek[__index__].FiyatFarki" value="0" />
+                        <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="FiyatFarki" name="UrunSecenek[__index__].FiyatFarki" value="0" />
                     </div>
                     <div class="col-lg-2 col-md-6">
                         <label class="ca-label" data-label-for="MaliyetFiyati">@Localizer["Admin_Cost"] (₪)</label>
-                        <input class="ca-input" type="number" step="0.01" min="0" data-variant-field="MaliyetFiyati" name="UrunSecenek[__index__].MaliyetFiyati" value="0" />
+                        <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="MaliyetFiyati" name="UrunSecenek[__index__].MaliyetFiyati" value="0" />
                     </div>
                     <div class="col-lg-2 col-md-6">
                         <label class="ca-label" data-label-for="StokAdedi">@Localizer["Admin_Stok"]</label>
@@ -233,7 +233,7 @@
                     </div>
                     <div class="col-lg-2 col-md-6">
                         <label class="ca-label" data-label-for="Desi">Desi</label>
-                        <input class="ca-input" type="number" step="0.01" min="0" data-variant-field="Desi" name="UrunSecenek[__index__].Desi" value="0" />
+                        <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="Desi" name="UrunSecenek[__index__].Desi" value="0" />
                     </div>
                     <div class="col-lg-2 col-md-6">
                         <label class="ca-label" data-label-for="GorselUrl">@Localizer["Admin_VariantImage"]</label>

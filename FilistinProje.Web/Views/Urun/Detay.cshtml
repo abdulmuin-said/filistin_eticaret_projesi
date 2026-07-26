@@ -14,6 +14,7 @@
     var secenekler = ViewBag.Secenekler as List<FilistinProje.Core.Varliklar.UrunSecenek> ?? new List<FilistinProje.Core.Varliklar.UrunSecenek>();
     var stokBiteniGriGoster = siteSettings.StokBiteniGriGoster;
     var stoktaYokSatisIzni = siteSettings.StoktaYokSatisIzni;
+    var badges = Model.ToBadges(stoktaYokSatisIzni);
     var varsayilanSecenek = secenekler
         .OrderByDescending(x => x.VarsayilanMi)
         .ThenBy(x => x.Sira)
@@ -305,9 +306,9 @@
 <div class="container mx-auto px-4 py-10 lg:py-12">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
         <div class="space-y-4">
-            @* ¦¦¦ ANA MEDYA ALANI ¦¦¦
-                Galeri + Video karýþýk medya listesi. width/height CLS için explicit.
-                Keyboard ve touch swipe _Layout/globalmedia.js içinde delegated. *@
+            @* ï¿½ï¿½ï¿½ ANA MEDYA ALANI ï¿½ï¿½ï¿½
+                Galeri + Video karï¿½ï¿½ï¿½k medya listesi. width/height CLS iï¿½in explicit.
+                Keyboard ve touch swipe _Layout/globalmedia.js iï¿½inde delegated. *@
             <div id="mainProductImageContainer"
                  class="product-media group relative aspect-square overflow-hidden rounded-lg bg-brand-cream"
                  role="region"
@@ -345,8 +346,23 @@
                     </div>
                 }
 
-                @* Galeri ok tuþlarý — RTL/LTR uyumlu (mantýksal prev/next; start/end always visual)
-                   Mantýksal olarak prev/next tipleri için ui ikonu locale göre ters çevrilir. *@
+                @if (badges.Any())
+                {
+                    <div class="pointer-events-none absolute start-2 top-2 z-10 flex flex-col gap-1.5">
+                        @foreach (var badge in badges)
+                        {
+                            var badgeText = !string.IsNullOrEmpty(badge.Metin)
+                                ? badge.Metin
+                                : Localizer[badge.LocalizasyonKey].Value;
+                            <span class="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow-sm @badge.CssClass">
+                                @badgeText
+                            </span>
+                        }
+                    </div>
+                }
+
+                @* Galeri ok tuï¿½larï¿½ ï¿½ RTL/LTR uyumlu (mantï¿½ksal prev/next; start/end always visual)
+                   Mantï¿½ksal olarak prev/next tipleri iï¿½in ui ikonu locale gï¿½re ters ï¿½evrilir. *@
                 @if (galeriMedyalari.Count > 1)
                 {
                     var prevIcon = isRtlDetay ? "fa-chevron-right" : "fa-chevron-left";
@@ -362,7 +378,7 @@
                 }
             </div>
 
-            @* ¦¦¦ THUMBNAIL STRIP — klavye/swipe friendly tab list ¦¦¦ *@
+            @* ï¿½ï¿½ï¿½ THUMBNAIL STRIP ï¿½ klavye/swipe friendly tab list ï¿½ï¿½ï¿½ *@
             @if (galeriMedyalari.Count > 1)
             {
                 <div class="product-thumbs flex gap-3 overflow-x-auto pb-2 px-1"
@@ -387,7 +403,7 @@
                 </div>
             }
 
-            @* ¦¦¦ VIDEO BLOKLARI —autoplay kapalý, poster = image, playsinline ¦¦¦ *@
+            @* ï¿½ï¿½ï¿½ VIDEO BLOKLARI ï¿½autoplay kapalï¿½, poster = image, playsinline ï¿½ï¿½ï¿½ *@
             @if (videoMedyalari.Any())
             {
                 <div class="grid grid-cols-1 gap-3">

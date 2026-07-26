@@ -65,7 +65,8 @@ namespace FilistinProje.Web.Models
                 ));
             }
 
-            if (KampanyaliMi && KampanyaBitisTarihi.HasValue && KampanyaBitisTarihi.Value > DateTime.UtcNow)
+            if (KampanyaliMi &&
+                (!KampanyaBitisTarihi.HasValue || KampanyaBitisTarihi.Value > DateTime.UtcNow))
             {
                 badges.Add(new ProductBadge(
                     metin: "",

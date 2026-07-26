@@ -3363,6 +3363,30 @@
   <data name="Admin_Cost" xml:space="preserve">
     <value>التكلفة</value>
   </data>
+  <data name="Admin_PricingAndAvailability" xml:space="preserve">
+    <value>السعر والإنتاج وحالة التوفر</value>
+  </data>
+  <data name="Admin_TaxRate" xml:space="preserve">
+    <value>نسبة الضريبة</value>
+  </data>
+  <data name="Admin_StockStatus" xml:space="preserve">
+    <value>حالة المخزون</value>
+  </data>
+  <data name="Admin_InStock" xml:space="preserve">
+    <value>متوفر</value>
+  </data>
+  <data name="Admin_OutOfStock" xml:space="preserve">
+    <value>نفد المخزون</value>
+  </data>
+  <data name="Admin_MinOrderQuantity" xml:space="preserve">
+    <value>الحد الأدنى للطلب</value>
+  </data>
+  <data name="Admin_MaxOrderQuantity" xml:space="preserve">
+    <value>الحد الأقصى للطلب</value>
+  </data>
+  <data name="Admin_ShippingPreparationDays" xml:space="preserve">
+    <value>مدة التجهيز للشحن (يوم)</value>
+  </data>
   <data name="Admin_VariantImage" xml:space="preserve">
     <value>صورة الخيار</value>
   </data>

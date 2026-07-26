@@ -52,8 +52,8 @@ namespace FilistinProje.Service.Helpers
             }
 
             // 3. KAMPANYALI ÜRÜN KONTROLÜ
-            if (urun.KampanyaliMi && urun.KampanyaBitisTarihi.HasValue &&
-                urun.KampanyaBitisTarihi.Value > DateTime.UtcNow)
+            if (urun.KampanyaliMi &&
+                (!urun.KampanyaBitisTarihi.HasValue || urun.KampanyaBitisTarihi.Value > DateTime.UtcNow))
             {
                 badges.Add(new ProductBadge(
                     metin: "",
@@ -76,10 +76,7 @@ namespace FilistinProje.Service.Helpers
             }
 
             // 5. YENİ ÜRÜN KONTROLÜ
-            // Mantıksal kontrol: Ürün çok eskiyse (satış > 50, görüntüleme > 1000) yeni etiketi gösterme
-            if (urun.YeniUrunMu &&
-                urun.SatisSayisi < 50 &&
-                urun.GoruntulenmeSayisi < 1000)
+            if (urun.YeniUrunMu)
             {
                 badges.Add(new ProductBadge(
                     metin: "",

@@ -64,6 +64,10 @@
         margin-top: 20px;
     }
 
+    .ca-product-editor > * {
+        min-width: 0;
+    }
+
     .ca-product-toolbar {
         display: flex;
         align-items: center;
@@ -328,6 +332,55 @@
         font-weight: 700;
     }
 
+    .ca-switch-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .ca-switch-tile {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 16px;
+        min-width: 0;
+        min-height: 76px;
+        margin: 0;
+        padding: 14px 16px;
+        border: 1px solid var(--editor-border);
+        border-radius: var(--editor-radius-sm);
+        background: #fafafa;
+        cursor: pointer;
+    }
+
+    .ca-switch-copy {
+        min-width: 0;
+    }
+
+    .ca-switch-tile.form-switch .form-check-input {
+        float: none;
+        grid-column: 2;
+        grid-row: 1;
+        width: 3rem;
+        height: 1.5rem;
+        margin: 0;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    [dir="rtl"] .ca-switch-tile.form-switch,
+    [dir="ltr"] .ca-switch-tile.form-switch {
+        padding-inline: 16px;
+    }
+
+    .ca-switch-field {
+        min-width: 0;
+        padding: 14px 16px;
+        border: 1px solid var(--editor-border);
+        border-radius: var(--editor-radius-sm);
+        background: #fff;
+    }
+
     .ca-save-rail {
         position: sticky;
         bottom: 0;
@@ -354,7 +407,21 @@
         }
     }
 
-    @@media (max-width: 768px) {
+    @@media (max-width: 767.98px) {
+        .ca-switch-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .ca-card-body {
+            padding: 18px;
+        }
+
+        .ca-save-rail {
+            margin-inline: -18px;
+            margin-bottom: -18px;
+            padding: 16px 18px;
+        }
+
         .ca-editor-tabs {
             top: 112px;
             overflow-x: auto;
@@ -389,16 +456,6 @@
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="OlusturulmaTarihi" />
         <input type="hidden" asp-for="SilindiMi" />
-        <!-- Hidden inputs for display:none panel checkboxes -->
-        <input type="hidden" id="hiddenHediyePaketiVarMi" name="HediyePaketiVarMi" value="@(Model.HediyePaketiVarMi ? "true" : "false")" />
-        <input type="hidden" id="hiddenAktifMi" name="AktifMi" value="@(Model.AktifMi ? "true" : "false")" />
-        <input type="hidden" id="hiddenYayindaMi" name="YayindaMi" value="@(Model.YayindaMi ? "true" : "false")" />
-        <input type="hidden" id="hiddenOneCikanMi" name="OneCikanMi" value="@(Model.OneCikanMi ? "true" : "false")" />
-        <input type="hidden" id="hiddenYeniUrunMu" name="YeniUrunMu" value="@(Model.YeniUrunMu ? "true" : "false")" />
-        <input type="hidden" id="hiddenAnaSayfadaGoster" name="AnaSayfadaGoster" value="@(Model.AnaSayfadaGoster ? "true" : "false")" />
-        <input type="hidden" id="hiddenWhatsappSiparisVarMi" name="WhatsappSiparisVarMi" value="@(Model.WhatsappSiparisVarMi ? "true" : "false")" />
-        <input type="hidden" id="hiddenFiyatGizliMi" name="FiyatGizliMi" value="@(Model.FiyatGizliMi ? "true" : "false")" />
-        <input type="hidden" id="hiddenKampanyaliMi" name="KampanyaliMi" value="@(Model.KampanyaliMi ? "true" : "false")" />
 
         @if (!ViewData.ModelState.IsValid)
         {
@@ -467,7 +524,7 @@
                                     <label class="ca-label">@Localizer["Admin_Kategori"]</label>
                                     <select asp-for="KategoriId" asp-items="ViewBag.Kategoriler" class="ca-select"></select>
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-md-6 col-xl-3">
                                     <label class="ca-label">الماركة</label>
                                     <input asp-for="Marka" class="ca-input" />
                                 </div>
@@ -491,7 +548,7 @@
                                     <label class="ca-label">الوسوم</label>
                                     <input asp-for="Etiketler" class="ca-input" placeholder="حديث، صالون، ديكور" />
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-md-6 col-xl-3">
                                     <label class="ca-label">@Localizer["Admin_Sira"]</label>
                                     <input asp-for="Sira" class="ca-input" type="number" min="0" />
                                 </div>
@@ -503,69 +560,66 @@
                 <section class="ca-editor-panel" data-product-panel="fiyat">
                     <div class="ca-card">
                         <div class="ca-card-header">
-                            <span class="ca-card-title">السعر والإنتاج وحالة الواجهة</span>
+                            <span class="ca-card-title">@Localizer["Admin_PricingAndAvailability"]</span>
                         </div>
                         <div class="ca-card-body">
                             <div class="row g-3">
-                                <div class="col-lg-3">
-                                    <label class="ca-label">سعر البيع</label>
-                                    <input asp-for="Fiyat" class="ca-input" type="number" step="0.01" min="0" />
+                                <div class="col-md-6 col-xl-3">
+                                    <label class="ca-label">@Localizer["Admin_SalePrice"]</label>
+                                    <input asp-for="Fiyat" class="ca-input" type="text" inputmode="decimal" data-decimal />
                                 </div>
-                                <div class="col-lg-3">
-                                    <label class="ca-label">السعر المخفَّض</label>
-                                    <input asp-for="IndirimliFiyat" class="ca-input" type="number" step="0.01" min="0" />
+                                <div class="col-md-6 col-xl-3">
+                                    <label class="ca-label">@Localizer["Admin_DiscountPrice"]</label>
+                                    <input asp-for="IndirimliFiyat" class="ca-input" type="text" inputmode="decimal" data-decimal />
                                 </div>
-                                <div class="col-lg-3">
-                                    <label class="ca-label">التكلفة</label>
-                                    <input asp-for="Maliyet" class="ca-input" type="number" step="0.01" min="0" />
+                                <div class="col-md-6 col-xl-3">
+                                    <label class="ca-label">@Localizer["Admin_Cost"]</label>
+                                    <input asp-for="Maliyet" class="ca-input" type="text" inputmode="decimal" data-decimal />
                                 </div>
-                                <div class="col-lg-3">
-                                    <label class="ca-label">نسبة الضريبة</label>
-                                    <input asp-for="KdvOrani" class="ca-input" type="number" step="0.01" min="0" />
+                                <div class="col-md-6 col-xl-3">
+                                    <label class="ca-label">@Localizer["Admin_TaxRate"]</label>
+                                    <input asp-for="KdvOrani" class="ca-input" type="text" inputmode="decimal" data-decimal />
                                 </div>
-                                <div class="col-lg-3">
-                                    <label class="ca-label">حالة المخزون</label>
+                                <div class="col-md-6 col-xl-3">
+                                    <label class="ca-label">@Localizer["Admin_StockStatus"]</label>
                                     <select asp-for="StokDurumu" class="ca-select">
-                                        <option value="Stokta">متوفر</option>
-                                        <option value="Tukendi">نفد المخزون</option>
-                                        <option value="OnSiparis">طلب مسبق</option>
+                                        <option value="Stokta">@Localizer["Admin_InStock"]</option>
+                                        <option value="Tukendi">@Localizer["Admin_OutOfStock"]</option>
+                                        <option value="OnSiparis">@Localizer["Admin_PreOrder"]</option>
                                     </select>
                                 </div>
-                                <div class="col-lg-3">
-                                    <label class="ca-label">الحد الأدنى للطلب</label>
+                                <div class="col-md-6 col-xl-3">
+                                    <label class="ca-label">@Localizer["Admin_MinOrderQuantity"]</label>
                                     <input asp-for="MinSiparisAdedi" class="ca-input" type="number" min="1" />
                                 </div>
-                                <div class="col-lg-3">
-                                    <label class="ca-label">الحد الأقصى للطلب</label>
+                                <div class="col-md-6 col-xl-3">
+                                    <label class="ca-label">@Localizer["Admin_MaxOrderQuantity"]</label>
                                     <input asp-for="MaxSiparisAdedi" class="ca-input" type="number" min="1" />
                                 </div>
-                                <div class="col-lg-3">
-                                    <label class="ca-label">مدة الإنتاج (يوم)</label>
+                                <div class="col-md-6 col-xl-3">
+                                    <label class="ca-label">@Localizer["Admin_ProductionDays"]</label>
                                     <input asp-for="UretimSuresiGun" class="ca-input" type="number" min="0" />
                                 </div>
-                                <div class="col-lg-3">
-                                    <label class="ca-label">مدة التسليم للشحن (يوم)</label>
+                                <div class="col-md-6 col-xl-3">
+                                    <label class="ca-label">@Localizer["Admin_ShippingPreparationDays"]</label>
                                     <input asp-for="KargoyaVerilisSuresiGun" class="ca-input" type="number" min="0" />
                                 </div>
-                                <div class="col-lg-3">
-                                    <label class="ca-label">التسليم المتوقع (يوم)</label>
+                                <div class="col-md-6 col-xl-3">
+                                    <label class="ca-label">@Localizer["Admin_EstimatedDeliveryDays"]</label>
                                     <input asp-for="TahminiTeslimSuresiGun" class="ca-input" type="number" min="0" />
                                 </div>
-                                <div class="col-lg-3">
-                                    <label class="ca-label">@Localizer["Admin_GiftPackage"]</label>
-                                    <div class="ca-toggle-box mt-2">
-                                        <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
-                                            <span>
-                                                <strong>@Localizer["Admin_OfferGiftWrap"]</strong><br>
-                                                <small class="text-muted">@Localizer["Admin_OfferGiftWrapHelp"]</small>
-                                            </span>
-                                            <input asp-for="HediyePaketiVarMi" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
-                                        </div>
-                                    </div>
+                                <div class="col-md-6 col-xl-3">
+                                    <label class="ca-switch-tile form-check form-switch h-100">
+                                        <span class="ca-switch-copy">
+                                            <span class="form-check-label fw-semibold">@Localizer["Admin_OfferGiftWrap"]</span>
+                                            <span class="small text-muted d-block mt-1">@Localizer["Admin_OfferGiftWrapHelp"]</span>
+                                        </span>
+                                        <input asp-for="HediyePaketiVarMi" class="form-check-input" type="checkbox">
+                                    </label>
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-md-6 col-xl-3" id="giftPriceContainer">
                                     <label class="ca-label">@Localizer["Admin_GiftWrapPrice"]</label>
-                                    <input asp-for="HediyePaketFiyati" class="ca-input" type="number" step="0.01" min="0" placeholder="₪ 0.00" />
+                                    <input asp-for="HediyePaketFiyati" class="ca-input" type="text" inputmode="decimal" data-decimal placeholder="₪ 0.00" />
                                 </div>
                             </div>
 
@@ -573,49 +627,65 @@
 
                             <div class="ca-switch-grid">
                                 <label class="ca-switch-tile form-check form-switch">
+                                    <span class="ca-switch-copy">
+                                        <span class="form-check-label fw-semibold">@Localizer["Admin_ProductActive"]</span>
+                                        <span class="small text-muted d-block mt-1">@Localizer["Admin_ProductActiveHelp"]</span>
+                                    </span>
                                     <input asp-for="AktifMi" class="form-check-input" type="checkbox">
-                                    <span class="form-check-label fw-semibold">@Localizer["Admin_ProductActive"]</span>
-                                    <div class="small text-muted mt-1">@Localizer["Admin_ProductActiveHelp"]</div>
                                 </label>
                                 <label class="ca-switch-tile form-check form-switch">
+                                    <span class="ca-switch-copy">
+                                        <span class="form-check-label fw-semibold">@Localizer["Admin_ShowInStorefront"]</span>
+                                        <span class="small text-muted d-block mt-1">@Localizer["Admin_ShowInStorefrontHelp"]</span>
+                                    </span>
                                     <input asp-for="YayindaMi" class="form-check-input" type="checkbox">
-                                    <span class="form-check-label fw-semibold">@Localizer["Admin_ShowInStorefront"]</span>
-                                    <div class="small text-muted mt-1">@Localizer["Admin_ShowInStorefrontHelp"]</div>
                                 </label>
                                 <label class="ca-switch-tile form-check form-switch">
+                                    <span class="ca-switch-copy">
+                                        <span class="form-check-label fw-semibold">@Localizer["Admin_Featured"]</span>
+                                        <span class="small text-muted d-block mt-1">@Localizer["Admin_FeaturedHelp"]</span>
+                                    </span>
                                     <input asp-for="OneCikanMi" class="form-check-input" type="checkbox">
-                                    <span class="form-check-label fw-semibold">@Localizer["Admin_Featured"]</span>
-                                    <div class="small text-muted mt-1">@Localizer["Admin_FeaturedHelp"]</div>
                                 </label>
                                 <label class="ca-switch-tile form-check form-switch">
+                                    <span class="ca-switch-copy">
+                                        <span class="form-check-label fw-semibold">@Localizer["Admin_NewProduct"]</span>
+                                        <span class="small text-muted d-block mt-1">@Localizer["Admin_NewProductHelp"]</span>
+                                    </span>
                                     <input asp-for="YeniUrunMu" class="form-check-input" type="checkbox">
-                                    <span class="form-check-label fw-semibold">@Localizer["Admin_NewProduct"]</span>
-                                    <div class="small text-muted mt-1">@Localizer["Admin_NewProductHelp"]</div>
                                 </label>
                                 <label class="ca-switch-tile form-check form-switch">
+                                    <span class="ca-switch-copy">
+                                        <span class="form-check-label fw-semibold">@Localizer["Admin_Campaign"]</span>
+                                        <span class="small text-muted d-block mt-1">@Localizer["Admin_CampaignHelp"]</span>
+                                    </span>
                                     <input asp-for="KampanyaliMi" class="form-check-input" type="checkbox">
-                                    <span class="form-check-label fw-semibold">@Localizer["Admin_Campaign"]</span>
-                                    <div class="small text-muted mt-1">@Localizer["Admin_CampaignHelp"]</div>
                                 </label>
-                                <div class="mb-3">
+                                <div class="ca-switch-field">
                                     <label asp-for="KampanyaBitisTarihi" class="form-label fw-semibold">@Localizer["Admin_CampaignEndDate"]</label>
                                     <input asp-for="KampanyaBitisTarihi" class="ca-input" type="datetime-local" value="@(Model.KampanyaBitisTarihi?.ToString("yyyy-MM-ddTHH:mm"))" />
                                     <div class="small text-muted mt-1">@Localizer["Admin_CampaignEndDateHelp"]</div>
                                 </div>
                                 <label class="ca-switch-tile form-check form-switch">
+                                    <span class="ca-switch-copy">
+                                        <span class="form-check-label fw-semibold">@Localizer["Admin_Ana_Sayfa"]</span>
+                                        <span class="small text-muted d-block mt-1">@Localizer["Admin_ShowOnHomeHelp"]</span>
+                                    </span>
                                     <input asp-for="AnaSayfadaGoster" class="form-check-input" type="checkbox">
-                                    <span class="form-check-label fw-semibold">@Localizer["Admin_Ana_Sayfa"]</span>
-                                    <div class="small text-muted mt-1">@Localizer["Admin_ShowOnHomeHelp"]</div>
                                 </label>
                                 <label class="ca-switch-tile form-check form-switch">
+                                    <span class="ca-switch-copy">
+                                        <span class="form-check-label fw-semibold">@Localizer["Admin_WhatsappOrder"]</span>
+                                        <span class="small text-muted d-block mt-1">@Localizer["Admin_WhatsappOrderHelp"]</span>
+                                    </span>
                                     <input asp-for="WhatsappSiparisVarMi" class="form-check-input" type="checkbox">
-                                    <span class="form-check-label fw-semibold">@Localizer["Admin_WhatsappOrder"]</span>
-                                    <div class="small text-muted mt-1">@Localizer["Admin_WhatsappOrderHelp"]</div>
                                 </label>
                                 <label class="ca-switch-tile form-check form-switch">
+                                    <span class="ca-switch-copy">
+                                        <span class="form-check-label fw-semibold">@Localizer["Admin_HiddenPrice"]</span>
+                                        <span class="small text-muted d-block mt-1">@Localizer["Admin_HiddenPriceHelp"]</span>
+                                    </span>
                                     <input asp-for="FiyatGizliMi" class="form-check-input" type="checkbox">
-                                    <span class="form-check-label fw-semibold">@Localizer["Admin_HiddenPrice"]</span>
-                                    <div class="small text-muted mt-1">@Localizer["Admin_HiddenPriceHelp"]</div>
                                 </label>
                             </div>
                         </div>
@@ -643,7 +713,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="ca-label">@Localizer["Admin_WholesalePrice"] (₪)</label>
-                                    <input asp-for="TopFiyat" class="ca-input" type="number" min="0" step="0.01" placeholder="@Localizer["Admin_WholesalePricePlaceholder"]" />
+                                    <input asp-for="TopFiyat" class="ca-input" type="text" inputmode="decimal" data-decimal placeholder="@Localizer["Admin_WholesalePricePlaceholder"]" />
                                     <div class="small text-muted mt-1">@Localizer["Admin_WholesalePriceHelp"]</div>
                                 </div>
                             </div>
@@ -890,26 +960,8 @@
         reader.readAsDataURL(file);
     }
 
-    // Checkbox-Hidden input sync
-    function syncHidden(cbId, hiddenId) {
-        const cb = document.getElementById(cbId);
-        const hid = document.getElementById(hiddenId);
-        if (cb && hid) {
-            cb.addEventListener('change', function() { hid.value = this.checked ? 'true' : 'false'; });
-        }
-    }
-    syncHidden('giftWrapToggle', 'hiddenHediyePaketiVarMi');
-    syncHidden('cbAktifMi', 'hiddenAktifMi');
-    syncHidden('cbYayindaMi', 'hiddenYayindaMi');
-    syncHidden('cbOneCikanMi', 'hiddenOneCikanMi');
-    syncHidden('cbYeniUrunMu', 'hiddenYeniUrunMu');
-    syncHidden('cbAnaSayfadaGoster', 'hiddenAnaSayfadaGoster');
-    syncHidden('cbWhatsappSiparisVarMi', 'hiddenWhatsappSiparisVarMi');
-    syncHidden('cbFiyatGizliMi', 'hiddenFiyatGizliMi');
-    syncHidden('cbKampanyaliMi', 'hiddenKampanyaliMi');
-
     // Gift wrap UI
-    const giftToggle = document.getElementById('giftWrapToggle');
+    const giftToggle = document.getElementById('HediyePaketiVarMi');
     const giftContainer = document.getElementById('giftPriceContainer');
     const giftInput = document.getElementById('HediyePaketFiyati');
     if (giftToggle && giftContainer && giftInput) {

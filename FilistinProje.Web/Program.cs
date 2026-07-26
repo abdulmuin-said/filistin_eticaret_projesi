@@ -21,6 +21,7 @@ using FilistinProje.Web.Attributes;
 using FilistinProje.Web.Caching;
 using FilistinProje.Web.Diagnostics;
 using FilistinProje.Web.HealthChecks;
+using FilistinProje.Web.ModelBinding;
 using FilistinProje.Web.Resources;
 using FilistinProje.Web.Security;
 using FilistinProje.Web.Services;
@@ -295,8 +296,9 @@ builder.Services.AddResponseCompression(options =>
 // 8. MVC ve Session
 builder.Services.AddControllersWithViews(options =>
 {
+    options.ModelBinderProviders.Insert(0, new FlexibleDecimalModelBinderProvider());
     // Bu satÄ±r sayesinde siteye giren herkes otomatik kaydedilir
-    options.Filters.Add<ZiyaretciTakipAttribute>(); 
+    options.Filters.Add<ZiyaretciTakipAttribute>();
 })
 .AddDataAnnotationsLocalization(options =>
 {

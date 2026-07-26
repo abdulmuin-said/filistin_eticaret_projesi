@@ -2,6 +2,7 @@ using FilistinProje.Core.DTOs;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Service;
+using FilistinProje.Service.Helpers;
 using FilistinProje.Service.Interfaces;
 using FilistinProje.Service.Services;
 using FilistinProje.Web.Controllers;
@@ -72,6 +73,33 @@ namespace FilistinProje.Tests
 
             Assert.True(urun.IndirimVarMi);
             Assert.Equal(75m, urun.EtkinFiyat);
+        }
+
+        [Fact]
+        public void ToBadges_CampaignWithoutEndDate_ShowsCampaignBadge()
+        {
+            var urun = new Urun
+            {
+                KampanyaliMi = true,
+                KampanyaBitisTarihi = null,
+                StokDurumu = "Stokta"
+            };
+
+            Assert.Contains(urun.ToBadges(), badge => badge.LocalizasyonKey == "Badge_Campaign");
+        }
+
+        [Fact]
+        public void ToBadges_AdminMarkedNewProduct_ShowsNewBadge()
+        {
+            var urun = new Urun
+            {
+                YeniUrunMu = true,
+                SatisSayisi = 50,
+                GoruntulenmeSayisi = 1000,
+                StokDurumu = "Stokta"
+            };
+
+            Assert.Contains(urun.ToBadges(), badge => badge.LocalizasyonKey == "Badge_NewProduct");
         }
 
         // --- 2. SEPET BİRLEŞTİRME GERÇEK SERVİS TESTLERİ (POST-AUDIT-001) ---

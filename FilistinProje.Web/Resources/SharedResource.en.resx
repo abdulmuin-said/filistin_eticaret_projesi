@@ -3401,6 +3401,30 @@
   <data name="Admin_Cost" xml:space="preserve">
     <value>Cost</value>
   </data>
+  <data name="Admin_PricingAndAvailability" xml:space="preserve">
+    <value>Pricing, Production and Availability</value>
+  </data>
+  <data name="Admin_TaxRate" xml:space="preserve">
+    <value>Tax Rate</value>
+  </data>
+  <data name="Admin_StockStatus" xml:space="preserve">
+    <value>Stock Status</value>
+  </data>
+  <data name="Admin_InStock" xml:space="preserve">
+    <value>In Stock</value>
+  </data>
+  <data name="Admin_OutOfStock" xml:space="preserve">
+    <value>Out of Stock</value>
+  </data>
+  <data name="Admin_MinOrderQuantity" xml:space="preserve">
+    <value>Minimum Order Quantity</value>
+  </data>
+  <data name="Admin_MaxOrderQuantity" xml:space="preserve">
+    <value>Maximum Order Quantity</value>
+  </data>
+  <data name="Admin_ShippingPreparationDays" xml:space="preserve">
+    <value>Shipping Preparation (Days)</value>
+  </data>
   <data name="Admin_VariantImage" xml:space="preserve">
     <value>Variant Image</value>
   </data>

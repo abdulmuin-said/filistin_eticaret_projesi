@@ -269,6 +269,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!await ValidateProductAsync(model, anaResimDosyasi, id, galeriDosyalari))
             {
+                AddVisibleModelStateErrorsToSummary();
                 await PopulateCategorySelectListAsync(model.KategoriId);
                 await PopulateProductMetadataAsync(model.UrunTipi);
                 ViewBag.ToptanciUrunGruplari = await _context.ToptanciUrunGruplari
@@ -316,7 +317,7 @@ await _context.SaveChangesAsync();
             await SyncProductPricesWithVariantsAsync(urun, model);
 
             TempData["Mesaj"] = "تم تحديث المنتج بنجاح.";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { area = "Admin" });
         }
 
         private async Task SyncProductPricesWithVariantsAsync(Urun urun, Urun model)
@@ -2266,6 +2267,8 @@ await _context.SaveChangesAsync();
         {
             var optionalProductFields = new HashSet<string>
             {
+                nameof(Urun.BaslikEn),
+                nameof(Urun.BaslikAr),
                 nameof(Urun.KisaAd),
                 nameof(Urun.SKU),
                 nameof(Urun.Barkod),
@@ -2273,7 +2276,11 @@ await _context.SaveChangesAsync();
                 nameof(Urun.UrunTipi),
                 nameof(Urun.Etiketler),
                 nameof(Urun.KisaAciklama),
+                nameof(Urun.KisaAciklamaEn),
+                nameof(Urun.KisaAciklamaAr),
                 nameof(Urun.Aciklama),
+                nameof(Urun.AciklamaEn),
+                nameof(Urun.AciklamaAr),
                 nameof(Urun.TeknikOzellikler),
                 nameof(Urun.MalzemeBilgisi),
                 nameof(Urun.BakimTalimati),
@@ -2282,9 +2289,18 @@ await _context.SaveChangesAsync();
                 nameof(Urun.StokDurumu),
                 nameof(Urun.UrlYolu),
                 nameof(Urun.SeoTitle),
+                nameof(Urun.SeoTitleEn),
+                nameof(Urun.SeoTitleAr),
                 nameof(Urun.SeoDescription),
+                nameof(Urun.SeoDescriptionEn),
+                nameof(Urun.SeoDescriptionAr),
                 nameof(Urun.SeoKeywords),
-                nameof(Urun.AktifMi)
+                nameof(Urun.AktifMi),
+                nameof(Urun.Kategori),
+                nameof(Urun.ToptanciUrunGrubu),
+                nameof(Urun.UrunResimleri),
+                nameof(Urun.UrunSecenek),
+                nameof(Urun.UrunOzellikleri)
             };
 
             foreach (var key in optionalProductFields)
@@ -2304,25 +2320,50 @@ await _context.SaveChangesAsync();
                 nameof(UrunSecenek.KisilestirmeMetni),
                 nameof(UrunSecenek.OzelTasarimNotu),
                 nameof(UrunSecenek.GorselUrl),
-                nameof(UrunSecenek.Urun),
                 nameof(UrunSecenek.AktifMi),
                 nameof(UrunSecenek.VarsayilanMi),
                 nameof(UrunSecenek.TukeninceGizle),
-                nameof(UrunSecenek.OnSipariseAcikMi)
+                nameof(UrunSecenek.OnSipariseAcikMi),
+                nameof(UrunSecenek.Urun)
+            };
+
+            var optionalFeatureFields = new[]
+            {
+                nameof(UrunOzellikDegeri.Urun),
+                nameof(UrunOzellikDegeri.Deger),
+                nameof(UrunOzellikDegeri.DegerGosterimi),
+                nameof(UrunOzellikDegeri.UrunOzellikTanimi)
             };
 
             foreach (var key in ModelState.Keys.ToList())
             {
-                if (key.StartsWith("UrunSecenek[", StringComparison.Ordinal) &&
-                    optionalVariantFields.Any(field => key.EndsWith("." + field, StringComparison.Ordinal)))
+                if ((key.StartsWith("UrunSecenek[", StringComparison.Ordinal) &&
+                     optionalVariantFields.Any(field => key.EndsWith("." + field, StringComparison.Ordinal))) ||
+                    (key.StartsWith("UrunOzellikleri[", StringComparison.Ordinal) &&
+                     optionalFeatureFields.Any(field => key.EndsWith("." + field, StringComparison.Ordinal))))
                 {
                     ModelState.Remove(key);
                 }
             }
         }
 
+        private void AddVisibleModelStateErrorsToSummary()
+        {
+            foreach (var error in ModelState
+                .Where(entry => entry.Key.Length > 0)
+                .SelectMany(entry => entry.Value?.Errors ?? Enumerable.Empty<Microsoft.AspNetCore.Mvc.ModelBinding.ModelError>())
+                .Select(error => error.ErrorMessage)
+                .Where(message => !string.IsNullOrWhiteSpace(message))
+                .Distinct())
+            {
+                ModelState.AddModelError(string.Empty, error);
+            }
+        }
+
         private static void NormalizeOptionalProductFieldsForValidation(Urun urun)
         {
+            urun.BaslikEn ??= string.Empty;
+            urun.BaslikAr ??= string.Empty;
             urun.KisaAd ??= string.Empty;
             urun.SKU ??= string.Empty;
             urun.Barkod ??= string.Empty;
@@ -2330,7 +2371,11 @@ await _context.SaveChangesAsync();
             urun.UrunTipi = UrunOzellikCatalog.NormalizeProductType(urun.UrunTipi);
             urun.Etiketler ??= string.Empty;
             urun.KisaAciklama ??= string.Empty;
+            urun.KisaAciklamaEn ??= string.Empty;
+            urun.KisaAciklamaAr ??= string.Empty;
             urun.Aciklama ??= string.Empty;
+            urun.AciklamaEn ??= string.Empty;
+            urun.AciklamaAr ??= string.Empty;
             urun.TeknikOzellikler ??= string.Empty;
             urun.MalzemeBilgisi ??= string.Empty;
             urun.BakimTalimati ??= string.Empty;
@@ -2339,7 +2384,11 @@ await _context.SaveChangesAsync();
             urun.StokDurumu = NormalizeStockStatus(urun.StokDurumu);
             urun.UrlYolu ??= string.Empty;
             urun.SeoTitle ??= string.Empty;
+            urun.SeoTitleEn ??= string.Empty;
+            urun.SeoTitleAr ??= string.Empty;
             urun.SeoDescription ??= string.Empty;
+            urun.SeoDescriptionEn ??= string.Empty;
+            urun.SeoDescriptionAr ??= string.Empty;
             urun.SeoKeywords ??= string.Empty;
 
             foreach (var variant in urun.UrunSecenek ?? Enumerable.Empty<UrunSecenek>())
@@ -3090,6 +3139,7 @@ await _context.SaveChangesAsync();
             target.StokDurumu = source.StokDurumu;
             target.Fiyat = source.Fiyat;
             target.IndirimliFiyat = source.IndirimliFiyat;
+            target.TopFiyat = source.TopFiyat;
             target.Maliyet = source.Maliyet;
             target.KdvOrani = source.KdvOrani;
             target.UretimSuresiGun = source.UretimSuresiGun;
@@ -3109,6 +3159,7 @@ await _context.SaveChangesAsync();
             target.MinSiparisAdedi = source.MinSiparisAdedi;
             target.MaxSiparisAdedi = source.MaxSiparisAdedi;
             target.KategoriId = source.KategoriId;
+            target.ToptanciUrunGrubuId = source.ToptanciUrunGrubuId;
             target.SeoTitle = source.SeoTitle;
             target.SeoDescription = source.SeoDescription;
             target.SeoKeywords = source.SeoKeywords;

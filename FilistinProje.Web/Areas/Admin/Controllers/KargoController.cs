@@ -38,6 +38,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             try
             {
+                if ((ModelState.TryGetValue(nameof(KargoFirmasi.Fiyat), out var fiyatState) && fiyatState.Errors.Count > 0) || model.Fiyat < 0)
+                {
+                    TempData["Mesaj"] = _localizer["Admin_InvalidShippingPrice"].Value;
+                    TempData["Durum"] = "danger";
+                    return RedirectToAction(nameof(Index));
+                }
+
                 if (string.IsNullOrWhiteSpace(model.Ad))
                 {
                     TempData["Mesaj"] = _localizer["Admin_CarrierNameRequired"].Value;
@@ -149,6 +156,9 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             try
             {
+                if ((ModelState.TryGetValue("fiyat", out var fiyatState) && fiyatState.Errors.Count > 0) || fiyat < 0)
+                    return Json(new { success = false, message = _localizer["Admin_InvalidShippingPrice"].Value });
+
                 if (string.IsNullOrWhiteSpace(ad))
                     return Json(new { success = false, message = _localizer["Admin_RegionNameRequired"].Value });
 
@@ -305,7 +315,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             try
             {
-                if (fiyat < 0)
+                if ((ModelState.TryGetValue("fiyat", out var fiyatState) && fiyatState.Errors.Count > 0) || fiyat < 0)
                     return Json(new { success = false, message = _localizer["Admin_InvalidShippingPrice"].Value });
 
                 var firmaVar = await _context.KargoFirmalari.IgnoreQueryFilters()

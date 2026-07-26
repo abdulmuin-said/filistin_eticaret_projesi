@@ -103,7 +103,7 @@
             }
 
             if (definition.alanTipi === 'number') {
-                return `${hidden}<input class="ca-input" type="number" step="0.01" name="${fieldName}" value="${escapedValue}" data-feature-input data-definition-id="${definition.id}" />`;
+                return `${hidden}<input class="ca-input" type="text" inputmode="decimal" data-decimal name="${fieldName}" value="${escapedValue}" data-feature-input data-definition-id="${definition.id}" />`;
             }
 
             if (definition.alanTipi === 'select') {

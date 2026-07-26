@@ -1,0 +1,212 @@
+- generic [active] [ref=f21e1]:
+  - generic [ref=f21e3]:
+    - generic [ref=f21e4]:
+      - generic [ref=f21e5]:
+        - generic [ref=f21e6]: 
+        - text: توصيل مجاني للطلبات فوق 200 ₪
+      - generic [ref=f21e7]:
+        - generic [ref=f21e8]: 
+        - text: شحن مجاني للطلبات فوق 1٬500 ₪
+      - generic [ref=f21e9]:
+        - generic [ref=f21e10]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f21e11]:
+        - generic [ref=f21e12]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f21e13]:
+        - generic [ref=f21e14]: 
+        - text: إنتاج سريع
+      - generic [ref=f21e15]:
+        - generic [ref=f21e16]: 
+        - text: تغليف دقيق
+      - generic [ref=f21e17]:
+        - generic [ref=f21e18]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f21e19]:
+        - generic [ref=f21e20]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f21e21]:
+        - generic [ref=f21e22]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f21e23]:
+        - generic [ref=f21e24]: 
+        - text: دعم واتساب
+    - generic [ref=f21e25]:
+      - generic [ref=f21e26]:
+        - generic [ref=f21e27]: 
+        - text: توصيل مجاني للطلبات فوق 200 ₪
+      - generic [ref=f21e28]:
+        - generic [ref=f21e29]: 
+        - text: شحن مجاني للطلبات فوق 1٬500 ₪
+      - generic [ref=f21e30]:
+        - generic [ref=f21e31]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f21e32]:
+        - generic [ref=f21e33]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f21e34]:
+        - generic [ref=f21e35]: 
+        - text: إنتاج سريع
+      - generic [ref=f21e36]:
+        - generic [ref=f21e37]: 
+        - text: تغليف دقيق
+      - generic [ref=f21e38]:
+        - generic [ref=f21e39]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f21e40]:
+        - generic [ref=f21e41]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f21e42]:
+        - generic [ref=f21e43]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f21e44]:
+        - generic [ref=f21e45]: 
+        - text: دعم واتساب
+  - banner [ref=f21e46]:
+    - generic [ref=f21e47]:
+      - generic [ref=f21e48]:
+        - generic [ref=f21e49]: 
+        - link "العربية" [ref=f21e51] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FHesap%2FGirisYap%3FreturnUrl%3D%252FAdmin%252FUrun%252FDuzenle%252F141
+        - link "English" [ref=f21e52] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FHesap%2FGirisYap%3FreturnUrl%3D%252FAdmin%252FUrun%252FDuzenle%252F141
+      - link "7ANRPS48" [ref=f21e53] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f21e54]
+      - generic [ref=f21e55]:
+        - button "بحث" [ref=f21e56] [cursor=pointer]
+        - link "تسجيل الدخول" [ref=f21e59] [cursor=pointer]:
+          - /url: /account/GirisYap
+        - link "المفضلة" [ref=f21e62] [cursor=pointer]:
+          - /url: /favorites
+        - link "السلة" [ref=f21e65] [cursor=pointer]:
+          - /url: /cart
+          - generic [ref=f21e68]: "0"
+      - navigation [ref=f21e69]:
+        - list [ref=f21e70]:
+          - listitem [ref=f21e71] [cursor=pointer]:
+            - link "أثاث" [ref=f21e72]:
+              - /url: /products?k=91
+          - listitem [ref=f21e75] [cursor=pointer]:
+            - link "العطور" [ref=f21e76]:
+              - /url: /products?k=90
+          - listitem [ref=f21e79] [cursor=pointer]:
+            - link "بقالة" [ref=f21e80]:
+              - /url: /products?k=92
+          - listitem [ref=f21e83] [cursor=pointer]:
+            - link "جمال" [ref=f21e84]:
+              - /url: /products?k=89
+          - listitem [ref=f21e87] [cursor=pointer]:
+            - link "أثاث منزلي" [ref=f21e88]:
+              - /url: /products?k=78
+          - listitem [ref=f21e91] [cursor=pointer]:
+            - link "إلكترونيات" [ref=f21e92]:
+              - /url: /products?k=79
+          - listitem [ref=f21e95] [cursor=pointer]:
+            - link "أزياء" [ref=f21e96]:
+              - /url: /products?k=80
+          - listitem [ref=f21e99] [cursor=pointer]:
+            - link "اتصل بنا" [ref=f21e100]:
+              - /url: /pages/Iletisim
+  - main [ref=f21e101]:
+    - generic [ref=f21e103]:
+      - generic [ref=f21e104]:
+        - link "7ANRPS48" [ref=f21e105] [cursor=pointer]:
+          - /url: /
+        - paragraph [ref=f21e106]: تسجيل الدخول إلى حسابك
+      - generic [ref=f21e107]:
+        - generic [ref=f21e108]:
+          - generic [ref=f21e109]:
+            - generic [ref=f21e110]: البريد الإلكتروني
+            - textbox "البريد الإلكتروني" [ref=f21e111]:
+              - /placeholder: example@email.com
+              - text: admin@7anrps48.com
+          - generic [ref=f21e112]:
+            - generic [ref=f21e113]: كلمة المرور
+            - textbox "كلمة المرور" [ref=f21e114]: Admin123!
+          - link "نسيت كلمة المرور" [ref=f21e116] [cursor=pointer]:
+            - /url: /account/SifremiUnuttum
+          - button "تسجيل الدخول" [ref=f21e117] [cursor=pointer]
+        - generic [ref=f21e118]:
+          - generic [ref=f21e119]: Or
+          - link "LoginWithGoogle" [ref=f21e125] [cursor=pointer]:
+            - /url: "#"
+      - paragraph [ref=f21e131]:
+        - text: ليس لديك حساب؟
+        - link "تسجيل" [ref=f21e132] [cursor=pointer]:
+          - /url: /account/KayitOl
+  - contentinfo [ref=f21e133]:
+    - generic [ref=f21e135]:
+      - generic [ref=f21e140]:
+        - generic [ref=f21e141]: في جميع مناطق فلسطين
+        - generic [ref=f21e142]: شحن مجاني
+      - generic [ref=f21e147]:
+        - generic [ref=f21e148]: إتمام الطلب بأمان
+        - generic [ref=f21e149]: 256 Bit SSL
+      - generic [ref=f21e154]:
+        - generic [ref=f21e155]: تحويل بنكي
+        - generic [ref=f21e156]: دفع سهل عبر الآيبان
+    - generic [ref=f21e157]:
+      - generic [ref=f21e158]:
+        - generic [ref=f21e159]:
+          - paragraph [ref=f21e160]: متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن
+          - generic [ref=f21e161]:
+            - generic [ref=f21e162]:
+              - generic [ref=f21e163]: 
+              - generic [ref=f21e164]: فلسطين
+            - generic [ref=f21e165]:
+              - generic [ref=f21e166]: 
+              - generic [ref=f21e167]: "السبت - الخميس: 9:00 - 21:00"
+          - heading "اشترك في النشرة البريدية" [level=3] [ref=f21e168]
+          - paragraph [ref=f21e169]: استقبل أحدث المنتجات المختارة من السوق الفلسطيني والعروض الخاصة على بريدك.
+          - generic [ref=f21e170]:
+            - textbox "عنوان البريد الإلكتروني" [ref=f21e171]
+            - button "اشتراك" [ref=f21e172] [cursor=pointer]
+        - generic [ref=f21e173]:
+          - heading "مؤسسي" [level=4] [ref=f21e174]
+          - list [ref=f21e175]:
+            - listitem [ref=f21e176]:
+              - link "من نحن" [ref=f21e177] [cursor=pointer]:
+                - /url: /pages/about
+            - listitem [ref=f21e178]:
+              - link "اتصل بنا" [ref=f21e179] [cursor=pointer]:
+                - /url: /pages/contact
+            - listitem [ref=f21e180]:
+              - link "جميع المنتجات" [ref=f21e181] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=f21e182]:
+              - link "سياسة الخصوصية" [ref=f21e183] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f21e184]:
+              - link "عقد البيع عن بعد" [ref=f21e185] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - generic [ref=f21e186]:
+            - link "Facebook" [ref=f21e187] [cursor=pointer]:
+              - /url: https://www.facebook.com/7anrps48
+              - generic [ref=f21e188]: 
+            - link "X / Twitter" [ref=f21e189] [cursor=pointer]:
+              - /url: https://x.com/7anrps48?s=21
+              - generic [ref=f21e190]: 
+      - generic [ref=f21e191]:
+        - paragraph [ref=f21e193]: © 2026 7ANRPS48 — جميع الحقوق محفوظة.
+        - generic [ref=f21e194]:
+          - link "سياسة الخصوصية" [ref=f21e195] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "الإرجاع والاستبدال" [ref=f21e196] [cursor=pointer]:
+            - /url: /pages/return-policy
+          - text: "|"
+          - link "من نحن" [ref=f21e197] [cursor=pointer]:
+            - /url: /pages/about
+  - link "اتصال واتساب" [ref=f21e198] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=f21e201]: WhatsApp
+  - link "السلة" [ref=f21e202] [cursor=pointer]:
+    - /url: /cart
+  - generic [ref=f21e206]:
+    - generic [ref=f21e207]:
+      - generic [ref=f21e208]: 
+      - paragraph [ref=f21e210]: نستخدم ملفات تعريف الارتباط لتحسين تجربتك وتحليل حركة الموقع.
+    - generic [ref=f21e211]:
+      - button "رفض" [ref=f21e212] [cursor=pointer]
+      - button "موافق" [ref=f21e213] [cursor=pointer]

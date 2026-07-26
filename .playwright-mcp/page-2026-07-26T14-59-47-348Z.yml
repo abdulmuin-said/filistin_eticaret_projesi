@@ -1,0 +1,229 @@
+- generic [ref=f1e2]:
+  - text:          +                   
+  - banner [ref=f1e3]:
+    - generic [ref=f1e4]:
+      - link "7ANRPS48 لوحة التحكم" [ref=f1e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f1e6]
+      - generic [ref=f1e7]: لوحة التحكم
+    - navigation "القائمة الرئيسية للإدارة" [ref=f1e8]:
+      - link " لوحة البيانات" [ref=f1e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f1e10]: 
+        - text: لوحة البيانات
+      - generic [ref=f1e11]:
+        - button " إدارة الطلبات 1" [ref=f1e12] [cursor=pointer]:
+          - generic [ref=f1e13]: 
+          - text: إدارة الطلبات
+          - generic [ref=f1e14]: "1"
+        - text:      
+      - generic [ref=f1e15]:
+        - button " إدارة المنتجات" [ref=f1e16] [cursor=pointer]:
+          - generic [ref=f1e17]: 
+          - text: إدارة المنتجات
+        - text:  +  
+      - generic [ref=f1e18]:
+        - button " محتوى المتجر" [ref=f1e19] [cursor=pointer]:
+          - generic [ref=f1e20]: 
+          - text: محتوى المتجر
+        - text:        
+      - link " الأعضاء" [ref=f1e21] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f1e22]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=f1e23] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f1e24]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=f1e25] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f1e26]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=f1e27] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f1e28]: 
+        - text: مجموعات الجملة
+      - generic [ref=f1e29]:
+        - button " التقارير" [ref=f1e30] [cursor=pointer]:
+          - generic [ref=f1e31]: 
+          - text: التقارير
+        - text:  
+      - link " الحسابات البنكية" [ref=f1e32] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f1e33]: 
+        - text: الحسابات البنكية
+      - link " الإعدادات" [ref=f1e34] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f1e35]: 
+        - text: الإعدادات
+    - generic [ref=f1e36]:
+      - text: 
+      - generic [ref=f1e37]:
+        - generic [ref=f1e38]: 
+        - link "العربية" [ref=f1e40] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FAdmin%2FKargo
+        - link "English" [ref=f1e41] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FAdmin%2FKargo
+      - text: 
+      - generic [ref=f1e42]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f1e43] [cursor=pointer]:
+          - generic [ref=f1e44]:
+            - strong [ref=f1e45]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f1e46]: "7"
+        - text:  
+  - generic [ref=f1e47]:
+    - main [ref=f1e48]:
+      - generic [ref=f1e49]:
+        - generic [ref=f1e51]:
+          - heading "إدارة الشحن" [level=1] [ref=f1e52]
+          - paragraph [ref=f1e53]: أدر شركات الشحن وروابط التتبع وبيانات مرسل الملصق المستخدمة في الطلبات.
+        - generic [ref=f1e54]:
+          - generic [ref=f1e56]:
+            - heading "+ شركة شحن جديدة" [level=3] [ref=f1e58]:
+              - generic [ref=f1e59]: +
+              - text: شركة شحن جديدة
+            - generic [ref=f1e61]:
+              - generic [ref=f1e62]:
+                - generic [ref=f1e63]:
+                  - generic [ref=f1e64]: اسم الشركة
+                  - textbox "Palestine Post" [ref=f1e65]
+                - generic [ref=f1e66]:
+                  - generic [ref=f1e67]: الرمز
+                  - textbox "palestine-post" [ref=f1e68]
+                - generic [ref=f1e69]:
+                  - generic [ref=f1e70]: Admin_LogoUrl
+                  - textbox "/img/shipping/company-logo.svg" [ref=f1e71]
+                - generic [ref=f1e72]:
+                  - generic [ref=f1e73]: الهاتف
+                  - textbox "+970 599 123 456" [ref=f1e74]
+                - generic [ref=f1e75]:
+                  - generic [ref=f1e76]: رسوم الشحن (₪)
+                  - textbox [ref=f1e77]: "0.00"
+                - generic [ref=f1e78]:
+                  - generic [ref=f1e79]: افتراضي
+                  - combobox [ref=f1e80]:
+                    - option "لا" [selected]
+                    - option "نعم"
+                - generic [ref=f1e81]:
+                  - generic [ref=f1e82]: رابط التتبع
+                  - textbox "https://..." [ref=f1e83]
+                - generic [ref=f1e84]:
+                  - generic [ref=f1e85]: اسم المرسل
+                  - textbox [ref=f1e86]: 7ANRPS48
+                - generic [ref=f1e87]:
+                  - generic [ref=f1e88]: عنوان المرسل
+                  - textbox "عنوان المرسل الظاهر على الملصق" [ref=f1e89]
+                - generic [ref=f1e90]:
+                  - generic [ref=f1e91]: هاتف المرسل
+                  - textbox "+970 599 123 456" [ref=f1e92]
+              - button " حفظ الشركة" [ref=f1e93] [cursor=pointer]:
+                - generic [ref=f1e94]: 
+                - text: حفظ الشركة
+          - generic [ref=f1e96]:
+            - heading " شركات الشحن" [level=3] [ref=f1e98]:
+              - generic [ref=f1e99]: 
+              - text: شركات الشحن
+            - table [ref=f1e101]:
+              - rowgroup [ref=f1e102]:
+                - row [ref=f1e103]:
+                  - columnheader "الشركة" [ref=f1e104]
+                  - columnheader "التتبع" [ref=f1e105]
+                  - columnheader "رسوم الشحن" [ref=f1e106]
+                  - columnheader "الحالة" [ref=f1e107]
+                  - columnheader "الإجراء" [ref=f1e108]
+              - rowgroup [ref=f1e109]:
+                - row [ref=f1e110]:
+                  - cell "United Express united-express" [ref=f1e111]:
+                    - generic [ref=f1e113]:
+                      - generic [ref=f1e114]: United Express
+                      - generic [ref=f1e115]: united-express
+                  - cell "+970 000 000 000 https://tracking.unitedexpress.ps/?track=" [ref=f1e116]:
+                    - generic [ref=f1e117]: +970 000 000 000
+                    - generic [ref=f1e118]: https://tracking.unitedexpress.ps/?track=
+                  - cell "0٫00 ₪" [ref=f1e119]
+                  - cell "نشط افتراضي" [ref=f1e120]:
+                    - generic [ref=f1e121]: نشط
+                    - generic [ref=f1e122]: افتراضي
+                  - cell [ref=f1e123]:
+                    - generic [ref=f1e124]:
+                      - button "" [ref=f1e125] [cursor=pointer]
+                      - text:  
+                - text: 
+      - generic [ref=f1e127]:
+        - generic [ref=f1e129]:
+          - heading " مناطق ومدن الشحن" [level=2] [ref=f1e130]:
+            - generic [ref=f1e131]: 
+            - text: مناطق ومدن الشحن
+          - paragraph [ref=f1e132]: أدر مناطق ومدن الشحن لمحافظات فلسطين والمناطق الأخرى.
+        - generic [ref=f1e133]:
+          - generic [ref=f1e134]:
+            - generic [ref=f1e135]:
+              - heading "+ منطقة جديدة" [level=3] [ref=f1e137]:
+                - generic [ref=f1e138]: +
+                - text: منطقة جديدة
+              - generic [ref=f1e140]:
+                - generic [ref=f1e141]:
+                  - generic [ref=f1e142]: اسم المنطقة
+                  - textbox "Gaza" [ref=f1e143]
+                - generic [ref=f1e144]:
+                  - generic [ref=f1e145]: الدولة
+                  - textbox "Palestine" [ref=f1e146]
+                - generic [ref=f1e147]:
+                  - generic [ref=f1e148]: الوصف
+                  - textbox "وصف قصير عن المنطقة" [ref=f1e149]
+                - generic [ref=f1e150]:
+                  - generic [ref=f1e151]: الترتيب
+                  - spinbutton [ref=f1e152]: "0"
+                - generic [ref=f1e153]:
+                  - generic [ref=f1e154]: السعر (₪)
+                  - textbox [ref=f1e155]: "0.00"
+                - generic [ref=f1e156]:
+                  - button " حفظ" [ref=f1e157] [cursor=pointer]:
+                    - generic [ref=f1e158]: 
+                    - text: حفظ
+                  - text: 
+            - generic [ref=f1e159]:
+              - heading " إضافة مدينة" [level=3] [ref=f1e161]:
+                - generic [ref=f1e162]: 
+                - text: إضافة مدينة
+              - generic [ref=f1e164]:
+                - generic [ref=f1e165]:
+                  - generic [ref=f1e166]: المنطقة
+                  - combobox [ref=f1e167]:
+                    - option "اختر المنطقة..." [selected]
+                - generic [ref=f1e168]:
+                  - generic [ref=f1e169]: اسم المدينة
+                  - textbox "Ramallah" [ref=f1e170]
+                - button "+ إضافة مدينة" [ref=f1e172] [cursor=pointer]:
+                  - generic [ref=f1e173]: +
+                  - text: إضافة مدينة
+          - generic [ref=f1e175]:
+            - generic [ref=f1e176]:
+              - heading " قائمة المناطق والمدن" [level=3] [ref=f1e177]:
+                - generic [ref=f1e178]: 
+                - text: قائمة المناطق والمدن
+              - combobox [ref=f1e180]:
+                - option "كل الدول" [selected]
+                - option "فلسطين"
+            - generic [ref=f1e183]:
+              - generic [ref=f1e184]: 
+              - text: جاري التحميل...
+      - generic [ref=f1e185]:
+        - generic [ref=f1e187]:
+          - heading " أسعار شحن محافظات فلسطين" [level=2] [ref=f1e188]:
+            - generic [ref=f1e189]: 
+            - text: أسعار شحن محافظات فلسطين
+          - paragraph [ref=f1e190]: أدر رسوم التوصيل لمحافظات فلسطين حسب شركة الشحن.
+        - generic [ref=f1e191]:
+          - generic [ref=f1e192]:
+            - heading " مصفوفة أسعار المحافظات" [level=3] [ref=f1e193]:
+              - generic [ref=f1e194]: 
+              - text: مصفوفة أسعار المحافظات
+            - button " تحديث" [ref=f1e195] [cursor=pointer]:
+              - generic [ref=f1e196]: 
+              - text: تحديث
+          - generic [ref=f1e199]:
+            - generic [ref=f1e200]: 
+            - text: جاري التحميل...
+    - contentinfo [ref=f1e201]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

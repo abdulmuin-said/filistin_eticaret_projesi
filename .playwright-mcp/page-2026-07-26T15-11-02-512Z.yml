@@ -1,0 +1,334 @@
+- generic [ref=f9e2]:
+  - navigation "Admin main menu" [ref=f9e3]:
+    - generic [ref=f9e4]:
+      - link [ref=f9e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f9e6]
+      - button "Kapat" [ref=f9e7] [cursor=pointer]:
+        - generic [ref=f9e8]: 
+    - generic [ref=f9e9]:
+      - link " Dashboard" [ref=f9e10] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f9e11]: 
+        - text: Dashboard
+      - generic [ref=f9e12]:
+        - generic [ref=f9e13]:
+          - generic [ref=f9e14]: 
+          - text: Order Management
+        - link " Orders" [ref=f9e15] [cursor=pointer]:
+          - /url: /Admin/Siparis
+          - generic [ref=f9e16]: 
+          - text: Orders
+        - link " New Orders" [ref=f9e17] [cursor=pointer]:
+          - /url: /Admin/Siparis?durum=0
+          - generic [ref=f9e18]: 
+          - text: New Orders
+        - link " Shipping Companies" [ref=f9e19] [cursor=pointer]:
+          - /url: /Admin/Kargo
+          - generic [ref=f9e20]: 
+          - text: Shipping Companies
+        - link " Return Requests" [ref=f9e21] [cursor=pointer]:
+          - /url: /Admin/Iade
+          - generic [ref=f9e22]: 
+          - text: Return Requests
+      - generic [ref=f9e23]:
+        - generic [ref=f9e24]:
+          - generic [ref=f9e25]: 
+          - text: Product Management
+        - link " Products" [ref=f9e26] [cursor=pointer]:
+          - /url: /Admin/Urun
+          - generic [ref=f9e27]: 
+          - text: Products
+        - link "+ Add New Product" [ref=f9e28] [cursor=pointer]:
+          - /url: /Admin/Urun/Ekle
+          - generic [ref=f9e29]: +
+          - text: Add New Product
+        - link " Categories" [ref=f9e30] [cursor=pointer]:
+          - /url: /Admin/Kategori
+          - generic [ref=f9e31]: 
+          - text: Categories
+        - link " Product Attributes" [ref=f9e32] [cursor=pointer]:
+          - /url: /Admin/UrunOzellik
+          - generic [ref=f9e33]: 
+          - text: Product Attributes
+      - generic [ref=f9e34]:
+        - generic [ref=f9e35]:
+          - generic [ref=f9e36]: 
+          - text: Store Content
+        - link " Slider Management" [ref=f9e37] [cursor=pointer]:
+          - /url: /Admin/Slayt
+          - generic [ref=f9e38]: 
+          - text: Slider Management
+        - link " Home Page Sections" [ref=f9e39] [cursor=pointer]:
+          - /url: /Admin/HomeSections
+          - generic [ref=f9e40]: 
+          - text: Home Page Sections
+        - link " Coupons" [ref=f9e41] [cursor=pointer]:
+          - /url: /Admin/Kupon
+          - generic [ref=f9e42]: 
+          - text: Coupons
+        - link " Messages" [ref=f9e43] [cursor=pointer]:
+          - /url: /Admin/Iletisim
+          - generic [ref=f9e44]: 
+          - text: Messages
+        - link " Product Reviews" [ref=f9e45] [cursor=pointer]:
+          - /url: /Admin/Yorum
+          - generic [ref=f9e46]: 
+          - text: Product Reviews
+        - link " Newsletter Subscribers" [ref=f9e47] [cursor=pointer]:
+          - /url: /Admin/Bulten
+          - generic [ref=f9e48]: 
+          - text: Newsletter Subscribers
+        - link " Corporate Pages" [ref=f9e49] [cursor=pointer]:
+          - /url: /Admin/Sayfa
+          - generic [ref=f9e50]: 
+          - text: Corporate Pages
+      - link " Members" [ref=f9e51] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f9e52]: 
+        - text: Members
+      - link " Staff" [ref=f9e53] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f9e54]: 
+        - text: Staff
+      - link " Wholesalers" [ref=f9e55] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f9e56]: 
+        - text: Wholesalers
+      - link " Wholesale Groups" [ref=f9e57] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f9e58]: 
+        - text: Wholesale Groups
+      - link " Reports" [ref=f9e59] [cursor=pointer]:
+        - /url: /Admin/Rapor
+        - generic [ref=f9e60]: 
+        - text: Reports
+      - link " Bank Accounts" [ref=f9e61] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f9e62]: 
+        - text: Bank Accounts
+      - link " Settings" [ref=f9e63] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f9e64]: 
+        - text: Settings
+      - generic [ref=f9e65]:
+        - link " View Live Site" [ref=f9e66] [cursor=pointer]:
+          - /url: /
+          - generic [ref=f9e67]: 
+          - text: View Live Site
+        - button " Logout" [ref=f9e69] [cursor=pointer]:
+          - generic [ref=f9e70]: 
+          - text: Logout
+  - banner [ref=f9e71]:
+    - generic [ref=f9e72]:
+      - button "Menü" [ref=f9e73] [cursor=pointer]
+      - link "7ANRPS48 Admin Panel" [ref=f9e77] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f9e78]
+    - text:           +                    
+    - generic [ref=f9e79]:
+      - text: 
+      - generic [ref=f9e80]:
+        - generic [ref=f9e81]: 
+        - link "العربية" [ref=f9e83] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FAdmin%2FUrun%2FDuzenle%2F141
+        - link "English" [ref=f9e84] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FAdmin%2FUrun%2FDuzenle%2F141
+      - text: 
+      - generic [ref=f9e85]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f9e86] [cursor=pointer]:
+          - generic [ref=f9e87]:
+            - strong [ref=f9e88]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f9e89]: "7"
+        - text:  
+  - generic [ref=f9e90]:
+    - main [ref=f9e91]:
+      - generic [ref=f9e92]:
+        - generic [ref=f9e93]:
+          - generic [ref=f9e94]:
+            - heading "تعديل المنتج" [level=1] [ref=f9e95]
+            - paragraph [ref=f9e96]: كيوي
+          - generic [ref=f9e97]:
+            - link " العودة إلى المنتجات" [ref=f9e98] [cursor=pointer]:
+              - /url: /Admin/Urun
+              - generic [ref=f9e99]: 
+              - text: العودة إلى المنتجات
+            - link " عرض في الموقع" [ref=f9e100] [cursor=pointer]:
+              - /url: /Urun/Detay/test-30-kiwi-141
+              - generic [ref=f9e101]: 
+              - text: عرض في الموقع
+        - generic [ref=f9e102]:
+          - generic [ref=f9e103]:
+            - generic [ref=f9e104]:
+              - generic [ref=f9e105]:
+                - generic [ref=f9e106]: 
+                - text: System Active
+              - generic [ref=f9e107]: Featured
+              - generic [ref=f9e108]: New Product
+              - generic [ref=f9e109]: حملة
+              - generic [ref=f9e110]: "ID: #141"
+            - button " حفظ التغييرات" [ref=f9e111] [cursor=pointer]:
+              - generic [ref=f9e112]: 
+              - text: حفظ التغييرات
+          - generic [ref=f9e113]:
+            - generic [ref=f9e114]:
+              - tablist "أقسام تعديل المنتج" [ref=f9e115]:
+                - button " الأساسيات" [ref=f9e116] [cursor=pointer]:
+                  - generic [ref=f9e117]: 
+                  - text: الأساسيات
+                - button " السعر والعمليات" [ref=f9e118] [cursor=pointer]:
+                  - generic [ref=f9e119]: 
+                  - text: السعر والعمليات
+                - button " المحتوى" [ref=f9e120] [cursor=pointer]:
+                  - generic [ref=f9e121]: 
+                  - text: المحتوى
+                - button " الخصائص" [ref=f9e122] [cursor=pointer]:
+                  - generic [ref=f9e123]: 
+                  - text: الخصائص
+                - button " المتغيرات" [ref=f9e124] [cursor=pointer]:
+                  - generic [ref=f9e125]: 
+                  - text: المتغيرات
+                - button " الصور" [ref=f9e126] [cursor=pointer]:
+                  - generic [ref=f9e127]: 
+                  - text: الصور
+              - text: 
+              - generic [ref=f9e128]:
+                - generic [ref=f9e129]:
+                  - generic [ref=f9e130]: Pricing, Production and Availability
+                  - generic [ref=f9e132]:
+                    - generic [ref=f9e133]:
+                      - generic [ref=f9e134]:
+                        - generic [ref=f9e135]: Sale Price
+                        - textbox [ref=f9e136]: "2.49"
+                      - generic [ref=f9e137]:
+                        - generic [ref=f9e138]: Discount Price
+                        - textbox [ref=f9e139]: "2.11"
+                      - generic [ref=f9e140]:
+                        - generic [ref=f9e141]: Cost
+                        - textbox [ref=f9e142]: "1.49"
+                      - generic [ref=f9e143]:
+                        - generic [ref=f9e144]: Tax Rate
+                        - textbox [ref=f9e145]: "0"
+                      - generic [ref=f9e146]:
+                        - generic [ref=f9e147]: Stock Status
+                        - combobox [ref=f9e148]:
+                          - option "In Stock" [selected]
+                          - option "Out of Stock"
+                          - option "Pre-order"
+                      - generic [ref=f9e149]:
+                        - generic [ref=f9e150]: Minimum Order Quantity
+                        - spinbutton [ref=f9e151]: "1"
+                      - generic [ref=f9e152]:
+                        - generic [ref=f9e153]: Maximum Order Quantity
+                        - spinbutton [ref=f9e154]
+                      - generic [ref=f9e155]:
+                        - generic [ref=f9e156]: Production Days
+                        - spinbutton [ref=f9e157]: "0"
+                      - generic [ref=f9e158]:
+                        - generic [ref=f9e159]: Shipping Preparation (Days)
+                        - spinbutton [ref=f9e160]: "1"
+                      - generic [ref=f9e161]:
+                        - generic [ref=f9e162]: Estimated Delivery Time (Days)
+                        - spinbutton [ref=f9e163]: "2"
+                      - generic [ref=f9e165] [cursor=pointer]:
+                        - generic [ref=f9e166]:
+                          - text: Offer gift wrapping
+                          - generic [ref=f9e167]: Customers can add gift wrapping from the product page.
+                        - checkbox "Offer gift wrapping Customers can add gift wrapping from the product page." [ref=f9e168]
+                      - generic [ref=f9e169]:
+                        - generic [ref=f9e170]: Gift wrap price
+                        - textbox "₪ 0.00" [ref=f9e171]: "0"
+                    - separator [ref=f9e172]
+                    - generic [ref=f9e173]:
+                      - generic [ref=f9e174] [cursor=pointer]:
+                        - generic [ref=f9e175]:
+                          - text: System Active
+                          - generic [ref=f9e176]: Product can be managed in admin panel.
+                        - checkbox "System Active Product can be managed in admin panel." [checked] [ref=f9e177]
+                      - generic [ref=f9e178] [cursor=pointer]:
+                        - generic [ref=f9e179]:
+                          - text: Show in Storefront
+                          - generic [ref=f9e180]: Product is visible to customers.
+                        - checkbox "Show in Storefront Product is visible to customers." [checked] [ref=f9e181]
+                      - generic [ref=f9e182] [cursor=pointer]:
+                        - generic [ref=f9e183]:
+                          - text: Featured
+                          - generic [ref=f9e184]: Highlights in showcase areas.
+                        - checkbox "Featured Highlights in showcase areas." [checked] [ref=f9e185]
+                      - generic [ref=f9e186] [cursor=pointer]:
+                        - generic [ref=f9e187]:
+                          - text: New Product
+                          - generic [ref=f9e188]: Receives a new product label.
+                        - checkbox "New Product Receives a new product label." [checked] [ref=f9e189]
+                      - generic [ref=f9e190] [cursor=pointer]:
+                        - generic [ref=f9e191]:
+                          - text: Campaign
+                          - generic [ref=f9e192]: Shows campaign highlight.
+                        - checkbox "Campaign Shows campaign highlight." [checked] [ref=f9e193]
+                      - generic [ref=f9e194]:
+                        - generic [ref=f9e195]: Campaign End Date
+                        - textbox "Campaign End Date" [ref=f9e196]
+                        - generic [ref=f9e197]: Countdown timer will stop at this date. Leave empty for no timer.
+                      - generic [ref=f9e198] [cursor=pointer]:
+                        - generic [ref=f9e199]:
+                          - text: Show on Homepage
+                          - generic [ref=f9e200]: Included in home page lists.
+                        - checkbox "Show on Homepage Included in home page lists." [checked] [ref=f9e201]
+                      - generic [ref=f9e202] [cursor=pointer]:
+                        - generic [ref=f9e203]:
+                          - text: WhatsApp Order
+                          - generic [ref=f9e204]: Shows WhatsApp button instead of cart.
+                        - checkbox "WhatsApp Order Shows WhatsApp button instead of cart." [ref=f9e205]
+                      - generic [ref=f9e206] [cursor=pointer]:
+                        - generic [ref=f9e207]:
+                          - text: Hidden Price
+                          - generic [ref=f9e208]: Price is hidden and quote is requested.
+                        - checkbox "Hidden Price Price is hidden and quote is requested." [ref=f9e209]
+                - generic [ref=f9e210]:
+                  - generic [ref=f9e211]: Wholesale Settings
+                  - generic [ref=f9e214]:
+                    - generic [ref=f9e215]:
+                      - generic [ref=f9e216]: Wholesale Product Group
+                      - combobox [ref=f9e217]:
+                        - option "-- No Group --" [selected]
+                        - option "مجموعة الجملة الأساسية"
+                      - generic [ref=f9e218]: Select which wholesale group the product belongs to.
+                    - generic [ref=f9e219]:
+                      - generic [ref=f9e220]: Wholesale Price (₪)
+                      - textbox "Wholesale sale price" [ref=f9e221]
+                      - generic [ref=f9e222]: Special price shown to wholesalers. If left empty, it is calculated automatically.
+              - text:  + 
+              - generic [ref=f9e223]:
+                - link "إلغاء" [ref=f9e224] [cursor=pointer]:
+                  - /url: /Admin/Urun
+                - button " حفظ" [ref=f9e225] [cursor=pointer]:
+                  - generic [ref=f9e226]: 
+                  - text: حفظ
+            - complementary [ref=f9e227]:
+              - generic [ref=f9e228]:
+                - generic [ref=f9e229]: Product Summary
+                - generic [ref=f9e231]:
+                  - img "كيوي - الصورة الرئيسية" [ref=f9e234]
+                  - generic [ref=f9e235]: كيوي
+                  - generic [ref=f9e236]: "SKU: GRO-BRD-KIW-030"
+                  - generic [ref=f9e237]:
+                    - generic [ref=f9e238]:
+                      - generic [ref=f9e239]: Effective Price
+                      - strong [ref=f9e240]: 2.11 ₪
+                    - generic [ref=f9e241]:
+                      - generic [ref=f9e242]: Sales
+                      - strong [ref=f9e243]: "0"
+                    - generic [ref=f9e244]:
+                      - generic [ref=f9e245]: Views
+                      - strong [ref=f9e246]: "6"
+                    - generic [ref=f9e247]:
+                      - generic [ref=f9e248]: Favorite
+                      - strong [ref=f9e249]: "0"
+                    - generic [ref=f9e250]:
+                      - generic [ref=f9e251]: Admin_Variation
+                      - strong [ref=f9e252]: "1"
+                    - generic [ref=f9e253]:
+                      - generic [ref=f9e254]: Media
+                      - strong [ref=f9e255]: "1"
+    - contentinfo [ref=f9e256]: © 2026 7ANRPS48 Admin Panel. All rights reserved.
