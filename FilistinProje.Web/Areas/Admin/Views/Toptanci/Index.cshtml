@@ -422,7 +422,7 @@
                 <input type="hidden" name="id" id="rejectUserId" />
                 <div class="mb-2">
                     <label class="ca-detail-label">@Localizer["Admin_RedSebebi"]</label>
-                    <textarea name="redSebebi" rows="3" placeholder='@Localizer["Admin_RedSebebiPlaceholder"]'></textarea>
+                    <textarea name="redSebebi" rows="3" maxlength="1000" required placeholder='@Localizer["Admin_RedSebebiPlaceholder"]'></textarea>
                     <div class="ca-reject-hint">@Localizer["Admin_AdminKayitGorur"]</div>
                 </div>
             </form>
@@ -488,17 +488,20 @@
                 addItem('@Localizer["Admin_Adres"]', d.adres || '@Localizer["Admin_Belirtilmemis"]', true, !d.adres);
                 addItem('@Localizer["Admin_SiparisSayisi"]', d.siparisSayisi ?? 0);
                 addItem('@Localizer["Admin_ToptanciRolu"]', d.isWholesaleRole ? '@Localizer["Admin_Evet"]' : '@Localizer["Admin_Hayir"]');
+                if (d.toptanciRedSebebi) {
+                    addItem('@Localizer["Admin_RedSebebi"]', d.toptanciRedSebebi, true);
+                }
 
-                const photoValue = addItem('@Localizer["Admin_KimlikFotografi"]', '@Localizer["Admin_YuklenmemisText"]', true, !d.kimlikFotografYolu);
-                if (typeof d.kimlikFotografYolu === 'string' && d.kimlikFotografYolu.startsWith('/Belge/')) {
+                const photoValue = addItem('@Localizer["Admin_KimlikFotografi"]', '@Localizer["Admin_YuklenmemisText"]', true, !d.kimlikBelgeUrl);
+                if (typeof d.kimlikBelgeUrl === 'string' && d.kimlikBelgeUrl.startsWith('/Belge/')) {
                     const photoLink = document.createElement('a');
-                    photoLink.href = d.kimlikFotografYolu;
+                    photoLink.href = d.kimlikBelgeUrl;
                     photoLink.target = '_blank';
                     photoLink.rel = 'noopener';
                     photoLink.className = 'ca-detail-photo-link';
                     photoLink.textContent = '@Localizer["Admin_FotografiYeniSekmede"]';
                     const photo = document.createElement('img');
-                    photo.src = d.kimlikFotografYolu;
+                    photo.src = d.kimlikBelgeUrl;
                     photo.className = 'ca-detail-photo';
                     photo.alt = '@Localizer["Admin_KimlikFotografi"]';
                     photoValue.replaceChildren(photoLink, document.createElement('br'), photo);
@@ -573,6 +576,7 @@
 
     function submitReject() {
         var form = document.getElementById('rejectForm');
+        if (!form.reportValidity()) return;
         var btn = document.querySelector('#rejectModal .ca-ws-btn.reject');
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> @Localizer["Admin_Isleniyor"]';
@@ -581,11 +585,13 @@
         fetch(form.getAttribute('action') || '/Admin/Toptanci/Reddet', {
             method: 'POST',
             body: formData
-        }).then(function() {
-            showToast('@Localizer["Admin_BasvuruReddedildi"]', 'success');
+        }).then(async function(response) {
+            const payload = await response.json().catch(function() { return {}; });
+            if (!response.ok) throw new Error(payload.message || '@Localizer["Admin_IslemHata"]');
+            showToast(payload.message || '@Localizer["Admin_BasvuruReddedildi"]', 'success');
             setTimeout(function() { location.reload(); }, 800);
-        }).catch(function() {
-            showToast('@Localizer["Admin_IslemHata"]', 'error');
+        }).catch(function(error) {
+            showToast(error.message || '@Localizer["Admin_IslemHata"]', 'error');
             btn.disabled = false;
             btn.innerHTML = '<i class="fas fa-times"></i> @Localizer["Admin_Reddet"]';
         });

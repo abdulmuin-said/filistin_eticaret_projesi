@@ -20,10 +20,10 @@ module.exports = {
           cream: "#fbf8f2"
         },
         brand: {
-          primary: '#1a2b1b',
+          primary: 'rgb(var(--brand-primary-rgb) / <alpha-value>)',
           gold: '#b58735',
           cream: '#fcf9f3',
-          olive: '#313511',
+          olive: 'rgb(var(--brand-primary-rgb) / <alpha-value>)',
           lightgold: '#c6ca99',
           warmcream: '#f7f1e6',
           darktext: '#1c1c18',

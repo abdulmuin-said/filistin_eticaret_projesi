@@ -27,13 +27,16 @@ public static class PhoneNumberNormalizer
             return false;
         }
 
-        var digits = compact.StartsWith("+", StringComparison.Ordinal) ? compact[1..] : compact;
-        if (digits.Length == 0 || digits.Any(c => !char.IsDigit(c)))
+        var hasInternationalPrefix = compact.StartsWith("+", StringComparison.Ordinal) || compact.StartsWith("00", StringComparison.Ordinal);
+        var digits = compact.StartsWith("+", StringComparison.Ordinal)
+            ? compact[1..]
+            : compact.StartsWith("00", StringComparison.Ordinal) ? compact[2..] : compact;
+        if (digits.Length == 0 || digits.Any(c => c is < '0' or > '9'))
         {
             return false;
         }
 
-        var countryCode = ResolveCountryCode(digits, compact.StartsWith("+", StringComparison.Ordinal), out var nationalNumber);
+        var countryCode = ResolveCountryCode(digits, hasInternationalPrefix, out var nationalNumber);
         if (countryCode == null || !IsValidNationalNumber(countryCode, nationalNumber))
         {
             return false;
@@ -58,11 +61,18 @@ public static class PhoneNumberNormalizer
                 continue;
             }
 
-            builder.Append(ch);
+            builder.Append(ToAsciiDigit(ch));
         }
 
         return builder.ToString();
     }
+
+    private static char ToAsciiDigit(char value) => value switch
+    {
+        >= '\u0660' and <= '\u0669' => (char)('0' + value - '\u0660'),
+        >= '\u06F0' and <= '\u06F9' => (char)('0' + value - '\u06F0'),
+        _ => value
+    };
 
     private static string? ResolveCountryCode(string digits, bool hasPlus, out string nationalNumber)
     {

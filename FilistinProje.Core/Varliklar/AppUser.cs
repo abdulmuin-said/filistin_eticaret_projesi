@@ -1,5 +1,6 @@
 using FilistinProje.Core.Enums;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace FilistinProje.Core.Varliklar
 {
@@ -14,6 +15,9 @@ namespace FilistinProje.Core.Varliklar
         public string Adres { get; set; } = string.Empty;
         public WholesaleStatus WholesaleStatus { get; set; } = WholesaleStatus.Pending;
         public DateTime? BasvuruTarihi { get; set; }
+
+        [MaxLength(1000)]
+        public string? ToptanciRedSebebi { get; set; }
 
         public string? SifreSifirlamaToken { get; set; }
         public DateTime? SifreSifirlamaGecerlilik { get; set; }

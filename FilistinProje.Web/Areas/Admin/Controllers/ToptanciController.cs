@@ -73,7 +73,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     KimlikFotografYolu = user.KimlikFotografYolu,
                     Adres = user.Adres,
                     Sehir = user.Sehir,
-                    BasvuruTarihi = user.BasvuruTarihi
+                    BasvuruTarihi = user.BasvuruTarihi,
+                    ToptanciRedSebebi = user.ToptanciRedSebebi
                 });
             }
 
@@ -104,6 +105,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             user.WholesaleStatus = WholesaleStatus.Approved;
+            user.ToptanciRedSebebi = null;
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
@@ -119,11 +121,21 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Reddet(string id, string? redSebebi = null)
         {
+            var temizRedSebebi = redSebebi?.Trim();
+            if (string.IsNullOrWhiteSpace(temizRedSebebi))
+            {
+                return BadRequest(new { success = false, message = "Red sebebi zorunludur." });
+            }
+
+            if (temizRedSebebi.Length > 1000)
+            {
+                return BadRequest(new { success = false, message = "Red sebebi en fazla 1000 karakter olabilir." });
+            }
+
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
-                TempData["Hata"] = _localizer["Admin_Sonuc_bulunamadi"].Value;
-                return RedirectToAction(nameof(Index));
+                return NotFound(new { success = false, message = _localizer["Admin_Sonuc_bulunamadi"].Value });
             }
 
             if (await _userManager.IsInRoleAsync(user, AdminSecurityRoles.Wholesale))
@@ -132,15 +144,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             user.WholesaleStatus = WholesaleStatus.Rejected;
+            user.ToptanciRedSebebi = temizRedSebebi;
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
-                TempData["Hata"] = "حدث خطأ أثناء الرفض.";
-                return RedirectToAction(nameof(Index));
+                return BadRequest(new { success = false, message = "حدث خطأ أثناء الرفض." });
             }
 
-            TempData["Basari"] = $"{user.AdSoyad} تم الرفض.";
-            return RedirectToAction(nameof(Index));
+            return Ok(new { success = true, message = $"{user.AdSoyad} تم الرفض." });
         }
 
         [HttpGet]
@@ -163,9 +174,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 user.PhoneNumber,
                 user.KimlikNo,
                 DogumTarihi = user.DogumTarihi?.ToString("dd.MM.yyyy"),
-                user.KimlikFotografYolu,
+                KimlikBelgeUrl = string.IsNullOrWhiteSpace(user.KimlikFotografYolu)
+                    ? null
+                    : Url.Action("Kimlik", "Belge", new { area = string.Empty, userId = user.Id }),
                 user.Adres,
                 user.Sehir,
+                user.ToptanciRedSebebi,
                 BasvuruTarihi = user.BasvuruTarihi?.ToString("dd.MM.yyyy HH:mm"),
                 WholesaleStatus = user.WholesaleStatus.ToString(),
                 StatusLabel = GetStatusLabel(user.WholesaleStatus),
@@ -365,6 +379,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         public string Adres { get; set; } = string.Empty;
         public string Sehir { get; set; } = string.Empty;
         public DateTime? BasvuruTarihi { get; set; }
+        public string? ToptanciRedSebebi { get; set; }
     }
 }
 

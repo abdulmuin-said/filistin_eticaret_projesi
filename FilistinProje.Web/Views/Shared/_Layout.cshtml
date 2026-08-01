@@ -51,7 +51,10 @@
     var rawThemeColor = siteSettings.TemaRengi?.Trim();
     var validThemeColor = !string.IsNullOrWhiteSpace(rawThemeColor) && System.Text.RegularExpressions.Regex.IsMatch(rawThemeColor, @"^#[0-9A-Fa-f]{6}$")
         ? rawThemeColor
-        : null;
+        : "#313511";
+    var themeRed = Convert.ToInt32(validThemeColor.Substring(1, 2), 16);
+    var themeGreen = Convert.ToInt32(validThemeColor.Substring(3, 2), 16);
+    var themeBlue = Convert.ToInt32(validThemeColor.Substring(5, 2), 16);
 }
 <!DOCTYPE html>
 <html lang="@currentCulture" dir="@currentDirection">
@@ -77,6 +80,7 @@
     <meta name="twitter:title" content="@layoutTitle">
     <meta name="twitter:description" content="@metaDescription">
     <meta name="twitter:image" content="@ogImage">
+    <meta name="theme-color" content="@validThemeColor">
 
     <link rel="stylesheet" href="~/css/storefront.css" asp-append-version="true" />
     <script src="~/vendor/firebase/firebase-app-compat.js" asp-append-version="true"
@@ -88,26 +92,16 @@
     <link rel="stylesheet" href="~/vendor/fonts/local-fonts.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/vendor/fontawesome/css/all.min.css" asp-append-version="true" />
 
-    @if (!string.IsNullOrWhiteSpace(validThemeColor))
-    {
-        <style>
-            :root {
-                --brand-primary: @validThemeColor;
-            }
-            .btn-primary, .bg-brand-olive, .brand-primary-bg {
-                background-color: var(--brand-primary) !important;
-            }
-            .btn-primary:hover {
-                filter: brightness(0.9);
-            }
-            .text-brand-olive, .brand-primary-text {
-                color: var(--brand-primary) !important;
-            }
-            .border-brand-olive, .brand-primary-border {
-                border-color: var(--brand-primary) !important;
-            }
-        </style>
-    }
+    <style>
+        :root {
+            --brand-primary: @validThemeColor;
+            --brand-primary-rgb: @themeRed @themeGreen @themeBlue;
+        }
+        .btn-primary:hover { filter: brightness(0.9); }
+        .brand-primary-bg { background-color: var(--brand-primary) !important; }
+        .brand-primary-text { color: var(--brand-primary) !important; }
+        .brand-primary-border { border-color: var(--brand-primary) !important; }
+    </style>
     <style data-purpose="custom-fonts">
         body { font-family: 'IBM Plex Sans Arabic', 'Inter', -apple-system, sans-serif; color: var(--color-text-dark); padding: 0 !important; margin: 0 !important; background: var(--color-cream) !important; font-size: 14px; line-height: 1.6; }
         h1, h2, h3, h4, h5, h6, .font-serif { font-family: 'IBM Plex Sans Arabic', 'Inter', sans-serif; font-weight: 600; }
@@ -1128,13 +1122,13 @@ document.addEventListener('keydown', function(event) {
         var fbId = (siteSettings.FacebookPixelId ?? string.Empty).Trim();
     }
 
-    <div id="cookieConsentBanner" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl p-4 sm:p-5 rounded-2xl hidden z-[999999] transition-all duration-300" style="background-color: #ffffff !important; color: #25280c !important; border: 1.5px solid #b58735 !important; box-shadow: 0 16px 40px rgba(49, 53, 17, 0.16) !important; opacity: 1 !important;">
+    <div id="cookieConsentBanner" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl p-4 sm:p-5 rounded-2xl hidden z-[999999] transition-all duration-300" style="background-color: #ffffff !important; color: var(--brand-primary) !important; border: 1.5px solid #b58735 !important; box-shadow: 0 16px 40px rgb(var(--brand-primary-rgb) / 0.16) !important; opacity: 1 !important;">
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <div class="flex items-center gap-3 flex-1 min-w-0">
                 <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style="background-color: rgba(181, 135, 53, 0.12); border: 1px solid rgba(181, 135, 53, 0.3);">
                     <i class="fas fa-cookie-bite text-lg" style="color: #b58735 !important;"></i>
                 </div>
-                <p class="text-xs sm:text-sm leading-relaxed font-sans font-medium" style="color: #25280c !important;">@cookieMessage</p>
+                <p class="text-xs sm:text-sm leading-relaxed font-sans font-medium" style="color: var(--brand-primary) !important;">@cookieMessage</p>
             </div>
             <div class="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-end pt-3 sm:pt-0" style="border-top: 1px solid rgba(0,0,0,0.08);">
                 <button type="button" id="declineCookiesBtn" class="px-4 py-2 text-xs rounded-xl transition-colors font-semibold" style="color: #6b6e4e !important; background: #f8f6f0; border: 1px solid #e2dcd0;">@declineBtnText</button>

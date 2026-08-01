@@ -199,14 +199,24 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 urun.AnaGorselUrl = urun.AnaGorselUrl.Trim();
             }
 
-            _context.Urunler.Add(urun);
-            await _context.SaveChangesAsync();
-            await EnsureProductSkuAsync(urun);
-            await SyncVariantsAsync(urun, postedVariants);
-            await SyncFeatureValuesAsync(urun, postedFeatureValues);
-            await SaveGalleryImagesAsync(urun, galeriDosyalari);
-            await _context.SaveChangesAsync();
-            await EnsureVariantSkusAsync(urun.Id);
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                _context.Urunler.Add(urun);
+                await _context.SaveChangesAsync();
+                await EnsureProductSkuAsync(urun);
+                await SyncVariantsAsync(urun, postedVariants);
+                await SyncFeatureValuesAsync(urun, postedFeatureValues);
+                await SaveGalleryImagesAsync(urun, galeriDosyalari);
+                await _context.SaveChangesAsync();
+                await EnsureVariantSkusAsync(urun.Id);
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
 
             TempData["Mesaj"] = "تم إضافة المنتج بنجاح.";
             return RedirectToAction(nameof(Duzenle), new { id = urun.Id });

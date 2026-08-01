@@ -7,12 +7,14 @@ using FilistinProje.Service.Interfaces;
 using FilistinProje.Service.Services;
 using FilistinProje.Web.Controllers;
 using FilistinProje.Web.Helpers;
+using FilistinProje.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xunit;
@@ -320,6 +322,78 @@ namespace FilistinProje.Tests
             Assert.Single(result.Satirlar);
             Assert.Equal(200m, result.Satirlar[0].BirimFiyat); // 200 + 0 = 200m!
             Assert.Equal(200m, result.AraToplam);
+        }
+
+        [Theory]
+        [InlineData("+970 599 123 456", "+970599123456")]
+        [InlineData("00970 599 123 456", "+970599123456")]
+        [InlineData("٠٥٩٩١٢٣٤٥٦", "+970599123456")]
+        [InlineData("۵۹۹۱۲۳۴۵۶", "+970599123456")]
+        public void PhoneNumberNormalizer_AcceptsPalestineFormats(string input, string expected)
+        {
+            Assert.True(PhoneNumberNormalizer.TryNormalize(input, out var normalized));
+            Assert.Equal(expected, normalized);
+        }
+
+        [Theory]
+        [InlineData("+905551234567")]
+        [InlineData("0555")]
+        [InlineData("+970ABC")]
+        public void PhoneNumberNormalizer_RejectsInvalidOrUnsupportedNumbers(string input)
+        {
+            Assert.False(PhoneNumberNormalizer.TryNormalize(input, out _));
+        }
+
+        [Fact]
+        public void HomePageSection_LocalizedFields_FollowCurrentCultureAndFallback()
+        {
+            var originalCulture = CultureInfo.CurrentUICulture;
+            try
+            {
+                var section = new HomePageSection
+                {
+                    Title = "Legacy",
+                    TitleEn = "English title",
+                    TitleAr = "عنوان عربي"
+                };
+
+                CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("ar");
+                Assert.Equal("عنوان عربي", section.LocalizedTitle);
+
+                CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("en");
+                Assert.Equal("English title", section.LocalizedTitle);
+
+                section.TitleEn = string.Empty;
+                Assert.Equal("عنوان عربي", section.LocalizedTitle);
+            }
+            finally
+            {
+                CultureInfo.CurrentUICulture = originalCulture;
+            }
+        }
+
+        [Fact]
+        public void KurumsalSayfa_LocalizedContent_FallsBackWithoutLosingLegacyContent()
+        {
+            var originalCulture = CultureInfo.CurrentUICulture;
+            try
+            {
+                var page = new KurumsalSayfa
+                {
+                    Baslik = "Legacy title",
+                    Icerik = "<p>Legacy content</p>",
+                    BaslikAr = "عنوان",
+                    IcerikAr = "<p>محتوى</p>"
+                };
+
+                CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("en");
+                Assert.Equal("عنوان", page.LocalizedBaslik);
+                Assert.Equal("<p>محتوى</p>", page.LocalizedIcerik);
+            }
+            finally
+            {
+                CultureInfo.CurrentUICulture = originalCulture;
+            }
         }
     }
 }

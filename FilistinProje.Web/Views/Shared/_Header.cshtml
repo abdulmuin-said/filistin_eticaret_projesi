@@ -48,6 +48,11 @@
         trustMessages.Insert(0, siteSettings.UstBarMesaji);
     }
 
+    if (!string.IsNullOrWhiteSpace(siteSettings.KampanyaMesaji))
+    {
+        trustMessages.Insert(0, siteSettings.KampanyaMesaji);
+    }
+
     if (!string.IsNullOrWhiteSpace(siteSettings.WhatsappNumarasi))
     {
         trustMessages.Add(Localizer["WhatsAppSupport"]);
@@ -80,7 +85,7 @@
     @if (siteSettings.UstBarEtkin)
     {
         var tickerSpeed = siteSettings.UstBarHizi > 0 ? siteSettings.UstBarHizi : 34;
-        <div class="trust-ticker relative z-50 overflow-hidden py-2 text-xs font-semibold tracking-wider" dir="ltr" style="background-color: #d7c176; color: #25280c; box-shadow: inset 0 -1px 0 rgba(37, 40, 12, 0.16);">
+        <div class="trust-ticker relative z-50 overflow-hidden py-2 text-xs font-semibold tracking-wider" dir="ltr" style="background-color: #d7c176; color: var(--brand-primary); box-shadow: inset 0 -1px 0 rgb(var(--brand-primary-rgb) / 0.16);">
             <div class="trust-ticker-track flex items-center" style="animation-duration: @tickerSpeed.ToString("0", System.Globalization.CultureInfo.InvariantCulture)s;">
                 @for (var repeat = 0; repeat < 2; repeat++)
                 {
@@ -88,7 +93,7 @@
                         @foreach (var message in trustMessages)
                         {
                             <span class="mx-5 flex shrink-0 items-center gap-2 whitespace-nowrap" dir="auto">
-                                <i class="fas fa-check text-[10px]" style="color: #313511;"></i>
+                                <i class="fas fa-check text-[10px]" style="color: var(--brand-primary);"></i>
                                 @message
                             </span>
                         }
@@ -256,7 +261,7 @@
 
                             <!-- Geniş kategori menüsü ve önizleme -->
                             <div class="absolute left-1/2 top-full pt-3 w-[min(820px,calc(100vw-32px))] z-[9999]" style="transform:translateX(-50%)" data-category-dropdown>
-                                <div class="bg-brand-warmcream border border-[#c9b58a]/60 shadow-xl rounded-sm p-6 ring-1 ring-[#313511]/5">
+                                <div class="bg-brand-warmcream border border-[#c9b58a]/60 shadow-xl rounded-sm p-6 ring-1 ring-brand-olive/5">
                                     <div class="grid gap-6 lg:grid-cols-[1.35fr_0.65fr]">
                                         
                                         <!-- Sol Kısım: Menüler / Alt Kategoriler -->

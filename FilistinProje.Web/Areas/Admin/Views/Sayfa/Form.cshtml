@@ -49,6 +49,29 @@
                             </small>
                         </div>
 
+                        <div class="row g-4 mt-1">
+                            <div class="col-md-6">
+                                <div class="ca-form-group">
+                                    <label class="ca-label">Arapça sayfa başlığı</label>
+                                    <input asp-for="BaslikAr" class="ca-input" dir="rtl" />
+                                </div>
+                                <div class="ca-form-group">
+                                    <label class="ca-label">Arapça içerik</label>
+                                    <textarea asp-for="IcerikAr" class="ca-textarea" rows="12" dir="rtl"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="ca-form-group">
+                                    <label class="ca-label">İngilizce sayfa başlığı</label>
+                                    <input asp-for="BaslikEn" class="ca-input" dir="ltr" />
+                                </div>
+                                <div class="ca-form-group">
+                                    <label class="ca-label">İngilizce içerik</label>
+                                    <textarea asp-for="IcerikEn" class="ca-textarea" rows="12" dir="ltr"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
                         <hr style="border-color:var(--ca-border); margin:24px 0;">
 
                         <div class="d-flex justify-content-end gap-2">

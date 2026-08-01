@@ -47,7 +47,7 @@ namespace FilistinProje.Web.Controllers
                 return NotFound();
             }
 
-            ViewData["Title"] = sayfa.Baslik;
+            ViewData["Title"] = sayfa.LocalizedBaslik;
             return View("Detay", sayfa);
         }
 
@@ -163,7 +163,7 @@ namespace FilistinProje.Web.Controllers
 
             if (sayfa != null)
             {
-                ViewData["Title"] = sayfa.Baslik;
+                ViewData["Title"] = sayfa.LocalizedBaslik;
                 return View("Detay", sayfa);
             }
 

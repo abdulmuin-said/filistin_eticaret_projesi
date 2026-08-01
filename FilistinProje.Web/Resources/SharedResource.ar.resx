@@ -5715,4 +5715,10 @@
   <data name="Badge_OutOfStock" xml:space="preserve"><value>نفذ من المخزون</value></data>
   <data name="Badge_LowStock" xml:space="preserve"><value>كمية محدودة</value></data>
   <data name="Badge_Discount" xml:space="preserve"><value>خصم</value></data>
+  <data name="DeliveryToAddress" xml:space="preserve"><value>التوصيل إلى العنوان</value></data>
+  <data name="GuestAccessStatus" xml:space="preserve"><value>مفتاح وصول الضيف</value></data>
+  <data name="Available" xml:space="preserve"><value>متوفر</value></data>
+  <data name="NotAvailable" xml:space="preserve"><value>غير متوفر</value></data>
+  <data name="CashOnDeliveryServiceFee" xml:space="preserve"><value>رسوم خدمة الدفع عند الاستلام</value></data>
+  <data name="ViewOrderIdentityDocument" xml:space="preserve"><value>عرض وثيقة هوية الطلب</value></data>
 </root>

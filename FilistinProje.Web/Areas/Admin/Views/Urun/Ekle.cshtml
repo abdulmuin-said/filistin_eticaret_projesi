@@ -266,18 +266,13 @@
                         </div>
                     </div>
 
-                    <div class="alert alert-light border mt-4 mb-0">
-                        <div class="fw-semibold mb-1">@Localizer["Admin_VariationAfterSaveTitle"]</div>
-                        <div class="small text-muted">
-                            @Localizer["Admin_VariationAfterSaveText"]
-                        </div>
-                    </div>
+                    @await Html.PartialAsync("_FeatureEditor", Model)
+                    @await Html.PartialAsync("_VariantEditor", Model.UrunSecenek)
 
                     <input asp-for="KisaAd" type="hidden" />
                     <input asp-for="SKU" type="hidden" />
                     <input asp-for="Barkod" type="hidden" />
                     <input asp-for="Marka" type="hidden" />
-                    <input asp-for="UrunTipi" type="hidden" />
                     <input asp-for="Etiketler" type="hidden" />
                     <input asp-for="TeknikOzellikler" type="hidden" />
                     <input asp-for="MalzemeBilgisi" type="hidden" />

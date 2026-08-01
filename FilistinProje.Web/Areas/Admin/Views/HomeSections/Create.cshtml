@@ -67,6 +67,13 @@
                                 <label asp-for="ViewAllUrl" class="ca-label">@Localizer["Admin_ButtonLink"]</label>
                                 <input asp-for="ViewAllUrl" class="ca-input" placeholder="/Urun" />
                             </div>
+                            <div class="col-12"><hr class="my-2"><h6 class="fw-semibold mb-0">Arapça ve İngilizce metinler</h6></div>
+                            <div class="col-md-6"><label class="ca-label">Arapça başlık</label><input asp-for="TitleAr" class="ca-input" dir="rtl" /></div>
+                            <div class="col-md-6"><label class="ca-label">İngilizce başlık</label><input asp-for="TitleEn" class="ca-input" dir="ltr" /></div>
+                            <div class="col-md-6"><label class="ca-label">Arapça alt başlık</label><input asp-for="SubtitleAr" class="ca-input" dir="rtl" /></div>
+                            <div class="col-md-6"><label class="ca-label">İngilizce alt başlık</label><input asp-for="SubtitleEn" class="ca-input" dir="ltr" /></div>
+                            <div class="col-md-6"><label class="ca-label">Arapça tümünü gör metni</label><input asp-for="ViewAllTextAr" class="ca-input" dir="rtl" /></div>
+                            <div class="col-md-6"><label class="ca-label">İngilizce tümünü gör metni</label><input asp-for="ViewAllTextEn" class="ca-input" dir="ltr" /></div>
                         </div>
 
                         <hr class="my-4">
@@ -90,6 +97,10 @@
                                     <label asp-for="Description" class="ca-label">@Localizer["Admin_Aciklama"]</label>
                                     <textarea asp-for="Description" class="ca-input" rows="3" placeholder='@Localizer["Admin_BannerDescriptionPlaceholder"]'></textarea>
                                 </div>
+                                <div class="col-md-6"><label class="ca-label">Arapça buton metni</label><input asp-for="ButtonTextAr" class="ca-input" dir="rtl" /></div>
+                                <div class="col-md-6"><label class="ca-label">İngilizce buton metni</label><input asp-for="ButtonTextEn" class="ca-input" dir="ltr" /></div>
+                                <div class="col-md-6"><label class="ca-label">Arapça açıklama</label><textarea asp-for="DescriptionAr" class="ca-input" rows="3" dir="rtl"></textarea></div>
+                                <div class="col-md-6"><label class="ca-label">İngilizce açıklama</label><textarea asp-for="DescriptionEn" class="ca-input" rows="3" dir="ltr"></textarea></div>
                             </div>
                         </div>
                     </div>

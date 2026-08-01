@@ -42,6 +42,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                NormalizeContent(model);
                 if (model.Id == 0) // Yeni KayÄ±t
                 {
                     model.UrlSlug = FriendlyUrl(model.Baslik); // Link oluÅŸtur
@@ -54,6 +55,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     {
                         mevcut.Baslik = model.Baslik;
                         mevcut.Icerik = model.Icerik;
+                        mevcut.BaslikEn = model.BaslikEn?.Trim() ?? string.Empty;
+                        mevcut.BaslikAr = model.BaslikAr?.Trim() ?? string.Empty;
+                        mevcut.IcerikEn = model.IcerikEn?.Trim() ?? string.Empty;
+                        mevcut.IcerikAr = model.IcerikAr?.Trim() ?? string.Empty;
                         mevcut.Sira = model.Sira;
                         // UrlSlug'Ä± gÃ¼ncellemiyoruz ki Google'daki linkler kÄ±rÄ±lmasÄ±n
                     }
@@ -87,6 +92,16 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .Replace("ÅŸ", "s").Replace("Ã¶", "o").Replace("Ã§", "c")
                 .Replace(" ", "-").Replace(".", "").Replace("/", "")
                 + "-" + new Random().Next(100,999); // Sonuna rastgele sayÄ± ekledim ki Ã§akÄ±ÅŸma olmasÄ±n
+        }
+
+        private static void NormalizeContent(KurumsalSayfa model)
+        {
+            model.Baslik = model.Baslik?.Trim() ?? string.Empty;
+            model.Icerik = model.Icerik?.Trim() ?? string.Empty;
+            model.BaslikEn = model.BaslikEn?.Trim() ?? string.Empty;
+            model.BaslikAr = model.BaslikAr?.Trim() ?? string.Empty;
+            model.IcerikEn = model.IcerikEn?.Trim() ?? string.Empty;
+            model.IcerikAr = model.IcerikAr?.Trim() ?? string.Empty;
         }
     }
 }

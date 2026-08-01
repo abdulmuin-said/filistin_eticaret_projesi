@@ -212,6 +212,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Ekle(Kategori kategori, IFormFile? gorselDosyasi)
         {
+            NormalizeLocalizedCategoryFields(kategori);
             await ValidateImageUploadAsync(gorselDosyasi);
             if (!await ValidateCategoryAsync(kategori))
             {
@@ -277,8 +278,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             kategori.Ad = model.Ad.Trim();
+            kategori.AdEn = model.AdEn?.Trim() ?? string.Empty;
+            kategori.AdAr = model.AdAr?.Trim() ?? string.Empty;
             kategori.KisaAciklama = model.KisaAciklama?.Trim() ?? string.Empty;
+            kategori.KisaAciklamaEn = model.KisaAciklamaEn?.Trim() ?? string.Empty;
+            kategori.KisaAciklamaAr = model.KisaAciklamaAr?.Trim() ?? string.Empty;
             kategori.Aciklama = model.Aciklama?.Trim() ?? string.Empty;
+            kategori.AciklamaEn = model.AciklamaEn?.Trim() ?? string.Empty;
+            kategori.AciklamaAr = model.AciklamaAr?.Trim() ?? string.Empty;
             kategori.GorselUrl = string.IsNullOrWhiteSpace(model.GorselUrl) ? null : model.GorselUrl.Trim();
             kategori.BannerUrl = string.IsNullOrWhiteSpace(model.BannerUrl) ? null : model.BannerUrl.Trim();
             kategori.MenuGorselUrl = string.IsNullOrWhiteSpace(model.MenuGorselUrl) ? null : model.MenuGorselUrl.Trim();
@@ -287,10 +294,20 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             kategori.ReceteGerekliMi = model.ReceteGerekliMi;
             kategori.Sira = await NormalizeCategoryOrderAsync(model.Sira);
             kategori.SeoTitle = model.SeoTitle?.Trim() ?? string.Empty;
+            kategori.SeoTitleEn = model.SeoTitleEn?.Trim() ?? string.Empty;
+            kategori.SeoTitleAr = model.SeoTitleAr?.Trim() ?? string.Empty;
             kategori.SeoDescription = model.SeoDescription?.Trim() ?? string.Empty;
+            kategori.SeoDescriptionEn = model.SeoDescriptionEn?.Trim() ?? string.Empty;
+            kategori.SeoDescriptionAr = model.SeoDescriptionAr?.Trim() ?? string.Empty;
             kategori.UstMetin = model.UstMetin?.Trim() ?? string.Empty;
+            kategori.UstMetinEn = model.UstMetinEn?.Trim() ?? string.Empty;
+            kategori.UstMetinAr = model.UstMetinAr?.Trim() ?? string.Empty;
             kategori.AltMetin = model.AltMetin?.Trim() ?? string.Empty;
+            kategori.AltMetinEn = model.AltMetinEn?.Trim() ?? string.Empty;
+            kategori.AltMetinAr = model.AltMetinAr?.Trim() ?? string.Empty;
             kategori.KampanyaEtiketi = model.KampanyaEtiketi?.Trim() ?? string.Empty;
+            kategori.KampanyaEtiketiEn = model.KampanyaEtiketiEn?.Trim() ?? string.Empty;
+            kategori.KampanyaEtiketiAr = model.KampanyaEtiketiAr?.Trim() ?? string.Empty;
             kategori.UrunSiralamaTipi = NormalizeSortType(model.UrunSiralamaTipi);
             kategori.Slug = await GenerateUniqueCategorySlugAsync(model.Slug, model.Ad, model.Id);
             if (gorselDosyasi is { Length: > 0 })
@@ -336,6 +353,34 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         private Task InvalidateCategoryCachesAsync()
         {
             return _cacheService.RemoveByPrefixAsync("category-menu:v1:");
+        }
+
+        private static void NormalizeLocalizedCategoryFields(Kategori kategori)
+        {
+            kategori.Ad = kategori.Ad?.Trim() ?? string.Empty;
+            kategori.AdEn = kategori.AdEn?.Trim() ?? string.Empty;
+            kategori.AdAr = kategori.AdAr?.Trim() ?? string.Empty;
+            kategori.KisaAciklama = kategori.KisaAciklama?.Trim() ?? string.Empty;
+            kategori.KisaAciklamaEn = kategori.KisaAciklamaEn?.Trim() ?? string.Empty;
+            kategori.KisaAciklamaAr = kategori.KisaAciklamaAr?.Trim() ?? string.Empty;
+            kategori.Aciklama = kategori.Aciklama?.Trim() ?? string.Empty;
+            kategori.AciklamaEn = kategori.AciklamaEn?.Trim() ?? string.Empty;
+            kategori.AciklamaAr = kategori.AciklamaAr?.Trim() ?? string.Empty;
+            kategori.SeoTitle = kategori.SeoTitle?.Trim() ?? string.Empty;
+            kategori.SeoTitleEn = kategori.SeoTitleEn?.Trim() ?? string.Empty;
+            kategori.SeoTitleAr = kategori.SeoTitleAr?.Trim() ?? string.Empty;
+            kategori.SeoDescription = kategori.SeoDescription?.Trim() ?? string.Empty;
+            kategori.SeoDescriptionEn = kategori.SeoDescriptionEn?.Trim() ?? string.Empty;
+            kategori.SeoDescriptionAr = kategori.SeoDescriptionAr?.Trim() ?? string.Empty;
+            kategori.UstMetin = kategori.UstMetin?.Trim() ?? string.Empty;
+            kategori.UstMetinEn = kategori.UstMetinEn?.Trim() ?? string.Empty;
+            kategori.UstMetinAr = kategori.UstMetinAr?.Trim() ?? string.Empty;
+            kategori.AltMetin = kategori.AltMetin?.Trim() ?? string.Empty;
+            kategori.AltMetinEn = kategori.AltMetinEn?.Trim() ?? string.Empty;
+            kategori.AltMetinAr = kategori.AltMetinAr?.Trim() ?? string.Empty;
+            kategori.KampanyaEtiketi = kategori.KampanyaEtiketi?.Trim() ?? string.Empty;
+            kategori.KampanyaEtiketiEn = kategori.KampanyaEtiketiEn?.Trim() ?? string.Empty;
+            kategori.KampanyaEtiketiAr = kategori.KampanyaEtiketiAr?.Trim() ?? string.Empty;
         }
 
         private IQueryable<Kategori> BuildCategoryListQuery(string? arama, string? durum, string? tip)

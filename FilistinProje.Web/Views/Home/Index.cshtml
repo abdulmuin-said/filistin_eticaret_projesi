@@ -25,6 +25,8 @@
         .ToList();
     var heroSlideCount = heroSlaytlar.Count;
     var heroAnimationDuration = Math.Max(heroSlideCount, 1) * 5;
+    var heroTitle = currentCulture == "ar" ? siteSettings.HeroBaslikAr : siteSettings.HeroBaslikEn;
+    var heroSubtitle = currentCulture == "ar" ? siteSettings.HeroAltBaslikAr : siteSettings.HeroAltBaslikEn;
     var siteUrl = SiteSettingsService.BuildAbsoluteUrl(string.Empty);
     var isWholesale = User.IsInRole("Wholesale");
     FilistinProje.Web.Models.ProductCardViewModel BuildHomeProductCard(
@@ -111,6 +113,16 @@
         z-index: 1;
     }
 
+    .home-hero-copy {
+        position: absolute;
+        inset-inline-start: clamp(1.5rem, 7vw, 7rem);
+        bottom: clamp(2rem, 8vw, 5.5rem);
+        z-index: 8;
+        max-width: min(38rem, 78%);
+        color: white;
+        text-shadow: 0 3px 24px rgba(0, 0, 0, .55);
+    }
+
     .home-hero-slide.is-active {
         opacity: 1;
         z-index: 2;
@@ -158,7 +170,7 @@
         background: rgba(255, 255, 255, 0.6);
         backdrop-filter: blur(8px);
         border: 1px solid rgba(181, 135, 53, 0.3);
-        color: #313511;
+        color: var(--brand-primary);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -431,12 +443,26 @@
             else
             {
                 <div class="home-hero-slide is-active" data-slide-index="0">
-                    <img src="/placeholder.svg" alt="" class="home-hero-blur" aria-hidden="true" />
+                    <img src="@siteSettings.HeroGorselUrl" alt="" class="home-hero-blur" aria-hidden="true" />
                     <div class="home-hero-vignette pointer-events-none" aria-hidden="true"></div>
-                    <img src="/placeholder.svg" alt="@brandName Banner" class="home-hero-image relative z-10 h-full w-full" loading="eager" />
+                    <img src="@siteSettings.HeroGorselUrl" alt="@brandName Banner" class="home-hero-image relative z-10 h-full w-full" loading="eager" onerror="this.src='/placeholder.svg';this.onerror=null;" />
                 </div>
             }
         </div>
+
+        @if (!string.IsNullOrWhiteSpace(heroTitle) || !string.IsNullOrWhiteSpace(heroSubtitle))
+        {
+            <div class="home-hero-copy" dir="auto">
+                @if (!string.IsNullOrWhiteSpace(heroTitle))
+                {
+                    <h1 class="font-serif text-3xl font-semibold leading-tight md:text-5xl">@heroTitle</h1>
+                }
+                @if (!string.IsNullOrWhiteSpace(heroSubtitle))
+                {
+                    <p class="mt-3 max-w-xl text-sm font-medium md:text-lg">@heroSubtitle</p>
+                }
+            </div>
+        }
 
         @if (heroSlideCount > 1)
         {
@@ -606,6 +632,11 @@
 {
     foreach (var homeSection in Model.Sections)
     {
+        var sectionTitle = homeSection.LocalizedTitle;
+        var sectionSubtitle = homeSection.LocalizedSubtitle;
+        var sectionViewAllText = homeSection.LocalizedViewAllText;
+        var sectionDescription = homeSection.LocalizedDescription;
+        var sectionButtonText = homeSection.LocalizedButtonText;
         // -------------------------------------------------------------
         // 1. MANUEL ÜRÜN BLOĞU
         // -------------------------------------------------------------
@@ -622,22 +653,22 @@
                 <section class="bg-brand-cream py-14 md:py-16" data-motion-section>
                     <div class="container mx-auto px-4">
                         <div class="mb-10 text-center flex flex-col items-center">
-                            @if (!string.IsNullOrWhiteSpace(homeSection.Title))
+                            @if (!string.IsNullOrWhiteSpace(sectionTitle))
                             {
                                 <div class="flex items-center justify-center w-full mb-3">
                                     <hr class="hidden w-1/4 border-brand-border md:block"/>
-                                    <h2 class="font-serif mx-6 text-3xl text-brand-olive md:text-4xl">@(homeSection.Title)</h2>
+                                    <h2 class="font-serif mx-6 text-3xl text-brand-olive md:text-4xl">@sectionTitle</h2>
                                     <hr class="hidden w-1/4 border-brand-border md:block"/>
                                 </div>
                             }
-                            @if (!string.IsNullOrWhiteSpace(homeSection.Subtitle))
+                            @if (!string.IsNullOrWhiteSpace(sectionSubtitle))
                             {
-                                <p class="text-sm text-brand-mutedtext mb-4">@(homeSection.Subtitle)</p>
+                                <p class="text-sm text-brand-mutedtext mb-4">@sectionSubtitle</p>
                             }
                             @if (!string.IsNullOrWhiteSpace(homeSection.ViewAllUrl))
                             {
                                 <a href="@(homeSection.ViewAllUrl)" class="inline-flex items-center gap-2 border-b border-brand-olive pb-1 text-xs uppercase tracking-widest text-brand-olive transition-colors hover:text-brand-gold">
-                                    @(string.IsNullOrWhiteSpace(homeSection.ViewAllText) ? Localizer["ViewAll"] : homeSection.ViewAllText)
+                                    @(string.IsNullOrWhiteSpace(sectionViewAllText) ? Localizer["ViewAll"] : sectionViewAllText)
                                     <svg class="w-3 h-3 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 </a>
                             }
@@ -660,12 +691,20 @@
             <section class="py-8" data-motion-section>
                 <div class="container mx-auto px-4">
                     <a href="@(string.IsNullOrWhiteSpace(homeSection.ButtonUrl) ? "#" : homeSection.ButtonUrl)" class="block relative group overflow-hidden">
-                        <img src="@(homeSection.ImageUrl)" alt="@(homeSection.Title)" class="w-full h-auto transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
-                        @if (!string.IsNullOrWhiteSpace(homeSection.Title) || !string.IsNullOrWhiteSpace(homeSection.Subtitle))
+                        <img src="@(homeSection.ImageUrl)" alt="@sectionTitle" class="w-full h-auto transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
+                        @if (!string.IsNullOrWhiteSpace(sectionTitle) || !string.IsNullOrWhiteSpace(sectionSubtitle))
                         {
                             <div class="absolute inset-0 bg-black/30 flex flex-col justify-center items-center text-center p-4">
-                                <h3 class="text-white font-serif text-3xl md:text-5xl mb-2 drop-shadow-md">@homeSection.Title</h3>
-                                <p class="text-white/90 text-sm md:text-base drop-shadow-md">@homeSection.Subtitle</p>
+                                <h3 class="text-white font-serif text-3xl md:text-5xl mb-2 drop-shadow-md">@sectionTitle</h3>
+                                <p class="text-white/90 text-sm md:text-base drop-shadow-md">@sectionSubtitle</p>
+                                @if (!string.IsNullOrWhiteSpace(sectionDescription))
+                                {
+                                    <p class="mt-3 max-w-2xl text-sm leading-relaxed text-white/85 drop-shadow-md">@sectionDescription</p>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(sectionButtonText))
+                                {
+                                    <span class="mt-5 inline-flex rounded-full bg-white px-5 py-2 text-xs font-bold uppercase tracking-widest text-brand-olive shadow-lg">@sectionButtonText</span>
+                                }
                             </div>
                         }
                     </a>
@@ -682,12 +721,12 @@
                     <div class="mb-10 text-center flex flex-col items-center">
                         <div class="flex items-center justify-center w-full mb-3">
                             <hr class="hidden w-1/4 border-brand-border md:block"/>
-                            <h2 class="font-serif mx-6 text-3xl text-brand-olive md:text-4xl">@(string.IsNullOrWhiteSpace(homeSection.Title) ? Localizer["FeaturedProducts"] : homeSection.Title)</h2>
+                            <h2 class="font-serif mx-6 text-3xl text-brand-olive md:text-4xl">@(string.IsNullOrWhiteSpace(sectionTitle) ? Localizer["FeaturedProducts"] : sectionTitle)</h2>
                             <hr class="hidden w-1/4 border-brand-border md:block"/>
                         </div>
-                        <p class="text-sm text-brand-mutedtext mb-4">@(string.IsNullOrWhiteSpace(homeSection.Subtitle) ? Localizer["FeaturedProductsSubtitle"] : homeSection.Subtitle)</p>
+                        <p class="text-sm text-brand-mutedtext mb-4">@(string.IsNullOrWhiteSpace(sectionSubtitle) ? Localizer["FeaturedProductsSubtitle"] : sectionSubtitle)</p>
                         <a href="@(string.IsNullOrWhiteSpace(homeSection.ViewAllUrl) ? "/products" : homeSection.ViewAllUrl)" class="inline-flex items-center gap-2 border-b border-brand-olive pb-1 text-xs uppercase tracking-widest text-brand-olive transition-colors hover:text-brand-gold">
-                            @(string.IsNullOrWhiteSpace(homeSection.ViewAllText) ? Localizer["ViewAll5Piece"] : homeSection.ViewAllText)
+                            @(string.IsNullOrWhiteSpace(sectionViewAllText) ? Localizer["ViewAll5Piece"] : sectionViewAllText)
                             <svg class="w-3 h-3 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </a>
                     </div>
@@ -710,13 +749,13 @@
 
                     <div class="flex items-center justify-center">
                         <hr class="hidden w-1/4 border-brand-border md:block"/>
-                        <h2 class="font-serif mx-6 text-3xl text-brand-olive md:text-4xl">@(string.IsNullOrWhiteSpace(homeSection.Title) ? Localizer["FeaturedProducts"] : homeSection.Title)</h2>
+                        <h2 class="font-serif mx-6 text-3xl text-brand-olive md:text-4xl">@(string.IsNullOrWhiteSpace(sectionTitle) ? Localizer["FeaturedProducts"] : sectionTitle)</h2>
                         <hr class="hidden w-1/4 border-brand-border md:block"/>
                     </div>
                 </div>
-                @if (!string.IsNullOrWhiteSpace(homeSection.Subtitle))
+                @if (!string.IsNullOrWhiteSpace(sectionSubtitle))
                 {
-                    <p class="text-center text-sm text-brand-mutedtext mb-8 -mt-4">@homeSection.Subtitle</p>
+                    <p class="text-center text-sm text-brand-mutedtext mb-8 -mt-4">@sectionSubtitle</p>
                 }
                 <div class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-5" data-motion-stagger>
                     @foreach (var urun in Model.VitrinUrunleri.Take(8))
@@ -725,8 +764,8 @@
                     }
                 </div>
                 <div class="mt-12 text-center">
-                    <a href="@(string.IsNullOrWhiteSpace(homeSection.ViewAllUrl) ? "/products" : homeSection.ViewAllUrl)" class="inline-flex items-center justify-center rounded-full border border-brand-olive bg-brand-olive px-8 py-3 text-xs uppercase tracking-widest text-white shadow-sm transition-colors hover:bg-[#22250b] hover:shadow-soft">
-                        @(string.IsNullOrWhiteSpace(homeSection.ViewAllText) ? Localizer["ViewAll"] : homeSection.ViewAllText)
+                    <a href="@(string.IsNullOrWhiteSpace(homeSection.ViewAllUrl) ? "/products" : homeSection.ViewAllUrl)" class="inline-flex items-center justify-center rounded-full border border-brand-olive bg-brand-olive px-8 py-3 text-xs uppercase tracking-widest text-white shadow-sm transition-all hover:brightness-90 hover:shadow-soft">
+                         @(string.IsNullOrWhiteSpace(sectionViewAllText) ? Localizer["ViewAll"] : sectionViewAllText)
                     </a>
                 </div>
             </section>
@@ -738,14 +777,14 @@
         {
             <section class="container mx-auto px-4 pb-16">
                 <div class="mb-10 text-center flex flex-col items-center">
-                    <p class="mb-3 text-xs uppercase tracking-[0.25em] text-brand-gold">@(string.IsNullOrWhiteSpace(homeSection.Subtitle) ? Localizer["BestSellers"] : homeSection.Subtitle)</p>
+                    <p class="mb-3 text-xs uppercase tracking-[0.25em] text-brand-gold">@(string.IsNullOrWhiteSpace(sectionSubtitle) ? Localizer["BestSellers"] : sectionSubtitle)</p>
                     <div class="flex items-center justify-center w-full mb-4">
                         <hr class="hidden w-1/4 border-brand-border md:block"/>
-                        <h2 class="font-serif mx-6 text-3xl text-brand-olive md:text-4xl">@(string.IsNullOrWhiteSpace(homeSection.Title) ? Localizer["MostPreferred"] : homeSection.Title)</h2>
+                        <h2 class="font-serif mx-6 text-3xl text-brand-olive md:text-4xl">@(string.IsNullOrWhiteSpace(sectionTitle) ? Localizer["MostPreferred"] : sectionTitle)</h2>
                         <hr class="hidden w-1/4 border-brand-border md:block"/>
                     </div>
                     <a href="@(string.IsNullOrWhiteSpace(homeSection.ViewAllUrl) ? "/products?sort=popularity" : homeSection.ViewAllUrl)" class="inline-flex items-center gap-2 border-b border-brand-olive pb-1 text-xs uppercase tracking-widest text-brand-olive transition-colors hover:text-brand-gold">
-                        @(string.IsNullOrWhiteSpace(homeSection.ViewAllText) ? Localizer["ViewAll"] : homeSection.ViewAllText)
+                        @(string.IsNullOrWhiteSpace(sectionViewAllText) ? Localizer["ViewAll"] : sectionViewAllText)
                         <svg class="w-3 h-3 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </a>
                 </div>
@@ -765,14 +804,14 @@
             <section class="bg-brand-warmcream py-16">
                 <div class="container mx-auto px-4">
                     <div class="mb-10 text-center flex flex-col items-center">
-                        <p class="mb-3 text-xs uppercase tracking-[0.25em] text-brand-gold">@(string.IsNullOrWhiteSpace(homeSection.Subtitle) ? Localizer["DealProducts"] : homeSection.Subtitle)</p>
+                        <p class="mb-3 text-xs uppercase tracking-[0.25em] text-brand-gold">@(string.IsNullOrWhiteSpace(sectionSubtitle) ? Localizer["DealProducts"] : sectionSubtitle)</p>
                         <div class="flex items-center justify-center w-full mb-4">
                             <hr class="hidden w-1/4 border-brand-border md:block"/>
-                            <h2 class="font-serif mx-6 text-3xl text-brand-olive md:text-4xl">@(string.IsNullOrWhiteSpace(homeSection.Title) ? Localizer["CampaignSelections"] : homeSection.Title)</h2>
+                            <h2 class="font-serif mx-6 text-3xl text-brand-olive md:text-4xl">@(string.IsNullOrWhiteSpace(sectionTitle) ? Localizer["CampaignSelections"] : sectionTitle)</h2>
                             <hr class="hidden w-1/4 border-brand-border md:block"/>
                         </div>
                         <a href="@(string.IsNullOrWhiteSpace(homeSection.ViewAllUrl) ? "/products?sort=price_asc" : homeSection.ViewAllUrl)" class="inline-flex items-center gap-2 border-b border-brand-olive pb-1 text-xs uppercase tracking-widest text-brand-olive transition-colors hover:text-brand-gold">
-                            @(string.IsNullOrWhiteSpace(homeSection.ViewAllText) ? Localizer["ViewDeals"] : homeSection.ViewAllText)
+                            @(string.IsNullOrWhiteSpace(sectionViewAllText) ? Localizer["ViewDeals"] : sectionViewAllText)
                             <svg class="w-3 h-3 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </a>
                     </div>

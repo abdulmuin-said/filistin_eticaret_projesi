@@ -108,6 +108,13 @@ namespace FilistinProje.Service.Services
                 existing.KapidaOdemeLimiti = normalized.KapidaOdemeLimiti;
                 existing.ToptanciMinSiparisTutari = normalized.ToptanciMinSiparisTutari;
                 existing.IptalSuresiSaat = normalized.IptalSuresiSaat;
+                existing.FooterAciklamasiEn = normalized.FooterAciklamasiEn;
+                existing.FooterAciklamasiAr = normalized.FooterAciklamasiAr;
+                existing.HeroBaslikAr = normalized.HeroBaslikAr;
+                existing.HeroBaslikEn = normalized.HeroBaslikEn;
+                existing.HeroAltBaslikAr = normalized.HeroAltBaslikAr;
+                existing.HeroAltBaslikEn = normalized.HeroAltBaslikEn;
+                existing.HeroGorselUrl = normalized.HeroGorselUrl;
             }
             else
             {
@@ -159,12 +166,19 @@ namespace FilistinProje.Service.Services
             settings.SiteLogoUrl = NormalizeLogoUrl(settings.SiteLogoUrl);
             settings.FaviconUrl = NormalizeFaviconUrl(settings.FaviconUrl);
             settings.BaseUrl = NormalizeBaseUrl(settings.BaseUrl, ConfiguredBaseUrl(), IsProductionEnvironment());
-            settings.TemaRengi = string.IsNullOrWhiteSpace(settings.TemaRengi) ? "#313511" : settings.TemaRengi.Trim();
+            settings.TemaRengi = NormalizeThemeColor(settings.TemaRengi);
             settings.UstBarMesaji = settings.UstBarMesaji?.Trim() ?? string.Empty;
             settings.KampanyaMesaji = settings.KampanyaMesaji?.Trim() ?? string.Empty;
             settings.FooterAciklamasi = string.IsNullOrWhiteSpace(settings.FooterAciklamasi)
                 ? settings.SiteAciklamasi
                 : settings.FooterAciklamasi.Trim();
+            settings.FooterAciklamasiEn = settings.FooterAciklamasiEn?.Trim() ?? string.Empty;
+            settings.FooterAciklamasiAr = settings.FooterAciklamasiAr?.Trim() ?? string.Empty;
+            settings.HeroBaslikAr = settings.HeroBaslikAr?.Trim() ?? string.Empty;
+            settings.HeroBaslikEn = settings.HeroBaslikEn?.Trim() ?? string.Empty;
+            settings.HeroAltBaslikAr = settings.HeroAltBaslikAr?.Trim() ?? string.Empty;
+            settings.HeroAltBaslikEn = settings.HeroAltBaslikEn?.Trim() ?? string.Empty;
+            settings.HeroGorselUrl = string.IsNullOrWhiteSpace(settings.HeroGorselUrl) ? "/slider-demo.jpg" : settings.HeroGorselUrl.Trim();
 
             settings.Telefon = settings.Telefon?.Trim() ?? string.Empty;
             settings.Email = settings.Email?.Trim() ?? string.Empty;
@@ -262,6 +276,15 @@ namespace FilistinProje.Service.Services
                    value.Equals("favicon.svg", StringComparison.OrdinalIgnoreCase)
                 ? "/74anrps48logo2.svg"
                 : value;
+        }
+
+        private static string NormalizeThemeColor(string? color)
+        {
+            var value = color?.Trim();
+            return !string.IsNullOrWhiteSpace(value) &&
+                   System.Text.RegularExpressions.Regex.IsMatch(value, "^#[0-9A-Fa-f]{6}$")
+                ? value.ToUpperInvariant()
+                : "#313511";
         }
 
         private static string NormalizeBaseUrl(string? baseUrl, string? configuredBaseUrl, bool isProduction)

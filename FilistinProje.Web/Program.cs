@@ -531,7 +531,11 @@ app.Use(async (context, next) =>
         }
     };
     var siteMessage = WebUtility.HtmlEncode(maintenanceText.Message);
-    var themeColor = WebUtility.HtmlEncode(siteSettings.TemaRengi);
+    var rawThemeColor = siteSettings.TemaRengi?.Trim();
+    var themeColor = WebUtility.HtmlEncode(!string.IsNullOrWhiteSpace(rawThemeColor) &&
+        System.Text.RegularExpressions.Regex.IsMatch(rawThemeColor, "^#[0-9A-Fa-f]{6}$")
+            ? rawThemeColor
+            : "#313511");
     var logoUrl = WebUtility.HtmlEncode(string.IsNullOrWhiteSpace(siteSettings.SiteLogoUrl)
         ? "/74anrps48logo2.svg"
         : siteSettings.SiteLogoUrl);
@@ -1372,6 +1376,23 @@ BEGIN
     ALTER TABLE "AspNetUsers" ADD COLUMN IF NOT EXISTS "Adres" text NOT NULL DEFAULT '';
     ALTER TABLE "AspNetUsers" ADD COLUMN IF NOT EXISTS "WholesaleStatus" integer NOT NULL DEFAULT 0;
     ALTER TABLE "AspNetUsers" ADD COLUMN IF NOT EXISTS "BasvuruTarihi" timestamp with time zone NULL;
+    ALTER TABLE "AspNetUsers" ADD COLUMN IF NOT EXISTS "ToptanciRedSebebi" character varying(1000) NULL;
+
+    ALTER TABLE "HomePageSections" ADD COLUMN IF NOT EXISTS "TitleEn" text NOT NULL DEFAULT '';
+    ALTER TABLE "HomePageSections" ADD COLUMN IF NOT EXISTS "TitleAr" text NOT NULL DEFAULT '';
+    ALTER TABLE "HomePageSections" ADD COLUMN IF NOT EXISTS "SubtitleEn" text NOT NULL DEFAULT '';
+    ALTER TABLE "HomePageSections" ADD COLUMN IF NOT EXISTS "SubtitleAr" text NOT NULL DEFAULT '';
+    ALTER TABLE "HomePageSections" ADD COLUMN IF NOT EXISTS "ViewAllTextEn" text NOT NULL DEFAULT '';
+    ALTER TABLE "HomePageSections" ADD COLUMN IF NOT EXISTS "ViewAllTextAr" text NOT NULL DEFAULT '';
+    ALTER TABLE "HomePageSections" ADD COLUMN IF NOT EXISTS "DescriptionEn" text NOT NULL DEFAULT '';
+    ALTER TABLE "HomePageSections" ADD COLUMN IF NOT EXISTS "DescriptionAr" text NOT NULL DEFAULT '';
+    ALTER TABLE "HomePageSections" ADD COLUMN IF NOT EXISTS "ButtonTextEn" text NOT NULL DEFAULT '';
+    ALTER TABLE "HomePageSections" ADD COLUMN IF NOT EXISTS "ButtonTextAr" text NOT NULL DEFAULT '';
+
+    ALTER TABLE "KurumsalSayfalar" ADD COLUMN IF NOT EXISTS "BaslikEn" text NOT NULL DEFAULT '';
+    ALTER TABLE "KurumsalSayfalar" ADD COLUMN IF NOT EXISTS "BaslikAr" text NOT NULL DEFAULT '';
+    ALTER TABLE "KurumsalSayfalar" ADD COLUMN IF NOT EXISTS "IcerikEn" text NOT NULL DEFAULT '';
+    ALTER TABLE "KurumsalSayfalar" ADD COLUMN IF NOT EXISTS "IcerikAr" text NOT NULL DEFAULT '';
 
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "GirisZorunluMu" boolean NOT NULL DEFAULT false;
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "StokBiteniGriGoster" boolean NOT NULL DEFAULT true;

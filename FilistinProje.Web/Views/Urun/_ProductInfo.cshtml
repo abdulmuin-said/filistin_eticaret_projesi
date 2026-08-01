@@ -82,7 +82,6 @@
         ? Model.TahminiTeslimSuresiGun
         : siteSettings.SiparisTeslimSuresiGun;
     int iadeSuresi = siteSettings.IadeHakkiGun > 0 ? siteSettings.IadeHakkiGun : 14;
-    bool cerceveSecimiGerekli = false;
     var cerceveModelleri = Array.Empty<string>();
 
     var teknikSatirlari = (Model.TeknikOzellikler ?? string.Empty)

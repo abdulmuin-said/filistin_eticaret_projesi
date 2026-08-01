@@ -7,12 +7,16 @@
     var logoUrl = string.IsNullOrWhiteSpace(siteSettings.SiteLogoUrl) ? "/74anrps48logo2.svg" : siteSettings.SiteLogoUrl;
     var currentCulture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
     bool isRtl = currentCulture == "ar";
+    var footerDescription = currentCulture == "ar"
+        ? siteSettings.FooterAciklamasiAr
+        : siteSettings.FooterAciklamasiEn;
+    if (string.IsNullOrWhiteSpace(footerDescription)) footerDescription = siteSettings.FooterAciklamasi;
 }
 
-<footer class="bg-[#313511] text-white pt-0 pb-8 mt-auto" dir="@(isRtl ? "rtl" : "ltr")" style="color: #ffffff;">
+<footer class="bg-brand-olive text-white pt-0 pb-8 mt-auto" dir="@(isRtl ? "rtl" : "ltr")" style="color: #ffffff;">
 
     <!-- Trust Bar -->
-    <div class="border-b border-white/10 bg-[#25280c]">
+    <div class="border-b border-white/10" style="background:rgb(var(--brand-primary-rgb) / .82);">
         <div class="container mx-auto grid grid-cols-3 gap-2 px-3 py-4 text-center md:gap-4 md:px-8 md:py-5">
             <div class="flex flex-col items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-2 py-3 md:flex-row md:gap-3 md:border-0 md:bg-transparent md:px-0 md:py-0">
                 <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#c6ca99]/35 text-[#c6ca99] md:h-10 md:w-10">
@@ -50,10 +54,10 @@
 
             <!-- Newsletter Signup & Store Info -->
             <div>
-                @if (!string.IsNullOrWhiteSpace(siteSettings.FooterAciklamasi))
+                @if (!string.IsNullOrWhiteSpace(footerDescription))
                 {
                     <p class="text-xs font-light mb-4 text-[#d9ddaa] leading-relaxed max-w-md">
-                        @siteSettings.FooterAciklamasi
+                        @footerDescription
                     </p>
                 }
                 @if (!string.IsNullOrWhiteSpace(siteSettings.Adres) || !string.IsNullOrWhiteSpace(siteSettings.CalismaSaatleri))
@@ -81,7 +85,7 @@
                            oninvalid="this.setCustomValidity('@Localizer["FillRequiredFields"]')" 
                            oninput="this.setCustomValidity('')" 
                            type="email"/>
-                    <button type="submit" class="rounded-full bg-[#eef2c3] px-4 py-2 text-xs font-bold uppercase tracking-widest text-[#25280c] transition-all ms-4 whitespace-nowrap hover:bg-white disabled:cursor-wait disabled:opacity-60">@Localizer["Subscribe"]</button>
+                    <button type="submit" class="rounded-full bg-[#eef2c3] px-4 py-2 text-xs font-bold uppercase tracking-widest transition-all ms-4 whitespace-nowrap hover:bg-white disabled:cursor-wait disabled:opacity-60" style="color:var(--brand-primary);">@Localizer["Subscribe"]</button>
                 </form>
             </div>
 

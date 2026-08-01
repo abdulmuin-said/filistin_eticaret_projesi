@@ -524,6 +524,43 @@
                             <div class="ca-fw-bold ca-text-primary" style="font-size:1.2rem;">@Model.ToplamTutar.ToString("N2") ₪</div>
                         </div>
                     </div>
+                    <hr class="my-4" />
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="small text-muted">@Localizer["DeliveryType"]</div>
+                            <div class="ca-fw-bold">@(Model.TeslimatTipi == "MagazadanTeslim" ? Localizer["StorePickup"] : Localizer["DeliveryToAddress"])</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="small text-muted">@Localizer["Admin_Odeme_Yontemi"]</div>
+                            <div class="ca-fw-bold">@(Model.OdemeYontemi == "KapidaOdeme" ? Localizer["CashOnDelivery"] : Localizer["BankTransfer"])</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="small text-muted">@Localizer["GuestAccessStatus"]</div>
+                            <div class="ca-fw-bold">@(!string.IsNullOrWhiteSpace(Model.EmailHashKodu) ? Localizer["Available"] : Localizer["NotAvailable"])</div>
+                        </div>
+                        @if (Model.KapidaOdemeHizmetBedeli > 0)
+                        {
+                            <div class="col-md-4">
+                                <div class="small text-muted">@Localizer["CashOnDeliveryServiceFee"]</div>
+                                <div class="ca-fw-bold">@Model.KapidaOdemeHizmetBedeli.ToString("N2") ₪</div>
+                            </div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.Aciklama))
+                        {
+                            <div class="col-12">
+                                <div class="small text-muted">@Localizer["Admin_Note"]</div>
+                                <div class="p-3 rounded border bg-light" style="white-space:pre-wrap;">@Model.Aciklama</div>
+                            </div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.KimlikFotoYolu))
+                        {
+                            <div class="col-12">
+                                <a href="/Belge/SiparisKimlik?siparisId=@Model.Id" target="_blank" rel="noopener" class="ca-btn ca-btn-outline ca-btn-sm">
+                                    <i class="fas fa-id-card"></i> @Localizer["ViewOrderIdentityDocument"]
+                                </a>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
