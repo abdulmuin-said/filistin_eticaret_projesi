@@ -53,9 +53,30 @@
                     <input type="hidden" data-variant-field="Id" name="UrunSecenek[@i].Id" value="@variant.Id" />
 
                     <div class="row g-3">
-                        <div class="col-lg-3 col-md-6" data-canvas-option>
+                        <div class="col-lg-2 col-md-6">
                             <label class="ca-label" data-label-for="Olcu">@Localizer["Admin_Size"]</label>
                             <input class="ca-input" data-variant-field="Olcu" name="UrunSecenek[@i].Olcu" value="@temizOlcu" />
+                        </div>
+                        <div class="col-lg-2 col-md-6">
+                            <label class="ca-label" data-label-for="OlcuBirimi">Ölçü birimi</label>
+                            <select class="ca-input" data-variant-field="OlcuBirimi" name="UrunSecenek[@i].OlcuBirimi">
+                                @foreach (var unit in new[] { "", "mm", "cm", "m", "ml", "L", "g", "kg", "adet" })
+                                {
+                                    <option value="@unit" selected="@(variant.OlcuBirimi == unit ? "selected" : null)">@(string.IsNullOrEmpty(unit) ? "Birimsiz" : unit)</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-md-6">
+                            <label class="ca-label" data-label-for="Beden">Beden / boyut</label>
+                            <input class="ca-input" data-variant-field="Beden" name="UrunSecenek[@i].Beden" value="@variant.Beden" placeholder="S, M, L, XL..." />
+                        </div>
+                        <div class="col-lg-2 col-md-6">
+                            <label class="ca-label" data-label-for="Renk">Renk</label>
+                            <input class="ca-input" data-variant-field="Renk" name="UrunSecenek[@i].Renk" value="@variant.Renk" />
+                        </div>
+                        <div class="col-lg-2 col-md-6">
+                            <label class="ca-label" data-label-for="RenkKodu">Renk kodu</label>
+                            <input class="ca-input" type="color" data-variant-field="RenkKodu" name="UrunSecenek[@i].RenkKodu" value="@(string.IsNullOrWhiteSpace(variant.RenkKodu) ? "#31543b" : variant.RenkKodu)" />
                         </div>
                         <div class="col-lg-3 col-md-6" data-canvas-option>
                             <label class="ca-label" data-label-for="CerceveTipi">@Localizer["Admin_FrameType"]</label>
@@ -173,9 +194,27 @@
                 <input type="hidden" data-variant-field="Id" name="UrunSecenek[__index__].Id" value="0" />
 
                 <div class="row g-3">
-                    <div class="col-lg-3 col-md-6" data-canvas-option>
+                    <div class="col-lg-2 col-md-6">
                         <label class="ca-label" data-label-for="Olcu">@Localizer["Admin_Size"]</label>
                         <input class="ca-input" data-variant-field="Olcu" name="UrunSecenek[__index__].Olcu" value="" />
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <label class="ca-label" data-label-for="OlcuBirimi">Ölçü birimi</label>
+                        <select class="ca-input" data-variant-field="OlcuBirimi" name="UrunSecenek[__index__].OlcuBirimi">
+                            <option value="">Birimsiz</option><option>mm</option><option>cm</option><option>m</option><option>ml</option><option>L</option><option>g</option><option>kg</option><option>adet</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <label class="ca-label" data-label-for="Beden">Beden / boyut</label>
+                        <input class="ca-input" data-variant-field="Beden" name="UrunSecenek[__index__].Beden" value="" placeholder="S, M, L, XL..." />
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <label class="ca-label" data-label-for="Renk">Renk</label>
+                        <input class="ca-input" data-variant-field="Renk" name="UrunSecenek[__index__].Renk" value="" />
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <label class="ca-label" data-label-for="RenkKodu">Renk kodu</label>
+                        <input class="ca-input" type="color" data-variant-field="RenkKodu" name="UrunSecenek[__index__].RenkKodu" value="#31543b" />
                     </div>
                     <div class="col-lg-3 col-md-6" data-canvas-option>
                         <label class="ca-label" data-label-for="CerceveTipi">@Localizer["Admin_FrameType"]</label>
@@ -332,7 +371,7 @@
         const emptyState = document.getElementById('variantEmptyState');
         const categorySelect = document.querySelector('[name="KategoriId"]');
         const canvasOptionCategoryIds = new Set(@Html.Raw(canvasOptionCategoryIdJson));
-        const canvasFields = ['Olcu', 'CerceveTipi', 'CerceveRengi', 'CerceveKalinligi', 'MalzemeTuru', 'ParcaSayisi'];
+        const canvasFields = ['CerceveTipi', 'CerceveRengi', 'CerceveKalinligi', 'MalzemeTuru', 'ParcaSayisi'];
         const pieceText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Piece"].Value.ToLowerInvariant()));
         const personalizationPrefixText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_PersonalizationPrefix"].Value));
         const variationSubtitleDefaultText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_VariationSubtitleDefault"].Value));
@@ -382,12 +421,15 @@
 
         function buildTitle(card, index) {
             const canvasEnabled = supportsCanvasOptions();
-            const olcu = canvasEnabled ? selector(card, 'Olcu')?.value?.trim() || '' : '';
+            const olcu = selector(card, 'Olcu')?.value?.trim() || '';
+            const birim = selector(card, 'OlcuBirimi')?.value?.trim() || '';
+            const beden = selector(card, 'Beden')?.value?.trim() || '';
+            const genelRenk = selector(card, 'Renk')?.value?.trim() || '';
             const cerceve = canvasEnabled ? selector(card, 'CerceveTipi')?.value?.trim() || '' : '';
             const renk = canvasEnabled ? selector(card, 'CerceveRengi')?.value?.trim() || '' : '';
             const sku = selector(card, 'VaryantSku')?.value?.trim() || '';
 
-            const baseTitle = [olcu, cerceve, renk].filter(Boolean).join(' / ');
+            const baseTitle = [genelRenk, beden, [olcu, birim].filter(Boolean).join(' '), cerceve, renk].filter(Boolean).join(' / ');
             if (baseTitle) {
                 return baseTitle;
             }
@@ -469,7 +511,7 @@
         }
 
         function bindCard(card) {
-            card.querySelectorAll('input, textarea').forEach((input) => {
+            card.querySelectorAll('input, textarea, select').forEach((input) => {
                 input.addEventListener('input', () => reindex());
                 input.addEventListener('change', () => reindex());
             });

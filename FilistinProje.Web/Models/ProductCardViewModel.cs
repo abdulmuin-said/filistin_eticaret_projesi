@@ -48,7 +48,7 @@ namespace FilistinProje.Web.Models
             {
                 badges.Add(new ProductBadge(
                     metin: "",
-                    cssClass: "bg-[#77786f] text-white",
+                    cssClass: "product-badge--out",
                     oncelik: 1,
                     locKey: "Badge_OutOfStock"
                 ));
@@ -59,7 +59,7 @@ namespace FilistinProje.Web.Models
             {
                 badges.Add(new ProductBadge(
                     metin: "",
-                    cssClass: "bg-red-500 text-white",
+                    cssClass: "product-badge--low",
                     oncelik: 1,
                     locKey: "Badge_LowStock"
                 ));
@@ -70,7 +70,7 @@ namespace FilistinProje.Web.Models
             {
                 badges.Add(new ProductBadge(
                     metin: "",
-                    cssClass: "bg-purple-600 text-white",
+                    cssClass: "product-badge--campaign",
                     oncelik: 2,
                     locKey: "Badge_Campaign"
                 ));
@@ -80,17 +80,22 @@ namespace FilistinProje.Web.Models
             {
                 badges.Add(new ProductBadge(
                     metin: $"-{IndirimYuzdesi}%",
-                    cssClass: "bg-brand-gold text-white",
+                    cssClass: "product-badge--discount",
                     oncelik: 3,
                     locKey: "Badge_Discount"
                 ));
+            }
+
+            if (TopFiyat.HasValue && TopFiyat.Value > 0)
+            {
+                badges.Add(new ProductBadge("", "product-badge--wholesale", 4, "Badge_Wholesale"));
             }
 
             if (YeniUrunMu)
             {
                 badges.Add(new ProductBadge(
                     metin: "",
-                    cssClass: "bg-brand-olive text-white",
+                    cssClass: "product-badge--new",
                     oncelik: 4,
                     locKey: "Badge_NewProduct"
                 ));
@@ -100,7 +105,7 @@ namespace FilistinProje.Web.Models
             {
                 badges.Add(new ProductBadge(
                     metin: "",
-                    cssClass: "bg-blue-600 text-white",
+                    cssClass: "product-badge--featured",
                     oncelik: 5,
                     locKey: "Badge_Featured"
                 ));
@@ -110,7 +115,7 @@ namespace FilistinProje.Web.Models
             {
                 badges.Add(new ProductBadge(
                     metin: "",
-                    cssClass: "bg-green-500 text-white",
+                    cssClass: "product-badge--whatsapp",
                     oncelik: 6,
                     locKey: "Badge_WhatsappOrder"
                 ));

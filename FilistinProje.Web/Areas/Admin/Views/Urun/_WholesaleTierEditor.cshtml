@@ -1,0 +1,76 @@
+@model FilistinProje.Core.Varliklar.Urun
+@{
+    var tiers = (Model.ToptanFiyatKademeleri ?? new List<FilistinProje.Core.Varliklar.UrunToptanFiyatKademesi>())
+        .Where(x => !x.SilindiMi).OrderBy(x => x.MinAdet).ThenBy(x => x.Sira).ToList();
+    var variants = (Model.UrunSecenek ?? new List<FilistinProje.Core.Varliklar.UrunSecenek>())
+        .Where(x => !x.SilindiMi && x.Id > 0).OrderBy(x => x.Sira).ToList();
+}
+
+<div class="ca-card mt-4" style="border:1px solid var(--ca-border);">
+    <div class="ca-card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div>
+            <span class="ca-card-title">Adet bazlı toptan fiyatlar</span>
+            <div class="small text-muted mt-1">Müşteri belirtilen adede ulaştığında uygulanacak doğrudan birim fiyatı tanımlayın. Varyant boşsa tüm ürün için geçerlidir.</div>
+        </div>
+        <button type="button" class="ca-btn ca-btn-primary ca-btn-sm" id="addWholesaleTier"><i class="fas fa-plus"></i> Kademe ekle</button>
+    </div>
+    <div class="ca-card-body">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead><tr><th>Varyant</th><th>Minimum adet</th><th>Birim fiyat (₪)</th><th>Aktif</th><th></th></tr></thead>
+                <tbody id="wholesaleTierList">
+                @for (var i = 0; i < tiers.Count; i++)
+                {
+                    var tier = tiers[i];
+                    <tr data-wholesale-tier>
+                        <td>
+                            <input type="hidden" data-tier-field="Id" name="ToptanFiyatKademeleri[@i].Id" value="@tier.Id" />
+                            <select class="ca-input" data-tier-field="UrunSecenekId" name="ToptanFiyatKademeleri[@i].UrunSecenekId">
+                                <option value="">Tüm ürün</option>
+                                @foreach (var variant in variants)
+                                {
+                                    if (tier.UrunSecenekId == variant.Id) { <option value="@variant.Id" selected>@variant.VaryantBasligi</option> }
+                                    else { <option value="@variant.Id">@variant.VaryantBasligi</option> }
+                                }
+                            </select>
+                        </td>
+                        <td><input class="ca-input" type="number" min="1" data-tier-field="MinAdet" name="ToptanFiyatKademeleri[@i].MinAdet" value="@tier.MinAdet" /></td>
+                        <td><input class="ca-input" type="text" inputmode="decimal" data-decimal data-tier-field="BirimFiyat" name="ToptanFiyatKademeleri[@i].BirimFiyat" value="@tier.BirimFiyat.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" /></td>
+                        <td><input class="form-check-input" type="checkbox" data-tier-field="AktifMi" name="ToptanFiyatKademeleri[@i].AktifMi" value="true" @(tier.AktifMi ? "checked" : null) /><input type="hidden" name="ToptanFiyatKademeleri[@i].AktifMi" value="false" /></td>
+                        <td><button type="button" class="ca-btn ca-btn-outline ca-btn-sm" data-tier-remove><i class="fas fa-trash"></i></button></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+        <div class="small text-muted mt-3">Örnek: 10 adet → 42 ₪, 25 adet → 38 ₪. Uygun kademeler arasından en yüksek minimum adet otomatik seçilir.</div>
+    </div>
+</div>
+
+<template id="wholesaleTierTemplate">
+    <tr data-wholesale-tier>
+        <td><input type="hidden" data-tier-field="Id" value="0" /><select class="ca-input" data-tier-field="UrunSecenekId"><option value="">Tüm ürün</option>@foreach (var variant in variants) { <option value="@variant.Id">@variant.VaryantBasligi</option> }</select></td>
+        <td><input class="ca-input" type="number" min="1" data-tier-field="MinAdet" value="1" /></td>
+        <td><input class="ca-input" type="text" inputmode="decimal" data-decimal data-tier-field="BirimFiyat" value="0" /></td>
+        <td><input class="form-check-input" type="checkbox" data-tier-field="AktifMi" value="true" checked /><input type="hidden" data-tier-false value="false" /></td>
+        <td><button type="button" class="ca-btn ca-btn-outline ca-btn-sm" data-tier-remove><i class="fas fa-trash"></i></button></td>
+    </tr>
+</template>
+
+<script>
+(() => {
+    const list = document.getElementById('wholesaleTierList');
+    const template = document.getElementById('wholesaleTierTemplate');
+    const add = document.getElementById('addWholesaleTier');
+    if (!list || !template || !add) return;
+    const reindex = () => list.querySelectorAll('[data-wholesale-tier]').forEach((row, index) => {
+        row.querySelectorAll('[data-tier-field]').forEach(input => input.name = `ToptanFiyatKademeleri[${index}].${input.dataset.tierField}`);
+        const falseInput = row.querySelector('[data-tier-false]');
+        if (falseInput) falseInput.name = `ToptanFiyatKademeleri[${index}].AktifMi`;
+    });
+    const bind = row => row.querySelector('[data-tier-remove]')?.addEventListener('click', () => { row.remove(); reindex(); });
+    list.querySelectorAll('[data-wholesale-tier]').forEach(bind);
+    add.addEventListener('click', () => { list.insertAdjacentHTML('beforeend', template.innerHTML); const row = list.lastElementChild; if (row) bind(row); reindex(); });
+    reindex();
+})();
+</script>

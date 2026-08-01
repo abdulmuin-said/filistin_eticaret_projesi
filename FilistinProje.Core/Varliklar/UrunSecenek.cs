@@ -11,6 +11,10 @@ namespace FilistinProje.Core.Varliklar
         public Urun Urun { get; set; } = default!;
 
         public string Olcu { get; set; } = string.Empty;
+        public string Beden { get; set; } = string.Empty;
+        public string Renk { get; set; } = string.Empty;
+        public string RenkKodu { get; set; } = string.Empty;
+        public string OlcuBirimi { get; set; } = string.Empty;
         public string CerceveTipi { get; set; } = string.Empty;
         public string CerceveRengi { get; set; } = string.Empty;
         public string CerceveKalinligi { get; set; } = string.Empty;
@@ -32,12 +36,19 @@ namespace FilistinProje.Core.Varliklar
         public bool TukeninceGizle { get; set; }
         public bool OnSipariseAcikMi { get; set; }
         public int Sira { get; set; }
+        public ICollection<UrunToptanFiyatKademesi> ToptanFiyatKademeleri { get; set; } = new List<UrunToptanFiyatKademesi>();
 
         [NotMapped]
         public bool SatinAlinabilirMi => AktifMi && (StokAdedi > 0 || OnSipariseAcikMi);
 
         [NotMapped]
-        public string VaryantBasligi => !string.IsNullOrWhiteSpace(Olcu) ? Olcu : string.Empty;
+        public string VaryantBasligi => string.Join(" / ", new[]
+            {
+                Renk,
+                Beden,
+                string.IsNullOrWhiteSpace(OlcuBirimi) ? Olcu : $"{Olcu} {OlcuBirimi}"
+            }
+            .Where(x => !string.IsNullOrWhiteSpace(x)));
 
         [NotMapped]
         public string VaryantOzeti

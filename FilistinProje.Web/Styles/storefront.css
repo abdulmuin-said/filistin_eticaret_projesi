@@ -1493,6 +1493,19 @@
     @apply opacity-100;
     transform: translateY(0);
   }
+
+  .product-badge {
+    @apply rounded-full border px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider shadow-sm;
+  }
+
+  .product-badge--featured { @apply border-yellow-300 bg-yellow-300 text-yellow-950; }
+  .product-badge--new { @apply border-red-600 bg-red-600 text-white; }
+  .product-badge--campaign { @apply border-violet-700 bg-violet-700 text-white; }
+  .product-badge--discount { @apply border-orange-600 bg-orange-600 text-white; }
+  .product-badge--whatsapp { @apply border-emerald-600 bg-emerald-600 text-white; }
+  .product-badge--wholesale { @apply border-green-800 bg-green-800 text-white; }
+  .product-badge--low { @apply border-rose-700 bg-rose-700 text-white; }
+  .product-badge--out { @apply border-stone-700 bg-stone-700 text-white; }
 }
 
 @layer utilities {

@@ -173,6 +173,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             var postedVariants = urun.UrunSecenek?.ToList() ?? new List<UrunSecenek>();
+            var postedWholesaleTiers = urun.ToptanFiyatKademeleri?.ToList() ?? new List<UrunToptanFiyatKademesi>();
             var postedFeatureValues = urun.UrunOzellikleri?.ToList() ?? new List<UrunOzellikDegeri>();
             NormalizeProductInput(urun);
             var supportsCanvasOptions = await SupportsCanvasOptionsAsync(urun.KategoriId);
@@ -206,6 +207,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 await EnsureProductSkuAsync(urun);
                 await SyncVariantsAsync(urun, postedVariants);
+                await _context.SaveChangesAsync();
+                await SyncWholesaleTiersAsync(urun, postedWholesaleTiers);
                 await SyncFeatureValuesAsync(urun, postedFeatureValues);
                 await SaveGalleryImagesAsync(urun, galeriDosyalari);
                 await _context.SaveChangesAsync();
@@ -227,6 +230,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             var urun = await _context.Urunler
                 .Include(x => x.UrunSecenek)
+                .Include(x => x.ToptanFiyatKademeleri)
                 .Include(x => x.UrunOzellikleri)
                     .ThenInclude(x => x.UrunOzellikTanimi)
                 .Include(x => x.UrunResimleri)
@@ -262,6 +266,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             var urun = await _context.Urunler
                 .Include(x => x.UrunSecenek)
+                .Include(x => x.ToptanFiyatKademeleri)
                 .Include(x => x.UrunOzellikleri)
                     .ThenInclude(x => x.UrunOzellikTanimi)
                 .Include(x => x.UrunResimleri)
@@ -316,6 +321,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             await SyncVariantsAsync(urun, model.UrunSecenek);
+            await _context.SaveChangesAsync();
+            await SyncWholesaleTiersAsync(urun, model.ToptanFiyatKademeleri);
             await EnsureProductSkuAsync(urun);
             await EnsureVariantSkusAsync(urun.Id);
             await SyncFeatureValuesAsync(urun, model.UrunOzellikleri);
@@ -327,7 +334,7 @@ await _context.SaveChangesAsync();
             await SyncProductPricesWithVariantsAsync(urun, model);
 
             TempData["Mesaj"] = "تم تحديث المنتج بنجاح.";
-            return RedirectToAction(nameof(Index), new { area = "Admin" });
+            return RedirectToAction(nameof(Duzenle), new { area = "Admin", id = urun.Id });
         }
 
         private async Task SyncProductPricesWithVariantsAsync(Urun urun, Urun model)
@@ -2928,6 +2935,57 @@ await _context.SaveChangesAsync();
             return Task.CompletedTask;
         }
 
+        private Task SyncWholesaleTiersAsync(Urun urun, ICollection<UrunToptanFiyatKademesi>? incomingTiers)
+        {
+            var valid = (incomingTiers ?? new List<UrunToptanFiyatKademesi>())
+                .Where(x => x.MinAdet > 0 && x.BirimFiyat > 0)
+                .OrderBy(x => x.MinAdet)
+                .ToList();
+
+            var validVariantIds = urun.UrunSecenek.Where(x => !x.SilindiMi).Select(x => x.Id).ToHashSet();
+            foreach (var tier in valid)
+            {
+                if (tier.UrunSecenekId.HasValue && !validVariantIds.Contains(tier.UrunSecenekId.Value))
+                {
+                    tier.UrunSecenekId = null;
+                }
+            }
+
+            var incomingIds = valid.Where(x => x.Id > 0).Select(x => x.Id).ToHashSet();
+            var removed = urun.ToptanFiyatKademeleri.Where(x => x.Id > 0 && !incomingIds.Contains(x.Id)).ToList();
+            if (removed.Count > 0)
+            {
+                _context.UrunToptanFiyatKademeleri.RemoveRange(removed);
+            }
+
+            for (var index = 0; index < valid.Count; index++)
+            {
+                var source = valid[index];
+                var target = source.Id > 0
+                    ? urun.ToptanFiyatKademeleri.FirstOrDefault(x => x.Id == source.Id)
+                    : null;
+
+                if (target == null)
+                {
+                    target = new UrunToptanFiyatKademesi
+                    {
+                        UrunId = urun.Id,
+                        OlusturulmaTarihi = DateTime.UtcNow,
+                        SilindiMi = false
+                    };
+                    urun.ToptanFiyatKademeleri.Add(target);
+                }
+
+                target.UrunSecenekId = source.UrunSecenekId;
+                target.MinAdet = source.MinAdet;
+                target.BirimFiyat = decimal.Round(source.BirimFiyat, 2);
+                target.AktifMi = source.AktifMi;
+                target.Sira = index + 1;
+            }
+
+            return Task.CompletedTask;
+        }
+
         private static void SanitizeVariantScope(ICollection<UrunSecenek>? variants, bool supportsCanvasOptions)
         {
             if (supportsCanvasOptions || variants == null)
@@ -2937,7 +2995,6 @@ await _context.SaveChangesAsync();
 
             foreach (var variant in variants)
             {
-                variant.Olcu = string.Empty;
                 variant.CerceveTipi = string.Empty;
                 variant.CerceveRengi = string.Empty;
                 variant.CerceveKalinligi = string.Empty;
@@ -3056,6 +3113,8 @@ await _context.SaveChangesAsync();
             }
 
             return !string.IsNullOrWhiteSpace(variant.Olcu)
+                || !string.IsNullOrWhiteSpace(variant.Beden)
+                || !string.IsNullOrWhiteSpace(variant.Renk)
                 || !string.IsNullOrWhiteSpace(variant.CerceveTipi)
                 || !string.IsNullOrWhiteSpace(variant.CerceveRengi)
                 || !string.IsNullOrWhiteSpace(variant.CerceveKalinligi)
@@ -3077,6 +3136,10 @@ await _context.SaveChangesAsync();
         private static void NormalizeVariantInput(UrunSecenek variant, int index)
         {
             variant.Olcu = (variant.Olcu ?? string.Empty).Trim();
+            variant.Beden = (variant.Beden ?? string.Empty).Trim();
+            variant.Renk = (variant.Renk ?? string.Empty).Trim();
+            variant.RenkKodu = (variant.RenkKodu ?? string.Empty).Trim();
+            variant.OlcuBirimi = (variant.OlcuBirimi ?? string.Empty).Trim();
             variant.CerceveTipi = (variant.CerceveTipi ?? string.Empty).Trim();
             variant.CerceveRengi = (variant.CerceveRengi ?? string.Empty).Trim();
             variant.CerceveKalinligi = (variant.CerceveKalinligi ?? string.Empty).Trim();
@@ -3108,6 +3171,10 @@ await _context.SaveChangesAsync();
         private static void ApplyVariantFields(UrunSecenek target, UrunSecenek source)
         {
             target.Olcu = source.Olcu;
+            target.Beden = source.Beden;
+            target.Renk = source.Renk;
+            target.RenkKodu = source.RenkKodu;
+            target.OlcuBirimi = source.OlcuBirimi;
             target.CerceveTipi = source.CerceveTipi;
             target.CerceveRengi = source.CerceveRengi;
             target.CerceveKalinligi = source.CerceveKalinligi;

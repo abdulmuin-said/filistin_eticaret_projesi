@@ -59,6 +59,7 @@ namespace FilistinProje.Service.Services
             var urunler = await _context.Urunler
                 .AsNoTracking()
                 .Include(u => u.UrunSecenek)
+                .Include(u => u.ToptanFiyatKademeleri)
                 .Where(u => urunIds.Contains(u.Id) && !u.SilindiMi)
                 .ToListAsync();
 
@@ -351,6 +352,25 @@ namespace FilistinProje.Service.Services
             int adet,
             Dictionary<int, List<ToptanciIskontoOrani>> toptanciGrupIskonto)
         {
+            if (isWholesale)
+            {
+                var variantTier = secenek == null ? null : urun.ToptanFiyatKademeleri
+                    .Where(x => !x.SilindiMi && x.AktifMi && x.UrunSecenekId == secenek.Id && adet >= x.MinAdet)
+                    .OrderByDescending(x => x.MinAdet)
+                    .ThenBy(x => x.Sira)
+                    .FirstOrDefault();
+                var productTier = urun.ToptanFiyatKademeleri
+                    .Where(x => !x.SilindiMi && x.AktifMi && !x.UrunSecenekId.HasValue && adet >= x.MinAdet)
+                    .OrderByDescending(x => x.MinAdet)
+                    .ThenBy(x => x.Sira)
+                    .FirstOrDefault();
+                var directTier = variantTier ?? productTier;
+                if (directTier != null)
+                {
+                    return System.Math.Round(directTier.BirimFiyat, 2);
+                }
+            }
+
             decimal birimFiyatBase;
 
             if (secenek != null && secenek.SatisFiyati > 0)

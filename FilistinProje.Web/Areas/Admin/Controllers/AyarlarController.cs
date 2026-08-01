@@ -34,15 +34,16 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             _localizer = localizer;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? tab = null)
         {
             await HazirlaKargoFirmaSecenekleriAsync();
+            ViewBag.ActiveTab = string.IsNullOrWhiteSpace(tab) ? "genel" : tab;
             return View(_siteSettingsService.GetSettings());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(SiteAyarlari model)
+        public async Task<IActionResult> Index(SiteAyarlari model, string? aktifSekme)
         {
             try
             {
@@ -57,7 +58,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 TempData["Durum"] = "danger";
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { tab = aktifSekme });
         }
 
         [HttpPost]

@@ -76,7 +76,7 @@
                     var badgeText = !string.IsNullOrEmpty(badge.Metin)
                         ? badge.Metin
                         : Localizer[badge.LocalizasyonKey].Value;
-                    <span class="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow-sm @badge.CssClass">
+                    <span class="product-badge @badge.CssClass">
                         @badgeText
                     </span>
                 }

@@ -257,6 +257,33 @@ namespace FilistinProje.Service
                 where userRole.UserId == userId && role.Name == "Wholesale"
                 select userRole.UserId).AnyAsync();
 
+            if (isWholesale)
+            {
+                var secenekId = secenek?.Id;
+                var directTier = await _context.UrunToptanFiyatKademeleri
+                    .AsNoTracking()
+                    .Where(x => !x.SilindiMi && x.AktifMi && x.UrunId == urun.Id && x.MinAdet <= adet
+                        && ((secenekId.HasValue && x.UrunSecenekId == secenekId.Value)
+                            || (!secenekId.HasValue && !x.UrunSecenekId.HasValue)))
+                    .OrderByDescending(x => x.UrunSecenekId.HasValue)
+                    .ThenByDescending(x => x.MinAdet)
+                    .ThenBy(x => x.Sira)
+                    .FirstOrDefaultAsync();
+                if (directTier == null && secenek != null)
+                {
+                    directTier = await _context.UrunToptanFiyatKademeleri
+                        .AsNoTracking()
+                        .Where(x => !x.SilindiMi && x.AktifMi && x.UrunId == urun.Id && !x.UrunSecenekId.HasValue && x.MinAdet <= adet)
+                        .OrderByDescending(x => x.MinAdet)
+                        .ThenBy(x => x.Sira)
+                        .FirstOrDefaultAsync();
+                }
+                if (directTier != null)
+                {
+                    return Math.Round(directTier.BirimFiyat, 2);
+                }
+            }
+
             var price = secenek is { SatisFiyati: > 0 }
                 ? secenek.SatisFiyati
                 : isWholesale ? urun.EtkinTopFiyat : urun.EtkinFiyat;

@@ -324,6 +324,62 @@ namespace FilistinProje.Tests
             Assert.Equal(200m, result.AraToplam);
         }
 
+        [Fact]
+        public async Task OrderPricingService_WholesaleTier_UsesHighestReachedQuantityPrice()
+        {
+            using var db = CreateInMemoryContext(Guid.NewGuid().ToString());
+            var pricingService = new OrderPricingService(db, null!, null!, NullLogger<OrderPricingService>.Instance);
+            var urun = new Urun { Id = 20, Baslik = "Toptan Urun", Fiyat = 100m, TopFiyat = 90m, AktifMi = true, StokDurumu = "Stokta" };
+            urun.ToptanFiyatKademeleri.Add(new UrunToptanFiyatKademesi { MinAdet = 10, BirimFiyat = 80m, AktifMi = true });
+            urun.ToptanFiyatKademeleri.Add(new UrunToptanFiyatKademesi { MinAdet = 25, BirimFiyat = 70m, AktifMi = true });
+            db.Urunler.Add(urun);
+            await db.SaveChangesAsync();
+
+            var result = await pricingService.HesaplaAsync(
+                new List<SepetItem> { new() { Id = 60, UrunId = 20, Adet = 30, Fiyat = 90m } },
+                null, "BankaHavalesi", true, null);
+
+            Assert.Single(result.Satirlar);
+            Assert.Equal(70m, result.Satirlar[0].BirimFiyat);
+        }
+
+        [Fact]
+        public async Task OrderPricingService_VariantWholesaleTier_OverridesProductTier()
+        {
+            using var db = CreateInMemoryContext(Guid.NewGuid().ToString());
+            var pricingService = new OrderPricingService(db, null!, null!, NullLogger<OrderPricingService>.Instance);
+            var urun = new Urun { Id = 21, Baslik = "Varyantli Toptan Urun", Fiyat = 100m, AktifMi = true, StokDurumu = "Stokta" };
+            var variant = new UrunSecenek { Id = 210, UrunId = 21, Olcu = "500", OlcuBirimi = "ml", SatisFiyati = 95m, StokAdedi = 100, AktifMi = true };
+            urun.UrunSecenek.Add(variant);
+            urun.ToptanFiyatKademeleri.Add(new UrunToptanFiyatKademesi { MinAdet = 10, BirimFiyat = 82m, AktifMi = true });
+            urun.ToptanFiyatKademeleri.Add(new UrunToptanFiyatKademesi { UrunSecenekId = 210, MinAdet = 10, BirimFiyat = 76m, AktifMi = true });
+            db.Urunler.Add(urun);
+            await db.SaveChangesAsync();
+
+            var result = await pricingService.HesaplaAsync(
+                new List<SepetItem> { new() { Id = 61, UrunId = 21, UrunSecenekId = 210, Adet = 12, Fiyat = 95m } },
+                null, "BankaHavalesi", true, null);
+
+            Assert.Single(result.Satirlar);
+            Assert.Equal(76m, result.Satirlar[0].BirimFiyat);
+        }
+
+        [Fact]
+        public void LoginPost_AcceptsAccountAliasUsedByLoginForm()
+        {
+            var method = typeof(HesapController).GetMethod(
+                nameof(HesapController.GirisYap),
+                new[] { typeof(string), typeof(string), typeof(string) });
+
+            Assert.NotNull(method);
+            var postRoutes = method!
+                .GetCustomAttributes(typeof(HttpPostAttribute), inherit: false)
+                .Cast<HttpPostAttribute>()
+                .Select(attribute => attribute.Template);
+
+            Assert.Contains("/account/GirisYap", postRoutes);
+        }
+
         [Theory]
         [InlineData("+970 599 123 456", "+970599123456")]
         [InlineData("00970 599 123 456", "+970599123456")]

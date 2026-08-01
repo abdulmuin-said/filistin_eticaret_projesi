@@ -35,6 +35,14 @@
         .ThenBy(x => x.LocalizedAd)
         .ToList() ?? new List<FilistinProje.Core.Varliklar.Kategori>();
     var kategoriLookup = kategoriler?.ToDictionary(x => x.Id) ?? new Dictionary<int, FilistinProje.Core.Varliklar.Kategori>();
+    var seciliKategori = aktifKategori.HasValue && kategoriler != null ? kategoriler.FirstOrDefault(x => x.Id == aktifKategori.Value) : null;
+    var seciliAltKategoriler = seciliKategori == null || kategoriler == null
+        ? new List<FilistinProje.Core.Varliklar.Kategori>()
+        : kategoriler.Where(x => x.ParentKategoriId == seciliKategori.Id && x.AktifMi && !x.SilindiMi).OrderBy(x => x.Sira).ToList();
+    var kategoriHeroGorseli = seciliKategori == null ? string.Empty
+        : (!string.IsNullOrWhiteSpace(seciliKategori.BannerUrl) ? seciliKategori.BannerUrl
+            : !string.IsNullOrWhiteSpace(seciliKategori.GorselUrl) ? seciliKategori.GorselUrl
+            : Model.FirstOrDefault()?.AnaGorselUrl ?? string.Empty);
 
     var sortOptions = new Dictionary<string, string>
     {
@@ -176,7 +184,6 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/vendor/nouislider/nouislider.min.css" asp-append-version="true" />
     <style>
         #priceSlider { height: 6px; margin: 8px 4px 4px; }
         #priceSlider .noUi-connect { background: #b58735; }
@@ -268,6 +275,50 @@
 </div>
 
 <div class="container mx-auto px-4 py-10">
+    @if (seciliKategori != null)
+    {
+        <section class="relative mb-10 overflow-hidden rounded-[2rem] bg-brand-olive text-white shadow-[0_28px_80px_rgba(45,50,5,.18)]">
+            <div class="absolute inset-0 opacity-20" style="background-image:radial-gradient(circle at 15% 20%,#d6ab5b 0,transparent 30%),radial-gradient(circle at 85% 80%,#f4ecd9 0,transparent 24%)"></div>
+            <div class="relative grid min-h-[310px] md:grid-cols-[1.05fr_.95fr]">
+                <div class="flex flex-col justify-center px-6 py-10 sm:px-10 lg:px-14">
+                    @if (!string.IsNullOrWhiteSpace(seciliKategori.LocalizedKampanyaEtiketi))
+                    {
+                        <span class="mb-5 w-fit rounded-full border border-brand-gold/60 bg-brand-gold/15 px-4 py-2 text-[10px] font-bold uppercase tracking-[.24em] text-[#f4d99e]">@seciliKategori.LocalizedKampanyaEtiketi</span>
+                    }
+                    <h1 class="max-w-xl font-serif text-4xl leading-tight sm:text-5xl lg:text-6xl">@seciliKategori.LocalizedAd</h1>
+                    @if (!string.IsNullOrWhiteSpace(seciliKategori.LocalizedUstMetin) || !string.IsNullOrWhiteSpace(seciliKategori.LocalizedKisaAciklama))
+                    {
+                        <p class="mt-5 max-w-xl text-sm leading-7 text-white/75 sm:text-base">@(string.IsNullOrWhiteSpace(seciliKategori.LocalizedUstMetin) ? seciliKategori.LocalizedKisaAciklama : seciliKategori.LocalizedUstMetin)</p>
+                    }
+                    <div class="mt-7 flex items-center gap-3 text-xs font-semibold uppercase tracking-widest text-[#f4d99e]"><span class="h-px w-10 bg-brand-gold"></span>@Localizer["ProductCountListing", totalItems]</div>
+                </div>
+                @if (!string.IsNullOrWhiteSpace(kategoriHeroGorseli))
+                {
+                    <div class="relative min-h-[240px] overflow-hidden md:min-h-full">
+                        <img src="@kategoriHeroGorseli" alt="@seciliKategori.LocalizedAd" class="absolute inset-0 h-full w-full object-cover" loading="eager" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-olive/50 via-transparent to-transparent md:bg-gradient-to-r md:from-brand-olive/45"></div>
+                    </div>
+                }
+            </div>
+        </section>
+
+        @if (seciliAltKategoriler.Count > 0)
+        {
+            <section class="mb-10">
+                <div class="mb-5 flex items-end justify-between gap-4"><div><p class="text-[10px] font-bold uppercase tracking-[.24em] text-brand-gold">@Localizer["Explore"]</p><h2 class="mt-1 font-serif text-2xl text-brand-olive">@Localizer["Categories"]</h2></div></div>
+                <div class="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-3 sm:mx-0 sm:grid sm:grid-cols-2 sm:px-0 md:grid-cols-3 lg:grid-cols-4">
+                    @foreach (var child in seciliAltKategoriler)
+                    {
+                        var childImage = !string.IsNullOrWhiteSpace(child.MenuGorselUrl) ? child.MenuGorselUrl : (!string.IsNullOrWhiteSpace(child.GorselUrl) ? child.GorselUrl : kategoriHeroGorseli);
+                        <a href="@BuildFilterUrl("k", child.Id.ToString())" class="group relative min-w-[76vw] snap-start overflow-hidden rounded-2xl bg-brand-warmcream sm:min-w-0">
+                            <div class="aspect-[4/3] overflow-hidden">@if (!string.IsNullOrWhiteSpace(childImage)) { <img src="@childImage" alt="@child.LocalizedAd" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" /> }</div>
+                            <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-5 pb-5 pt-16 text-white"><h3 class="font-serif text-xl">@child.LocalizedAd</h3><span class="mt-1 block text-[10px] uppercase tracking-widest text-white/70">@GetKategoriUrunSayisi(child.Id) @Localizer["Products"]</span></div>
+                        </a>
+                    }
+                </div>
+            </section>
+        }
+    }
     <div class="flex gap-8">
 
         <!-- Sidebar Filtreler -->
@@ -357,15 +408,14 @@
                 }
                 <input type="hidden" name="sort" value="@aktifSort" />
 
-                <div class="flex items-center justify-between text-xs font-medium text-brand-olive">
-                    <span id="minPriceDisplay">@currencySymbol@((aktifMin ?? ViewBag.AvailableMinFiyat ?? 0).ToString("N0"))</span>
-                    <span id="maxPriceDisplay">@currencySymbol@((aktifMax ?? ViewBag.AvailableMaxFiyat ?? 10000).ToString("N0"))</span>
+                <div class="grid grid-cols-2 gap-3">
+                    <label class="text-[11px] font-semibold text-brand-mutedtext">@Localizer["Minimum"]
+                        <span class="mt-1 flex items-center rounded-lg border border-brand-border bg-white px-3"><span class="text-brand-gold">@currencySymbol</span><input class="w-full border-0 bg-transparent px-2 py-2 text-sm focus:ring-0" type="number" min="0" step="1" name="min" value="@aktifMin" placeholder="@ViewBag.AvailableMinFiyat" /></span>
+                    </label>
+                    <label class="text-[11px] font-semibold text-brand-mutedtext">@Localizer["Maximum"]
+                        <span class="mt-1 flex items-center rounded-lg border border-brand-border bg-white px-3"><span class="text-brand-gold">@currencySymbol</span><input class="w-full border-0 bg-transparent px-2 py-2 text-sm focus:ring-0" type="number" min="0" step="1" name="max" value="@aktifMax" placeholder="@ViewBag.AvailableMaxFiyat" /></span>
+                    </label>
                 </div>
-
-                <div id="priceSlider" class="mx-1"></div>
-
-                <input type="hidden" name="min" id="minInput" value="@aktifMin" />
-                <input type="hidden" name="max" id="maxInput" value="@aktifMax" />
 
                 <button type="submit" class="w-full bg-brand-olive text-white text-xs py-2 rounded hover:bg-[#1c2001] transition-colors tracking-widest uppercase">
                     @Localizer["Apply"]
@@ -635,13 +685,10 @@
             <input type="hidden" name="ozellik" value="@($"{secili.Key}:{secili.Value}")"/>
         }
         <input type="hidden" name="sort" value="@aktifSort"/>
-        <div class="flex items-center justify-between text-xs font-medium text-brand-olive">
-            <span id="mobileMinPriceDisplay">@currencySymbol@((aktifMin ?? ViewBag.AvailableMinFiyat ?? 0).ToString("N0"))</span>
-            <span id="mobileMaxPriceDisplay">@currencySymbol@((aktifMax ?? ViewBag.AvailableMaxFiyat ?? 10000).ToString("N0"))</span>
+        <div class="grid grid-cols-2 gap-3">
+            <label class="text-[11px] font-semibold text-brand-mutedtext">@Localizer["Minimum"]<span class="mt-1 flex items-center rounded-lg border border-brand-border bg-white px-2"><span>@currencySymbol</span><input class="w-full border-0 bg-transparent px-2 py-2 text-sm focus:ring-0" type="number" min="0" name="min" value="@aktifMin" placeholder="@ViewBag.AvailableMinFiyat" /></span></label>
+            <label class="text-[11px] font-semibold text-brand-mutedtext">@Localizer["Maximum"]<span class="mt-1 flex items-center rounded-lg border border-brand-border bg-white px-2"><span>@currencySymbol</span><input class="w-full border-0 bg-transparent px-2 py-2 text-sm focus:ring-0" type="number" min="0" name="max" value="@aktifMax" placeholder="@ViewBag.AvailableMaxFiyat" /></span></label>
         </div>
-        <div id="mobilePriceSlider" class="mx-1"></div>
-        <input type="hidden" name="min" id="mobileMinInput" value="@aktifMin"/>
-        <input type="hidden" name="max" id="mobileMaxInput" value="@aktifMax"/>
         <button type="submit" class="w-full bg-brand-olive text-white text-xs py-2 rounded hover:bg-[#1c2001] transition-colors tracking-widest uppercase">@Localizer["Apply"]</button>
     </form>
 
@@ -694,7 +741,6 @@
 </div>
 
 @section Scripts {
-    <script src="~/vendor/nouislider/nouislider.min.js" asp-append-version="true"></script>
     <script>
         window.toggleFilterDrawer = function(open) {
             const drawer = document.getElementById('filterDrawer');
@@ -755,6 +801,7 @@
         });
 
         // ��� Desktop Price Slider ���
+        /* Legacy noUiSlider initialization intentionally disabled; numeric inputs are now authoritative.
         (function () {
             var slider = document.getElementById('priceSlider');
             var minInput = document.getElementById('minInput');
@@ -825,6 +872,7 @@
         })();
 
         // ��� Grid / List Layout Toggle ���
+        */
         window.setProductLayout = function(layout) {
             const grid = document.getElementById('productGrid');
             const btnGrid = document.getElementById('btnGridView');

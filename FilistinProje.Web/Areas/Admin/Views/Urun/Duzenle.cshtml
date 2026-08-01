@@ -786,6 +786,7 @@
 
                 <section class="ca-editor-panel" data-product-panel="varyasyon">
                     @await Html.PartialAsync("_VariantEditor", Model.UrunSecenek?.ToList() ?? new System.Collections.Generic.List<FilistinProje.Core.Varliklar.UrunSecenek>())
+                    @await Html.PartialAsync("_WholesaleTierEditor", Model)
                 </section>
 
                 <section class="ca-editor-panel" data-product-panel="medya">

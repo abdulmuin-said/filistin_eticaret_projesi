@@ -208,6 +208,7 @@ namespace FilistinProje.Web.Controllers
 
         [HttpPost("login")]
         [HttpPost("/Hesap/GirisYap")]
+        [HttpPost("/account/GirisYap")]
         [ValidateAntiForgeryToken]
         [EnableRateLimiting("auth")]
         public async Task<IActionResult> GirisYap(string eposta, string sifre, string? returnUrl = null)

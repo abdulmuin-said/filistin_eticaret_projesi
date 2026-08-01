@@ -16,6 +16,7 @@ namespace FilistinProje.Service.Helpers
         private const int OncelikYeni = 4;
         private const int OncelikOneCikan = 5;
         private const int OncelikWhatsapp = 6;
+        private const int OncelikToptan = 4;
 
         /// <summary>
         /// Bir Urun entity'sinden frontend'de gösterilecek badge listesini oluşturur.
@@ -33,7 +34,7 @@ namespace FilistinProje.Service.Helpers
                 // Stok yoksa sadece stok etiketi göster, kampanya/indirim/yeni gösterme
                 badges.Add(new ProductBadge(
                     metin: "",
-                    cssClass: "bg-[#77786f] text-white",
+                    cssClass: "product-badge--out",
                     oncelik: OncelikStok,
                     locKey: "Badge_OutOfStock"
                 ));
@@ -45,7 +46,7 @@ namespace FilistinProje.Service.Helpers
             {
                 badges.Add(new ProductBadge(
                     metin: "",
-                    cssClass: "bg-red-500 text-white",
+                    cssClass: "product-badge--low",
                     oncelik: OncelikStok,
                     locKey: "Badge_LowStock"
                 ));
@@ -57,7 +58,7 @@ namespace FilistinProje.Service.Helpers
             {
                 badges.Add(new ProductBadge(
                     metin: "",
-                    cssClass: "bg-purple-600 text-white",
+                    cssClass: "product-badge--campaign",
                     oncelik: OncelikKampanya,
                     locKey: "Badge_Campaign"
                 ));
@@ -69,10 +70,15 @@ namespace FilistinProje.Service.Helpers
                 int indirimYuzde = urun.IndirimYuzdesi;
                 badges.Add(new ProductBadge(
                     metin: $"-{indirimYuzde}%",
-                    cssClass: "bg-brand-gold text-white",
+                    cssClass: "product-badge--discount",
                     oncelik: OncelikIndirim,
                     locKey: "Badge_Discount"
                 ));
+            }
+
+            if (urun.TopFiyat.HasValue && urun.TopFiyat.Value > 0)
+            {
+                badges.Add(new ProductBadge("", "product-badge--wholesale", OncelikToptan, "Badge_Wholesale"));
             }
 
             // 5. YENİ ÜRÜN KONTROLÜ
@@ -80,7 +86,7 @@ namespace FilistinProje.Service.Helpers
             {
                 badges.Add(new ProductBadge(
                     metin: "",
-                    cssClass: "bg-brand-olive text-white",
+                    cssClass: "product-badge--new",
                     oncelik: OncelikYeni,
                     locKey: "Badge_NewProduct"
                 ));
@@ -91,7 +97,7 @@ namespace FilistinProje.Service.Helpers
             {
                 badges.Add(new ProductBadge(
                     metin: "",
-                    cssClass: "bg-blue-600 text-white",
+                    cssClass: "product-badge--featured",
                     oncelik: OncelikOneCikan,
                     locKey: "Badge_Featured"
                 ));
@@ -102,7 +108,7 @@ namespace FilistinProje.Service.Helpers
             {
                 badges.Add(new ProductBadge(
                     metin: "",
-                    cssClass: "bg-green-500 text-white",
+                    cssClass: "product-badge--whatsapp",
                     oncelik: OncelikWhatsapp,
                     locKey: "Badge_WhatsappOrder"
                 ));

@@ -210,6 +210,7 @@
         </div>
 
         <form method="post" asp-antiforgery="true">
+            <input type="hidden" id="activeSettingsTab" name="aktifSekme" value="@(ViewBag.ActiveTab ?? "genel")" />
             <div class="ca-settings-tabs" role="tablist" aria-label="@Localizer["Admin_SettingsTabs"]">
                 <button type="button" class="ca-settings-tab active" data-target="genel"><i class="fas fa-store"></i> @Localizer["Admin_Brand"]</button>
                 <button type="button" class="ca-settings-tab" data-target="iletisim"><i class="fas fa-address-card"></i> @Localizer["Admin_Contact"]</button>
@@ -690,15 +691,26 @@
         document.addEventListener('DOMContentLoaded', function () {
             const tabs = document.querySelectorAll('.ca-settings-tab');
             const panels = document.querySelectorAll('.ca-settings-panel');
+            const activeTabInput = document.getElementById('activeSettingsTab');
+
+            const activateTab = function(target) {
+                const tab = Array.from(tabs).find(item => item.dataset.target === target) || tabs[0];
+                if (!tab) return;
+                tabs.forEach(item => item.classList.remove('active'));
+                panels.forEach(panel => panel.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('panel-' + tab.dataset.target)?.classList.add('active');
+                if (activeTabInput) activeTabInput.value = tab.dataset.target;
+                history.replaceState(null, '', '?tab=' + encodeURIComponent(tab.dataset.target));
+            };
 
             tabs.forEach(tab => {
                 tab.addEventListener('click', function () {
-                    tabs.forEach(item => item.classList.remove('active'));
-                    panels.forEach(panel => panel.classList.remove('active'));
-                    this.classList.add('active');
-                    document.getElementById('panel-' + this.dataset.target)?.classList.add('active');
+                    activateTab(this.dataset.target);
                 });
             });
+
+            activateTab(activeTabInput?.value || new URLSearchParams(window.location.search).get('tab') || 'genel');
 
             const kargoSelect = document.getElementById('kargoFirmasiSelect');
             const takipInput = document.querySelector('[name="KargoTakipUrl"]');

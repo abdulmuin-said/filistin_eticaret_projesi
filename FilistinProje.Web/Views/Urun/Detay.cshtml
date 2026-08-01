@@ -327,7 +327,7 @@
                          alt="@varsayilanGaleriAltMetni"
                          data-product-name="@Model.LocalizedBaslik"
                          width="800" height="800"
-                          class="main-product-image h-full w-full cursor-zoom-in object-contain p-4 transition-transform duration-700 ease-out group-hover:scale-[1.65]"
+                          class="main-product-image h-full w-full cursor-zoom-in object-contain p-4 transition-opacity duration-300 ease-out group-hover:opacity-95"
                          onclick="openProductLightbox()"
                          loading="eager"
                          decoding="async"
@@ -354,7 +354,7 @@
                             var badgeText = !string.IsNullOrEmpty(badge.Metin)
                                 ? badge.Metin
                                 : Localizer[badge.LocalizasyonKey].Value;
-                            <span class="rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider shadow-sm @badge.CssClass">
+                            <span class="product-badge @badge.CssClass">
                                 @badgeText
                             </span>
                         }
@@ -494,7 +494,7 @@
                 <span id="lowStockText">@string.Format(Localizer["LowStockText"].Value, varsayilanStok)</span>
             </div>
 
-            @if (Model.WhatsappSiparisVarMi || Model.FiyatGizliMi)
+            @if (Model.WhatsappSiparisVarMi)
             {
                 var whatsappNumber = new string((siteSettings.WhatsappNumarasi ?? string.Empty).Where(char.IsDigit).ToArray());
                 var whatsappText = Uri.EscapeDataString($"{Model.LocalizedBaslik} - {productUrl}");
@@ -506,7 +506,7 @@
                     <span>@Localizer["WhatsApp"]</span>
                 </a>
             }
-            else
+            else if (!Model.FiyatGizliMi)
             {
             <form id="addToCartForm" class="space-y-6 pt-6">
                 @Html.AntiForgeryToken()
@@ -529,6 +529,7 @@
                                 var varyantEskiFiyat = Model.Fiyat > varyant.SatisFiyati ? Model.Fiyat : 0;
                                 <label class="relative cursor-pointer rounded border border-brand-border px-4 py-2 text-sm transition-colors hover:border-brand-gold has-[:checked]:border-brand-olive has-[:checked]:bg-brand-olive has-[:checked]:text-white @(!varyantSatinAlinabilir ? "cursor-not-allowed opacity-45" : "")">
                                     <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" disabled="@(!varyantSatinAlinabilir ? "disabled" : null)" data-price="@varyant.SatisFiyati.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
+                                    @if (!string.IsNullOrWhiteSpace(varyant.RenkKodu)) { <span class="me-1 inline-block h-3 w-3 rounded-full border border-black/15 align-middle" style="background-color:@varyant.RenkKodu"></span> }
                                     @varyantEtiket
                                 </label>
                             }
@@ -573,6 +574,22 @@
                     <a href="/cart" class="flex h-12 w-12 items-center justify-center bg-brand-gold text-white transition-colors hover:bg-[#8e6a28]" aria-label="@Localizer["Cart"]"><i class="fas fa-shopping-cart"></i></a>
                 </div>
             </form>
+            }
+            @if (Model.ToptanFiyatKademeleri.Any(x => x.AktifMi && !x.SilindiMi))
+            {
+                <div class="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-4">
+                    <div class="mb-3 flex items-center gap-2 text-sm font-bold text-emerald-900"><i class="fas fa-boxes-stacked"></i>@Localizer["WholesalePrices"]</div>
+                    <div class="grid gap-2 sm:grid-cols-2">
+                        @foreach (var tier in Model.ToptanFiyatKademeleri.Where(x => x.AktifMi && !x.SilindiMi).OrderBy(x => x.MinAdet))
+                        {
+                            var tierVariant = Model.UrunSecenek.FirstOrDefault(x => x.Id == tier.UrunSecenekId);
+                            <div class="flex items-center justify-between rounded-xl bg-white px-3 py-2 text-xs shadow-sm">
+                                <span class="text-brand-mutedtext">@tier.MinAdet+ @Localizer["Piece"] @(tierVariant == null ? "" : $"· {tierVariant.VaryantBasligi}")</span>
+                                <strong class="text-emerald-800">@tier.BirimFiyat.ToString("N2") @currencySymbol</strong>
+                            </div>
+                        }
+                    </div>
+                </div>
             }
             <div class="mt-7 grid grid-cols-3 border-y border-brand-border py-5 text-center">
                 <div><i class="fas fa-shield-alt mb-2 text-brand-gold"></i><p class="text-xs font-semibold text-brand-darktext">@Localizer["SecurePayment"]</p></div>
