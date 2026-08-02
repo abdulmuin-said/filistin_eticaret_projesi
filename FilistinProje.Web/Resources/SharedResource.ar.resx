@@ -5727,4 +5727,26 @@
   <data name="Explore" xml:space="preserve"><value>اكتشف</value></data>
   <data name="Minimum" xml:space="preserve"><value>الحد الأدنى</value></data>
   <data name="Maximum" xml:space="preserve"><value>الحد الأعلى</value></data>
+  <data name="Admin_UploadCategoryBanner" xml:space="preserve"><value>رفع صورة واجهة القسم</value></data>
+  <data name="Admin_CategoryBannerSizeHelp" xml:space="preserve"><value>المقاس الموصى به: 1600×640 بكسل، بصيغة WebP أو JPG. تُعرض الصورة بشكل متجاوب على الهاتف والكمبيوتر.</value></data>
+  <data name="Admin_CategoryCardImageSizeHelp" xml:space="preserve"><value>المقاس الموصى به لصورة بطاقة القسم: 800×800 بكسل، بصيغة WebP أو JPG.</value></data>
+  <data name="Admin_BadgeColors" xml:space="preserve"><value>ألوان شارات المنتج</value></data>
+  <data name="Admin_BadgeColorsHelp" xml:space="preserve"><value>اختر لون خلفية كل شارة تظهر فوق صورة المنتج. يتم ضبط لون النص تلقائياً لسهولة القراءة.</value></data>
+  <data name="Admin_FeaturedBadgeColor" xml:space="preserve"><value>لون شارة مميز</value></data>
+  <data name="Admin_NewBadgeColor" xml:space="preserve"><value>لون شارة جديد</value></data>
+  <data name="Admin_CampaignBadgeColor" xml:space="preserve"><value>لون شارة الحملة</value></data>
+  <data name="Admin_DiscountBadgeColor" xml:space="preserve"><value>لون شارة الخصم</value></data>
+  <data name="Admin_Feature_Color" xml:space="preserve"><value>اللون</value></data>
+  <data name="Admin_Feature_Style" xml:space="preserve"><value>النمط</value></data>
+  <data name="Admin_Feature_UsageArea" xml:space="preserve"><value>مجال الاستخدام</value></data>
+  <data name="Admin_FeatureOption_Modern" xml:space="preserve"><value>عصري</value></data>
+  <data name="Admin_FeatureOption_Minimal" xml:space="preserve"><value>بسيط</value></data>
+  <data name="Admin_FeatureOption_Classic" xml:space="preserve"><value>كلاسيكي</value></data>
+  <data name="Admin_FeatureOption_Rustic" xml:space="preserve"><value>ريفي</value></data>
+  <data name="Admin_FeatureOption_Industrial" xml:space="preserve"><value>صناعي</value></data>
+  <data name="Admin_FeatureOption_LivingRoom" xml:space="preserve"><value>غرفة المعيشة</value></data>
+  <data name="Admin_FeatureOption_Bedroom" xml:space="preserve"><value>غرفة النوم</value></data>
+  <data name="Admin_FeatureOption_Office" xml:space="preserve"><value>المكتب</value></data>
+  <data name="Admin_FeatureOption_Kitchen" xml:space="preserve"><value>المطبخ</value></data>
+  <data name="Admin_FeatureOption_Corridor" xml:space="preserve"><value>الممر</value></data>
 </root>

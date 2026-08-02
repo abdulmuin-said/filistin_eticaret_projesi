@@ -688,6 +688,7 @@
                                     <input asp-for="FiyatGizliMi" class="form-check-input" type="checkbox">
                                 </label>
                             </div>
+                            @await Html.PartialAsync("_BadgeColorEditor", Model)
                         </div>
                     </div>
 

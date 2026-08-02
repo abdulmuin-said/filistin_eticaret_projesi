@@ -37,6 +37,10 @@ namespace FilistinProje.Web.Models
         // Admin bayrakları (etiket oluşturmak için kullanılır)
         public bool OneCikanMi { get; set; }
         public bool KampanyaliMi { get; set; }
+        public string OneCikanEtiketRengi { get; set; } = "#D6AB5B";
+        public string YeniUrunEtiketRengi { get; set; } = "#B33A3A";
+        public string KampanyaEtiketRengi { get; set; } = "#31543B";
+        public string IndirimEtiketRengi { get; set; } = "#B86A2F";
 
         public List<ProductBadge> ToBadges(bool stoktaYokSatisIzni = false)
         {
@@ -72,7 +76,8 @@ namespace FilistinProje.Web.Models
                     metin: "",
                     cssClass: "product-badge--campaign",
                     oncelik: 2,
-                    locKey: "Badge_Campaign"
+                    locKey: "Badge_Campaign",
+                    arkaPlanRengi: KampanyaEtiketRengi
                 ));
             }
 
@@ -82,7 +87,8 @@ namespace FilistinProje.Web.Models
                     metin: $"-{IndirimYuzdesi}%",
                     cssClass: "product-badge--discount",
                     oncelik: 3,
-                    locKey: "Badge_Discount"
+                    locKey: "Badge_Discount",
+                    arkaPlanRengi: IndirimEtiketRengi
                 ));
             }
 
@@ -97,7 +103,8 @@ namespace FilistinProje.Web.Models
                     metin: "",
                     cssClass: "product-badge--new",
                     oncelik: 4,
-                    locKey: "Badge_NewProduct"
+                    locKey: "Badge_NewProduct",
+                    arkaPlanRengi: YeniUrunEtiketRengi
                 ));
             }
 
@@ -107,7 +114,8 @@ namespace FilistinProje.Web.Models
                     metin: "",
                     cssClass: "product-badge--featured",
                     oncelik: 5,
-                    locKey: "Badge_Featured"
+                    locKey: "Badge_Featured",
+                    arkaPlanRengi: OneCikanEtiketRengi
                 ));
             }
 

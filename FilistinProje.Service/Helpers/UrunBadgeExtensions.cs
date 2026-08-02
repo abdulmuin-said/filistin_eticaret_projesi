@@ -60,7 +60,8 @@ namespace FilistinProje.Service.Helpers
                     metin: "",
                     cssClass: "product-badge--campaign",
                     oncelik: OncelikKampanya,
-                    locKey: "Badge_Campaign"
+                    locKey: "Badge_Campaign",
+                    arkaPlanRengi: urun.KampanyaEtiketRengi
                 ));
             }
 
@@ -72,7 +73,8 @@ namespace FilistinProje.Service.Helpers
                     metin: $"-{indirimYuzde}%",
                     cssClass: "product-badge--discount",
                     oncelik: OncelikIndirim,
-                    locKey: "Badge_Discount"
+                    locKey: "Badge_Discount",
+                    arkaPlanRengi: urun.IndirimEtiketRengi
                 ));
             }
 
@@ -88,7 +90,8 @@ namespace FilistinProje.Service.Helpers
                     metin: "",
                     cssClass: "product-badge--new",
                     oncelik: OncelikYeni,
-                    locKey: "Badge_NewProduct"
+                    locKey: "Badge_NewProduct",
+                    arkaPlanRengi: urun.YeniUrunEtiketRengi
                 ));
             }
 
@@ -99,7 +102,8 @@ namespace FilistinProje.Service.Helpers
                     metin: "",
                     cssClass: "product-badge--featured",
                     oncelik: OncelikOneCikan,
-                    locKey: "Badge_Featured"
+                    locKey: "Badge_Featured",
+                    arkaPlanRengi: urun.OneCikanEtiketRengi
                 ));
             }
 

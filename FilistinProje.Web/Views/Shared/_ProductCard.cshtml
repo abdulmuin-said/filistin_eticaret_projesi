@@ -76,7 +76,10 @@
                     var badgeText = !string.IsNullOrEmpty(badge.Metin)
                         ? badge.Metin
                         : Localizer[badge.LocalizasyonKey].Value;
-                    <span class="product-badge @badge.CssClass">
+                    var badgeStyle = string.IsNullOrWhiteSpace(badge.ArkaPlanRengi)
+                        ? null
+                        : $"background-color:{badge.ArkaPlanRengi};border-color:{badge.ArkaPlanRengi};color:{badge.YaziRengi}";
+                    <span class="product-badge @badge.CssClass" style="@badgeStyle">
                         @badgeText
                     </span>
                 }

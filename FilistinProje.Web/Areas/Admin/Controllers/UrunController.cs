@@ -2312,6 +2312,10 @@ await _context.SaveChangesAsync();
                 nameof(Urun.SeoDescriptionEn),
                 nameof(Urun.SeoDescriptionAr),
                 nameof(Urun.SeoKeywords),
+                nameof(Urun.OneCikanEtiketRengi),
+                nameof(Urun.YeniUrunEtiketRengi),
+                nameof(Urun.KampanyaEtiketRengi),
+                nameof(Urun.IndirimEtiketRengi),
                 nameof(Urun.AktifMi),
                 nameof(Urun.Kategori),
                 nameof(Urun.ToptanciUrunGrubu),
@@ -2328,6 +2332,10 @@ await _context.SaveChangesAsync();
             var optionalVariantFields = new[]
             {
                 nameof(UrunSecenek.Olcu),
+                nameof(UrunSecenek.Beden),
+                nameof(UrunSecenek.Renk),
+                nameof(UrunSecenek.RenkKodu),
+                nameof(UrunSecenek.OlcuBirimi),
                 nameof(UrunSecenek.CerceveTipi),
                 nameof(UrunSecenek.CerceveRengi),
                 nameof(UrunSecenek.CerceveKalinligi),
@@ -2407,10 +2415,18 @@ await _context.SaveChangesAsync();
             urun.SeoDescriptionEn ??= string.Empty;
             urun.SeoDescriptionAr ??= string.Empty;
             urun.SeoKeywords ??= string.Empty;
+            urun.OneCikanEtiketRengi ??= "#D6AB5B";
+            urun.YeniUrunEtiketRengi ??= "#B33A3A";
+            urun.KampanyaEtiketRengi ??= "#31543B";
+            urun.IndirimEtiketRengi ??= "#B86A2F";
 
             foreach (var variant in urun.UrunSecenek ?? Enumerable.Empty<UrunSecenek>())
             {
                 variant.Olcu ??= string.Empty;
+                variant.Beden ??= string.Empty;
+                variant.Renk ??= string.Empty;
+                variant.RenkKodu ??= string.Empty;
+                variant.OlcuBirimi ??= string.Empty;
                 variant.CerceveTipi ??= string.Empty;
                 variant.CerceveRengi ??= string.Empty;
                 variant.CerceveKalinligi ??= string.Empty;
@@ -2541,6 +2557,10 @@ await _context.SaveChangesAsync();
             urun.SeoTitle = urun.SeoTitle?.Trim() ?? string.Empty;
             urun.SeoDescription = urun.SeoDescription?.Trim() ?? string.Empty;
             urun.SeoKeywords = urun.SeoKeywords?.Trim() ?? string.Empty;
+            urun.OneCikanEtiketRengi = NormalizeBadgeColor(urun.OneCikanEtiketRengi, "#D6AB5B");
+            urun.YeniUrunEtiketRengi = NormalizeBadgeColor(urun.YeniUrunEtiketRengi, "#B33A3A");
+            urun.KampanyaEtiketRengi = NormalizeBadgeColor(urun.KampanyaEtiketRengi, "#31543B");
+            urun.IndirimEtiketRengi = NormalizeBadgeColor(urun.IndirimEtiketRengi, "#B86A2F");
         }
 
         private static void RepairProductTextForDisplay(Urun urun)
@@ -3227,6 +3247,10 @@ await _context.SaveChangesAsync();
             target.OneCikanMi = source.OneCikanMi;
             target.YeniUrunMu = source.YeniUrunMu;
             target.KampanyaliMi = source.KampanyaliMi;
+            target.OneCikanEtiketRengi = source.OneCikanEtiketRengi;
+            target.YeniUrunEtiketRengi = source.YeniUrunEtiketRengi;
+            target.KampanyaEtiketRengi = source.KampanyaEtiketRengi;
+            target.IndirimEtiketRengi = source.IndirimEtiketRengi;
             target.KampanyaBitisTarihi = source.KampanyaBitisTarihi;
             target.AnaSayfadaGoster = source.AnaSayfadaGoster;
             target.WhatsappSiparisVarMi = source.WhatsappSiparisVarMi;
@@ -3256,6 +3280,14 @@ await _context.SaveChangesAsync();
                 "no" => "false",
                 _ => value
             };
+        }
+
+        private static string NormalizeBadgeColor(string? value, string fallback)
+        {
+            var normalized = (value ?? string.Empty).Trim().ToUpperInvariant();
+            return System.Text.RegularExpressions.Regex.IsMatch(normalized, "^#[0-9A-F]{6}$")
+                ? normalized
+                : fallback;
         }
 
         private static decimal TryParsePrice(string? rawValue)

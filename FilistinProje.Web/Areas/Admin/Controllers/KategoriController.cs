@@ -210,10 +210,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Ekle(Kategori kategori, IFormFile? gorselDosyasi)
+        public async Task<IActionResult> Ekle(Kategori kategori, IFormFile? gorselDosyasi, IFormFile? bannerDosyasi)
         {
             NormalizeLocalizedCategoryFields(kategori);
-            await ValidateImageUploadAsync(gorselDosyasi);
+            await ValidateImageUploadAsync(gorselDosyasi, "gorselDosyasi");
+            await ValidateImageUploadAsync(bannerDosyasi, "bannerDosyasi");
             if (!await ValidateCategoryAsync(kategori))
             {
                 await PopulateParentCategoriesAsync(kategori.ParentKategoriId);
@@ -230,6 +231,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             if (gorselDosyasi is { Length: > 0 })
             {
                 kategori.GorselUrl = await SaveCategoryImageAsync(gorselDosyasi);
+            }
+            if (bannerDosyasi is { Length: > 0 })
+            {
+                kategori.BannerUrl = await SaveCategoryImageAsync(bannerDosyasi);
             }
 
             _context.Kategoriler.Add(kategori);
@@ -261,7 +266,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Duzenle(Kategori model, IFormFile? gorselDosyasi)
+        public async Task<IActionResult> Duzenle(Kategori model, IFormFile? gorselDosyasi, IFormFile? bannerDosyasi)
         {
             var kategori = await _context.Kategoriler.FirstOrDefaultAsync(x => x.Id == model.Id);
             if (kategori == null)
@@ -269,7 +274,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            await ValidateImageUploadAsync(gorselDosyasi);
+            await ValidateImageUploadAsync(gorselDosyasi, "gorselDosyasi");
+            await ValidateImageUploadAsync(bannerDosyasi, "bannerDosyasi");
             if (!await ValidateCategoryAsync(model))
             {
                 PopulateCategoryEditStats(kategori);
@@ -313,6 +319,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             if (gorselDosyasi is { Length: > 0 })
             {
                 kategori.GorselUrl = await SaveCategoryImageAsync(gorselDosyasi);
+            }
+            if (bannerDosyasi is { Length: > 0 })
+            {
+                kategori.BannerUrl = await SaveCategoryImageAsync(bannerDosyasi);
             }
 
             await _context.SaveChangesAsync();
@@ -515,7 +525,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             return ModelState.IsValid;
         }
 
-        private async Task ValidateImageUploadAsync(IFormFile? file)
+        private async Task ValidateImageUploadAsync(IFormFile? file, string modelStateKey)
         {
             if (file == null || file.Length == 0)
             {
@@ -525,7 +535,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var extension = Path.GetExtension(file.FileName);
             if (!AllowedImageExtensions.Contains(extension) || file.Length > MaxImageFileBytes)
             {
-                ModelState.AddModelError("gorselDosyasi", _localizer["Admin_InvalidCategoryImageUpload"]);
+                ModelState.AddModelError(modelStateKey, _localizer["Admin_InvalidCategoryImageUpload"]);
                 return;
             }
 
@@ -534,16 +544,16 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await using var stream = file.OpenReadStream();
                 if (await SixLabors.ImageSharp.Image.IdentifyAsync(stream) == null)
                 {
-                    ModelState.AddModelError("gorselDosyasi", _localizer["Admin_InvalidCategoryImageUpload"]);
+                    ModelState.AddModelError(modelStateKey, _localizer["Admin_InvalidCategoryImageUpload"]);
                 }
             }
             catch (UnknownImageFormatException)
             {
-                ModelState.AddModelError("gorselDosyasi", _localizer["Admin_InvalidCategoryImageUpload"]);
+                ModelState.AddModelError(modelStateKey, _localizer["Admin_InvalidCategoryImageUpload"]);
             }
             catch (InvalidImageContentException)
             {
-                ModelState.AddModelError("gorselDosyasi", _localizer["Admin_InvalidCategoryImageUpload"]);
+                ModelState.AddModelError(modelStateKey, _localizer["Admin_InvalidCategoryImageUpload"]);
             }
         }
 

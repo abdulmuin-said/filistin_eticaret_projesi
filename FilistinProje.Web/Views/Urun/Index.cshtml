@@ -277,29 +277,38 @@
 <div class="container mx-auto px-4 py-10">
     @if (seciliKategori != null)
     {
-        <section class="relative mb-10 overflow-hidden rounded-[2rem] bg-brand-olive text-white shadow-[0_28px_80px_rgba(45,50,5,.18)]">
-            <div class="absolute inset-0 opacity-20" style="background-image:radial-gradient(circle at 15% 20%,#d6ab5b 0,transparent 30%),radial-gradient(circle at 85% 80%,#f4ecd9 0,transparent 24%)"></div>
-            <div class="relative grid min-h-[310px] md:grid-cols-[1.05fr_.95fr]">
-                <div class="flex flex-col justify-center px-6 py-10 sm:px-10 lg:px-14">
+        <section class="group relative mb-10 isolate min-h-[390px] overflow-hidden rounded-[1.75rem] bg-[#182f22] text-white shadow-[0_26px_70px_rgba(28,50,35,.22)] sm:min-h-[420px] lg:min-h-[360px]">
+            @if (!string.IsNullOrWhiteSpace(kategoriHeroGorseli))
+            {
+                <img src="@kategoriHeroGorseli"
+                     alt="@(string.IsNullOrWhiteSpace(seciliKategori.LocalizedAltMetin) ? seciliKategori.LocalizedAd : seciliKategori.LocalizedAltMetin)"
+                     class="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.025]"
+                     loading="eager"
+                     fetchpriority="high" />
+            }
+            <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,28,19,.16)_0%,rgba(12,28,19,.42)_45%,rgba(12,28,19,.94)_100%)] lg:bg-[linear-gradient(90deg,rgba(12,28,19,.94)_0%,rgba(12,28,19,.77)_43%,rgba(12,28,19,.18)_78%)]"></div>
+            <div class="absolute inset-0 opacity-[.13]" style="background-image:linear-gradient(rgba(255,255,255,.22) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.22) 1px,transparent 1px);background-size:34px 34px"></div>
+
+            <div class="relative flex min-h-[390px] items-end px-5 pb-7 pt-24 sm:min-h-[420px] sm:px-8 sm:pb-9 lg:min-h-[360px] lg:items-center lg:px-12 lg:py-12 xl:px-16">
+                <div class="max-w-2xl">
                     @if (!string.IsNullOrWhiteSpace(seciliKategori.LocalizedKampanyaEtiketi))
                     {
-                        <span class="mb-5 w-fit rounded-full border border-brand-gold/60 bg-brand-gold/15 px-4 py-2 text-[10px] font-bold uppercase tracking-[.24em] text-[#f4d99e]">@seciliKategori.LocalizedKampanyaEtiketi</span>
+                        <span class="mb-4 inline-flex items-center gap-2 rounded-full border border-[#e3c47f]/55 bg-[#13291d]/65 px-3.5 py-2 text-[10px] font-bold uppercase tracking-[.2em] text-[#f2d99f] backdrop-blur-md">
+                            <span class="h-1.5 w-1.5 rounded-full bg-brand-gold"></span>@seciliKategori.LocalizedKampanyaEtiketi
+                        </span>
                     }
-                    <h1 class="max-w-xl font-serif text-4xl leading-tight sm:text-5xl lg:text-6xl">@seciliKategori.LocalizedAd</h1>
+                    <h1 class="max-w-xl font-serif text-[2.65rem] leading-[.98] tracking-[-.025em] text-white sm:text-5xl lg:text-6xl">@seciliKategori.LocalizedAd</h1>
                     @if (!string.IsNullOrWhiteSpace(seciliKategori.LocalizedUstMetin) || !string.IsNullOrWhiteSpace(seciliKategori.LocalizedKisaAciklama))
                     {
-                        <p class="mt-5 max-w-xl text-sm leading-7 text-white/75 sm:text-base">@(string.IsNullOrWhiteSpace(seciliKategori.LocalizedUstMetin) ? seciliKategori.LocalizedKisaAciklama : seciliKategori.LocalizedUstMetin)</p>
+                        <p class="mt-4 max-w-xl text-sm leading-7 text-white/80 sm:text-[15px]">@(string.IsNullOrWhiteSpace(seciliKategori.LocalizedUstMetin) ? seciliKategori.LocalizedKisaAciklama : seciliKategori.LocalizedUstMetin)</p>
                     }
-                    <div class="mt-7 flex items-center gap-3 text-xs font-semibold uppercase tracking-widest text-[#f4d99e]"><span class="h-px w-10 bg-brand-gold"></span>@Localizer["ProductCountListing", totalItems]</div>
-                </div>
-                @if (!string.IsNullOrWhiteSpace(kategoriHeroGorseli))
-                {
-                    <div class="relative min-h-[240px] overflow-hidden md:min-h-full">
-                        <img src="@kategoriHeroGorseli" alt="@seciliKategori.LocalizedAd" class="absolute inset-0 h-full w-full object-cover" loading="eager" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-brand-olive/50 via-transparent to-transparent md:bg-gradient-to-r md:from-brand-olive/45"></div>
+                    <div class="mt-6 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[.17em] text-[#f2d99f]">
+                        <span class="h-px w-9 bg-brand-gold"></span>
+                        @Localizer["ProductCountListing", totalItems]
                     </div>
-                }
+                </div>
             </div>
+            <div class="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-brand-gold to-transparent"></div>
         </section>
 
         @if (seciliAltKategoriler.Count > 0)
@@ -532,7 +541,7 @@
             <!-- Ürün Grid -->
             @if (Model != null && Model.Any())
             {
-            <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6" id="productGrid" data-motion-stagger>
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 xl:gap-4" id="productGrid" data-motion-stagger>
                     @foreach (var urun in Model)
                     {
                         var cardVm = new FilistinProje.Web.Models.ProductCardViewModel
@@ -549,6 +558,12 @@
                             IndirimVarMi = urun.IndirimVarMi,
                             IndirimYuzdesi = urun.IndirimYuzdesi,
                             YeniUrunMu = urun.YeniUrunMu,
+                            OneCikanMi = urun.OneCikanMi,
+                            KampanyaliMi = urun.KampanyaliMi,
+                            OneCikanEtiketRengi = urun.OneCikanEtiketRengi,
+                            YeniUrunEtiketRengi = urun.YeniUrunEtiketRengi,
+                            KampanyaEtiketRengi = urun.KampanyaEtiketRengi,
+                            IndirimEtiketRengi = urun.IndirimEtiketRengi,
                             StoktaVarMi = urun.StoktaVarMi,
                             ToplamStok = urun.ToplamStok,
                                     FiyatGizliMi = urun.FiyatGizliMi,

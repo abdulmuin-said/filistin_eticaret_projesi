@@ -47,6 +47,10 @@ namespace FilistinProje.Core.Varliklar
         public bool OneCikanMi { get; set; }
         public bool YeniUrunMu { get; set; }
         public bool KampanyaliMi { get; set; }
+        public string OneCikanEtiketRengi { get; set; } = "#D6AB5B";
+        public string YeniUrunEtiketRengi { get; set; } = "#B33A3A";
+        public string KampanyaEtiketRengi { get; set; } = "#31543B";
+        public string IndirimEtiketRengi { get; set; } = "#B86A2F";
         public bool AnaSayfadaGoster { get; set; }
         public int Sira { get; set; }
         public int GoruntulenmeSayisi { get; set; }

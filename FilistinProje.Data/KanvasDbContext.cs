@@ -80,6 +80,10 @@ namespace FilistinProje.Data
                 entity.HasIndex(e => e.KategoriId);
                 entity.HasIndex(e => e.Slug).HasFilter("\"Slug\" IS NOT NULL AND \"Slug\" <> ''");
                 entity.HasIndex(e => e.ToptanciUrunGrubuId);
+                entity.Property(e => e.OneCikanEtiketRengi).HasDefaultValue("#D6AB5B");
+                entity.Property(e => e.YeniUrunEtiketRengi).HasDefaultValue("#B33A3A");
+                entity.Property(e => e.KampanyaEtiketRengi).HasDefaultValue("#31543B");
+                entity.Property(e => e.IndirimEtiketRengi).HasDefaultValue("#B86A2F");
                 entity.HasOne(e => e.Kategori)
                     .WithMany(e => e.Urunler)
                     .HasForeignKey(e => e.KategoriId)

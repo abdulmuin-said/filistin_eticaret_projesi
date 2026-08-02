@@ -1,0 +1,48 @@
+@model FilistinProje.Core.Varliklar.Urun
+
+<div class="ca-badge-color-section">
+    <div class="mb-3">
+        <div class="fw-semibold">@Localizer["Admin_BadgeColors"]</div>
+        <div class="small text-muted mt-1">@Localizer["Admin_BadgeColorsHelp"]</div>
+    </div>
+    <div class="ca-badge-color-grid">
+        <label class="ca-badge-color-item">
+            <input asp-for="OneCikanEtiketRengi" type="color" data-badge-color />
+            <span><strong>@Localizer["Admin_FeaturedBadgeColor"]</strong><small>@Localizer["Admin_Featured"]</small><code data-color-value>@Model.OneCikanEtiketRengi</code></span>
+        </label>
+        <label class="ca-badge-color-item">
+            <input asp-for="YeniUrunEtiketRengi" type="color" data-badge-color />
+            <span><strong>@Localizer["Admin_NewBadgeColor"]</strong><small>@Localizer["Admin_NewProduct"]</small><code data-color-value>@Model.YeniUrunEtiketRengi</code></span>
+        </label>
+        <label class="ca-badge-color-item">
+            <input asp-for="KampanyaEtiketRengi" type="color" data-badge-color />
+            <span><strong>@Localizer["Admin_CampaignBadgeColor"]</strong><small>@Localizer["Admin_Campaign"]</small><code data-color-value>@Model.KampanyaEtiketRengi</code></span>
+        </label>
+        <label class="ca-badge-color-item">
+            <input asp-for="IndirimEtiketRengi" type="color" data-badge-color />
+            <span><strong>@Localizer["Admin_DiscountBadgeColor"]</strong><small>@Localizer["Admin_DiscountPrice"]</small><code data-color-value>@Model.IndirimEtiketRengi</code></span>
+        </label>
+    </div>
+</div>
+
+<style>
+    .ca-badge-color-section{margin-top:22px;padding-top:20px;border-top:1px solid var(--ca-border)}
+    .ca-badge-color-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .ca-badge-color-item{display:flex;align-items:center;gap:12px;padding:13px;border:1px solid var(--ca-border);border-radius:14px;background:var(--ca-bg);cursor:pointer;transition:border-color .2s ease,transform .2s ease}
+    .ca-badge-color-item:hover{border-color:#b58a3b;transform:translateY(-1px)}
+    .ca-badge-color-item input[type=color]{width:46px;height:46px;flex:0 0 46px;padding:3px;border:1px solid var(--ca-border);border-radius:12px;background:#fff;cursor:pointer}
+    .ca-badge-color-item span{display:grid;gap:2px;min-width:0}
+    .ca-badge-color-item strong{font-size:13px}
+    .ca-badge-color-item small{font-size:11px;color:var(--ca-muted)}
+    .ca-badge-color-item code{font-size:10px;color:#7c6332;background:transparent;padding:0}
+    @@media(max-width:991px){.ca-badge-color-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @@media(max-width:575px){.ca-badge-color-grid{grid-template-columns:1fr}}
+</style>
+<script>
+    document.querySelectorAll('[data-badge-color]').forEach((input) => {
+        const output = input.closest('.ca-badge-color-item')?.querySelector('[data-color-value]');
+        const sync = () => { if (output) output.textContent = input.value.toUpperCase(); };
+        input.addEventListener('input', sync);
+        sync();
+    });
+</script>

@@ -1,5 +1,6 @@
 @model FilistinProje.Core.Varliklar.Urun
 @using FilistinProje.Service.Helpers
+@using FilistinProje.Core.Varliklar
 @{
     var definitions = (ViewBag.OzellikTanimlari as IEnumerable<FilistinProje.Core.Varliklar.UrunOzellikTanimi> ?? Enumerable.Empty<FilistinProje.Core.Varliklar.UrunOzellikTanimi>())
         .OrderBy(x => x.Sira)
@@ -11,14 +12,43 @@
         .GroupBy(x => x.UrunOzellikTanimiId)
         .ToDictionary(x => x.Key.ToString(), x => (x.Last().Deger ?? string.Empty).Trim());
 
-    var definitionPayload = definitions.Select(x => new
+    string LocalizedFeatureName(UrunOzellikTanimi definition) => definition.Kod switch
+    {
+        "genel_renk" => Localizer["Admin_Feature_Color"].Value,
+        "genel_stil" => Localizer["Admin_Feature_Style"].Value,
+        "genel_kullanim_alani" => Localizer["Admin_Feature_UsageArea"].Value,
+        _ => definition.Ad
+    };
+
+    string LocalizedFeatureOption(string code, string option) => (code, option) switch
+    {
+        ("genel_stil", "Modern") => Localizer["Admin_FeatureOption_Modern"].Value,
+        ("genel_stil", "Minimal") => Localizer["Admin_FeatureOption_Minimal"].Value,
+        ("genel_stil", "Klasik") => Localizer["Admin_FeatureOption_Classic"].Value,
+        ("genel_stil", "Rustik") => Localizer["Admin_FeatureOption_Rustic"].Value,
+        ("genel_stil", "Endustriyel") => Localizer["Admin_FeatureOption_Industrial"].Value,
+        ("genel_kullanim_alani", "Salon") => Localizer["Admin_FeatureOption_LivingRoom"].Value,
+        ("genel_kullanim_alani", "Yatak Odasi") => Localizer["Admin_FeatureOption_Bedroom"].Value,
+        ("genel_kullanim_alani", "Ofis") => Localizer["Admin_FeatureOption_Office"].Value,
+        ("genel_kullanim_alani", "Mutfak") => Localizer["Admin_FeatureOption_Kitchen"].Value,
+        ("genel_kullanim_alani", "Koridor") => Localizer["Admin_FeatureOption_Corridor"].Value,
+        _ => option
+    };
+
+    var definitionPayload = definitions
+        .Where(x => x.UrunTipi == UrunOzellikCatalog.Genel)
+        .Select(x => new
     {
         id = x.Id,
-        ad = (x.Ad ?? string.Empty).Trim(),
+        ad = LocalizedFeatureName(x),
         urunTipi = x.UrunTipi,
         alanTipi = x.AlanTipi,
         yardimMetni = (x.YardimMetni ?? string.Empty).Trim(),
-        secenekler = x.SecenekListesi.Select(s => (s ?? string.Empty).Trim()).ToList(),
+        secenekler = x.SecenekListesi.Select(s => new
+        {
+            value = (s ?? string.Empty).Trim(),
+            label = LocalizedFeatureOption(x.Kod, (s ?? string.Empty).Trim())
+        }).ToList(),
         filtredeGoster = x.FiltredeGoster,
         detaySayfasindaGoster = x.DetaySayfasindaGoster,
         teknikTablodaGoster = x.TeknikTablodaGoster,
@@ -108,9 +138,9 @@
 
             if (definition.alanTipi === 'select') {
                 const options = (definition.secenekler || []).map((option) => {
-                    const normalized = option === 'true' ? yesText : (option === 'false' ? noText : option);
-                    const selected = option === value ? 'selected' : '';
-                    return `<option value="${escapeHtml(option)}" ${selected}>${escapeHtml(normalized)}</option>`;
+                    const normalized = option.value === 'true' ? yesText : (option.value === 'false' ? noText : option.label);
+                    const selected = option.value === value ? 'selected' : '';
+                    return `<option value="${escapeHtml(option.value)}" ${selected}>${escapeHtml(normalized)}</option>`;
                 }).join('');
 
                 return `${hidden}<select class="ca-select" name="${fieldName}" data-feature-input data-definition-id="${definition.id}"><option value="">${selectText}</option>${options}</select>`;
@@ -125,7 +155,7 @@
             const selectedType = typeSelect.value || 'Genel';
             const visibleDefinitions = definitions
                 .filter((definition) => definition.urunTipi === 'Genel' || definition.urunTipi === selectedType)
-                .sort((a, b) => (a.sira - b.sira) || a.ad.localeCompare(b.ad, 'tr'));
+                .sort((a, b) => (a.sira - b.sira) || a.ad.localeCompare(b.ad, document.documentElement.lang || 'ar'));
 
             container.innerHTML = '';
 

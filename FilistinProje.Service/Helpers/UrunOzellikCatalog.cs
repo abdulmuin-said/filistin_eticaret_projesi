@@ -1,5 +1,6 @@
 using FilistinProje.Core.Varliklar;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Globalization;
 
 namespace FilistinProje.Service.Helpers
 {
@@ -27,34 +28,23 @@ namespace FilistinProje.Service.Helpers
         public const string DuvarKagidi = "DuvarKagidi";
         public const string SehpaMobilya = "SehpaMobilya";
 
-        private static readonly IReadOnlyList<(string Value, string Label)> ProductTypes = new[]
-        {
-            (Genel, "Genel"),
-            (Kanvas, "Kanvas"),
-            (Ayna, "Ayna"),
-            (Hali, "Hali"),
-            (CamTablo, "Cam Tablo"),
-            (DuvarKagidi, "Duvar Kagidi"),
-            (SehpaMobilya, "Sehpa / Mobilya")
-        };
-
         public static string NormalizeProductType(string? value)
         {
-            var normalized = value?.Trim();
-            return string.IsNullOrWhiteSpace(normalized) ? Genel : normalized;
+            return Genel;
         }
 
         public static IReadOnlyList<SelectListItem> GetProductTypeSelectList(string? selectedValue = null)
         {
-            var normalizedSelected = NormalizeProductType(selectedValue);
-            return ProductTypes
-                .Select(x => new SelectListItem
+            var language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+            return new[]
+            {
+                new SelectListItem
                 {
-                    Value = x.Value,
-                    Text = x.Label,
-                    Selected = string.Equals(x.Value, normalizedSelected, StringComparison.OrdinalIgnoreCase)
-                })
-                .ToList();
+                    Value = Genel,
+                    Text = language == "ar" ? "عام" : "General",
+                    Selected = true
+                }
+            };
         }
 
         public static IReadOnlyList<VarsayilanUrunOzellikTanimi> GetDefaultDefinitions() => new[]

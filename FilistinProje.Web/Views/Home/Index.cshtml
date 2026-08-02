@@ -51,10 +51,16 @@
             IndirimVarMi = urun.IndirimVarMi,
             IndirimYuzdesi = urun.IndirimYuzdesi,
             YeniUrunMu = urun.YeniUrunMu,
+            OneCikanMi = urun.OneCikanMi,
+            KampanyaliMi = urun.KampanyaliMi,
+            OneCikanEtiketRengi = urun.OneCikanEtiketRengi,
+            YeniUrunEtiketRengi = urun.YeniUrunEtiketRengi,
+            KampanyaEtiketRengi = urun.KampanyaEtiketRengi,
+            IndirimEtiketRengi = urun.IndirimEtiketRengi,
             StoktaVarMi = urun.StoktaVarMi,
             ToplamStok = urun.ToplamStok,
-                FiyatGizliMi = urun.FiyatGizliMi,
-                WhatsappSiparisVarMi = urun.WhatsappSiparisVarMi,
+            FiyatGizliMi = urun.FiyatGizliMi,
+            WhatsappSiparisVarMi = urun.WhatsappSiparisVarMi,
             KampanyaBitisTarihi = urun.KampanyaBitisTarihi,
             IsWholesale = isWholesale,
             BadgeText = badgeText,
@@ -673,7 +679,7 @@
                                 </a>
                             }
                         </div>
-                        <div class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-5" data-motion-stagger>
+                        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5 xl:gap-4" data-motion-stagger>
                             @foreach (var urun in sectionProducts.Take(15))
                             {
                                 @await Html.PartialAsync("_HomeProductCard", BuildHomeProductCard(urun))
@@ -730,7 +736,7 @@
                             <svg class="w-3 h-3 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </a>
                     </div>
-                    <div class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-5" data-motion-stagger>
+                    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5 xl:gap-4" data-motion-stagger>
                         @foreach (var urun in Model.BesParcaliKoleksiyon.Take(15))
                         {
                             @await Html.PartialAsync("_HomeProductCard", BuildHomeProductCard(urun, Localizer["5Piece"].Value))
@@ -757,7 +763,7 @@
                 {
                     <p class="text-center text-sm text-brand-mutedtext mb-8 -mt-4">@sectionSubtitle</p>
                 }
-                <div class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-5" data-motion-stagger>
+                <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5 xl:gap-4" data-motion-stagger>
                     @foreach (var urun in Model.VitrinUrunleri.Take(8))
                     {
                         @await Html.PartialAsync("_HomeProductCard", BuildHomeProductCard(urun))
@@ -788,7 +794,7 @@
                         <svg class="w-3 h-3 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </a>
                 </div>
-                <div class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-5" data-motion-stagger>
+                <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5 xl:gap-4" data-motion-stagger>
                     @foreach (var urun in Model.CokSatanlar.Take(8))
                     {
                         @await Html.PartialAsync("_HomeProductCard", BuildHomeProductCard(urun, Localizer["Bestseller"].Value))
@@ -815,7 +821,7 @@
                             <svg class="w-3 h-3 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </a>
                     </div>
-                    <div class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-5" data-motion-stagger>
+                    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5 xl:gap-4" data-motion-stagger>
                     @foreach (var urun in Model.FirsatUrunleri.Take(8))
                     {
                         @await Html.PartialAsync("_HomeProductCard", BuildHomeProductCard(urun))

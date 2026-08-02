@@ -187,12 +187,18 @@
                                 <label class="ca-label">@Localizer["Admin_UploadCategoryImage"]</label>
                                 <input type="file" name="gorselDosyasi" id="categoryImageFile" class="ca-input" accept=".jpg,.jpeg,.png,.webp" onchange="previewCategoryFile(event)" />
                                 <span class="text-danger small" data-valmsg-for="gorselDosyasi"></span>
-                                <div class="small text-muted mt-1">@Localizer["Admin_ImageFormatsHelp"]</div>
+                                <div class="small text-muted mt-1">@Localizer["Admin_CategoryCardImageSizeHelp"]</div>
                             </div>
                             <div class="col-lg-6">
                                   <label class="ca-label">@Localizer["Admin_Kategori_Banner_URL"]</label>
 
                                 <input asp-for="BannerUrl" class="ca-input" />
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="ca-label">@Localizer["Admin_UploadCategoryBanner"]</label>
+                                <input type="file" name="bannerDosyasi" class="ca-input" accept=".jpg,.jpeg,.png,.webp" />
+                                <span class="text-danger small" data-valmsg-for="bannerDosyasi"></span>
+                                <div class="small text-muted mt-1">@Localizer["Admin_CategoryBannerSizeHelp"]</div>
                             </div>
                             <div class="col-lg-6">
                                 <label class="ca-label">Menü hover görsel URL</label>

@@ -380,6 +380,30 @@ namespace FilistinProje.Tests
             Assert.Contains("/account/GirisYap", postRoutes);
         }
 
+        [Fact]
+        public void ToBadges_UsesProductSpecificCampaignColor()
+        {
+            var urun = new Urun
+            {
+                StokDurumu = "Stokta",
+                KampanyaliMi = true,
+                KampanyaEtiketRengi = "#123456"
+            };
+
+            var badge = Assert.Single(urun.ToBadges(), x => x.LocalizasyonKey == "Badge_Campaign");
+
+            Assert.Equal("#123456", badge.ArkaPlanRengi);
+            Assert.Equal("#FFFFFF", badge.YaziRengi);
+        }
+
+        [Fact]
+        public void ProductBadge_LightBackground_UsesDarkReadableText()
+        {
+            var badge = new ProductBadge("", "product-badge--featured", 1, "Badge_Featured", "#F4D99F");
+
+            Assert.Equal("#18231B", badge.YaziRengi);
+        }
+
         [Theory]
         [InlineData("+970 599 123 456", "+970599123456")]
         [InlineData("00970 599 123 456", "+970599123456")]
