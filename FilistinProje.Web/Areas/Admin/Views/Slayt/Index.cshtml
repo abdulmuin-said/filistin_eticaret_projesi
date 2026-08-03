@@ -62,8 +62,6 @@
                             <tr>
                                 <th style="width:40px;">@Localizer["Admin_Sira"]</th>
                                 <th style="width:120px;">@Localizer["Admin_Preview"]</th>
-                                <th>@Localizer["Admin_Baslik"]</th>
-                                <th>@Localizer["Admin_Alt_Baslik"]</th>
                                 <th style="width:100px;">@Localizer["Admin_Type"]</th>
                                 <th style="width:80px;">@Localizer["Admin_Durum"]</th>
                                 <th style="width:140px;">@Localizer["Admin_Islemler"]</th>
@@ -97,14 +95,6 @@
                                             </div>
                                         }
                                     </td>
-                                    <td>
-                                        <strong>@item.Baslik</strong>
-                                        @if (!string.IsNullOrEmpty(item.Aciklama))
-                                        {
-                                            <div class="small text-muted">@item.Aciklama</div>
-                                        }
-                                    </td>
-                                    <td class="text-muted small">@(string.IsNullOrEmpty(item.AltBaslik) ? "-" : item.AltBaslik)</td>
                                     <td>
                                         @if (item.Tur == "Video")
                                         {

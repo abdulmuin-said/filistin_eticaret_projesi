@@ -43,6 +43,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         [RequestFormLimits(MultipartBodyLengthLimit = 52_428_800)]
         public async Task<IActionResult> Ekle(Slayt model, IFormFile? Resim, IFormFile? Video)
         {
+            model.Baslik = "Slider";
             model.BaslikEn ??= string.Empty;
             model.BaslikAr ??= string.Empty;
             model.AltBaslikEn ??= string.Empty;
@@ -53,6 +54,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             model.ButonMetniEn ??= string.Empty;
             model.ButonMetniAr ??= string.Empty;
 
+            ModelState.Remove(nameof(model.Baslik));
+            ModelState.Remove(nameof(model.AltBaslik));
+            ModelState.Remove(nameof(model.Aciklama));
+            ModelState.Remove(nameof(model.BaglantiUrl));
             ModelState.Remove(nameof(model.BaslikEn));
             ModelState.Remove(nameof(model.BaslikAr));
             ModelState.Remove(nameof(model.AltBaslikEn));
@@ -96,6 +101,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             var maxSira = await _db.Slaytlar.MaxAsync(s => (int?)s.Sira) ?? 0;
             model.Sira = maxSira + 1;
+            model.Baslik = $"Slider {model.Sira}";
             model.OlusturmaTarihi = DateTime.UtcNow;
 
             _db.Slaytlar.Add(model);
@@ -139,6 +145,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             model.ButonMetniEn ??= string.Empty;
             model.ButonMetniAr ??= string.Empty;
 
+            ModelState.Remove(nameof(model.Baslik));
+            ModelState.Remove(nameof(model.AltBaslik));
+            ModelState.Remove(nameof(model.Aciklama));
+            ModelState.Remove(nameof(model.BaglantiUrl));
             ModelState.Remove(nameof(model.BaslikEn));
             ModelState.Remove(nameof(model.BaslikAr));
             ModelState.Remove(nameof(model.AltBaslikEn));
@@ -156,19 +166,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
                 return View(slayt);
 
-            slayt.Baslik = model.Baslik;
-            slayt.BaslikEn = model.BaslikEn;
-            slayt.BaslikAr = model.BaslikAr;
-            slayt.AltBaslik = model.AltBaslik;
-            slayt.AltBaslikEn = model.AltBaslikEn;
-            slayt.AltBaslikAr = model.AltBaslikAr;
-            slayt.Aciklama = model.Aciklama;
-            slayt.AciklamaEn = model.AciklamaEn;
-            slayt.AciklamaAr = model.AciklamaAr;
-            slayt.ButonMetni = model.ButonMetni;
-            slayt.ButonMetniEn = model.ButonMetniEn;
-            slayt.ButonMetniAr = model.ButonMetniAr;
-            slayt.BaglantiUrl = model.BaglantiUrl;
             slayt.Tur = model.Tur;
             slayt.Sira = model.Sira;
             slayt.AktifMi = model.AktifMi;

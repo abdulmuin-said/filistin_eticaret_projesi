@@ -53,14 +53,14 @@
 
         <div class="row g-4">
             <div class="col-lg-8">
-                <div class="ca-card">
+                <div class="ca-card d-none" aria-hidden="true">
                     <div class="ca-card-header">
                         <h3 class="ca-card-title"><i class="fas fa-edit me-2 ca-text-primary"></i>@Localizer["Admin_SlideInfo"]</h3>
                     </div>
                     <div class="ca-card-body">
                         <div class="mb-3">
                             <label class="form-label">@Localizer["Admin_Baslik"] <span class="text-danger">*</span></label>
-                            <input type="text" name="Baslik" value="@Model.Baslik" class="form-control" placeholder='@Localizer["Admin_SlideTitlePlaceholder"]' required />
+                            <input type="text" name="Baslik" value="@Model.Baslik" class="form-control" tabindex="-1" />
                             @Html.ValidationMessage("Baslik", "", new { @class = "text-danger small" })
                         </div>
 
@@ -282,12 +282,11 @@ function previewVideo(input) {
     }
 }
 
-document.querySelectorAll('input[name="Baslik"], input[name="ResimUrl"]').forEach(function(input) {
+document.querySelectorAll('input[name="ResimUrl"]').forEach(function(input) {
     input.addEventListener('input', updatePreview);
 });
 
 function updatePreview() {
-    var baslik = document.querySelector('input[name="Baslik"]')?.value || '';
     var url = document.querySelector('input[name="ResimUrl"]')?.value || '';
     if (url) {
         var preview = document.querySelector('#livePreview img');

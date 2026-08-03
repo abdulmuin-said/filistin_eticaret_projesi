@@ -278,22 +278,10 @@
                                               <h3 class="font-bold mb-3 text-sm">@Localizer["Admin_HeroBanner"]</h3>
                                           </div>
                                       </div>
-                                      <div class="col-md-6">
-                                          <label class="ca-label">@Localizer["Admin_HeroTitle_Ar"]</label>
-                                          <input asp-for="HeroBaslikAr" class="ca-input" />
-                                      </div>
-                                      <div class="col-md-6">
-                                          <label class="ca-label">@Localizer["Admin_HeroTitle_En"]</label>
-                                          <input asp-for="HeroBaslikEn" class="ca-input" />
-                                      </div>
-                                      <div class="col-md-6">
-                                          <label class="ca-label">@Localizer["Admin_HeroSubtitle_Ar"]</label>
-                                          <input asp-for="HeroAltBaslikAr" class="ca-input" />
-                                      </div>
-                                      <div class="col-md-6">
-                                          <label class="ca-label">@Localizer["Admin_HeroSubtitle_En"]</label>
-                                          <input asp-for="HeroAltBaslikEn" class="ca-input" />
-                                      </div>
+                                      <input asp-for="HeroBaslikAr" type="hidden" />
+                                      <input asp-for="HeroBaslikEn" type="hidden" />
+                                      <input asp-for="HeroAltBaslikAr" type="hidden" />
+                                      <input asp-for="HeroAltBaslikEn" type="hidden" />
                                       <div class="col-md-6">
                                           <label class="ca-label">@Localizer["Admin_HeroImage"]</label>
                                           <input asp-for="HeroGorselUrl" class="ca-input" placeholder="/slider-demo.jpg" />
