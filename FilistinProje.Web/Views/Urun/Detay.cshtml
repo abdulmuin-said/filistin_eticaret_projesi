@@ -8,6 +8,8 @@
     var siteSettings = SiteSettingsService.GetSettings();
     var brandName = string.IsNullOrWhiteSpace(siteSettings.MarkaAdi) ? siteSettings.SiteAdi : siteSettings.MarkaAdi;
     var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "?" : siteSettings.ParaBirimi;
+    var whatsappSiparisModu = Model.FiyatGizliMi || Model.WhatsappSiparisVarMi;
+    var whatsappNumber = new string((siteSettings.WhatsappNumarasi ?? string.Empty).Where(char.IsDigit).ToArray());
     var isRtlDetay = System.Threading.Thread.CurrentThread.CurrentUICulture.TextInfo.IsRightToLeft;
 
     // --- VARYANT VE FÃ„Â°YAT HESAPLAMA ---
@@ -497,19 +499,56 @@
                 <span id="lowStockText">@string.Format(Localizer["LowStockText"].Value, varsayilanStok)</span>
             </div>
 
-            @if (Model.WhatsappSiparisVarMi)
+            @if (whatsappSiparisModu)
             {
-                var whatsappNumber = new string((siteSettings.WhatsappNumarasi ?? string.Empty).Where(char.IsDigit).ToArray());
-                var whatsappText = Uri.EscapeDataString($"{Model.LocalizedBaslik} - {productUrl}");
-                <a href="https://wa.me/@whatsappNumber?text=@whatsappText"
+                @if (secenekler.Any())
+                {
+                    <div class="pt-6">
+                        <div id="variantSummaryText" class="mb-3 text-xs font-medium uppercase tracking-widest text-brand-darktext @(string.IsNullOrWhiteSpace(seciliVaryantMetni) ? "hidden" : "")"><i class="fas fa-layer-group me-1.5"></i>@seciliVaryantMetni</div>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach (var varyant in secenekler)
+                            {
+                                var varyantSatinAlinabilir = stoktaYokSatisIzni || varyant.SatinAlinabilirMi;
+                                var varyantEtiket = string.IsNullOrWhiteSpace(varyant.VaryantBasligi) ? (varyant.Olcu ?? "Standard") : varyant.VaryantBasligi;
+                                var varyantGorseli = !string.IsNullOrWhiteSpace(varyant.GorselUrl) ? varyant.GorselUrl : (varyantMedyaHaritasi.TryGetValue(varyant.Id, out var eslesen) ? eslesen : string.Empty);
+                                var varyantEskiFiyat = Model.Fiyat > varyant.SatisFiyati ? Model.Fiyat : 0;
+                                <label class="relative cursor-pointer rounded border border-brand-border px-4 py-2 text-sm transition-colors hover:border-brand-gold has-[:checked]:border-brand-olive has-[:checked]:bg-brand-olive has-[:checked]:text-white @(!varyantSatinAlinabilir ? "cursor-not-allowed opacity-45" : "")">
+                                    @if (Model.FiyatGizliMi)
+                                    {
+                                        <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" disabled="@(!varyantSatinAlinabilir ? "disabled" : null)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" disabled="@(!varyantSatinAlinabilir ? "disabled" : null)" data-price="@varyant.SatisFiyati.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(varyant.RenkKodu)) { <span class="me-1 inline-block h-3 w-3 rounded-full border border-black/15 align-middle" style="background-color:@varyant.RenkKodu"></span> }
+                                    @varyantEtiket
+                                </label>
+                            }
+                        </div>
+                    </div>
+                }
+
+                var whatsappMessageParts = new List<string> { Model.LocalizedBaslik };
+                var varsayilanWhatsappVaryanti = varsayilanSecenek == null
+                    ? string.Empty
+                    : (string.IsNullOrWhiteSpace(varsayilanSecenek.VaryantBasligi) ? varsayilanSecenek.Olcu : varsayilanSecenek.VaryantBasligi);
+                if (!string.IsNullOrWhiteSpace(varsayilanWhatsappVaryanti))
+                {
+                    whatsappMessageParts.Add(varsayilanWhatsappVaryanti);
+                }
+                whatsappMessageParts.Add(productUrl);
+                var whatsappText = Uri.EscapeDataString(string.Join("\n", whatsappMessageParts));
+                <a id="whatsappOrderLink"
+                   href="https://wa.me/@whatsappNumber?text=@whatsappText"
                    rel="noopener noreferrer"
                    target="_blank"
-                   class="inline-flex w-full items-center justify-center gap-3 rounded-full bg-[#25D366] px-6 py-4 text-sm font-bold uppercase tracking-[0.12em] text-white shadow-lg hover:bg-[#1da851]">
+                   class="mt-6 inline-flex w-full items-center justify-center gap-3 rounded-full bg-[#25D366] px-6 py-4 text-sm font-bold uppercase tracking-[0.12em] text-white shadow-lg hover:bg-[#1da851]">
                     <i class="fab fa-whatsapp text-xl"></i>
-                    <span>@Localizer["WhatsApp"]</span>
+                    <span>@Localizer["Admin_WhatsappOrder"]</span>
                 </a>
             }
-            else if (!Model.FiyatGizliMi)
+            else
             {
             <form id="addToCartForm" class="space-y-6 pt-6">
                 @Html.AntiForgeryToken()
@@ -578,7 +617,7 @@
                 </div>
             </form>
             }
-            @if (Model.ToptanFiyatKademeleri.Any(x => x.AktifMi && !x.SilindiMi))
+            @if (!Model.FiyatGizliMi && Model.ToptanFiyatKademeleri.Any(x => x.AktifMi && !x.SilindiMi))
             {
                 <div class="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-4">
                     <div class="mb-3 flex items-center gap-2 text-sm font-bold text-emerald-900"><i class="fas fa-boxes-stacked"></i>@Localizer["WholesalePrices"]</div>
@@ -704,7 +743,18 @@
                     <a href="/products/@itemSlug-@item.Id" class="group rounded-md bg-white p-2 transition-transform hover:-translate-y-1">
                         <img src="@(string.IsNullOrWhiteSpace(item.AnaGorselUrl) ? "/img/products/placeholder.webp" : item.AnaGorselUrl)" alt="@item.LocalizedBaslik" class="aspect-square w-full rounded object-cover" loading="lazy" decoding="async" />
                         <h3 class="mt-2 line-clamp-2 text-xs font-semibold text-brand-darktext">@item.LocalizedBaslik</h3>
-                        <p class="mt-1 text-sm font-bold text-brand-olive">@item.GosterFiyat.ToString("N2") @currencySymbol</p>
+                        @if (!item.FiyatGizliMi)
+                        {
+                            <p class="mt-1 text-sm font-bold text-brand-olive">@item.GosterFiyat.ToString("N2") @currencySymbol</p>
+                        }
+                        else
+                        {
+                            <p class="mt-1 text-xs italic text-brand-mutedtext">@Localizer["PriceOnRequest"]</p>
+                        }
+                        @if (item.WhatsappSiparisModu)
+                        {
+                            <span class="mt-2 flex items-center justify-center gap-2 rounded border border-green-500 px-2 py-1.5 text-[10px] font-semibold uppercase text-green-600"><i class="fab fa-whatsapp"></i>@Localizer["Admin_WhatsappOrder"]</span>
+                        }
                     </a>
                 }
             </div>
@@ -727,7 +777,7 @@
                 @foreach (var item in benzerUrunler)
                 {
                     decimal itemFiyat = item.GosterFiyat;
-                    decimal? bEskiFiyat = (item.IndirimliFiyat != null && item.IndirimliFiyat < item.Fiyat) ? item.Fiyat : null;
+                    decimal? bEskiFiyat = !item.FiyatGizliMi && item.IndirimliFiyat != null && item.IndirimliFiyat < item.Fiyat ? item.Fiyat : null;
                     var benzerUrlSlug = !string.IsNullOrEmpty(item.Slug) ? item.Slug : FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.LocalizedBaslik);
                     if (string.IsNullOrWhiteSpace(benzerUrlSlug)) { benzerUrlSlug = "urun"; }
                     string bProductUrl = $"/products/{benzerUrlSlug}-{item.Id}";
@@ -754,13 +804,24 @@
                             }
                         </div>
                         <h3 class="text-xs font-semibold text-brand-darktext tracking-wide line-clamp-2 mb-1">@item.LocalizedBaslik</h3>
-                        <div class="flex items-center gap-2">
-                            <span class="text-sm font-bold text-brand-olive">@itemFiyat.ToString("N2") @currencySymbol</span>
-                            @if (bEskiFiyat != null)
-                            {
-                                <span class="text-xs text-[#999] line-through">@bEskiFiyat?.ToString("N2") @currencySymbol</span>
-                            }
-                        </div>
+                        @if (!item.FiyatGizliMi)
+                        {
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-bold text-brand-olive">@itemFiyat.ToString("N2") @currencySymbol</span>
+                                @if (bEskiFiyat != null)
+                                {
+                                    <span class="text-xs text-[#999] line-through">@bEskiFiyat?.ToString("N2") @currencySymbol</span>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-xs italic text-brand-mutedtext">@Localizer["PriceOnRequest"]</p>
+                        }
+                        @if (item.WhatsappSiparisModu)
+                        {
+                            <span class="mt-2 flex items-center gap-1.5 text-[10px] font-semibold uppercase text-green-600"><i class="fab fa-whatsapp"></i>@Localizer["Admin_WhatsappOrder"]</span>
+                        }
                     </a>
                 }
             </div>
@@ -799,6 +860,21 @@ const PRODUCT_ADDED_TEXT = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(L
 const PRODUCT_ADDED_TO_CART_TEXT = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["AddedToCartSuccess"].Value));
 const PRODUCT_ADD_TO_CART_TEXT = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["AddToCart"].Value));
 const PRODUCT_STOKTA_YOK_SATIS_IZNI = @Json.Serialize(stoktaYokSatisIzni);
+const PRODUCT_WHATSAPP_NAME = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.LocalizedBaslik));
+const PRODUCT_WHATSAPP_URL = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(productUrl));
+const PRODUCT_WHATSAPP_NUMBER = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(whatsappNumber));
+
+function updateWhatsappOrderLink() {
+    const link = document.getElementById('whatsappOrderLink');
+    if (!link) return;
+
+    const selectedVariant = document.querySelector('.variant-radio:checked');
+    const variantLabel = selectedVariant?.getAttribute('data-label')?.trim();
+    const messageParts = [PRODUCT_WHATSAPP_NAME];
+    if (variantLabel) messageParts.push(variantLabel);
+    messageParts.push(PRODUCT_WHATSAPP_URL);
+    link.href = `https://wa.me/${PRODUCT_WHATSAPP_NUMBER}?text=${encodeURIComponent(messageParts.join('\n'))}`;
+}
 
 // Modal event listeners
 document.addEventListener('DOMContentLoaded', function() {
@@ -878,6 +954,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
         updateSelectionSummary();
         updateVariantCardStyles();
+        updateWhatsappOrderLink();
     }, 100);
 });
 
@@ -1271,7 +1348,8 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
 
             updateVariantCardStyles();
             updatePriceWithFrame();
-            
+            updateWhatsappOrderLink();
+
             var oldPriceDisplay = document.getElementById('oldPriceDisplay');
             var discountBadge = document.getElementById('discountBadge');
             var selectedFrame = document.querySelector('.frame-radio:checked');

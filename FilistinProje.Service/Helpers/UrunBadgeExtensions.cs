@@ -66,7 +66,7 @@ namespace FilistinProje.Service.Helpers
             }
 
             // 4. İNDİRİM KONTROLÜ
-            if (urun.IndirimVarMi)
+            if (!urun.FiyatGizliMi && urun.IndirimVarMi)
             {
                 int indirimYuzde = urun.IndirimYuzdesi;
                 badges.Add(new ProductBadge(
@@ -78,7 +78,7 @@ namespace FilistinProje.Service.Helpers
                 ));
             }
 
-            if (urun.TopFiyat.HasValue && urun.TopFiyat.Value > 0)
+            if (!urun.FiyatGizliMi && urun.TopFiyat.HasValue && urun.TopFiyat.Value > 0)
             {
                 badges.Add(new ProductBadge("", "product-badge--wholesale", OncelikToptan, "Badge_Wholesale"));
             }
@@ -108,7 +108,7 @@ namespace FilistinProje.Service.Helpers
             }
 
             // 7. WHATSAPP SİPARİŞ KONTROLÜ
-            if (urun.WhatsappSiparisVarMi && badges.Count < 4)
+            if ((urun.FiyatGizliMi || urun.WhatsappSiparisVarMi) && badges.Count < 4)
             {
                 badges.Add(new ProductBadge(
                     metin: "",

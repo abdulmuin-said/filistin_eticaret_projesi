@@ -119,9 +119,18 @@
                                          loading="lazy" decoding="async" />
                                 </div>
                                 <h6 class="text-xs font-medium text-brand-darktext line-clamp-1 group-hover:text-brand-gold transition-colors">@urun.Baslik</h6>
-                                <p class="text-xs text-brand-gold font-semibold mt-0.5">
-                                    @urun.EtkinFiyat.ToString("N2") @currencySymbol
-                                </p>
+                                @if (!urun.FiyatGizliMi)
+                                {
+                                    <p class="mt-0.5 text-xs font-semibold text-brand-gold">@urun.EtkinFiyat.ToString("N2") @currencySymbol</p>
+                                }
+                                else
+                                {
+                                    <p class="mt-0.5 text-xs italic text-brand-mutedtext">@Localizer["PriceOnRequest"]</p>
+                                }
+                                @if (urun.FiyatGizliMi || urun.WhatsappSiparisVarMi)
+                                {
+                                    <span class="mt-2 flex items-center justify-center gap-1 rounded border border-green-500 px-2 py-1 text-[10px] font-semibold uppercase text-green-600"><i class="fab fa-whatsapp"></i>@Localizer["Admin_WhatsappOrder"]</span>
+                                }
                             </a>
                         }
                     </div>

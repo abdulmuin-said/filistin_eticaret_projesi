@@ -14,6 +14,8 @@ namespace FilistinProje.Core.DTOs
         public decimal? IndirimliFiyat { get; set; }
         public bool IndirimVarMi { get; set; }
         public bool FiyatGizliMi { get; set; }
+        public bool WhatsappSiparisVarMi { get; set; }
+        public bool WhatsappSiparisModu => FiyatGizliMi || WhatsappSiparisVarMi;
         public bool StoktaVarMi { get; set; }
         public decimal GosterFiyat => IndirimliFiyat ?? Fiyat;
         public string LocalizedBaslik => CultureInfo.CurrentUICulture.TwoLetterISOLanguageName switch

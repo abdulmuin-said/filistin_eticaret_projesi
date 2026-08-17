@@ -58,7 +58,7 @@
                             <i class="fas fa-heart"></i>
                         </button>
 
-                        @if (urun.IndirimVarMi)
+                        @if (!urun.FiyatGizliMi && urun.IndirimVarMi)
                         {
                             <span class="absolute top-3 left-3 bg-brand-gold text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm">
                                 %@urun.IndirimYuzdesi @Localizer["Discount"]
@@ -71,32 +71,48 @@
                             <a href="/products/@urlSlug" class="hover:text-brand-gold transition-colors">@urun.Baslik</a>
                         </h6>
                         <div class="mb-3">
-                            @if (urun.IndirimVarMi)
+                            @if (!urun.FiyatGizliMi && urun.IndirimVarMi)
                             {
                                 <span class="text-xs text-[#999] line-through mr-1">@urun.Fiyat.ToString("N2") @currencySymbol</span>
                                 <span class="text-sm font-bold text-brand-gold">@urun.EtkinFiyat.ToString("N2") @currencySymbol</span>
                             }
-                            else
+                            else if (!urun.FiyatGizliMi)
                             {
                                 <span class="text-sm text-brand-mutedtext">@urun.Fiyat.ToString("N2") @currencySymbol</span>
                             }
+                            else
+                            {
+                                <span class="text-sm italic text-brand-mutedtext">@Localizer["PriceOnRequest"]</span>
+                            }
                         </div>
 
-                        <!-- Fiyat Düşüş Bildirimi Butonu -->
-                        <button type="button"
-                                class="mb-2 w-full flex items-center justify-center gap-2 py-2 text-xs rounded transition-all duration-300
-                                       @(bildirimAktif
-                                           ? "bg-emerald-50 border border-emerald-300 text-emerald-700 hover:bg-emerald-100"
-                                           : "bg-brand-cream border border-brand-border text-brand-mutedtext hover:border-brand-gold hover:text-brand-gold")"
-                                onclick="togglePriceNotification(this, @urun.Id)"
-                                title="@(bildirimAktif ? Localizer["PriceDropNotificationOn"].Value : Localizer["NotifyPriceDropTitle"].Value)">
-                            <i class="fas @(bildirimAktif ? "fa-bell" : "fa-bell-slash") text-xs"></i>
-                            <span>@(bildirimAktif ? Localizer["NotificationOn"] : Localizer["NotifyPriceDrop"])</span>
-                        </button>
+                        @if (!urun.FiyatGizliMi)
+                        {
+                            <!-- Fiyat Düşüş Bildirimi Butonu -->
+                            <button type="button"
+                                    class="mb-2 w-full flex items-center justify-center gap-2 py-2 text-xs rounded transition-all duration-300
+                                           @(bildirimAktif
+                                               ? "bg-emerald-50 border border-emerald-300 text-emerald-700 hover:bg-emerald-100"
+                                               : "bg-brand-cream border border-brand-border text-brand-mutedtext hover:border-brand-gold hover:text-brand-gold")"
+                                    onclick="togglePriceNotification(this, @urun.Id)"
+                                    title="@(bildirimAktif ? Localizer["PriceDropNotificationOn"].Value : Localizer["NotifyPriceDropTitle"].Value)">
+                                <i class="fas @(bildirimAktif ? "fa-bell" : "fa-bell-slash") text-xs"></i>
+                                <span>@(bildirimAktif ? Localizer["NotificationOn"] : Localizer["NotifyPriceDrop"])</span>
+                            </button>
+                        }
 
-                        <button type="button" class="mt-auto w-full border border-brand-olive text-brand-olive hover:bg-brand-olive hover:text-white py-2 text-xs tracking-widest uppercase rounded transition-colors" onclick="favoriSepeteEkle(this, @urun.Id)">
-                            @Localizer["AddToCart"]
-                        </button>
+                        @if (urun.FiyatGizliMi || urun.WhatsappSiparisVarMi)
+                        {
+                            <a href="/products/@urlSlug" class="mt-auto flex w-full items-center justify-center gap-2 rounded border border-green-500 py-2 text-xs uppercase tracking-widest text-green-600 transition-colors hover:bg-green-500 hover:text-white">
+                                <i class="fab fa-whatsapp"></i>@Localizer["Admin_WhatsappOrder"]
+                            </a>
+                        }
+                        else
+                        {
+                            <button type="button" class="mt-auto w-full border border-brand-olive text-brand-olive hover:bg-brand-olive hover:text-white py-2 text-xs tracking-widest uppercase rounded transition-colors" onclick="favoriSepeteEkle(this, @urun.Id)">
+                                @Localizer["AddToCart"]
+                            </button>
+                        }
                     </div>
                 </div>
             }

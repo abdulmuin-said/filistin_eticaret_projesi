@@ -30,6 +30,7 @@ namespace FilistinProje.Web.Models
         public bool ShowFavori { get; set; } = true; // Favori butonu gösterilsin mi?
         public bool ShowQuickAdd { get; set; } = true; // Sepete Ekle overlay gösterilsin mi?
         public bool WhatsappSiparisVarMi { get; set; }
+        public bool WhatsappSiparisModu => FiyatGizliMi || WhatsappSiparisVarMi;
 
         // Ürün kartında gösterilecek etiketler (maks 4 adet, öncelik sırasına göre)
         public List<ProductBadge> Etiketler { get; set; } = new();
@@ -81,7 +82,7 @@ namespace FilistinProje.Web.Models
                 ));
             }
 
-            if (IndirimVarMi)
+            if (!FiyatGizliMi && IndirimVarMi)
             {
                 badges.Add(new ProductBadge(
                     metin: $"-{IndirimYuzdesi}%",
@@ -92,7 +93,7 @@ namespace FilistinProje.Web.Models
                 ));
             }
 
-            if (TopFiyat.HasValue && TopFiyat.Value > 0)
+            if (!FiyatGizliMi && TopFiyat.HasValue && TopFiyat.Value > 0)
             {
                 badges.Add(new ProductBadge("", "product-badge--wholesale", 4, "Badge_Wholesale"));
             }
@@ -119,7 +120,7 @@ namespace FilistinProje.Web.Models
                 ));
             }
 
-            if (WhatsappSiparisVarMi && badges.Count < 4)
+            if (WhatsappSiparisModu && badges.Count < 4)
             {
                 badges.Add(new ProductBadge(
                     metin: "",

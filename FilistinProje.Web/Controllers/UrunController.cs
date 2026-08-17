@@ -519,14 +519,13 @@ namespace FilistinProje.Web.Controllers
             ViewBag.OrtalamaPuan = ortalamaPuan;
             ViewBag.YorumSayisi = yorumlar.Count;
 
-            // Benzer Ã¼rÃ¼nler - aynÄ± kategoriden, fiyatÄ± gizli olmayan, silinmemiÅŸ/pasif olmayan
+            // Benzer Ã¼rÃ¼nler - aynÄ± kategoriden, silinmemiÅŸ/pasif olmayan
             var benzerUrunler = await _context.Urunler
                 .AsNoTracking()
                 .Where(x =>
                     x.AktifMi &&
                     x.YayindaMi &&
                     !x.SilindiMi &&
-                    !x.FiyatGizliMi &&
                     x.KategoriId == urun.KategoriId &&
                     x.Id != urun.Id)
                 .OrderByDescending(x => x.SatisSayisi)
@@ -551,6 +550,7 @@ namespace FilistinProje.Web.Controllers
                     IndirimliFiyat = x.IndirimliFiyat,
                     IndirimVarMi = x.IndirimVarMi,
                     FiyatGizliMi = x.FiyatGizliMi,
+                    WhatsappSiparisVarMi = x.WhatsappSiparisVarMi,
                     StoktaVarMi = x.StoktaVarMi
                 })
                 .ToListAsync();

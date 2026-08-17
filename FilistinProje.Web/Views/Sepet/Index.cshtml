@@ -278,10 +278,23 @@
                                         <a href="@urunUrl" class="block">
                                             <h4 class="text-xs font-semibold tracking-wide text-brand-darktext hover:text-brand-gold transition-colors line-clamp-2 mb-1 min-h-[32px]">@localizedOnerilen</h4>
                                         </a>
-                                        <p class="text-xs font-medium text-brand-mutedtext mb-3">@urun.EtkinFiyat.ToString("N0") @currencySymbol</p>
+                                        @if (!urun.FiyatGizliMi)
+                                        {
+                                            <p class="text-xs font-medium text-brand-mutedtext mb-3">@urun.EtkinFiyat.ToString("N0") @currencySymbol</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="mb-3 text-xs italic text-brand-mutedtext">@Localizer["PriceOnRequest"]</p>
+                                        }
                                     </div>
 
-                                    @if (defaultSecenek != null)
+                                    @if (urun.FiyatGizliMi || urun.WhatsappSiparisVarMi)
+                                    {
+                                        <a href="@urunUrl" class="flex w-full items-center justify-center gap-2 rounded border border-green-500 py-2 text-center text-[10px] font-medium uppercase tracking-widest text-green-600 transition-colors hover:bg-green-500 hover:text-white">
+                                            <i class="fab fa-whatsapp"></i>@Localizer["Admin_WhatsappOrder"]
+                                        </a>
+                                    }
+                                    else if (defaultSecenek != null)
                                     {
                                         <button type="button" onclick="quickAddToCart(@urun.Id, @defaultSecenek.Id)" class="w-full bg-brand-warmcream text-brand-olive text-[10px] uppercase tracking-widest py-2 rounded hover:bg-brand-olive hover:text-white transition-colors font-medium">
                                             @Localizer["AddToCart"]
