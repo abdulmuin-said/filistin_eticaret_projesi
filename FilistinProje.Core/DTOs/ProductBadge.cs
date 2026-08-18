@@ -13,25 +13,63 @@ namespace FilistinProje.Core.DTOs
         public string LocalizasyonKey { get; set; } = string.Empty;
         public string ArkaPlanRengi { get; set; } = string.Empty;
 
+        public string VarsayilanArkaPlanRengi => CssClass
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Select(cssClass => cssClass switch
+            {
+                "product-badge--featured" => "#FDE047",
+                "product-badge--new" => "#B91C1C",
+                "product-badge--campaign" => "#6D28D9",
+                "product-badge--discount" => "#C2410C",
+                "product-badge--whatsapp" => "#047857",
+                "product-badge--wholesale" => "#166534",
+                "product-badge--low" => "#A21CAF",
+                "product-badge--out" => "#44403C",
+                "product-badge--custom" => "#313511",
+                _ => string.Empty
+            })
+            .FirstOrDefault(color => color.Length > 0) ?? "#313511";
+
+        public string GuvenliArkaPlanRengi => NormalizeHexColor(ArkaPlanRengi, VarsayilanArkaPlanRengi);
+
         public string YaziRengi
         {
             get
             {
-                if (ArkaPlanRengi.Length != 7 || ArkaPlanRengi[0] != '#')
-                {
-                    return "#FFFFFF";
-                }
-
-                if (!int.TryParse(ArkaPlanRengi[1..3], System.Globalization.NumberStyles.HexNumber, null, out var red)
-                    || !int.TryParse(ArkaPlanRengi[3..5], System.Globalization.NumberStyles.HexNumber, null, out var green)
-                    || !int.TryParse(ArkaPlanRengi[5..7], System.Globalization.NumberStyles.HexNumber, null, out var blue))
-                {
-                    return "#FFFFFF";
-                }
-
-                var luminance = (0.299 * red) + (0.587 * green) + (0.114 * blue);
-                return luminance > 160 ? "#18231B" : "#FFFFFF";
+                var backgroundLuminance = GetRelativeLuminance(GuvenliArkaPlanRengi);
+                var blackContrast = (backgroundLuminance + 0.05) / 0.05;
+                var whiteContrast = 1.05 / (backgroundLuminance + 0.05);
+                return blackContrast >= whiteContrast ? "#000000" : "#FFFFFF";
             }
+        }
+
+        private static string NormalizeHexColor(string? color, string fallback)
+        {
+            var normalized = (color ?? string.Empty).Trim().ToUpperInvariant();
+            if (normalized.Length != 7 || normalized[0] != '#')
+            {
+                return fallback;
+            }
+
+            return int.TryParse(normalized[1..], System.Globalization.NumberStyles.HexNumber, null, out _)
+                ? normalized
+                : fallback;
+        }
+
+        private static double GetRelativeLuminance(string color)
+        {
+            static double ToLinear(int channel)
+            {
+                var value = channel / 255d;
+                return value <= 0.04045
+                    ? value / 12.92
+                    : Math.Pow((value + 0.055) / 1.055, 2.4);
+            }
+
+            var red = Convert.ToInt32(color[1..3], 16);
+            var green = Convert.ToInt32(color[3..5], 16);
+            var blue = Convert.ToInt32(color[5..7], 16);
+            return (0.2126 * ToLinear(red)) + (0.7152 * ToLinear(green)) + (0.0722 * ToLinear(blue));
         }
 
         public ProductBadge() { }
@@ -113,8 +151,10 @@ namespace FilistinProje.Core.DTOs
                 badges.Add(new ProductBadge("", "product-badge--whatsapp", 6, "Badge_WhatsappOrder"));
             }
 
-            badges.AddRange(context.DigerEtiketler.Select(badge =>
-                new ProductBadge(badge.Metin, badge.CssClass, 6, badge.LocalizasyonKey, badge.ArkaPlanRengi)));
+            badges.AddRange(context.DigerEtiketler
+                .Where(badge => !string.IsNullOrWhiteSpace(badge.Metin) || !string.IsNullOrWhiteSpace(badge.LocalizasyonKey))
+                .Select(badge =>
+                    new ProductBadge(badge.Metin, badge.CssClass, 6, badge.LocalizasyonKey, badge.ArkaPlanRengi)));
 
             return badges
                 .Select((badge, index) => new { Badge = badge, Index = index })

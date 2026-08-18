@@ -499,11 +499,81 @@ namespace FilistinProje.Tests
         }
 
         [Fact]
-        public void ProductBadge_LightBackground_UsesDarkReadableText()
+        public void ProductBadge_LightBackground_UsesBlackAaText()
         {
             var badge = new ProductBadge("", "product-badge--featured", 1, "Badge_Featured", "#F4D99F");
 
-            Assert.Equal("#18231B", badge.YaziRengi);
+            Assert.Equal("#F4D99F", badge.GuvenliArkaPlanRengi);
+            Assert.Equal("#000000", badge.YaziRengi);
+            Assert.True(GetContrastRatio(badge.GuvenliArkaPlanRengi, badge.YaziRengi) >= 4.5);
+        }
+
+        [Fact]
+        public void ProductBadge_DarkBackground_UsesWhiteAaText()
+        {
+            var badge = new ProductBadge("", "product-badge--campaign", 1, "Badge_Campaign", "#123456");
+
+            Assert.Equal("#123456", badge.GuvenliArkaPlanRengi);
+            Assert.Equal("#FFFFFF", badge.YaziRengi);
+            Assert.True(GetContrastRatio(badge.GuvenliArkaPlanRengi, badge.YaziRengi) >= 4.5);
+        }
+
+        [Theory]
+        [InlineData("product-badge--featured", "not-a-color", "#FDE047")]
+        [InlineData("product-badge--campaign", "#123", "#6D28D9")]
+        [InlineData("product-badge--low", "", "#A21CAF")]
+        public void ProductBadge_InvalidColor_UsesTypeSpecificFallback(string cssClass, string color, string expected)
+        {
+            var badge = new ProductBadge("Badge", cssClass, 1, arkaPlanRengi: color);
+
+            Assert.Equal(color, badge.ArkaPlanRengi);
+            Assert.Equal(expected, badge.GuvenliArkaPlanRengi);
+        }
+
+        [Fact]
+        public void ToBadges_DefaultTypes_HaveDistinctSafeColors()
+        {
+            var badges = CreateProductWithAllBadges().ToBadges();
+            var colors = badges
+                .Where(badge => badge.LocalizasyonKey is "Badge_LowStock" or "Badge_Campaign" or "Badge_Discount" or "Badge_NewProduct" or "Badge_Featured")
+                .Select(badge => badge.GuvenliArkaPlanRengi)
+                .ToArray();
+
+            Assert.Equal(5, colors.Length);
+            Assert.Equal(colors.Length, colors.Distinct(StringComparer.OrdinalIgnoreCase).Count());
+        }
+
+        [Fact]
+        public void ToBadges_EmptyOptionalBadge_IsDiscarded()
+        {
+            var card = new FilistinProje.Web.Models.ProductCardViewModel
+            {
+                StoktaVarMi = true,
+                Etiketler = [new ProductBadge("", "product-badge--custom", 6)]
+            };
+
+            Assert.Empty(card.ToBadges());
+        }
+
+        private static double GetContrastRatio(string first, string second)
+        {
+            static double Luminance(string color)
+            {
+                static double Linear(int channel)
+                {
+                    var value = channel / 255d;
+                    return value <= 0.04045 ? value / 12.92 : Math.Pow((value + 0.055) / 1.055, 2.4);
+                }
+
+                return (0.2126 * Linear(Convert.ToInt32(color[1..3], 16)))
+                    + (0.7152 * Linear(Convert.ToInt32(color[3..5], 16)))
+                    + (0.0722 * Linear(Convert.ToInt32(color[5..7], 16)));
+            }
+
+            var firstLuminance = Luminance(first);
+            var secondLuminance = Luminance(second);
+            return (Math.Max(firstLuminance, secondLuminance) + 0.05)
+                / (Math.Min(firstLuminance, secondLuminance) + 0.05);
         }
 
         [Theory]

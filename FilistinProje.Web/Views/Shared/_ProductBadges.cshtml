@@ -6,12 +6,17 @@
     <div class="product-badge-group" data-product-badges>
         @foreach (var badge in Model)
         {
-            var badgeText = !string.IsNullOrEmpty(badge.Metin)
-                ? badge.Metin
-                : Localizer[badge.LocalizasyonKey].Value;
-            var badgeStyle = string.IsNullOrWhiteSpace(badge.ArkaPlanRengi)
-                ? null
-                : $"background-color:{badge.ArkaPlanRengi};border-color:{badge.ArkaPlanRengi};color:{badge.YaziRengi}";
+            var badgeText = !string.IsNullOrWhiteSpace(badge.Metin)
+                ? badge.Metin.Trim()
+                : !string.IsNullOrWhiteSpace(badge.LocalizasyonKey)
+                    ? Localizer[badge.LocalizasyonKey].Value
+                    : string.Empty;
+            if (string.IsNullOrWhiteSpace(badgeText))
+            {
+                continue;
+            }
+
+            var badgeStyle = $"background-color:{badge.GuvenliArkaPlanRengi};border-color:{badge.GuvenliArkaPlanRengi};color:{badge.YaziRengi}";
             <span class="product-badge @badge.CssClass"
                   style="@badgeStyle"
                   data-badge-key="@badge.LocalizasyonKey">

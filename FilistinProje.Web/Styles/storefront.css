@@ -1504,13 +1504,13 @@
   }
 
   .product-badge--custom { @apply border-brand-olive bg-brand-olive text-white; }
-  .product-badge--featured { @apply border-yellow-300 bg-yellow-300 text-yellow-950; }
-  .product-badge--new { @apply border-red-600 bg-red-600 text-white; }
+  .product-badge--featured { @apply border-yellow-300 bg-yellow-300 text-black; }
+  .product-badge--new { @apply border-red-700 bg-red-700 text-white; }
   .product-badge--campaign { @apply border-violet-700 bg-violet-700 text-white; }
-  .product-badge--discount { @apply border-orange-600 bg-orange-600 text-white; }
-  .product-badge--whatsapp { @apply border-emerald-600 bg-emerald-600 text-white; }
+  .product-badge--discount { @apply border-orange-700 bg-orange-700 text-white; }
+  .product-badge--whatsapp { @apply border-emerald-700 bg-emerald-700 text-white; }
   .product-badge--wholesale { @apply border-green-800 bg-green-800 text-white; }
-  .product-badge--low { @apply border-rose-700 bg-rose-700 text-white; }
+  .product-badge--low { @apply border-fuchsia-700 bg-fuchsia-700 text-white; }
   .product-badge--out { @apply border-stone-700 bg-stone-700 text-white; }
 }
 
