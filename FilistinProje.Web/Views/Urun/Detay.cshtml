@@ -348,23 +348,7 @@
                     </div>
                 }
 
-                @if (badges.Any())
-                {
-                    <div class="pointer-events-none absolute start-2 top-2 z-10 flex flex-col gap-1.5">
-                        @foreach (var badge in badges)
-                        {
-                            var badgeText = !string.IsNullOrEmpty(badge.Metin)
-                                ? badge.Metin
-                                : Localizer[badge.LocalizasyonKey].Value;
-                            var badgeStyle = string.IsNullOrWhiteSpace(badge.ArkaPlanRengi)
-                                ? null
-                                : $"background-color:{badge.ArkaPlanRengi};border-color:{badge.ArkaPlanRengi};color:{badge.YaziRengi}";
-                            <span class="product-badge @badge.CssClass" style="@badgeStyle">
-                                @badgeText
-                            </span>
-                        }
-                    </div>
-                }
+                @await Html.PartialAsync("_ProductBadges", badges)
 
                 @* Galeri ok tu�lar� � RTL/LTR uyumlu (mant�ksal prev/next; start/end always visual)
                    Mant�ksal olarak prev/next tipleri i�in ui ikonu locale g�re ters �evrilir. *@

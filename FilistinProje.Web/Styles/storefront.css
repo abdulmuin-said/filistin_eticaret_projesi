@@ -1494,10 +1494,16 @@
     transform: translateY(0);
   }
 
-  .product-badge {
-    @apply rounded-full border px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider shadow-sm;
+  .product-badge-group {
+    @apply pointer-events-none absolute start-2 top-2 z-10 flex max-w-[calc(100%-3.5rem)] flex-wrap content-start gap-1;
   }
 
+  .product-badge {
+    @apply inline-flex max-w-full items-center rounded-full border px-2 py-0.5 text-[9px] font-extrabold uppercase leading-tight tracking-wide shadow-sm sm:px-2.5 sm:py-1 sm:text-[10px];
+    overflow-wrap: anywhere;
+  }
+
+  .product-badge--custom { @apply border-brand-olive bg-brand-olive text-white; }
   .product-badge--featured { @apply border-yellow-300 bg-yellow-300 text-yellow-950; }
   .product-badge--new { @apply border-red-600 bg-red-600 text-white; }
   .product-badge--campaign { @apply border-violet-700 bg-violet-700 text-white; }

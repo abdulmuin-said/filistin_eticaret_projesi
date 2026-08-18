@@ -25,17 +25,14 @@ namespace FilistinProje.Web.Models
         public DateTime? KampanyaBitisTarihi { get; set; }
         public bool IsWholesale { get; set; }
 
-        // Ekstra: kart davranışını değiştiren opsiyonel bayraklar
-        public string? BadgeText { get; set; }      // Özel rozet metni (ör: "5 Parça")
-        public bool ShowFavori { get; set; } = true; // Favori butonu gösterilsin mi?
-        public bool ShowQuickAdd { get; set; } = true; // Sepete Ekle overlay gösterilsin mi?
+        public string? BadgeText { get; set; }
+        public bool ShowFavori { get; set; } = true;
+        public bool ShowQuickAdd { get; set; } = true;
         public bool WhatsappSiparisVarMi { get; set; }
         public bool WhatsappSiparisModu => FiyatGizliMi || WhatsappSiparisVarMi;
 
-        // Ürün kartında gösterilecek etiketler (maks 4 adet, öncelik sırasına göre)
         public List<ProductBadge> Etiketler { get; set; } = new();
 
-        // Admin bayrakları (etiket oluşturmak için kullanılır)
         public bool OneCikanMi { get; set; }
         public bool KampanyaliMi { get; set; }
         public string OneCikanEtiketRengi { get; set; } = "#D6AB5B";
@@ -45,95 +42,31 @@ namespace FilistinProje.Web.Models
 
         public List<ProductBadge> ToBadges(bool stoktaYokSatisIzni = false)
         {
-            var badges = new List<ProductBadge>();
-
-            bool stoktaVar = stoktaYokSatisIzni || StoktaVarMi;
-
-            if (!stoktaVar)
+            var digerEtiketler = Etiketler.AsEnumerable();
+            if (!string.IsNullOrWhiteSpace(BadgeText))
             {
-                badges.Add(new ProductBadge(
-                    metin: "",
-                    cssClass: "product-badge--out",
-                    oncelik: 1,
-                    locKey: "Badge_OutOfStock"
-                ));
-                return badges;
+                digerEtiketler = digerEtiketler.Append(new ProductBadge(BadgeText, "product-badge--custom", 6));
             }
 
-            if (ToplamStok >= 1 && ToplamStok <= 4)
+            return ProductBadgeBuilder.Build(new ProductBadgeContext
             {
-                badges.Add(new ProductBadge(
-                    metin: "",
-                    cssClass: "product-badge--low",
-                    oncelik: 1,
-                    locKey: "Badge_LowStock"
-                ));
-            }
-
-            if (KampanyaliMi &&
-                (!KampanyaBitisTarihi.HasValue || KampanyaBitisTarihi.Value > DateTime.UtcNow))
-            {
-                badges.Add(new ProductBadge(
-                    metin: "",
-                    cssClass: "product-badge--campaign",
-                    oncelik: 2,
-                    locKey: "Badge_Campaign",
-                    arkaPlanRengi: KampanyaEtiketRengi
-                ));
-            }
-
-            if (!FiyatGizliMi && IndirimVarMi)
-            {
-                badges.Add(new ProductBadge(
-                    metin: $"-{IndirimYuzdesi}%",
-                    cssClass: "product-badge--discount",
-                    oncelik: 3,
-                    locKey: "Badge_Discount",
-                    arkaPlanRengi: IndirimEtiketRengi
-                ));
-            }
-
-            if (!FiyatGizliMi && TopFiyat.HasValue && TopFiyat.Value > 0)
-            {
-                badges.Add(new ProductBadge("", "product-badge--wholesale", 4, "Badge_Wholesale"));
-            }
-
-            if (YeniUrunMu)
-            {
-                badges.Add(new ProductBadge(
-                    metin: "",
-                    cssClass: "product-badge--new",
-                    oncelik: 4,
-                    locKey: "Badge_NewProduct",
-                    arkaPlanRengi: YeniUrunEtiketRengi
-                ));
-            }
-
-            if (OneCikanMi && badges.Count < 3)
-            {
-                badges.Add(new ProductBadge(
-                    metin: "",
-                    cssClass: "product-badge--featured",
-                    oncelik: 5,
-                    locKey: "Badge_Featured",
-                    arkaPlanRengi: OneCikanEtiketRengi
-                ));
-            }
-
-            if (WhatsappSiparisModu && badges.Count < 4)
-            {
-                badges.Add(new ProductBadge(
-                    metin: "",
-                    cssClass: "product-badge--whatsapp",
-                    oncelik: 6,
-                    locKey: "Badge_WhatsappOrder"
-                ));
-            }
-
-            return badges
-                .OrderBy(b => b.Oncelik)
-                .Take(4)
-                .ToList();
+                StoktaVarMi = StoktaVarMi,
+                ToplamStok = ToplamStok,
+                KampanyaliMi = KampanyaliMi,
+                KampanyaBitisTarihi = KampanyaBitisTarihi,
+                FiyatGizliMi = FiyatGizliMi,
+                IndirimVarMi = IndirimVarMi,
+                IndirimYuzdesi = IndirimYuzdesi,
+                ToptanFiyatVarMi = TopFiyat.HasValue && TopFiyat.Value > 0,
+                YeniUrunMu = YeniUrunMu,
+                OneCikanMi = OneCikanMi,
+                WhatsappSiparisModu = WhatsappSiparisModu,
+                OneCikanEtiketRengi = OneCikanEtiketRengi,
+                YeniUrunEtiketRengi = YeniUrunEtiketRengi,
+                KampanyaEtiketRengi = KampanyaEtiketRengi,
+                IndirimEtiketRengi = IndirimEtiketRengi,
+                DigerEtiketler = digerEtiketler
+            }, stoktaYokSatisIzni);
         }
     }
 }

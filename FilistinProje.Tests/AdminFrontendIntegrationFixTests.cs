@@ -104,6 +104,108 @@ namespace FilistinProje.Tests
             Assert.Contains(urun.ToBadges(), badge => badge.LocalizasyonKey == "Badge_NewProduct");
         }
 
+        [Fact]
+        public void ToBadges_AllMatchingBadges_AreUniqueAndOrdered()
+        {
+            var urun = CreateProductWithAllBadges();
+
+            var badgeKeys = urun.ToBadges().Select(x => x.LocalizasyonKey).ToArray();
+
+            Assert.Equal(new[]
+            {
+                "Badge_LowStock",
+                "Badge_Campaign",
+                "Badge_Discount",
+                "Badge_NewProduct",
+                "Badge_Featured",
+                "Badge_Wholesale",
+                "Badge_WhatsappOrder"
+            }, badgeKeys);
+            Assert.Equal(badgeKeys.Length, badgeKeys.Distinct(StringComparer.OrdinalIgnoreCase).Count());
+        }
+
+        [Fact]
+        public void ToBadges_OutOfStock_KeepsOtherMatchingBadges()
+        {
+            var urun = CreateProductWithAllBadges();
+            urun.StokDurumu = "Tukendi";
+            urun.UrunSecenek.Clear();
+
+            var badgeKeys = urun.ToBadges().Select(x => x.LocalizasyonKey).ToArray();
+
+            Assert.Equal("Badge_OutOfStock", badgeKeys[0]);
+            Assert.Contains("Badge_Campaign", badgeKeys);
+            Assert.Contains("Badge_Discount", badgeKeys);
+            Assert.Contains("Badge_NewProduct", badgeKeys);
+            Assert.Contains("Badge_Featured", badgeKeys);
+        }
+
+        [Fact]
+        public void ToBadges_EntityAndCardViewModel_ProduceSameStandardBadges()
+        {
+            var urun = CreateProductWithAllBadges();
+            var card = new FilistinProje.Web.Models.ProductCardViewModel
+            {
+                Fiyat = urun.Fiyat,
+                IndirimliFiyat = urun.IndirimliFiyat,
+                TopFiyat = urun.TopFiyat,
+                IndirimVarMi = urun.IndirimVarMi,
+                IndirimYuzdesi = urun.IndirimYuzdesi,
+                YeniUrunMu = urun.YeniUrunMu,
+                StoktaVarMi = urun.StoktaVarMi,
+                ToplamStok = urun.ToplamStok,
+                KampanyaliMi = urun.KampanyaliMi,
+                KampanyaBitisTarihi = urun.KampanyaBitisTarihi,
+                OneCikanMi = urun.OneCikanMi,
+                WhatsappSiparisVarMi = urun.WhatsappSiparisVarMi,
+                OneCikanEtiketRengi = urun.OneCikanEtiketRengi,
+                YeniUrunEtiketRengi = urun.YeniUrunEtiketRengi,
+                KampanyaEtiketRengi = urun.KampanyaEtiketRengi,
+                IndirimEtiketRengi = urun.IndirimEtiketRengi
+            };
+
+            Assert.Equal(
+                urun.ToBadges().Select(x => x.LocalizasyonKey),
+                card.ToBadges().Select(x => x.LocalizasyonKey));
+        }
+
+        [Fact]
+        public void ToBadges_DuplicateOptionalBadges_AreRenderedOnce()
+        {
+            var card = new FilistinProje.Web.Models.ProductCardViewModel
+            {
+                StoktaVarMi = true,
+                BadgeText = "Limited edition",
+                Etiketler =
+                [
+                    new ProductBadge("Limited edition", "product-badge--custom", 6),
+                    new ProductBadge("", "product-badge--featured", 6, "Badge_Featured"),
+                    new ProductBadge("", "product-badge--featured", 6, "Badge_Featured")
+                ]
+            };
+
+            var badges = card.ToBadges();
+
+            Assert.Single(badges, x => x.Metin == "Limited edition");
+            Assert.Single(badges, x => x.LocalizasyonKey == "Badge_Featured");
+        }
+
+        private static Urun CreateProductWithAllBadges() => new()
+        {
+            StokDurumu = "Stokta",
+            Fiyat = 100m,
+            IndirimliFiyat = 80m,
+            TopFiyat = 70m,
+            KampanyaliMi = true,
+            YeniUrunMu = true,
+            OneCikanMi = true,
+            WhatsappSiparisVarMi = true,
+            UrunSecenek =
+            [
+                new UrunSecenek { StokAdedi = 3, AktifMi = true }
+            ]
+        };
+
         // --- 2. SEPET BİRLEŞTİRME GERÇEK SERVİS TESTLERİ (POST-AUDIT-001) ---
 
         [Fact]
