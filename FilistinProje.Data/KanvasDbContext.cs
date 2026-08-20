@@ -17,6 +17,7 @@ namespace FilistinProje.Data
         public DbSet<Kategori> Kategoriler { get; set; }
         public DbSet<Urun> Urunler { get; set; }
         public DbSet<UrunSecenek> UrunSecenekleri { get; set; }
+        public DbSet<UrunHediyePaketSecenegi> UrunHediyePaketSecenekleri { get; set; }
         public DbSet<UrunResim> UrunResimleri { get; set; }
         public DbSet<UrunOzellikTanimi> UrunOzellikTanimlari { get; set; }
         public DbSet<UrunOzellikDegeri> UrunOzellikDegerleri { get; set; }
@@ -104,6 +105,20 @@ namespace FilistinProje.Data
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
+            modelBuilder.Entity<UrunHediyePaketSecenegi>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Ad).HasMaxLength(150);
+                entity.Property(e => e.AdEn).HasMaxLength(150);
+                entity.Property(e => e.AdAr).HasMaxLength(150);
+                entity.Property(e => e.Fiyat).HasPrecision(18, 2);
+                entity.HasIndex(e => new { e.UrunId, e.Sira });
+                entity.HasOne(e => e.Urun)
+                    .WithMany(e => e.HediyePaketSecenekleri)
+                    .HasForeignKey(e => e.UrunId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
             modelBuilder.Entity<UrunResim>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -167,6 +182,11 @@ namespace FilistinProje.Data
                 entity.HasOne(e => e.UrunSecenek)
                     .WithMany()
                     .HasForeignKey(e => e.UrunSecenekId);
+                entity.HasOne(e => e.HediyePaketSecenegi)
+                    .WithMany()
+                    .HasForeignKey(e => e.HediyePaketSecenegiId)
+                    .OnDelete(DeleteBehavior.SetNull)
+                    .HasConstraintName("FK_SiparisDetaylari_HediyePaketSecenekleri");
             });
 
             modelBuilder.Entity<Sepet>(entity =>
@@ -200,6 +220,11 @@ namespace FilistinProje.Data
                 entity.HasOne(e => e.UrunSecenek)
                     .WithMany()
                     .HasForeignKey(e => e.UrunSecenekId);
+                entity.HasOne(e => e.HediyePaketSecenegi)
+                    .WithMany()
+                    .HasForeignKey(e => e.HediyePaketSecenegiId)
+                    .OnDelete(DeleteBehavior.SetNull)
+                    .HasConstraintName("FK_SepetItems_HediyePaketSecenekleri");
             });
 
             modelBuilder.Entity<Adres>(entity =>

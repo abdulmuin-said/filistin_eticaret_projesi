@@ -52,16 +52,53 @@ WHERE "Id" = 13;
 --         WHERE "Id" = 53 AND "StokAdedi" >= 1;
 --    Eger "StokAdedi" < 1 ise affected_rows = 0 → StokDusAsync Basarili = false → transaction rollback.
 
--- 8) Hediye paketi (B13) tekil kayit:
---    Tek satir SepeteEkle'de Urun.HediyePaketFiyati * Adet = toplama dahildir.
---    Sipariş POST'unda ayri bir hediye bedeli eklemesi YAPILMAZ.
+-- 8) Coklu hediye paketi (B13): paket bedeli adet basina uygulanir.
+--    Toplam = UrunBirim * Adet + PaketBirim * Adet. Checkout paketi DB'den yeniden okur.
 SELECT
-  "Id", "UrunId", "Adet", "Fiyat", "HediyePaketi", "HediyePaketFiyati",
-  -- Toplam formülü: (Fiyat * Adet) + (HediyePaketi ? HediyePaketFiyati * Adet : 0)
-  ("Fiyat" * "Adet" + (CASE WHEN "HediyePaketi" THEN "HediyePaketFiyati" * "Adet" ELSE 0 END)) AS Toplam
-FROM "SepetItems"
-WHERE "SilindiMi" = false
-ORDER BY "Id";
+  s."Id", s."UrunId", s."Adet", s."Fiyat", s."HediyePaketSecenegiId",
+  s."HediyePaketAdi", s."HediyePaketFiyati",
+  (s."Fiyat" * s."Adet" + (CASE WHEN s."HediyePaketSecenegiId" IS NOT NULL THEN s."HediyePaketFiyati" * s."Adet" ELSE 0 END)) AS "Toplam",
+  p."Fiyat" AS "GuncelSunucuPaketFiyati",
+  p."AktifMi" AS "PaketAktifMi"
+FROM "SepetItems" s
+LEFT JOIN "UrunHediyePaketSecenekleri" p ON p."Id" = s."HediyePaketSecenegiId"
+WHERE s."SilindiMi" = false
+ORDER BY s."Id";
+
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1
+    FROM "SepetItems" s
+    JOIN "UrunHediyePaketSecenekleri" p ON p."Id" = s."HediyePaketSecenegiId"
+    WHERE s."SilindiMi" = false AND p."UrunId" <> s."UrunId"
+  ) THEN
+    RAISE EXCEPTION 'Sepette baska urune ait paket secenegi bulundu';
+  END IF;
+
+  IF EXISTS (
+    SELECT 1
+    FROM "Urunler" u
+    WHERE (u."HediyePaketiVarMi" OR u."HediyePaketFiyati" > 0)
+      AND NOT EXISTS (
+        SELECT 1 FROM "UrunHediyePaketSecenekleri" p
+        WHERE p."UrunId" = u."Id" AND NOT p."SilindiMi"
+      )
+  ) THEN
+    RAISE EXCEPTION 'Legacy hediye paketi verisi yeni secenege tasinmamis';
+  END IF;
+
+  IF 2 * 100 + 2 * 15 <> 230 THEN
+    RAISE EXCEPTION 'Paket fiyati adet basina formulu bozuk';
+  END IF;
+END
+$$;
+
+-- Manipulasyon kontrolu: HTTP istegindeki fiyat alani kullanilmaz. Secim ID'si
+-- UrunId + AktifMi + SilindiMi ile dogrulanir; checkout p."Fiyat" degerini okur.
+SELECT p."Id", p."UrunId", p."Fiyat", p."AktifMi", p."SilindiMi"
+FROM "UrunHediyePaketSecenekleri" p
+ORDER BY p."UrunId", p."Sira", p."Id";
 
 -- 9) Tum stok dusum islemlerini gormek icin (transaction rollback dogrulamasi):
 --    Stok = 5, 3 ayri siparis, 2 tanesi basarili, 1 tanesi stok yetersiz:

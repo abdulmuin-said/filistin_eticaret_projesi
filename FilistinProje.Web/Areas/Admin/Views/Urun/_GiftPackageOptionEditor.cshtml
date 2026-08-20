@@ -1,0 +1,78 @@
+@model FilistinProje.Core.Varliklar.Urun
+@{
+    var options = (Model.HediyePaketSecenekleri ?? new List<FilistinProje.Core.Varliklar.UrunHediyePaketSecenegi>())
+        .Where(x => !x.SilindiMi)
+        .OrderBy(x => x.Sira)
+        .ThenBy(x => x.Id)
+        .ToList();
+}
+
+<div class="ca-card mt-4" style="border:1px solid var(--ca-border);">
+    <div class="ca-card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div>
+            <span class="ca-card-title">@Localizer["Admin_GiftPackageOptions"]</span>
+            <div class="small text-muted mt-1">@Localizer["Admin_GiftPackageOptionsHelp"]</div>
+        </div>
+        <button type="button" class="ca-btn ca-btn-primary ca-btn-sm" id="addGiftPackageOption"><i class="fas fa-plus"></i> @Localizer["Admin_AddGiftPackageOption"]</button>
+    </div>
+    <div class="ca-card-body">
+        <div id="giftPackageOptionEmpty" class="alert alert-light border mb-3 @(options.Count > 0 ? "d-none" : string.Empty)">@Localizer["Admin_NoGiftPackageOptions"]</div>
+        <div id="giftPackageOptionList" class="d-grid gap-3">
+            @for (var i = 0; i < options.Count; i++)
+            {
+                var option = options[i];
+                <div class="border rounded p-3" data-gift-package-option>
+                    <input type="hidden" data-gift-field="Id" name="HediyePaketSecenekleri[@i].Id" value="@option.Id" />
+                    <div class="row g-3 align-items-end">
+                        <div class="col-lg-3"><label class="ca-label">@Localizer["Admin_GiftPackageName"]</label><input class="ca-input" maxlength="150" data-gift-field="Ad" name="HediyePaketSecenekleri[@i].Ad" value="@option.Ad" /></div>
+                        <div class="col-lg-3"><label class="ca-label">@Localizer["Admin_GiftPackageNameEn"]</label><input class="ca-input" maxlength="150" lang="en" dir="ltr" data-gift-field="AdEn" name="HediyePaketSecenekleri[@i].AdEn" value="@option.AdEn" /></div>
+                        <div class="col-lg-3"><label class="ca-label">@Localizer["Admin_GiftPackageNameAr"]</label><input class="ca-input" maxlength="150" lang="ar" dir="rtl" data-gift-field="AdAr" name="HediyePaketSecenekleri[@i].AdAr" value="@option.AdAr" /></div>
+                        <div class="col-lg-1"><label class="ca-label">@Localizer["Admin_GiftWrapPrice"]</label><input class="ca-input" type="text" inputmode="decimal" data-decimal data-gift-field="Fiyat" name="HediyePaketSecenekleri[@i].Fiyat" value="@option.Fiyat.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" /></div>
+                        <div class="col-lg-1"><label class="ca-label">@Localizer["Admin_Sira"]</label><input class="ca-input" type="number" min="0" data-gift-field="Sira" name="HediyePaketSecenekleri[@i].Sira" value="@option.Sira" /></div>
+                        <div class="col-lg-1 d-flex align-items-center justify-content-between gap-2">
+                            <label class="form-check form-switch mb-0"><input class="form-check-input" type="checkbox" data-gift-field="AktifMi" name="HediyePaketSecenekleri[@i].AktifMi" value="true" @(option.AktifMi ? "checked" : null) /><input type="hidden" data-gift-false value="false" name="HediyePaketSecenekleri[@i].AktifMi" /></label>
+                            <button type="button" class="ca-btn ca-btn-outline ca-btn-sm" data-gift-remove title="@Localizer["Admin_Sil"]"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<template id="giftPackageOptionTemplate">
+    <div class="border rounded p-3" data-gift-package-option>
+        <input type="hidden" data-gift-field="Id" value="0" />
+        <div class="row g-3 align-items-end">
+            <div class="col-lg-3"><label class="ca-label">@Localizer["Admin_GiftPackageName"]</label><input class="ca-input" maxlength="150" data-gift-field="Ad" /></div>
+            <div class="col-lg-3"><label class="ca-label">@Localizer["Admin_GiftPackageNameEn"]</label><input class="ca-input" maxlength="150" lang="en" dir="ltr" data-gift-field="AdEn" /></div>
+            <div class="col-lg-3"><label class="ca-label">@Localizer["Admin_GiftPackageNameAr"]</label><input class="ca-input" maxlength="150" lang="ar" dir="rtl" data-gift-field="AdAr" /></div>
+            <div class="col-lg-1"><label class="ca-label">@Localizer["Admin_GiftWrapPrice"]</label><input class="ca-input" type="text" inputmode="decimal" data-decimal data-gift-field="Fiyat" value="0" /></div>
+            <div class="col-lg-1"><label class="ca-label">@Localizer["Admin_Sira"]</label><input class="ca-input" type="number" min="0" data-gift-field="Sira" value="0" /></div>
+            <div class="col-lg-1 d-flex align-items-center justify-content-between gap-2"><label class="form-check form-switch mb-0"><input class="form-check-input" type="checkbox" data-gift-field="AktifMi" value="true" checked /><input type="hidden" data-gift-false value="false" /></label><button type="button" class="ca-btn ca-btn-outline ca-btn-sm" data-gift-remove><i class="fas fa-trash"></i></button></div>
+        </div>
+    </div>
+</template>
+
+<script>
+(() => {
+    const list = document.getElementById('giftPackageOptionList');
+    const template = document.getElementById('giftPackageOptionTemplate');
+    const add = document.getElementById('addGiftPackageOption');
+    const empty = document.getElementById('giftPackageOptionEmpty');
+    if (!list || !template || !add) return;
+
+    const reindex = () => {
+        list.querySelectorAll('[data-gift-package-option]').forEach((row, index) => {
+            row.querySelectorAll('[data-gift-field]').forEach(input => input.name = `HediyePaketSecenekleri[${index}].${input.dataset.giftField}`);
+            const falseInput = row.querySelector('[data-gift-false]');
+            if (falseInput) falseInput.name = `HediyePaketSecenekleri[${index}].AktifMi`;
+        });
+        empty?.classList.toggle('d-none', list.children.length > 0);
+    };
+    const bind = row => row.querySelector('[data-gift-remove]')?.addEventListener('click', () => { row.remove(); reindex(); });
+    list.querySelectorAll('[data-gift-package-option]').forEach(bind);
+    add.addEventListener('click', () => { list.insertAdjacentHTML('beforeend', template.innerHTML); const row = list.lastElementChild; if (row) bind(row); reindex(); });
+    reindex();
+})();
+</script>

@@ -244,7 +244,7 @@ namespace FilistinProje.Web.Controllers
         [HttpPost("Ekle")]
         [HttpPost("/Sepet/Ekle")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Ekle(int UrunId, int? SecenekId, int Adet = 1, string? CerceveModeli = null, string? MusteriNotu = null, decimal? CerceveFarki = null, bool HediyePaketi = false, decimal? HediyePaketFiyati = null)
+        public async Task<IActionResult> Ekle(int UrunId, int? SecenekId, int Adet = 1, string? CerceveModeli = null, string? MusteriNotu = null, decimal? CerceveFarki = null, int? HediyePaketSecenegiId = null)
         {
             if (Adet < 1) Adet = 1;
             if (Adet > 100) Adet = 100;
@@ -257,7 +257,7 @@ namespace FilistinProje.Web.Controllers
             }
             var sessionId = HttpContext.Session.Id;
 
-            var success = await _sepetService.SepeteEkleAsync(userId, sessionId, UrunId, SecenekId, Adet, CerceveModeli, MusteriNotu, CerceveFarki, HediyePaketi, HediyePaketFiyati);
+            var success = await _sepetService.SepeteEkleAsync(userId, sessionId, UrunId, SecenekId, Adet, CerceveModeli, MusteriNotu, CerceveFarki, HediyePaketSecenegiId);
 
             if (success)
             {

@@ -59,6 +59,16 @@ namespace FilistinProje.Service.Services
                 pricing.KapidaOdemeHizmetBedeli = 0;
             }
 
+            if (pricing.GecersizHediyePaketiVar)
+            {
+                return new PlaceOrderResult
+                {
+                    Status = PlaceOrderStatus.ValidationError,
+                    Pricing = pricing,
+                    MessageKey = "Sepet_GiftPackageUnavailable"
+                };
+            }
+
             if (pricing.StokSorunuVar)
             {
                 return new PlaceOrderResult
@@ -210,8 +220,12 @@ namespace FilistinProje.Service.Services
                         UrunId = line.UrunId,
                         CerceveModeli = sourceItem.CerceveModeli,
                         MusteriNotu = sourceItem.MusteriNotu,
+                        HediyePaketSecenegiId = line.HediyePaketSecenegiId,
                         HediyePaketi = line.HediyePaketi,
                         HediyePaketFiyati = line.HediyePaketBirim,
+                        HediyePaketAdi = line.HediyePaketAdi,
+                        HediyePaketAdiEn = line.HediyePaketAdiEn,
+                        HediyePaketAdiAr = line.HediyePaketAdiAr,
                         SilindiMi = false
                     });
                 }

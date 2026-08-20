@@ -272,7 +272,7 @@
                                     }
                                     @if (item.HediyePaketi)
                                     {
-                                        <br /><small style="color:#b58735; font-weight:bold;">🎁 @Localizer["Admin_GiftPackage"] @(item.HediyePaketFiyati > 0 ? $" (+{item.HediyePaketFiyati:N2} ₪)" : "")</small>
+                                        <br /><small style="color:#b58735; font-weight:bold;">🎁 @(string.IsNullOrWhiteSpace(item.LocalizedHediyePaketAdi) ? Localizer["Admin_GiftPackage"].Value : item.LocalizedHediyePaketAdi) @(item.HediyePaketFiyati > 0 ? $" (+{item.HediyePaketFiyati:N2} ₪ / {Localizer["Piece"]})" : "")</small>
                                     }
                                     @if (!string.IsNullOrWhiteSpace(item.MusteriNotu))
                                     {

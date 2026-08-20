@@ -173,6 +173,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             var postedVariants = urun.UrunSecenek?.ToList() ?? new List<UrunSecenek>();
+            var postedGiftPackages = urun.HediyePaketSecenekleri?.ToList() ?? new List<UrunHediyePaketSecenegi>();
             var postedWholesaleTiers = urun.ToptanFiyatKademeleri?.ToList() ?? new List<UrunToptanFiyatKademesi>();
             var postedFeatureValues = urun.UrunOzellikleri?.ToList() ?? new List<UrunOzellikDegeri>();
             NormalizeProductInput(urun);
@@ -189,6 +190,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             urun.UrlYolu = SlugHelper.GenerateSlug(string.IsNullOrWhiteSpace(urun.UrlYolu) ? (!string.IsNullOrWhiteSpace(urun.BaslikEn) ? urun.BaslikEn : urun.Baslik) : urun.UrlYolu);
             urun.Slug = await GenerateUniqueProductSlugAsync(urun.Slug, urun.Baslik, urun.BaslikEn, null);
             urun.UrunSecenek = new List<UrunSecenek>();
+            urun.HediyePaketSecenekleri = new List<UrunHediyePaketSecenegi>();
             urun.UrunOzellikleri = new List<UrunOzellikDegeri>();
 
             if (resimDosyasi != null)
@@ -207,6 +209,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 await EnsureProductSkuAsync(urun);
                 await SyncVariantsAsync(urun, postedVariants);
+                await SyncGiftPackageOptionsAsync(urun, postedGiftPackages);
                 await _context.SaveChangesAsync();
                 await SyncWholesaleTiersAsync(urun, postedWholesaleTiers);
                 await SyncFeatureValuesAsync(urun, postedFeatureValues);
@@ -230,10 +233,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             var urun = await _context.Urunler
                 .Include(x => x.UrunSecenek)
+                .Include(x => x.HediyePaketSecenekleri)
                 .Include(x => x.ToptanFiyatKademeleri)
                 .Include(x => x.UrunOzellikleri)
                     .ThenInclude(x => x.UrunOzellikTanimi)
                 .Include(x => x.UrunResimleri)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (urun == null)
@@ -266,10 +271,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             var urun = await _context.Urunler
                 .Include(x => x.UrunSecenek)
+                .Include(x => x.HediyePaketSecenekleri)
                 .Include(x => x.ToptanFiyatKademeleri)
                 .Include(x => x.UrunOzellikleri)
                     .ThenInclude(x => x.UrunOzellikTanimi)
                 .Include(x => x.UrunResimleri)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (urun == null)
@@ -321,6 +328,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             await SyncVariantsAsync(urun, model.UrunSecenek);
+            await SyncGiftPackageOptionsAsync(urun, model.HediyePaketSecenekleri);
             await _context.SaveChangesAsync();
             await SyncWholesaleTiersAsync(urun, model.ToptanFiyatKademeleri);
             await EnsureProductSkuAsync(urun);
@@ -2321,6 +2329,7 @@ await _context.SaveChangesAsync();
                 nameof(Urun.ToptanciUrunGrubu),
                 nameof(Urun.UrunResimleri),
                 nameof(Urun.UrunSecenek),
+                nameof(Urun.HediyePaketSecenekleri),
                 nameof(Urun.UrunOzellikleri)
             };
 
@@ -2352,6 +2361,11 @@ await _context.SaveChangesAsync();
                 nameof(UrunSecenek.Urun)
             };
 
+            var optionalGiftPackageFields = new[]
+            {
+                nameof(UrunHediyePaketSecenegi.Urun)
+            };
+
             var optionalFeatureFields = new[]
             {
                 nameof(UrunOzellikDegeri.Urun),
@@ -2364,6 +2378,8 @@ await _context.SaveChangesAsync();
             {
                 if ((key.StartsWith("UrunSecenek[", StringComparison.Ordinal) &&
                      optionalVariantFields.Any(field => key.EndsWith("." + field, StringComparison.Ordinal))) ||
+                    (key.StartsWith("HediyePaketSecenekleri[", StringComparison.Ordinal) &&
+                     optionalGiftPackageFields.Any(field => key.EndsWith("." + field, StringComparison.Ordinal))) ||
                     (key.StartsWith("UrunOzellikleri[", StringComparison.Ordinal) &&
                      optionalFeatureFields.Any(field => key.EndsWith("." + field, StringComparison.Ordinal))))
                 {
@@ -2419,6 +2435,13 @@ await _context.SaveChangesAsync();
             urun.YeniUrunEtiketRengi ??= "#B33A3A";
             urun.KampanyaEtiketRengi ??= "#31543B";
             urun.IndirimEtiketRengi ??= "#B86A2F";
+
+            foreach (var option in urun.HediyePaketSecenekleri ?? Enumerable.Empty<UrunHediyePaketSecenegi>())
+            {
+                option.Ad ??= string.Empty;
+                option.AdEn ??= string.Empty;
+                option.AdAr ??= string.Empty;
+            }
 
             foreach (var variant in urun.UrunSecenek ?? Enumerable.Empty<UrunSecenek>())
             {
@@ -2491,6 +2514,7 @@ await _context.SaveChangesAsync();
             }
 
             ValidateVariants(urun.UrunSecenek);
+            ValidateGiftPackageOptions(urun.HediyePaketSecenekleri);
 
             return ModelState.IsValid;
         }
@@ -2544,11 +2568,6 @@ await _context.SaveChangesAsync();
             urun.PaketlemeBilgisi = urun.PaketlemeBilgisi?.Trim() ?? string.Empty;
             urun.StokDurumu = NormalizeStockStatus(urun.StokDurumu);
             urun.KdvOrani = urun.KdvOrani < 0 ? 0 : urun.KdvOrani;
-            urun.HediyePaketFiyati = Math.Max(0, urun.HediyePaketFiyati);
-            if (!urun.HediyePaketiVarMi)
-            {
-                urun.HediyePaketFiyati = 0;
-            }
             urun.MinSiparisAdedi = urun.MinSiparisAdedi < 1 ? 1 : urun.MinSiparisAdedi;
             urun.MaxSiparisAdedi = urun.MaxSiparisAdedi.HasValue && urun.MaxSiparisAdedi.Value < 1 ? null : urun.MaxSiparisAdedi;
             urun.IndirimliFiyat = urun.IndirimliFiyat.HasValue && urun.IndirimliFiyat.Value <= 0
@@ -2955,6 +2974,101 @@ await _context.SaveChangesAsync();
             return Task.CompletedTask;
         }
 
+        private Task SyncGiftPackageOptionsAsync(Urun urun, ICollection<UrunHediyePaketSecenegi>? incomingOptions)
+        {
+            var valid = (incomingOptions ?? new List<UrunHediyePaketSecenegi>())
+                .Where(IsMeaningfulGiftPackageOption)
+                .ToList();
+
+            for (var index = 0; index < valid.Count; index++)
+            {
+                var source = valid[index];
+                source.Ad = source.Ad.Trim();
+                source.AdEn = source.AdEn.Trim();
+                source.AdAr = source.AdAr.Trim();
+                source.Fiyat = decimal.Round(Math.Max(0, source.Fiyat), 2);
+                source.Sira = source.Sira > 0 ? source.Sira : index + 1;
+            }
+
+            var incomingIds = valid.Where(x => x.Id > 0).Select(x => x.Id).ToHashSet();
+            foreach (var removed in urun.HediyePaketSecenekleri.Where(x => x.Id > 0 && !incomingIds.Contains(x.Id)))
+            {
+                removed.AktifMi = false;
+                removed.SilindiMi = true;
+            }
+
+            foreach (var source in valid)
+            {
+                var target = source.Id > 0
+                    ? urun.HediyePaketSecenekleri.FirstOrDefault(x => x.Id == source.Id)
+                    : null;
+
+                if (target == null)
+                {
+                    if (source.Id > 0)
+                    {
+                        continue;
+                    }
+
+                    target = new UrunHediyePaketSecenegi
+                    {
+                        UrunId = urun.Id,
+                        OlusturulmaTarihi = DateTime.UtcNow
+                    };
+                    urun.HediyePaketSecenekleri.Add(target);
+                }
+
+                target.Ad = source.Ad;
+                target.AdEn = source.AdEn;
+                target.AdAr = source.AdAr;
+                target.Fiyat = source.Fiyat;
+                target.AktifMi = source.AktifMi;
+                target.Sira = source.Sira;
+                target.SilindiMi = false;
+            }
+
+            var legacyOption = urun.HediyePaketSecenekleri
+                .Where(x => !x.SilindiMi && x.AktifMi)
+                .OrderBy(x => x.Sira)
+                .ThenBy(x => x.Id)
+                .FirstOrDefault();
+            urun.HediyePaketiVarMi = legacyOption != null;
+            urun.HediyePaketFiyati = legacyOption?.Fiyat ?? 0;
+
+            return Task.CompletedTask;
+        }
+
+        private void ValidateGiftPackageOptions(ICollection<UrunHediyePaketSecenegi>? options)
+        {
+            var meaningful = (options ?? Array.Empty<UrunHediyePaketSecenegi>())
+                .Where(IsMeaningfulGiftPackageOption)
+                .ToList();
+
+            for (var index = 0; index < meaningful.Count; index++)
+            {
+                var option = meaningful[index];
+                var row = index + 1;
+                if (string.IsNullOrWhiteSpace(option.Ad) || string.IsNullOrWhiteSpace(option.AdEn) || string.IsNullOrWhiteSpace(option.AdAr))
+                {
+                    ModelState.AddModelError(string.Empty, string.Format(_localizer["Admin_GiftPackageNamesRequired"].Value, row));
+                }
+
+                if (option.Fiyat < 0)
+                {
+                    ModelState.AddModelError(string.Empty, string.Format(_localizer["Admin_GiftPackagePriceInvalid"].Value, row));
+                }
+            }
+        }
+
+        private static bool IsMeaningfulGiftPackageOption(UrunHediyePaketSecenegi? option)
+        {
+            return option != null && (option.Id > 0
+                || !string.IsNullOrWhiteSpace(option.Ad)
+                || !string.IsNullOrWhiteSpace(option.AdEn)
+                || !string.IsNullOrWhiteSpace(option.AdAr)
+                || option.Fiyat != 0);
+        }
+
         private Task SyncWholesaleTiersAsync(Urun urun, ICollection<UrunToptanFiyatKademesi>? incomingTiers)
         {
             var valid = (incomingTiers ?? new List<UrunToptanFiyatKademesi>())
@@ -3255,8 +3369,6 @@ await _context.SaveChangesAsync();
             target.AnaSayfadaGoster = source.AnaSayfadaGoster;
             target.WhatsappSiparisVarMi = source.WhatsappSiparisVarMi;
             target.FiyatGizliMi = source.FiyatGizliMi;
-            target.HediyePaketiVarMi = source.HediyePaketiVarMi;
-            target.HediyePaketFiyati = source.HediyePaketFiyati;
             target.MinSiparisAdedi = source.MinSiparisAdedi;
             target.MaxSiparisAdedi = source.MaxSiparisAdedi;
             target.KategoriId = source.KategoriId;

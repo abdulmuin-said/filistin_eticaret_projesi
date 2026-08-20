@@ -271,10 +271,12 @@ namespace FilistinProje.Web.Services
                         table.Cell().Background(bg).BorderBottom(1).BorderColor(Colors.Grey.Lighten3).Padding(5)
                             .Text($"₪ {satirToplam:N2}").FontSize(8).AlignRight().Bold();
 
-                        if (item.HediyePaketi && item.HediyePaketFiyati > 0)
+                        if (item.HediyePaketi)
                         {
+                            var giftNameAr = string.IsNullOrWhiteSpace(item.HediyePaketAdiAr) ? "تغليف هدية" : item.HediyePaketAdiAr;
+                            var giftNameEn = string.IsNullOrWhiteSpace(item.HediyePaketAdiEn) ? "Gift Wrap" : item.HediyePaketAdiEn;
                             table.Cell().ColumnSpan(4).Padding(2).PaddingLeft(10)
-                                .Text("🎁 تغليف هدية / Gift Wrap").FontSize(7).FontColor(Colors.Grey.Darken1).Italic();
+                                .Text($"🎁 {giftNameAr} / {giftNameEn}").FontSize(7).FontColor(Colors.Grey.Darken1).Italic();
                             table.Cell().Padding(2)
                                 .Text($"₪ {hediyeEk:N2}").FontSize(7).FontColor(Colors.Grey.Darken1).AlignRight();
                         }

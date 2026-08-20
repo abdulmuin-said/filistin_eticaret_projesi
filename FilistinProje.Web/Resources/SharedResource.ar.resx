@@ -5541,6 +5541,18 @@
   <data name="Admin_OfferGiftWrap" xml:space="preserve"><value>توفير تغليف الهدايا</value></data>
   <data name="Admin_OfferGiftWrapHelp" xml:space="preserve"><value>يمكن للعملاء إضافة تغليف الهدايا من صفحة المنتج.</value></data>
   <data name="Admin_GiftWrapPrice" xml:space="preserve"><value>سعر تغليف الهدية</value></data>
+  <data name="GiftPackageType" xml:space="preserve"><value>خيار التغليف</value></data>
+  <data name="NoGiftPackage" xml:space="preserve"><value>بدون تغليف</value></data>
+  <data name="Sepet_GiftPackageUnavailable" xml:space="preserve"><value>خيار التغليف المحدد لم يعد متاحاً. يرجى تحديث سلة التسوق.</value></data>
+  <data name="Admin_GiftPackageOptions" xml:space="preserve"><value>خيارات التغليف</value></data>
+  <data name="Admin_GiftPackageOptionsHelp" xml:space="preserve"><value>عرّف عدة أنواع من التغليف. يُطبّق السعر على كل قطعة.</value></data>
+  <data name="Admin_AddGiftPackageOption" xml:space="preserve"><value>إضافة خيار تغليف</value></data>
+  <data name="Admin_NoGiftPackageOptions" xml:space="preserve"><value>لم تتم إضافة خيارات تغليف.</value></data>
+  <data name="Admin_GiftPackageName" xml:space="preserve"><value>الاسم الأساسي</value></data>
+  <data name="Admin_GiftPackageNameEn" xml:space="preserve"><value>الاسم بالإنجليزية</value></data>
+  <data name="Admin_GiftPackageNameAr" xml:space="preserve"><value>الاسم بالعربية</value></data>
+  <data name="Admin_GiftPackageNamesRequired" xml:space="preserve"><value>خيار التغليف {0}: الأسماء الثلاثة مطلوبة.</value></data>
+  <data name="Admin_GiftPackagePriceInvalid" xml:space="preserve"><value>خيار التغليف {0}: لا يمكن أن يكون السعر سالباً.</value></data>
   <data name="Admin_InvalidProductImageUpload" xml:space="preserve"><value>ارفع صورة صالحة بصيغة JPG أو PNG أو WEBP ولا يزيد حجمها عن 10 ميجابايت.</value></data>
   <data name="Home_CategoriesTitle" xml:space="preserve"><value>تسوق حسب الفئة</value></data>
   <data name="Home_AllCategories" xml:space="preserve"><value>عرض جميع الفئات</value></data>

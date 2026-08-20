@@ -15,10 +15,15 @@ namespace FilistinProje.Core.DTOs
         /// <summary>Satır başına (adet 1) server-side hesaplanmış birim fiyat.</summary>
         public decimal BirimFiyat { get; set; }
 
+        public int? HediyePaketSecenegiId { get; set; }
+
         /// <summary>Hediye paketi satır başına birim bedel.</summary>
         public decimal HediyePaketBirim { get; set; }
 
         public bool HediyePaketi { get; set; }
+        public string HediyePaketAdi { get; set; } = string.Empty;
+        public string HediyePaketAdiEn { get; set; } = string.Empty;
+        public string HediyePaketAdiAr { get; set; } = string.Empty;
 
         public int Adet { get; set; }
 
@@ -63,6 +68,7 @@ namespace FilistinProje.Core.DTOs
         public List<PriceChangedEntry> FiyatDegisiklikleri { get; set; } = new();
         public List<StockShortageEntry> StokYetersizlikleri { get; set; } = new();
         public List<string> LimitAsimlari { get; set; } = new();
+        public List<int> GecersizHediyePaketSecenegiIds { get; set; } = new();
 
         public decimal AraToplam { get; set; }
         public decimal IndirimTutari { get; set; }
@@ -78,6 +84,7 @@ namespace FilistinProje.Core.DTOs
 
         public bool StokSorunuVar => StokYetersizlikleri.Count > 0;
         public bool LimitSorunuVar => LimitAsimlari.Count > 0;
+        public bool GecersizHediyePaketiVar => GecersizHediyePaketSecenegiIds.Count > 0;
         public bool FiyatDegistiMi => FiyatDegisiklikleri.Count > 0;
     }
 

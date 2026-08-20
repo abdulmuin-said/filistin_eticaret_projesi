@@ -151,9 +151,15 @@ namespace FilistinProje.Web.Controllers
                         : (string.IsNullOrWhiteSpace(x.UrunSecenek.VaryantBasligi) ? _localizer["Profil_DefaultVariant"].Value : x.UrunSecenek.VaryantBasligi),
                     SecenekDetay = x.UrunSecenek?.VaryantOzeti ?? string.Empty,
                     CerceveModeli = x.CerceveModeli,
+                    HediyePaketi = x.HediyePaketi,
+                    HediyePaketFiyati = x.HediyePaketFiyati,
+                    HediyePaketAdi = x.HediyePaketAdi,
+                    HediyePaketAdiEn = x.HediyePaketAdiEn,
+                    HediyePaketAdiAr = x.HediyePaketAdiAr,
+                    LocalizedHediyePaketAdi = x.LocalizedHediyePaketAdi,
                     Adet = x.Adet,
                     Fiyat = x.BirimFiyat,
-                    Toplam = x.Adet * x.BirimFiyat,
+                    Toplam = (x.Adet * x.BirimFiyat) + (x.HediyePaketi ? x.HediyePaketFiyati * x.Adet : 0),
                     UrunId = x.Urun!.Id,
                     MusteriNotu = x.MusteriNotu
                 })
@@ -584,7 +590,15 @@ namespace FilistinProje.Web.Controllers
             foreach (var item in detaylar)
             {
                 var productName = WebUtility.HtmlEncode(item.Urun?.Baslik ?? _localizer["Siparis_EmailProduct"].Value);
-                var variant = WebUtility.HtmlEncode(item.UrunSecenek?.VaryantOzeti ?? item.CerceveModeli ?? string.Empty);
+                var variantParts = new List<string>();
+                var variantText = item.UrunSecenek?.VaryantOzeti ?? item.CerceveModeli ?? string.Empty;
+                if (!string.IsNullOrWhiteSpace(variantText)) variantParts.Add(variantText);
+                if (item.HediyePaketi)
+                {
+                    var packageName = string.IsNullOrWhiteSpace(item.LocalizedHediyePaketAdi) ? _localizer["GiftWrap"].Value : item.LocalizedHediyePaketAdi;
+                    variantParts.Add($"{packageName} (+{item.HediyePaketFiyati:N2} {currencySymbol})");
+                }
+                var variant = WebUtility.HtmlEncode(string.Join(" | ", variantParts));
                 var note = string.IsNullOrWhiteSpace(item.MusteriNotu)
                     ? string.Empty
                     : $"<div style='margin-top:4px; font-size:12px; color:#b58735;'>{_localizer["Profil_EmailNoteLabel"].Value} {WebUtility.HtmlEncode(item.MusteriNotu)}</div>";
@@ -597,7 +611,7 @@ namespace FilistinProje.Web.Controllers
                             {note}
                         </td>
                         <td style='padding:12px; border-bottom:1px solid #e5e2dc; text-align:center; color:#47473d;'>{item.Adet}</td>
-                        <td style='padding:12px; border-bottom:1px solid #e5e2dc; text-align:right; color:#313511; font-weight:600;'>{(item.Adet * item.BirimFiyat):N2} {currencySymbol}</td>
+                        <td style='padding:12px; border-bottom:1px solid #e5e2dc; text-align:right; color:#313511; font-weight:600;'>{((item.Adet * item.BirimFiyat) + (item.HediyePaketi ? item.HediyePaketFiyati * item.Adet : 0)):N2} {currencySymbol}</td>
                     </tr>");
             }
 

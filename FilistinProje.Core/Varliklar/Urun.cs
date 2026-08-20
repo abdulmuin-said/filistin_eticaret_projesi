@@ -75,6 +75,7 @@ namespace FilistinProje.Core.Varliklar
 
         public virtual ICollection<UrunResim> UrunResimleri { get; set; } = new List<UrunResim>();
         public virtual ICollection<UrunSecenek> UrunSecenek { get; set; } = new List<UrunSecenek>();
+        public virtual ICollection<UrunHediyePaketSecenegi> HediyePaketSecenekleri { get; set; } = new List<UrunHediyePaketSecenegi>();
         public virtual ICollection<UrunToptanFiyatKademesi> ToptanFiyatKademeleri { get; set; } = new List<UrunToptanFiyatKademesi>();
         public virtual ICollection<UrunOzellikDegeri> UrunOzellikleri { get; set; } = new List<UrunOzellikDegeri>();
 

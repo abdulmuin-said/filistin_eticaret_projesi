@@ -881,7 +881,7 @@ namespace FilistinProje.Web.Controllers
                 var urunAdi = System.Net.WebUtility.HtmlEncode(item.Urun?.Baslik ?? _localizer["Siparis_EmailProduct"].Value);
                 var detayMetni = System.Net.WebUtility.HtmlEncode(BuildOrderLineDetail(item));
                 var adet = item.Adet;
-                var fiyat = item.BirimFiyat * item.Adet;
+                var fiyat = (item.BirimFiyat * item.Adet) + (item.HediyePaketi ? item.HediyePaketFiyati * item.Adet : 0);
                 var notSatiri = !string.IsNullOrWhiteSpace(item.MusteriNotu)
                     ? $"<div style='margin-top:4px; font-size:12px; color:#b58735; font-style:italic;'>Not: {System.Net.WebUtility.HtmlEncode(item.MusteriNotu)}</div>"
                     : string.Empty;
@@ -990,7 +990,7 @@ namespace FilistinProje.Web.Controllers
                             {detayHtml}
                         </td>
                         <td style='padding:10px; border-top:1px solid #e5e2dc; text-align:center; color:#47473d;'>{item.Adet}</td>
-                        <td style='padding:10px; border-top:1px solid #e5e2dc; text-align:right; color:#313511; font-weight:600;'>{(item.BirimFiyat * item.Adet):N2} {currencySymbol}</td>
+                        <td style='padding:10px; border-top:1px solid #e5e2dc; text-align:right; color:#313511; font-weight:600;'>{((item.BirimFiyat * item.Adet) + (item.HediyePaketi ? item.HediyePaketFiyati * item.Adet : 0)):N2} {currencySymbol}</td>
                     </tr>");
             }
 
@@ -1027,8 +1027,11 @@ namespace FilistinProje.Web.Controllers
 
             if (item.HediyePaketi)
             {
-                var giftFeeText = item.HediyePaketFiyati > 0 ? $" (+{item.HediyePaketFiyati:N2} {GetCurrencySymbol()})" : string.Empty;
-                details.Add($"🎁 {_localizer["GiftWrap"].Value}{giftFeeText}");
+                var giftName = string.IsNullOrWhiteSpace(item.LocalizedHediyePaketAdi)
+                    ? _localizer["GiftWrap"].Value
+                    : item.LocalizedHediyePaketAdi;
+                var giftFeeText = item.HediyePaketFiyati > 0 ? $" (+{item.HediyePaketFiyati:N2} {GetCurrencySymbol()} / {_localizer["Piece"].Value})" : string.Empty;
+                details.Add($"🎁 {giftName}{giftFeeText}");
             }
 
             return string.Join(" | ", details);

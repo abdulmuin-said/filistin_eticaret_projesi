@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FilistinProje.Core.Varliklar
 {
@@ -35,8 +36,34 @@ namespace FilistinProje.Core.Varliklar
         [MaxLength(500)]
         public string? MusteriNotu { get; set; }
 
+        public int? HediyePaketSecenegiId { get; set; }
+        public UrunHediyePaketSecenegi? HediyePaketSecenegi { get; set; }
         public bool HediyePaketi { get; set; }
         public decimal HediyePaketFiyati { get; set; }
+
+        [MaxLength(150)]
+        public string HediyePaketAdi { get; set; } = string.Empty;
+
+        [MaxLength(150)]
+        public string HediyePaketAdiEn { get; set; } = string.Empty;
+
+        [MaxLength(150)]
+        public string HediyePaketAdiAr { get; set; } = string.Empty;
+
+        [NotMapped]
+        public string LocalizedHediyePaketAdi
+        {
+            get
+            {
+                var culture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+                return culture switch
+                {
+                    "ar" => !string.IsNullOrWhiteSpace(HediyePaketAdiAr) ? HediyePaketAdiAr : (!string.IsNullOrWhiteSpace(HediyePaketAdiEn) ? HediyePaketAdiEn : HediyePaketAdi),
+                    "en" => !string.IsNullOrWhiteSpace(HediyePaketAdiEn) ? HediyePaketAdiEn : (!string.IsNullOrWhiteSpace(HediyePaketAdiAr) ? HediyePaketAdiAr : HediyePaketAdi),
+                    _ => !string.IsNullOrWhiteSpace(HediyePaketAdiAr) ? HediyePaketAdiAr : (!string.IsNullOrWhiteSpace(HediyePaketAdiEn) ? HediyePaketAdiEn : HediyePaketAdi)
+                };
+            }
+        }
 
         // Toplam (Calculated property)
         public decimal Toplam => (Fiyat * Adet) + (HediyePaketi ? HediyePaketFiyati * Adet : 0);

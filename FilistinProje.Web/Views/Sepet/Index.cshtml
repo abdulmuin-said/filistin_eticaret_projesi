@@ -168,8 +168,8 @@
                             }
                             @if (item.HediyePaketi)
                             {
-                                <span class="inline-flex items-center gap-1 text-[10px] bg-brand-olive text-white font-semibold uppercase tracking-wider rounded-full px-2.5 py-0.5 mt-1">
-                                    <i class="fas fa-gift text-[10px]"></i> @Localizer["GiftWrapShort"]
+                                <span class="inline-flex items-center gap-1 text-[10px] bg-brand-olive text-white font-semibold rounded-full px-2.5 py-0.5 mt-1">
+                                    <i class="fas fa-gift text-[10px]"></i> @(string.IsNullOrWhiteSpace(item.LocalizedHediyePaketAdi) ? Localizer["GiftWrapShort"].Value : item.LocalizedHediyePaketAdi) (+@item.HediyePaketFiyati.ToString("N2") @currencySymbol / @Localizer["Piece"])
                                 </span>
                             }
 

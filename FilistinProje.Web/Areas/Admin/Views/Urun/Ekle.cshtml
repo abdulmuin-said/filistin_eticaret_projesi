@@ -246,26 +246,9 @@
                             </div>
                         </div>
 
-                        <div class="col-md-7">
-                            <div class="ca-toggle-box h-100">
-                                <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
-                                    <span>
-                                        <strong>@Localizer["Admin_OfferGiftWrap"]</strong><br>
-                                        <small class="text-muted">@Localizer["Admin_OfferGiftWrapHelp"]</small>
-                                    </span>
-                                    <input asp-for="HediyePaketiVarMi" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <label class="ca-label">@Localizer["Admin_GiftWrapPrice"]</label>
-                            <div class="input-group">
-                                <span class="input-group-text">₪</span>
-                                <input asp-for="HediyePaketFiyati" class="ca-input form-control" type="text" inputmode="decimal" data-decimal placeholder="0.00" />
-                            </div>
-                        </div>
                     </div>
 
+                    @await Html.PartialAsync("_GiftPackageOptionEditor", Model)
                     @await Html.PartialAsync("_FeatureEditor", Model)
                     @await Html.PartialAsync("_VariantEditor", Model.UrunSecenek)
                     @await Html.PartialAsync("_WholesaleTierEditor", Model)

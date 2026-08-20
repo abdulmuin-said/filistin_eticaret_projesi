@@ -27,7 +27,7 @@
         {
             <div class="flex gap-3">
                 <div class="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-brand-cream"><img src="@item.UrunResimUrl" alt="@item.UrunBaslik" class="h-full w-full object-cover" loading="lazy"><span class="absolute end-1 top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-olive px-1 text-[10px] font-bold text-white">@item.Adet</span></div>
-                <div class="min-w-0 flex-1"><h3 class="line-clamp-2 text-xs font-semibold leading-relaxed text-brand-darktext">@item.UrunBaslik</h3>@if (!string.IsNullOrWhiteSpace(item.SecenekAdi)) { <p class="mt-0.5 truncate text-[11px] text-brand-mutedtext">@item.SecenekAdi</p> }<p class="mt-1 text-xs font-semibold text-brand-olive">@item.Toplam.ToString("N2") @currencySymbol</p></div>
+                <div class="min-w-0 flex-1"><h3 class="line-clamp-2 text-xs font-semibold leading-relaxed text-brand-darktext">@item.UrunBaslik</h3>@if (!string.IsNullOrWhiteSpace(item.SecenekAdi)) { <p class="mt-0.5 truncate text-[11px] text-brand-mutedtext">@item.SecenekAdi</p> }@if (item.HediyePaketi) { <p class="mt-0.5 text-[11px] text-brand-gold"><i class="fas fa-gift me-1"></i>@(string.IsNullOrWhiteSpace(item.LocalizedHediyePaketAdi) ? Localizer["GiftWrap"].Value : item.LocalizedHediyePaketAdi) (+@item.HediyePaketFiyati.ToString("N2") @currencySymbol / @Localizer["Piece"])</p> }<p class="mt-1 text-xs font-semibold text-brand-olive">@item.Toplam.ToString("N2") @currencySymbol</p></div>
             </div>
         }
     </div>

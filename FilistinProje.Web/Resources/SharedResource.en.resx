@@ -5556,6 +5556,18 @@
   <data name="Admin_OfferGiftWrap" xml:space="preserve"><value>Offer gift wrapping</value></data>
   <data name="Admin_OfferGiftWrapHelp" xml:space="preserve"><value>Customers can add gift wrapping from the product page.</value></data>
   <data name="Admin_GiftWrapPrice" xml:space="preserve"><value>Gift wrap price</value></data>
+  <data name="GiftPackageType" xml:space="preserve"><value>Packaging option</value></data>
+  <data name="NoGiftPackage" xml:space="preserve"><value>No packaging</value></data>
+  <data name="Sepet_GiftPackageUnavailable" xml:space="preserve"><value>Selected packaging option is no longer available. Please update your cart.</value></data>
+  <data name="Admin_GiftPackageOptions" xml:space="preserve"><value>Packaging options</value></data>
+  <data name="Admin_GiftPackageOptionsHelp" xml:space="preserve"><value>Define multiple packaging types. Price applies per item.</value></data>
+  <data name="Admin_AddGiftPackageOption" xml:space="preserve"><value>Add packaging option</value></data>
+  <data name="Admin_NoGiftPackageOptions" xml:space="preserve"><value>No packaging options defined.</value></data>
+  <data name="Admin_GiftPackageName" xml:space="preserve"><value>Default name</value></data>
+  <data name="Admin_GiftPackageNameEn" xml:space="preserve"><value>English name</value></data>
+  <data name="Admin_GiftPackageNameAr" xml:space="preserve"><value>Arabic name</value></data>
+  <data name="Admin_GiftPackageNamesRequired" xml:space="preserve"><value>Packaging option {0}: all three names are required.</value></data>
+  <data name="Admin_GiftPackagePriceInvalid" xml:space="preserve"><value>Packaging option {0}: price cannot be negative.</value></data>
   <data name="Admin_InvalidProductImageUpload" xml:space="preserve"><value>Upload a valid JPG, PNG, or WEBP image no larger than 10 MB.</value></data>
   <data name="Home_CategoriesTitle" xml:space="preserve"><value>Shop by category</value></data>
   <data name="Home_AllCategories" xml:space="preserve"><value>View all categories</value></data>

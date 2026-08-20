@@ -397,6 +397,7 @@ namespace FilistinProje.Web.Controllers
                     .ThenInclude(x => x.ParentKategori)
                 .Include(x => x.UrunResimleri)
                 .Include(x => x.UrunSecenek)
+                .Include(x => x.HediyePaketSecenekleri)
                 .Include(x => x.ToptanFiyatKademeleri)
                 .Include(x => x.UrunOzellikleri)
                     .ThenInclude(x => x.UrunOzellikTanimi)

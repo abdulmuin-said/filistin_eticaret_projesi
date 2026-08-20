@@ -305,14 +305,14 @@
     </div>
 </div>
 
-<div class="container mx-auto px-4 py-10 lg:py-12">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-        <div class="space-y-4">
+<div class="container mx-auto px-4 py-6 lg:py-10">
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10 xl:gap-14">
+        <div class="min-w-0 space-y-4">
             @* ��� ANA MEDYA ALANI ���
                 Galeri + Video kar���k medya listesi. width/height CLS i�in explicit.
                 Keyboard ve touch swipe _Layout/globalmedia.js i�inde delegated. *@
             <div id="mainProductImageContainer"
-                 class="product-media group relative aspect-square overflow-hidden rounded-lg bg-brand-cream"
+                 class="product-media group relative mx-auto w-full overflow-hidden rounded-lg bg-brand-cream"
                  role="region"
                  aria-roledescription="image"
                  aria-label="@Localizer["ProductImage"]"
@@ -329,7 +329,7 @@
                          alt="@varsayilanGaleriAltMetni"
                          data-product-name="@Model.LocalizedBaslik"
                          width="800" height="800"
-                          class="main-product-image h-full w-full cursor-zoom-in object-contain p-4 transition-opacity duration-300 ease-out group-hover:opacity-95"
+                         class="main-product-image h-full w-full cursor-zoom-in object-contain p-3 transition-opacity duration-300 ease-out group-hover:opacity-95 sm:p-4"
                          onclick="openProductLightbox()"
                          loading="eager"
                          decoding="async"
@@ -579,17 +579,32 @@
                     </div>
                 }
 
-                @if (Model.HediyePaketiVarMi)
+                @{
+                    var hediyePaketSecenekleri = Model.HediyePaketSecenekleri
+                        .Where(x => x.AktifMi && !x.SilindiMi)
+                        .OrderBy(x => x.Sira)
+                        .ThenBy(x => x.Id)
+                        .ToList();
+                }
+                @if (hediyePaketSecenekleri.Count > 0)
                 {
                     <div class="rounded-2xl border border-brand-border bg-brand-cream p-4">
-                        <label class="flex cursor-pointer items-start gap-3">
-                            <input id="giftWrapCheckbox" type="checkbox" class="mt-1 h-4 w-4 accent-brand-gold" onchange="document.getElementById('giftNoteText')?.classList.toggle('hidden', !this.checked); updateSelectionSummary();" />
-                            <span class="flex-1">
-                                <span class="block text-sm font-semibold text-brand-olive">@Localizer["GiftWrap"] (+@Model.HediyePaketFiyati.ToString("N2") @currencySymbol)</span>
-                                <span class="mt-1 block text-xs text-brand-mutedtext">@Localizer["GiftWrapDesc"]</span>
-                            </span>
-                        </label>
-                        <input id="hediyePaketFiyatiHidden" type="hidden" value="@Model.HediyePaketFiyati.ToString(System.Globalization.CultureInfo.InvariantCulture)" />
+                        <label class="mb-3 block text-xs font-medium uppercase tracking-widest text-brand-darktext">@Localizer["GiftPackageType"]</label>
+                        <div class="grid gap-2 sm:grid-cols-2">
+                            <label class="cursor-pointer rounded-xl border border-brand-border bg-white px-3 py-3 text-sm transition hover:border-brand-gold has-[:checked]:border-brand-olive has-[:checked]:bg-brand-warmcream">
+                                <input type="radio" name="giftPackageOption" value="" data-price="0" class="gift-package-radio me-2 accent-brand-gold" checked />
+                                <span class="font-semibold text-brand-olive">@Localizer["NoGiftPackage"]</span>
+                            </label>
+                            @foreach (var paket in hediyePaketSecenekleri)
+                            {
+                                <label class="cursor-pointer rounded-xl border border-brand-border bg-white px-3 py-3 text-sm transition hover:border-brand-gold has-[:checked]:border-brand-olive has-[:checked]:bg-brand-warmcream">
+                                    <input type="radio" name="giftPackageOption" value="@paket.Id" data-price="@paket.Fiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)" class="gift-package-radio me-2 accent-brand-gold" />
+                                    <span class="font-semibold text-brand-olive">@paket.LocalizedAd</span>
+                                    <span class="ms-1 text-xs text-brand-mutedtext">(+@paket.Fiyat.ToString("N2") @currencySymbol / @Localizer["Piece"])</span>
+                                </label>
+                            }
+                        </div>
+                        <p class="mt-2 text-xs text-brand-mutedtext">@Localizer["GiftWrapDesc"]</p>
                         <textarea id="giftNoteText" maxlength="500" rows="2" class="mt-3 hidden w-full rounded-xl border border-brand-border bg-white p-3 text-sm" placeholder="@Localizer["GiftWrapDesc"]"></textarea>
                     </div>
                 }
@@ -814,12 +829,14 @@
 }
 
 <style>
+    #mainProductImageContainer { aspect-ratio: 4 / 3; height: clamp(17rem, 62vw, 32rem); max-height: 62vh; }
     .product-benefit-card { border: 1px solid #e5e2dc; background: #fff; padding: 1rem; }
     .product-benefit-card > i { color: #b58735; margin-bottom: .65rem; }
     .product-benefit-card h3 { color: var(--brand-primary); font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
     .product-benefit-card p { color: #47473d; font-size: .75rem; line-height: 1.5; margin-top: .35rem; }
     .product-detail-sections { margin-top: 5rem; }
     @@media (max-width: 1023px) { .product-detail-sections { margin-top: 3.5rem; } }
+    @@media (min-width: 1024px) { #mainProductImageContainer { height: clamp(24rem, 58vh, 34rem); max-height: calc(100vh - 12rem); } }
     @@media (max-width: 767px) {
         .product-purchase-actions {
             position: sticky;
@@ -1194,23 +1211,19 @@ function updateSelectionSummary() {
         summaryCerceveEl.textContent = cerceve || '@Localizer["SelectFrame"]';
     }
 
-    var giftPrice = 0;
-    var giftCheck = document.getElementById('giftWrapCheckbox');
-    if (giftCheck && giftCheck.checked) {
-        var giftPriceInput = document.getElementById('hediyePaketFiyatiHidden');
-        if (giftPriceInput) giftPrice = parseFloat(giftPriceInput.value) || 0;
-    }
+    var selectedGiftPackage = document.querySelector('.gift-package-radio:checked');
+    var giftPrice = selectedGiftPackage ? parseFloat(selectedGiftPackage.dataset.price || '0') || 0 : 0;
     var toplamBirimGift = toplamBirim + giftPrice;
     var toplamGift = toplamBirimGift * adet;
 
     var summaryFiyatEl = document.getElementById('summaryFiyat');
     if (summaryFiyatEl) {
-        summaryFiyatEl.textContent = window.formatMoney(toplamGift) + ' @currencySymbol';
+        summaryFiyatEl.textContent = window.formatMoney(toplamGift);
     }
 
     var summaryBirimFiyatEl = document.getElementById('summaryBirimFiyat');
     if (summaryBirimFiyatEl) {
-        summaryBirimFiyatEl.textContent = adet > 1 ? `(birim: ${window.formatMoney(toplamBirimGift)} @currencySymbol)` : '';
+        summaryBirimFiyatEl.textContent = adet > 1 ? `(birim: ${window.formatMoney(toplamBirimGift)})` : '';
     }
 
     var giftBadge = document.getElementById('summaryGiftBadge');
@@ -1225,43 +1238,13 @@ function updateSelectionSummary() {
     summary.classList.remove('hidden');
 }
 
-function toggleGiftWrap(container) {
-    var checkbox = container.querySelector('input[type="checkbox"]');
-    if (!checkbox) return;
-    checkbox.checked = !checkbox.checked;
-    
-    var hiddenInput = document.getElementById('hediyePaketiHidden');
-    if (hiddenInput) hiddenInput.value = checkbox.checked ? 'true' : 'false';
-    
-    var noteBlock = document.getElementById('giftNoteBlock');
-    if (noteBlock) {
-        if (checkbox.checked) {
-            noteBlock.classList.remove('hidden');
-        } else {
-            noteBlock.classList.add('hidden');
-        }
-    }
-    
-    updateSelectionSummary();
-    
-    var priceDisplay = document.getElementById('priceDisplay');
-    if (priceDisplay) {
-        var selectedVariant = document.querySelector('.variant-radio:checked');
-        if (selectedVariant) {
-            var basePrice = parseFloat(selectedVariant.getAttribute('data-price')) || 0;
-            var olcu = selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '';
-            var selectedFrame = document.querySelector('.frame-radio:checked');
-            var cerceve = selectedFrame ? selectedFrame.value : null;
-            var cerceveFarki = calcFrameFiyat(olcu, cerceve || 'Çerçevesiz');
-            var totalPrice = basePrice + cerceveFarki;
-            if (checkbox.checked) {
-                var giftPriceInput = document.getElementById('hediyePaketFiyatiHidden');
-                if (giftPriceInput) totalPrice += parseFloat(giftPriceInput.value) || 0;
-            }
-            priceDisplay.innerHTML = window.formatMoney(totalPrice) + ' @currencySymbol';
-        }
-    }
-}
+document.querySelectorAll('.gift-package-radio').forEach(function (radio) {
+    radio.addEventListener('change', function () {
+        var note = document.getElementById('giftNoteText');
+        if (note) note.classList.toggle('hidden', !this.value);
+        updatePriceWithFrame();
+    });
+});
 
 function updatePriceWithFrame() {
     var selectedVariant = document.querySelector('.variant-radio:checked');
@@ -1272,11 +1255,13 @@ function updatePriceWithFrame() {
     var olcu = selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '';
     var cerceve = selectedFrame ? selectedFrame.value : null;
     var cerceveFarki = calcFrameFiyat(olcu, cerceve || 'Çerçevesiz');
-    var newPrice = basePrice + cerceveFarki;
+    var selectedGiftPackage = document.querySelector('.gift-package-radio:checked');
+    var giftPrice = selectedGiftPackage ? parseFloat(selectedGiftPackage.dataset.price || '0') || 0 : 0;
+    var newPrice = basePrice + cerceveFarki + giftPrice;
 
     var priceDisplay = document.getElementById('priceDisplay');
     if (priceDisplay) {
-        priceDisplay.innerHTML = `${window.formatMoney(newPrice)} @currencySymbol`;
+        priceDisplay.innerHTML = window.formatMoney(newPrice);
     }
 
     var frameFarkiInput = document.getElementById('selectedFrameFarki');
@@ -1496,11 +1481,9 @@ if (ajaxSepetBtn) {
         if (cerceveModeli) params.append('CerceveModeli', cerceveModeli);
         if (cerceveFarki && cerceveFarki !== '0') params.append('CerceveFarki', cerceveFarki);
         
-        var hediyePaketiCheck = document.getElementById('giftWrapCheckbox');
-        if (hediyePaketiCheck && hediyePaketiCheck.checked) {
-            params.append('HediyePaketi', 'true');
-            var hediyeFiyat = document.getElementById('hediyePaketFiyatiHidden')?.value;
-            if (hediyeFiyat) params.append('HediyePaketFiyati', hediyeFiyat);
+        var selectedGiftPackage = document.querySelector('.gift-package-radio:checked');
+        if (selectedGiftPackage?.value) {
+            params.append('HediyePaketSecenegiId', selectedGiftPackage.value);
             var giftNote = document.getElementById('giftNoteText')?.value;
             if (giftNote) params.append('MusteriNotu', giftNote);
         }

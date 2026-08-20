@@ -59,7 +59,9 @@ namespace FilistinProje.Service.Services
             var urunler = await _context.Urunler
                 .AsNoTracking()
                 .Include(u => u.UrunSecenek)
+                .Include(u => u.HediyePaketSecenekleri)
                 .Include(u => u.ToptanFiyatKademeleri)
+                .AsSplitQuery()
                 .Where(u => urunIds.Contains(u.Id) && !u.SilindiMi)
                 .ToListAsync();
 
@@ -94,7 +96,7 @@ namespace FilistinProje.Service.Services
 
             // Sepet satırlarını grupla — aynı varyant birden fazla satırda olabilir.
             var grouped = sepetItems
-                .GroupBy(i => new { i.UrunId, i.UrunSecenekId, Cerceve = (i.CerceveModeli ?? string.Empty), i.HediyePaketi })
+                .GroupBy(i => new { i.UrunId, i.UrunSecenekId, Cerceve = (i.CerceveModeli ?? string.Empty), i.HediyePaketSecenegiId })
                 .ToList();
 
             foreach (var grp in grouped)
@@ -149,13 +151,22 @@ namespace FilistinProje.Service.Services
                 decimal birimFiyat = HesaplaBirimFiyat(urun, secenek, isWholesale, adetToplam, toptanciGrupIskonto);
                 decimal cerceveFark = HesaplaCerceveFarki(secenek, ornek.CerceveModeli);
 
-                decimal hediyeBirim = 0m;
-                bool hediyePaketi = ornek.HediyePaketi && urun.HediyePaketiVarMi;
-                if (hediyePaketi)
+                UrunHediyePaketSecenegi? hediyePaketSecenegi = null;
+                if (ornek.HediyePaketSecenegiId.HasValue)
                 {
-                    hediyeBirim = urun.HediyePaketFiyati;
+                    hediyePaketSecenegi = urun.HediyePaketSecenekleri.FirstOrDefault(x =>
+                        x.Id == ornek.HediyePaketSecenegiId.Value &&
+                        x.AktifMi &&
+                        !x.SilindiMi);
+                    if (hediyePaketSecenegi == null)
+                    {
+                        result.GecersizHediyePaketSecenegiIds.Add(ornek.HediyePaketSecenegiId.Value);
+                        continue;
+                    }
                 }
 
+                decimal hediyeBirim = hediyePaketSecenegi?.Fiyat ?? 0;
+                bool hediyePaketi = hediyePaketSecenegi != null;
                 decimal birimToplam = birimFiyat + cerceveFark;
                 decimal satirToplam = (birimToplam * adetToplam) + (hediyeBirim * adetToplam);
 
@@ -165,8 +176,12 @@ namespace FilistinProje.Service.Services
                     UrunId = urun.Id,
                     UrunSecenekId = ornek.UrunSecenekId,
                     BirimFiyat = birimFiyat + cerceveFark, // tek fiyat olarak sakla, çerçeve farkı entegre
+                    HediyePaketSecenegiId = hediyePaketSecenegi?.Id,
                     HediyePaketBirim = hediyeBirim,
                     HediyePaketi = hediyePaketi,
+                    HediyePaketAdi = hediyePaketSecenegi?.Ad ?? string.Empty,
+                    HediyePaketAdiEn = hediyePaketSecenegi?.AdEn ?? string.Empty,
+                    HediyePaketAdiAr = hediyePaketSecenegi?.AdAr ?? string.Empty,
                     Adet = adetToplam,
                     SatirToplam = satirToplam,
                     OncekiSepetFiyat = ornek.Fiyat,

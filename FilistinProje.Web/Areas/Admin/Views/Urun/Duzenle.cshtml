@@ -608,19 +608,6 @@
                                     <label class="ca-label">@Localizer["Admin_EstimatedDeliveryDays"]</label>
                                     <input asp-for="TahminiTeslimSuresiGun" class="ca-input" type="number" min="0" />
                                 </div>
-                                <div class="col-md-6 col-xl-3">
-                                    <label class="ca-switch-tile form-check form-switch h-100">
-                                        <span class="ca-switch-copy">
-                                            <span class="form-check-label fw-semibold">@Localizer["Admin_OfferGiftWrap"]</span>
-                                            <span class="small text-muted d-block mt-1">@Localizer["Admin_OfferGiftWrapHelp"]</span>
-                                        </span>
-                                        <input asp-for="HediyePaketiVarMi" class="form-check-input" type="checkbox">
-                                    </label>
-                                </div>
-                                <div class="col-md-6 col-xl-3" id="giftPriceContainer">
-                                    <label class="ca-label">@Localizer["Admin_GiftWrapPrice"]</label>
-                                    <input asp-for="HediyePaketFiyati" class="ca-input" type="text" inputmode="decimal" data-decimal placeholder="₪ 0.00" />
-                                </div>
                             </div>
 
                             <hr style="border-color:var(--ca-border); margin:22px 0;">
@@ -689,6 +676,7 @@
                                 </label>
                             </div>
                             @await Html.PartialAsync("_BadgeColorEditor", Model)
+                            @await Html.PartialAsync("_GiftPackageOptionEditor", Model)
                         </div>
                     </div>
 
@@ -960,23 +948,6 @@
             document.getElementById(id).src = e.target.result;
         };
         reader.readAsDataURL(file);
-    }
-
-    // Gift wrap UI
-    const giftToggle = document.getElementById('HediyePaketiVarMi');
-    const giftContainer = document.getElementById('giftPriceContainer');
-    const giftInput = document.getElementById('HediyePaketFiyati');
-    if (giftToggle && giftContainer && giftInput) {
-        giftToggle.addEventListener('change', function() {
-            if (this.checked) {
-                giftContainer.style.opacity = '1';
-                giftContainer.style.pointerEvents = 'auto';
-                giftInput.focus();
-            } else {
-                giftContainer.style.opacity = '0.5';
-                giftContainer.style.pointerEvents = 'none';
-            }
-        });
     }
 
     function updatePreviewFromUrl(inputId, previewId) {

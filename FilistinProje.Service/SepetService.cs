@@ -29,6 +29,8 @@ namespace FilistinProje.Service
                         .ThenInclude(i => i.Urun)
                     .Include(s => s.SepetItems.Where(i => !i.SilindiMi))
                         .ThenInclude(i => i.UrunSecenek)
+                    .Include(s => s.SepetItems.Where(i => !i.SilindiMi))
+                        .ThenInclude(i => i.HediyePaketSecenegi)
                     .FirstOrDefaultAsync(s => s.AppUserId == userId && !s.SilindiMi);
             }
             else
@@ -38,6 +40,8 @@ namespace FilistinProje.Service
                         .ThenInclude(i => i.Urun)
                     .Include(s => s.SepetItems.Where(i => !i.SilindiMi))
                         .ThenInclude(i => i.UrunSecenek)
+                    .Include(s => s.SepetItems.Where(i => !i.SilindiMi))
+                        .ThenInclude(i => i.HediyePaketSecenegi)
                     .FirstOrDefaultAsync(s => s.SessionId == sessionId && !s.SilindiMi);
             }
 
@@ -59,7 +63,7 @@ namespace FilistinProje.Service
             return sepet;
         }
 
-        public async Task<bool> SepeteEkleAsync(string? userId, string sessionId, int urunId, int? urunSecenekId, int adet, string? cerceveModeli = null, string? musteriNotu = null, decimal? cerceveFarki = null, bool hediyePaketi = false, decimal? hediyePaketFiyati = null)
+        public async Task<bool> SepeteEkleAsync(string? userId, string sessionId, int urunId, int? urunSecenekId, int adet, string? cerceveModeli = null, string? musteriNotu = null, decimal? cerceveFarki = null, int? hediyePaketSecenegiId = null)
         {
             try
             {
@@ -69,6 +73,8 @@ namespace FilistinProje.Service
                     .Include(x => x.Kategori!)
                         .ThenInclude(x => x.ParentKategori)
                     .Include(x => x.UrunSecenek)
+                    .Include(x => x.HediyePaketSecenekleri)
+                    .AsSplitQuery()
                     .FirstOrDefaultAsync(x => x.Id == urunId && x.AktifMi && !x.SilindiMi);
 
                 if (urun == null)
@@ -97,15 +103,21 @@ namespace FilistinProje.Service
 
                 var hedefSecenekId = secenek?.Id;
                 var normalizedMusteriNotu = NormalizeCustomerNote(musteriNotu);
-                var normalizedHediyePaketi = hediyePaketi && urun.HediyePaketiVarMi;
-                var normalizedHediyePaketFiyati = normalizedHediyePaketi ? Math.Max(0, urun.HediyePaketFiyati) : 0;
+                var hediyePaketSecenegi = hediyePaketSecenegiId.HasValue
+                    ? urun.HediyePaketSecenekleri.FirstOrDefault(x => x.Id == hediyePaketSecenegiId.Value && x.AktifMi && !x.SilindiMi)
+                    : null;
+                if (hediyePaketSecenegiId.HasValue && hediyePaketSecenegi == null)
+                {
+                    return false;
+                }
+
                 var guvenliCerceveFarki = CalculateFramePrice(secenek, normalizedCerceveModeli);
                 var mevcutItem = sepet.SepetItems.FirstOrDefault(i =>
                     i.UrunId == urunId &&
                     i.UrunSecenekId == hedefSecenekId &&
                     i.CerceveModeli == normalizedCerceveModeli &&
                     NormalizeCustomerNote(i.MusteriNotu) == normalizedMusteriNotu &&
-                    i.HediyePaketi == normalizedHediyePaketi &&
+                    i.HediyePaketSecenegiId == hediyePaketSecenegiId &&
                     !i.SilindiMi);
 
                 var toplamAdet = (mevcutItem?.Adet ?? 0) + adet;
@@ -138,8 +150,12 @@ namespace FilistinProje.Service
                         SecenekAdi = BuildCartOptionLabel(secenekAdi, normalizedCerceveModeli),
                         CerceveModeli = normalizedCerceveModeli,
                         MusteriNotu = normalizedMusteriNotu,
-                        HediyePaketi = normalizedHediyePaketi,
-                        HediyePaketFiyati = normalizedHediyePaketFiyati,
+                        HediyePaketSecenegiId = hediyePaketSecenegi?.Id,
+                        HediyePaketi = hediyePaketSecenegi != null,
+                        HediyePaketFiyati = hediyePaketSecenegi?.Fiyat ?? 0,
+                        HediyePaketAdi = hediyePaketSecenegi?.Ad ?? string.Empty,
+                        HediyePaketAdiEn = hediyePaketSecenegi?.AdEn ?? string.Empty,
+                        HediyePaketAdiAr = hediyePaketSecenegi?.AdAr ?? string.Empty,
                         OlusturulmaTarihi = DateTime.UtcNow,
                         SilindiMi = false
                     };
@@ -238,6 +254,19 @@ namespace FilistinProje.Service
                 {
                     item.Fiyat = currentPrice;
                     changed = true;
+                }
+
+                if (item.HediyePaketSecenegiId.HasValue && item.HediyePaketSecenegi is { AktifMi: true, SilindiMi: false } package && package.UrunId == item.UrunId)
+                {
+                    if (!item.HediyePaketi || item.HediyePaketFiyati != package.Fiyat || item.HediyePaketAdi != package.Ad || item.HediyePaketAdiEn != package.AdEn || item.HediyePaketAdiAr != package.AdAr)
+                    {
+                        item.HediyePaketi = true;
+                        item.HediyePaketFiyati = package.Fiyat;
+                        item.HediyePaketAdi = package.Ad;
+                        item.HediyePaketAdiEn = package.AdEn;
+                        item.HediyePaketAdiAr = package.AdAr;
+                        changed = true;
+                    }
                 }
             }
 
@@ -398,6 +427,7 @@ namespace FilistinProje.Service
                 var urunler = await _context.Urunler
                     .AsNoTracking()
                     .Include(u => u.UrunSecenek)
+                    .Include(u => u.HediyePaketSecenekleri)
                     .Where(u => urunIds.Contains(u.Id))
                     .ToDictionaryAsync(u => u.Id);
 
@@ -428,12 +458,30 @@ namespace FilistinProje.Service
                         }
                     }
 
+                    UrunHediyePaketSecenegi? package = null;
+                    if (anonItem.HediyePaketSecenegiId.HasValue)
+                    {
+                        package = urun.HediyePaketSecenekleri.FirstOrDefault(x =>
+                            x.Id == anonItem.HediyePaketSecenegiId.Value &&
+                            x.AktifMi &&
+                            !x.SilindiMi);
+                        if (package == null)
+                        {
+                            await transaction.RollbackAsync();
+                            result.Basarili = false;
+                            result.MessageKey = "Sepet_GiftPackageUnavailable";
+                            result.HataMesaji = $"Hediye paket secenegi gecersiz: {anonItem.UrunBaslik}";
+                            result.EngellenenUrunler.Add(anonItem.UrunBaslik);
+                            return result;
+                        }
+                    }
+
                     var mevcutItem = userSepet.SepetItems.FirstOrDefault(i =>
                         i.UrunId == anonItem.UrunId &&
                         i.UrunSecenekId == anonItem.UrunSecenekId &&
                         i.CerceveModeli == anonItem.CerceveModeli &&
                         NormalizeCustomerNote(i.MusteriNotu) == NormalizeCustomerNote(anonItem.MusteriNotu) &&
-                        i.HediyePaketi == anonItem.HediyePaketi &&
+                        i.HediyePaketSecenegiId == anonItem.HediyePaketSecenegiId &&
                         !i.SilindiMi);
 
                     var mevcutAdet = mevcutItem?.Adet ?? 0;
@@ -479,8 +527,12 @@ namespace FilistinProje.Service
                             SecenekAdi = anonItem.SecenekAdi,
                             CerceveModeli = anonItem.CerceveModeli,
                             MusteriNotu = anonItem.MusteriNotu,
-                            HediyePaketi = anonItem.HediyePaketi,
-                            HediyePaketFiyati = anonItem.HediyePaketFiyati,
+                            HediyePaketSecenegiId = package?.Id,
+                            HediyePaketi = package != null,
+                            HediyePaketFiyati = package?.Fiyat ?? 0,
+                            HediyePaketAdi = package?.Ad ?? string.Empty,
+                            HediyePaketAdiEn = package?.AdEn ?? string.Empty,
+                            HediyePaketAdiAr = package?.AdAr ?? string.Empty,
                             OlusturulmaTarihi = DateTime.UtcNow,
                             SilindiMi = false
                         };
