@@ -1,0 +1,35 @@
+--- FilistinProje.Web/Areas/Admin/Views/Urun/_VariantEditor.cshtml
++++ FilistinProje.Web/Areas/Admin/Views/Urun/_VariantEditor.cshtml
+@@ -475,25 +475,21 @@
+ 
+         function reindex() {
+             applyCategoryScope();
+ 
+             list.querySelectorAll('[data-variant-card]').forEach((card, index) => {
+                 card.dataset.index = index;
+ 
+-                card.querySelectorAll('[data-variant-field]').forEach((input) => {
+-                    const field = input.getAttribute('data-variant-field');
+-                    input.name = `UrunSecenek[${index}].${field}`;
++                card.querySelectorAll('[name^="UrunSecenek["]').forEach((input) => {
++                    input.name = input.name.replace(/UrunSecenek\[[^\]]+\]/, `UrunSecenek[${index}]`);
++                });
+ 
+-                    if (input.type !== 'hidden') {
++                card.querySelectorAll('[data-variant-field]').forEach((input) => {
++                    const field = input.getAttribute('data-variant-field');
++                    if (input.type !== 'hidden' && input.name && input.name.startsWith('UrunSecenek')) {
+                         const id = `variant_${field}_${index}`;
+                         input.id = id;
+                         const label = card.querySelector(`[data-label-for="${field}"]`);
+                         if (label) {
+                             label.htmlFor = id;
+                         }
+                     }
+                 });
+ 
+-                card.querySelectorAll('input[type="hidden"][name^="UrunSecenek["]').forEach((input) => {
+-                    input.name = input.name.replace(/UrunSecenek\[[^\]]+\]\./, `UrunSecenek[${index}].`);
+-                });
+-
+                 const title = card.querySelector('[data-variant-title]');

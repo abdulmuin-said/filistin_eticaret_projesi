@@ -1,0 +1,14 @@
+--- UrunController.cs
++++ UrunController.cs
+@@ -2134,6 +2134,11 @@
+                 nameof(Urun.ToptanFiyatKademeleri),
+                 nameof(Urun.UrunOzellikleri),
+                 nameof(Urun.KampanyaBitisTarihi),
++                nameof(Urun.LocalizedBaslik),
++                nameof(Urun.LocalizedAciklama),
++                nameof(Urun.LocalizedKisaAciklama),
++                nameof(Urun.LocalizedSeoTitle),
++                nameof(Urun.LocalizedSeoDescription),
+                 "UrunOzellikleri",
+                 "UrunSecenek"
+             };

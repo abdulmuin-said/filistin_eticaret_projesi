@@ -1,0 +1,541 @@
+- generic [ref=f5e2]:
+  - text:          +                    
+  - banner [ref=f5e3]:
+    - generic [ref=f5e4]:
+      - link "7ANRPS48 لوحة التحكم" [ref=f5e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f5e6]
+      - generic [ref=f5e7]: لوحة التحكم
+    - navigation "القائمة الرئيسية للإدارة" [ref=f5e8]:
+      - link " لوحة البيانات" [ref=f5e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f5e10]: 
+        - text: لوحة البيانات
+      - generic [ref=f5e11]:
+        - button " إدارة الطلبات 1" [ref=f5e12] [cursor=pointer]:
+          - generic [ref=f5e13]: 
+          - text: إدارة الطلبات
+          - generic [ref=f5e14]: "1"
+        - text:      
+      - generic [ref=f5e15]:
+        - button " إدارة المنتجات" [ref=f5e16] [cursor=pointer]:
+          - generic [ref=f5e17]: 
+          - text: إدارة المنتجات
+        - text:  +  
+      - generic [ref=f5e18]:
+        - button " محتوى المتجر" [ref=f5e19] [cursor=pointer]:
+          - generic [ref=f5e20]: 
+          - text: محتوى المتجر
+        - text:        
+      - link " الأعضاء" [ref=f5e21] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f5e22]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=f5e23] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f5e24]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=f5e25] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f5e26]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=f5e27] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f5e28]: 
+        - text: مجموعات الجملة
+      - generic [ref=f5e29]:
+        - button " التقارير" [ref=f5e30] [cursor=pointer]:
+          - generic [ref=f5e31]: 
+          - text: التقارير
+        - text:  
+      - link " الحسابات البنكية" [ref=f5e32] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f5e33]: 
+        - text: الحسابات البنكية
+      - link " Sosyal Medya" [ref=f5e34] [cursor=pointer]:
+        - /url: /Admin/SosyalMedya
+        - generic [ref=f5e35]: 
+        - text: Sosyal Medya
+      - link " الإعدادات" [ref=f5e36] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f5e37]: 
+        - text: الإعدادات
+    - generic [ref=f5e38]:
+      - text: 
+      - generic [ref=f5e39]:
+        - generic [ref=f5e40]: 
+        - link "العربية" [ref=f5e42] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FAdmin%2FUrun%2FEkle
+        - link "English" [ref=f5e43] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FAdmin%2FUrun%2FEkle
+      - text: 
+      - generic [ref=f5e44]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f5e45] [cursor=pointer]:
+          - generic [ref=f5e46]:
+            - strong [ref=f5e47]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f5e48]: "7"
+        - text:  
+  - generic [ref=f5e49]:
+    - main [ref=f5e50]:
+      - generic [ref=f5e51]:
+        - generic [ref=f5e52]:
+          - generic [ref=f5e53]:
+            - heading "إضافة منتج جديد" [level=1] [ref=f5e54]
+            - paragraph [ref=f5e55]: أدخل المعلومات المطلوبة فقط للحفظ الأول. يتم تعديل الخصائص التفصيلية بعد حفظ المنتج.
+          - link " العودة إلى المنتجات" [ref=f5e56] [cursor=pointer]:
+            - /url: /Admin/Urun
+            - generic [ref=f5e57]: 
+            - text: العودة إلى المنتجات
+        - generic [ref=f5e58]:
+          - generic [ref=f5e59]:
+            - generic [ref=f5e60]: "تعذر حفظ المنتج. يرجى مراجعة الحقول التالية:"
+            - list [ref=f5e61]:
+              - listitem [ref=f5e62]: The LocalizedAciklama field is required.
+              - listitem [ref=f5e63]: The LocalizedSeoTitle field is required.
+              - listitem [ref=f5e64]: The LocalizedSeoDescription field is required.
+          - generic [ref=f5e65]:
+            - generic [ref=f5e66]: كيف يعمل سعر البيع وسعر الخيارات؟
+            - generic [ref=f5e67]: سعر البيع في هذه الشاشة هو السعر الأساسي للمنتج. عند الحفظ ينشئ النظام خياراً افتراضياً بهذا السعر. يمكنك إضافة أسعار خاصة للمقاسات أو الخيارات بعد حفظ المنتج.
+          - generic [ref=f5e68]:
+            - generic [ref=f5e69]:
+              - generic [ref=f5e71]:
+                - generic [ref=f5e72]: 
+                - text: معلومات المنتج
+              - generic [ref=f5e73]:
+                - generic [ref=f5e74]: أنشئ المنتج بسرعة هنا. بعد الحفظ يمكنك إضافة الخيارات والمعرض والفيديو وتفاصيل SEO من صفحة التعديل.
+                - generic [ref=f5e75]:
+                  - generic [ref=f5e76]:
+                    - generic [ref=f5e77]: "* اسم المنتج"
+                    - 'textbox "مثال: مجموعة هدايا بطابع فلسطيني" [ref=f5e78]': Test Ürün 1787679181417
+                  - generic [ref=f5e79]:
+                    - generic [ref=f5e80]:
+                      - generic [ref=f5e81]:
+                        - generic [ref=f5e82]: Slug
+                        - textbox "urun-adi-otomatik-olusturulur" [ref=f5e83]
+                      - generic [ref=f5e84]:
+                        - generic [ref=f5e85]: SEO URL
+                        - textbox "urun-adi-otomatik-olusturulur" [ref=f5e86]
+                    - generic [ref=f5e87]: يتم إنشاء هذه الحقول تلقائياً أثناء كتابة اسم المنتج. يمكن تعديلها بعد الحفظ إذا لزم الأمر.
+                  - generic [ref=f5e88]:
+                    - generic [ref=f5e89]: "* الفئة"
+                    - combobox [ref=f5e90]:
+                      - option "اختر التصنيف"
+                      - option "أثاث" [selected]
+                      - option "العطور"
+                      - option "بقالة"
+                      - option "جمال"
+                      - option "أثاث منزلي"
+                      - option "إلكترونيات"
+                      - option "أزياء"
+                  - generic [ref=f5e91]:
+                    - generic [ref=f5e92]: "* سعر البيع (₪)"
+                    - textbox "0,00" [ref=f5e93]: "100"
+                  - generic [ref=f5e94]:
+                    - generic [ref=f5e95]: سعر الخصم (₪)
+                    - textbox "يمكن تركه فارغاً" [ref=f5e96]
+                  - generic [ref=f5e97]:
+                    - generic [ref=f5e98]: "* ملف الصورة الرئيسية"
+                    - generic [ref=f5e99] [cursor=pointer]:
+                      - generic [ref=f5e100]: 
+                      - text: اختيار ملف
+                    - text: لم يتم اختيار ملف
+                    - button " اختيار ملف" [ref=f5e101]
+                    - generic [ref=f5e102]: "الصيغ المدعومة: JPG، PNG، WEBP. الحد الأقصى لحجم الملف: 10MB."
+                  - generic [ref=f5e103]:
+                    - generic [ref=f5e104]: رابط الصورة الرئيسية
+                    - textbox "/img/products/ornek.webp" [ref=f5e105]: https://example.com/test.jpg
+                    - generic [ref=f5e106]: إذا لم ترفع ملفاً يمكنك إدخال رابط صورة موجود. يكفي أحدهما.
+                  - generic [ref=f5e107]:
+                    - generic [ref=f5e108]: صور إضافية للمنتج
+                    - generic [ref=f5e109] [cursor=pointer]:
+                      - generic [ref=f5e110]: 
+                      - text: اختيار ملفات
+                    - button " اختيار ملفات" [ref=f5e111]
+                    - generic [ref=f5e112]: يمكنك اختيار عدة صور. ستتم إضافتها إلى معرض المنتج.
+                    - generic [ref=f5e113]: "الصيغ المدعومة: JPG، PNG، WEBP. الحد الأقصى لحجم الملف: 10MB."
+                  - generic [ref=f5e114]:
+                    - generic [ref=f5e115]: وصف قصير
+                    - textbox "وصف قصير" [ref=f5e116]: Kısa açıklama
+                  - generic [ref=f5e117]:
+                    - generic [ref=f5e118]: وصف تفصيلي
+                    - textbox "اكتب معلومات عن المنتج أو الاستخدام أو وصف الجودة." [ref=f5e119]
+                  - generic [ref=f5e121]:
+                    - generic [ref=f5e123]:
+                      - generic [ref=f5e124]: 
+                      - text: معلومات SEO
+                    - generic [ref=f5e125]:
+                      - generic [ref=f5e126]: وسوم ميتا مخصصة لمحركات البحث. إذا تركتها فارغة يتم استخدام معلومات المنتج تلقائياً.
+                      - generic [ref=f5e127]:
+                        - generic [ref=f5e128]:
+                          - generic [ref=f5e129]: عنوان SEO
+                          - 'textbox "مثال: مجموعة هدايا بطابع فلسطيني - 7ANRPS48" [ref=f5e130]'
+                          - generic [ref=f5e131]: يظهر كنص بارز. يوصى بـ 60-70 حرفاً.
+                        - generic [ref=f5e132]:
+                          - generic [ref=f5e133]: وصف SEO
+                          - 'textbox "مثال: مجموعات هدايا فلسطينية عالية الجودة. توصيل سريع وتغليف آمن." [ref=f5e134]'
+                          - generic [ref=f5e135]: يظهر في نتائج البحث. يوصى بـ 150-160 حرفاً.
+                        - generic [ref=f5e136]:
+                          - generic [ref=f5e137]: كلمات SEO المفتاحية
+                          - textbox "هدايا فلسطين، القدس، غزة، علم" [ref=f5e138]
+                          - generic [ref=f5e139]: اكتبها مفصولة بفواصل.
+                  - generic [ref=f5e141]:
+                    - checkbox "نشر المنتج" [checked] [ref=f5e142]
+                    - generic [ref=f5e143]: نشر المنتج
+                - generic [ref=f5e144]:
+                  - generic [ref=f5e145]:
+                    - generic [ref=f5e146]:
+                      - text: خيارات التغليف
+                      - generic [ref=f5e147]: عرّف عدة أنواع من التغليف. يُطبّق السعر على كل قطعة.
+                    - button "+ إضافة خيار تغليف" [ref=f5e148] [cursor=pointer]:
+                      - generic [ref=f5e149]: +
+                      - text: إضافة خيار تغليف
+                  - generic [ref=f5e150]: لم تتم إضافة خيارات تغليف.
+                - generic [ref=f5e152]:
+                  - generic [ref=f5e153]: نوع المنتج ومجموعة الخصائص
+                  - generic [ref=f5e155]:
+                    - generic [ref=f5e156]:
+                      - generic [ref=f5e158]:
+                        - generic [ref=f5e159]: نوع المنتج
+                        - combobox [ref=f5e160]:
+                          - option "عام" [selected]
+                      - generic [ref=f5e161]: يحدد هذا الاختيار الحقول الديناميكية التي ستظهر للمنتج. تبقى الحقول العامة ظاهرة لكل نوع منتج.
+                    - generic [ref=f5e163]: يتم عرض 3 حقول. 3 منها محددة كجاهزة للتصفية.
+                    - generic [ref=f5e164]:
+                      - generic [ref=f5e167]:
+                        - generic [ref=f5e168]:
+                          - generic [ref=f5e169]: اللون
+                          - generic [ref=f5e171]:
+                            - generic [ref=f5e172]: فلتر
+                            - generic [ref=f5e173]: التفاصيل
+                            - generic [ref=f5e174]: تقني
+                        - textbox [ref=f5e175]
+                      - generic [ref=f5e178]:
+                        - generic [ref=f5e179]:
+                          - generic [ref=f5e180]: النمط
+                          - generic [ref=f5e182]:
+                            - generic [ref=f5e183]: فلتر
+                            - generic [ref=f5e184]: التفاصيل
+                            - generic [ref=f5e185]: تقني
+                        - combobox [ref=f5e186]:
+                          - option "اختر" [selected]
+                          - option "عصري"
+                          - option "بسيط"
+                          - option "كلاسيكي"
+                          - option "ريفي"
+                          - option "صناعي"
+                      - generic [ref=f5e189]:
+                        - generic [ref=f5e190]:
+                          - generic [ref=f5e191]: مجال الاستخدام
+                          - generic [ref=f5e193]:
+                            - generic [ref=f5e194]: فلتر
+                            - generic [ref=f5e195]: التفاصيل
+                            - generic [ref=f5e196]: تقني
+                        - combobox [ref=f5e197]:
+                          - option "اختر" [selected]
+                          - option "غرفة المعيشة"
+                          - option "غرفة النوم"
+                          - option "المكتب"
+                          - option "المطبخ"
+                          - option "الممر"
+                - generic [ref=f5e198]:
+                  - generic [ref=f5e199]:
+                    - generic [ref=f5e200]:
+                      - text: الخيارات المتقدمة
+                      - generic [ref=f5e201]: أدر المقاس والخامة والتخصيص واللوجستيات من هنا.
+                    - button "+ إضافة خيار" [ref=f5e202] [cursor=pointer]:
+                      - generic [ref=f5e203]: +
+                      - text: إضافة خيار
+                  - generic [ref=f5e205]:
+                    - generic [ref=f5e206]:
+                      - generic [ref=f5e207]:
+                        - generic [ref=f5e208]:
+                          - generic [ref=f5e209]: Kırmızı / XL
+                          - generic [ref=f5e210]: عرّف تركيبة باستخدام المقاس والسعر.
+                        - button "" [ref=f5e211] [cursor=pointer]
+                      - generic [ref=f5e213]:
+                        - generic [ref=f5e214]:
+                          - generic [ref=f5e215]: المقاس
+                          - textbox "المقاس" [ref=f5e216]
+                        - generic [ref=f5e217]:
+                          - generic [ref=f5e218]: وحدة القياس
+                          - combobox "وحدة القياس" [ref=f5e219]:
+                            - option "بدون وحدة" [selected]
+                            - option "mm"
+                            - option "cm"
+                            - option "m"
+                            - option "ml"
+                            - option "L"
+                            - option "g"
+                            - option "kg"
+                            - option "adet"
+                        - generic [ref=f5e220]:
+                          - generic [ref=f5e221]: المقاس / الحجم
+                          - textbox "المقاس / الحجم" [ref=f5e222]:
+                            - /placeholder: S, M, L, XL...
+                            - text: XL
+                        - generic [ref=f5e223]:
+                          - generic [ref=f5e224]: اللون
+                          - textbox "اللون" [ref=f5e225]: Kırmızı
+                        - generic [ref=f5e226]:
+                          - generic [ref=f5e227]: رمز اللون
+                          - textbox "رمز اللون" [ref=f5e228]: "#31543b"
+                        - generic [ref=f5e229]:
+                          - generic [ref=f5e230]: الاتجاه
+                          - textbox "الاتجاه" [ref=f5e231]
+                        - generic [ref=f5e232]:
+                          - generic [ref=f5e233]: SKU الخيار
+                          - textbox "SKU الخيار" [ref=f5e234]: SKU-XL-RED
+                        - generic [ref=f5e235]:
+                          - generic [ref=f5e236]: الترتيب
+                          - spinbutton "الترتيب" [ref=f5e237]: "0"
+                        - generic [ref=f5e238]:
+                          - generic [ref=f5e239]: أيام الإنتاج
+                          - spinbutton "أيام الإنتاج" [ref=f5e240]: "0"
+                        - generic [ref=f5e241]:
+                          - generic [ref=f5e242]: سعر البيع (₪)
+                          - textbox "سعر البيع (₪)" [ref=f5e243]: "150"
+                        - generic [ref=f5e244]:
+                          - generic [ref=f5e245]: فرق السعر (₪)
+                          - textbox "فرق السعر (₪)" [ref=f5e246]: "0"
+                        - generic [ref=f5e247]:
+                          - generic [ref=f5e248]: التكلفة (₪)
+                          - textbox "التكلفة (₪)" [ref=f5e249]: "0"
+                        - generic [ref=f5e250]:
+                          - generic [ref=f5e251]: المخزون
+                          - spinbutton "المخزون" [ref=f5e252]: "0"
+                        - generic [ref=f5e253]:
+                          - generic [ref=f5e254]: الوزن (دسي)
+                          - textbox "الوزن (دسي)" [ref=f5e255]: "0"
+                        - generic [ref=f5e256]:
+                          - generic [ref=f5e257]: صورة الخيار
+                          - textbox "صورة الخيار" [ref=f5e258]
+                        - generic [ref=f5e259]:
+                          - generic [ref=f5e260]: نص التخصيص
+                          - textbox "نص التخصيص" [ref=f5e261]
+                        - generic [ref=f5e262]:
+                          - generic [ref=f5e263]: ملاحظة تصميم خاصة
+                          - textbox "ملاحظة تصميم خاصة" [ref=f5e264]
+                        - generic [ref=f5e266]:
+                          - generic [ref=f5e267]:
+                            - checkbox "نشط" [checked] [ref=f5e268]
+                            - text: نشط
+                          - generic [ref=f5e269]:
+                            - checkbox "افتراضي" [ref=f5e270]
+                            - text: افتراضي
+                          - generic [ref=f5e271]:
+                            - checkbox "إخفاء عند النفاد" [ref=f5e272]
+                            - text: إخفاء عند النفاد
+                          - generic [ref=f5e273]:
+                            - checkbox "طلب مسبق" [ref=f5e274]
+                            - text: طلب مسبق
+                    - generic [ref=f5e275]:
+                      - generic [ref=f5e276]:
+                        - generic [ref=f5e277]:
+                          - generic [ref=f5e278]: متغير 2
+                          - generic [ref=f5e279]: عرّف تركيبة باستخدام المقاس والسعر.
+                        - button "" [ref=f5e280] [cursor=pointer]
+                      - generic [ref=f5e282]:
+                        - generic [ref=f5e283]:
+                          - generic [ref=f5e284]: المقاس
+                          - textbox "المقاس" [ref=f5e285]
+                        - generic [ref=f5e286]:
+                          - generic [ref=f5e287]: وحدة القياس
+                          - combobox "وحدة القياس" [ref=f5e288]:
+                            - option "بدون وحدة" [selected]
+                            - option "mm"
+                            - option "cm"
+                            - option "m"
+                            - option "ml"
+                            - option "L"
+                            - option "g"
+                            - option "kg"
+                            - option "adet"
+                        - generic [ref=f5e289]:
+                          - generic [ref=f5e290]: المقاس / الحجم
+                          - textbox "المقاس / الحجم" [ref=f5e291]:
+                            - /placeholder: S, M, L, XL...
+                        - generic [ref=f5e292]:
+                          - generic [ref=f5e293]: اللون
+                          - textbox "اللون" [ref=f5e294]
+                        - generic [ref=f5e295]:
+                          - generic [ref=f5e296]: رمز اللون
+                          - textbox "رمز اللون" [ref=f5e297]: "#31543b"
+                        - generic [ref=f5e298]:
+                          - generic [ref=f5e299]: الاتجاه
+                          - textbox "الاتجاه" [ref=f5e300]
+                        - generic [ref=f5e301]:
+                          - generic [ref=f5e302]: SKU الخيار
+                          - textbox "SKU الخيار" [ref=f5e303]
+                        - generic [ref=f5e304]:
+                          - generic [ref=f5e305]: الترتيب
+                          - spinbutton "الترتيب" [ref=f5e306]: "0"
+                        - generic [ref=f5e307]:
+                          - generic [ref=f5e308]: أيام الإنتاج
+                          - spinbutton "أيام الإنتاج" [ref=f5e309]: "0"
+                        - generic [ref=f5e310]:
+                          - generic [ref=f5e311]: سعر البيع (₪)
+                          - textbox "سعر البيع (₪)" [ref=f5e312]: "0"
+                        - generic [ref=f5e313]:
+                          - generic [ref=f5e314]: فرق السعر (₪)
+                          - textbox "فرق السعر (₪)" [ref=f5e315]: "0"
+                        - generic [ref=f5e316]:
+                          - generic [ref=f5e317]: التكلفة (₪)
+                          - textbox "التكلفة (₪)" [ref=f5e318]: "0"
+                        - generic [ref=f5e319]:
+                          - generic [ref=f5e320]: المخزون
+                          - spinbutton "المخزون" [ref=f5e321]: "0"
+                        - generic [ref=f5e322]:
+                          - generic [ref=f5e323]: الوزن (دسي)
+                          - textbox "الوزن (دسي)" [ref=f5e324]: "0"
+                        - generic [ref=f5e325]:
+                          - generic [ref=f5e326]: صورة الخيار
+                          - textbox "صورة الخيار" [ref=f5e327]
+                        - generic [ref=f5e328]:
+                          - generic [ref=f5e329]: نص التخصيص
+                          - textbox "نص التخصيص" [ref=f5e330]
+                        - generic [ref=f5e331]:
+                          - generic [ref=f5e332]: ملاحظة تصميم خاصة
+                          - textbox "ملاحظة تصميم خاصة" [ref=f5e333]
+                        - generic [ref=f5e335]:
+                          - generic [ref=f5e336]:
+                            - checkbox "نشط" [checked] [ref=f5e337]
+                            - text: نشط
+                          - generic [ref=f5e338]:
+                            - checkbox "افتراضي" [ref=f5e339]
+                            - text: افتراضي
+                          - generic [ref=f5e340]:
+                            - checkbox "إخفاء عند النفاد" [ref=f5e341]
+                            - text: إخفاء عند النفاد
+                          - generic [ref=f5e342]:
+                            - checkbox "طلب مسبق" [ref=f5e343]
+                            - text: طلب مسبق
+                    - generic [ref=f5e344]:
+                      - generic [ref=f5e345]:
+                        - generic [ref=f5e346]:
+                          - generic [ref=f5e347]: متغير 3
+                          - generic [ref=f5e348]: عرّف تركيبة باستخدام المقاس والسعر.
+                        - button "" [ref=f5e349] [cursor=pointer]
+                      - generic [ref=f5e351]:
+                        - generic [ref=f5e352]:
+                          - generic [ref=f5e353]: المقاس
+                          - textbox "المقاس" [ref=f5e354]
+                        - generic [ref=f5e355]:
+                          - generic [ref=f5e356]: وحدة القياس
+                          - combobox "وحدة القياس" [ref=f5e357]:
+                            - option "بدون وحدة" [selected]
+                            - option "mm"
+                            - option "cm"
+                            - option "m"
+                            - option "ml"
+                            - option "L"
+                            - option "g"
+                            - option "kg"
+                            - option "adet"
+                        - generic [ref=f5e358]:
+                          - generic [ref=f5e359]: المقاس / الحجم
+                          - textbox "المقاس / الحجم" [ref=f5e360]:
+                            - /placeholder: S, M, L, XL...
+                        - generic [ref=f5e361]:
+                          - generic [ref=f5e362]: اللون
+                          - textbox "اللون" [ref=f5e363]
+                        - generic [ref=f5e364]:
+                          - generic [ref=f5e365]: رمز اللون
+                          - textbox "رمز اللون" [ref=f5e366]: "#31543b"
+                        - generic [ref=f5e367]:
+                          - generic [ref=f5e368]: الاتجاه
+                          - textbox "الاتجاه" [ref=f5e369]
+                        - generic [ref=f5e370]:
+                          - generic [ref=f5e371]: SKU الخيار
+                          - textbox "SKU الخيار" [ref=f5e372]
+                        - generic [ref=f5e373]:
+                          - generic [ref=f5e374]: الترتيب
+                          - spinbutton "الترتيب" [ref=f5e375]: "0"
+                        - generic [ref=f5e376]:
+                          - generic [ref=f5e377]: أيام الإنتاج
+                          - spinbutton "أيام الإنتاج" [ref=f5e378]: "0"
+                        - generic [ref=f5e379]:
+                          - generic [ref=f5e380]: سعر البيع (₪)
+                          - textbox "سعر البيع (₪)" [ref=f5e381]: "0"
+                        - generic [ref=f5e382]:
+                          - generic [ref=f5e383]: فرق السعر (₪)
+                          - textbox "فرق السعر (₪)" [ref=f5e384]: "0"
+                        - generic [ref=f5e385]:
+                          - generic [ref=f5e386]: التكلفة (₪)
+                          - textbox "التكلفة (₪)" [ref=f5e387]: "0"
+                        - generic [ref=f5e388]:
+                          - generic [ref=f5e389]: المخزون
+                          - spinbutton "المخزون" [ref=f5e390]: "0"
+                        - generic [ref=f5e391]:
+                          - generic [ref=f5e392]: الوزن (دسي)
+                          - textbox "الوزن (دسي)" [ref=f5e393]: "0"
+                        - generic [ref=f5e394]:
+                          - generic [ref=f5e395]: صورة الخيار
+                          - textbox "صورة الخيار" [ref=f5e396]
+                        - generic [ref=f5e397]:
+                          - generic [ref=f5e398]: نص التخصيص
+                          - textbox "نص التخصيص" [ref=f5e399]
+                        - generic [ref=f5e400]:
+                          - generic [ref=f5e401]: ملاحظة تصميم خاصة
+                          - textbox "ملاحظة تصميم خاصة" [ref=f5e402]
+                        - generic [ref=f5e404]:
+                          - generic [ref=f5e405]:
+                            - checkbox "نشط" [checked] [ref=f5e406]
+                            - text: نشط
+                          - generic [ref=f5e407]:
+                            - checkbox "افتراضي" [ref=f5e408]
+                            - text: افتراضي
+                          - generic [ref=f5e409]:
+                            - checkbox "إخفاء عند النفاد" [ref=f5e410]
+                            - text: إخفاء عند النفاد
+                          - generic [ref=f5e411]:
+                            - checkbox "طلب مسبق" [ref=f5e412]
+                            - text: طلب مسبق
+                - generic [ref=f5e413]:
+                  - generic [ref=f5e414]:
+                    - generic [ref=f5e415]:
+                      - text: أسعار الجملة حسب الكمية
+                      - generic [ref=f5e416]: حدّد سعر الوحدة المباشر الذي يُطبَّق عند وصول العميل إلى الكمية المحددة. إذا تُرك الخيار فارغاً فهو ساري على المنتج بالكامل.
+                    - button "+ إضافة شريحة" [ref=f5e417] [cursor=pointer]:
+                      - generic [ref=f5e418]: +
+                      - text: إضافة شريحة
+                  - generic [ref=f5e419]:
+                    - table [ref=f5e421]:
+                      - rowgroup [ref=f5e422]:
+                        - row [ref=f5e423]:
+                          - columnheader "المتغير" [ref=f5e424]
+                          - columnheader "الحد الأدنى للكمية" [ref=f5e425]
+                          - columnheader "سعر الوحدة (₪)" [ref=f5e426]
+                          - columnheader "نشط" [ref=f5e427]
+                          - columnheader [ref=f5e428]
+                      - rowgroup
+                    - generic [ref=f5e429]: "مثال: 10 قطع ← 42 ₪، 25 قطعة ← 38 ₪. يُختار تلقائياً الشريحة ذات الحد الأدنى الأعلى."
+                - generic [ref=f5e430]:
+                  - link "إلغاء" [ref=f5e431] [cursor=pointer]:
+                    - /url: /Admin/Urun
+                  - button " حفظ المنتج" [ref=f5e432] [cursor=pointer]:
+                    - generic [ref=f5e433]: 
+                    - text: حفظ المنتج
+            - complementary [ref=f5e434]:
+              - generic [ref=f5e435]:
+                - generic [ref=f5e436]: معاينة
+                - generic [ref=f5e438]:
+                  - img "معاينة الصورة الرئيسية للمنتج الجديد" [ref=f5e440]
+                  - generic [ref=f5e441]: Test Ürün 1787679181417
+                  - generic [ref=f5e442]: يمكنك توسيع التفاصيل بعد الحفظ.
+              - generic [ref=f5e443]:
+                - generic [ref=f5e444]: الحقول المطلوبة
+                - generic [ref=f5e446]:
+                  - generic [ref=f5e447]:
+                    - generic [ref=f5e448]: 
+                    - text: اسم المنتج
+                  - generic [ref=f5e449]:
+                    - generic [ref=f5e450]: 
+                    - text: الفئة
+                  - generic [ref=f5e451]:
+                    - generic [ref=f5e452]: 
+                    - text: سعر البيع
+                  - generic [ref=f5e453]:
+                    - generic [ref=f5e454]: 
+                    - text: ملف الصورة الرئيسية أو الرابط
+    - contentinfo [ref=f5e455]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

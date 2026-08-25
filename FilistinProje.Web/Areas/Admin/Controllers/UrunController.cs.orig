@@ -2338,12 +2338,7 @@ await _context.SaveChangesAsync();
                 nameof(Urun.UrunResimleri),
                 nameof(Urun.UrunSecenek),
                 nameof(Urun.HediyePaketSecenekleri),
-                nameof(Urun.UrunOzellikleri),
-                nameof(Urun.LocalizedBaslik),
-                nameof(Urun.LocalizedAciklama),
-                nameof(Urun.LocalizedKisaAciklama),
-                nameof(Urun.LocalizedSeoTitle),
-                nameof(Urun.LocalizedSeoDescription)
+                nameof(Urun.UrunOzellikleri)
             };
 
             foreach (var key in optionalProductFields)

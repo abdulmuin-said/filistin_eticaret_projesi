@@ -479,11 +479,13 @@
             list.querySelectorAll('[data-variant-card]').forEach((card, index) => {
                 card.dataset.index = index;
 
+                card.querySelectorAll('[name^="UrunSecenek["]').forEach((input) => {
+                    input.name = input.name.replace(/UrunSecenek\[[^\]]+\]/, `UrunSecenek[${index}]`);
+                });
+
                 card.querySelectorAll('[data-variant-field]').forEach((input) => {
                     const field = input.getAttribute('data-variant-field');
-                    input.name = `UrunSecenek[${index}].${field}`;
-
-                    if (input.type !== 'hidden') {
+                    if (input.type !== 'hidden' && input.name && input.name.startsWith('UrunSecenek')) {
                         const id = `variant_${field}_${index}`;
                         input.id = id;
                         const label = card.querySelector(`[data-label-for="${field}"]`);
@@ -491,10 +493,6 @@
                             label.htmlFor = id;
                         }
                     }
-                });
-
-                card.querySelectorAll('input[type="hidden"][name^="UrunSecenek["]').forEach((input) => {
-                    input.name = input.name.replace(/UrunSecenek\[[^\]]+\]\./, `UrunSecenek[${index}].`);
                 });
 
                 const title = card.querySelector('[data-variant-title]');
