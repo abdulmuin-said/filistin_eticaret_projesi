@@ -1,0 +1,147 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e2]:
+    - text:          +                    
+    - banner [ref=f4e3]:
+      - generic [ref=f4e4]:
+        - link "7ANRPS48 لوحة التحكم" [ref=f4e5] [cursor=pointer]:
+          - /url: /Admin/Home
+          - img "7ANRPS48" [ref=f4e6]
+        - generic [ref=f4e7]: لوحة التحكم
+      - navigation "القائمة الرئيسية للإدارة" [ref=f4e8]:
+        - link " لوحة البيانات" [ref=f4e9] [cursor=pointer]:
+          - /url: /Admin/Home
+          - generic [ref=f4e10]: 
+          - text: لوحة البيانات
+        - generic [ref=f4e11]:
+          - button " إدارة الطلبات 1" [ref=f4e12] [cursor=pointer]:
+            - generic [ref=f4e13]: 
+            - text: إدارة الطلبات
+            - generic [ref=f4e14]: "1"
+          - text:      
+        - generic [ref=f4e15]:
+          - button " إدارة المنتجات" [ref=f4e16] [cursor=pointer]:
+            - generic [ref=f4e17]: 
+            - text: إدارة المنتجات
+          - text:  +  
+        - generic [ref=f4e18]:
+          - button " محتوى المتجر" [ref=f4e19] [cursor=pointer]:
+            - generic [ref=f4e20]: 
+            - text: محتوى المتجر
+          - text:        
+        - link " الأعضاء" [ref=f4e21] [cursor=pointer]:
+          - /url: /Admin/Kullanici
+          - generic [ref=f4e22]: 
+          - text: الأعضاء
+        - link " الموظفون" [ref=f4e23] [cursor=pointer]:
+          - /url: /Admin/Personel
+          - generic [ref=f4e24]: 
+          - text: الموظفون
+        - link " تجار الجملة" [ref=f4e25] [cursor=pointer]:
+          - /url: /Admin/Toptanci
+          - generic [ref=f4e26]: 
+          - text: تجار الجملة
+        - link " مجموعات الجملة" [ref=f4e27] [cursor=pointer]:
+          - /url: /Admin/Toptanci/UrunGruplari
+          - generic [ref=f4e28]: 
+          - text: مجموعات الجملة
+        - generic [ref=f4e29]:
+          - button " التقارير" [ref=f4e30] [cursor=pointer]:
+            - generic [ref=f4e31]: 
+            - text: التقارير
+          - text:  
+        - link " الحسابات البنكية" [ref=f4e32] [cursor=pointer]:
+          - /url: /Admin/Bankalar
+          - generic [ref=f4e33]: 
+          - text: الحسابات البنكية
+        - link " Sosyal Medya" [ref=f4e34] [cursor=pointer]:
+          - /url: /Admin/SosyalMedya
+          - generic [ref=f4e35]: 
+          - text: Sosyal Medya
+        - link " الإعدادات" [ref=f4e36] [cursor=pointer]:
+          - /url: /Admin/Ayarlar
+          - generic [ref=f4e37]: 
+          - text: الإعدادات
+      - generic [ref=f4e38]:
+        - text: 
+        - generic [ref=f4e39]:
+          - generic [ref=f4e40]: 
+          - link "العربية" [ref=f4e42] [cursor=pointer]:
+            - /url: /Dil/Degistir?culture=ar&returnUrl=%2FAdmin%2FSosyalMedya
+          - link "English" [ref=f4e43] [cursor=pointer]:
+            - /url: /Dil/Degistir?culture=en&returnUrl=%2FAdmin%2FSosyalMedya
+        - text: 
+        - generic [ref=f4e44]:
+          - button "7ANRPS48 Admin Admin 7" [ref=f4e45] [cursor=pointer]:
+            - generic [ref=f4e46]:
+              - strong [ref=f4e47]: 7ANRPS48 Admin
+              - text: Admin
+            - generic [ref=f4e48]: "7"
+          - text:  
+    - generic [ref=f4e49]:
+      - main [ref=f4e50]:
+        - generic [ref=f4e51]:
+          - generic [ref=f4e52]:
+            - generic [ref=f4e53]:
+              - heading " Sosyal Medya Bağlantıları" [level=1] [ref=f4e54]:
+                - generic [ref=f4e55]: 
+                - text: Sosyal Medya Bağlantıları
+              - paragraph [ref=f4e56]: Sitede footer'da gösterilecek sosyal medya ikonları ve linkleri
+            - button "+ Yeni Ekle" [ref=f4e57] [cursor=pointer]:
+              - generic [ref=f4e58]: +
+              - text: Yeni Ekle
+          - generic [ref=f4e59]:
+            - generic [ref=f4e60]: 
+            - text: Sosyal medya bağlantısı eklendi.
+            - button [ref=f4e61] [cursor=pointer]
+          - table [ref=f4e65]:
+            - rowgroup [ref=f4e66]:
+              - row [ref=f4e67]:
+                - columnheader "" [ref=f4e68]
+                - columnheader "İkon" [ref=f4e70]
+                - columnheader "Platform" [ref=f4e71]
+                - columnheader "URL" [ref=f4e72]
+                - columnheader "Sıra" [ref=f4e73]
+                - columnheader "Durum" [ref=f4e74]
+                - columnheader "İşlemler" [ref=f4e75]
+            - rowgroup [ref=f4e76]:
+              - row [ref=f4e77]:
+                - cell "" [ref=f4e78]
+                - cell "" [ref=f4e80]
+                - cell "Facebook" [ref=f4e83]
+                - cell [ref=f4e84]:
+                  - link "https://www.facebook.com/7anrps48" [ref=f4e85] [cursor=pointer]:
+                    - /url: https://www.facebook.com/7anrps48
+                - cell "1" [ref=f4e86]
+                - cell "Aktif" [ref=f4e87]
+                - cell [ref=f4e89]:
+                  - button "" [ref=f4e90] [cursor=pointer]
+                  - button "" [ref=f4e93] [cursor=pointer]
+              - row [ref=f4e95]:
+                - cell "" [ref=f4e96]
+                - cell [ref=f4e98]
+                - cell "Twitter / X" [ref=f4e99]
+                - cell [ref=f4e100]:
+                  - link "https://x.com/7anrps48?s=21" [ref=f4e101] [cursor=pointer]:
+                    - /url: https://x.com/7anrps48?s=21
+                - cell "6" [ref=f4e102]
+                - cell "Aktif" [ref=f4e103]
+                - cell [ref=f4e105]:
+                  - button "" [ref=f4e106] [cursor=pointer]
+                  - button "" [ref=f4e109] [cursor=pointer]
+              - row [ref=f4e111]:
+                - cell "" [ref=f4e112]
+                - cell "" [ref=f4e114]
+                - cell "Snapchat" [ref=f4e117]
+                - cell [ref=f4e118]:
+                  - link "https://snapchat.com/add/test7anrps" [ref=f4e119] [cursor=pointer]:
+                    - /url: https://snapchat.com/add/test7anrps
+                - cell "7" [ref=f4e120]
+                - cell "Aktif" [ref=f4e121]
+                - cell [ref=f4e123]:
+                  - button "" [ref=f4e124] [cursor=pointer]
+                  - button "" [ref=f4e127] [cursor=pointer]
+        - text: +       
+      - contentinfo [ref=f4e129]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.
+  - generic [ref=f4e131]:
+    - generic [ref=f4e132]: 
+    - generic [ref=f4e133]: Sosyal medya bağlantısı eklendi.

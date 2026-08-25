@@ -154,6 +154,9 @@
                 }
                 @if (canManageSettings)
                 {
+                    <a href="/Admin/SosyalMedya" class="ca-mobile-nav-link @(currentController == "SosyalMedya" ? "active" : "")">
+                        <i class="fas fa-share-nodes"></i> Sosyal Medya
+                    </a>
                     <a href="/Admin/Ayarlar" class="ca-mobile-nav-link @(currentController == "Ayarlar" ? "active" : "")">
                         <i class="fas fa-gear"></i> @Localizer["Settings"]
                     </a>
@@ -290,6 +293,9 @@
 
                 @if (canManageSettings)
                 {
+                    <a href="/Admin/SosyalMedya" class="ca-partner-nav-link @(currentController == "SosyalMedya" ? "active" : "")">
+                        <i class="fas fa-share-nodes"></i> Sosyal Medya
+                    </a>
                     <a href="/Admin/Ayarlar" class="ca-partner-nav-link @(currentController == "Ayarlar" ? "active" : "")">
                         <i class="fas fa-gear"></i> @Localizer["Settings"]
                     </a>

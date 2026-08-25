@@ -5778,4 +5778,28 @@
   <data name="Admin_FeatureOption_Office" xml:space="preserve"><value>Office</value></data>
   <data name="Admin_FeatureOption_Kitchen" xml:space="preserve"><value>Kitchen</value></data>
   <data name="Admin_FeatureOption_Corridor" xml:space="preserve"><value>Corridor</value></data>
+
+  <data name="Admin_SosyalMedya_Baslik" xml:space="preserve"><value>Social Media Links</value></data>
+  <data name="Admin_SosyalMedya_Aciklama" xml:space="preserve"><value>Social media icons and links displayed in the site footer</value></data>
+  <data name="Admin_SosyalMedya_YeniEkle" xml:space="preserve"><value>Add New Link</value></data>
+  <data name="Admin_SosyalMedya_PlatformAdi" xml:space="preserve"><value>Platform Name</value></data>
+  <data name="Admin_SosyalMedya_PlatformAdiPlaceholder" xml:space="preserve"><value>e.g. Snapchat, LinkedIn, TikTok</value></data>
+  <data name="Admin_SosyalMedya_PlatformAdiYardim" xml:space="preserve"><value>Any platform name can be entered.</value></data>
+  <data name="Admin_SosyalMedya_IkonSinifi" xml:space="preserve"><value>Font Awesome Icon Class</value></data>
+  <data name="Admin_SosyalMedya_IkonYardim" xml:space="preserve"><value>Leave blank to show the default icon. Examples:</value></data>
+  <data name="Admin_SosyalMedya_SiraYardim" xml:space="preserve"><value>Lower number appears first. Can also be changed by drag and drop.</value></data>
+  <data name="Admin_SosyalMedya_AktifGoster" xml:space="preserve"><value>Active (show on site)</value></data>
+  <data name="Admin_SosyalMedya_Aktif" xml:space="preserve"><value>Active</value></data>
+  <data name="Admin_SosyalMedya_Pasif" xml:space="preserve"><value>Inactive</value></data>
+  <data name="Admin_SosyalMedya_YeniBaslik" xml:space="preserve"><value>New Social Media Link</value></data>
+  <data name="Admin_SosyalMedya_DuzenleBaslik" xml:space="preserve"><value>Edit Link</value></data>
+  <data name="Admin_SosyalMedya_Henuz" xml:space="preserve"><value>No social media links added yet.</value></data>
+  <data name="Admin_SosyalMedya_SilConfirm" xml:space="preserve"><value>Are you sure you want to delete this link?</value></data>
+  <data name="Admin_SosyalMedya_Eklendi" xml:space="preserve"><value>Social media link added.</value></data>
+  <data name="Admin_SosyalMedya_Guncellendi" xml:space="preserve"><value>Updated.</value></data>
+  <data name="Admin_SosyalMedya_Silindi" xml:space="preserve"><value>Deleted.</value></data>
+  <data name="Admin_SosyalMedya_GeçersizUrl" xml:space="preserve"><value>Invalid URL. Only https:// or http:// links are accepted.</value></data>
+  <data name="Admin_SosyalMedya_PlatformZorunlu" xml:space="preserve"><value>Platform name is required.</value></data>
+  <data name="Admin_SosyalMedya_UrlGuvenlik" xml:space="preserve"><value>Only secure links starting with https:// or http:// are accepted.</value></data>
 </root>
+

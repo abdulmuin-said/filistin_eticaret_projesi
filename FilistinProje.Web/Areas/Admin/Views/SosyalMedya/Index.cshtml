@@ -1,0 +1,195 @@
+@model List<FilistinProje.Core.Varliklar.SosyalMedyaLink>
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = Localizer["Admin_SosyalMedya_Baslik"];
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h1 class="h4 mb-0 fw-bold"><i class="fas fa-share-nodes me-2 text-primary"></i>@Localizer["Admin_SosyalMedya_Baslik"]</h1>
+            <p class="text-muted small mb-0">@Localizer["Admin_SosyalMedya_Aciklama"]</p>
+        </div>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ekleModal">
+            <i class="fas fa-plus me-1"></i> @Localizer["Admin_SosyalMedya_YeniEkle"]
+        </button>
+    </div>
+
+    @if (TempData["Basari"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show"><i class="fas fa-check-circle me-2"></i>@TempData["Basari"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+    }
+    @if (TempData["Hata"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show"><i class="fas fa-exclamation-circle me-2"></i>@TempData["Hata"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5 text-muted">
+                    <i class="fas fa-share-nodes fa-3x mb-3 opacity-25"></i>
+                    <p>@Localizer["Admin_SosyalMedya_Henuz"]</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th width="40"><i class="fas fa-grip-vertical text-muted"></i></th>
+                                <th>@Localizer["Admin_SosyalMedya_IkonSinifi"]</th>
+                                <th>@Localizer["Admin_SosyalMedya_PlatformAdi"]</th>
+                                <th>URL</th>
+                                <th width="80">@Localizer["Admin_Sira"]</th>
+                                <th width="90">@Localizer["Admin_Durum"]</th>
+                                <th width="130">@Localizer["Admin_Islemler"]</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sortable-body">
+                            @foreach (var link in Model)
+                            {
+                                <tr data-id="@link.Id">
+                                    <td class="drag-handle text-center" style="cursor:grab">
+                                        <i class="fas fa-grip-vertical text-muted"></i>
+                                    </td>
+                                    <td>
+                                        <span class="fs-4">
+                                            <i class="@(string.IsNullOrWhiteSpace(link.IkonSinifi) ? "fas fa-share-nodes" : link.IkonSinifi)"></i>
+                                        </span>
+                                    </td>
+                                    <td class="fw-semibold">@link.PlatformAdi</td>
+                                    <td>
+                                        <a href="@link.Url" target="_blank" rel="noopener noreferrer" class="text-truncate d-inline-block" style="max-width:260px">
+                                            @link.Url
+                                        </a>
+                                    </td>
+                                    <td class="text-center">@link.Sira</td>
+                                    <td>
+                                        @if (link.AktifMi)
+                                        {
+                                            <span class="badge bg-success">@Localizer["Admin_SosyalMedya_Aktif"]</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">@Localizer["Admin_SosyalMedya_Pasif"]</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary me-1"
+                                                onclick="duzenle(@link.Id,'@Html.Raw(link.PlatformAdi.Replace("'","\\\'"))','@Html.Raw(link.Url.Replace("'","\\\'"))','@Html.Raw(link.IkonSinifi.Replace("'","\\\'"))',@link.Sira,@(link.AktifMi ? "true" : "false"))">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <form method="post" asp-action="Sil" asp-area="Admin" style="display:inline"
+                                              onsubmit="return confirm('@Localizer["Admin_SosyalMedya_SilConfirm"]')">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@link.Id" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@* ========= EKLE MODAL ========= *@
+<div class="modal fade" id="ekleModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-action="Ekle" asp-area="Admin">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-plus me-2"></i>@Localizer["Admin_SosyalMedya_YeniBaslik"]</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    @await Html.PartialAsync("_SosyalMedyaForm", new FilistinProje.Core.Varliklar.SosyalMedyaLink())
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["Admin_Iptal"]</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>@Localizer["Admin_Kaydet"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* ========= DÜZENLE MODAL ========= *@
+<div class="modal fade" id="guncelleModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-action="Guncelle" asp-area="Admin" id="guncelleForm">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" id="edit-id" />
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-edit me-2"></i>@Localizer["Admin_SosyalMedya_DuzenleBaslik"]</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="guncelleBody">
+                    @await Html.PartialAsync("_SosyalMedyaForm", new FilistinProje.Core.Varliklar.SosyalMedyaLink())
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["Admin_Iptal"]</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>@Localizer["Admin_Guncelle"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"
+            integrity="sha384-eeLEhtwdMwD3X9y+8P3Cn7Idl/M+w8H4uZqkgD/2eJVkWIN1yKzEj6XegJ9dL3q0"
+            crossorigin="anonymous"></script>
+    <script>
+        const body = document.getElementById('sortable-body');
+        if (body) {
+            Sortable.create(body, {
+                handle: '.drag-handle',
+                animation: 150,
+                onEnd: async () => {
+                    const rows = body.querySelectorAll('tr[data-id]');
+                    const payload = Array.from(rows).map((r, i) => ({ id: parseInt(r.dataset.id), sira: i }));
+                    await fetch('/Admin/SosyalMedya/SiraGuncelle', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': document.querySelector('input[name=__RequestVerificationToken]')?.value ?? '' },
+                        body: JSON.stringify(payload)
+                    });
+                }
+            });
+        }
+
+        function duzenle(id, platform, url, ikon, sira, aktif) {
+            document.getElementById('edit-id').value = id;
+            const b = document.getElementById('guncelleBody');
+            b.querySelector('[name=platformAdi]').value = platform;
+            b.querySelector('[name=url]').value = url;
+            b.querySelector('[name=ikonSinifi]').value = ikon;
+            b.querySelector('[name=sira]').value = sira;
+            b.querySelector('[name=aktifMi]').checked = aktif;
+            gosterIkonOnizleme(b.querySelector('[name=ikonSinifi]'));
+            new bootstrap.Modal(document.getElementById('guncelleModal')).show();
+        }
+
+        function gosterIkonOnizleme(input) {
+            const preview = input.closest('.mb-3').querySelector('.ikon-preview');
+            if (preview) {
+                preview.className = 'ikon-preview fs-4 ms-2 ' + (input.value.trim() || 'fas fa-share-nodes');
+            }
+        }
+
+        document.querySelectorAll('[name=ikonSinifi]').forEach(inp => {
+            inp.addEventListener('input', () => gosterIkonOnizleme(inp));
+        });
+    </script>
+}

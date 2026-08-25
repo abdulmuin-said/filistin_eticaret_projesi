@@ -1,0 +1,130 @@
+- generic [active] [ref=f1e1]:
+  - heading "An unhandled exception occurred while processing the request." [level=1] [ref=f1e2]
+  - generic [ref=f1e3]: "PostgresException: 42P01: relation \"SosyalMedyaLinkleri\" does not exist POSITION: 109"
+  - paragraph [ref=f1e4]: Npgsql.Internal.NpgsqlConnector.ReadMessageLong(bool async, DataRowLoadingMode dataRowLoadingMode, bool readingNotifications, bool isReadingPrependedMessage)
+  - list [ref=f1e5]:
+    - listitem [ref=f1e6] [cursor=pointer]: Stack
+    - listitem [ref=f1e7] [cursor=pointer]: Query
+    - listitem [ref=f1e8] [cursor=pointer]: Cookies
+    - listitem [ref=f1e9] [cursor=pointer]: Headers
+    - listitem [ref=f1e10] [cursor=pointer]: Routing
+  - list [ref=f1e12]:
+    - listitem [ref=f1e13]:
+      - 'heading "PostgresException: 42P01: relation \"SosyalMedyaLinkleri\" does not exist POSITION: 109" [level=2] [ref=f1e14]'
+      - list [ref=f1e15]:
+        - listitem [ref=f1e16]:
+          - heading "Npgsql.Internal.NpgsqlConnector.ReadMessageLong(bool async, DataRowLoadingMode dataRowLoadingMode, bool readingNotifications, bool isReadingPrependedMessage)" [level=3] [ref=f1e17]
+        - listitem [ref=f1e18]:
+          - heading "System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<TResult>+StateMachineBox<TStateMachine>.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(short token)" [level=3] [ref=f1e19]
+        - listitem [ref=f1e20]:
+          - heading "Npgsql.NpgsqlDataReader.NextResult(bool async, bool isConsuming, CancellationToken cancellationToken)" [level=3] [ref=f1e21]
+        - listitem [ref=f1e22]:
+          - heading "Npgsql.NpgsqlDataReader.NextResult(bool async, bool isConsuming, CancellationToken cancellationToken)" [level=3] [ref=f1e23]
+        - listitem [ref=f1e24]:
+          - heading "Npgsql.NpgsqlCommand.ExecuteReader(bool async, CommandBehavior behavior, CancellationToken cancellationToken)" [level=3] [ref=f1e25]
+        - listitem [ref=f1e26]:
+          - heading "Npgsql.NpgsqlCommand.ExecuteReader(bool async, CommandBehavior behavior, CancellationToken cancellationToken)" [level=3] [ref=f1e27]
+        - listitem [ref=f1e28]:
+          - heading "Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)" [level=3] [ref=f1e29]
+        - listitem [ref=f1e30]:
+          - heading "Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)" [level=3] [ref=f1e31]
+        - listitem [ref=f1e32]:
+          - heading "Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)" [level=3] [ref=f1e33]
+        - listitem [ref=f1e34]:
+          - heading "Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable<T>+AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)" [level=3] [ref=f1e35]
+        - listitem [ref=f1e36]:
+          - heading "Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync<TState, TResult>(TState state, Func<DbContext, TState, CancellationToken, Task<TResult>> operation, Func<DbContext, TState, CancellationToken, Task<ExecutionResult<TResult>>> verifySucceeded, CancellationToken cancellationToken)" [level=3] [ref=f1e37]
+        - listitem [ref=f1e38]:
+          - heading "Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable<T>+AsyncEnumerator.MoveNextAsync()" [level=3] [ref=f1e39]
+        - listitem [ref=f1e40]:
+          - heading "System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable<TResult>+ConfiguredValueTaskAwaiter.GetResult()" [level=3] [ref=f1e41]
+        - listitem [ref=f1e42]:
+          - heading "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync<TSource>(IQueryable<TSource> source, CancellationToken cancellationToken)" [level=3] [ref=f1e43]
+        - listitem [ref=f1e44]:
+          - heading "Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync<TSource>(IQueryable<TSource> source, CancellationToken cancellationToken)" [level=3] [ref=f1e45]
+        - listitem [ref=f1e46]:
+          - heading [level=3] [ref=f1e47]:
+            - text: FilistinProje.Web.Areas.Admin.Controllers.SosyalMedyaController.Index() in
+            - code [ref=f1e48]: SosyalMedyaController.cs
+          - button "+" [ref=f1e49] [cursor=pointer]
+          - list [ref=f1e51]:
+            - listitem [ref=f1e52]: var linkler = await _context.SosyalMedyaLinkleri
+        - listitem [ref=f1e53]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor+TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, object controller, object[] arguments)" [level=3] [ref=f1e54]
+        - listitem [ref=f1e55]:
+          - heading "System.Runtime.CompilerServices.ValueTaskAwaiter<TResult>.GetResult()" [level=3] [ref=f1e56]
+        - listitem [ref=f1e57]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask<IActionResult> actionResultValueTask)" [level=3] [ref=f1e58]
+        - listitem [ref=f1e59]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, object state, bool isCompleted)" [level=3] [ref=f1e60]
+        - listitem [ref=f1e61]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)" [level=3] [ref=f1e62]
+        - listitem [ref=f1e63]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(ref State next, ref Scope scope, ref object state, ref bool isCompleted)" [level=3] [ref=f1e64]
+        - listitem [ref=f1e65]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, object state, bool isCompleted)" [level=3] [ref=f1e66]
+        - listitem [ref=f1e67]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, object state, bool isCompleted)" [level=3] [ref=f1e68]
+        - listitem [ref=f1e69]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)" [level=3] [ref=f1e70]
+        - listitem [ref=f1e71]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(ref State next, ref Scope scope, ref object state, ref bool isCompleted)" [level=3] [ref=f1e72]
+        - listitem [ref=f1e73]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, object state, bool isCompleted)" [level=3] [ref=f1e74]
+        - listitem [ref=f1e75]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)" [level=3] [ref=f1e76]
+        - listitem [ref=f1e77]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)" [level=3] [ref=f1e78]
+        - listitem [ref=f1e79]:
+          - heading [level=3] [ref=f1e80]:
+            - text: Program+<>c+<<<Main>$>b__0_20>d.MoveNext() in
+            - code [ref=f1e81]: Program.cs
+          - button "+" [ref=f1e82] [cursor=pointer]
+          - list [ref=f1e84]:
+            - listitem [ref=f1e85]: await next();
+        - listitem [ref=f1e86]:
+          - heading "Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)" [level=3] [ref=f1e87]
+        - listitem [ref=f1e88]:
+          - heading "Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)" [level=3] [ref=f1e89]
+        - listitem [ref=f1e90]:
+          - heading "Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)" [level=3] [ref=f1e91]
+        - listitem [ref=f1e92]:
+          - heading "Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)" [level=3] [ref=f1e93]
+        - listitem [ref=f1e94]:
+          - heading "Microsoft.AspNetCore.ResponseCompression.ResponseCompressionMiddleware.InvokeCore(HttpContext context)" [level=3] [ref=f1e95]
+        - listitem [ref=f1e96]:
+          - heading [level=3] [ref=f1e97]:
+            - text: Program+<>c+<<<Main>$>b__0_19>d.MoveNext() in
+            - code [ref=f1e98]: Program.cs
+          - button "+" [ref=f1e99] [cursor=pointer]
+          - list [ref=f1e101]:
+            - listitem [ref=f1e102]: await next();
+        - listitem [ref=f1e103]:
+          - heading "Microsoft.AspNetCore.Diagnostics.StatusCodePagesMiddleware.Invoke(HttpContext context)" [level=3] [ref=f1e104]
+        - listitem [ref=f1e105]:
+          - heading "Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)" [level=3] [ref=f1e106]
+        - listitem [ref=f1e107]:
+          - heading [level=3] [ref=f1e108]:
+            - text: Program+<>c+<<<Main>$>b__0_18>d.MoveNext() in
+            - code [ref=f1e109]: Program.cs
+          - button "+" [ref=f1e110] [cursor=pointer]
+          - list [ref=f1e112]:
+            - listitem [ref=f1e113]: await next();
+        - listitem [ref=f1e114]:
+          - heading [level=3] [ref=f1e115]:
+            - text: Program+<>c+<<<Main>$>b__0_17>d.MoveNext() in
+            - code [ref=f1e116]: Program.cs
+          - button "+" [ref=f1e117] [cursor=pointer]
+          - list [ref=f1e119]:
+            - listitem [ref=f1e120]: await next();
+        - listitem [ref=f1e121]:
+          - heading [level=3] [ref=f1e122]:
+            - text: Program+<>c__DisplayClass0_0+<<<Main>$>b__16>d.MoveNext() in
+            - code [ref=f1e123]: Program.cs
+          - button "+" [ref=f1e124] [cursor=pointer]
+          - list [ref=f1e126]:
+            - listitem [ref=f1e127]: await next();
+        - listitem [ref=f1e128]:
+          - heading "Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)" [level=3] [ref=f1e129]
+    - listitem [ref=f1e130]:
+      - button "Show raw exception details" [ref=f1e132] [cursor=pointer]

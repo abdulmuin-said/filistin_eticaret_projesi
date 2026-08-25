@@ -1,0 +1,173 @@
+- generic [ref=f3e2]:
+  - text:          +                    
+  - banner [ref=f3e3]:
+    - generic [ref=f3e4]:
+      - link "7ANRPS48 لوحة التحكم" [ref=f3e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f3e6]
+      - generic [ref=f3e7]: لوحة التحكم
+    - navigation "القائمة الرئيسية للإدارة" [ref=f3e8]:
+      - link " لوحة البيانات" [ref=f3e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f3e10]: 
+        - text: لوحة البيانات
+      - generic [ref=f3e11]:
+        - button " إدارة الطلبات 1" [ref=f3e12] [cursor=pointer]:
+          - generic [ref=f3e13]: 
+          - text: إدارة الطلبات
+          - generic [ref=f3e14]: "1"
+        - text:      
+      - generic [ref=f3e15]:
+        - button " إدارة المنتجات" [ref=f3e16] [cursor=pointer]:
+          - generic [ref=f3e17]: 
+          - text: إدارة المنتجات
+        - text:  +  
+      - generic [ref=f3e18]:
+        - button " محتوى المتجر" [ref=f3e19] [cursor=pointer]:
+          - generic [ref=f3e20]: 
+          - text: محتوى المتجر
+        - text:        
+      - link " الأعضاء" [ref=f3e21] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f3e22]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=f3e23] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f3e24]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=f3e25] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f3e26]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=f3e27] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f3e28]: 
+        - text: مجموعات الجملة
+      - generic [ref=f3e29]:
+        - button " التقارير" [ref=f3e30] [cursor=pointer]:
+          - generic [ref=f3e31]: 
+          - text: التقارير
+        - text:  
+      - link " الحسابات البنكية" [ref=f3e32] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f3e33]: 
+        - text: الحسابات البنكية
+      - link " Sosyal Medya" [ref=f3e34] [cursor=pointer]:
+        - /url: /Admin/SosyalMedya
+        - generic [ref=f3e35]: 
+        - text: Sosyal Medya
+      - link " الإعدادات" [ref=f3e36] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f3e37]: 
+        - text: الإعدادات
+    - generic [ref=f3e38]:
+      - text: 
+      - generic [ref=f3e39]:
+        - generic [ref=f3e40]: 
+        - link "العربية" [ref=f3e42] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FAdmin%2FSosyalMedya
+        - link "English" [ref=f3e43] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FAdmin%2FSosyalMedya
+      - text: 
+      - generic [ref=f3e44]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f3e45] [cursor=pointer]:
+          - generic [ref=f3e46]:
+            - strong [ref=f3e47]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f3e48]: "7"
+        - text:  
+  - generic [ref=f3e49]:
+    - main [ref=f3e50]:
+      - generic [ref=f3e51]:
+        - generic [ref=f3e52]:
+          - generic [ref=f3e53]:
+            - heading " Sosyal Medya Bağlantıları" [level=1] [ref=f3e54]:
+              - generic [ref=f3e55]: 
+              - text: Sosyal Medya Bağlantıları
+            - paragraph [ref=f3e56]: Sitede footer'da gösterilecek sosyal medya ikonları ve linkleri
+          - button "+ Yeni Ekle" [ref=f3e57] [cursor=pointer]:
+            - generic [ref=f3e58]: +
+            - text: Yeni Ekle
+        - table [ref=f3e62]:
+          - rowgroup [ref=f3e63]:
+            - row [ref=f3e64]:
+              - columnheader "" [ref=f3e65]
+              - columnheader "İkon" [ref=f3e67]
+              - columnheader "Platform" [ref=f3e68]
+              - columnheader "URL" [ref=f3e69]
+              - columnheader "Sıra" [ref=f3e70]
+              - columnheader "Durum" [ref=f3e71]
+              - columnheader "İşlemler" [ref=f3e72]
+          - rowgroup [ref=f3e73]:
+            - row [ref=f3e74]:
+              - cell "" [ref=f3e75]
+              - cell "" [ref=f3e77]
+              - cell "Facebook" [ref=f3e80]
+              - cell [ref=f3e81]:
+                - link "https://www.facebook.com/7anrps48" [ref=f3e82] [cursor=pointer]:
+                  - /url: https://www.facebook.com/7anrps48
+              - cell "1" [ref=f3e83]
+              - cell "Aktif" [ref=f3e84]
+              - cell [ref=f3e86]:
+                - button "" [ref=f3e87] [cursor=pointer]
+                - button "" [ref=f3e90] [cursor=pointer]
+            - row [ref=f3e92]:
+              - cell "" [ref=f3e93]
+              - cell [ref=f3e95]
+              - cell "Twitter / X" [ref=f3e96]
+              - cell [ref=f3e97]:
+                - link "https://x.com/7anrps48?s=21" [ref=f3e98] [cursor=pointer]:
+                  - /url: https://x.com/7anrps48?s=21
+              - cell "6" [ref=f3e99]
+              - cell "Aktif" [ref=f3e100]
+              - cell [ref=f3e102]:
+                - button "" [ref=f3e103] [cursor=pointer]
+                - button "" [ref=f3e106] [cursor=pointer]
+      - dialog [active] [ref=f3e109]:
+        - generic [ref=f3e111]:
+          - generic [ref=f3e112]:
+            - heading "+ Yeni Sosyal Medya Bağlantısı" [level=5] [ref=f3e113]:
+              - generic [ref=f3e114]: +
+              - text: Yeni Sosyal Medya Bağlantısı
+            - button [ref=f3e115] [cursor=pointer]
+          - generic [ref=f3e116]:
+            - generic [ref=f3e117]:
+              - generic [ref=f3e118]: Platform Adı *
+              - textbox "ör. Snapchat, LinkedIn, TikTok" [ref=f3e119]
+              - generic [ref=f3e120]: Herhangi bir platform adı girilebilir.
+            - generic [ref=f3e121]:
+              - generic [ref=f3e122]: URL *
+              - textbox "https://snapchat.com/add/kullaniciad" [ref=f3e123]
+              - generic [ref=f3e124]:
+                - generic [ref=f3e125]: 
+                - text: Sadece
+                - code [ref=f3e126]: https://
+                - text: veya
+                - code [ref=f3e127]: http://
+                - text: ile başlayan güvenli bağlantılar.
+            - generic [ref=f3e128]:
+              - generic [ref=f3e129]: Font Awesome İkon Sınıfı
+              - generic [ref=f3e130]:
+                - textbox "fab fa-snapchat" [ref=f3e131]
+                - generic [ref=f3e132]: 
+              - generic [ref=f3e134]:
+                - text: "Boş bırakılırsa varsayılan ikon gösterilir. Örnekler:"
+                - code [ref=f3e135]: fab fa-snapchat
+                - code [ref=f3e136]: fab fa-instagram
+                - code [ref=f3e137]: fab fa-tiktok
+                - code [ref=f3e138]: fab fa-linkedin
+            - generic [ref=f3e139]:
+              - generic [ref=f3e140]:
+                - generic [ref=f3e141]: Sıra
+                - spinbutton [ref=f3e142]: "0"
+                - generic [ref=f3e143]: Küçük = önce gösterilir. Sürükle-bırak ile de değiştirilebilir.
+              - generic [ref=f3e145]:
+                - checkbox "Aktif (sitede göster) Aktif (sitede göster)" [checked] [ref=f3e146]
+                - generic [ref=f3e147]: Aktif (sitede göster)
+          - generic [ref=f3e148]:
+            - button "İptal" [ref=f3e149] [cursor=pointer]
+            - button " Kaydet" [ref=f3e150] [cursor=pointer]:
+              - generic [ref=f3e151]: 
+              - text: Kaydet
+      - text:    
+    - contentinfo [ref=f3e108]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

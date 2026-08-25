@@ -48,6 +48,7 @@ namespace FilistinProje.Data
         public DbSet<UrunToptanFiyatKademesi> UrunToptanFiyatKademeleri { get; set; }
         public DbSet<PushAbonelik> PushAbonelikleri { get; set; }
         public DbSet<StokBildirimLog> StokBildirimLoglari { get; set; }
+        public DbSet<SosyalMedyaLink> SosyalMedyaLinkleri { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -438,6 +439,15 @@ namespace FilistinProje.Data
                     .WithMany()
                     .HasForeignKey(e => e.UrunSecenekId)
                     .OnDelete(DeleteBehavior.SetNull);
+            });
+
+            modelBuilder.Entity<SosyalMedyaLink>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.HasIndex(e => e.Sira);
+                entity.Property(e => e.PlatformAdi).HasMaxLength(100).IsRequired();
+                entity.Property(e => e.Url).HasMaxLength(500).IsRequired();
+                entity.Property(e => e.IkonSinifi).HasMaxLength(100);
             });
 
         }

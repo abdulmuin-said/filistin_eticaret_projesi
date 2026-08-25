@@ -1,0 +1,55 @@
+@model FilistinProje.Core.Varliklar.SosyalMedyaLink
+@inject IStringLocalizer<SharedResource> Localizer
+
+<div class="mb-3">
+    <label class="form-label fw-semibold">@Localizer["Admin_SosyalMedya_PlatformAdi"] <span class="text-danger">*</span></label>
+    <input type="text" name="platformAdi" class="form-control"
+           value="@Model.PlatformAdi" placeholder="@Localizer["Admin_SosyalMedya_PlatformAdiPlaceholder"]"
+           required maxlength="100" />
+    <div class="form-text">@Localizer["Admin_SosyalMedya_PlatformAdiYardim"]</div>
+</div>
+
+<div class="mb-3">
+    <label class="form-label fw-semibold">URL <span class="text-danger">*</span></label>
+    <input type="url" name="url" class="form-control"
+           value="@Model.Url" placeholder="https://snapchat.com/add/kullaniciad"
+           required maxlength="500" />
+    <div class="form-text text-danger"><i class="fas fa-shield-alt me-1"></i>@Localizer["Admin_SosyalMedya_UrlGuvenlik"]</div>
+</div>
+
+<div class="mb-3">
+    <label class="form-label fw-semibold">@Localizer["Admin_SosyalMedya_IkonSinifi"]</label>
+    <div class="input-group">
+        <input type="text" name="ikonSinifi" class="form-control"
+               value="@Model.IkonSinifi"
+               placeholder="fab fa-snapchat"
+               maxlength="100"
+               oninput="gosterIkonOnizleme(this)" />
+        <span class="input-group-text">
+            <i class="ikon-preview @(string.IsNullOrWhiteSpace(Model.IkonSinifi) ? "fas fa-share-nodes" : Model.IkonSinifi)"></i>
+        </span>
+    </div>
+    <div class="form-text">
+        @Localizer["Admin_SosyalMedya_IkonYardim"]
+        <code>fab fa-snapchat</code> &nbsp;
+        <code>fab fa-instagram</code> &nbsp;
+        <code>fab fa-tiktok</code> &nbsp;
+        <code>fab fa-linkedin</code>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-6">
+        <label class="form-label fw-semibold">@Localizer["Admin_Sira"]</label>
+        <input type="number" name="sira" class="form-control"
+               value="@Model.Sira" min="0" max="9999" />
+        <div class="form-text">@Localizer["Admin_SosyalMedya_SiraYardim"]</div>
+    </div>
+    <div class="col-6 d-flex align-items-end pb-3">
+        <div class="form-check form-switch">
+            <input type="checkbox" name="aktifMi" class="form-check-input" id="aktifMi_@Model.Id"
+                   value="true" @(Model.AktifMi ? "checked" : "") />
+            <label class="form-check-label" for="aktifMi_@Model.Id">@Localizer["Admin_SosyalMedya_AktifGoster"]</label>
+        </div>
+    </div>
+</div>

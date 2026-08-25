@@ -5761,4 +5761,28 @@
   <data name="Admin_FeatureOption_Office" xml:space="preserve"><value>المكتب</value></data>
   <data name="Admin_FeatureOption_Kitchen" xml:space="preserve"><value>المطبخ</value></data>
   <data name="Admin_FeatureOption_Corridor" xml:space="preserve"><value>الممر</value></data>
+
+  <data name="Admin_SosyalMedya_Baslik" xml:space="preserve"><value>روابط التواصل الاجتماعي</value></data>
+  <data name="Admin_SosyalMedya_Aciklama" xml:space="preserve"><value>أيقونات ووصلات التواصل الاجتماعي المعروضة في تذييل الموقع</value></data>
+  <data name="Admin_SosyalMedya_YeniEkle" xml:space="preserve"><value>إضافة رابط جديد</value></data>
+  <data name="Admin_SosyalMedya_PlatformAdi" xml:space="preserve"><value>اسم المنصة</value></data>
+  <data name="Admin_SosyalMedya_PlatformAdiPlaceholder" xml:space="preserve"><value>مثال: Snapchat، LinkedIn، TikTok</value></data>
+  <data name="Admin_SosyalMedya_PlatformAdiYardim" xml:space="preserve"><value>يمكن إدخال أي اسم منصة.</value></data>
+  <data name="Admin_SosyalMedya_IkonSinifi" xml:space="preserve"><value>فئة أيقونة Font Awesome</value></data>
+  <data name="Admin_SosyalMedya_IkonYardim" xml:space="preserve"><value>إذا تُرك فارغاً تظهر الأيقونة الافتراضية. أمثلة:</value></data>
+  <data name="Admin_SosyalMedya_SiraYardim" xml:space="preserve"><value>الأصغر يظهر أولاً. يمكن التغيير بالسحب والإفلات.</value></data>
+  <data name="Admin_SosyalMedya_AktifGoster" xml:space="preserve"><value>فعّال (يظهر في الموقع)</value></data>
+  <data name="Admin_SosyalMedya_Aktif" xml:space="preserve"><value>فعّال</value></data>
+  <data name="Admin_SosyalMedya_Pasif" xml:space="preserve"><value>معطّل</value></data>
+  <data name="Admin_SosyalMedya_YeniBaslik" xml:space="preserve"><value>رابط تواصل اجتماعي جديد</value></data>
+  <data name="Admin_SosyalMedya_DuzenleBaslik" xml:space="preserve"><value>تعديل الرابط</value></data>
+  <data name="Admin_SosyalMedya_Henuz" xml:space="preserve"><value>لم يُضَف أي رابط تواصل اجتماعي بعد.</value></data>
+  <data name="Admin_SosyalMedya_SilConfirm" xml:space="preserve"><value>هل أنت متأكد من حذف هذا الرابط؟</value></data>
+  <data name="Admin_SosyalMedya_Eklendi" xml:space="preserve"><value>تمت إضافة رابط التواصل الاجتماعي.</value></data>
+  <data name="Admin_SosyalMedya_Guncellendi" xml:space="preserve"><value>تم التحديث.</value></data>
+  <data name="Admin_SosyalMedya_Silindi" xml:space="preserve"><value>تم الحذف.</value></data>
+  <data name="Admin_SosyalMedya_GeçersizUrl" xml:space="preserve"><value>رابط غير صالح. يُقبل فقط ما يبدأ بـ https:// أو http://</value></data>
+  <data name="Admin_SosyalMedya_PlatformZorunlu" xml:space="preserve"><value>اسم المنصة مطلوب.</value></data>
+  <data name="Admin_SosyalMedya_UrlGuvenlik" xml:space="preserve"><value>روابط آمنة فقط تبدأ بـ https:// أو http://</value></data>
 </root>
+
