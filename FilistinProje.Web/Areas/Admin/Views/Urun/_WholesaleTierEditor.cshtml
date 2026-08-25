@@ -1,4 +1,5 @@
 @model FilistinProje.Core.Varliklar.Urun
+@inject Microsoft.Extensions.Localization.IStringLocalizer<FilistinProje.Web.Resources.SharedResource> Localizer
 @{
     var tiers = (Model.ToptanFiyatKademeleri ?? new List<FilistinProje.Core.Varliklar.UrunToptanFiyatKademesi>())
         .Where(x => !x.SilindiMi).OrderBy(x => x.MinAdet).ThenBy(x => x.Sira).ToList();
@@ -9,15 +10,15 @@
 <div class="ca-card mt-4" style="border:1px solid var(--ca-border);">
     <div class="ca-card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
         <div>
-            <span class="ca-card-title">Adet bazlı toptan fiyatlar</span>
-            <div class="small text-muted mt-1">Müşteri belirtilen adede ulaştığında uygulanacak doğrudan birim fiyatı tanımlayın. Varyant boşsa tüm ürün için geçerlidir.</div>
+            <span class="ca-card-title">@Localizer["Admin_QuantityBasedWholesale"]</span>
+            <div class="small text-muted mt-1">@Localizer["Admin_QuantityBasedWholesaleDesc"]</div>
         </div>
-        <button type="button" class="ca-btn ca-btn-primary ca-btn-sm" id="addWholesaleTier"><i class="fas fa-plus"></i> Kademe ekle</button>
+        <button type="button" class="ca-btn ca-btn-primary ca-btn-sm" id="addWholesaleTier"><i class="fas fa-plus"></i> @Localizer["Admin_AddTier"]</button>
     </div>
     <div class="ca-card-body">
         <div class="table-responsive">
             <table class="table align-middle mb-0">
-                <thead><tr><th>Varyant</th><th>Minimum adet</th><th>Birim fiyat (₪)</th><th>Aktif</th><th></th></tr></thead>
+                <thead><tr><th>@Localizer["Admin_Variant"]</th><th>@Localizer["Admin_MinQty"]</th><th>@Localizer["Admin_UnitPrice"] (₪)</th><th>@Localizer["Admin_Aktif"]</th><th></th></tr></thead>
                 <tbody id="wholesaleTierList">
                 @for (var i = 0; i < tiers.Count; i++)
                 {
@@ -26,7 +27,7 @@
                         <td>
                             <input type="hidden" data-tier-field="Id" name="ToptanFiyatKademeleri[@i].Id" value="@tier.Id" />
                             <select class="ca-input" data-tier-field="UrunSecenekId" name="ToptanFiyatKademeleri[@i].UrunSecenekId">
-                                <option value="">Tüm ürün</option>
+                                <option value="">@Localizer["Admin_AllProduct"]</option>
                                 @foreach (var variant in variants)
                                 {
                                     if (tier.UrunSecenekId == variant.Id) { <option value="@variant.Id" selected>@variant.VaryantBasligi</option> }
@@ -43,13 +44,13 @@
                 </tbody>
             </table>
         </div>
-        <div class="small text-muted mt-3">Örnek: 10 adet → 42 ₪, 25 adet → 38 ₪. Uygun kademeler arasından en yüksek minimum adet otomatik seçilir.</div>
+        <div class="small text-muted mt-3">@Localizer["Admin_TierExample"]</div>
     </div>
 </div>
 
 <template id="wholesaleTierTemplate">
     <tr data-wholesale-tier>
-        <td><input type="hidden" data-tier-field="Id" value="0" /><select class="ca-input" data-tier-field="UrunSecenekId"><option value="">Tüm ürün</option>@foreach (var variant in variants) { <option value="@variant.Id">@variant.VaryantBasligi</option> }</select></td>
+        <td><input type="hidden" data-tier-field="Id" value="0" /><select class="ca-input" data-tier-field="UrunSecenekId"><option value="">@Localizer["Admin_AllProduct"]</option>@foreach (var variant in variants) { <option value="@variant.Id">@variant.VaryantBasligi</option> }</select></td>
         <td><input class="ca-input" type="number" min="1" required data-tier-field="MinAdet" value="1" /></td>
         <td><input class="ca-input" type="number" inputmode="decimal" min="0.01" step="0.01" required data-decimal data-tier-field="BirimFiyat" /></td>
         <td><input class="form-check-input" type="checkbox" data-tier-field="AktifMi" value="true" checked /><input type="hidden" data-tier-false value="false" /></td>

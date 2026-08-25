@@ -5801,5 +5801,20 @@
   <data name="Admin_SosyalMedya_GeçersizUrl" xml:space="preserve"><value>Invalid URL. Only https:// or http:// links are accepted.</value></data>
   <data name="Admin_SosyalMedya_PlatformZorunlu" xml:space="preserve"><value>Platform name is required.</value></data>
   <data name="Admin_SosyalMedya_UrlGuvenlik" xml:space="preserve"><value>Only secure links starting with https:// or http:// are accepted.</value></data>
+  <data name="Admin_MeasureUnit" xml:space="preserve"><value>Unit of measure</value></data>
+  <data name="Admin_NoUnit" xml:space="preserve"><value>No unit</value></data>
+  <data name="Admin_SizeSlash" xml:space="preserve"><value>Size / dimension</value></data>
+  <data name="Admin_Color" xml:space="preserve"><value>Color</value></data>
+  <data name="Admin_ColorCode" xml:space="preserve"><value>Color code</value></data>
+  <data name="Admin_Weight" xml:space="preserve"><value>Weight (desi)</value></data>
+  <data name="Admin_VariationFallbackTitle" xml:space="preserve"><value>Variation {0}</value></data>
+  <data name="Admin_NotePrefix" xml:space="preserve"><value>Note: </value></data>
+  <data name="Admin_QuantityBasedWholesale" xml:space="preserve"><value>Quantity-based wholesale prices</value></data>
+  <data name="Admin_QuantityBasedWholesaleDesc" xml:space="preserve"><value>Define a direct unit price applied when the customer reaches the specified quantity. Leave the variant blank to apply to the entire product.</value></data>
+  <data name="Admin_AddTier" xml:space="preserve"><value>Add tier</value></data>
+  <data name="Admin_Variant" xml:space="preserve"><value>Variant</value></data>
+  <data name="Admin_MinQty" xml:space="preserve"><value>Minimum quantity</value></data>
+  <data name="Admin_AllProduct" xml:space="preserve"><value>All products</value></data>
+  <data name="Admin_TierExample" xml:space="preserve"><value>Example: 10 pcs → ₪42, 25 pcs → ₪38. The tier with the highest applicable minimum is selected automatically.</value></data>
 </root>
 

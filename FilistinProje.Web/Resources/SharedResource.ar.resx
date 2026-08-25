@@ -5784,5 +5784,20 @@
   <data name="Admin_SosyalMedya_GeçersizUrl" xml:space="preserve"><value>رابط غير صالح. يُقبل فقط ما يبدأ بـ https:// أو http://</value></data>
   <data name="Admin_SosyalMedya_PlatformZorunlu" xml:space="preserve"><value>اسم المنصة مطلوب.</value></data>
   <data name="Admin_SosyalMedya_UrlGuvenlik" xml:space="preserve"><value>روابط آمنة فقط تبدأ بـ https:// أو http://</value></data>
+  <data name="Admin_MeasureUnit" xml:space="preserve"><value>وحدة القياس</value></data>
+  <data name="Admin_NoUnit" xml:space="preserve"><value>بدون وحدة</value></data>
+  <data name="Admin_SizeSlash" xml:space="preserve"><value>المقاس / الحجم</value></data>
+  <data name="Admin_Color" xml:space="preserve"><value>اللون</value></data>
+  <data name="Admin_ColorCode" xml:space="preserve"><value>رمز اللون</value></data>
+  <data name="Admin_Weight" xml:space="preserve"><value>الوزن (دسي)</value></data>
+  <data name="Admin_VariationFallbackTitle" xml:space="preserve"><value>متغير {0}</value></data>
+  <data name="Admin_NotePrefix" xml:space="preserve"><value>ملاحظة: </value></data>
+  <data name="Admin_QuantityBasedWholesale" xml:space="preserve"><value>أسعار الجملة حسب الكمية</value></data>
+  <data name="Admin_QuantityBasedWholesaleDesc" xml:space="preserve"><value>حدّد سعر الوحدة المباشر الذي يُطبَّق عند وصول العميل إلى الكمية المحددة. إذا تُرك الخيار فارغاً فهو ساري على المنتج بالكامل.</value></data>
+  <data name="Admin_AddTier" xml:space="preserve"><value>إضافة شريحة</value></data>
+  <data name="Admin_Variant" xml:space="preserve"><value>المتغير</value></data>
+  <data name="Admin_MinQty" xml:space="preserve"><value>الحد الأدنى للكمية</value></data>
+  <data name="Admin_AllProduct" xml:space="preserve"><value>جميع المنتجات</value></data>
+  <data name="Admin_TierExample" xml:space="preserve"><value>مثال: 10 قطع ← 42 ₪، 25 قطعة ← 38 ₪. يُختار تلقائياً الشريحة ذات الحد الأدنى الأعلى.</value></data>
 </root>
 

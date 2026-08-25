@@ -58,24 +58,24 @@
                             <input class="ca-input" data-variant-field="Olcu" name="UrunSecenek[@i].Olcu" value="@temizOlcu" />
                         </div>
                         <div class="col-lg-2 col-md-6">
-                            <label class="ca-label" data-label-for="OlcuBirimi">Ölçü birimi</label>
+                            <label class="ca-label" data-label-for="OlcuBirimi">@Localizer["Admin_MeasureUnit"]</label>
                             <select class="ca-input" data-variant-field="OlcuBirimi" name="UrunSecenek[@i].OlcuBirimi">
                                 @foreach (var unit in new[] { "", "mm", "cm", "m", "ml", "L", "g", "kg", "adet" })
                                 {
-                                    <option value="@unit" selected="@(variant.OlcuBirimi == unit ? "selected" : null)">@(string.IsNullOrEmpty(unit) ? "Birimsiz" : unit)</option>
+                                    <option value="@unit" selected="@(variant.OlcuBirimi == unit ? "selected" : null)">@(string.IsNullOrEmpty(unit) ? Localizer["Admin_NoUnit"].Value : unit)</option>
                                 }
                             </select>
                         </div>
                         <div class="col-lg-2 col-md-6">
-                            <label class="ca-label" data-label-for="Beden">Beden / boyut</label>
+                            <label class="ca-label" data-label-for="Beden">@Localizer["Admin_SizeSlash"]</label>
                             <input class="ca-input" data-variant-field="Beden" name="UrunSecenek[@i].Beden" value="@variant.Beden" placeholder="S, M, L, XL..." />
                         </div>
                         <div class="col-lg-2 col-md-6">
-                            <label class="ca-label" data-label-for="Renk">Renk</label>
+                            <label class="ca-label" data-label-for="Renk">@Localizer["Admin_Color"]</label>
                             <input class="ca-input" data-variant-field="Renk" name="UrunSecenek[@i].Renk" value="@variant.Renk" />
                         </div>
                         <div class="col-lg-2 col-md-6">
-                            <label class="ca-label" data-label-for="RenkKodu">Renk kodu</label>
+                            <label class="ca-label" data-label-for="RenkKodu">@Localizer["Admin_ColorCode"]</label>
                             <input class="ca-input" type="color" data-variant-field="RenkKodu" name="UrunSecenek[@i].RenkKodu" value="@(string.IsNullOrWhiteSpace(variant.RenkKodu) ? "#31543b" : variant.RenkKodu)" />
                         </div>
                         <div class="col-lg-3 col-md-6" data-canvas-option>
@@ -133,7 +133,7 @@
                             <input class="ca-input" type="number" min="0" data-variant-field="StokAdedi" name="UrunSecenek[@i].StokAdedi" value="@variant.StokAdedi" />
                         </div>
                         <div class="col-lg-2 col-md-6">
-                            <label class="ca-label" data-label-for="Desi">Desi</label>
+                            <label class="ca-label" data-label-for="Desi">@Localizer["Admin_Weight"]</label>
                             <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="Desi" name="UrunSecenek[@i].Desi" value="@variant.Desi.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" />
                         </div>
                         <div class="col-lg-2 col-md-6">
@@ -199,21 +199,21 @@
                         <input class="ca-input" data-variant-field="Olcu" name="UrunSecenek[__index__].Olcu" value="" />
                     </div>
                     <div class="col-lg-2 col-md-6">
-                        <label class="ca-label" data-label-for="OlcuBirimi">Ölçü birimi</label>
+                        <label class="ca-label" data-label-for="OlcuBirimi">@Localizer["Admin_MeasureUnit"]</label>
                         <select class="ca-input" data-variant-field="OlcuBirimi" name="UrunSecenek[__index__].OlcuBirimi">
-                            <option value="">Birimsiz</option><option>mm</option><option>cm</option><option>m</option><option>ml</option><option>L</option><option>g</option><option>kg</option><option>adet</option>
+                            <option value="">@Localizer["Admin_NoUnit"]</option><option>mm</option><option>cm</option><option>m</option><option>ml</option><option>L</option><option>g</option><option>kg</option><option>adet</option>
                         </select>
                     </div>
                     <div class="col-lg-2 col-md-6">
-                        <label class="ca-label" data-label-for="Beden">Beden / boyut</label>
+                        <label class="ca-label" data-label-for="Beden">@Localizer["Admin_SizeSlash"]</label>
                         <input class="ca-input" data-variant-field="Beden" name="UrunSecenek[__index__].Beden" value="" placeholder="S, M, L, XL..." />
                     </div>
                     <div class="col-lg-2 col-md-6">
-                        <label class="ca-label" data-label-for="Renk">Renk</label>
+                        <label class="ca-label" data-label-for="Renk">@Localizer["Admin_Color"]</label>
                         <input class="ca-input" data-variant-field="Renk" name="UrunSecenek[__index__].Renk" value="" />
                     </div>
                     <div class="col-lg-2 col-md-6">
-                        <label class="ca-label" data-label-for="RenkKodu">Renk kodu</label>
+                        <label class="ca-label" data-label-for="RenkKodu">@Localizer["Admin_ColorCode"]</label>
                         <input class="ca-input" type="color" data-variant-field="RenkKodu" name="UrunSecenek[__index__].RenkKodu" value="#31543b" />
                     </div>
                     <div class="col-lg-3 col-md-6" data-canvas-option>
@@ -271,7 +271,7 @@
                         <input class="ca-input" type="number" min="0" data-variant-field="StokAdedi" name="UrunSecenek[__index__].StokAdedi" value="0" />
                     </div>
                     <div class="col-lg-2 col-md-6">
-                        <label class="ca-label" data-label-for="Desi">Desi</label>
+                        <label class="ca-label" data-label-for="Desi">@Localizer["Admin_Weight"]</label>
                         <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="Desi" name="UrunSecenek[__index__].Desi" value="0" />
                     </div>
                     <div class="col-lg-2 col-md-6">
@@ -375,6 +375,8 @@
         const pieceText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Piece"].Value.ToLowerInvariant()));
         const personalizationPrefixText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_PersonalizationPrefix"].Value));
         const variationSubtitleDefaultText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_VariationSubtitleDefault"].Value));
+        const variationFallbackText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_VariationFallbackTitle"].Value));
+        const notePrefixText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_NotePrefix"].Value));
 
         if (!list || !template) {
             return;
@@ -438,7 +440,7 @@
                 return sku;
             }
 
-            return `Varyasyon ${index + 1}`;
+            return variationFallbackText.replace('{0}', index + 1);
         }
 
         function buildSubtitle(card) {
@@ -454,7 +456,7 @@
             if (yon) parts.push(yon);
             if (parca > 1) parts.push(`${parca} ${pieceText}`);
             if (kisellestirme) parts.push(personalizationPrefixText.replace('{0}', kisellestirme));
-            if (not) parts.push(`Not: ${not}`);
+            if (not) parts.push(`${notePrefixText}${not}`);
 
             return parts.length > 0 ? parts.join(' | ') : variationSubtitleDefaultText;
         }
