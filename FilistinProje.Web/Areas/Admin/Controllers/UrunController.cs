@@ -167,13 +167,9 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!await ValidateProductAsync(urun, resimDosyasi, galeriDosyalari: galeriDosyalari))
             {
-                foreach (var state in ModelState)
-                {
-                    foreach (var error in state.Value.Errors)
-                    {
-                        _logger.LogError($"VALIDATION ERROR [{state.Key}]: {error.ErrorMessage} / {error.Exception?.Message}");
-                    }
-                }
+                _logger.LogWarning(
+                    "Urun ekleme dogrulamasi basarisiz. HataSayisi={ValidationErrorCount}",
+                    ModelState.Values.Sum(state => state.Errors.Count));
 
                 await PopulateCategorySelectListAsync(urun.KategoriId);
                 await PopulateProductMetadataAsync(urun.UrunTipi);
@@ -226,10 +222,18 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await EnsureVariantSkusAsync(urun.Id);
                 await transaction.CommitAsync();
             }
-            catch
+            catch (DbUpdateException ex)
             {
                 await transaction.RollbackAsync();
-                throw;
+                LogProductSaveFailure("ekleme", urun.Id, ex);
+                ModelState.AddModelError(string.Empty, _localizer["Admin_ProductSaveFailed"]);
+                urun.UrunSecenek = postedVariants;
+                urun.HediyePaketSecenekleri = postedGiftPackages;
+                urun.ToptanFiyatKademeleri = postedWholesaleTiers;
+                urun.UrunOzellikleri = postedFeatureValues;
+                await PopulateCategorySelectListAsync(urun.KategoriId);
+                await PopulateProductMetadataAsync(urun.UrunTipi);
+                return View(urun);
             }
 
             TempData["Mesaj"] = "تم إضافة المنتج بنجاح.";
@@ -335,19 +339,48 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 urun.AnaGorselUrl = model.AnaGorselUrl.Trim();
             }
 
-            await SyncVariantsAsync(urun, model.UrunSecenek);
-            await SyncGiftPackageOptionsAsync(urun, model.HediyePaketSecenekleri);
-            await _context.SaveChangesAsync();
-            await SyncWholesaleTiersAsync(urun, model.ToptanFiyatKademeleri);
-            await EnsureProductSkuAsync(urun);
-            await EnsureVariantSkusAsync(urun.Id);
-            await SyncFeatureValuesAsync(urun, model.UrunOzellikleri);
-            await SaveGalleryImagesAsync(urun, galeriDosyalari);
-            await EnsureDefaultProductMediaAsync(urun);
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                // Kademeleri önce eşzamanlamak, silinen bir varyanta bağlı kayıtların
+                // varyant silinmeden önce güvenli şekilde kaldırılmasını sağlar.
+                await SyncWholesaleTiersAsync(urun, model.ToptanFiyatKademeleri);
+                await _context.SaveChangesAsync();
 
-await _context.SaveChangesAsync();
-
-            await SyncProductPricesWithVariantsAsync(urun, model);
+                await SyncVariantsAsync(urun, model.UrunSecenek);
+                await SyncGiftPackageOptionsAsync(urun, model.HediyePaketSecenekleri);
+                await _context.SaveChangesAsync();
+                await EnsureProductSkuAsync(urun);
+                await EnsureVariantSkusAsync(urun.Id);
+                await SyncFeatureValuesAsync(urun, model.UrunOzellikleri);
+                await SaveGalleryImagesAsync(urun, galeriDosyalari);
+                await EnsureDefaultProductMediaAsync(urun);
+                await _context.SaveChangesAsync();
+                await SyncProductPricesWithVariantsAsync(urun, model);
+                await transaction.CommitAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                await transaction.RollbackAsync();
+                LogProductSaveFailure("guncelleme", id, ex);
+                ModelState.AddModelError(string.Empty, _localizer["Admin_ProductSaveFailed"]);
+                await PopulateCategorySelectListAsync(model.KategoriId);
+                await PopulateProductMetadataAsync(model.UrunTipi);
+                ViewBag.ToptanciUrunGruplari = await _context.ToptanciUrunGruplari
+                    .AsNoTracking()
+                    .Where(g => !g.SilindiMi && g.AktifMi)
+                    .OrderBy(g => g.Sira)
+                    .ThenBy(g => g.Ad)
+                    .Select(g => new SelectListItem { Value = g.Id.ToString(), Text = g.Ad })
+                    .ToListAsync();
+                model.UrunResimleri = urun.UrunResimleri;
+                model.GoruntulenmeSayisi = urun.GoruntulenmeSayisi;
+                model.SatisSayisi = urun.SatisSayisi;
+                model.FavoriSayisi = urun.FavoriSayisi;
+                RepairProductTextForDisplay(model);
+                PopulateMediaMetadata(model);
+                return View(model);
+            }
 
             TempData["Mesaj"] = "تم تحديث المنتج بنجاح.";
             return RedirectToAction(nameof(Duzenle), new { area = "Admin", id = urun.Id });
@@ -2526,7 +2559,7 @@ await _context.SaveChangesAsync();
                 }
             }
 
-            ValidateVariants(urun.UrunSecenek);
+            await ValidateVariantsAsync(urun.UrunSecenek, currentId);
             ValidateGiftPackageOptions(urun.HediyePaketSecenekleri);
             await ValidateWholesaleTiersAsync(urun, currentId);
 
@@ -3268,47 +3301,106 @@ await _context.SaveChangesAsync();
             }
         }
 
-        private void ValidateVariants(ICollection<UrunSecenek>? variants)
+        private async Task ValidateVariantsAsync(ICollection<UrunSecenek>? variants, int? currentProductId)
         {
             if (variants == null || variants.Count == 0)
             {
                 return;
             }
 
-            var validVariants = variants.Where(IsMeaningfulVariant).ToList();
-            for (var i = 0; i < validVariants.Count; i++)
+            var validVariants = variants
+                .Select((variant, index) => new { Variant = variant, Index = index })
+                .Where(item => IsMeaningfulVariant(item.Variant))
+                .ToList();
+            var duplicateSkus = validVariants
+                .Select(item => item.Variant.VaryantSku?.Trim() ?? string.Empty)
+                .Where(sku => !string.IsNullOrWhiteSpace(sku))
+                .GroupBy(sku => sku, StringComparer.OrdinalIgnoreCase)
+                .Where(group => group.Count() > 1)
+                .Select(group => group.Key)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            HashSet<int> ownedVariantIds = [];
+            HashSet<string> skusOwnedByOtherVariants = new(StringComparer.OrdinalIgnoreCase);
+            if (currentProductId.HasValue)
             {
-                var variant = validVariants[i];
-                var row = i + 1;
+                var postedIds = validVariants
+                    .Where(item => item.Variant.Id > 0)
+                    .Select(item => item.Variant.Id)
+                    .ToHashSet();
+                ownedVariantIds = (await _context.UrunSecenekleri
+                    .AsNoTracking()
+                    .Where(variant => variant.UrunId == currentProductId.Value && postedIds.Contains(variant.Id))
+                    .Select(variant => variant.Id)
+                    .ToListAsync())
+                    .ToHashSet();
+            }
+
+            var postedSkus = validVariants
+                .Select(item => item.Variant.VaryantSku?.Trim() ?? string.Empty)
+                .Where(sku => !string.IsNullOrWhiteSpace(sku))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+            if (postedSkus.Count > 0)
+            {
+                var normalizedSkus = postedSkus.Select(sku => sku.ToLowerInvariant()).ToList();
+                var postedIds = validVariants
+                    .Where(item => item.Variant.Id > 0)
+                    .Select(item => item.Variant.Id)
+                    .ToHashSet();
+                skusOwnedByOtherVariants = (await _context.UrunSecenekleri
+                    .AsNoTracking()
+                    .Where(variant => !postedIds.Contains(variant.Id) && normalizedSkus.Contains(variant.VaryantSku.ToLower()))
+                    .Select(variant => variant.VaryantSku)
+                    .ToListAsync())
+                    .ToHashSet(StringComparer.OrdinalIgnoreCase);
+            }
+
+            foreach (var item in validVariants)
+            {
+                var variant = item.Variant;
+                var prefix = $"UrunSecenek[{item.Index}]";
+                var row = item.Index + 1;
 
                 if (variant.SatisFiyati < 0)
                 {
-                    ModelState.AddModelError(string.Empty, $"Varyasyon {row}: satis fiyati negatif olamaz.");
+                    ModelState.AddModelError($"{prefix}.SatisFiyati", $"Varyasyon {row}: satış fiyatı negatif olamaz.");
                 }
 
                 if (variant.MaliyetFiyati < 0)
                 {
-                    ModelState.AddModelError(string.Empty, $"Varyasyon {row}: maliyet negatif olamaz.");
+                    ModelState.AddModelError($"{prefix}.MaliyetFiyati", $"Varyasyon {row}: maliyet negatif olamaz.");
                 }
 
                 if (variant.StokAdedi < 0)
                 {
-                    ModelState.AddModelError(string.Empty, $"Varyasyon {row}: stok adedi negatif olamaz.");
+                    ModelState.AddModelError($"{prefix}.StokAdedi", $"Varyasyon {row}: stok adedi negatif olamaz.");
                 }
 
-                if (variant.ParcaSayisi < 0)
+                if (variant.ParcaSayisi < 1)
                 {
-                    ModelState.AddModelError(string.Empty, $"Varyasyon {row}: parca sayisi negatif olamaz.");
+                    ModelState.AddModelError($"{prefix}.ParcaSayisi", $"Varyasyon {row}: parça sayısı en az 1 olmalıdır.");
                 }
 
                 if (variant.UretimSuresiGun < 0)
                 {
-                    ModelState.AddModelError(string.Empty, $"Varyasyon {row}: uretim suresi negatif olamaz.");
+                    ModelState.AddModelError($"{prefix}.UretimSuresiGun", $"Varyasyon {row}: üretim süresi negatif olamaz.");
                 }
 
                 if (variant.Desi < 0)
                 {
-                    ModelState.AddModelError(string.Empty, $"Varyasyon {row}: desi negatif olamaz.");
+                    ModelState.AddModelError($"{prefix}.Desi", $"Varyasyon {row}: desi negatif olamaz.");
+                }
+
+                if (variant.Id > 0 && currentProductId.HasValue && !ownedVariantIds.Contains(variant.Id))
+                {
+                    ModelState.AddModelError($"{prefix}.Id", $"Varyasyon {row}: bu kayıt ürüne ait değil.");
+                }
+
+                var sku = variant.VaryantSku?.Trim() ?? string.Empty;
+                if (!string.IsNullOrWhiteSpace(sku) && (duplicateSkus.Contains(sku) || skusOwnedByOtherVariants.Contains(sku)))
+                {
+                    ModelState.AddModelError($"{prefix}.VaryantSku", $"Varyasyon {row}: SKU değeri benzersiz olmalıdır.");
                 }
             }
         }
@@ -3450,6 +3542,17 @@ await _context.SaveChangesAsync();
             target.SeoTitle = source.SeoTitle;
             target.SeoDescription = source.SeoDescription;
             target.SeoKeywords = source.SeoKeywords;
+        }
+
+        private void LogProductSaveFailure(string operation, int productId, Exception exception)
+        {
+            // Veritabanı hata ayrıntıları form değerleri veya sağlayıcı detayları içerebilir.
+            // Operasyonel tanılama için yalnızca güvenli kimlik ve hata türünü kaydet.
+            _logger.LogError(
+                "Urun {Operation} kaydi basarisiz. UrunId={ProductId}, HataTuru={ErrorType}",
+                operation,
+                productId,
+                exception.GetType().Name);
         }
 
         private static string NormalizeFeatureValue(string? rawValue)

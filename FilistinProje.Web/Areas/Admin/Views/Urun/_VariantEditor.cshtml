@@ -16,7 +16,7 @@
             <span class="ca-card-title">@Localizer["Admin_AdvancedVariants"]</span>
             <div class="small text-muted mt-1">@Localizer["Admin_AdvancedVariantsDesc"]</div>
         </div>
-        <button type="button" class="ca-btn ca-btn-primary ca-btn-sm" onclick="window.caVariantEditor.add()">
+        <button type="button" class="ca-btn ca-btn-primary ca-btn-sm" data-variant-add>
             <i class="fas fa-plus"></i> @Localizer["Admin_AddVariation"]
         </button>
     </div>
@@ -365,10 +365,11 @@
 
 <script>
     (function () {
-        const form = document.querySelector('form[asp-action], form');
         const list = document.getElementById('variantList');
         const template = document.getElementById('variantCardTemplate');
         const emptyState = document.getElementById('variantEmptyState');
+        const form = list?.closest('form');
+        const addButton = document.querySelector('[data-variant-add]');
         const categorySelect = document.querySelector('[name="KategoriId"]');
         const canvasOptionCategoryIds = new Set(@Html.Raw(canvasOptionCategoryIdJson));
         const canvasFields = ['CerceveTipi', 'CerceveRengi', 'CerceveKalinligi', 'MalzemeTuru', 'ParcaSayisi'];
@@ -519,6 +520,10 @@
             const removeButton = card.querySelector('[data-variant-remove]');
             if (removeButton) {
                 removeButton.addEventListener('click', () => {
+                    const persistedId = Number.parseInt(selector(card, 'Id')?.value || '0', 10);
+                    if (persistedId > 0) {
+                        window.caWholesaleTierEditor?.removeVariant(persistedId);
+                    }
                     card.remove();
                     reindex();
                 });
@@ -534,11 +539,10 @@
         }
 
         function addCard() {
-            const index = list.querySelectorAll('[data-variant-card]').length;
-            const html = template.innerHTML.replaceAll('__index__', index.toString());
-            list.insertAdjacentHTML('beforeend', html);
-            const card = list.querySelector('[data-variant-card]:last-child');
+            const fragment = template.content.cloneNode(true);
+            const card = fragment.querySelector('[data-variant-card]');
             if (card) {
+                list.appendChild(fragment);
                 bindCard(card);
             }
             reindex();
@@ -547,8 +551,12 @@
         list.querySelectorAll('[data-variant-card]').forEach(bindCard);
         reindex();
 
+        addButton?.addEventListener('click', addCard);
+
         if (form) {
             form.addEventListener('submit', () => {
+                reindex();
+
                 if (!supportsCanvasOptions()) {
                     list.querySelectorAll('[data-variant-card]').forEach(clearCanvasFields);
                 }

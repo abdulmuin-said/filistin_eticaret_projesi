@@ -70,8 +70,16 @@
         if (falseInput) falseInput.name = `ToptanFiyatKademeleri[${index}].AktifMi`;
     });
     const bind = row => row.querySelector('[data-tier-remove]')?.addEventListener('click', () => { row.remove(); reindex(); });
+    const removeVariant = variantId => {
+        list.querySelectorAll('[data-wholesale-tier]').forEach(row => {
+            const select = row.querySelector('[data-tier-field="UrunSecenekId"]');
+            if (select?.value === String(variantId)) row.remove();
+        });
+        reindex();
+    };
     list.querySelectorAll('[data-wholesale-tier]').forEach(bind);
     add.addEventListener('click', () => { list.insertAdjacentHTML('beforeend', template.innerHTML); const row = list.lastElementChild; if (row) bind(row); reindex(); });
     reindex();
+    window.caWholesaleTierEditor = { removeVariant, refresh: reindex };
 })();
 </script>
