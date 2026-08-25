@@ -1,0 +1,439 @@
+- generic [active] [ref=f13e1]:
+  - generic [ref=f13e3]:
+    - generic [ref=f13e4]:
+      - generic [ref=f13e5]:
+        - generic [ref=f13e6]: 
+        - text: الدفع عند الاستلام متاح
+      - generic [ref=f13e7]:
+        - generic [ref=f13e8]: 
+        - text: توصيل مجاني للطلبات فوق 200 ₪
+      - generic [ref=f13e9]:
+        - generic [ref=f13e10]: 
+        - text: شحن مجاني للطلبات فوق 1٬500 ₪
+      - generic [ref=f13e11]:
+        - generic [ref=f13e12]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f13e13]:
+        - generic [ref=f13e14]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f13e15]:
+        - generic [ref=f13e16]: 
+        - text: إنتاج سريع
+      - generic [ref=f13e17]:
+        - generic [ref=f13e18]: 
+        - text: تغليف دقيق
+      - generic [ref=f13e19]:
+        - generic [ref=f13e20]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f13e21]:
+        - generic [ref=f13e22]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f13e23]:
+        - generic [ref=f13e24]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f13e25]:
+        - generic [ref=f13e26]: 
+        - text: دعم واتساب
+    - generic [ref=f13e27]:
+      - generic [ref=f13e28]:
+        - generic [ref=f13e29]: 
+        - text: الدفع عند الاستلام متاح
+      - generic [ref=f13e30]:
+        - generic [ref=f13e31]: 
+        - text: توصيل مجاني للطلبات فوق 200 ₪
+      - generic [ref=f13e32]:
+        - generic [ref=f13e33]: 
+        - text: شحن مجاني للطلبات فوق 1٬500 ₪
+      - generic [ref=f13e34]:
+        - generic [ref=f13e35]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f13e36]:
+        - generic [ref=f13e37]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f13e38]:
+        - generic [ref=f13e39]: 
+        - text: إنتاج سريع
+      - generic [ref=f13e40]:
+        - generic [ref=f13e41]: 
+        - text: تغليف دقيق
+      - generic [ref=f13e42]:
+        - generic [ref=f13e43]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f13e44]:
+        - generic [ref=f13e45]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f13e46]:
+        - generic [ref=f13e47]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f13e48]:
+        - generic [ref=f13e49]: 
+        - text: دعم واتساب
+  - banner [ref=f13e50]:
+    - generic [ref=f13e51]:
+      - generic [ref=f13e52]:
+        - generic [ref=f13e53]: 
+        - link "العربية" [ref=f13e55] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FSiparis%2FOdeme
+        - link "English" [ref=f13e56] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FSiparis%2FOdeme
+      - link "7ANRPS48" [ref=f13e57] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f13e58]
+      - generic [ref=f13e59]:
+        - button "بحث" [ref=f13e60] [cursor=pointer]
+        - link "حسابي" [ref=f13e63] [cursor=pointer]:
+          - /url: /profile
+        - link "المفضلة" [ref=f13e66] [cursor=pointer]:
+          - /url: /favorites
+        - link "السلة" [ref=f13e69] [cursor=pointer]:
+          - /url: /cart
+          - generic [ref=f13e72]: "36"
+      - navigation [ref=f13e73]:
+        - list [ref=f13e74]:
+          - listitem [ref=f13e75] [cursor=pointer]:
+            - link "أثاث" [ref=f13e76]:
+              - /url: /products?k=91
+          - listitem [ref=f13e79] [cursor=pointer]:
+            - link "العطور" [ref=f13e80]:
+              - /url: /products?k=90
+          - listitem [ref=f13e83] [cursor=pointer]:
+            - link "بقالة" [ref=f13e84]:
+              - /url: /products?k=92
+          - listitem [ref=f13e87] [cursor=pointer]:
+            - link "جمال" [ref=f13e88]:
+              - /url: /products?k=89
+          - listitem [ref=f13e91] [cursor=pointer]:
+            - link "أثاث منزلي" [ref=f13e92]:
+              - /url: /products?k=78
+          - listitem [ref=f13e95] [cursor=pointer]:
+            - link "إلكترونيات" [ref=f13e96]:
+              - /url: /products?k=79
+          - listitem [ref=f13e99] [cursor=pointer]:
+            - link "أزياء" [ref=f13e100]:
+              - /url: /products?k=80
+          - listitem [ref=f13e103] [cursor=pointer]:
+            - link "اتصل بنا" [ref=f13e104]:
+              - /url: /pages/Iletisim
+  - main [ref=f13e105]:
+    - generic [ref=f13e107]:
+      - link "1 السلة" [ref=f13e108] [cursor=pointer]:
+        - /url: /cart
+        - generic [ref=f13e109]: "1"
+        - text: السلة
+      - generic [ref=f13e111]:
+        - generic [ref=f13e112]: "2"
+        - text: الدفع والتوصيل
+    - main [ref=f13e113]:
+      - generic [ref=f13e114]:
+        - generic [ref=f13e115]:
+          - generic [ref=f13e116]:
+            - generic [ref=f13e117]: 
+            - text: تشفير SSL 256 بت
+          - heading "إتمام الطلب بأمان" [level=1] [ref=f13e118]
+          - paragraph [ref=f13e119]: تحقق من معلومات التوصيل
+        - generic [ref=f13e120]:
+          - generic [ref=f13e121]:
+            - text: 
+            - region [ref=f13e122]:
+              - generic [ref=f13e123]:
+                - generic [ref=f13e124]: "01"
+                - generic [ref=f13e125]:
+                  - heading "معلومات التوصيل" [level=2] [ref=f13e126]
+                  - paragraph [ref=f13e127]: تحقق من معلومات التوصيل
+              - radiogroup "طريقة الاستلام" [ref=f13e128]:
+                - generic [ref=f13e129] [cursor=pointer]:
+                  - radio " توصيل إلى العنوان سيتم شحن طلبك إلى عنوانك " [checked] [ref=f13e130]
+                  - generic [ref=f13e131]: 
+                  - generic [ref=f13e133]:
+                    - generic [ref=f13e134]: توصيل إلى العنوان
+                    - generic [ref=f13e135]: سيتم شحن طلبك إلى عنوانك
+                  - generic [ref=f13e136]: 
+                - generic [ref=f13e138] [cursor=pointer]:
+                  - radio " استلام من المتجر استلم طلبك من متجرنا" [ref=f13e139]
+                  - generic [ref=f13e140]: 
+                  - generic [ref=f13e142]:
+                    - generic [ref=f13e143]: استلام من المتجر
+                    - generic [ref=f13e144]: استلم طلبك من متجرنا
+                  - text: 
+              - text: 
+              - generic [ref=f13e145]:
+                - generic [ref=f13e146]:
+                  - generic [ref=f13e147]: الاسم الكامل *
+                  - textbox "الاسم الكامل" [ref=f13e148]:
+                    - /placeholder: اسمك ولقبك
+                    - text: 7ANRPS48 Admin
+                - generic [ref=f13e149]:
+                  - generic [ref=f13e150]: البريد الإلكتروني *
+                  - textbox [ref=f13e151]: admin@7anrps48.com
+                  - paragraph [ref=f13e152]: هذا البريد الإلكتروني مسجل بالفعل
+                - generic [ref=f13e153]:
+                  - generic [ref=f13e154]: الهاتف *
+                  - textbox "الهاتف" [ref=f13e155]:
+                    - /placeholder: +970 5XX XXX XXX
+                - generic [ref=f13e156]:
+                  - generic [ref=f13e157]: المدينة *
+                  - combobox "المدينة" [ref=f13e158]:
+                    - option "اختر المدينة" [selected]
+                    - option "أريحا"
+                    - option "الخليل"
+                    - option "الرملة"
+                    - option "الطيبة"
+                    - option "القدس"
+                    - option "اللد"
+                    - option "الناصرة"
+                    - option "أم الفحم"
+                    - option "بيت لحم"
+                    - option "جنين"
+                    - option "حيفا"
+                    - option "خان يونس"
+                    - option "دير البلح"
+                    - option "رام الله والبيرة"
+                    - option "رفح"
+                    - option "سلفيت"
+                    - option "شمال غزة"
+                    - option "طوباس"
+                    - option "طولكرم"
+                    - option "عكا"
+                    - option "غزة"
+                    - option "قلقيلية"
+                    - option "نابلس"
+                    - option "يافا"
+                - generic [ref=f13e159]:
+                  - generic [ref=f13e160]: الحي *
+                  - textbox "الحي" [ref=f13e161]:
+                    - /placeholder: اسم الحي
+                - generic [ref=f13e162]:
+                  - generic [ref=f13e163]: العنوان الكامل *
+                  - textbox "العنوان الكامل" [ref=f13e164]:
+                    - /placeholder: الشارع، الجادة، رقم المبنى، رقم الشقة...
+                - generic [ref=f13e166] [cursor=pointer]:
+                  - checkbox "سيتم حفظ العنوان في حسابك" [ref=f13e167]
+                  - text: سيتم حفظ العنوان في حسابك
+              - generic [ref=f13e169]:
+                - generic [ref=f13e170]: 
+                - generic [ref=f13e172]:
+                  - strong [ref=f13e173]: رسوم الشحن
+                  - paragraph [ref=f13e174]: يتم احتساب رسوم الشحن تلقائياً بعد اختيار مدينتك.
+            - region [ref=f13e175]:
+              - generic [ref=f13e176]:
+                - generic [ref=f13e177]: "02"
+                - generic [ref=f13e178]:
+                  - heading "طريقة الدفع" [level=2] [ref=f13e179]
+                  - paragraph [ref=f13e180]: اختر طريقة الدفع المناسبة لهذا الطلب.
+                - generic [ref=f13e181]:
+                  - generic [ref=f13e182]: 
+                  - text: 256 بت SSL
+              - radiogroup "طريقة الدفع" [ref=f13e183]:
+                - generic [ref=f13e184] [cursor=pointer]:
+                  - radio " تحويل بنكي الدفع باستخدام تفاصيل الحساب البنكي." [disabled] [ref=f13e185]
+                  - generic [ref=f13e186]: 
+                  - generic [ref=f13e188]:
+                    - generic [ref=f13e189]: تحويل بنكي
+                    - generic [ref=f13e190]: الدفع باستخدام تفاصيل الحساب البنكي.
+                  - text: 
+                - generic [ref=f13e191] [cursor=pointer]:
+                  - radio " الدفع عند الاستلام الدفع نقداً عند استلام الطلب. (+15٫00 ₪) " [checked] [ref=f13e192]
+                  - generic [ref=f13e193]: 
+                  - generic [ref=f13e195]:
+                    - generic [ref=f13e196]: الدفع عند الاستلام
+                    - generic [ref=f13e197]: الدفع نقداً عند استلام الطلب. (+15٫00 ₪)
+                  - generic [ref=f13e198]: 
+              - text: 
+            - region [ref=f13e200]:
+              - generic [ref=f13e201]:
+                - generic [ref=f13e202]: "03"
+                - generic [ref=f13e203]:
+                  - heading "التحقق من الهوية" [level=2] [ref=f13e204]
+                  - paragraph [ref=f13e205]: التقط أو حمّل صورة هوية لتأكيد الدفع
+              - generic [ref=f13e206]:
+                - button " فتح الكاميرا" [ref=f13e207] [cursor=pointer]:
+                  - generic [ref=f13e208]: 
+                  - text: فتح الكاميرا
+                - button " رفع ملف" [ref=f13e209] [cursor=pointer]:
+                  - generic [ref=f13e210]: 
+                  - text: رفع ملف
+              - text:    
+              - generic [ref=f13e212] [cursor=pointer]:
+                - generic [ref=f13e213]: 
+                - generic [ref=f13e214]: رفع ملف
+                - generic [ref=f13e215]: JPEG, PNG, WebP · 5 MB
+                - button " رفع ملف JPEG, PNG, WebP · 5 MB" [ref=f13e216]
+              - text: 
+              - generic [ref=f13e217]:
+                - generic [ref=f13e218]: ملاحظة الطلب
+                - textbox "ملاحظة الطلب" [ref=f13e219]:
+                  - /placeholder: اكتب ملاحظة حول طلبك...
+                - paragraph [ref=f13e220]: الحد الأقصى 1000 حرف
+              - generic [ref=f13e222] [cursor=pointer]:
+                - checkbox "سياسة الخصوصية و اتفاقية المستخدم أوافق على الشروط" [ref=f13e223]
+                - generic [ref=f13e224]:
+                  - link "سياسة الخصوصية" [ref=f13e225]:
+                    - /url: /pages/Gizlilik
+                  - text: و
+                  - link "اتفاقية المستخدم" [ref=f13e226]:
+                    - /url: /pages/KullaniciSozlesmesi
+                  - text: أوافق على الشروط
+              - button " إنشاء طلب · ١٬٢٤٩٫٨٤ ₪" [ref=f13e227] [cursor=pointer]:
+                - generic [ref=f13e228]: 
+                - generic [ref=f13e229]: إنشاء طلب
+                - generic [ref=f13e230]: ·
+                - generic [ref=f13e231]: ١٬٢٤٩٫٨٤ ₪
+          - complementary [ref=f13e232]:
+            - generic [ref=f13e233]:
+              - generic [ref=f13e234]:
+                - heading "ملخص الطلب" [level=2] [ref=f13e235]
+                - link "تعديل السلة" [ref=f13e236] [cursor=pointer]:
+                  - /url: /cart
+              - generic [ref=f13e237]:
+                - generic [ref=f13e238]:
+                  - generic [ref=f13e239]:
+                    - img "ايسنس ماسكارا لاش برينسيس" [ref=f13e240]
+                    - generic [ref=f13e241]: "30"
+                  - generic [ref=f13e242]:
+                    - heading "ايسنس ماسكارا لاش برينسيس" [level=3] [ref=f13e243]
+                    - paragraph [ref=f13e244]: "SKU: BEA-ESS-ESS-001-STD"
+                    - paragraph [ref=f13e245]: 1٬050٫00 ₪
+                - generic [ref=f13e246]:
+                  - generic [ref=f13e247]:
+                    - img "شانيل كوكو نوير أو دي" [ref=f13e248]
+                    - generic [ref=f13e249]: "1"
+                  - generic [ref=f13e250]:
+                    - heading "شانيل كوكو نوير أو دي" [level=3] [ref=f13e251]
+                    - paragraph [ref=f13e252]: "SKU: FRA-CHA-CHA-007-STD"
+                    - paragraph [ref=f13e253]: 108٫53 ₪
+                - generic [ref=f13e254]:
+                  - generic [ref=f13e255]:
+                    - img "كالفن كلاين سي كيه وان" [ref=f13e256]
+                    - generic [ref=f13e257]: "1"
+                  - generic [ref=f13e258]:
+                    - heading "كالفن كلاين سي كيه وان" [level=3] [ref=f13e259]
+                    - paragraph [ref=f13e260]: "SKU: FRA-CAL-CAL-006-STD"
+                    - paragraph [ref=f13e261]: 49٫05 ₪
+                - generic [ref=f13e262]:
+                  - generic [ref=f13e263]:
+                    - img "كيوي" [ref=f13e264]
+                    - generic [ref=f13e265]: "1"
+                  - generic [ref=f13e266]:
+                    - heading "كيوي" [level=3] [ref=f13e267]
+                    - paragraph [ref=f13e268]: "SKU: GRO-BRD-KIW-030-STD"
+                    - paragraph [ref=f13e269]: 2٫11 ₪
+                - generic [ref=f13e270]:
+                  - generic [ref=f13e271]:
+                    - img "عصير" [ref=f13e272]
+                    - generic [ref=f13e273]: "1"
+                  - generic [ref=f13e274]:
+                    - heading "عصير" [level=3] [ref=f13e275]
+                    - paragraph [ref=f13e276]: "SKU: GRO-BRD-JUI-029-STD"
+                    - paragraph [ref=f13e277]: 3٫51 ₪
+                - generic [ref=f13e278]:
+                  - generic [ref=f13e279]:
+                    - img "علبة مسحوق" [ref=f13e280]
+                    - generic [ref=f13e281]: "1"
+                  - generic [ref=f13e282]:
+                    - heading "علبة مسحوق" [level=3] [ref=f13e283]
+                    - paragraph [ref=f13e284]: "SKU: BEA-VEL-POW-003-STD"
+                    - paragraph [ref=f13e285]: 13٫51 ₪
+                - generic [ref=f13e286]:
+                  - generic [ref=f13e287]:
+                    - img "طعام القطط" [ref=f13e288]
+                    - generic [ref=f13e289]: "1"
+                  - generic [ref=f13e290]:
+                    - heading "طعام القطط" [level=3] [ref=f13e291]
+                    - paragraph [ref=f13e292]: "SKU: GRO-BRD-FOO-018-STD"
+                    - paragraph [ref=f13e293]: 8٫13 ₪
+              - generic [ref=f13e295]:
+                - generic [ref=f13e296]: 
+                - generic [ref=f13e297]: أضف ₪265٫16 أخرى للشحن المجاني!
+              - generic [ref=f13e300]:
+                - generic [ref=f13e301]:
+                  - term [ref=f13e302]: المجموع الفرعي
+                  - definition [ref=f13e303]: 1٬234٫84 ₪
+                - generic [ref=f13e304]:
+                  - term [ref=f13e305]: رسوم الشحن
+                  - definition [ref=f13e306]: مجاني
+                - generic [ref=f13e307]:
+                  - term [ref=f13e308]: رسوم خدمة الدفع عند الاستلام
+                  - definition [ref=f13e309]: 15٫00 ₪
+              - generic [ref=f13e310]:
+                - generic [ref=f13e311]: المجموع الكلي
+                - generic [ref=f13e312]: ١٬٢٤٩٫٨٤ ₪
+              - generic [ref=f13e313]:
+                - generic [ref=f13e314]:
+                  - generic [ref=f13e315]: 
+                  - text: تشفير SSL 256 بت
+                - generic [ref=f13e316]:
+                  - generic [ref=f13e317]: 
+                  - text: توصيل بدون تلف
+                - generic [ref=f13e318]:
+                  - generic [ref=f13e319]: 
+                  - text: إرجاع سهل
+  - contentinfo [ref=f13e320]:
+    - generic [ref=f13e322]:
+      - generic [ref=f13e327]:
+        - generic [ref=f13e328]: في جميع مناطق فلسطين
+        - generic [ref=f13e329]: شحن مجاني
+      - generic [ref=f13e334]:
+        - generic [ref=f13e335]: إتمام الطلب بأمان
+        - generic [ref=f13e336]: 256 Bit SSL
+      - generic [ref=f13e341]:
+        - generic [ref=f13e342]: تحويل بنكي
+        - generic [ref=f13e343]: دفع سهل عبر الآيبان
+    - generic [ref=f13e344]:
+      - generic [ref=f13e345]:
+        - generic [ref=f13e346]:
+          - paragraph [ref=f13e347]: متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن
+          - generic [ref=f13e348]:
+            - generic [ref=f13e349]:
+              - generic [ref=f13e350]: 
+              - generic [ref=f13e351]: فلسطين
+            - generic [ref=f13e352]:
+              - generic [ref=f13e353]: 
+              - generic [ref=f13e354]: "السبت - الخميس: 9:00 - 21:00"
+          - heading "اشترك في النشرة البريدية" [level=3] [ref=f13e355]
+          - paragraph [ref=f13e356]: استقبل أحدث المنتجات المختارة من السوق الفلسطيني والعروض الخاصة على بريدك.
+          - generic [ref=f13e357]:
+            - textbox "عنوان البريد الإلكتروني" [ref=f13e358]
+            - button "اشتراك" [ref=f13e359] [cursor=pointer]
+        - generic [ref=f13e360]:
+          - heading "مؤسسي" [level=4] [ref=f13e361]
+          - list [ref=f13e362]:
+            - listitem [ref=f13e363]:
+              - link "من نحن" [ref=f13e364] [cursor=pointer]:
+                - /url: /pages/about
+            - listitem [ref=f13e365]:
+              - link "اتصل بنا" [ref=f13e366] [cursor=pointer]:
+                - /url: /pages/contact
+            - listitem [ref=f13e367]:
+              - link "جميع المنتجات" [ref=f13e368] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=f13e369]:
+              - link "سياسة الخصوصية" [ref=f13e370] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f13e371]:
+              - link "عقد البيع عن بعد" [ref=f13e372] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - generic [ref=f13e373]:
+            - link "Facebook" [ref=f13e374] [cursor=pointer]:
+              - /url: https://www.facebook.com/7anrps48
+              - generic [ref=f13e375]: 
+            - link "X / Twitter" [ref=f13e376] [cursor=pointer]:
+              - /url: https://x.com/7anrps48?s=21
+              - generic [ref=f13e377]: 
+      - generic [ref=f13e378]:
+        - paragraph [ref=f13e380]: © 2026 7ANRPS48 — جميع الحقوق محفوظة.
+        - generic [ref=f13e381]:
+          - link "سياسة الخصوصية" [ref=f13e382] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "الإرجاع والاستبدال" [ref=f13e383] [cursor=pointer]:
+            - /url: /pages/return-policy
+          - text: "|"
+          - link "من نحن" [ref=f13e384] [cursor=pointer]:
+            - /url: /pages/about
+  - link "اتصال واتساب" [ref=f13e385] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=f13e388]: WhatsApp
+  - link "السلة" [ref=f13e389] [cursor=pointer]:
+    - /url: /cart
+    - generic [ref=f13e392]: "36"
+  - text: 

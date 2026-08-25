@@ -35,8 +35,8 @@
                             </select>
                         </td>
                         <td><input class="ca-input" type="number" min="1" data-tier-field="MinAdet" name="ToptanFiyatKademeleri[@i].MinAdet" value="@tier.MinAdet" /></td>
-                        <td><input class="ca-input" type="text" inputmode="decimal" data-decimal data-tier-field="BirimFiyat" name="ToptanFiyatKademeleri[@i].BirimFiyat" value="@tier.BirimFiyat.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" /></td>
-                        <td><input class="form-check-input" type="checkbox" data-tier-field="AktifMi" name="ToptanFiyatKademeleri[@i].AktifMi" value="true" @(tier.AktifMi ? "checked" : null) /><input type="hidden" name="ToptanFiyatKademeleri[@i].AktifMi" value="false" /></td>
+                        <td><input class="ca-input" type="number" inputmode="decimal" min="0.01" step="0.01" required data-decimal data-tier-field="BirimFiyat" name="ToptanFiyatKademeleri[@i].BirimFiyat" value="@tier.BirimFiyat.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" /></td>
+                        <td><input class="form-check-input" type="checkbox" data-tier-field="AktifMi" name="ToptanFiyatKademeleri[@i].AktifMi" value="true" @(tier.AktifMi ? "checked" : null) /><input type="hidden" data-tier-false name="ToptanFiyatKademeleri[@i].AktifMi" value="false" /></td>
                         <td><button type="button" class="ca-btn ca-btn-outline ca-btn-sm" data-tier-remove><i class="fas fa-trash"></i></button></td>
                     </tr>
                 }
@@ -50,8 +50,8 @@
 <template id="wholesaleTierTemplate">
     <tr data-wholesale-tier>
         <td><input type="hidden" data-tier-field="Id" value="0" /><select class="ca-input" data-tier-field="UrunSecenekId"><option value="">Tüm ürün</option>@foreach (var variant in variants) { <option value="@variant.Id">@variant.VaryantBasligi</option> }</select></td>
-        <td><input class="ca-input" type="number" min="1" data-tier-field="MinAdet" value="1" /></td>
-        <td><input class="ca-input" type="text" inputmode="decimal" data-decimal data-tier-field="BirimFiyat" value="0" /></td>
+        <td><input class="ca-input" type="number" min="1" required data-tier-field="MinAdet" value="1" /></td>
+        <td><input class="ca-input" type="number" inputmode="decimal" min="0.01" step="0.01" required data-decimal data-tier-field="BirimFiyat" /></td>
         <td><input class="form-check-input" type="checkbox" data-tier-field="AktifMi" value="true" checked /><input type="hidden" data-tier-false value="false" /></td>
         <td><button type="button" class="ca-btn ca-btn-outline ca-btn-sm" data-tier-remove><i class="fas fa-trash"></i></button></td>
     </tr>

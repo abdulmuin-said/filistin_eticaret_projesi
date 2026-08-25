@@ -1,0 +1,126 @@
+- generic [ref=f2e2]:
+  - text:          +                   
+  - banner [ref=f2e3]:
+    - generic [ref=f2e4]:
+      - link "7ANRPS48 لوحة التحكم" [ref=f2e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f2e6]
+      - generic [ref=f2e7]: لوحة التحكم
+    - navigation "القائمة الرئيسية للإدارة" [ref=f2e8]:
+      - link " لوحة البيانات" [ref=f2e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f2e10]: 
+        - text: لوحة البيانات
+      - generic [ref=f2e11]:
+        - button " إدارة الطلبات 1" [ref=f2e12] [cursor=pointer]:
+          - generic [ref=f2e13]: 
+          - text: إدارة الطلبات
+          - generic [ref=f2e14]: "1"
+        - text:      
+      - generic [ref=f2e15]:
+        - button " إدارة المنتجات" [ref=f2e16] [cursor=pointer]:
+          - generic [ref=f2e17]: 
+          - text: إدارة المنتجات
+        - text:  +  
+      - generic [ref=f2e18]:
+        - button " محتوى المتجر" [ref=f2e19] [cursor=pointer]:
+          - generic [ref=f2e20]: 
+          - text: محتوى المتجر
+        - text:        
+      - link " الأعضاء" [ref=f2e21] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f2e22]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=f2e23] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f2e24]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=f2e25] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f2e26]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=f2e27] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f2e28]: 
+        - text: مجموعات الجملة
+      - generic [ref=f2e29]:
+        - button " التقارير" [ref=f2e30] [cursor=pointer]:
+          - generic [ref=f2e31]: 
+          - text: التقارير
+        - text:  
+      - link " الحسابات البنكية" [ref=f2e32] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f2e33]: 
+        - text: الحسابات البنكية
+      - link " الإعدادات" [ref=f2e34] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f2e35]: 
+        - text: الإعدادات
+    - generic [ref=f2e36]:
+      - text: 
+      - generic [ref=f2e37]:
+        - generic [ref=f2e38]: 
+        - link "العربية" [ref=f2e40] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FAdmin%2FUrun%2FDuzenle%2F112
+        - link "English" [ref=f2e41] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FAdmin%2FUrun%2FDuzenle%2F112
+      - text: 
+      - generic [ref=f2e42]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f2e43] [cursor=pointer]:
+          - generic [ref=f2e44]:
+            - strong [ref=f2e45]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f2e46]: "7"
+        - text:  
+  - generic [ref=f2e47]:
+    - main [ref=f2e48]:
+      - generic [ref=f2e49]:
+        - generic [ref=f2e50]:
+          - generic [ref=f2e51]:
+            - heading "تعديل المنتج" [level=1] [ref=f2e52]
+            - paragraph [ref=f2e53]: ايسنس ماسكارا لاش برينسيس
+          - generic [ref=f2e54]:
+            - link " العودة إلى المنتجات" [ref=f2e55] [cursor=pointer]:
+              - /url: /Admin/Urun
+              - generic [ref=f2e56]: 
+              - text: العودة إلى المنتجات
+            - link " عرض في الموقع" [ref=f2e57] [cursor=pointer]:
+              - /url: /Urun/Detay/test-1-essence-mascara-lash-princess-112
+              - generic [ref=f2e58]: 
+              - text: عرض في الموقع
+        - generic [ref=f2e59]:
+          - generic [ref=f2e60]:
+            - generic [ref=f2e61]:
+              - generic [ref=f2e62]:
+                - generic [ref=f2e63]: 
+                - text: نشط في النظام
+              - generic [ref=f2e64]: مميز
+              - generic [ref=f2e65]: منتج جديد
+              - generic [ref=f2e66]: حملة
+              - generic [ref=f2e67]: "ID: #112"
+            - button " حفظ التغييرات" [ref=f2e68] [cursor=pointer]:
+              - generic [ref=f2e69]: 
+              - text: حفظ التغييرات
+          - generic [ref=f2e70]:
+            - generic [ref=f2e71]:
+              - tablist "أقسام تعديل المنتج" [ref=f2e72]:
+                - button " الأساسيات" [ref=f2e73] [cursor=pointer]
+                - button " السعر والعمليات" [ref=f2e75] [cursor=pointer]
+                - button " المحتوى" [ref=f2e77] [cursor=pointer]
+                - button " الخصائص" [ref=f2e79] [cursor=pointer]
+                - button " المتغيرات" [ref=f2e81] [cursor=pointer]
+                - button " الصور" [ref=f2e83] [cursor=pointer]
+              - text: 
+              - generic [ref=f2e85]:
+                - generic [ref=f2e86]
+                - generic [ref=f2e219]
+              - text:  +  +
+              - generic [ref=f2e232]:
+                - link "إلغاء" [ref=f2e233] [cursor=pointer]:
+                  - /url: /Admin/Urun
+                - button " حفظ" [ref=f2e234] [cursor=pointer]
+            - complementary [ref=f2e236]:
+              - generic [ref=f2e237]:
+                - generic [ref=f2e238]: ملخص المنتج
+                - generic [ref=f2e240]
+    - contentinfo [ref=f2e265]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

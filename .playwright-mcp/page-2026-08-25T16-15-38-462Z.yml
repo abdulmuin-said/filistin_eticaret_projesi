@@ -1,0 +1,448 @@
+- generic [active] [ref=f5e1]:
+  - generic [ref=f5e3]:
+    - generic [ref=f5e4]:
+      - generic [ref=f5e5]:
+        - generic [ref=f5e6]: 
+        - text: الدفع عند الاستلام متاح
+      - generic [ref=f5e7]:
+        - generic [ref=f5e8]: 
+        - text: توصيل مجاني للطلبات فوق 200 ₪
+      - generic [ref=f5e9]:
+        - generic [ref=f5e10]: 
+        - text: شحن مجاني للطلبات فوق 1٬500 ₪
+      - generic [ref=f5e11]:
+        - generic [ref=f5e12]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f5e13]:
+        - generic [ref=f5e14]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f5e15]:
+        - generic [ref=f5e16]: 
+        - text: إنتاج سريع
+      - generic [ref=f5e17]:
+        - generic [ref=f5e18]: 
+        - text: تغليف دقيق
+      - generic [ref=f5e19]:
+        - generic [ref=f5e20]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f5e21]:
+        - generic [ref=f5e22]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f5e23]:
+        - generic [ref=f5e24]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f5e25]:
+        - generic [ref=f5e26]: 
+        - text: دعم واتساب
+    - generic [ref=f5e27]:
+      - generic [ref=f5e28]:
+        - generic [ref=f5e29]: 
+        - text: الدفع عند الاستلام متاح
+      - generic [ref=f5e30]:
+        - generic [ref=f5e31]: 
+        - text: توصيل مجاني للطلبات فوق 200 ₪
+      - generic [ref=f5e32]:
+        - generic [ref=f5e33]: 
+        - text: شحن مجاني للطلبات فوق 1٬500 ₪
+      - generic [ref=f5e34]:
+        - generic [ref=f5e35]: 
+        - text: دفع سهل عبر الآيبان
+      - generic [ref=f5e36]:
+        - generic [ref=f5e37]: 
+        - text: خيار الدفع عند الاستلام
+      - generic [ref=f5e38]:
+        - generic [ref=f5e39]: 
+        - text: إنتاج سريع
+      - generic [ref=f5e40]:
+        - generic [ref=f5e41]: 
+        - text: تغليف دقيق
+      - generic [ref=f5e42]:
+        - generic [ref=f5e43]: 
+        - text: توصيل إلى جميع مناطق فلسطين
+      - generic [ref=f5e44]:
+        - generic [ref=f5e45]: 
+        - text: إرجاع 14 يوم
+      - generic [ref=f5e46]:
+        - generic [ref=f5e47]: 
+        - text: ضمان الشركة المصنعة
+      - generic [ref=f5e48]:
+        - generic [ref=f5e49]: 
+        - text: دعم واتساب
+  - banner [ref=f5e50]:
+    - generic [ref=f5e51]:
+      - generic [ref=f5e52]:
+        - generic [ref=f5e53]: 
+        - link "العربية" [ref=f5e55] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FSepet
+        - link "English" [ref=f5e56] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FSepet
+      - link "7ANRPS48" [ref=f5e57] [cursor=pointer]:
+        - /url: /
+        - img "7ANRPS48" [ref=f5e58]
+      - generic [ref=f5e59]:
+        - button "بحث" [ref=f5e60] [cursor=pointer]
+        - link "حسابي" [ref=f5e63] [cursor=pointer]:
+          - /url: /profile
+        - link "المفضلة" [ref=f5e66] [cursor=pointer]:
+          - /url: /favorites
+        - link "السلة" [ref=f5e69] [cursor=pointer]:
+          - /url: /cart
+          - generic [ref=f5e72]: "37"
+      - navigation [ref=f5e73]:
+        - list [ref=f5e74]:
+          - listitem [ref=f5e75] [cursor=pointer]:
+            - link "أثاث" [ref=f5e76]:
+              - /url: /products?k=91
+          - listitem [ref=f5e79] [cursor=pointer]:
+            - link "العطور" [ref=f5e80]:
+              - /url: /products?k=90
+          - listitem [ref=f5e83] [cursor=pointer]:
+            - link "بقالة" [ref=f5e84]:
+              - /url: /products?k=92
+          - listitem [ref=f5e87] [cursor=pointer]:
+            - link "جمال" [ref=f5e88]:
+              - /url: /products?k=89
+          - listitem [ref=f5e91] [cursor=pointer]:
+            - link "أثاث منزلي" [ref=f5e92]:
+              - /url: /products?k=78
+          - listitem [ref=f5e95] [cursor=pointer]:
+            - link "إلكترونيات" [ref=f5e96]:
+              - /url: /products?k=79
+          - listitem [ref=f5e99] [cursor=pointer]:
+            - link "أزياء" [ref=f5e100]:
+              - /url: /products?k=80
+          - listitem [ref=f5e103] [cursor=pointer]:
+            - link "اتصل بنا" [ref=f5e104]:
+              - /url: /pages/Iletisim
+  - main [ref=f5e105]:
+    - generic [ref=f5e107]:
+      - link "الصفحة الرئيسية" [ref=f5e108] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f5e109]: /
+      - generic [ref=f5e110]: سلتي
+    - generic [ref=f5e111]:
+      - generic [ref=f5e112]:
+        - generic [ref=f5e113]:
+          - heading "سلتي" [level=1] [ref=f5e114]
+          - paragraph [ref=f5e115]: 37 منتج
+        - button " إفراغ السلة" [ref=f5e117] [cursor=pointer]:
+          - generic [ref=f5e118]: 
+          - text: إفراغ السلة
+      - generic [ref=f5e119]:
+        - generic [ref=f5e120]:
+          - article [ref=f5e121]:
+            - button "" [ref=f5e123] [cursor=pointer]
+            - link [ref=f5e125] [cursor=pointer]:
+              - /url: /products/112
+              - img "ايسنس ماسكارا لاش برينسيس" [ref=f5e126]
+            - generic [ref=f5e127]:
+              - link "ايسنس ماسكارا لاش برينسيس" [ref=f5e128] [cursor=pointer]:
+                - /url: /products/112
+              - text: "SKU: BEA-ESS-ESS-001-STD"
+              - generic [ref=f5e130]:
+                - generic [ref=f5e131]: ملاحظة طلب خاص
+                - textbox "ملاحظة حول طلبك" [ref=f5e132]
+                - generic [ref=f5e133]:
+                  - generic [ref=f5e134]: 500 حرف كحد أقصى
+                  - button " حفظ" [ref=f5e135] [cursor=pointer]:
+                    - generic [ref=f5e136]: 
+                    - text: حفظ
+              - generic [ref=f5e137]:
+                - generic [ref=f5e138]:
+                  - button "" [ref=f5e140] [cursor=pointer]
+                  - generic [ref=f5e142]: "31"
+                  - button "+" [ref=f5e144] [cursor=pointer]
+                - generic [ref=f5e146]: ₪277٫14
+          - article [ref=f5e147]:
+            - button "" [ref=f5e149] [cursor=pointer]
+            - link [ref=f5e151] [cursor=pointer]:
+              - /url: /products/118
+              - img "شانيل كوكو نوير أو دي" [ref=f5e152]
+            - generic [ref=f5e153]:
+              - link "شانيل كوكو نوير أو دي" [ref=f5e154] [cursor=pointer]:
+                - /url: /products/118
+              - text: "SKU: FRA-CHA-CHA-007-STD"
+              - generic [ref=f5e156]:
+                - generic [ref=f5e157]: ملاحظة طلب خاص
+                - textbox "ملاحظة حول طلبك" [ref=f5e158]
+                - generic [ref=f5e159]:
+                  - generic [ref=f5e160]: 500 حرف كحد أقصى
+                  - button " حفظ" [ref=f5e161] [cursor=pointer]:
+                    - generic [ref=f5e162]: 
+                    - text: حفظ
+              - generic [ref=f5e163]:
+                - generic [ref=f5e164]:
+                  - button "" [ref=f5e166] [cursor=pointer]
+                  - generic [ref=f5e168]: "1"
+                  - button "+" [ref=f5e170] [cursor=pointer]
+                - generic [ref=f5e172]: ₪108٫53
+          - article [ref=f5e173]:
+            - button "" [ref=f5e175] [cursor=pointer]
+            - link [ref=f5e177] [cursor=pointer]:
+              - /url: /products/117
+              - img "كالفن كلاين سي كيه وان" [ref=f5e178]
+            - generic [ref=f5e179]:
+              - link "كالفن كلاين سي كيه وان" [ref=f5e180] [cursor=pointer]:
+                - /url: /products/117
+              - text: "SKU: FRA-CAL-CAL-006-STD"
+              - generic [ref=f5e182]:
+                - generic [ref=f5e183]: ملاحظة طلب خاص
+                - textbox "ملاحظة حول طلبك" [ref=f5e184]
+                - generic [ref=f5e185]:
+                  - generic [ref=f5e186]: 500 حرف كحد أقصى
+                  - button " حفظ" [ref=f5e187] [cursor=pointer]:
+                    - generic [ref=f5e188]: 
+                    - text: حفظ
+              - generic [ref=f5e189]:
+                - generic [ref=f5e190]:
+                  - button "" [ref=f5e192] [cursor=pointer]
+                  - generic [ref=f5e194]: "1"
+                  - button "+" [ref=f5e196] [cursor=pointer]
+                - generic [ref=f5e198]: ₪49٫05
+          - article [ref=f5e199]:
+            - button "" [ref=f5e201] [cursor=pointer]
+            - link [ref=f5e203] [cursor=pointer]:
+              - /url: /products/141
+              - img "كيوي" [ref=f5e204]
+            - generic [ref=f5e205]:
+              - link "كيوي" [ref=f5e206] [cursor=pointer]:
+                - /url: /products/141
+              - text: "SKU: GRO-BRD-KIW-030-STD"
+              - generic [ref=f5e208]:
+                - generic [ref=f5e209]: ملاحظة طلب خاص
+                - textbox "ملاحظة حول طلبك" [ref=f5e210]
+                - generic [ref=f5e211]:
+                  - generic [ref=f5e212]: 500 حرف كحد أقصى
+                  - button " حفظ" [ref=f5e213] [cursor=pointer]:
+                    - generic [ref=f5e214]: 
+                    - text: حفظ
+              - generic [ref=f5e215]:
+                - generic [ref=f5e216]:
+                  - button "" [ref=f5e218] [cursor=pointer]
+                  - generic [ref=f5e220]: "1"
+                  - button "+" [ref=f5e222] [cursor=pointer]
+                - generic [ref=f5e224]: ₪2٫11
+          - article [ref=f5e225]:
+            - button "" [ref=f5e227] [cursor=pointer]
+            - link [ref=f5e229] [cursor=pointer]:
+              - /url: /products/140
+              - img "عصير" [ref=f5e230]
+            - generic [ref=f5e231]:
+              - link "عصير" [ref=f5e232] [cursor=pointer]:
+                - /url: /products/140
+              - text: "SKU: GRO-BRD-JUI-029-STD"
+              - generic [ref=f5e234]:
+                - generic [ref=f5e235]: ملاحظة طلب خاص
+                - textbox "ملاحظة حول طلبك" [ref=f5e236]
+                - generic [ref=f5e237]:
+                  - generic [ref=f5e238]: 500 حرف كحد أقصى
+                  - button " حفظ" [ref=f5e239] [cursor=pointer]:
+                    - generic [ref=f5e240]: 
+                    - text: حفظ
+              - generic [ref=f5e241]:
+                - generic [ref=f5e242]:
+                  - button "" [ref=f5e244] [cursor=pointer]
+                  - generic [ref=f5e246]: "1"
+                  - button "+" [ref=f5e248] [cursor=pointer]
+                - generic [ref=f5e250]: ₪3٫51
+          - article [ref=f5e251]:
+            - button "" [ref=f5e253] [cursor=pointer]
+            - link [ref=f5e255] [cursor=pointer]:
+              - /url: /products/114
+              - img "علبة مسحوق" [ref=f5e256]
+            - generic [ref=f5e257]:
+              - link "علبة مسحوق" [ref=f5e258] [cursor=pointer]:
+                - /url: /products/114
+              - text: "SKU: BEA-VEL-POW-003-STD"
+              - generic [ref=f5e260]:
+                - generic [ref=f5e261]: ملاحظة طلب خاص
+                - textbox "ملاحظة حول طلبك" [ref=f5e262]
+                - generic [ref=f5e263]:
+                  - generic [ref=f5e264]: 500 حرف كحد أقصى
+                  - button " حفظ" [ref=f5e265] [cursor=pointer]:
+                    - generic [ref=f5e266]: 
+                    - text: حفظ
+              - generic [ref=f5e267]:
+                - generic [ref=f5e268]:
+                  - button "" [ref=f5e270] [cursor=pointer]
+                  - generic [ref=f5e272]: "1"
+                  - button "+" [ref=f5e274] [cursor=pointer]
+                - generic [ref=f5e276]: ₪13٫51
+          - article [ref=f5e277]:
+            - button "" [ref=f5e279] [cursor=pointer]
+            - link [ref=f5e281] [cursor=pointer]:
+              - /url: /products/129
+              - img "طعام القطط" [ref=f5e282]
+            - generic [ref=f5e283]:
+              - link "طعام القطط" [ref=f5e284] [cursor=pointer]:
+                - /url: /products/129
+              - text: "SKU: GRO-BRD-FOO-018-STD"
+              - generic [ref=f5e286]:
+                - generic [ref=f5e287]: ملاحظة طلب خاص
+                - textbox "ملاحظة حول طلبك" [ref=f5e288]
+                - generic [ref=f5e289]:
+                  - generic [ref=f5e290]: 500 حرف كحد أقصى
+                  - button " حفظ" [ref=f5e291] [cursor=pointer]:
+                    - generic [ref=f5e292]: 
+                    - text: حفظ
+              - generic [ref=f5e293]:
+                - generic [ref=f5e294]:
+                  - button "" [ref=f5e296] [cursor=pointer]
+                  - generic [ref=f5e298]: "1"
+                  - button "+" [ref=f5e300] [cursor=pointer]
+                - generic [ref=f5e302]: ₪8٫13
+          - generic [ref=f5e303]:
+            - heading "اختيارات خاصة" [level=3] [ref=f5e304]
+            - generic [ref=f5e305]:
+              - generic [ref=f5e306]:
+                - generic [ref=f5e307]:
+                  - link "أريكة أنيبال كولومبو" [ref=f5e308] [cursor=pointer]:
+                    - /url: /products/test-12-annibale-colombo-sofa-123
+                    - img "أريكة أنيبال كولومبو"
+                  - link [ref=f5e309] [cursor=pointer]:
+                    - /url: /products/test-12-annibale-colombo-sofa-123
+                    - heading "أريكة أنيبال كولومبو" [level=4] [ref=f5e310]
+                  - paragraph [ref=f5e311]: 2٬140 ₪
+                - button "أضف إلى السلة" [ref=f5e312] [cursor=pointer]
+              - generic [ref=f5e313]:
+                - generic [ref=f5e314]:
+                  - link [ref=f5e315] [cursor=pointer]:
+                    - /url: /products/test-11-annibale-colombo-bed-122
+                    - img "سرير أنيبال كولومبو" [ref=f5e316]
+                  - link [ref=f5e317] [cursor=pointer]:
+                    - /url: /products/test-11-annibale-colombo-bed-122
+                    - heading "سرير أنيبال كولومبو" [level=4] [ref=f5e318]
+                  - paragraph [ref=f5e319]: 1٬737 ₪
+                - button "أضف إلى السلة" [ref=f5e320] [cursor=pointer]
+              - generic [ref=f5e321]:
+                - generic [ref=f5e322]:
+                  - link "حوض حمام خشبي مع مرآة" [ref=f5e323] [cursor=pointer]:
+                    - /url: /products/test-15-wooden-bathroom-sink-with-mirror-126
+                    - img "حوض حمام خشبي مع مرآة"
+                  - link [ref=f5e324] [cursor=pointer]:
+                    - /url: /products/test-15-wooden-bathroom-sink-with-mirror-126
+                    - heading "حوض حمام خشبي مع مرآة" [level=4] [ref=f5e325]
+                  - paragraph [ref=f5e326]: 730 ₪
+                - button "أضف إلى السلة" [ref=f5e327] [cursor=pointer]
+              - generic [ref=f5e328]:
+                - generic [ref=f5e329]:
+                  - link "نول سارينن رئيس المؤتمر التنفيذي" [ref=f5e330] [cursor=pointer]:
+                    - /url: /products/test-14-knoll-saarinen-executive-conference-chair-125
+                    - img "نول سارينن رئيس المؤتمر التنفيذي"
+                  - link [ref=f5e331] [cursor=pointer]:
+                    - /url: /products/test-14-knoll-saarinen-executive-conference-chair-125
+                    - heading "نول سارينن رئيس المؤتمر التنفيذي" [level=4] [ref=f5e332]
+                  - paragraph [ref=f5e333]: 490 ₪
+                - button "أضف إلى السلة" [ref=f5e334] [cursor=pointer]
+        - complementary [ref=f5e335]:
+          - generic [ref=f5e336]:
+            - heading "ملخص الطلب" [level=2] [ref=f5e337]
+            - generic [ref=f5e338]:
+              - generic [ref=f5e339]:
+                - generic [ref=f5e340]: 
+                - generic [ref=f5e341]: أضف ₪1٬038٫02 أخرى للشحن المجاني!
+              - generic [ref=f5e344]:
+                - generic [ref=f5e345]: ₪0
+                - generic [ref=f5e346]: متبقي ₪1٬038٫02 للشحن المجاني
+                - generic [ref=f5e347]: ₪1٬500٫00
+            - generic [ref=f5e348]:
+              - generic [ref=f5e349]:
+                - generic [ref=f5e350]: المجموع الفرعي
+                - generic [ref=f5e351]: ₪461٫98
+              - generic [ref=f5e352]:
+                - generic [ref=f5e353]: الشحن
+                - generic [ref=f5e354]: مجاني
+              - generic [ref=f5e356]:
+                - generic [ref=f5e357]: اختر شركة الشحن
+                - combobox [ref=f5e358]:
+                  - option "United Express (مجاني)" [selected]
+              - generic [ref=f5e359]:
+                - generic [ref=f5e360]: المجموع
+                - generic [ref=f5e361]: ₪461٫98
+            - generic [ref=f5e362]:
+              - textbox "كود الخصم" [ref=f5e363]
+              - button "تطبيق" [ref=f5e364] [cursor=pointer]
+            - link " المتابعة للدفع" [ref=f5e365] [cursor=pointer]:
+              - /url: /Siparis/Odeme
+              - generic [ref=f5e366]: 
+              - text: المتابعة للدفع
+            - paragraph [ref=f5e367]:
+              - generic [ref=f5e368]: 
+              - text: دفع آمن SSL
+      - text: 
+  - contentinfo [ref=f5e369]:
+    - generic [ref=f5e371]:
+      - generic [ref=f5e376]:
+        - generic [ref=f5e377]: في جميع مناطق فلسطين
+        - generic [ref=f5e378]: شحن مجاني
+      - generic [ref=f5e383]:
+        - generic [ref=f5e384]: إتمام الطلب بأمان
+        - generic [ref=f5e385]: 256 Bit SSL
+      - generic [ref=f5e390]:
+        - generic [ref=f5e391]: تحويل بنكي
+        - generic [ref=f5e392]: دفع سهل عبر الآيبان
+    - generic [ref=f5e393]:
+      - generic [ref=f5e394]:
+        - generic [ref=f5e395]:
+          - paragraph [ref=f5e396]: متجر إلكتروني فلسطيني يقدم منتجات متنوعة بأسعار منافسة وتوصيل سريع لجميع المدن
+          - generic [ref=f5e397]:
+            - generic [ref=f5e398]:
+              - generic [ref=f5e399]: 
+              - generic [ref=f5e400]: فلسطين
+            - generic [ref=f5e401]:
+              - generic [ref=f5e402]: 
+              - generic [ref=f5e403]: "السبت - الخميس: 9:00 - 21:00"
+          - heading "اشترك في النشرة البريدية" [level=3] [ref=f5e404]
+          - paragraph [ref=f5e405]: استقبل أحدث المنتجات المختارة من السوق الفلسطيني والعروض الخاصة على بريدك.
+          - generic [ref=f5e406]:
+            - textbox "عنوان البريد الإلكتروني" [ref=f5e407]
+            - button "اشتراك" [ref=f5e408] [cursor=pointer]
+        - generic [ref=f5e409]:
+          - heading "مؤسسي" [level=4] [ref=f5e410]
+          - list [ref=f5e411]:
+            - listitem [ref=f5e412]:
+              - link "من نحن" [ref=f5e413] [cursor=pointer]:
+                - /url: /pages/about
+            - listitem [ref=f5e414]:
+              - link "اتصل بنا" [ref=f5e415] [cursor=pointer]:
+                - /url: /pages/contact
+            - listitem [ref=f5e416]:
+              - link "جميع المنتجات" [ref=f5e417] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=f5e418]:
+              - link "سياسة الخصوصية" [ref=f5e419] [cursor=pointer]:
+                - /url: /Sozlesmeler/Gizlilik
+            - listitem [ref=f5e420]:
+              - link "عقد البيع عن بعد" [ref=f5e421] [cursor=pointer]:
+                - /url: /Sozlesmeler/MesafeliSatis
+          - generic [ref=f5e422]:
+            - link "Facebook" [ref=f5e423] [cursor=pointer]:
+              - /url: https://www.facebook.com/7anrps48
+              - generic [ref=f5e424]: 
+            - link "X / Twitter" [ref=f5e425] [cursor=pointer]:
+              - /url: https://x.com/7anrps48?s=21
+              - generic [ref=f5e426]: 
+      - generic [ref=f5e427]:
+        - paragraph [ref=f5e429]: © 2026 7ANRPS48 — جميع الحقوق محفوظة.
+        - generic [ref=f5e430]:
+          - link "سياسة الخصوصية" [ref=f5e431] [cursor=pointer]:
+            - /url: /Sozlesmeler/Gizlilik
+          - text: "|"
+          - link "الإرجاع والاستبدال" [ref=f5e432] [cursor=pointer]:
+            - /url: /pages/return-policy
+          - text: "|"
+          - link "من نحن" [ref=f5e433] [cursor=pointer]:
+            - /url: /pages/about
+  - link "اتصال واتساب" [ref=f5e434] [cursor=pointer]:
+    - /url: https://wa.me/970599000000
+    - generic [ref=f5e437]: WhatsApp
+  - link "السلة" [ref=f5e438] [cursor=pointer]:
+    - /url: /cart
+    - generic [ref=f5e441]: "37"
+  - generic [ref=f5e443]:
+    - generic [ref=f5e444]:
+      - generic [ref=f5e445]: 
+      - paragraph [ref=f5e447]: نستخدم ملفات تعريف الارتباط لتحسين تجربتك وتحليل حركة الموقع.
+    - generic [ref=f5e448]:
+      - button "رفض" [ref=f5e449] [cursor=pointer]
+      - button "موافق" [ref=f5e450] [cursor=pointer]

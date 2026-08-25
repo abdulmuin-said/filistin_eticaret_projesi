@@ -1,0 +1,131 @@
+- generic [active] [ref=f6e1]:
+  - heading "An unhandled exception occurred while processing the request." [level=1] [ref=f6e2]
+  - generic [ref=f6e3]: "TimeoutException: The operation has timed out."
+  - paragraph [ref=f6e4]: Unknown location
+  - generic [ref=f6e5]: "NpgsqlException: The operation has timed out"
+  - paragraph [ref=f6e6]: Npgsql.ThrowHelper.ThrowNpgsqlExceptionWithInnerTimeoutException(string message)
+  - generic [ref=f6e7]: "InvalidOperationException: An exception has been raised that is likely due to a transient failure."
+  - paragraph [ref=f6e8]: Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync<TState, TResult>(TState state, Func<DbContext, TState, CancellationToken, Task<TResult>> operation, Func<DbContext, TState, CancellationToken, Task<ExecutionResult<TResult>>> verifySucceeded, CancellationToken cancellationToken)
+  - list [ref=f6e9]:
+    - listitem [ref=f6e10] [cursor=pointer]: Stack
+    - listitem [ref=f6e11] [cursor=pointer]: Query
+    - listitem [ref=f6e12] [cursor=pointer]: Cookies
+    - listitem [ref=f6e13] [cursor=pointer]: Headers
+    - listitem [ref=f6e14] [cursor=pointer]: Routing
+  - list [ref=f6e16]:
+    - listitem [ref=f6e17]:
+      - 'heading "TimeoutException: The operation has timed out." [level=2] [ref=f6e18]'
+      - list
+    - listitem [ref=f6e19]:
+      - button "Show raw exception details" [ref=f6e21] [cursor=pointer]
+    - listitem [ref=f6e22]:
+      - 'heading "NpgsqlException: The operation has timed out" [level=2] [ref=f6e23]'
+      - list [ref=f6e24]:
+        - listitem [ref=f6e25]:
+          - heading "Npgsql.ThrowHelper.ThrowNpgsqlExceptionWithInnerTimeoutException(string message)" [level=3] [ref=f6e26]
+        - listitem [ref=f6e27]:
+          - heading "Npgsql.Util.NpgsqlTimeout.Check()" [level=3] [ref=f6e28]
+        - listitem [ref=f6e29]:
+          - heading "Npgsql.Util.NpgsqlTimeout.CheckAndGetTimeLeft()" [level=3] [ref=f6e30]
+        - listitem [ref=f6e31]:
+          - heading "Npgsql.Internal.NpgsqlConnector.ConnectAsync(NpgsqlTimeout timeout, CancellationToken cancellationToken)" [level=3] [ref=f6e32]
+        - listitem [ref=f6e33]:
+          - heading "Npgsql.Internal.NpgsqlConnector.RawOpen(NpgsqlTimeout timeout, bool async, CancellationToken cancellationToken)" [level=3] [ref=f6e34]
+        - listitem [ref=f6e35]:
+          - heading "Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, string username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, bool async, CancellationToken cancellationToken)" [level=3] [ref=f6e36]
+        - listitem [ref=f6e37]:
+          - heading "Npgsql.Internal.NpgsqlConnector.<Open>g__OpenCore|209_0(NpgsqlConnector conn, string username, SslMode sslMode, GssEncryptionMode gssEncMode, NpgsqlTimeout timeout, bool async, CancellationToken cancellationToken)" [level=3] [ref=f6e38]
+        - listitem [ref=f6e39]:
+          - heading "Npgsql.Internal.NpgsqlConnector.Open(NpgsqlTimeout timeout, bool async, CancellationToken cancellationToken)" [level=3] [ref=f6e40]
+        - listitem [ref=f6e41]:
+          - heading "Npgsql.PoolingDataSource.OpenNewConnector(NpgsqlConnection conn, NpgsqlTimeout timeout, bool async, CancellationToken cancellationToken)" [level=3] [ref=f6e42]
+        - listitem [ref=f6e43]:
+          - heading "Npgsql.PoolingDataSource.<Get>g__RentAsync|33_0(NpgsqlConnection conn, NpgsqlTimeout timeout, bool async, CancellationToken cancellationToken)" [level=3] [ref=f6e44]
+        - listitem [ref=f6e45]:
+          - heading "Npgsql.NpgsqlConnection.<Open>g__OpenAsync|42_0(bool async, CancellationToken cancellationToken)" [level=3] [ref=f6e46]
+        - listitem [ref=f6e47]:
+          - heading "Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(bool errorsExpected, CancellationToken cancellationToken)" [level=3] [ref=f6e48]
+        - listitem [ref=f6e49]:
+          - heading "Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternalAsync(bool errorsExpected, CancellationToken cancellationToken)" [level=3] [ref=f6e50]
+        - listitem [ref=f6e51]:
+          - heading "Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenAsync(CancellationToken cancellationToken, bool errorsExpected)" [level=3] [ref=f6e52]
+        - listitem [ref=f6e53]:
+          - heading "Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)" [level=3] [ref=f6e54]
+        - listitem [ref=f6e55]:
+          - heading "Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable<T>+AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)" [level=3] [ref=f6e56]
+        - listitem [ref=f6e57]:
+          - heading "Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync<TState, TResult>(TState state, Func<DbContext, TState, CancellationToken, Task<TResult>> operation, Func<DbContext, TState, CancellationToken, Task<ExecutionResult<TResult>>> verifySucceeded, CancellationToken cancellationToken)" [level=3] [ref=f6e58]
+    - listitem [ref=f6e59]:
+      - button "Show raw exception details" [ref=f6e61] [cursor=pointer]
+    - listitem [ref=f6e62]:
+      - 'heading "InvalidOperationException: An exception has been raised that is likely due to a transient failure." [level=2] [ref=f6e63]'
+      - list [ref=f6e64]:
+        - listitem [ref=f6e65]:
+          - heading "Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync<TState, TResult>(TState state, Func<DbContext, TState, CancellationToken, Task<TResult>> operation, Func<DbContext, TState, CancellationToken, Task<ExecutionResult<TResult>>> verifySucceeded, CancellationToken cancellationToken)" [level=3] [ref=f6e66]
+        - listitem [ref=f6e67]:
+          - heading "Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable<T>+AsyncEnumerator.MoveNextAsync()" [level=3] [ref=f6e68]
+        - listitem [ref=f6e69]:
+          - heading "System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable<TResult>+ConfiguredValueTaskAwaiter.GetResult()" [level=3] [ref=f6e70]
+        - listitem [ref=f6e71]:
+          - heading "Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync<TSource>(IAsyncEnumerable<TSource> asyncEnumerable, CancellationToken cancellationToken)" [level=3] [ref=f6e72]
+        - listitem [ref=f6e73]:
+          - heading "Microsoft.EntityFrameworkCore.Query.ShapedQueryCompilingExpressionVisitor.SingleOrDefaultAsync<TSource>(IAsyncEnumerable<TSource> asyncEnumerable, CancellationToken cancellationToken)" [level=3] [ref=f6e74]
+        - listitem [ref=f6e75]:
+          - heading [level=3] [ref=f6e76]:
+            - text: Program+<>c+<<<Main>$>b__0_37>d.MoveNext() in
+            - code [ref=f6e77]: Program.cs
+          - button "+" [ref=f6e78] [cursor=pointer]
+          - list [ref=f6e80]:
+            - listitem [ref=f6e81]: var user = await userManager.GetUserAsync(context.Principal);
+        - listitem [ref=f6e82]:
+          - heading "Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationHandler.HandleAuthenticateAsync()" [level=3] [ref=f6e83]
+        - listitem [ref=f6e84]:
+          - heading "Microsoft.AspNetCore.Authentication.AuthenticationHandler<TOptions>.AuthenticateAsync()" [level=3] [ref=f6e85]
+        - listitem [ref=f6e86]:
+          - heading "Microsoft.AspNetCore.Authentication.AuthenticationService.AuthenticateAsync(HttpContext context, string scheme)" [level=3] [ref=f6e87]
+        - listitem [ref=f6e88]:
+          - heading "Microsoft.AspNetCore.Authentication.AuthenticationServiceImpl.AuthenticateAsync(HttpContext context, string scheme)" [level=3] [ref=f6e89]
+        - listitem [ref=f6e90]:
+          - heading "Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)" [level=3] [ref=f6e91]
+        - listitem [ref=f6e92]:
+          - heading "Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)" [level=3] [ref=f6e93]
+        - listitem [ref=f6e94]:
+          - heading "Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)" [level=3] [ref=f6e95]
+        - listitem [ref=f6e96]:
+          - heading "Microsoft.AspNetCore.ResponseCompression.ResponseCompressionMiddleware.InvokeCore(HttpContext context)" [level=3] [ref=f6e97]
+        - listitem [ref=f6e98]:
+          - heading [level=3] [ref=f6e99]:
+            - text: Program+<>c+<<<Main>$>b__0_19>d.MoveNext() in
+            - code [ref=f6e100]: Program.cs
+          - button "+" [ref=f6e101] [cursor=pointer]
+          - list [ref=f6e103]:
+            - listitem [ref=f6e104]: await next();
+        - listitem [ref=f6e105]:
+          - heading "Microsoft.AspNetCore.Diagnostics.StatusCodePagesMiddleware.Invoke(HttpContext context)" [level=3] [ref=f6e106]
+        - listitem [ref=f6e107]:
+          - heading "Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)" [level=3] [ref=f6e108]
+        - listitem [ref=f6e109]:
+          - heading [level=3] [ref=f6e110]:
+            - text: Program+<>c+<<<Main>$>b__0_18>d.MoveNext() in
+            - code [ref=f6e111]: Program.cs
+          - button "+" [ref=f6e112] [cursor=pointer]
+          - list [ref=f6e114]:
+            - listitem [ref=f6e115]: await next();
+        - listitem [ref=f6e116]:
+          - heading [level=3] [ref=f6e117]:
+            - text: Program+<>c+<<<Main>$>b__0_17>d.MoveNext() in
+            - code [ref=f6e118]: Program.cs
+          - button "+" [ref=f6e119] [cursor=pointer]
+          - list [ref=f6e121]:
+            - listitem [ref=f6e122]: await next();
+        - listitem [ref=f6e123]:
+          - heading [level=3] [ref=f6e124]:
+            - text: Program+<>c__DisplayClass0_0+<<<Main>$>b__16>d.MoveNext() in
+            - code [ref=f6e125]: Program.cs
+          - button "+" [ref=f6e126] [cursor=pointer]
+          - list [ref=f6e128]:
+            - listitem [ref=f6e129]: await next();
+        - listitem [ref=f6e130]:
+          - heading "Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)" [level=3] [ref=f6e131]
+    - listitem [ref=f6e132]:
+      - button "Show raw exception details" [ref=f6e134] [cursor=pointer]

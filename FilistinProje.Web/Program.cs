@@ -1523,7 +1523,22 @@ BEGIN
         CONSTRAINT "FK_UrunToptanFiyatKademeleri_UrunSecenekleri_UrunSecenekId" FOREIGN KEY ("UrunSecenekId") REFERENCES "UrunSecenekleri" ("Id") ON DELETE CASCADE
     );
 
-    CREATE INDEX IF NOT EXISTS "IX_UrunToptanFiyatKademeleri_UrunId_UrunSecenekId_MinAdet" ON "UrunToptanFiyatKademeleri" ("UrunId", "UrunSecenekId", "MinAdet");
+    DELETE FROM "UrunToptanFiyatKademeleri" duplicate
+    USING "UrunToptanFiyatKademeleri" keeper
+    WHERE duplicate."SilindiMi" = false
+      AND keeper."SilindiMi" = false
+      AND duplicate."UrunId" = keeper."UrunId"
+      AND duplicate."UrunSecenekId" IS NOT DISTINCT FROM keeper."UrunSecenekId"
+      AND duplicate."MinAdet" = keeper."MinAdet"
+      AND duplicate."Id" > keeper."Id";
+
+    DROP INDEX IF EXISTS "IX_UrunToptanFiyatKademeleri_UrunId_UrunSecenekId_MinAdet";
+    CREATE UNIQUE INDEX IF NOT EXISTS "UX_UrunToptanFiyatKademeleri_Urun_MinAdet"
+        ON "UrunToptanFiyatKademeleri" ("UrunId", "MinAdet")
+        WHERE "UrunSecenekId" IS NULL AND "SilindiMi" = false;
+    CREATE UNIQUE INDEX IF NOT EXISTS "UX_UrunToptanFiyatKademeleri_Varyant_MinAdet"
+        ON "UrunToptanFiyatKademeleri" ("UrunId", "UrunSecenekId", "MinAdet")
+        WHERE "UrunSecenekId" IS NOT NULL AND "SilindiMi" = false;
     CREATE INDEX IF NOT EXISTS "IX_UrunToptanFiyatKademeleri_UrunSecenekId" ON "UrunToptanFiyatKademeleri" ("UrunSecenekId");
 
     IF NOT EXISTS (
@@ -1694,6 +1709,15 @@ AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'SepetIt
 AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'SepetItems' AND column_name = 'HediyePaketAdiAr')
 AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'SiparisDetaylari' AND column_name = 'HediyePaketSecenegiId')
 AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'SiparisDetaylari' AND column_name = 'HediyePaketAdiAr');
+
+INSERT INTO ""__EFMigrationsHistory"" (""MigrationId"", ""ProductVersion"")
+SELECT '20260820193510_EnforceWholesaleTierUniqueness', '10.0.10'
+WHERE NOT EXISTS (
+    SELECT 1 FROM ""__EFMigrationsHistory""
+    WHERE ""MigrationId"" = '20260820193510_EnforceWholesaleTierUniqueness'
+)
+AND to_regclass('""UX_UrunToptanFiyatKademeleri_Urun_MinAdet""') IS NOT NULL
+AND to_regclass('""UX_UrunToptanFiyatKademeleri_Varyant_MinAdet""') IS NOT NULL;
 ");
     logger.LogInformation("Migration history tutarlilik kontrolu tamamlandi.");
 }

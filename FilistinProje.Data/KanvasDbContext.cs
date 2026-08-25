@@ -396,7 +396,14 @@ namespace FilistinProje.Data
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.BirimFiyat).HasPrecision(18, 2);
-                entity.HasIndex(e => new { e.UrunId, e.UrunSecenekId, e.MinAdet });
+                entity.HasIndex(e => new { e.UrunId, e.MinAdet })
+                    .HasDatabaseName("UX_UrunToptanFiyatKademeleri_Urun_MinAdet")
+                    .IsUnique()
+                    .HasFilter("\"UrunSecenekId\" IS NULL AND \"SilindiMi\" = false");
+                entity.HasIndex(e => new { e.UrunId, e.UrunSecenekId, e.MinAdet })
+                    .HasDatabaseName("UX_UrunToptanFiyatKademeleri_Varyant_MinAdet")
+                    .IsUnique()
+                    .HasFilter("\"UrunSecenekId\" IS NOT NULL AND \"SilindiMi\" = false");
                 entity.HasOne(e => e.Urun)
                     .WithMany(e => e.ToptanFiyatKademeleri)
                     .HasForeignKey(e => e.UrunId)

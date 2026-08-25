@@ -5,7 +5,7 @@ namespace FilistinProje.Core.Varliklar
     public class UrunToptanFiyatKademesi : BaseEntity
     {
         public int UrunId { get; set; }
-        public Urun Urun { get; set; } = default!;
+        public Urun? Urun { get; set; }
 
         public int? UrunSecenekId { get; set; }
         public UrunSecenek? UrunSecenek { get; set; }
@@ -13,7 +13,7 @@ namespace FilistinProje.Core.Varliklar
         [Range(1, int.MaxValue)]
         public int MinAdet { get; set; } = 1;
 
-        [Range(typeof(decimal), "0.01", "999999999")]
+        [Range(typeof(decimal), "0.01", "999999999", ParseLimitsInInvariantCulture = true)]
         public decimal BirimFiyat { get; set; }
 
         public bool AktifMi { get; set; } = true;

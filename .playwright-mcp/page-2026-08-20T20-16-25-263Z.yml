@@ -1,0 +1,152 @@
+- generic [active] [ref=f3e1]:
+  - heading "An unhandled exception occurred while processing the request." [level=1] [ref=f3e2]
+  - generic [ref=f3e3]: "FormatException: The input string '0.01' was not in a correct format."
+  - paragraph [ref=f3e4]: System.Number.ThrowFormatException<TChar>(ReadOnlySpan<TChar> value)
+  - generic [ref=f3e5]: "ArgumentException: 0.01 is not a valid value for Decimal. (Parameter 'value')"
+  - paragraph [ref=f3e6]: System.ComponentModel.BaseNumberConverter.ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+  - list [ref=f3e7]:
+    - listitem [ref=f3e8] [cursor=pointer]: Stack
+    - listitem [ref=f3e9] [cursor=pointer]: Query
+    - listitem [ref=f3e10] [cursor=pointer]: Cookies
+    - listitem [ref=f3e11] [cursor=pointer]: Headers
+    - listitem [ref=f3e12] [cursor=pointer]: Routing
+  - list [ref=f3e14]:
+    - listitem [ref=f3e15]:
+      - 'heading "FormatException: The input string ''0.01'' was not in a correct format." [level=2] [ref=f3e16]'
+      - list [ref=f3e17]:
+        - listitem [ref=f3e18]:
+          - heading "System.Number.ThrowFormatException<TChar>(ReadOnlySpan<TChar> value)" [level=3] [ref=f3e19]
+        - listitem [ref=f3e20]:
+          - heading "System.Number.ParseDecimal<TChar>(ReadOnlySpan<TChar> value, NumberStyles styles, NumberFormatInfo info)" [level=3] [ref=f3e21]
+        - listitem [ref=f3e22]:
+          - heading "decimal.Parse(string s, NumberStyles style, IFormatProvider provider)" [level=3] [ref=f3e23]
+        - listitem [ref=f3e24]:
+          - heading "System.ComponentModel.DecimalConverter.FromString(string value, NumberFormatInfo formatInfo)" [level=3] [ref=f3e25]
+        - listitem [ref=f3e26]:
+          - heading "System.ComponentModel.BaseNumberConverter.ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)" [level=3] [ref=f3e27]
+    - listitem [ref=f3e28]:
+      - button "Show raw exception details" [ref=f3e30] [cursor=pointer]
+    - listitem [ref=f3e31]:
+      - 'heading "ArgumentException: 0.01 is not a valid value for Decimal. (Parameter ''value'')" [level=2] [ref=f3e32]'
+      - list [ref=f3e33]:
+        - listitem [ref=f3e34]:
+          - heading "System.ComponentModel.BaseNumberConverter.ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)" [level=3] [ref=f3e35]
+        - listitem [ref=f3e36]:
+          - heading "System.ComponentModel.DataAnnotations.RangeAttribute.SetupConversion()" [level=3] [ref=f3e37]
+        - listitem [ref=f3e38]:
+          - heading "System.ComponentModel.DataAnnotations.RangeAttribute.IsValid(object value)" [level=3] [ref=f3e39]
+        - listitem [ref=f3e40]:
+          - heading "System.ComponentModel.DataAnnotations.ValidationAttribute.IsValid(object value, ValidationContext validationContext)" [level=3] [ref=f3e41]
+        - listitem [ref=f3e42]:
+          - heading "System.ComponentModel.DataAnnotations.ValidationAttribute.GetValidationResult(object value, ValidationContext validationContext)" [level=3] [ref=f3e43]
+        - listitem [ref=f3e44]:
+          - heading "Microsoft.AspNetCore.Mvc.DataAnnotations.DataAnnotationsModelValidator.Validate(ModelValidationContext validationContext)" [level=3] [ref=f3e45]
+        - listitem [ref=f3e46]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationVisitor.ValidateNode()" [level=3] [ref=f3e47]
+        - listitem [ref=f3e48]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationVisitor.VisitImplementation(ref ModelMetadata metadata, ref string key, object model)" [level=3] [ref=f3e49]
+        - listitem [ref=f3e50]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationVisitor.Visit(ModelMetadata metadata, string key, object model)" [level=3] [ref=f3e51]
+        - listitem [ref=f3e52]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationVisitor.VisitChildren(IValidationStrategy strategy)" [level=3] [ref=f3e53]
+        - listitem [ref=f3e54]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationVisitor.VisitComplexType(IValidationStrategy defaultStrategy)" [level=3] [ref=f3e55]
+        - listitem [ref=f3e56]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationVisitor.VisitImplementation(ref ModelMetadata metadata, ref string key, object model)" [level=3] [ref=f3e57]
+        - listitem [ref=f3e58]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationVisitor.Visit(ModelMetadata metadata, string key, object model)" [level=3] [ref=f3e59]
+        - listitem [ref=f3e60]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationVisitor.VisitChildren(IValidationStrategy strategy)" [level=3] [ref=f3e61]
+        - listitem [ref=f3e62]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationVisitor.VisitComplexType(IValidationStrategy defaultStrategy)" [level=3] [ref=f3e63]
+        - listitem [ref=f3e64]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationVisitor.VisitImplementation(ref ModelMetadata metadata, ref string key, object model)" [level=3] [ref=f3e65]
+        - listitem [ref=f3e66]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationVisitor.Visit(ModelMetadata metadata, string key, object model)" [level=3] [ref=f3e67]
+        - listitem [ref=f3e68]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationVisitor.VisitChildren(IValidationStrategy strategy)" [level=3] [ref=f3e69]
+        - listitem [ref=f3e70]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationVisitor.VisitComplexType(IValidationStrategy defaultStrategy)" [level=3] [ref=f3e71]
+        - listitem [ref=f3e72]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationVisitor.VisitImplementation(ref ModelMetadata metadata, ref string key, object model)" [level=3] [ref=f3e73]
+        - listitem [ref=f3e74]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.Validation.ValidationVisitor.Visit(ModelMetadata metadata, string key, object model)" [level=3] [ref=f3e75]
+        - listitem [ref=f3e76]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.ObjectModelValidator.Validate(ActionContext actionContext, ValidationStateDictionary validationState, string prefix, object model, ModelMetadata metadata, object container)" [level=3] [ref=f3e77]
+        - listitem [ref=f3e78]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.ParameterBinder.EnforceBindRequiredAndValidate(ObjectModelValidator baseObjectValidator, ActionContext actionContext, ParameterDescriptor parameter, ModelMetadata metadata, ModelBindingContext modelBindingContext, ModelBindingResult modelBindingResult, object container)" [level=3] [ref=f3e79]
+        - listitem [ref=f3e80]:
+          - heading "Microsoft.AspNetCore.Mvc.ModelBinding.ParameterBinder.BindModelAsync(ActionContext actionContext, IModelBinder modelBinder, IValueProvider valueProvider, ParameterDescriptor parameter, ModelMetadata metadata, object value, object container)" [level=3] [ref=f3e81]
+        - listitem [ref=f3e82]:
+          - heading "System.Threading.Tasks.ValueTask<TResult>.get_Result()" [level=3] [ref=f3e83]
+        - listitem [ref=f3e84]:
+          - heading "System.Runtime.CompilerServices.ValueTaskAwaiter<TResult>.GetResult()" [level=3] [ref=f3e85]
+        - listitem [ref=f3e86]:
+          - heading "Microsoft.AspNetCore.Mvc.Controllers.ControllerBinderDelegateProvider+<>c__DisplayClass0_0+<<CreateBinderDelegate>g__Bind|0>d.MoveNext()" [level=3] [ref=f3e87]
+        - listitem [ref=f3e88]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, object state, bool isCompleted)" [level=3] [ref=f3e89]
+        - listitem [ref=f3e90]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, object state, bool isCompleted)" [level=3] [ref=f3e91]
+        - listitem [ref=f3e92]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)" [level=3] [ref=f3e93]
+        - listitem [ref=f3e94]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(ref State next, ref Scope scope, ref object state, ref bool isCompleted)" [level=3] [ref=f3e95]
+        - listitem [ref=f3e96]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()" [level=3] [ref=f3e97]
+        - listitem [ref=f3e98]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)" [level=3] [ref=f3e99]
+        - listitem [ref=f3e100]:
+          - heading "Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)" [level=3] [ref=f3e101]
+        - listitem [ref=f3e102]:
+          - heading [level=3] [ref=f3e103]:
+            - text: Program+<>c+<<<Main>$>b__0_20>d.MoveNext() in
+            - code [ref=f3e104]: Program.cs
+          - button "+" [ref=f3e105] [cursor=pointer]
+          - list [ref=f3e107]:
+            - listitem [ref=f3e108]: await next();
+        - listitem [ref=f3e109]:
+          - heading "Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)" [level=3] [ref=f3e110]
+        - listitem [ref=f3e111]:
+          - heading "Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)" [level=3] [ref=f3e112]
+        - listitem [ref=f3e113]:
+          - heading "Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)" [level=3] [ref=f3e114]
+        - listitem [ref=f3e115]:
+          - heading "Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)" [level=3] [ref=f3e116]
+        - listitem [ref=f3e117]:
+          - heading "Microsoft.AspNetCore.ResponseCompression.ResponseCompressionMiddleware.InvokeCore(HttpContext context)" [level=3] [ref=f3e118]
+        - listitem [ref=f3e119]:
+          - heading [level=3] [ref=f3e120]:
+            - text: Program+<>c+<<<Main>$>b__0_19>d.MoveNext() in
+            - code [ref=f3e121]: Program.cs
+          - button "+" [ref=f3e122] [cursor=pointer]
+          - list [ref=f3e124]:
+            - listitem [ref=f3e125]: await next();
+        - listitem [ref=f3e126]:
+          - heading "Microsoft.AspNetCore.Diagnostics.StatusCodePagesMiddleware.Invoke(HttpContext context)" [level=3] [ref=f3e127]
+        - listitem [ref=f3e128]:
+          - heading "Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)" [level=3] [ref=f3e129]
+        - listitem [ref=f3e130]:
+          - heading [level=3] [ref=f3e131]:
+            - text: Program+<>c+<<<Main>$>b__0_18>d.MoveNext() in
+            - code [ref=f3e132]: Program.cs
+          - button "+" [ref=f3e133] [cursor=pointer]
+          - list [ref=f3e135]:
+            - listitem [ref=f3e136]: await next();
+        - listitem [ref=f3e137]:
+          - heading [level=3] [ref=f3e138]:
+            - text: Program+<>c+<<<Main>$>b__0_17>d.MoveNext() in
+            - code [ref=f3e139]: Program.cs
+          - button "+" [ref=f3e140] [cursor=pointer]
+          - list [ref=f3e142]:
+            - listitem [ref=f3e143]: await next();
+        - listitem [ref=f3e144]:
+          - heading [level=3] [ref=f3e145]:
+            - text: Program+<>c__DisplayClass0_0+<<<Main>$>b__16>d.MoveNext() in
+            - code [ref=f3e146]: Program.cs
+          - button "+" [ref=f3e147] [cursor=pointer]
+          - list [ref=f3e149]:
+            - listitem [ref=f3e150]: await next();
+        - listitem [ref=f3e151]:
+          - heading "Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)" [level=3] [ref=f3e152]
+    - listitem [ref=f3e153]:
+      - button "Show raw exception details" [ref=f3e155] [cursor=pointer]

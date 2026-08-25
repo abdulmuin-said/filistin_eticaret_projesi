@@ -1,0 +1,366 @@
+- generic [ref=f11e2]:
+  - text:          +                   
+  - banner [ref=f11e3]:
+    - generic [ref=f11e4]:
+      - link "7ANRPS48 لوحة التحكم" [ref=f11e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f11e6]
+      - generic [ref=f11e7]: لوحة التحكم
+    - navigation "القائمة الرئيسية للإدارة" [ref=f11e8]:
+      - link " لوحة البيانات" [ref=f11e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f11e10]: 
+        - text: لوحة البيانات
+      - generic [ref=f11e11]:
+        - button " إدارة الطلبات 1" [ref=f11e12] [cursor=pointer]:
+          - generic [ref=f11e13]: 
+          - text: إدارة الطلبات
+          - generic [ref=f11e14]: "1"
+        - text:      
+      - generic [ref=f11e15]:
+        - button " إدارة المنتجات" [ref=f11e16] [cursor=pointer]:
+          - generic [ref=f11e17]: 
+          - text: إدارة المنتجات
+        - text:  +  
+      - generic [ref=f11e18]:
+        - button " محتوى المتجر" [ref=f11e19] [cursor=pointer]:
+          - generic [ref=f11e20]: 
+          - text: محتوى المتجر
+        - text:        
+      - link " الأعضاء" [ref=f11e21] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f11e22]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=f11e23] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f11e24]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=f11e25] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f11e26]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=f11e27] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f11e28]: 
+        - text: مجموعات الجملة
+      - generic [ref=f11e29]:
+        - button " التقارير" [ref=f11e30] [cursor=pointer]:
+          - generic [ref=f11e31]: 
+          - text: التقارير
+        - text:  
+      - link " الحسابات البنكية" [ref=f11e32] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f11e33]: 
+        - text: الحسابات البنكية
+      - link " الإعدادات" [ref=f11e34] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f11e35]: 
+        - text: الإعدادات
+    - generic [ref=f11e36]:
+      - text: 
+      - generic [ref=f11e37]:
+        - generic [ref=f11e38]: 
+        - link "العربية" [ref=f11e40] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FAdmin%2FHome
+        - link "English" [ref=f11e41] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FAdmin%2FHome
+      - text: 
+      - generic [ref=f11e42]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f11e43] [cursor=pointer]:
+          - generic [ref=f11e44]:
+            - strong [ref=f11e45]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f11e46]: "7"
+        - text:  
+  - generic [ref=f11e47]:
+    - main [ref=f11e48]:
+      - generic [ref=f11e49]:
+        - generic [ref=f11e50]:
+          - generic [ref=f11e51]:
+            - heading "لوحة التحكم" [level=1] [ref=f11e52]
+            - paragraph [ref=f11e53]: ملخص الطلبات والمخزون والزيارات في شاشة واحدة.
+          - generic [ref=f11e54]:
+            - generic [ref=f11e55]: 
+            - text: 25 أغسطس 2026, الثلاثاء
+        - generic [ref=f11e56]:
+          - generic [ref=f11e58]:
+            - generic [ref=f11e59]: إجمالي الإيرادات
+            - generic [ref=f11e60]: 1٬350٫00 ₪
+            - generic [ref=f11e61]: "شهرياً: 0٫00 ₪"
+          - generic [ref=f11e63]:
+            - generic [ref=f11e64]: إيرادات اليوم
+            - generic [ref=f11e65]: 0٫00 ₪
+            - generic [ref=f11e66]: "أسبوعياً: 0٫00 ₪"
+          - generic [ref=f11e68]:
+            - generic [ref=f11e69]: إجمالي الطلبات
+            - generic [ref=f11e70]: "6"
+            - generic [ref=f11e71]: "اليوم: 0 طلب"
+          - generic [ref=f11e73]:
+            - generic [ref=f11e74]: قيد الانتظار
+            - generic [ref=f11e75]: "1"
+            - generic [ref=f11e76]: "جاهز للشحن: 1"
+          - generic [ref=f11e78]:
+            - generic [ref=f11e79]: الشحن / المرتجعات
+            - generic [ref=f11e80]: 1 / 2
+            - generic [ref=f11e81]: ملخص العمليات
+          - generic [ref=f11e83]:
+            - generic [ref=f11e84]: الرسائل / المنتجات النشطة
+            - generic [ref=f11e85]: 0 / 30
+            - generic [ref=f11e86]: متابعة العمليات
+        - generic [ref=f11e87]:
+          - generic [ref=f11e88]:
+            - heading " مخطط إيرادات آخر 7 أيام" [level=3] [ref=f11e91]:
+              - generic [ref=f11e92]: 
+              - text: مخطط إيرادات آخر 7 أيام
+            - heading " اتجاه الإيرادات لـ12 شهرًا" [level=3] [ref=f11e98]:
+              - generic [ref=f11e99]: 
+              - text: اتجاه الإيرادات لـ12 شهرًا
+            - generic [ref=f11e103]:
+              - heading " إجراءات سريعة" [level=3] [ref=f11e105]:
+                - generic [ref=f11e106]: 
+                - text: إجراءات سريعة
+              - generic [ref=f11e108]:
+                - link " إضافة منتج" [ref=f11e110] [cursor=pointer]:
+                  - /url: /Admin/Urun/Ekle
+                  - generic [ref=f11e111]:
+                    - generic [ref=f11e112]: 
+                    - generic [ref=f11e114]: إضافة منتج
+                - link " الطلبات" [ref=f11e116] [cursor=pointer]:
+                  - /url: /Admin/Siparis
+                  - generic [ref=f11e117]:
+                    - generic [ref=f11e118]: 
+                    - generic [ref=f11e120]: الطلبات
+                - link " حقول الخصائص" [ref=f11e122] [cursor=pointer]:
+                  - /url: /Admin/UrunOzellik
+                  - generic [ref=f11e123]:
+                    - generic [ref=f11e124]: 
+                    - generic [ref=f11e126]: حقول الخصائص
+                - link " صندوق الرسائل" [ref=f11e128] [cursor=pointer]:
+                  - /url: /Admin/Iletisim
+                  - generic [ref=f11e129]:
+                    - generic [ref=f11e130]: 
+                    - generic [ref=f11e132]: صندوق الرسائل
+            - generic [ref=f11e133]:
+              - generic [ref=f11e135]:
+                - heading " الأكثر مبيعاً" [level=3] [ref=f11e137]:
+                  - generic [ref=f11e138]: 
+                  - text: الأكثر مبيعاً
+                - link "كيوي كيوي 1 قطعة " [ref=f11e141] [cursor=pointer]:
+                  - /url: /Admin/Urun/Duzenle/141
+                  - img "كيوي" [ref=f11e142]
+                  - generic [ref=f11e143]:
+                    - generic [ref=f11e144]: كيوي
+                    - generic [ref=f11e145]: 1 قطعة
+                  - generic [ref=f11e146]: 
+              - generic [ref=f11e148]:
+                - heading " الأكثر مشاهدة" [level=3] [ref=f11e150]:
+                  - generic [ref=f11e151]: 
+                  - text: الأكثر مشاهدة
+                - generic [ref=f11e153]:
+                  - link "ايسنس ماسكارا لاش برينسيس ايسنس ماسكارا لاش برينسيس 22 مشاهدة " [ref=f11e154] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/112
+                    - img "ايسنس ماسكارا لاش برينسيس" [ref=f11e155]
+                    - generic [ref=f11e156]:
+                      - generic [ref=f11e157]: ايسنس ماسكارا لاش برينسيس
+                      - generic [ref=f11e158]: 22 مشاهدة
+                    - generic [ref=f11e159]: 
+                  - link "كيوي كيوي 10 مشاهدة " [ref=f11e160] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/141
+                    - img "كيوي" [ref=f11e161]
+                    - generic [ref=f11e162]:
+                      - generic [ref=f11e163]: كيوي
+                      - generic [ref=f11e164]: 10 مشاهدة
+                    - generic [ref=f11e165]: 
+                  - link "علبة مسحوق علبة مسحوق 5 مشاهدة " [ref=f11e166] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/114
+                    - img "علبة مسحوق" [ref=f11e167]
+                    - generic [ref=f11e168]:
+                      - generic [ref=f11e169]: علبة مسحوق
+                      - generic [ref=f11e170]: 5 مشاهدة
+                    - generic [ref=f11e171]: 
+                  - link "فلفل أخضر حار فلفل أخضر حار 4 مشاهدة " [ref=f11e172] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/137
+                    - img "فلفل أخضر حار" [ref=f11e173]
+                    - generic [ref=f11e174]:
+                      - generic [ref=f11e175]: فلفل أخضر حار
+                      - generic [ref=f11e176]: 4 مشاهدة
+                    - generic [ref=f11e177]: 
+                  - link "لوحة ظلال العيون مع مرآة لوحة ظلال العيون مع مرآة 4 مشاهدة " [ref=f11e178] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/113
+                    - img "لوحة ظلال العيون مع مرآة" [ref=f11e179]
+                    - generic [ref=f11e180]:
+                      - generic [ref=f11e181]: لوحة ظلال العيون مع مرآة
+                      - generic [ref=f11e182]: 4 مشاهدة
+                    - generic [ref=f11e183]: 
+            - generic [ref=f11e184]:
+              - generic [ref=f11e186]:
+                - heading " المنتجات المضافة حديثاً" [level=3] [ref=f11e188]:
+                  - generic [ref=f11e189]: 
+                  - text: المنتجات المضافة حديثاً
+                - generic [ref=f11e191]:
+                  - link "كيوي GRO-BRD-KIW-030 | 2٫11 â‚ª 14.07.2026 19:29" [ref=f11e192] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/141
+                    - generic [ref=f11e193]: كيوي
+                    - generic [ref=f11e194]: GRO-BRD-KIW-030 | 2٫11 â‚ª
+                    - generic [ref=f11e195]: 14.07.2026 19:29
+                  - link "عصير GRO-BRD-JUI-029 | 3٫51 â‚ª 14.07.2026 19:29" [ref=f11e196] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/140
+                    - generic [ref=f11e197]: عصير
+                    - generic [ref=f11e198]: GRO-BRD-JUI-029 | 3٫51 â‚ª
+                    - generic [ref=f11e199]: 14.07.2026 19:29
+                  - link "بوظة GRO-BRD-CRE-028 | 5٫01 â‚ª 14.07.2026 19:29" [ref=f11e200] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/139
+                    - generic [ref=f11e201]: بوظة
+                    - generic [ref=f11e202]: GRO-BRD-CRE-028 | 5٫01 â‚ª
+                    - generic [ref=f11e203]: 14.07.2026 19:29
+                  - link "جرة العسل GRO-BRD-HON-027 | 5٫98 â‚ª 14.07.2026 19:29" [ref=f11e204] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/138
+                    - generic [ref=f11e205]: جرة العسل
+                    - generic [ref=f11e206]: GRO-BRD-HON-027 | 5٫98 â‚ª
+                    - generic [ref=f11e207]: 14.07.2026 19:29
+                  - link "فلفل أخضر حار GRO-BRD-GRE-026 | 0٫98 â‚ª 14.07.2026 19:29" [ref=f11e208] [cursor=pointer]:
+                    - /url: /Admin/Urun/Duzenle/137
+                    - generic [ref=f11e209]: فلفل أخضر حار
+                    - generic [ref=f11e210]: GRO-BRD-GRE-026 | 0٫98 â‚ª
+                    - generic [ref=f11e211]: 14.07.2026 19:29
+              - generic [ref=f11e213]:
+                - heading " أحدث تقييمات العملاء" [level=3] [ref=f11e215]:
+                  - generic [ref=f11e216]: 
+                  - text: أحدث تقييمات العملاء
+                - generic [ref=f11e218]:
+                  - generic [ref=f11e219]: 
+                  - paragraph [ref=f11e220]: لا توجد تقييمات بعد.
+          - generic [ref=f11e221]:
+            - generic [ref=f11e222]:
+              - heading " تنبيهات النظام" [level=3] [ref=f11e224]:
+                - generic [ref=f11e225]: 
+                - text: تنبيهات النظام
+              - generic [ref=f11e227]:
+                - generic [ref=f11e228]: طلبات معلقة
+                - generic [ref=f11e229]: هناك 1 طلبات بانتظار المعالجة.
+                - link "الذهاب إلى التفاصيل" [ref=f11e230] [cursor=pointer]:
+                  - /url: /Admin/Siparis?durum=0
+            - generic [ref=f11e231]:
+              - heading " ملخص العمليات" [level=3] [ref=f11e233]:
+                - generic [ref=f11e234]: 
+                - text: ملخص العمليات
+              - generic [ref=f11e235]:
+                - generic [ref=f11e236]:
+                  - generic [ref=f11e237]: الطلبات المعلقة
+                  - strong [ref=f11e238]: "1"
+                - generic [ref=f11e239]:
+                  - generic [ref=f11e240]: جاهز للشحن
+                  - strong [ref=f11e241]: "1"
+                - generic [ref=f11e242]:
+                  - generic [ref=f11e243]: تم الشحن
+                  - strong [ref=f11e244]: "1"
+                - generic [ref=f11e245]:
+                  - generic [ref=f11e246]: إلغاء / إرجاع
+                  - strong [ref=f11e247]: "2"
+            - generic [ref=f11e248]:
+              - heading " المبيعات حسب المدينة" [level=3] [ref=f11e250]:
+                - generic [ref=f11e251]: 
+                - text: المبيعات حسب المدينة
+              - generic [ref=f11e253]:
+                - generic [ref=f11e254]:
+                  - generic [ref=f11e255]: "1"
+                  - generic [ref=f11e256]:
+                    - generic [ref=f11e257]: Nablus
+                    - generic [ref=f11e258]: 620٫00 ₪
+                - generic [ref=f11e259]:
+                  - generic [ref=f11e260]: "1"
+                  - generic [ref=f11e261]:
+                    - generic [ref=f11e262]: Ramallah
+                    - generic [ref=f11e263]: 450٫00 ₪
+                - generic [ref=f11e264]:
+                  - generic [ref=f11e265]: "1"
+                  - generic [ref=f11e266]:
+                    - generic [ref=f11e267]: Hebron
+                    - generic [ref=f11e268]: 280٫00 ₪
+                - generic [ref=f11e269]:
+                  - generic [ref=f11e270]: "1"
+                  - generic [ref=f11e271]:
+                    - generic [ref=f11e272]: Istanbul
+                    - generic [ref=f11e273]: 2٫11 ₪
+                - generic [ref=f11e274]:
+                  - generic [ref=f11e275]: "1"
+                  - generic [ref=f11e276]:
+                    - generic [ref=f11e277]: Gaza
+                    - generic [ref=f11e278]: 0٫00 ₪
+                - generic [ref=f11e279]:
+                  - generic [ref=f11e280]: "1"
+                  - generic [ref=f11e281]:
+                    - generic [ref=f11e282]: Jenin
+                    - generic [ref=f11e283]: 0٫00 ₪
+            - generic [ref=f11e284]:
+              - heading " منطقة الزيارات" [level=3] [ref=f11e286]:
+                - generic [ref=f11e287]: 
+                - text: منطقة الزيارات
+              - generic [ref=f11e288]:
+                - generic [ref=f11e289]:
+                  - generic [ref=f11e290]: زيارات آخر 7 أيام
+                  - strong [ref=f11e291]: "48"
+                - generic [ref=f11e292]:
+                  - generic [ref=f11e293]: زوار فريدون
+                  - strong [ref=f11e294]: "6"
+            - generic [ref=f11e295]:
+              - heading " أداء الفئات" [level=3] [ref=f11e297]:
+                - generic [ref=f11e298]: 
+                - text: أداء الفئات
+              - generic [ref=f11e300]:
+                - generic [ref=f11e301]: 
+                - paragraph [ref=f11e302]: لا توجد بيانات مبيعات للفئات بعد.
+            - generic [ref=f11e303]:
+              - heading " أحدث الأنشطة" [level=3] [ref=f11e305]:
+                - generic [ref=f11e306]: 
+                - text: أحدث الأنشطة
+              - generic [ref=f11e307]:
+                - generic [ref=f11e308]:
+                  - generic [ref=f11e309]: 
+                  - generic [ref=f11e311]:
+                    - generic [ref=f11e312]: "طلب جديد #12"
+                    - generic [ref=f11e313]: Checkout E2E Guest - 2٫11 â‚ª
+                  - generic [ref=f11e314]: 20:37
+                - generic [ref=f11e315]:
+                  - generic [ref=f11e316]: 
+                  - generic [ref=f11e318]:
+                    - generic [ref=f11e319]: تمت إضافة منتج جديد
+                    - generic [ref=f11e320]: كيوي
+                  - generic [ref=f11e321]: 19:29
+                - generic [ref=f11e322]:
+                  - generic [ref=f11e323]: 
+                  - generic [ref=f11e325]:
+                    - generic [ref=f11e326]: تمت إضافة منتج جديد
+                    - generic [ref=f11e327]: عصير
+                  - generic [ref=f11e328]: 19:29
+                - generic [ref=f11e329]:
+                  - generic [ref=f11e330]: 
+                  - generic [ref=f11e332]:
+                    - generic [ref=f11e333]: تمت إضافة منتج جديد
+                    - generic [ref=f11e334]: بوظة
+                  - generic [ref=f11e335]: 19:29
+                - generic [ref=f11e336]:
+                  - generic [ref=f11e337]: 
+                  - generic [ref=f11e339]:
+                    - generic [ref=f11e340]: تمت إضافة منتج جديد
+                    - generic [ref=f11e341]: جرة العسل
+                  - generic [ref=f11e342]: 19:29
+                - generic [ref=f11e343]:
+                  - generic [ref=f11e344]: 
+                  - generic [ref=f11e346]:
+                    - generic [ref=f11e347]: تمت إضافة منتج جديد
+                    - generic [ref=f11e348]: فلفل أخضر حار
+                  - generic [ref=f11e349]: 19:29
+                - generic [ref=f11e350]:
+                  - generic [ref=f11e351]: 
+                  - generic [ref=f11e353]:
+                    - generic [ref=f11e354]: "طلب جديد #7"
+                    - generic [ref=f11e355]: Ahmet El-Filistini - 450٫00 â‚ª
+                  - generic [ref=f11e356]: 07:40
+                - generic [ref=f11e357]:
+                  - generic [ref=f11e358]: 
+                  - generic [ref=f11e360]:
+                    - generic [ref=f11e361]: "طلب جديد #8"
+                    - generic [ref=f11e362]: Fatima Hassan - 280٫00 â‚ª
+                  - generic [ref=f11e363]: 07:40
+    - contentinfo [ref=f11e364]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

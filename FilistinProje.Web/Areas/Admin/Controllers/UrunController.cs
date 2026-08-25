@@ -2515,6 +2515,7 @@ await _context.SaveChangesAsync();
 
             ValidateVariants(urun.UrunSecenek);
             ValidateGiftPackageOptions(urun.HediyePaketSecenekleri);
+            await ValidateWholesaleTiersAsync(urun, currentId);
 
             return ModelState.IsValid;
         }
@@ -3069,38 +3070,97 @@ await _context.SaveChangesAsync();
                 || option.Fiyat != 0);
         }
 
-        private Task SyncWholesaleTiersAsync(Urun urun, ICollection<UrunToptanFiyatKademesi>? incomingTiers)
+        private async Task ValidateWholesaleTiersAsync(Urun urun, int? currentId)
         {
-            var valid = (incomingTiers ?? new List<UrunToptanFiyatKademesi>())
-                .Where(x => x.MinAdet > 0 && x.BirimFiyat > 0)
-                .OrderBy(x => x.MinAdet)
-                .ToList();
+            var tiers = (urun.ToptanFiyatKademeleri ?? Array.Empty<UrunToptanFiyatKademesi>()).ToList();
+            var postedVariantIds = (urun.UrunSecenek ?? Array.Empty<UrunSecenek>())
+                .Where(x => x.Id > 0 && IsMeaningfulVariant(x))
+                .Select(x => x.Id)
+                .ToHashSet();
 
-            var validVariantIds = urun.UrunSecenek.Where(x => !x.SilindiMi).Select(x => x.Id).ToHashSet();
-            foreach (var tier in valid)
+            HashSet<int> ownedVariantIds = [];
+            HashSet<int> ownedTierIds = [];
+            if (currentId.HasValue)
             {
-                if (tier.UrunSecenekId.HasValue && !validVariantIds.Contains(tier.UrunSecenekId.Value))
-                {
-                    tier.UrunSecenekId = null;
-                }
+                ownedVariantIds = (await _context.UrunSecenekleri
+                    .AsNoTracking()
+                    .Where(x => x.UrunId == currentId.Value && postedVariantIds.Contains(x.Id) && !x.SilindiMi)
+                    .Select(x => x.Id)
+                    .ToListAsync())
+                    .ToHashSet();
+                ownedTierIds = (await _context.UrunToptanFiyatKademeleri
+                    .AsNoTracking()
+                    .Where(x => x.UrunId == currentId.Value)
+                    .Select(x => x.Id)
+                    .ToListAsync())
+                    .ToHashSet();
             }
 
-            var incomingIds = valid.Where(x => x.Id > 0).Select(x => x.Id).ToHashSet();
+            var duplicateScopes = tiers
+                .GroupBy(x => (x.UrunSecenekId, x.MinAdet))
+                .Where(x => x.Count() > 1)
+                .Select(x => x.Key)
+                .ToHashSet();
+
+            for (var index = 0; index < tiers.Count; index++)
+            {
+                var tier = tiers[index];
+                var prefix = $"ToptanFiyatKademeleri[{index}]";
+
+                if (tier.MinAdet <= 0)
+                {
+                    ModelState.AddModelError($"{prefix}.MinAdet", "يجب أن يكون الحد الأدنى للكمية أكبر من صفر.");
+                }
+
+                if (tier.BirimFiyat <= 0)
+                {
+                    ModelState.AddModelError($"{prefix}.BirimFiyat", "يجب أن يكون سعر الوحدة أكبر من صفر.");
+                }
+
+                if (tier.Id > 0 && !ownedTierIds.Contains(tier.Id))
+                {
+                    ModelState.AddModelError($"{prefix}.Id", "درجة السعر المحددة لا تنتمي إلى هذا المنتج.");
+                }
+
+                if (tier.UrunSecenekId.HasValue && !ownedVariantIds.Contains(tier.UrunSecenekId.Value))
+                {
+                    ModelState.AddModelError($"{prefix}.UrunSecenekId", "المتغير المحدد لا ينتمي إلى هذا المنتج أو تم حذفه.");
+                }
+
+                if (duplicateScopes.Contains((tier.UrunSecenekId, tier.MinAdet)))
+                {
+                    ModelState.AddModelError($"{prefix}.MinAdet", "لا يمكن تكرار نفس الحد الأدنى للكمية ضمن المنتج أو المتغير نفسه.");
+                }
+            }
+        }
+
+        private Task SyncWholesaleTiersAsync(Urun urun, ICollection<UrunToptanFiyatKademesi>? incomingTiers)
+        {
+            var tiers = (incomingTiers ?? Array.Empty<UrunToptanFiyatKademesi>())
+                .OrderBy(x => x.MinAdet)
+                .ThenBy(x => x.Id)
+                .ToList();
+            var incomingIds = tiers.Where(x => x.Id > 0).Select(x => x.Id).ToHashSet();
             var removed = urun.ToptanFiyatKademeleri.Where(x => x.Id > 0 && !incomingIds.Contains(x.Id)).ToList();
             if (removed.Count > 0)
             {
                 _context.UrunToptanFiyatKademeleri.RemoveRange(removed);
             }
 
-            for (var index = 0; index < valid.Count; index++)
+            for (var index = 0; index < tiers.Count; index++)
             {
-                var source = valid[index];
+                var source = tiers[index];
                 var target = source.Id > 0
                     ? urun.ToptanFiyatKademeleri.FirstOrDefault(x => x.Id == source.Id)
                     : null;
 
                 if (target == null)
                 {
+                    if (source.Id > 0)
+                    {
+                        continue;
+                    }
+
                     target = new UrunToptanFiyatKademesi
                     {
                         UrunId = urun.Id,
@@ -3115,6 +3175,7 @@ await _context.SaveChangesAsync();
                 target.BirimFiyat = decimal.Round(source.BirimFiyat, 2);
                 target.AktifMi = source.AktifMi;
                 target.Sira = index + 1;
+                target.SilindiMi = false;
             }
 
             return Task.CompletedTask;

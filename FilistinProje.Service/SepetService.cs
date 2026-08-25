@@ -27,6 +27,7 @@ namespace FilistinProje.Service
                 sepet = await _context.Sepetler
                     .Include(s => s.SepetItems.Where(i => !i.SilindiMi))
                         .ThenInclude(i => i.Urun)
+                            .ThenInclude(u => u.ToptanFiyatKademeleri)
                     .Include(s => s.SepetItems.Where(i => !i.SilindiMi))
                         .ThenInclude(i => i.UrunSecenek)
                     .Include(s => s.SepetItems.Where(i => !i.SilindiMi))
@@ -38,6 +39,7 @@ namespace FilistinProje.Service
                 sepet = await _context.Sepetler
                     .Include(s => s.SepetItems.Where(i => !i.SilindiMi))
                         .ThenInclude(i => i.Urun)
+                            .ThenInclude(u => u.ToptanFiyatKademeleri)
                     .Include(s => s.SepetItems.Where(i => !i.SilindiMi))
                         .ThenInclude(i => i.UrunSecenek)
                     .Include(s => s.SepetItems.Where(i => !i.SilindiMi))
@@ -74,6 +76,7 @@ namespace FilistinProje.Service
                         .ThenInclude(x => x.ParentKategori)
                     .Include(x => x.UrunSecenek)
                     .Include(x => x.HediyePaketSecenekleri)
+                    .Include(x => x.ToptanFiyatKademeleri)
                     .AsSplitQuery()
                     .FirstOrDefaultAsync(x => x.Id == urunId && x.AktifMi && !x.SilindiMi);
 
@@ -120,10 +123,22 @@ namespace FilistinProje.Service
                     i.HediyePaketSecenegiId == hediyePaketSecenegiId &&
                     !i.SilindiMi);
 
-                var toplamAdet = (mevcutItem?.Adet ?? 0) + adet;
+                var pricingScopeItems = sepet.SepetItems.Where(i =>
+                    i.UrunId == urunId &&
+                    i.UrunSecenekId == hedefSecenekId &&
+                    i.CerceveModeli == normalizedCerceveModeli &&
+                    i.HediyePaketSecenegiId == hediyePaketSecenegiId &&
+                    !i.SilindiMi).ToList();
+                var toplamAdet = pricingScopeItems.Sum(i => i.Adet) + adet;
                 if (!CanAddQuantity(urun, secenek, toplamAdet))
                 {
                     return false;
+                }
+
+                var fiyat = await CalculateCurrentUnitPriceAsync(urun, secenek, userId, toplamAdet) + guvenliCerceveFarki;
+                foreach (var scopeItem in pricingScopeItems)
+                {
+                    scopeItem.Fiyat = fiyat;
                 }
 
                 if (mevcutItem != null)
@@ -132,7 +147,6 @@ namespace FilistinProje.Service
                 }
                 else
                 {
-                    var fiyat = await CalculateCurrentUnitPriceAsync(urun, secenek, userId, adet) + guvenliCerceveFarki;
                     var secenekAdi = secenek != null ? BuildVariantLabel(secenek) : null;
                     var gorsel = secenek != null && !string.IsNullOrWhiteSpace(secenek.GorselUrl)
                         ? secenek.GorselUrl
@@ -180,9 +194,12 @@ namespace FilistinProje.Service
             {
                 var item = await _context.SepetItems
                     .Include(x => x.Sepet)
+                        .ThenInclude(x => x.SepetItems.Where(i => !i.SilindiMi))
                     .Include(x => x.Urun)
                         .ThenInclude(x => x.Kategori!)
                             .ThenInclude(x => x.ParentKategori)
+                    .Include(x => x.Urun)
+                        .ThenInclude(x => x.ToptanFiyatKademeleri)
                     .Include(x => x.UrunSecenek)
                     .FirstOrDefaultAsync(x => x.Id == sepetItemId);
                 if (item == null || item.SilindiMi)
@@ -195,12 +212,29 @@ namespace FilistinProje.Service
                     return await SepettenCikarAsync(sepetItemId);
                 }
 
-                if (!CanAddQuantity(item.Urun, item.UrunSecenek, yeniAdet))
+                var pricingScopeItems = item.Sepet.SepetItems.Where(i =>
+                    i.UrunId == item.UrunId &&
+                    i.UrunSecenekId == item.UrunSecenekId &&
+                    (i.CerceveModeli ?? string.Empty) == (item.CerceveModeli ?? string.Empty) &&
+                    i.HediyePaketSecenegiId == item.HediyePaketSecenegiId &&
+                    !i.SilindiMi).ToList();
+                var toplamAdet = pricingScopeItems.Where(i => i.Id != item.Id).Sum(i => i.Adet) + yeniAdet;
+                if (!CanAddQuantity(item.Urun, item.UrunSecenek, toplamAdet))
                 {
                     return false;
                 }
 
                 item.Adet = yeniAdet;
+                var fiyat = await CalculateCurrentUnitPriceAsync(
+                    item.Urun,
+                    item.UrunSecenek,
+                    item.Sepet.AppUserId,
+                    toplamAdet) + CalculateFramePrice(item.UrunSecenek, item.CerceveModeli ?? string.Empty);
+                foreach (var scopeItem in pricingScopeItems)
+                {
+                    scopeItem.Fiyat = fiyat;
+                }
+
                 MarkCartAsUpdated(item.Sepet);
                 await _context.SaveChangesAsync();
                 return true;
@@ -240,6 +274,15 @@ namespace FilistinProje.Service
         {
             var sepet = await GetOrCreateSepetAsync(userId, sessionId);
             var items = sepet.SepetItems.Where(i => !i.SilindiMi).ToList();
+            var quantitiesByPricingScope = items
+                .GroupBy(i => new
+                {
+                    i.UrunId,
+                    i.UrunSecenekId,
+                    Cerceve = i.CerceveModeli ?? string.Empty,
+                    i.HediyePaketSecenegiId
+                })
+                .ToDictionary(group => group.Key, group => group.Sum(i => i.Adet));
             var changed = false;
             foreach (var item in items)
             {
@@ -248,8 +291,15 @@ namespace FilistinProje.Service
                     continue;
                 }
 
-                var currentPrice = await CalculateCurrentUnitPriceAsync(item.Urun, item.UrunSecenek, userId, item.Adet)
-                    + CalculateFramePrice(item.UrunSecenek, item.CerceveModeli);
+                var pricingQuantity = quantitiesByPricingScope[new
+                {
+                    item.UrunId,
+                    item.UrunSecenekId,
+                    Cerceve = item.CerceveModeli ?? string.Empty,
+                    item.HediyePaketSecenegiId
+                }];
+                var currentPrice = await CalculateCurrentUnitPriceAsync(item.Urun, item.UrunSecenek, userId, pricingQuantity)
+                    + CalculateFramePrice(item.UrunSecenek, item.CerceveModeli ?? string.Empty);
                 if (item.Fiyat != currentPrice)
                 {
                     item.Fiyat = currentPrice;
@@ -288,25 +338,13 @@ namespace FilistinProje.Service
 
             if (isWholesale)
             {
-                var secenekId = secenek?.Id;
-                var directTier = await _context.UrunToptanFiyatKademeleri
-                    .AsNoTracking()
-                    .Where(x => !x.SilindiMi && x.AktifMi && x.UrunId == urun.Id && x.MinAdet <= adet
-                        && ((secenekId.HasValue && x.UrunSecenekId == secenekId.Value)
-                            || (!secenekId.HasValue && !x.UrunSecenekId.HasValue)))
-                    .OrderByDescending(x => x.UrunSecenekId.HasValue)
-                    .ThenByDescending(x => x.MinAdet)
-                    .ThenBy(x => x.Sira)
-                    .FirstOrDefaultAsync();
-                if (directTier == null && secenek != null)
-                {
-                    directTier = await _context.UrunToptanFiyatKademeleri
+                var tiers = urun.ToptanFiyatKademeleri.Count > 0
+                    ? urun.ToptanFiyatKademeleri
+                    : await _context.UrunToptanFiyatKademeleri
                         .AsNoTracking()
-                        .Where(x => !x.SilindiMi && x.AktifMi && x.UrunId == urun.Id && !x.UrunSecenekId.HasValue && x.MinAdet <= adet)
-                        .OrderByDescending(x => x.MinAdet)
-                        .ThenBy(x => x.Sira)
-                        .FirstOrDefaultAsync();
-                }
+                        .Where(x => x.UrunId == urun.Id)
+                        .ToListAsync();
+                var directTier = Services.WholesaleTierResolver.Resolve(tiers, secenek?.Id, adet);
                 if (directTier != null)
                 {
                     return Math.Round(directTier.BirimFiyat, 2);
@@ -321,7 +359,7 @@ namespace FilistinProje.Service
             {
                 var discount = await _context.ToptanciIskontoOranlari
                     .AsNoTracking()
-                    .Where(x => !x.SilindiMi && x.ToptanciUrunGrubuId == urun.ToptanciUrunGrubuId && adet >= x.MinAdet)
+                    .Where(x => x.AktifMi && !x.SilindiMi && x.ToptanciUrunGrubuId == urun.ToptanciUrunGrubuId && adet >= x.MinAdet)
                     .MaxAsync(x => (decimal?)x.IskontoYuzdesi) ?? 0;
                 if (discount > 0)
                 {
@@ -428,6 +466,7 @@ namespace FilistinProje.Service
                     .AsNoTracking()
                     .Include(u => u.UrunSecenek)
                     .Include(u => u.HediyePaketSecenekleri)
+                    .Include(u => u.ToptanFiyatKademeleri)
                     .Where(u => urunIds.Contains(u.Id))
                     .ToDictionaryAsync(u => u.Id);
 
@@ -484,9 +523,13 @@ namespace FilistinProje.Service
                         i.HediyePaketSecenegiId == anonItem.HediyePaketSecenegiId &&
                         !i.SilindiMi);
 
-                    var mevcutAdet = mevcutItem?.Adet ?? 0;
-
-                    long candidateLong = (long)mevcutAdet + (long)anonItem.Adet;
+                    var pricingScopeItems = userSepet.SepetItems.Where(i =>
+                        i.UrunId == anonItem.UrunId &&
+                        i.UrunSecenekId == anonItem.UrunSecenekId &&
+                        (i.CerceveModeli ?? string.Empty) == (anonItem.CerceveModeli ?? string.Empty) &&
+                        i.HediyePaketSecenegiId == anonItem.HediyePaketSecenegiId &&
+                        !i.SilindiMi).ToList();
+                    var candidateLong = (long)pricingScopeItems.Sum(i => i.Adet) + anonItem.Adet;
                     if (candidateLong <= 0 || candidateLong > int.MaxValue)
                     {
                         await transaction.RollbackAsync();
@@ -497,8 +540,7 @@ namespace FilistinProje.Service
                         return result;
                     }
 
-                    int candidateQty = (int)candidateLong;
-
+                    var candidateQty = (int)candidateLong;
                     if (!CanAddQuantity(urun, secenek, candidateQty))
                     {
                         await transaction.RollbackAsync();
@@ -511,21 +553,20 @@ namespace FilistinProje.Service
 
                     if (mevcutItem != null)
                     {
-                        mevcutItem.Adet = candidateQty;
+                        mevcutItem.Adet += anonItem.Adet;
                     }
                     else
                     {
-                        var yeniItem = new SepetItem
+                        mevcutItem = new SepetItem
                         {
                             SepetId = userSepet.Id,
                             UrunId = anonItem.UrunId,
                             UrunSecenekId = anonItem.UrunSecenekId,
                             Adet = anonItem.Adet,
-                            Fiyat = anonItem.Fiyat,
                             UrunBaslik = anonItem.UrunBaslik,
                             UrunResimUrl = anonItem.UrunResimUrl,
                             SecenekAdi = anonItem.SecenekAdi,
-                            CerceveModeli = anonItem.CerceveModeli,
+                            CerceveModeli = anonItem.CerceveModeli ?? string.Empty,
                             MusteriNotu = anonItem.MusteriNotu,
                             HediyePaketSecenegiId = package?.Id,
                             HediyePaketi = package != null,
@@ -536,7 +577,15 @@ namespace FilistinProje.Service
                             OlusturulmaTarihi = DateTime.UtcNow,
                             SilindiMi = false
                         };
-                        _context.SepetItems.Add(yeniItem);
+                        userSepet.SepetItems.Add(mevcutItem);
+                        pricingScopeItems.Add(mevcutItem);
+                    }
+
+                    var fiyat = await CalculateCurrentUnitPriceAsync(urun, secenek, userId, candidateQty)
+                        + CalculateFramePrice(secenek, anonItem.CerceveModeli ?? string.Empty);
+                    foreach (var scopeItem in pricingScopeItems)
+                    {
+                        scopeItem.Fiyat = fiyat;
                     }
 
                     anonItem.SilindiMi = true;

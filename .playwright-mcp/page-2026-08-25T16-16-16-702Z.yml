@@ -1,0 +1,306 @@
+- generic [ref=f8e2]:
+  - text:          +                   
+  - banner [ref=f8e3]:
+    - generic [ref=f8e4]:
+      - link "7ANRPS48 لوحة التحكم" [ref=f8e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f8e6]
+      - generic [ref=f8e7]: لوحة التحكم
+    - navigation "القائمة الرئيسية للإدارة" [ref=f8e8]:
+      - link " لوحة البيانات" [ref=f8e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f8e10]: 
+        - text: لوحة البيانات
+      - generic [ref=f8e11]:
+        - button " إدارة الطلبات 1" [ref=f8e12] [cursor=pointer]:
+          - generic [ref=f8e13]: 
+          - text: إدارة الطلبات
+          - generic [ref=f8e14]: "1"
+        - text:      
+      - generic [ref=f8e15]:
+        - button " إدارة المنتجات" [ref=f8e16] [cursor=pointer]:
+          - generic [ref=f8e17]: 
+          - text: إدارة المنتجات
+        - text:  +  
+      - generic [ref=f8e18]:
+        - button " محتوى المتجر" [ref=f8e19] [cursor=pointer]:
+          - generic [ref=f8e20]: 
+          - text: محتوى المتجر
+        - text:        
+      - link " الأعضاء" [ref=f8e21] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f8e22]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=f8e23] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f8e24]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=f8e25] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f8e26]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=f8e27] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f8e28]: 
+        - text: مجموعات الجملة
+      - generic [ref=f8e29]:
+        - button " التقارير" [ref=f8e30] [cursor=pointer]:
+          - generic [ref=f8e31]: 
+          - text: التقارير
+        - text:  
+      - link " الحسابات البنكية" [ref=f8e32] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f8e33]: 
+        - text: الحسابات البنكية
+      - link " الإعدادات" [ref=f8e34] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f8e35]: 
+        - text: الإعدادات
+    - generic [ref=f8e36]:
+      - text: 
+      - generic [ref=f8e37]:
+        - generic [ref=f8e38]: 
+        - link "العربية" [ref=f8e40] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FAdmin%2FUrun%2FDuzenle%2F112
+        - link "English" [ref=f8e41] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FAdmin%2FUrun%2FDuzenle%2F112
+      - text: 
+      - generic [ref=f8e42]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f8e43] [cursor=pointer]:
+          - generic [ref=f8e44]:
+            - strong [ref=f8e45]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f8e46]: "7"
+        - text:  
+  - generic [ref=f8e47]:
+    - main [ref=f8e48]:
+      - generic [ref=f8e49]:
+        - generic [ref=f8e50]:
+          - generic [ref=f8e51]:
+            - heading "تعديل المنتج" [level=1] [ref=f8e52]
+            - paragraph [ref=f8e53]: ايسنس ماسكارا لاش برينسيس
+          - generic [ref=f8e54]:
+            - link " العودة إلى المنتجات" [ref=f8e55] [cursor=pointer]:
+              - /url: /Admin/Urun
+              - generic [ref=f8e56]: 
+              - text: العودة إلى المنتجات
+            - link " عرض في الموقع" [ref=f8e57] [cursor=pointer]:
+              - /url: /Urun/Detay/test-1-essence-mascara-lash-princess-112
+              - generic [ref=f8e58]: 
+              - text: عرض في الموقع
+        - generic [ref=f8e59]:
+          - generic [ref=f8e60]:
+            - generic [ref=f8e61]:
+              - generic [ref=f8e62]:
+                - generic [ref=f8e63]: 
+                - text: نشط في النظام
+              - generic [ref=f8e64]: مميز
+              - generic [ref=f8e65]: منتج جديد
+              - generic [ref=f8e66]: حملة
+              - generic [ref=f8e67]: "ID: #112"
+            - button " حفظ التغييرات" [ref=f8e68] [cursor=pointer]:
+              - generic [ref=f8e69]: 
+              - text: حفظ التغييرات
+          - generic [ref=f8e70]:
+            - generic [ref=f8e71]:
+              - tablist "أقسام تعديل المنتج" [ref=f8e72]:
+                - button " الأساسيات" [ref=f8e73] [cursor=pointer]:
+                  - generic [ref=f8e74]: 
+                  - text: الأساسيات
+                - button " السعر والعمليات" [ref=f8e75] [cursor=pointer]:
+                  - generic [ref=f8e76]: 
+                  - text: السعر والعمليات
+                - button " المحتوى" [ref=f8e77] [cursor=pointer]:
+                  - generic [ref=f8e78]: 
+                  - text: المحتوى
+                - button " الخصائص" [ref=f8e79] [cursor=pointer]:
+                  - generic [ref=f8e80]: 
+                  - text: الخصائص
+                - button " المتغيرات" [ref=f8e81] [cursor=pointer]:
+                  - generic [ref=f8e82]: 
+                  - text: المتغيرات
+                - button " الصور" [ref=f8e83] [cursor=pointer]:
+                  - generic [ref=f8e84]: 
+                  - text: الصور
+              - text:  +  
+              - generic [ref=f8e85]:
+                - generic [ref=f8e86]:
+                  - generic [ref=f8e87]:
+                    - generic [ref=f8e88]:
+                      - generic [ref=f8e89]: الخيارات المتقدمة
+                      - generic [ref=f8e90]: أدر المقاس والخامة والتخصيص واللوجستيات من هنا.
+                    - button "+ إضافة خيار" [ref=f8e91] [cursor=pointer]:
+                      - generic [ref=f8e92]: +
+                      - text: إضافة خيار
+                  - generic [ref=f8e95]:
+                    - generic [ref=f8e96]:
+                      - generic [ref=f8e97]:
+                        - generic [ref=f8e98]: BEA-ESS-ESS-001-STD
+                        - generic [ref=f8e99]: عرّف تركيبة باستخدام المقاس والسعر.
+                      - button "" [ref=f8e100] [cursor=pointer]
+                    - generic [ref=f8e102]:
+                      - generic [ref=f8e103]:
+                        - generic [ref=f8e104]: المقاس
+                        - textbox "المقاس" [ref=f8e105]
+                      - generic [ref=f8e106]:
+                        - generic [ref=f8e107]: Ölçü birimi
+                        - combobox "Ölçü birimi" [ref=f8e108]:
+                          - option "Birimsiz" [selected]
+                          - option "mm"
+                          - option "cm"
+                          - option "m"
+                          - option "ml"
+                          - option "L"
+                          - option "g"
+                          - option "kg"
+                          - option "adet"
+                      - generic [ref=f8e109]:
+                        - generic [ref=f8e110]: Beden / boyut
+                        - textbox "Beden / boyut" [ref=f8e111]:
+                          - /placeholder: S, M, L, XL...
+                      - generic [ref=f8e112]:
+                        - generic [ref=f8e113]: Renk
+                        - textbox "Renk" [ref=f8e114]
+                      - generic [ref=f8e115]:
+                        - generic [ref=f8e116]: Renk kodu
+                        - textbox "Renk kodu" [ref=f8e117]: "#31543b"
+                      - generic [ref=f8e118]:
+                        - generic [ref=f8e119]: الاتجاه
+                        - textbox "الاتجاه" [ref=f8e120]
+                      - generic [ref=f8e121]:
+                        - generic [ref=f8e122]: SKU الخيار
+                        - textbox "SKU الخيار" [ref=f8e123]: BEA-ESS-ESS-001-STD
+                      - generic [ref=f8e124]:
+                        - generic [ref=f8e125]: الترتيب
+                        - spinbutton "الترتيب" [ref=f8e126]: "1"
+                      - generic [ref=f8e127]:
+                        - generic [ref=f8e128]: أيام الإنتاج
+                        - spinbutton "أيام الإنتاج" [ref=f8e129]: "0"
+                      - generic [ref=f8e130]:
+                        - generic [ref=f8e131]: سعر البيع (₪)
+                        - textbox "سعر البيع (₪)" [ref=f8e132]: "8.94"
+                      - generic [ref=f8e133]:
+                        - generic [ref=f8e134]: فرق السعر (₪)
+                        - textbox "فرق السعر (₪)" [ref=f8e135]: "0"
+                      - generic [ref=f8e136]:
+                        - generic [ref=f8e137]: التكلفة (₪)
+                        - textbox "التكلفة (₪)" [ref=f8e138]: "5.99"
+                      - generic [ref=f8e139]:
+                        - generic [ref=f8e140]: المخزون
+                        - spinbutton "المخزون" [ref=f8e141]: "97"
+                      - generic [ref=f8e142]:
+                        - generic [ref=f8e143]: Desi
+                        - textbox "Desi" [ref=f8e144]: "0"
+                      - generic [ref=f8e145]:
+                        - generic [ref=f8e146]: صورة الخيار
+                        - textbox "صورة الخيار" [ref=f8e147]
+                      - generic [ref=f8e148]:
+                        - generic [ref=f8e149]: نص التخصيص
+                        - textbox "نص التخصيص" [ref=f8e150]
+                      - generic [ref=f8e151]:
+                        - generic [ref=f8e152]: ملاحظة تصميم خاصة
+                        - textbox "ملاحظة تصميم خاصة" [ref=f8e153]
+                      - generic [ref=f8e155]:
+                        - generic [ref=f8e156]:
+                          - checkbox "نشط" [checked] [ref=f8e157]
+                          - text: نشط
+                        - generic [ref=f8e158]:
+                          - checkbox "افتراضي" [checked] [ref=f8e159]
+                          - text: افتراضي
+                        - generic [ref=f8e160]:
+                          - checkbox "إخفاء عند النفاد" [ref=f8e161]
+                          - text: إخفاء عند النفاد
+                        - generic [ref=f8e162]:
+                          - checkbox "طلب مسبق" [ref=f8e163]
+                          - text: طلب مسبق
+                - generic [ref=f8e164]:
+                  - generic [ref=f8e165]:
+                    - generic [ref=f8e166]:
+                      - generic [ref=f8e167]: Adet bazlı toptan fiyatlar
+                      - generic [ref=f8e168]: Müşteri belirtilen adede ulaştığında uygulanacak doğrudan birim fiyatı tanımlayın. Varyant boşsa tüm ürün için geçerlidir.
+                    - button "+ Kademe ekle" [ref=f8e169] [cursor=pointer]:
+                      - generic [ref=f8e170]: +
+                      - text: Kademe ekle
+                  - generic [ref=f8e171]:
+                    - table [ref=f8e173]:
+                      - rowgroup [ref=f8e174]:
+                        - row [ref=f8e175]:
+                          - columnheader "Varyant" [ref=f8e176]
+                          - columnheader "Minimum adet" [ref=f8e177]
+                          - columnheader "Birim fiyat (₪)" [ref=f8e178]
+                          - columnheader "Aktif" [ref=f8e179]
+                          - columnheader [ref=f8e180]
+                      - rowgroup [ref=f8e181]:
+                        - row [ref=f8e182]:
+                          - cell "Tüm ürün" [ref=f8e183]:
+                            - combobox [ref=f8e184]:
+                              - option "Tüm ürün" [selected]
+                              - option
+                          - cell [ref=f8e185]:
+                            - spinbutton [ref=f8e186]: "10"
+                          - cell [ref=f8e187]:
+                            - spinbutton [ref=f8e188]: "42"
+                          - cell [ref=f8e189]:
+                            - checkbox [checked] [ref=f8e190]
+                          - cell [ref=f8e191]:
+                            - button "" [ref=f8e192] [cursor=pointer]
+                        - row [ref=f8e194]:
+                          - cell "Tüm ürün" [ref=f8e195]:
+                            - combobox [ref=f8e196]:
+                              - option "Tüm ürün" [selected]
+                              - option
+                          - cell [ref=f8e197]:
+                            - spinbutton [ref=f8e198]: "25"
+                          - cell [ref=f8e199]:
+                            - spinbutton [ref=f8e200]: "38"
+                          - cell [ref=f8e201]:
+                            - checkbox [checked] [ref=f8e202]
+                          - cell [ref=f8e203]:
+                            - button "" [ref=f8e204] [cursor=pointer]
+                        - row [ref=f8e206]:
+                          - cell [ref=f8e207]:
+                            - combobox [ref=f8e208]:
+                              - option "Tüm ürün"
+                              - option [selected]
+                          - cell [ref=f8e209]:
+                            - spinbutton [ref=f8e210]: "25"
+                          - cell [ref=f8e211]:
+                            - spinbutton [ref=f8e212]: "35"
+                          - cell [ref=f8e213]:
+                            - checkbox [checked] [ref=f8e214]
+                          - cell [ref=f8e215]:
+                            - button "" [ref=f8e216] [cursor=pointer]
+                    - generic [ref=f8e218]: "Örnek: 10 adet → 42 ₪, 25 adet → 38 ₪. Uygun kademeler arasından en yüksek minimum adet otomatik seçilir."
+              - generic [ref=f8e219]:
+                - link "إلغاء" [ref=f8e220] [cursor=pointer]:
+                  - /url: /Admin/Urun
+                - button " حفظ" [ref=f8e221] [cursor=pointer]:
+                  - generic [ref=f8e222]: 
+                  - text: حفظ
+            - complementary [ref=f8e223]:
+              - generic [ref=f8e224]:
+                - generic [ref=f8e225]: ملخص المنتج
+                - generic [ref=f8e227]:
+                  - img "ايسنس ماسكارا لاش برينسيس - الصورة الرئيسية" [ref=f8e230]
+                  - generic [ref=f8e231]: ايسنس ماسكارا لاش برينسيس
+                  - generic [ref=f8e232]: "SKU: BEA-ESS-ESS-001"
+                  - generic [ref=f8e233]:
+                    - generic [ref=f8e234]:
+                      - generic [ref=f8e235]: السعر الفعلي
+                      - strong [ref=f8e236]: 8٫94 ₪
+                    - generic [ref=f8e237]:
+                      - generic [ref=f8e238]: المبيعات
+                      - strong [ref=f8e239]: "0"
+                    - generic [ref=f8e240]:
+                      - generic [ref=f8e241]: المشاهدات
+                      - strong [ref=f8e242]: "22"
+                    - generic [ref=f8e243]:
+                      - generic [ref=f8e244]: المفضلة
+                      - strong [ref=f8e245]: "0"
+                    - generic [ref=f8e246]:
+                      - generic [ref=f8e247]: Admin_Variation
+                      - strong [ref=f8e248]: "1"
+                    - generic [ref=f8e249]:
+                      - generic [ref=f8e250]: الوسائط
+                      - strong [ref=f8e251]: "1"
+    - contentinfo [ref=f8e252]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.
