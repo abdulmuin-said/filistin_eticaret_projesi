@@ -497,12 +497,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             if (string.IsNullOrWhiteSpace(kategori.Ad))
             {
-                ModelState.AddModelError(nameof(Kategori.Ad), "اسم الفئة إلزامي.");
+                ModelState.AddModelError(nameof(Kategori.Ad), _localizer["Admin_Category_NameRequired"].Value);
             }
 
             if (kategori.ParentKategoriId == kategori.Id && kategori.Id != 0)
             {
-                ModelState.AddModelError(nameof(Kategori.ParentKategoriId), "لا يمكن أن تكون الفئة فرعًا لنفسها.");
+                ModelState.AddModelError(nameof(Kategori.ParentKategoriId), _localizer["Admin_Category_SelfParentError"].Value);
             }
 
             if (kategori.ParentKategoriId.HasValue)
@@ -514,11 +514,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 var parentExists = categories.Any(x => x.Id == kategori.ParentKategoriId.Value);
                 if (!parentExists)
                 {
-                    ModelState.AddModelError(nameof(Kategori.ParentKategoriId), "الفئة الرئيسية المحددة غير موجودة.");
+                    ModelState.AddModelError(nameof(Kategori.ParentKategoriId), _localizer["Admin_Category_ParentNotFoundError"].Value);
                 }
                 else if (kategori.Id != 0 && CategoryTreeHelper.IsDescendant(categories, kategori.Id, kategori.ParentKategoriId.Value))
                 {
-                    ModelState.AddModelError(nameof(Kategori.ParentKategoriId), "لا يمكن نقل فئة تحت أحد فروعها.");
+                    ModelState.AddModelError(nameof(Kategori.ParentKategoriId), _localizer["Admin_Category_ChildParentError"].Value);
                 }
             }
 

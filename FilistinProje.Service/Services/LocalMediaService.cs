@@ -49,7 +49,7 @@ namespace FilistinProje.Service.Services
 
                 var slug = SlugHelper.GenerateSlug(title);
                 var token = Guid.NewGuid().ToString("N")[..8];
-                var finalFileName = $"{slug}-{suffix}-{token}.webp";
+                var finalFileName = $"{slug}-{suffix}-{token}{extension.ToLowerInvariant()}";
                 var fullPath = Path.Combine(folder, finalFileName);
 
                 using var stream = new MemoryStream(imageBytes);
@@ -65,11 +65,7 @@ namespace FilistinProje.Service.Services
                     });
                 });
 
-                await image.SaveAsWebpAsync(fullPath, new WebpEncoder
-                {
-                    Quality = 82,
-                    FileFormat = WebpFileFormatType.Lossy
-                });
+                await image.SaveAsync(fullPath);
 
                 return new FileSaveResultDto { Success = true, Url = "/img/products/" + finalFileName };
             }

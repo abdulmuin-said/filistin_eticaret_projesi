@@ -109,11 +109,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
-                TempData["Hata"] = "حدث خطأ أثناء الموافقة.";
+                TempData["Hata"] = _localizer["Admin_Wholesaler_ApproveError"].Value;
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["Basari"] = $"{user.AdSoyad} تم الموافقة.";
+            TempData["Basari"] = string.Format(_localizer["Admin_Wholesaler_Approved"].Value, user.AdSoyad);
             return RedirectToAction(nameof(Index));
         }
 
@@ -208,11 +208,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
-                TempData["Hata"] = "حدث خطأ أثناء تحديث الحالة.";
+                TempData["Hata"] = _localizer["Admin_Wholesaler_UpdateError"].Value;
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["Basari"] = $"{user.AdSoyad} تم وضع المستخدم في قائمة الانتظار.";
+            TempData["Basari"] = string.Format(_localizer["Admin_Wholesaler_Waitlisted"].Value, user.AdSoyad);
             return RedirectToAction(nameof(Index));
         }
 

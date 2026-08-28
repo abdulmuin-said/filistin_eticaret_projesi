@@ -64,7 +64,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (durum == 1 && !IadeTalebiZamanindaMi(talep))
             {
-                TempData["Hata"] = $"لا يمكن قبول الطلب خارج مهلة {IadeHakkiGun} يوماً للإرجاع.";
+                TempData["Hata"] = string.Format(_localizer["Admin_Return_TimeoutError"].Value, IadeHakkiGun);
                 return RedirectToAction(nameof(Detay), new { id });
             }
 
@@ -80,7 +80,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             await _context.SaveChangesAsync();
-            TempData["Mesaj"] = "تم تحديث طلب الإرجاع.";
+            TempData["Mesaj"] = _localizer["Admin_Return_Updated"].Value;
             return RedirectToAction(nameof(Detay), new { id });
         }
 

@@ -199,8 +199,8 @@
                     <div class="ca-card-header"><span class="ca-card-title">Arapça ve İngilizce İçerik</span></div>
                     <div class="ca-card-body">
                         <div class="row g-3">
-                            <div class="col-lg-6"><label class="ca-label">Arapça kategori adı</label><input asp-for="AdAr" class="ca-input" dir="rtl" /></div>
-                            <div class="col-lg-6"><label class="ca-label">İngilizce kategori adı</label><input asp-for="AdEn" class="ca-input" dir="ltr" /></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["CategoryNameAR"]</label><input asp-for="AdAr" class="ca-input" dir="rtl" /></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["CategoryNameEN"]</label><input asp-for="AdEn" class="ca-input" dir="ltr" /></div>
                             <div class="col-lg-6"><label class="ca-label">Arapça kısa açıklama</label><textarea asp-for="KisaAciklamaAr" class="ca-textarea" rows="2" dir="rtl"></textarea></div>
                             <div class="col-lg-6"><label class="ca-label">İngilizce kısa açıklama</label><textarea asp-for="KisaAciklamaEn" class="ca-textarea" rows="2" dir="ltr"></textarea></div>
                             <div class="col-lg-6"><label class="ca-label">Arapça açıklama</label><textarea asp-for="AciklamaAr" class="ca-textarea" rows="4" dir="rtl"></textarea></div>

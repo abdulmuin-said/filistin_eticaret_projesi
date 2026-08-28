@@ -241,7 +241,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return View(urun);
             }
 
-            TempData["Mesaj"] = "تم إضافة المنتج بنجاح.";
+            TempData["Mesaj"] = _localizer["Admin_Product_Added"].Value;
             return RedirectToAction(nameof(Duzenle), new { id = urun.Id });
         }
 
@@ -387,7 +387,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return View(model);
             }
 
-            TempData["Mesaj"] = "تم تحديث المنتج بنجاح.";
+            TempData["Mesaj"] = _localizer["Admin_Product_Updated"].Value;
             return RedirectToAction(nameof(Duzenle), new { area = "Admin", id = urun.Id });
         }
 
@@ -427,7 +427,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            TempData["Mesaj"] = "تم أرشفة المنتج.";
+            TempData["Mesaj"] = _localizer["Admin_Product_Archived"].Value;
             return RedirectToAction(nameof(Index));
         }
 
@@ -442,7 +442,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!urunIds.Any())
             {
-                TempData["Mesaj"] = "اختر منتجاً واحداً على الأقل للحذف.";
+                TempData["Mesaj"] = _localizer["Admin_Product_SelectToArchive"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -459,7 +459,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{urunler.Count} منتج تم أرشفته.";
+            TempData["Mesaj"] = string.Format(_localizer["Admin_Product_ArchivedCount"].Value, urunler.Count);
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -471,7 +471,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var urun = await _context.Urunler.FirstOrDefaultAsync(x => x.Id == id);
             if (urun == null)
             {
-                TempData["Mesaj"] = "لم يتم العثور على المنتج.";
+                TempData["Mesaj"] = _localizer["Admin_Product_NotFound"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -479,7 +479,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             urun.YayindaMi = yayinda;
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = yayinda ? "تم عرض المنتج." : "تم إخفاء المنتج.";
+            TempData["Mesaj"] = yayinda ? _localizer["Admin_Product_Published"].Value : _localizer["Admin_Product_Hidden"].Value;
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -491,7 +491,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var urun = await _context.Urunler.FirstOrDefaultAsync(x => x.Id == id);
             if (urun == null)
             {
-                TempData["Mesaj"] = "لم يتم العثور على المنتج.";
+                TempData["Mesaj"] = _localizer["Admin_Product_NotFound"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -499,7 +499,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             urun.AktifMi = aktif;
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = aktif ? "تم تفعيل المنتج." : "تم تعطيل المنتج.";
+            TempData["Mesaj"] = aktif ? _localizer["Admin_Product_Activated"].Value : _localizer["Admin_Product_Deactivated"].Value;
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -515,7 +515,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!urunIds.Any())
             {
-                TempData["Mesaj"] = "اختر منتجاً واحداً على الأقل.";
+                TempData["Mesaj"] = _localizer["Admin_Product_SelectAtLeastOne"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -560,7 +560,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!urunIds.Any())
             {
-                TempData["Mesaj"] = "اختر منتجاً واحداً على الأقل للحذف.";
+                TempData["Mesaj"] = _localizer["Admin_Product_SelectToArchive"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -613,7 +613,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{updatedProducts} منتج SKU و {updatedVariants} تنويع تم تحديثها.";
+            TempData["Mesaj"] = string.Format(_localizer["Admin_Product_UpdatedSKUCount"].Value, updatedProducts, updatedVariants);
             TempData["Durum"] = "success";
             return RedirectToAction(nameof(Index));
         }
@@ -748,7 +748,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                         relativePath.TrimStart('/', '\\').Replace('/', Path.DirectorySeparatorChar)));
                     if (!fullPath.StartsWith(uploadsRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
                     {
-                        _logger.LogWarning("Urun medya temizligi guvenli uploads kokunun disinda oldugu icin atlandi.");
+                        _logger.LogWarning("Product media cleanup skipped because it is outside the safe uploads root.");
                         continue;
                     }
 
@@ -825,7 +825,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             await EnsureDefaultProductMediaAsync(urun, medya.VarsayilanMi ? medya : null);
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = "تم إضافة وسائط المنتج.";
+            TempData["Mesaj"] = _localizer["Admin_Product_MediaAdded"].Value;
             return RedirectToAction(nameof(Duzenle), new { id = model.UrunId });
         }
 
@@ -864,7 +864,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             await EnsureDefaultProductMediaAsync(medya.Urun, medya.VarsayilanMi ? medya : null);
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = "تم تحديث وسائط المنتج.";
+            TempData["Mesaj"] = _localizer["Admin_Product_MediaUpdated"].Value;
             return RedirectToAction(nameof(Duzenle), new { id = model.UrunId });
         }
 
@@ -886,7 +886,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             await EnsureDefaultProductMediaAsync(medya.Urun);
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = "تم حذف وسائط المنتج.";
+            TempData["Mesaj"] = _localizer["Admin_Product_MediaDeleted"].Value;
             return RedirectToAction(nameof(Duzenle), new { id = urunId });
         }
 
@@ -2521,38 +2521,38 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             if (string.IsNullOrWhiteSpace(urun.Baslik))
             {
-                ModelState.AddModelError(nameof(Urun.Baslik), "اسم المنتج إلزامي.");
+                ModelState.AddModelError(nameof(Urun.Baslik), _localizer["Admin_Product_NameRequired"].Value);
             }
 
             if (urun.KategoriId <= 0 || !await _context.Kategoriler.AnyAsync(x => x.Id == urun.KategoriId))
             {
-                ModelState.AddModelError(nameof(Urun.KategoriId), "يرجى اختيار فئة صالحة.");
+                ModelState.AddModelError(nameof(Urun.KategoriId), _localizer["Admin_Product_CategoryRequired"].Value);
             }
 
             if (urun.Fiyat <= 0)
             {
-                ModelState.AddModelError(nameof(Urun.Fiyat), "سعر البيع يجب أن يكون أكبر من صفر.");
+                ModelState.AddModelError(nameof(Urun.Fiyat), _localizer["Admin_Product_PriceGreaterThanZero"].Value);
             }
 
             if (urun.IndirimliFiyat.HasValue &&
                 (urun.IndirimliFiyat.Value <= 0 || urun.IndirimliFiyat.Value >= urun.Fiyat))
             {
-                ModelState.AddModelError(nameof(Urun.IndirimliFiyat), "السعر المخفَّض يجب أن يكون أقل من السعر الأصلي.");
+                ModelState.AddModelError(nameof(Urun.IndirimliFiyat), _localizer["Admin_Product_DiscountPriceLowerThanOriginal"].Value);
             }
 
             if (urun.MinSiparisAdedi < 1)
             {
-                ModelState.AddModelError(nameof(Urun.MinSiparisAdedi), "الحد الأدنى للطلب يجب أن يكون 1 على الأقل.");
+                ModelState.AddModelError(nameof(Urun.MinSiparisAdedi), _localizer["Admin_Product_MinOrderAtLeastOne"].Value);
             }
 
             if (urun.MaxSiparisAdedi.HasValue && urun.MaxSiparisAdedi.Value < urun.MinSiparisAdedi)
             {
-                ModelState.AddModelError(nameof(Urun.MaxSiparisAdedi), "الحد الأقصى للطلب لا يمكن أن يكون أقل من الحد الأدنى.");
+                ModelState.AddModelError(nameof(Urun.MaxSiparisAdedi), _localizer["Admin_Product_MaxOrderLowerThanMin"].Value);
             }
 
             if (currentId == null && imageFile == null && string.IsNullOrWhiteSpace(urun.AnaGorselUrl))
             {
-                ModelState.AddModelError(nameof(Urun.AnaGorselUrl), "يرجى رفع صورة رئيسية أو إدخال رابط صورة.");
+                ModelState.AddModelError(nameof(Urun.AnaGorselUrl), _localizer["Admin_Product_MainImageRequired"].Value);
             }
 
             await ValidateImageUploadAsync(imageFile, nameof(Urun.AnaGorselUrl));
@@ -3157,27 +3157,27 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
                 if (tier.MinAdet <= 0)
                 {
-                    ModelState.AddModelError($"{prefix}.MinAdet", "يجب أن يكون الحد الأدنى للكمية أكبر من صفر.");
+                    ModelState.AddModelError($"{prefix}.MinAdet", _localizer["Admin_Product_VariantMinQtyZero"].Value);
                 }
 
                 if (tier.BirimFiyat <= 0)
                 {
-                    ModelState.AddModelError($"{prefix}.BirimFiyat", "يجب أن يكون سعر الوحدة أكبر من صفر.");
+                    ModelState.AddModelError($"{prefix}.BirimFiyat", _localizer["Admin_Product_VariantUnitPriceZero"].Value);
                 }
 
                 if (tier.Id > 0 && !ownedTierIds.Contains(tier.Id))
                 {
-                    ModelState.AddModelError($"{prefix}.Id", "درجة السعر المحددة لا تنتمي إلى هذا المنتج.");
+                    ModelState.AddModelError($"{prefix}.Id", _localizer["Admin_Product_VariantPriceTierInvalid"].Value);
                 }
 
                 if (tier.UrunSecenekId.HasValue && !ownedVariantIds.Contains(tier.UrunSecenekId.Value))
                 {
-                    ModelState.AddModelError($"{prefix}.UrunSecenekId", "المتغير المحدد لا ينتمي إلى هذا المنتج أو تم حذفه.");
+                    ModelState.AddModelError($"{prefix}.UrunSecenekId", _localizer["Admin_Product_VariantInvalid"].Value);
                 }
 
                 if (duplicateScopes.Contains((tier.UrunSecenekId, tier.MinAdet)))
                 {
-                    ModelState.AddModelError($"{prefix}.MinAdet", "لا يمكن تكرار نفس الحد الأدنى للكمية ضمن المنتج أو المتغير نفسه.");
+                    ModelState.AddModelError($"{prefix}.MinAdet", _localizer["Admin_Product_VariantDuplicateMinQty"].Value);
                 }
             }
         }
@@ -3366,7 +3366,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
                 if (variant.SatisFiyati < 0)
                 {
-                    ModelState.AddModelError($"{prefix}.SatisFiyati", $"Varyasyon {row}: satış fiyatı negatif olamaz.");
+                    ModelState.AddModelError($"{prefix}.SatisFiyati", string.Format(_localizer["Admin_Product_VariantNegativeSalePrice"].Value, row));
                 }
 
                 if (variant.MaliyetFiyati < 0)
@@ -3381,12 +3381,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
                 if (variant.ParcaSayisi < 1)
                 {
-                    ModelState.AddModelError($"{prefix}.ParcaSayisi", $"Varyasyon {row}: parça sayısı en az 1 olmalıdır.");
+                    ModelState.AddModelError($"{prefix}.ParcaSayisi", string.Format(_localizer["Admin_Product_VariantPiecesMinOne"].Value, row));
                 }
 
                 if (variant.UretimSuresiGun < 0)
                 {
-                    ModelState.AddModelError($"{prefix}.UretimSuresiGun", $"Varyasyon {row}: üretim süresi negatif olamaz.");
+                    ModelState.AddModelError($"{prefix}.UretimSuresiGun", string.Format(_localizer["Admin_Product_VariantNegativeProductionTime"].Value, row));
                 }
 
                 if (variant.Desi < 0)
@@ -3404,13 +3404,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
                 if (variant.Id > 0 && currentProductId.HasValue && !ownedVariantIds.Contains(variant.Id))
                 {
-                    ModelState.AddModelError($"{prefix}.Id", $"Varyasyon {row}: bu kayıt ürüne ait değil.");
+                    ModelState.AddModelError($"{prefix}.Id", string.Format(_localizer["Admin_Product_VariantNotBelongToProduct"].Value, row));
                 }
 
                 var sku = variant.VaryantSku?.Trim() ?? string.Empty;
                 if (!string.IsNullOrWhiteSpace(sku) && (duplicateSkus.Contains(sku) || skusOwnedByOtherVariants.Contains(sku)))
                 {
-                    ModelState.AddModelError($"{prefix}.VaryantSku", $"Varyasyon {row}: SKU değeri benzersiz olmalıdır.");
+                    ModelState.AddModelError($"{prefix}.VaryantSku", string.Format(_localizer["Admin_Product_VariantSkuMustBeUnique"].Value, row));
                 }
             }
         }

@@ -281,7 +281,7 @@ namespace FilistinProje.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Kargo hesaplama hatası");
+                _logger.LogError(ex, "Shipping calculation error.");
                 return Json(new { success = false, message = "تعذّر حساب تكلفة الشحن." });
             }
         }
@@ -317,7 +317,7 @@ namespace FilistinProje.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Kimlik fotografi yuklenirken hata olustu");
+                _logger.LogError(ex, "Error uploading identity photo.");
                 return Json(new { success = false, message = _localizer["Siparis_FileUploadError"].Value });
             }
         }
@@ -353,7 +353,7 @@ namespace FilistinProje.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Reçete yüklenirken hata oluştu");
+                _logger.LogError(ex, "Error uploading prescription.");
                 return Json(new { success = false, message = _localizer["Siparis_FileUploadError"].Value });
             }
         }

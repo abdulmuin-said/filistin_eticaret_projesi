@@ -201,7 +201,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var siparis = await _siparisService.GetByIdAsync(id);
             if (siparis == null)
             {
-                TempData["Mesaj"] = "لم يتم العثور على الطلب.";
+                TempData["Mesaj"] = _localizer["Admin_Order_NotFound"].Value;
                 TempData["Durum"] = "danger";
                 return RedirectToAction("Detay", new { id });
             }
@@ -212,7 +212,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (durum != eskiDurum && !CanMoveOrderStatusForward(eskiDurum, durum))
             {
-                TempData["Mesaj"] = $"لا يمكن تراجع حالة الطلب من '{SiparisDurumHelper.GetLabel(eskiDurum)}' إلى '{SiparisDurumHelper.GetLabel(durum)}'.";
+                TempData["Mesaj"] = _localizer["Admin_Order_StatusRevertError"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction("Detay", new { id });
             }
@@ -229,20 +229,20 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (durum == eskiDurum)
             {
-                TempData["Mesaj"] = "?? ????? ??????? ????? ?????.";
-                TempData["Mesaj"] = "تم تحديث معلومات الطلب.";
+                TempData["Mesaj"] = _localizer["Admin_Order_UnknownError"].Value;
+                TempData["Mesaj"] = _localizer["Admin_Order_InfoUpdated"].Value;
                 return RedirectToAction("Detay", new { id });
             }
 
             var mailSonucu = await SendStatusNotificationAsync(siparis, eskiDurum, durum, firma?.Ad ?? string.Empty, temizKargoNo);
             if (mailSonucu.Success)
             {
-                TempData["Mesaj"] = "تم تحديث الطلب. تم إرسال إشعار للعميل.";
+                TempData["Mesaj"] = _localizer["Admin_Order_UpdatedWithNotification"].Value;
                 TempData["Durum"] = "success";
             }
             else
             {
-                TempData["Mesaj"] = $"تم تحديث الطلب. فشل إرسال الإشعار: {mailSonucu.Message}";
+                TempData["Mesaj"] = string.Format(_localizer["Admin_Order_UpdatedNotificationFailed"].Value, mailSonucu.Message);
                 TempData["Durum"] = "warning";
             }
 
@@ -321,7 +321,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!siparisIds.Any())
             {
-                TempData["Mesaj"] = "اختر طلباً للطباعة.";
+                TempData["Mesaj"] = _localizer["Admin_Order_SelectToPrint"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -347,7 +347,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!siparisler.Any())
             {
-                TempData["Mesaj"] = "لا توجد طلبات قابلة للطباعة.";
+                TempData["Mesaj"] = _localizer["Admin_Order_NoPrintableOrders"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -377,7 +377,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!siparisIds.Any())
             {
-                TempData["Mesaj"] = "اختر طلباً للموافقة.";
+                TempData["Mesaj"] = _localizer["Admin_Order_SelectToApprove"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -388,7 +388,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!siparisler.Any())
             {
-                TempData["Mesaj"] = "لا توجد طلبات جديدة للموافقة.";
+                TempData["Mesaj"] = _localizer["Admin_Order_NoNewOrders"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -400,7 +400,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{siparisler.Count} طلب قيد التحضير.";
+            TempData["Mesaj"] = string.Format(_localizer["Admin_Order_PreparingCount"].Value, siparisler.Count);
             TempData["Durum"] = "success";
             
             return RedirectToAction(nameof(Index), new { toast = Uri.EscapeDataString($"{siparisler.Count} sipariÅŸ onaylandÄ±"), toastType = "success" });
@@ -414,7 +414,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!siparisIds.Any())
             {
-                TempData["Mesaj"] = "اختر طلباً للشحن.";
+                TempData["Mesaj"] = _localizer["Admin_Order_SelectToShip"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -426,7 +426,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!siparisler.Any())
             {
-                TempData["Mesaj"] = "لا توجد طلبات قيد التحضير للشحن.";
+                TempData["Mesaj"] = _localizer["Admin_Order_NoPreparingOrders"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -442,7 +442,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{siparisler.Count} طلب تم شحنه.";
+            TempData["Mesaj"] = string.Format(_localizer["Admin_Order_ShippedCount"].Value, siparisler.Count);
             TempData["Durum"] = "success";
             
             return RedirectToAction(nameof(Index), new { toast = Uri.EscapeDataString($"{siparisler.Count} sipariÅŸ kargoya verildi"), toastType = "success" });
@@ -456,7 +456,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!siparisIds.Any())
             {
-                TempData["Mesaj"] = "اختر طلباً للتسليم.";
+                TempData["Mesaj"] = _localizer["Admin_Order_SelectToDeliver"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index), new { durum = SiparisDurumHelper.KargoyaVerildi });
             }
@@ -467,7 +467,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!siparisler.Any())
             {
-                TempData["Mesaj"] = "لا توجد طلبات في الشحن للتسليم.";
+                TempData["Mesaj"] = _localizer["Admin_Order_NoShippingOrders"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index), new { durum = SiparisDurumHelper.KargoyaVerildi });
             }
@@ -479,7 +479,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{siparisler.Count} طلب تم تسليمه.";
+            TempData["Mesaj"] = string.Format(_localizer["Admin_Order_DeliveredCount"].Value, siparisler.Count);
             TempData["Durum"] = "success";
 
             return RedirectToAction(nameof(Index), new
@@ -498,7 +498,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!siparisIds.Any())
             {
-                TempData["Mesaj"] = "اختر طلباً واحداً على الأقل لتحديث الحالة.";
+                TempData["Mesaj"] = _localizer["Admin_Order_SelectAtLeastOneToUpdate"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -509,7 +509,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!siparisler.Any())
             {
-                TempData["Mesaj"] = "لم يتم العثور على طلبات للتحديث.";
+                TempData["Mesaj"] = _localizer["Admin_Order_NoOrdersToUpdate"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -521,7 +521,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!guncellenecekler.Any())
             {
-                TempData["Mesaj"] = $"لا يمكن تحديث الحالة إلى '{durumAd}'.";
+                TempData["Mesaj"] = _localizer["Admin_Order_StatusUpdateError"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -533,7 +533,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{guncellenecekler.Count} طلب تم تحديثه إلى '{durumAd}'.";
+            TempData["Mesaj"] = _localizer["Admin_Order_BatchUpdated"].Value;
             TempData["Durum"] = "success";
             
             return RedirectToAction(nameof(Index), new { toast = Uri.EscapeDataString($"{guncellenecekler.Count} طلب محدّث"), toastType = "success" });
@@ -545,7 +545,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             if (string.IsNullOrWhiteSpace(siparisIds))
             {
-                TempData["Mesaj"] = "اختر طلباً واحداً على الأقل للإلغاء.";
+                TempData["Mesaj"] = _localizer["Admin_Order_SelectToCancel"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -554,7 +554,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!idList.Any())
             {
-                TempData["Mesaj"] = "اختر طلباً واحداً على الأقل للإلغاء.";
+                TempData["Mesaj"] = _localizer["Admin_Order_SelectToCancel"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -569,7 +569,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (!siparisler.Any())
             {
-                TempData["Mesaj"] = "لا توجد طلبات قابلة للإلغاء.";
+                TempData["Mesaj"] = _localizer["Admin_Order_NoCancelableOrders"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
@@ -586,7 +586,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = $"{siparisler.Count} طلب تم إلغاؤه وإرسال إشعار للعملاء.";
+            TempData["Mesaj"] = string.Format(_localizer["Admin_Order_CancelledCount"].Value, siparisler.Count);
             TempData["Durum"] = "success";
             
             return RedirectToAction(nameof(Index), new { toast = Uri.EscapeDataString($"{siparisler.Count} طلب ملغى"), toastType = "success" });
@@ -600,14 +600,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             
             if (siparis == null)
             {
-                TempData["Mesaj"] = "لم يتم العثور على الطلب.";
+                TempData["Mesaj"] = _localizer["Admin_Order_NotFound"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index));
             }
 
             if (siparis.Durum == SiparisDurumHelper.KargoyaVerildi)
             {
-                TempData["Mesaj"] = "لا يمكن إلغاء طلب تم شحنه!";
+                TempData["Mesaj"] = _localizer["Admin_Order_CannotCancelShipped"].Value;
                 TempData["Durum"] = "danger";
                 return RedirectToAction(nameof(Detay), new { id });
             }
@@ -620,7 +620,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await SendIptalEmailAsync(siparis);
             }
 
-                TempData["Mesaj"] = "تم إلغاء الطلب وإرسال إشعار للعميل.";
+                TempData["Mesaj"] = _localizer["Admin_Order_CancelledWithNotification"].Value;
             TempData["Durum"] = "success";
             
             return RedirectToAction(nameof(Detay), new { id });
@@ -892,7 +892,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             if (faturaDosyasi == null || faturaDosyasi.Length == 0)
             {
-                TempData["Hata"] = "يرجى اختيار ملف.";
+                TempData["Hata"] = _localizer["Admin_Order_SelectFile"].Value;
                 return RedirectToAction("Detay", new { id = siparisId });
             }
 
@@ -906,7 +906,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var kayit = await _dosyaServisi.HassasBelgeKaydetAsync(faturaDosyasi, HassasBelgeKategorisi.Fatura);
             if (!kayit.Success)
             {
-                TempData["Hata"] = kayit.ErrorMessage ?? "فشل حفظ الفاتورة بأمان.";
+                TempData["Hata"] = kayit.ErrorMessage ?? _localizer["Admin_Order_InvoiceSaveError"].Value;
                 return RedirectToAction("Detay", new { id = siparisId });
             }
 
@@ -979,7 +979,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var siparis = await _context.Siparisler.FindAsync(id);
             if (siparis == null)
             {
-                TempData["Hata"] = "لم يتم العثور على الطلب.";
+                TempData["Hata"] = _localizer["Admin_Order_NotFound"].Value;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -987,7 +987,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             siparis.ReceteRedSebebi = null;
             await _context.SaveChangesAsync();
 
-            TempData["Basarili"] = "تمت الموافقة على الوصفة.";
+            TempData["Basarili"] = _localizer["Admin_Order_PrescriptionApproved"].Value;
             return RedirectToAction(nameof(Detay), new { id });
         }
 
@@ -1001,13 +1001,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var siparis = await _context.Siparisler.FindAsync(id);
             if (siparis == null)
             {
-                TempData["Hata"] = "لم يتم العثور على الطلب.";
+                TempData["Hata"] = _localizer["Admin_Order_NotFound"].Value;
                 return RedirectToAction(nameof(Index));
             }
 
             if (string.IsNullOrWhiteSpace(redSebebi))
             {
-                TempData["Hata"] = "سبب الرفض إلزامي.";
+                TempData["Hata"] = _localizer["Admin_Order_RejectReasonRequired"].Value;
                 return RedirectToAction(nameof(Detay), new { id });
             }
 
@@ -1015,7 +1015,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             siparis.ReceteRedSebebi = redSebebi.Trim();
             await _context.SaveChangesAsync();
 
-            TempData["Basarili"] = "تم رفض الوصفة: " + redSebebi.Trim();
+            TempData["Basarili"] = _localizer["Admin_Order_PrescriptionRejected"].Value + redSebebi.Trim();
             return RedirectToAction(nameof(Detay), new { id });
         }
 
@@ -1046,8 +1046,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "PDF fatura olusturma hatasi. SiparisId={SiparisId}", id);
-                TempData["Hata"] = "حدث خطأ أثناء إنشاء الفاتورة.";
+                _logger.LogError(ex, "Error generating PDF invoice. OrderId={OrderId}", id);
+                TempData["Hata"] = _localizer["Admin_Order_InvoiceGenerationError"].Value;
                 return RedirectToAction(nameof(Detay), new { id });
             }
         }

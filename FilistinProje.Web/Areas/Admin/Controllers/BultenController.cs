@@ -121,7 +121,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 abone.AktifMi = false;
                 await _context.SaveChangesAsync();
-                TempData["Mesaj"] = "تم إلغاء تفعيل الاشتراك.";
+                TempData["Mesaj"] = _localizer["Admin_Newsletter_Deactivated"].Value;
                 TempData["Durum"] = "success";
             }
 
@@ -137,7 +137,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 abone.AktifMi = true;
                 await _context.SaveChangesAsync();
-                TempData["Mesaj"] = "تم تفعيل الاشتراك مجدداً.";
+                TempData["Mesaj"] = _localizer["Admin_Newsletter_Activated"].Value;
                 TempData["Durum"] = "success";
             }
 
@@ -151,7 +151,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             aboneIds = aboneIds.Where(x => x > 0).Distinct().ToList();
             if (!aboneIds.Any())
             {
-                TempData["Hata"] = "اختر مشتركاً واحداً على الأقل.";
+                TempData["Hata"] = _localizer["Admin_Newsletter_SelectAtLeastOne"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index), new { durum, q, page, pageSize });
             }
@@ -166,7 +166,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             await _context.SaveChangesAsync();
-            TempData["Mesaj"] = $"تم إلغاء تفعيل {aboneler.Count} اشتراك.";
+            TempData["Mesaj"] = string.Format(_localizer["Admin_Newsletter_DeactivatedCount"].Value, aboneler.Count);
             TempData["Durum"] = "success";
 
             return RedirectToAction(nameof(Index), new { durum, q, page, pageSize });
@@ -193,7 +193,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (string.IsNullOrWhiteSpace(baslik) || string.IsNullOrWhiteSpace(icerik))
             {
-                TempData["Hata"] = "عنوان البريد ومحتوى الرسالة إلزاميان.";
+                TempData["Hata"] = _localizer["Admin_Newsletter_MailRequired"].Value;
                 TempData["Durum"] = "warning";
                 return RedirectToAction(nameof(Index), new { durum, q, page, pageSize });
             }
@@ -204,7 +204,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 mailAboneIds = (mailAboneIds ?? new List<int>()).Where(x => x > 0).Distinct().ToList();
                 if (!mailAboneIds.Any())
                 {
-                    TempData["Hata"] = "اختر مشتركاً واحداً على الأقل للإرسال.";
+                    TempData["Hata"] = _localizer["Admin_Newsletter_SelectAtLeastOneToSend"].Value;
                     TempData["Durum"] = "warning";
                     return RedirectToAction(nameof(Index), new { durum, q, page, pageSize });
                 }
