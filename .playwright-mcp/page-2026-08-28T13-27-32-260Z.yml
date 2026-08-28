@@ -1,0 +1,850 @@
+- generic [ref=f3e2]:
+  - text:          +                    
+  - banner [ref=f3e3]:
+    - generic [ref=f3e4]:
+      - link "7ANRPS48 لوحة التحكم" [ref=f3e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f3e6]
+      - generic [ref=f3e7]: لوحة التحكم
+    - navigation "القائمة الرئيسية للإدارة" [ref=f3e8]:
+      - link " لوحة البيانات" [ref=f3e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f3e10]: 
+        - text: لوحة البيانات
+      - generic [ref=f3e11]:
+        - button " إدارة الطلبات 1" [ref=f3e12] [cursor=pointer]:
+          - generic [ref=f3e13]: 
+          - text: إدارة الطلبات
+          - generic [ref=f3e14]: "1"
+        - text:      
+      - generic [ref=f3e15]:
+        - button " إدارة المنتجات" [ref=f3e16] [cursor=pointer]:
+          - generic [ref=f3e17]: 
+          - text: إدارة المنتجات
+        - text:  +  
+      - generic [ref=f3e18]:
+        - button " محتوى المتجر" [ref=f3e19] [cursor=pointer]:
+          - generic [ref=f3e20]: 
+          - text: محتوى المتجر
+        - text:        
+      - link " الأعضاء" [ref=f3e21] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f3e22]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=f3e23] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f3e24]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=f3e25] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f3e26]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=f3e27] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f3e28]: 
+        - text: مجموعات الجملة
+      - generic [ref=f3e29]:
+        - button " التقارير" [ref=f3e30] [cursor=pointer]:
+          - generic [ref=f3e31]: 
+          - text: التقارير
+        - text:  
+      - link " الحسابات البنكية" [ref=f3e32] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f3e33]: 
+        - text: الحسابات البنكية
+      - link " Sosyal Medya" [ref=f3e34] [cursor=pointer]:
+        - /url: /Admin/SosyalMedya
+        - generic [ref=f3e35]: 
+        - text: Sosyal Medya
+      - link " الإعدادات" [ref=f3e36] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f3e37]: 
+        - text: الإعدادات
+    - generic [ref=f3e38]:
+      - text: 
+      - generic [ref=f3e39]:
+        - generic [ref=f3e40]: 
+        - link "العربية" [ref=f3e42] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FAdmin%2FUrun
+        - link "English" [ref=f3e43] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FAdmin%2FUrun
+      - text: 
+      - generic [ref=f3e44]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f3e45] [cursor=pointer]:
+          - generic [ref=f3e46]:
+            - strong [ref=f3e47]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f3e48]: "7"
+        - text:  
+  - generic [ref=f3e49]:
+    - main [ref=f3e50]:
+      - generic [ref=f3e51]:
+        - generic [ref=f3e52]:
+          - generic [ref=f3e53]:
+            - heading "كتالوج المنتجات" [level=1] [ref=f3e54]
+            - paragraph [ref=f3e55]: تابع المنتجات من شاشة إدارة سريعة ومقسمة الصفحات وخفيفة الصور.
+          - generic [ref=f3e56]:
+            - link " كل المنتجات XLSX" [ref=f3e57] [cursor=pointer]:
+              - /url: /Admin/Urun/UrunExcelExport
+              - generic [ref=f3e58]: 
+              - text: كل المنتجات XLSX
+            - link " عمليات Excel" [ref=f3e59] [cursor=pointer]:
+              - /url: /Admin/Urun/Excel
+              - generic [ref=f3e60]: 
+              - text: عمليات Excel
+            - button " إكمال رموز SKU" [ref=f3e62] [cursor=pointer]:
+              - generic [ref=f3e63]: 
+              - text: إكمال رموز SKU
+            - link "+ منتج جديد" [ref=f3e64] [cursor=pointer]:
+              - /url: /Admin/Urun/Ekle
+              - generic [ref=f3e65]: +
+              - text: منتج جديد
+        - generic [ref=f3e68]:
+          - generic [ref=f3e69]:
+            - generic [ref=f3e70]: 
+            - textbox "ابحث بالعنوان أو SKU أو الباركود أو الرقم" [ref=f3e71]
+          - combobox [ref=f3e72]:
+            - option "كل التصنيفات" [selected]
+            - option "أثاث"
+            - option "العطور"
+            - option "بقالة"
+            - option "جمال"
+            - option "أثاث منزلي"
+            - option "إلكترونيات"
+            - option "أزياء"
+          - combobox [ref=f3e73]:
+            - option "20" [selected]
+            - option "50"
+            - option "100"
+          - button "" [ref=f3e74] [cursor=pointer]
+          - button " تفعيل المحدد" [disabled] [ref=f3e76] [cursor=pointer]:
+            - generic [ref=f3e77]: 
+            - text: تفعيل المحدد
+          - button " تعطيل المحدد" [disabled] [ref=f3e78] [cursor=pointer]:
+            - generic [ref=f3e79]: 
+            - text: تعطيل المحدد
+          - button " حذف المنتجات المحددة" [disabled] [ref=f3e80] [cursor=pointer]:
+            - generic [ref=f3e81]: 
+            - text: حذف المنتجات المحددة
+          - button " حذف نهائي" [disabled] [ref=f3e82] [cursor=pointer]:
+            - generic [ref=f3e83]: 
+            - text: حذف نهائي
+          - generic [ref=f3e84]: لا توجد منتجات محددة.
+          - generic [ref=f3e85]:
+            - text: المجموع
+            - strong [ref=f3e86]: "31"
+            - text: منتج
+        - generic [ref=f3e87]:
+          - table [ref=f3e89]:
+            - rowgroup [ref=f3e90]:
+              - row [ref=f3e91]:
+                - columnheader "الصورة" [ref=f3e92]
+                - columnheader "منتج" [ref=f3e93]
+                - columnheader "الفئة" [ref=f3e94]
+                - columnheader "السعر" [ref=f3e95]
+                - columnheader "حالة النشر" [ref=f3e96]
+                - columnheader "الإجراءات" [ref=f3e97]
+                - columnheader [ref=f3e98]:
+                  - checkbox "تحديد منتجات هذه الصفحة" [ref=f3e99]
+            - rowgroup [ref=f3e100]:
+              - row [ref=f3e101]:
+                - cell [ref=f3e102]:
+                  - img "ايسنس ماسكارا لاش برينسيس" [ref=f3e103]
+                - 'cell "ايسنس ماسكارا لاش برينسيس SKU: BEA-ESS-ESS-001 مميز جديد حملة عرض في الصفحة الرئيسية" [ref=f3e104]':
+                  - generic [ref=f3e105]:
+                    - generic [ref=f3e106]: ايسنس ماسكارا لاش برينسيس
+                    - generic [ref=f3e107]: "SKU: BEA-ESS-ESS-001"
+                    - generic [ref=f3e108]:
+                      - generic [ref=f3e109]: مميز
+                      - generic [ref=f3e110]: جديد
+                      - generic [ref=f3e111]: حملة
+                      - generic [ref=f3e112]: عرض في الصفحة الرئيسية
+                - 'cell "جمال العلامة التجارية: Essence" [ref=f3e113]':
+                  - generic [ref=f3e114]: جمال
+                  - text: "العلامة التجارية: Essence"
+                - cell "8٫94 ₪ 9٫99 ₪" [ref=f3e115]:
+                  - generic [ref=f3e116]: 8٫94 ₪
+                  - text: 9٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e117]':
+                  - generic [ref=f3e119]:
+                    - generic [ref=f3e120]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e121]:
+                  - generic [ref=f3e122]:
+                    - link "" [ref=f3e123] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-1-essence-mascara-lash-princess-112
+                    - link "" [ref=f3e125] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/112
+                    - button "" [ref=f3e128] [cursor=pointer]
+                    - button "" [ref=f3e131] [cursor=pointer]
+                    - button "" [ref=f3e134] [cursor=pointer]
+                    - button "" [ref=f3e137] [cursor=pointer]
+                - cell [ref=f3e139]:
+                  - checkbox "تحديد المنتج ايسنس ماسكارا لاش برينسيس" [ref=f3e140]
+              - row [ref=f3e141]:
+                - cell [ref=f3e142]:
+                  - img "لوحة ظلال العيون مع مرآة" [ref=f3e143]
+                - 'cell "لوحة ظلال العيون مع مرآة SKU: BEA-GLA-EYE-002 جديد حملة عرض في الصفحة الرئيسية" [ref=f3e144]':
+                  - generic [ref=f3e145]:
+                    - generic [ref=f3e146]: لوحة ظلال العيون مع مرآة
+                    - generic [ref=f3e147]: "SKU: BEA-GLA-EYE-002"
+                    - generic [ref=f3e148]:
+                      - generic [ref=f3e149]: جديد
+                      - generic [ref=f3e150]: حملة
+                      - generic [ref=f3e151]: عرض في الصفحة الرئيسية
+                - 'cell "جمال العلامة التجارية: Glamour Beauty" [ref=f3e152]':
+                  - generic [ref=f3e153]: جمال
+                  - text: "العلامة التجارية: Glamour Beauty"
+                - cell "16٫35 ₪ 19٫99 ₪" [ref=f3e154]:
+                  - generic [ref=f3e155]: 16٫35 ₪
+                  - text: 19٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e156]':
+                  - generic [ref=f3e158]:
+                    - generic [ref=f3e159]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e160]:
+                  - generic [ref=f3e161]:
+                    - link "" [ref=f3e162] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-2-eyeshadow-palette-with-mirror-113
+                    - link "" [ref=f3e164] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/113
+                    - button "" [ref=f3e167] [cursor=pointer]
+                    - button "" [ref=f3e170] [cursor=pointer]
+                    - button "" [ref=f3e173] [cursor=pointer]
+                    - button "" [ref=f3e176] [cursor=pointer]
+                - cell [ref=f3e178]:
+                  - checkbox "تحديد المنتج لوحة ظلال العيون مع مرآة" [ref=f3e179]
+              - row [ref=f3e180]:
+                - cell [ref=f3e181]:
+                  - img "علبة مسحوق" [ref=f3e182]
+                - 'cell "علبة مسحوق SKU: BEA-VEL-POW-003 مميز جديد حملة عرض في الصفحة الرئيسية" [ref=f3e183]':
+                  - generic [ref=f3e184]:
+                    - generic [ref=f3e185]: علبة مسحوق
+                    - generic [ref=f3e186]: "SKU: BEA-VEL-POW-003"
+                    - generic [ref=f3e187]:
+                      - generic [ref=f3e188]: مميز
+                      - generic [ref=f3e189]: جديد
+                      - generic [ref=f3e190]: حملة
+                      - generic [ref=f3e191]: عرض في الصفحة الرئيسية
+                - 'cell "جمال العلامة التجارية: Velvet Touch" [ref=f3e192]':
+                  - generic [ref=f3e193]: جمال
+                  - text: "العلامة التجارية: Velvet Touch"
+                - cell "13٫51 ₪ 14٫99 ₪" [ref=f3e194]:
+                  - generic [ref=f3e195]: 13٫51 ₪
+                  - text: 14٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e196]':
+                  - generic [ref=f3e198]:
+                    - generic [ref=f3e199]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e200]:
+                  - generic [ref=f3e201]:
+                    - link "" [ref=f3e202] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-3-powder-canister-114
+                    - link "" [ref=f3e204] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/114
+                    - button "" [ref=f3e207] [cursor=pointer]
+                    - button "" [ref=f3e210] [cursor=pointer]
+                    - button "" [ref=f3e213] [cursor=pointer]
+                    - button "" [ref=f3e216] [cursor=pointer]
+                - cell [ref=f3e218]:
+                  - checkbox "تحديد المنتج علبة مسحوق" [ref=f3e219]
+              - row [ref=f3e220]:
+                - cell [ref=f3e221]:
+                  - img "أحمر الشفاه" [ref=f3e222]
+                - 'cell "أحمر الشفاه SKU: BEA-CHI-LIP-004 مميز جديد حملة عرض في الصفحة الرئيسية" [ref=f3e223]':
+                  - generic [ref=f3e224]:
+                    - generic [ref=f3e225]: أحمر الشفاه
+                    - generic [ref=f3e226]: "SKU: BEA-CHI-LIP-004"
+                    - generic [ref=f3e227]:
+                      - generic [ref=f3e228]: مميز
+                      - generic [ref=f3e229]: جديد
+                      - generic [ref=f3e230]: حملة
+                      - generic [ref=f3e231]: عرض في الصفحة الرئيسية
+                - 'cell "جمال العلامة التجارية: Chic Cosmetics" [ref=f3e232]':
+                  - generic [ref=f3e233]: جمال
+                  - text: "العلامة التجارية: Chic Cosmetics"
+                - cell "11٫41 ₪ 12٫99 ₪" [ref=f3e234]:
+                  - generic [ref=f3e235]: 11٫41 ₪
+                  - text: 12٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e236]':
+                  - generic [ref=f3e238]:
+                    - generic [ref=f3e239]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e240]:
+                  - generic [ref=f3e241]:
+                    - link "" [ref=f3e242] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-4-red-lipstick-115
+                    - link "" [ref=f3e244] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/115
+                    - button "" [ref=f3e247] [cursor=pointer]
+                    - button "" [ref=f3e250] [cursor=pointer]
+                    - button "" [ref=f3e253] [cursor=pointer]
+                    - button "" [ref=f3e256] [cursor=pointer]
+                - cell [ref=f3e258]:
+                  - checkbox "تحديد المنتج أحمر الشفاه" [ref=f3e259]
+              - row [ref=f3e260]:
+                - cell [ref=f3e261]:
+                  - img "طلاء الأظافر باللون الأحمر" [ref=f3e262]
+                - 'cell "طلاء الأظافر باللون الأحمر SKU: BEA-NAI-NAI-005 مميز جديد حملة عرض في الصفحة الرئيسية" [ref=f3e263]':
+                  - generic [ref=f3e264]:
+                    - generic [ref=f3e265]: طلاء الأظافر باللون الأحمر
+                    - generic [ref=f3e266]: "SKU: BEA-NAI-NAI-005"
+                    - generic [ref=f3e267]:
+                      - generic [ref=f3e268]: مميز
+                      - generic [ref=f3e269]: جديد
+                      - generic [ref=f3e270]: حملة
+                      - generic [ref=f3e271]: عرض في الصفحة الرئيسية
+                - 'cell "جمال العلامة التجارية: Nail Couture" [ref=f3e272]':
+                  - generic [ref=f3e273]: جمال
+                  - text: "العلامة التجارية: Nail Couture"
+                - cell "7٫96 ₪ 8٫99 ₪" [ref=f3e274]:
+                  - generic [ref=f3e275]: 7٫96 ₪
+                  - text: 8٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e276]':
+                  - generic [ref=f3e278]:
+                    - generic [ref=f3e279]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e280]:
+                  - generic [ref=f3e281]:
+                    - link "" [ref=f3e282] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-5-red-nail-polish-116
+                    - link "" [ref=f3e284] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/116
+                    - button "" [ref=f3e287] [cursor=pointer]
+                    - button "" [ref=f3e290] [cursor=pointer]
+                    - button "" [ref=f3e293] [cursor=pointer]
+                    - button "" [ref=f3e296] [cursor=pointer]
+                - cell [ref=f3e298]:
+                  - checkbox "تحديد المنتج طلاء الأظافر باللون الأحمر" [ref=f3e299]
+              - row [ref=f3e300]:
+                - cell [ref=f3e301]:
+                  - img "كالفن كلاين سي كيه وان" [ref=f3e302]
+                - 'cell "كالفن كلاين سي كيه وان SKU: FRA-CAL-CAL-006 مميز جديد حملة عرض في الصفحة الرئيسية" [ref=f3e303]':
+                  - generic [ref=f3e304]:
+                    - generic [ref=f3e305]: كالفن كلاين سي كيه وان
+                    - generic [ref=f3e306]: "SKU: FRA-CAL-CAL-006"
+                    - generic [ref=f3e307]:
+                      - generic [ref=f3e308]: مميز
+                      - generic [ref=f3e309]: جديد
+                      - generic [ref=f3e310]: حملة
+                      - generic [ref=f3e311]: عرض في الصفحة الرئيسية
+                - 'cell "العطور العلامة التجارية: Calvin Klein" [ref=f3e312]':
+                  - generic [ref=f3e313]: العطور
+                  - text: "العلامة التجارية: Calvin Klein"
+                - cell "49٫05 ₪ 49٫99 ₪" [ref=f3e314]:
+                  - generic [ref=f3e315]: 49٫05 ₪
+                  - text: 49٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e316]':
+                  - generic [ref=f3e318]:
+                    - generic [ref=f3e319]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e320]:
+                  - generic [ref=f3e321]:
+                    - link "" [ref=f3e322] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-6-calvin-klein-ck-one-117
+                    - link "" [ref=f3e324] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/117
+                    - button "" [ref=f3e327] [cursor=pointer]
+                    - button "" [ref=f3e330] [cursor=pointer]
+                    - button "" [ref=f3e333] [cursor=pointer]
+                    - button "" [ref=f3e336] [cursor=pointer]
+                - cell [ref=f3e338]:
+                  - checkbox "تحديد المنتج كالفن كلاين سي كيه وان" [ref=f3e339]
+              - row [ref=f3e340]:
+                - cell [ref=f3e341]:
+                  - img "شانيل كوكو نوير أو دي" [ref=f3e342]
+                - 'cell "شانيل كوكو نوير أو دي SKU: FRA-CHA-CHA-007 مميز جديد حملة عرض في الصفحة الرئيسية" [ref=f3e343]':
+                  - generic [ref=f3e344]:
+                    - generic [ref=f3e345]: شانيل كوكو نوير أو دي
+                    - generic [ref=f3e346]: "SKU: FRA-CHA-CHA-007"
+                    - generic [ref=f3e347]:
+                      - generic [ref=f3e348]: مميز
+                      - generic [ref=f3e349]: جديد
+                      - generic [ref=f3e350]: حملة
+                      - generic [ref=f3e351]: عرض في الصفحة الرئيسية
+                - 'cell "العطور العلامة التجارية: Chanel" [ref=f3e352]':
+                  - generic [ref=f3e353]: العطور
+                  - text: "العلامة التجارية: Chanel"
+                - cell "108٫53 ₪ 129٫99 ₪" [ref=f3e354]:
+                  - generic [ref=f3e355]: 108٫53 ₪
+                  - text: 129٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e356]':
+                  - generic [ref=f3e358]:
+                    - generic [ref=f3e359]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e360]:
+                  - generic [ref=f3e361]:
+                    - link "" [ref=f3e362] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-7-chanel-coco-noir-eau-de-118
+                    - link "" [ref=f3e364] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/118
+                    - button "" [ref=f3e367] [cursor=pointer]
+                    - button "" [ref=f3e370] [cursor=pointer]
+                    - button "" [ref=f3e373] [cursor=pointer]
+                    - button "" [ref=f3e376] [cursor=pointer]
+                - cell [ref=f3e378]:
+                  - checkbox "تحديد المنتج شانيل كوكو نوير أو دي" [ref=f3e379]
+              - row [ref=f3e380]:
+                - cell [ref=f3e381]:
+                  - img "ديور جادور" [ref=f3e382]
+                - 'cell "ديور جادور SKU: FRA-DIO-DIO-008 جديد حملة عرض في الصفحة الرئيسية" [ref=f3e383]':
+                  - generic [ref=f3e384]:
+                    - generic [ref=f3e385]: ديور جادور
+                    - generic [ref=f3e386]: "SKU: FRA-DIO-DIO-008"
+                    - generic [ref=f3e387]:
+                      - generic [ref=f3e388]: جديد
+                      - generic [ref=f3e389]: حملة
+                      - generic [ref=f3e390]: عرض في الصفحة الرئيسية
+                - 'cell "العطور العلامة التجارية: Dior" [ref=f3e391]':
+                  - generic [ref=f3e392]: العطور
+                  - text: "العلامة التجارية: Dior"
+                - cell "76٫74 ₪ 89٫99 ₪" [ref=f3e393]:
+                  - generic [ref=f3e394]: 76٫74 ₪
+                  - text: 89٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e395]':
+                  - generic [ref=f3e397]:
+                    - generic [ref=f3e398]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e399]:
+                  - generic [ref=f3e400]:
+                    - link "" [ref=f3e401] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-8-dior-jadore-119
+                    - link "" [ref=f3e403] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/119
+                    - button "" [ref=f3e406] [cursor=pointer]
+                    - button "" [ref=f3e409] [cursor=pointer]
+                    - button "" [ref=f3e412] [cursor=pointer]
+                    - button "" [ref=f3e415] [cursor=pointer]
+                - cell [ref=f3e417]:
+                  - checkbox "تحديد المنتج ديور جادور" [ref=f3e418]
+              - row [ref=f3e419]:
+                - cell [ref=f3e420]:
+                  - img "دولتشي شاين أو دي" [ref=f3e421]
+                - 'cell "دولتشي شاين أو دي SKU: FRA-DOL-DOL-009 جديد حملة عرض في الصفحة الرئيسية" [ref=f3e422]':
+                  - generic [ref=f3e423]:
+                    - generic [ref=f3e424]: دولتشي شاين أو دي
+                    - generic [ref=f3e425]: "SKU: FRA-DOL-DOL-009"
+                    - generic [ref=f3e426]:
+                      - generic [ref=f3e427]: جديد
+                      - generic [ref=f3e428]: حملة
+                      - generic [ref=f3e429]: عرض في الصفحة الرئيسية
+                - 'cell "العطور العلامة التجارية: Dolce & Gabbana" [ref=f3e430]':
+                  - generic [ref=f3e431]: العطور
+                  - text: "العلامة التجارية: Dolce & Gabbana"
+                - cell "69٫56 ₪ 69٫99 ₪" [ref=f3e432]:
+                  - generic [ref=f3e433]: 69٫56 ₪
+                  - text: 69٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e434]':
+                  - generic [ref=f3e436]:
+                    - generic [ref=f3e437]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e438]:
+                  - generic [ref=f3e439]:
+                    - link "" [ref=f3e440] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-9-dolce-shine-eau-de-120
+                    - link "" [ref=f3e442] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/120
+                    - button "" [ref=f3e445] [cursor=pointer]
+                    - button "" [ref=f3e448] [cursor=pointer]
+                    - button "" [ref=f3e451] [cursor=pointer]
+                    - button "" [ref=f3e454] [cursor=pointer]
+                - cell [ref=f3e456]:
+                  - checkbox "تحديد المنتج دولتشي شاين أو دي" [ref=f3e457]
+              - row [ref=f3e458]:
+                - cell [ref=f3e459]:
+                  - img "غوتشي بلوم أو دو" [ref=f3e460]
+                - 'cell "غوتشي بلوم أو دو SKU: FRA-GUC-GUC-010 جديد حملة عرض في الصفحة الرئيسية" [ref=f3e461]':
+                  - generic [ref=f3e462]:
+                    - generic [ref=f3e463]: غوتشي بلوم أو دو
+                    - generic [ref=f3e464]: "SKU: FRA-GUC-GUC-010"
+                    - generic [ref=f3e465]:
+                      - generic [ref=f3e466]: جديد
+                      - generic [ref=f3e467]: حملة
+                      - generic [ref=f3e468]: عرض في الصفحة الرئيسية
+                - 'cell "العطور العلامة التجارية: Gucci" [ref=f3e469]':
+                  - generic [ref=f3e470]: العطور
+                  - text: "العلامة التجارية: Gucci"
+                - cell "68٫48 ₪ 79٫99 ₪" [ref=f3e471]:
+                  - generic [ref=f3e472]: 68٫48 ₪
+                  - text: 79٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e473]':
+                  - generic [ref=f3e475]:
+                    - generic [ref=f3e476]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e477]:
+                  - generic [ref=f3e478]:
+                    - link "" [ref=f3e479] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-10-gucci-bloom-eau-de-121
+                    - link "" [ref=f3e481] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/121
+                    - button "" [ref=f3e484] [cursor=pointer]
+                    - button "" [ref=f3e487] [cursor=pointer]
+                    - button "" [ref=f3e490] [cursor=pointer]
+                    - button "" [ref=f3e493] [cursor=pointer]
+                - cell [ref=f3e495]:
+                  - checkbox "تحديد المنتج غوتشي بلوم أو دو" [ref=f3e496]
+              - row [ref=f3e497]:
+                - cell [ref=f3e498]:
+                  - img "سرير أنيبال كولومبو" [ref=f3e499]
+                - 'cell "سرير أنيبال كولومبو SKU: FUR-ANN-ANN-011 مميز جديد حملة عرض في الصفحة الرئيسية" [ref=f3e500]':
+                  - generic [ref=f3e501]:
+                    - generic [ref=f3e502]: سرير أنيبال كولومبو
+                    - generic [ref=f3e503]: "SKU: FUR-ANN-ANN-011"
+                    - generic [ref=f3e504]:
+                      - generic [ref=f3e505]: مميز
+                      - generic [ref=f3e506]: جديد
+                      - generic [ref=f3e507]: حملة
+                      - generic [ref=f3e508]: عرض في الصفحة الرئيسية
+                - 'cell "أثاث العلامة التجارية: Annibale Colombo" [ref=f3e509]':
+                  - generic [ref=f3e510]: أثاث
+                  - text: "العلامة التجارية: Annibale Colombo"
+                - cell "1٬737٫16 ₪ 1٬899٫99 ₪" [ref=f3e511]:
+                  - generic [ref=f3e512]: 1٬737٫16 ₪
+                  - text: 1٬899٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e513]':
+                  - generic [ref=f3e515]:
+                    - generic [ref=f3e516]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e517]:
+                  - generic [ref=f3e518]:
+                    - link "" [ref=f3e519] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-11-annibale-colombo-bed-122
+                    - link "" [ref=f3e521] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/122
+                    - button "" [ref=f3e524] [cursor=pointer]
+                    - button "" [ref=f3e527] [cursor=pointer]
+                    - button "" [ref=f3e530] [cursor=pointer]
+                    - button "" [ref=f3e533] [cursor=pointer]
+                - cell [ref=f3e535]:
+                  - checkbox "تحديد المنتج سرير أنيبال كولومبو" [ref=f3e536]
+              - row [ref=f3e537]:
+                - cell [ref=f3e538]:
+                  - img "أريكة أنيبال كولومبو" [ref=f3e539]
+                - 'cell "أريكة أنيبال كولومبو SKU: FUR-ANN-ANN-012 جديد حملة عرض في الصفحة الرئيسية" [ref=f3e540]':
+                  - generic [ref=f3e541]:
+                    - generic [ref=f3e542]: أريكة أنيبال كولومبو
+                    - generic [ref=f3e543]: "SKU: FUR-ANN-ANN-012"
+                    - generic [ref=f3e544]:
+                      - generic [ref=f3e545]: جديد
+                      - generic [ref=f3e546]: حملة
+                      - generic [ref=f3e547]: عرض في الصفحة الرئيسية
+                - 'cell "أثاث العلامة التجارية: Annibale Colombo" [ref=f3e548]':
+                  - generic [ref=f3e549]: أثاث
+                  - text: "العلامة التجارية: Annibale Colombo"
+                - cell "2٬139٫99 ₪ 2٬499٫99 ₪" [ref=f3e550]:
+                  - generic [ref=f3e551]: 2٬139٫99 ₪
+                  - text: 2٬499٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e552]':
+                  - generic [ref=f3e554]:
+                    - generic [ref=f3e555]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e556]:
+                  - generic [ref=f3e557]:
+                    - link "" [ref=f3e558] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-12-annibale-colombo-sofa-123
+                    - link "" [ref=f3e560] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/123
+                    - button "" [ref=f3e563] [cursor=pointer]
+                    - button "" [ref=f3e566] [cursor=pointer]
+                    - button "" [ref=f3e569] [cursor=pointer]
+                    - button "" [ref=f3e572] [cursor=pointer]
+                - cell [ref=f3e574]:
+                  - checkbox "تحديد المنتج أريكة أنيبال كولومبو" [ref=f3e575]
+              - row [ref=f3e576]:
+                - cell [ref=f3e577]:
+                  - img "طاولة بجانب السرير الكرز الأفريقي" [ref=f3e578]
+                - 'cell "طاولة بجانب السرير الكرز الأفريقي SKU: FUR-FUR-BED-013 جديد حملة عرض في الصفحة الرئيسية" [ref=f3e579]':
+                  - generic [ref=f3e580]:
+                    - generic [ref=f3e581]: طاولة بجانب السرير الكرز الأفريقي
+                    - generic [ref=f3e582]: "SKU: FUR-FUR-BED-013"
+                    - generic [ref=f3e583]:
+                      - generic [ref=f3e584]: جديد
+                      - generic [ref=f3e585]: حملة
+                      - generic [ref=f3e586]: عرض في الصفحة الرئيسية
+                - 'cell "أثاث العلامة التجارية: Furniture Co." [ref=f3e587]':
+                  - generic [ref=f3e588]: أثاث
+                  - text: "العلامة التجارية: Furniture Co."
+                - cell "242٫72 ₪ 299٫99 ₪" [ref=f3e589]:
+                  - generic [ref=f3e590]: 242٫72 ₪
+                  - text: 299٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e591]':
+                  - generic [ref=f3e593]:
+                    - generic [ref=f3e594]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e595]:
+                  - generic [ref=f3e596]:
+                    - link "" [ref=f3e597] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-13-bedside-table-african-cherry-124
+                    - link "" [ref=f3e599] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/124
+                    - button "" [ref=f3e602] [cursor=pointer]
+                    - button "" [ref=f3e605] [cursor=pointer]
+                    - button "" [ref=f3e608] [cursor=pointer]
+                    - button "" [ref=f3e611] [cursor=pointer]
+                - cell [ref=f3e613]:
+                  - checkbox "تحديد المنتج طاولة بجانب السرير الكرز الأفريقي" [ref=f3e614]
+              - row [ref=f3e615]:
+                - cell [ref=f3e616]:
+                  - img "نول سارينن رئيس المؤتمر التنفيذي" [ref=f3e617]
+                - 'cell "نول سارينن رئيس المؤتمر التنفيذي SKU: FUR-KNO-KNO-014 مميز جديد حملة عرض في الصفحة الرئيسية" [ref=f3e618]':
+                  - generic [ref=f3e619]:
+                    - generic [ref=f3e620]: نول سارينن رئيس المؤتمر التنفيذي
+                    - generic [ref=f3e621]: "SKU: FUR-KNO-KNO-014"
+                    - generic [ref=f3e622]:
+                      - generic [ref=f3e623]: مميز
+                      - generic [ref=f3e624]: جديد
+                      - generic [ref=f3e625]: حملة
+                      - generic [ref=f3e626]: عرض في الصفحة الرئيسية
+                - 'cell "أثاث العلامة التجارية: Knoll" [ref=f3e627]':
+                  - generic [ref=f3e628]: أثاث
+                  - text: "العلامة التجارية: Knoll"
+                - cell "489٫94 ₪ 499٫99 ₪" [ref=f3e629]:
+                  - generic [ref=f3e630]: 489٫94 ₪
+                  - text: 499٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e631]':
+                  - generic [ref=f3e633]:
+                    - generic [ref=f3e634]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e635]:
+                  - generic [ref=f3e636]:
+                    - link "" [ref=f3e637] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-14-knoll-saarinen-executive-conference-chair-125
+                    - link "" [ref=f3e639] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/125
+                    - button "" [ref=f3e642] [cursor=pointer]
+                    - button "" [ref=f3e645] [cursor=pointer]
+                    - button "" [ref=f3e648] [cursor=pointer]
+                    - button "" [ref=f3e651] [cursor=pointer]
+                - cell [ref=f3e653]:
+                  - checkbox "تحديد المنتج نول سارينن رئيس المؤتمر التنفيذي" [ref=f3e654]
+              - row [ref=f3e655]:
+                - cell [ref=f3e656]:
+                  - img "حوض حمام خشبي مع مرآة" [ref=f3e657]
+                - 'cell "حوض حمام خشبي مع مرآة SKU: FUR-BAT-WOO-015 جديد حملة عرض في الصفحة الرئيسية" [ref=f3e658]':
+                  - generic [ref=f3e659]:
+                    - generic [ref=f3e660]: حوض حمام خشبي مع مرآة
+                    - generic [ref=f3e661]: "SKU: FUR-BAT-WOO-015"
+                    - generic [ref=f3e662]:
+                      - generic [ref=f3e663]: جديد
+                      - generic [ref=f3e664]: حملة
+                      - generic [ref=f3e665]: عرض في الصفحة الرئيسية
+                - 'cell "أثاث العلامة التجارية: Bath Trends" [ref=f3e666]':
+                  - generic [ref=f3e667]: أثاث
+                  - text: "العلامة التجارية: Bath Trends"
+                - cell "729٫59 ₪ 799٫99 ₪" [ref=f3e668]:
+                  - generic [ref=f3e669]: 729٫59 ₪
+                  - text: 799٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e670]':
+                  - generic [ref=f3e672]:
+                    - generic [ref=f3e673]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e674]:
+                  - generic [ref=f3e675]:
+                    - link "" [ref=f3e676] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-15-wooden-bathroom-sink-with-mirror-126
+                    - link "" [ref=f3e678] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/126
+                    - button "" [ref=f3e681] [cursor=pointer]
+                    - button "" [ref=f3e684] [cursor=pointer]
+                    - button "" [ref=f3e687] [cursor=pointer]
+                    - button "" [ref=f3e690] [cursor=pointer]
+                - cell [ref=f3e692]:
+                  - checkbox "تحديد المنتج حوض حمام خشبي مع مرآة" [ref=f3e693]
+              - row [ref=f3e694]:
+                - cell [ref=f3e695]:
+                  - img "تفاحة" [ref=f3e696]
+                - 'cell "تفاحة SKU: GRO-BRD-APP-016 مميز جديد حملة عرض في الصفحة الرئيسية" [ref=f3e697]':
+                  - generic [ref=f3e698]:
+                    - generic [ref=f3e699]: تفاحة
+                    - generic [ref=f3e700]: "SKU: GRO-BRD-APP-016"
+                    - generic [ref=f3e701]:
+                      - generic [ref=f3e702]: مميز
+                      - generic [ref=f3e703]: جديد
+                      - generic [ref=f3e704]: حملة
+                      - generic [ref=f3e705]: عرض في الصفحة الرئيسية
+                - 'cell "بقالة العلامة التجارية: -" [ref=f3e706]':
+                  - generic [ref=f3e707]: بقالة
+                  - text: "العلامة التجارية: -"
+                - cell "1٫74 ₪ 1٫99 ₪" [ref=f3e708]:
+                  - generic [ref=f3e709]: 1٫74 ₪
+                  - text: 1٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e710]':
+                  - generic [ref=f3e712]:
+                    - generic [ref=f3e713]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e714]:
+                  - generic [ref=f3e715]:
+                    - link "" [ref=f3e716] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-16-apple-127
+                    - link "" [ref=f3e718] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/127
+                    - button "" [ref=f3e721] [cursor=pointer]
+                    - button "" [ref=f3e724] [cursor=pointer]
+                    - button "" [ref=f3e727] [cursor=pointer]
+                    - button "" [ref=f3e730] [cursor=pointer]
+                - cell [ref=f3e732]:
+                  - checkbox "تحديد المنتج تفاحة" [ref=f3e733]
+              - row [ref=f3e734]:
+                - cell [ref=f3e735]:
+                  - img "شريحة لحم البقر" [ref=f3e736]
+                - 'cell "شريحة لحم البقر SKU: GRO-BRD-BEE-017 مميز جديد حملة عرض في الصفحة الرئيسية" [ref=f3e737]':
+                  - generic [ref=f3e738]:
+                    - generic [ref=f3e739]: شريحة لحم البقر
+                    - generic [ref=f3e740]: "SKU: GRO-BRD-BEE-017"
+                    - generic [ref=f3e741]:
+                      - generic [ref=f3e742]: مميز
+                      - generic [ref=f3e743]: جديد
+                      - generic [ref=f3e744]: حملة
+                      - generic [ref=f3e745]: عرض في الصفحة الرئيسية
+                - 'cell "بقالة العلامة التجارية: -" [ref=f3e746]':
+                  - generic [ref=f3e747]: بقالة
+                  - text: "العلامة التجارية: -"
+                - cell "11٫74 ₪ 12٫99 ₪" [ref=f3e748]:
+                  - generic [ref=f3e749]: 11٫74 ₪
+                  - text: 12٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e750]':
+                  - generic [ref=f3e752]:
+                    - generic [ref=f3e753]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e754]:
+                  - generic [ref=f3e755]:
+                    - link "" [ref=f3e756] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-17-beef-steak-128
+                    - link "" [ref=f3e758] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/128
+                    - button "" [ref=f3e761] [cursor=pointer]
+                    - button "" [ref=f3e764] [cursor=pointer]
+                    - button "" [ref=f3e767] [cursor=pointer]
+                    - button "" [ref=f3e770] [cursor=pointer]
+                - cell [ref=f3e772]:
+                  - checkbox "تحديد المنتج شريحة لحم البقر" [ref=f3e773]
+              - row [ref=f3e774]:
+                - cell [ref=f3e775]:
+                  - img "طعام القطط" [ref=f3e776]
+                - 'cell "طعام القطط SKU: GRO-BRD-FOO-018 جديد حملة عرض في الصفحة الرئيسية" [ref=f3e777]':
+                  - generic [ref=f3e778]:
+                    - generic [ref=f3e779]: طعام القطط
+                    - generic [ref=f3e780]: "SKU: GRO-BRD-FOO-018"
+                    - generic [ref=f3e781]:
+                      - generic [ref=f3e782]: جديد
+                      - generic [ref=f3e783]: حملة
+                      - generic [ref=f3e784]: عرض في الصفحة الرئيسية
+                - 'cell "بقالة العلامة التجارية: -" [ref=f3e785]':
+                  - generic [ref=f3e786]: بقالة
+                  - text: "العلامة التجارية: -"
+                - cell "8٫13 ₪ 8٫99 ₪" [ref=f3e787]:
+                  - generic [ref=f3e788]: 8٫13 ₪
+                  - text: 8٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e789]':
+                  - generic [ref=f3e791]:
+                    - generic [ref=f3e792]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e793]:
+                  - generic [ref=f3e794]:
+                    - link "" [ref=f3e795] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-18-cat-food-129
+                    - link "" [ref=f3e797] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/129
+                    - button "" [ref=f3e800] [cursor=pointer]
+                    - button "" [ref=f3e803] [cursor=pointer]
+                    - button "" [ref=f3e806] [cursor=pointer]
+                    - button "" [ref=f3e809] [cursor=pointer]
+                - cell [ref=f3e811]:
+                  - checkbox "تحديد المنتج طعام القطط" [ref=f3e812]
+              - row [ref=f3e813]:
+                - cell [ref=f3e814]:
+                  - img "لحم دجاج" [ref=f3e815]
+                - 'cell "لحم دجاج SKU: GRO-BRD-CHI-019 جديد حملة عرض في الصفحة الرئيسية" [ref=f3e816]':
+                  - generic [ref=f3e817]:
+                    - generic [ref=f3e818]: لحم دجاج
+                    - generic [ref=f3e819]: "SKU: GRO-BRD-CHI-019"
+                    - generic [ref=f3e820]:
+                      - generic [ref=f3e821]: جديد
+                      - generic [ref=f3e822]: حملة
+                      - generic [ref=f3e823]: عرض في الصفحة الرئيسية
+                - 'cell "بقالة العلامة التجارية: -" [ref=f3e824]':
+                  - generic [ref=f3e825]: بقالة
+                  - text: "العلامة التجارية: -"
+                - cell "8٫62 ₪ 9٫99 ₪" [ref=f3e826]:
+                  - generic [ref=f3e827]: 8٫62 ₪
+                  - text: 9٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e828]':
+                  - generic [ref=f3e830]:
+                    - generic [ref=f3e831]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e832]:
+                  - generic [ref=f3e833]:
+                    - link "" [ref=f3e834] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-19-chicken-meat-130
+                    - link "" [ref=f3e836] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/130
+                    - button "" [ref=f3e839] [cursor=pointer]
+                    - button "" [ref=f3e842] [cursor=pointer]
+                    - button "" [ref=f3e845] [cursor=pointer]
+                    - button "" [ref=f3e848] [cursor=pointer]
+                - cell [ref=f3e850]:
+                  - checkbox "تحديد المنتج لحم دجاج" [ref=f3e851]
+              - row [ref=f3e852]:
+                - cell [ref=f3e853]:
+                  - img "زيت الطبخ" [ref=f3e854]
+                - 'cell "زيت الطبخ SKU: GRO-BRD-COO-020 مميز جديد حملة عرض في الصفحة الرئيسية" [ref=f3e855]':
+                  - generic [ref=f3e856]:
+                    - generic [ref=f3e857]: زيت الطبخ
+                    - generic [ref=f3e858]: "SKU: GRO-BRD-COO-020"
+                    - generic [ref=f3e859]:
+                      - generic [ref=f3e860]: مميز
+                      - generic [ref=f3e861]: جديد
+                      - generic [ref=f3e862]: حملة
+                      - generic [ref=f3e863]: عرض في الصفحة الرئيسية
+                - 'cell "بقالة العلامة التجارية: -" [ref=f3e864]':
+                  - generic [ref=f3e865]: بقالة
+                  - text: "العلامة التجارية: -"
+                - cell "4٫52 ₪ 4٫99 ₪" [ref=f3e866]:
+                  - generic [ref=f3e867]: 4٫52 ₪
+                  - text: 4٫99 ₪
+                - 'cell " منشور الحالة: Stokta" [ref=f3e868]':
+                  - generic [ref=f3e870]:
+                    - generic [ref=f3e871]: 
+                    - text: منشور
+                  - text: "الحالة: Stokta"
+                - cell [ref=f3e872]:
+                  - generic [ref=f3e873]:
+                    - link "" [ref=f3e874] [cursor=pointer]:
+                      - /url: /Urun/Detay/test-20-cooking-oil-131
+                    - link "" [ref=f3e876] [cursor=pointer]:
+                      - /url: /Admin/Urun/Duzenle/131
+                    - button "" [ref=f3e879] [cursor=pointer]
+                    - button "" [ref=f3e882] [cursor=pointer]
+                    - button "" [ref=f3e885] [cursor=pointer]
+                    - button "" [ref=f3e888] [cursor=pointer]
+                - cell [ref=f3e890]:
+                  - checkbox "تحديد المنتج زيت الطبخ" [ref=f3e891]
+          - generic [ref=f3e892]:
+            - generic [ref=f3e893]: الصفحة 1 / 2 - يتم عرض 20 منتج في هذه الصفحة.
+            - generic [ref=f3e894]:
+              - generic [ref=f3e895]: "1"
+              - link "2" [ref=f3e896] [cursor=pointer]:
+                - /url: /Admin/Urun?page=2&pageSize=20
+              - link "التالي" [ref=f3e897] [cursor=pointer]:
+                - /url: /Admin/Urun?page=2&pageSize=20
+                - generic [ref=f3e898]: 
+    - contentinfo [ref=f3e899]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.

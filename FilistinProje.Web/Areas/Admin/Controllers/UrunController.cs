@@ -2736,7 +2736,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             var slug = SlugHelper.GenerateSlug(title);
             var token = Guid.NewGuid().ToString("N")[..8];
-            var fileName = $"{slug}-{suffix}-{token}.webp";
+            var fileName = $"{slug}-{suffix}-{token}{extension.ToLowerInvariant()}";
             var fullPath = Path.Combine(folder, fileName);
 
             await using var imageStream = imageFile.OpenReadStream();
@@ -2751,11 +2751,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 });
             });
 
-            await image.SaveAsWebpAsync(fullPath, new WebpEncoder
-            {
-                Quality = 82,
-                FileFormat = WebpFileFormatType.Lossy
-            });
+            // Orijinal formatında ve boyutunda kaydet
+            await image.SaveAsync(fullPath);
 
             return "/img/products/" + fileName;
         }

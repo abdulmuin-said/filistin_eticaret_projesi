@@ -1,0 +1,181 @@
+- generic [ref=f4e2]:
+  - text:          +                    
+  - banner [ref=f4e3]:
+    - generic [ref=f4e4]:
+      - link "7ANRPS48 لوحة التحكم" [ref=f4e5] [cursor=pointer]:
+        - /url: /Admin/Home
+        - img "7ANRPS48" [ref=f4e6]
+      - generic [ref=f4e7]: لوحة التحكم
+    - navigation "القائمة الرئيسية للإدارة" [ref=f4e8]:
+      - link " لوحة البيانات" [ref=f4e9] [cursor=pointer]:
+        - /url: /Admin/Home
+        - generic [ref=f4e10]: 
+        - text: لوحة البيانات
+      - generic [ref=f4e11]:
+        - button " إدارة الطلبات 1" [ref=f4e12] [cursor=pointer]:
+          - generic [ref=f4e13]: 
+          - text: إدارة الطلبات
+          - generic [ref=f4e14]: "1"
+        - text:      
+      - generic [ref=f4e15]:
+        - button " إدارة المنتجات" [ref=f4e16] [cursor=pointer]:
+          - generic [ref=f4e17]: 
+          - text: إدارة المنتجات
+        - text:  +  
+      - generic [ref=f4e18]:
+        - button " محتوى المتجر" [ref=f4e19] [cursor=pointer]:
+          - generic [ref=f4e20]: 
+          - text: محتوى المتجر
+        - text:        
+      - link " الأعضاء" [ref=f4e21] [cursor=pointer]:
+        - /url: /Admin/Kullanici
+        - generic [ref=f4e22]: 
+        - text: الأعضاء
+      - link " الموظفون" [ref=f4e23] [cursor=pointer]:
+        - /url: /Admin/Personel
+        - generic [ref=f4e24]: 
+        - text: الموظفون
+      - link " تجار الجملة" [ref=f4e25] [cursor=pointer]:
+        - /url: /Admin/Toptanci
+        - generic [ref=f4e26]: 
+        - text: تجار الجملة
+      - link " مجموعات الجملة" [ref=f4e27] [cursor=pointer]:
+        - /url: /Admin/Toptanci/UrunGruplari
+        - generic [ref=f4e28]: 
+        - text: مجموعات الجملة
+      - generic [ref=f4e29]:
+        - button " التقارير" [ref=f4e30] [cursor=pointer]:
+          - generic [ref=f4e31]: 
+          - text: التقارير
+        - text:  
+      - link " الحسابات البنكية" [ref=f4e32] [cursor=pointer]:
+        - /url: /Admin/Bankalar
+        - generic [ref=f4e33]: 
+        - text: الحسابات البنكية
+      - link " Sosyal Medya" [ref=f4e34] [cursor=pointer]:
+        - /url: /Admin/SosyalMedya
+        - generic [ref=f4e35]: 
+        - text: Sosyal Medya
+      - link " الإعدادات" [ref=f4e36] [cursor=pointer]:
+        - /url: /Admin/Ayarlar
+        - generic [ref=f4e37]: 
+        - text: الإعدادات
+    - generic [ref=f4e38]:
+      - text: 
+      - generic [ref=f4e39]:
+        - generic [ref=f4e40]: 
+        - link "العربية" [ref=f4e42] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=ar&returnUrl=%2FAdmin%2FUrun%2FDuzenle%2F112
+        - link "English" [ref=f4e43] [cursor=pointer]:
+          - /url: /Dil/Degistir?culture=en&returnUrl=%2FAdmin%2FUrun%2FDuzenle%2F112
+      - text: 
+      - generic [ref=f4e44]:
+        - button "7ANRPS48 Admin Admin 7" [ref=f4e45] [cursor=pointer]:
+          - generic [ref=f4e46]:
+            - strong [ref=f4e47]: 7ANRPS48 Admin
+            - text: Admin
+          - generic [ref=f4e48]: "7"
+        - text:  
+  - generic [ref=f4e49]:
+    - main [ref=f4e50]:
+      - generic [ref=f4e51]:
+        - generic [ref=f4e52]:
+          - generic [ref=f4e53]:
+            - heading "تعديل المنتج" [level=1] [ref=f4e54]
+            - paragraph [ref=f4e55]: ايسنس ماسكارا لاش برينسيس
+          - generic [ref=f4e56]:
+            - link " العودة إلى المنتجات" [ref=f4e57] [cursor=pointer]:
+              - /url: /Admin/Urun
+              - generic [ref=f4e58]: 
+              - text: العودة إلى المنتجات
+            - link " عرض في الموقع" [ref=f4e59] [cursor=pointer]:
+              - /url: /Urun/Detay/test-1-essence-mascara-lash-princess-112
+              - generic [ref=f4e60]: 
+              - text: عرض في الموقع
+        - generic [ref=f4e61]:
+          - generic [ref=f4e62]:
+            - generic [ref=f4e63]:
+              - generic [ref=f4e64]:
+                - generic [ref=f4e65]: 
+                - text: نشط في النظام
+              - generic [ref=f4e66]: مميز
+              - generic [ref=f4e67]: منتج جديد
+              - generic [ref=f4e68]: حملة
+              - generic [ref=f4e69]: "ID: #112"
+            - button " حفظ التغييرات" [ref=f4e70] [cursor=pointer]:
+              - generic [ref=f4e71]: 
+              - text: حفظ التغييرات
+          - generic [ref=f4e72]:
+            - generic [ref=f4e73]:
+              - tablist "أقسام تعديل المنتج" [ref=f4e74]:
+                - button " الأساسيات" [ref=f4e75] [cursor=pointer]:
+                  - generic [ref=f4e76]: 
+                  - text: الأساسيات
+                - button " السعر والعمليات" [ref=f4e77] [cursor=pointer]:
+                  - generic [ref=f4e78]: 
+                  - text: السعر والعمليات
+                - button " المحتوى" [ref=f4e79] [cursor=pointer]:
+                  - generic [ref=f4e80]: 
+                  - text: المحتوى
+                - button " الخصائص" [ref=f4e81] [cursor=pointer]:
+                  - generic [ref=f4e82]: 
+                  - text: الخصائص
+                - button " المتغيرات" [ref=f4e83] [cursor=pointer]:
+                  - generic [ref=f4e84]: 
+                  - text: المتغيرات
+                - button " الصور" [active] [ref=f4e85] [cursor=pointer]:
+                  - generic [ref=f4e86]: 
+                  - text: الصور
+              - text:  +   +         +
+              - generic [ref=f4e269]:
+                - generic [ref=f4e270]: الصورة الرئيسية والمعرض التقليدي
+                - generic [ref=f4e272]:
+                  - generic [ref=f4e273]:
+                    - generic [ref=f4e274]:
+                      - generic [ref=f4e275]: رابط الصورة الرئيسية
+                      - textbox [ref=f4e276]: /uploads/test-products/test-001-01.webp
+                    - generic [ref=f4e277]:
+                      - generic [ref=f4e278]: رفع صورة رئيسية جديدة
+                      - button "Choose File" [ref=f4e279]
+                      - generic [ref=f4e280]: "الصيغ المدعومة: JPG، PNG، WEBP. الحد الأقصى لحجم الملف: 10MB."
+                    - generic [ref=f4e281]:
+                      - generic [ref=f4e282]: صور المعرض
+                      - button "Choose File" [ref=f4e283]
+                      - generic [ref=f4e284]: "الصيغ المدعومة: JPG، PNG، WEBP. الحد الأقصى لحجم الملف: 10MB."
+                  - generic [ref=f4e286]:
+                    - img "ايسنس ماسكارا لاش برينسيس - صورة المعرض" [ref=f4e287]
+                    - link "x" [ref=f4e288] [cursor=pointer]:
+                      - /url: /Admin/Urun/ResimSil/139
+              - generic [ref=f4e234]:
+                - link "إلغاء" [ref=f4e235] [cursor=pointer]:
+                  - /url: /Admin/Urun
+                - button " حفظ" [ref=f4e236] [cursor=pointer]:
+                  - generic [ref=f4e237]: 
+                  - text: حفظ
+            - complementary [ref=f4e238]:
+              - generic [ref=f4e239]:
+                - generic [ref=f4e240]: ملخص المنتج
+                - generic [ref=f4e242]:
+                  - img "ايسنس ماسكارا لاش برينسيس - الصورة الرئيسية" [ref=f4e245]
+                  - generic [ref=f4e246]: ايسنس ماسكارا لاش برينسيس
+                  - generic [ref=f4e247]: "SKU: BEA-ESS-ESS-001"
+                  - generic [ref=f4e248]:
+                    - generic [ref=f4e249]:
+                      - generic [ref=f4e250]: السعر الفعلي
+                      - strong [ref=f4e251]: 8٫94 ₪
+                    - generic [ref=f4e252]:
+                      - generic [ref=f4e253]: المبيعات
+                      - strong [ref=f4e254]: "0"
+                    - generic [ref=f4e255]:
+                      - generic [ref=f4e256]: المشاهدات
+                      - strong [ref=f4e257]: "28"
+                    - generic [ref=f4e258]:
+                      - generic [ref=f4e259]: المفضلة
+                      - strong [ref=f4e260]: "0"
+                    - generic [ref=f4e261]:
+                      - generic [ref=f4e262]: Admin_Variation
+                      - strong [ref=f4e263]: "8"
+                    - generic [ref=f4e264]:
+                      - generic [ref=f4e265]: الوسائط
+                      - strong [ref=f4e266]: "1"
+    - contentinfo [ref=f4e267]: © 2026 7ANRPS48 لوحة التحكم. جميع الحقوق محفوظة.
