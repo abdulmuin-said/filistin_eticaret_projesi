@@ -22,5 +22,11 @@ namespace FilistinProje.Core.Varliklar
         public int Puan { get; set; } // 1 ile 5 arası
 
         public bool OnayliMi { get; set; } // Admin onayı
+
+        // Moderasyon audit alanları
+        public DateTime? GizlemeTarihi { get; set; }
+        public string? GizleyenKullaniciId { get; set; }
+        public DateTime? DuzenlenmeTarihi { get; set; }
+        public string? DuzenleyenKullaniciId { get; set; }
     }
 }

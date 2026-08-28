@@ -310,29 +310,36 @@
                                 </td>
                                 <td class="text-end pe-4">
                                     <div class="ca-review-actions">
-                                         <button type="button" class="ca-btn-icon" data-bs-toggle="modal" data-bs-target="#@modalId" title="@Localizer["Admin_ViewReview"]">
+                                        <button type="button" class="ca-btn-icon" data-bs-toggle="modal" data-bs-target="#@modalId" title="@Localizer["Admin_ViewReview"]">
                                             <i class="fas fa-eye"></i>
                                         </button>
-                                        @if (!item.OnayliMi)
+                                        <button type="button" class="ca-btn-icon ca-edit-review-btn"
+                                                data-id="@item.Id"
+                                                data-puan="@item.Puan"
+                                                data-metin="@item.YorumMetni"
+                                                title="@Localizer["Admin_EditReview"]">
+                                            <i class="fas fa-pen"></i>
+                                        </button>
+                                        @if (item.OnayliMi)
                                         {
-                                            <form action="/Admin/Yorum/Onayla" method="post" class="d-inline">
+                                            <form action="/Admin/Yorum/Gizle" method="post" class="d-inline">
                                                 @Html.AntiForgeryToken()
                                                 <input type="hidden" name="id" value="@item.Id" />
-                                                 <button class="ca-btn-icon" title="@Localizer["Admin_Approve"]"><i class="fas fa-check"></i></button>
+                                                <button class="ca-btn-icon" title="@Localizer["Admin_HideReview"]"><i class="fas fa-eye-slash"></i></button>
                                             </form>
                                         }
                                         else
                                         {
-                                            <form action="/Admin/Yorum/OnayiKaldir" method="post" class="d-inline">
+                                            <form action="/Admin/Yorum/YayimlaTekrar" method="post" class="d-inline">
                                                 @Html.AntiForgeryToken()
                                                 <input type="hidden" name="id" value="@item.Id" />
-                                                 <button class="ca-btn-icon" title="@Localizer["Admin_RemoveApproval"]"><i class="fas fa-rotate-left"></i></button>
+                                                <button class="ca-btn-icon" title="@Localizer["Admin_PublishReview"]"><i class="fas fa-check"></i></button>
                                             </form>
                                         }
-                                         <form action="/Admin/Yorum/Sil" method="post" class="d-inline" onsubmit='return confirm(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_ArchiveReviewConfirm"].Value)));'>
+                                        <form action="/Admin/Yorum/Sil" method="post" class="d-inline" onsubmit='return confirm(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_ArchiveReviewConfirm"].Value)));'>
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="id" value="@item.Id" />
-                                             <button class="ca-btn-icon delete" title="@Localizer["Admin_Archive"]"><i class="fas fa-trash"></i></button>
+                                            <button class="ca-btn-icon delete" title="@Localizer["Admin_Archive"]"><i class="fas fa-trash"></i></button>
                                         </form>
                                     </div>
                                 </td>
@@ -387,23 +394,58 @@
 </div>
 
 @section Scripts {
+    <div class="modal fade" id="editReviewModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius:var(--ca-radius); border:1px solid var(--ca-border);">
+                <div class="modal-header">
+                    <h5 class="modal-title ca-fw-bold">@Localizer["Admin_EditReviewTitle"]</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Admin_Close"]"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="ca-label">@Localizer["Admin_Rating"]</label>
+                        <select id="editPuan" class="ca-select w-100">
+                            <option value="1">1 ★</option>
+                            <option value="2">2 ★★</option>
+                            <option value="3">3 ★★★</option>
+                            <option value="4">4 ★★★★</option>
+                            <option value="5">5 ★★★★★</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="ca-label">@Localizer["Admin_ReviewText"]</label>
+                        <textarea id="editMetin" class="ca-input" rows="6" maxlength="2000" style="resize:vertical;"></textarea>
+                        <div class="small text-muted mt-1"><span id="editCharCount">0</span>/2000</div>
+                    </div>
+                    <div id="editErrorMsg" class="ca-alert ca-alert-danger d-none"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="ca-btn ca-btn-outline" data-bs-dismiss="modal">@Localizer["Admin_Close"]</button>
+                    <button type="button" id="editSaveBtn" class="ca-btn ca-btn-primary">
+                        <i class="fas fa-save"></i> @Localizer["Admin_Save"]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         (function () {
+            // ── Bulk approve ─────────────────────────────────────────────────────
             const selectAll = document.getElementById('selectAllReviews');
             const checkboxes = Array.from(document.querySelectorAll('.ca-review-checkbox'));
-             const bulkButton = document.getElementById('bulkApproveButton');
-             const approveSelectedText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_ApproveSelected"].Value));
-             const approveNReviewsText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_ApproveNReviews"].Value));
+            const bulkButton = document.getElementById('bulkApproveButton');
+            const approveSelectedText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_ApproveSelected"].Value));
+            const approveNReviewsText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_ApproveNReviews"].Value));
 
             function refreshBulkState() {
                 const selected = checkboxes.filter(x => x.checked).length;
                 if (bulkButton) {
                     bulkButton.disabled = selected === 0;
                     bulkButton.innerHTML = selected === 0
-                         ? `<i class="fas fa-check-double"></i> ${approveSelectedText}`
-                         : `<i class="fas fa-check-double"></i> ${approveNReviewsText.replace('{0}', selected)}`;
+                        ? `<i class="fas fa-check-double"></i> ${approveSelectedText}`
+                        : `<i class="fas fa-check-double"></i> ${approveNReviewsText.replace('{0}', selected)}`;
                 }
-
                 if (selectAll) {
                     selectAll.checked = selected > 0 && selected === checkboxes.length;
                     selectAll.indeterminate = selected > 0 && selected < checkboxes.length;
@@ -414,9 +456,73 @@
                 checkboxes.forEach(x => x.checked = selectAll.checked);
                 refreshBulkState();
             });
-
             checkboxes.forEach(x => x.addEventListener('change', refreshBulkState));
             refreshBulkState();
+
+            // ── Edit review modal ─────────────────────────────────────────────────
+            let currentEditId = null;
+            const editModal = document.getElementById('editReviewModal');
+            const editPuan = document.getElementById('editPuan');
+            const editMetin = document.getElementById('editMetin');
+            const editCharCount = document.getElementById('editCharCount');
+            const editErrorMsg = document.getElementById('editErrorMsg');
+            const editSaveBtn = document.getElementById('editSaveBtn');
+            const antiforgeryToken = document.querySelector('input[name="__RequestVerificationToken"]')?.value ?? '';
+
+            document.querySelectorAll('.ca-edit-review-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    currentEditId = this.dataset.id;
+                    editPuan.value = this.dataset.puan;
+                    editMetin.value = this.dataset.metin;
+                    editCharCount.textContent = editMetin.value.length;
+                    editErrorMsg.classList.add('d-none');
+                    editErrorMsg.textContent = '';
+                    new bootstrap.Modal(editModal).show();
+                });
+            });
+
+            editMetin?.addEventListener('input', function () {
+                editCharCount.textContent = this.value.length;
+            });
+
+            editSaveBtn?.addEventListener('click', async function () {
+                const metinVal = editMetin.value.trim();
+                if (metinVal.length < 5 || metinVal.length > 2000) {
+                    showEditError(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Urun_ReviewLengthError"].Value)));
+                    return;
+                }
+
+                editSaveBtn.disabled = true;
+                try {
+                    const resp = await fetch(`/Admin/Yorum/Duzenle?id=${currentEditId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'RequestVerificationToken': antiforgeryToken
+                        },
+                        body: new URLSearchParams({
+                            YorumMetni: metinVal,
+                            Puan: editPuan.value
+                        })
+                    });
+                    const data = await resp.json();
+                    if (data.ok) {
+                        bootstrap.Modal.getInstance(editModal)?.hide();
+                        location.reload();
+                    } else {
+                        showEditError(data.hata ?? 'Hata.');
+                    }
+                } catch {
+                    showEditError('Bağlantı hatası.');
+                } finally {
+                    editSaveBtn.disabled = false;
+                }
+            });
+
+            function showEditError(msg) {
+                editErrorMsg.textContent = msg;
+                editErrorMsg.classList.remove('d-none');
+            }
         })();
     </script>
 }

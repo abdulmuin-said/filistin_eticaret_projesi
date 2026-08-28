@@ -598,6 +598,13 @@ namespace FilistinProje.Web.Controllers
                 return BadRequest();
             }
 
+            var yorumMetni = yorum.YorumMetni?.Trim() ?? string.Empty;
+            if (yorumMetni.Length < 5 || yorumMetni.Length > 2000)
+            {
+                TempData["Hata"] = _localizer["Urun_ReviewLengthError"].Value;
+                return RedirectToAction("Detay", new { id = yorum.UrunId });
+            }
+
             var urunVarMi = await _context.Urunler.AnyAsync(x => x.Id == yorum.UrunId && x.AktifMi && !x.SilindiMi);
             if (!urunVarMi)
             {
@@ -621,14 +628,16 @@ namespace FilistinProje.Web.Controllers
                 yorum.AdSoyad = _localizer["Urun_GuestUser"].Value;
             }
 
+            yorum.YorumMetni = yorumMetni;
+            yorum.AdSoyad = (yorum.AdSoyad ?? string.Empty).Trim();
             yorum.OlusturulmaTarihi = DateTime.UtcNow;
-            yorum.OnayliMi = false;
+            yorum.OnayliMi = true;
             yorum.SilindiMi = false;
 
             _context.Yorumlar.Add(yorum);
             await _context.SaveChangesAsync();
 
-            TempData["Basari"] = _localizer["Urun_ReviewReceived"].Value;
+            TempData["Basari"] = _localizer["Urun_ReviewPublished"].Value;
             return RedirectToAction("Detay", new { id = yorum.UrunId });
         }
 

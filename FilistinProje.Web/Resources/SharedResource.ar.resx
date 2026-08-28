@@ -1554,7 +1554,7 @@
     <value>مستخدم ضيف</value>
   </data>
   <data name="Urun_ReviewReceived" xml:space="preserve">
-    <value>تم استلام تقييمك. سيتم نشره بعد الموافقة عليه.</value>
+    <value>تم نشر تقييمك. شكراً لك!</value>
   </data>
   <data name="Urun_Yes" xml:space="preserve">
     <value>نعم</value>
@@ -5615,6 +5615,17 @@
   <data name="Admin_SelectAtLeastOneReview" xml:space="preserve"><value>اختر تقييماً واحداً على الأقل للموافقة.</value></data>
   <data name="Admin_ReviewsApprovedCount" xml:space="preserve"><value>تمت الموافقة على {0} تقييمات.</value></data>
   <data name="Admin_ReviewArchived" xml:space="preserve"><value>تمت أرشفة التقييم.</value></data>
+  <data name="Admin_HideReview" xml:space="preserve"><value>إخفاء التقييم</value></data>
+  <data name="Admin_PublishReview" xml:space="preserve"><value>نشر التقييم</value></data>
+  <data name="Admin_EditReview" xml:space="preserve"><value>تعديل التقييم</value></data>
+  <data name="Admin_ReviewHidden" xml:space="preserve"><value>تم إخفاء التقييم من المتجر.</value></data>
+  <data name="Admin_ReviewPublished" xml:space="preserve"><value>تم نشر التقييم في المتجر.</value></data>
+  <data name="Admin_ReviewUpdated" xml:space="preserve"><value>تم تحديث التقييم.</value></data>
+  <data name="Admin_ReviewNotFound" xml:space="preserve"><value>التقييم غير موجود.</value></data>
+  <data name="Admin_EditReviewTitle" xml:space="preserve"><value>تعديل التقييم</value></data>
+  <data name="Admin_ReviewText" xml:space="preserve"><value>نص التقييم</value></data>
+  <data name="Urun_ReviewPublished" xml:space="preserve"><value>تم نشر تقييمك. شكراً لك!</value></data>
+  <data name="Urun_ReviewLengthError" xml:space="preserve"><value>يجب أن يتراوح نص التقييم بين 5 و2000 حرف.</value></data>
   <data name="Admin_CarrierNameRequired" xml:space="preserve"><value>اسم شركة الشحن مطلوب.</value></data>
   <data name="Admin_CarrierAdded" xml:space="preserve"><value>تمت إضافة {0}.</value></data>
   <data name="Admin_CarrierNotFound" xml:space="preserve"><value>شركة الشحن غير موجودة.</value></data>

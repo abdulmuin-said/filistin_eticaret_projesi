@@ -1617,6 +1617,12 @@ BEGIN
     CREATE INDEX IF NOT EXISTS "IX_StokBildirimLoglari_UrunId" ON "StokBildirimLoglari" ("UrunId");
     CREATE INDEX IF NOT EXISTS "IX_StokBildirimLoglari_UrunSecenekId" ON "StokBildirimLoglari" ("UrunSecenekId");
     CREATE INDEX IF NOT EXISTS "IX_StokBildirimLoglari_GonderildiMi" ON "StokBildirimLoglari" ("GonderildiMi");
+
+    -- Yorum moderasyon audit alanları
+    ALTER TABLE "Yorumlar" ADD COLUMN IF NOT EXISTS "GizlemeTarihi" timestamp with time zone NULL;
+    ALTER TABLE "Yorumlar" ADD COLUMN IF NOT EXISTS "GizleyenKullaniciId" text NULL;
+    ALTER TABLE "Yorumlar" ADD COLUMN IF NOT EXISTS "DuzenlenmeTarihi" timestamp with time zone NULL;
+    ALTER TABLE "Yorumlar" ADD COLUMN IF NOT EXISTS "DuzenleyenKullaniciId" text NULL;
 END
 $$;
 

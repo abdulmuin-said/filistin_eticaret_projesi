@@ -1557,7 +1557,7 @@
     <value>Guest User</value>
   </data>
   <data name="Urun_ReviewReceived" xml:space="preserve">
-    <value>Your review has been received. It will be published after approval.</value>
+    <value>Your review has been published. Thank you!</value>
   </data>
   <data name="Urun_Yes" xml:space="preserve">
     <value>Yes</value>
@@ -5630,6 +5630,17 @@
   <data name="Admin_SelectAtLeastOneReview" xml:space="preserve"><value>Select at least one review to approve.</value></data>
   <data name="Admin_ReviewsApprovedCount" xml:space="preserve"><value>{0} reviews were approved.</value></data>
   <data name="Admin_ReviewArchived" xml:space="preserve"><value>The review was archived.</value></data>
+  <data name="Admin_HideReview" xml:space="preserve"><value>Hide review</value></data>
+  <data name="Admin_PublishReview" xml:space="preserve"><value>Publish review</value></data>
+  <data name="Admin_EditReview" xml:space="preserve"><value>Edit review</value></data>
+  <data name="Admin_ReviewHidden" xml:space="preserve"><value>The review has been hidden from the storefront.</value></data>
+  <data name="Admin_ReviewPublished" xml:space="preserve"><value>The review has been published on the storefront.</value></data>
+  <data name="Admin_ReviewUpdated" xml:space="preserve"><value>The review was updated.</value></data>
+  <data name="Admin_ReviewNotFound" xml:space="preserve"><value>Review not found.</value></data>
+  <data name="Admin_EditReviewTitle" xml:space="preserve"><value>Edit Review</value></data>
+  <data name="Admin_ReviewText" xml:space="preserve"><value>Review Text</value></data>
+  <data name="Urun_ReviewPublished" xml:space="preserve"><value>Your review has been published. Thank you!</value></data>
+  <data name="Urun_ReviewLengthError" xml:space="preserve"><value>Review text must be between 5 and 2000 characters.</value></data>
   <data name="Admin_CarrierNameRequired" xml:space="preserve"><value>Shipping company name is required.</value></data>
   <data name="Admin_CarrierAdded" xml:space="preserve"><value>{0} was added.</value></data>
   <data name="Admin_CarrierNotFound" xml:space="preserve"><value>Shipping company not found.</value></data>
