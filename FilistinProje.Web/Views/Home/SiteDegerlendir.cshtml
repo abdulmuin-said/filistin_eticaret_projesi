@@ -42,11 +42,19 @@
 
                         <div class="mb-5">
                             <label class="block text-xs uppercase tracking-widest text-brand-darktext font-medium mb-3">@Localizer["YourRatingRequired"]</label>
-                            <div class="flex flex-row-reverse justify-end gap-2">
-                                @for (int p = 5; p >= 1; p--)
+                            <div class="star-rating" role="radiogroup" aria-label="@Localizer["YourRatingRequired"]" data-star-rating data-default-rating="5" dir="ltr">
+                                <input type="hidden" name="Puan" value="5" data-rating-input />
+                                @for (int p = 1; p <= 5; p++)
                                 {
-                                    <input type="radio" id="sdr-star-@p" name="Puan" value="@p" class="hidden peer/sdr-@p" @(p == 5 ? "checked" : "") />
-                                    <label for="sdr-star-@p" class="text-gray-300 peer-checked/sdr-@p:text-brand-gold hover:text-brand-gold cursor-pointer text-3xl transition-colors"><i class="fas fa-star"></i></label>
+                                    <button type="button"
+                                            class="star-rating-option text-3xl"
+                                            role="radio"
+                                            aria-label="@($"{p} / 5")"
+                                            aria-checked="@(p == 5 ? "true" : "false")"
+                                            tabindex="@(p == 5 ? "0" : "-1")"
+                                            data-rating-value="@p">
+                                        <i class="fas fa-star" aria-hidden="true"></i>
+                                    </button>
                                 }
                             </div>
                         </div>

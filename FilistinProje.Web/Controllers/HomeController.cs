@@ -366,6 +366,11 @@ namespace FilistinProje.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SiteDegerlendir([Bind("AdSoyad,Eposta,Puan,Baslik,YorumMetni")] SiteDegerlendirme model)
         {
+            if (model.Puan is < 1 or > 5)
+            {
+                return BadRequest();
+            }
+
             if (string.IsNullOrWhiteSpace(model.AdSoyad) || string.IsNullOrWhiteSpace(model.YorumMetni))
             {
                 TempData["Hata"] = _localizer["Home_ReviewNameCommentRequired"].Value;

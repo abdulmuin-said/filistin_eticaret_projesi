@@ -251,29 +251,28 @@
 
 
 <!-- Yorum Yapma Modal -->
-<div class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 items-center justify-center" id="commentModal" aria-hidden="true">
+<div class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 items-center justify-center" id="commentModal" role="dialog" aria-modal="true" aria-labelledby="commentModalTitle" aria-hidden="true">
     <div class="bg-white rounded-lg w-full max-w-md p-6 relative">
-        <button class="absolute top-4 right-4 text-gray-400 hover:text-black" id="closeCommentModalBtn"><i class="fas fa-times"></i></button>
-        <h5 class="font-serif text-2xl text-brand-olive mb-6">@Localizer["RateProduct"]</h5>
-        <form action="/products/YorumYap" method="post">
+        <button type="button" class="absolute top-4 right-4 text-gray-400 hover:text-black" id="closeCommentModalBtn" aria-label="@Localizer["Close"]"><i class="fas fa-times" aria-hidden="true"></i></button>
+        <h5 id="commentModalTitle" class="font-serif text-2xl text-brand-olive mb-6">@Localizer["RateProduct"]</h5>
+        <form action="/products/YorumYap" method="post" data-review-form>
             @Html.AntiForgeryToken()
             <input type="hidden" name="UrunId" value="@Model.Id" />
-            
-            <div class="flex flex-row-reverse justify-center gap-2 mb-6">
-                <input type="radio" id="star5" name="Puan" value="5" class="hidden peer/5" />
-                <label for="star5" class="text-gray-300 peer-checked/5:text-brand-gold hover:text-brand-gold cursor-pointer text-2xl transition-colors"><i class="fas fa-star"></i></label>
-                
-                <input type="radio" id="star4" name="Puan" value="4" class="hidden peer/4" />
-                <label for="star4" class="text-gray-300 peer-checked/4:text-brand-gold hover:text-brand-gold cursor-pointer text-2xl transition-colors"><i class="fas fa-star"></i></label>
-                
-                <input type="radio" id="star3" name="Puan" value="3" class="hidden peer/3" />
-                <label for="star3" class="text-gray-300 peer-checked/3:text-brand-gold hover:text-brand-gold cursor-pointer text-2xl transition-colors"><i class="fas fa-star"></i></label>
-                
-                <input type="radio" id="star2" name="Puan" value="2" class="hidden peer/2" />
-                <label for="star2" class="text-gray-300 peer-checked/2:text-brand-gold hover:text-brand-gold cursor-pointer text-2xl transition-colors"><i class="fas fa-star"></i></label>
-                
-                <input type="radio" id="star1" name="Puan" value="1" class="hidden peer/1" checked />
-                <label for="star1" class="text-gray-300 peer-checked/1:text-brand-gold hover:text-brand-gold cursor-pointer text-2xl transition-colors"><i class="fas fa-star"></i></label>
+
+            <div class="star-rating justify-center mb-6" role="radiogroup" aria-label="@Localizer["RateProduct"]" data-star-rating data-default-rating="1" dir="ltr">
+                <input type="hidden" name="Puan" value="1" data-rating-input />
+                @for (int p = 1; p <= 5; p++)
+                {
+                    <button type="button"
+                            class="star-rating-option"
+                            role="radio"
+                            aria-label="@($"{p} / 5")"
+                            aria-checked="@(p == 1 ? "true" : "false")"
+                            tabindex="@(p == 1 ? "0" : "-1")"
+                            data-rating-value="@p">
+                        <i class="fas fa-star" aria-hidden="true"></i>
+                    </button>
+                }
             </div>
 
             @if (User.Identity?.IsAuthenticated != true)
@@ -966,9 +965,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (commentModal) {
         const openBtns = [document.getElementById('openCommentModalBtn'), document.getElementById('openCommentModalBtnEmpty')];
         openBtns.forEach(btn => btn && btn.addEventListener('click', () => {
+            const ratingGroup = commentModal.querySelector('[data-star-rating]');
+            window.starRatings?.reset(ratingGroup);
             commentModal.classList.remove('hidden');
             commentModal.classList.add('flex');
             commentModal.setAttribute('aria-hidden', 'false');
+            ratingGroup?.querySelector('[role="radio"][tabindex="0"]')?.focus();
         }));
 
         const closeCommentBtn = document.getElementById('closeCommentModalBtn');

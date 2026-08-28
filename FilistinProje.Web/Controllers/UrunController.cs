@@ -593,6 +593,11 @@ namespace FilistinProje.Web.Controllers
 
         [HttpPost("YorumYap")] [ValidateAntiForgeryToken] public async Task<IActionResult> YorumYap([Bind("UrunId,Puan,YorumMetni,AdSoyad")] Yorum yorum)
         {
+            if (yorum.Puan is < 1 or > 5)
+            {
+                return BadRequest();
+            }
+
             var urunVarMi = await _context.Urunler.AnyAsync(x => x.Id == yorum.UrunId && x.AktifMi && !x.SilindiMi);
             if (!urunVarMi)
             {
