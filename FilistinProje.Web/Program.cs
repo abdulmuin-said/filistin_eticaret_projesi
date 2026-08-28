@@ -98,6 +98,7 @@ builder.Services.AddSingleton<AdminCounterInvalidationInterceptor>();
 builder.Services.AddDbContext<KanvasDbContext>((serviceProvider, options) =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.ConfigureWarnings(w => w.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
     options.AddInterceptors(serviceProvider.GetRequiredService<AdminCounterInvalidationInterceptor>());
 
     if (builder.Environment.IsDevelopment())
