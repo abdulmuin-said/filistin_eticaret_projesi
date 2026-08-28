@@ -1,4 +1,5 @@
 using FilistinProje.Core.DTOs;
+using FilistinProje.Core.Helpers;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Service;
@@ -34,6 +35,23 @@ namespace FilistinProje.Tests
         }
 
         // --- 1. KAMPANYA TARİH VE ETKİN FİYAT TESTLERİ ---
+
+        [Theory]
+        [InlineData("100", "87", 13)]
+        [InlineData("14.99", "13.00", 13)]
+        [InlineData("100", "90", 10)]
+        [InlineData("100", "100", null)]
+        [InlineData("0", "0", null)]
+        public void IndirimYuzdesi_UsesSingleFormulaAndRounding(
+            string eskiFiyatText,
+            string etkinFiyatText,
+            int? expected)
+        {
+            var eskiFiyat = decimal.Parse(eskiFiyatText, CultureInfo.InvariantCulture);
+            var etkinFiyat = decimal.Parse(etkinFiyatText, CultureInfo.InvariantCulture);
+
+            Assert.Equal(expected, IndirimHesaplayici.YuzdeHesapla(eskiFiyat, etkinFiyat));
+        }
 
         [Fact]
         public void EtkinFiyat_FutureCampaignDate_ReturnsDiscountedPrice()
@@ -149,8 +167,6 @@ namespace FilistinProje.Tests
                 Fiyat = urun.Fiyat,
                 IndirimliFiyat = urun.IndirimliFiyat,
                 TopFiyat = urun.TopFiyat,
-                IndirimVarMi = urun.IndirimVarMi,
-                IndirimYuzdesi = urun.IndirimYuzdesi,
                 YeniUrunMu = urun.YeniUrunMu,
                 StoktaVarMi = urun.StoktaVarMi,
                 ToplamStok = urun.ToplamStok,

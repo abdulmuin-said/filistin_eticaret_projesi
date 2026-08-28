@@ -87,11 +87,11 @@ namespace FilistinProje.Core.Varliklar
 
         [NotMapped]
         public bool IndirimVarMi =>
-            IndirimliFiyat.HasValue && IndirimliFiyat.Value > 0 && IndirimliFiyat.Value < Fiyat && (!KampanyaBitisTarihi.HasValue || KampanyaBitisTarihi.Value > DateTime.UtcNow);
+            FilistinProje.Core.Helpers.IndirimHesaplayici.YuzdeHesapla(Fiyat, EtkinFiyat).HasValue;
 
         [NotMapped]
         public int IndirimYuzdesi =>
-            IndirimVarMi ? (int)Math.Round((1 - (IndirimliFiyat!.Value / Fiyat)) * 100) : 0;
+            FilistinProje.Core.Helpers.IndirimHesaplayici.YuzdeHesapla(Fiyat, EtkinFiyat) ?? 0;
 
         [NotMapped]
         public decimal EtkinTopFiyat =>

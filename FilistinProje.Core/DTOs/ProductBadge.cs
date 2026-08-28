@@ -91,8 +91,8 @@ namespace FilistinProje.Core.DTOs
         public bool KampanyaliMi { get; init; }
         public DateTime? KampanyaBitisTarihi { get; init; }
         public bool FiyatGizliMi { get; init; }
-        public bool IndirimVarMi { get; init; }
-        public int IndirimYuzdesi { get; init; }
+        public decimal EskiFiyat { get; init; }
+        public decimal EtkinFiyat { get; init; }
         public bool ToptanFiyatVarMi { get; init; }
         public bool YeniUrunMu { get; init; }
         public bool OneCikanMi { get; init; }
@@ -110,6 +110,7 @@ namespace FilistinProje.Core.DTOs
         {
             var badges = new List<ProductBadge>();
             var stoktaVar = stoktaYokSatisIzni || context.StoktaVarMi;
+            var indirimYuzdesi = FilistinProje.Core.Helpers.IndirimHesaplayici.YuzdeHesapla(context.EskiFiyat, context.EtkinFiyat);
 
             if (!stoktaVar)
             {
@@ -126,9 +127,9 @@ namespace FilistinProje.Core.DTOs
                 badges.Add(new ProductBadge("", "product-badge--campaign", 2, "Badge_Campaign", context.KampanyaEtiketRengi));
             }
 
-            if (!context.FiyatGizliMi && context.IndirimVarMi)
+            if (!context.FiyatGizliMi && indirimYuzdesi.HasValue)
             {
-                badges.Add(new ProductBadge($"-{context.IndirimYuzdesi}%", "product-badge--discount", 3, "Badge_Discount", context.IndirimEtiketRengi));
+                badges.Add(new ProductBadge($"-{indirimYuzdesi.Value}%", "product-badge--discount", 3, "Badge_Discount", context.IndirimEtiketRengi));
             }
 
             if (context.YeniUrunMu)

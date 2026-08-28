@@ -1,6 +1,7 @@
 @model FilistinProje.Core.Varliklar.Urun
 @using FilistinProje.Service.Helpers
 @using FilistinProje.Service.Services
+@using FilistinProje.Core.Helpers
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @inject IStringLocalizer<SharedResource> Localizer
@@ -41,9 +42,7 @@
     decimal? gosterilecekEskiFiyat = varsayilanSecenek != null && Model.Fiyat > gosterilecekFiyat
         ? Model.Fiyat
         : gosterilecekEskiFiyatEski;
-    int? gosterilecekIndirimYuzdesi = gosterilecekEskiFiyat.HasValue && gosterilecekEskiFiyat.Value > gosterilecekFiyat
-        ? (int)Math.Round((1 - (gosterilecekFiyat / gosterilecekEskiFiyat.Value)) * 100)
-        : null;
+    int? gosterilecekIndirimYuzdesi = IndirimHesaplayici.YuzdeHesapla(gosterilecekEskiFiyat ?? 0, gosterilecekFiyat);
     int toplamStok = secenekler.Any() ? secenekler.Where(x => !x.SilindiMi && x.AktifMi).Sum(x => x.StokAdedi) : Model.ToplamStok;
     bool stoktaVar = secenekler.Any()
         ? secenekler.Any(x => stoktaYokSatisIzni || x.SatinAlinabilirMi)

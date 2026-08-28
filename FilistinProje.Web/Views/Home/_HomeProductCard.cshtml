@@ -20,22 +20,8 @@
     // Etiketleri oluştur (ViewModel'in instance method'u)
     var badges = Model.ToBadges(siteSettings.StoktaYokSatisIzni);
 
-    decimal gosterFiyat;
-    decimal? eskiFiyat = null;
-    if (Model.IsWholesale && Model.TopFiyat.HasValue && Model.TopFiyat.Value > 0)
-    {
-        gosterFiyat = Model.TopFiyat.Value;
-        eskiFiyat = Model.Fiyat > gosterFiyat ? Model.Fiyat : null;
-    }
-    else if (Model.IndirimVarMi && Model.IndirimliFiyat.HasValue)
-    {
-        gosterFiyat = Model.IndirimliFiyat.Value;
-        eskiFiyat = Model.Fiyat;
-    }
-    else
-    {
-        gosterFiyat = Model.Fiyat;
-    }
+    var gosterFiyat = Model.EtkinFiyat;
+    decimal? eskiFiyat = Model.IndirimVarMi ? Model.Fiyat : null;
 
     var kampanyaAktif = Model.KampanyaBitisTarihi.HasValue &&
         Model.KampanyaBitisTarihi.Value > DateTime.UtcNow;

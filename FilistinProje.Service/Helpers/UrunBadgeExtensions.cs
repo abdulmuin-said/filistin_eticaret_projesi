@@ -5,7 +5,11 @@ namespace FilistinProje.Service.Helpers
 {
     public static class UrunBadgeExtensions
     {
-        public static List<ProductBadge> ToBadges(this Urun urun, bool stoktaYokSatisIzni = false) =>
+        public static List<ProductBadge> ToBadges(
+            this Urun urun,
+            bool stoktaYokSatisIzni = false,
+            decimal? eskiFiyat = null,
+            decimal? etkinFiyat = null) =>
             ProductBadgeBuilder.Build(new ProductBadgeContext
             {
                 StoktaVarMi = urun.StoktaVarMi,
@@ -13,8 +17,8 @@ namespace FilistinProje.Service.Helpers
                 KampanyaliMi = urun.KampanyaliMi,
                 KampanyaBitisTarihi = urun.KampanyaBitisTarihi,
                 FiyatGizliMi = urun.FiyatGizliMi,
-                IndirimVarMi = urun.IndirimVarMi,
-                IndirimYuzdesi = urun.IndirimYuzdesi,
+                EskiFiyat = eskiFiyat ?? urun.Fiyat,
+                EtkinFiyat = etkinFiyat ?? urun.EtkinFiyat,
                 ToptanFiyatVarMi = urun.TopFiyat.HasValue && urun.TopFiyat.Value > 0,
                 YeniUrunMu = urun.YeniUrunMu,
                 OneCikanMi = urun.OneCikanMi,

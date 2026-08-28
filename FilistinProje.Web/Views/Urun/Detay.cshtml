@@ -1,5 +1,6 @@
 @model FilistinProje.Core.Varliklar.Urun
 @using FilistinProje.Service.Helpers
+@using FilistinProje.Core.Helpers
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @inject IStringLocalizer<SharedResource> Localizer
@@ -16,7 +17,6 @@
     var secenekler = ViewBag.Secenekler as List<FilistinProje.Core.Varliklar.UrunSecenek> ?? new List<FilistinProje.Core.Varliklar.UrunSecenek>();
     var stokBiteniGriGoster = siteSettings.StokBiteniGriGoster;
     var stoktaYokSatisIzni = siteSettings.StoktaYokSatisIzni;
-    var badges = Model.ToBadges(stoktaYokSatisIzni);
     var varsayilanSecenek = secenekler
         .OrderByDescending(x => x.VarsayilanMi)
         .ThenBy(x => x.Sira)
@@ -29,24 +29,24 @@
             .FirstOrDefault();
     var isWholesale = ViewBag.IsWholesale is bool ws && ws;
     decimal gosterilecekFiyat;
-    if (isWholesale && Model.TopFiyat.HasValue && Model.TopFiyat.Value > 0)
+    if (varsayilanSecenek != null && varsayilanSecenek.SatisFiyati > 0)
     {
-        gosterilecekFiyat = Model.TopFiyat.Value;
+        gosterilecekFiyat = varsayilanSecenek.SatisFiyati;
     }
     else
     {
-        gosterilecekFiyat = varsayilanSecenek != null && varsayilanSecenek.SatisFiyati > 0 ? varsayilanSecenek.SatisFiyati : Model.EtkinFiyat;
+        gosterilecekFiyat = isWholesale && Model.TopFiyat.HasValue && Model.TopFiyat.Value > 0
+            ? Model.TopFiyat.Value
+            : Model.EtkinFiyat;
     }
-    decimal eskiFiyat = gosterilecekFiyat * 1.15m;
 
     // --- YORUM VERÃ„Â°LERÃ„Â° ---
     decimal? gosterilecekEskiFiyatEski = varsayilanSecenek == null && Model.IndirimVarMi ? Model.Fiyat : null;
     decimal? gosterilecekEskiFiyat = varsayilanSecenek != null && Model.Fiyat > gosterilecekFiyat
         ? Model.Fiyat
         : gosterilecekEskiFiyatEski;
-    int? gosterilecekIndirimYuzdesi = gosterilecekEskiFiyat.HasValue && gosterilecekEskiFiyat.Value > gosterilecekFiyat
-        ? (int)Math.Round((1 - (gosterilecekFiyat / gosterilecekEskiFiyat.Value)) * 100)
-        : null;
+    int? gosterilecekIndirimYuzdesi = IndirimHesaplayici.YuzdeHesapla(gosterilecekEskiFiyat ?? 0, gosterilecekFiyat);
+    var badges = Model.ToBadges(stoktaYokSatisIzni, gosterilecekEskiFiyat ?? 0, gosterilecekFiyat);
     int toplamStok = secenekler.Any() ? secenekler.Where(x => !x.SilindiMi && x.AktifMi).Sum(x => x.StokAdedi) : Model.ToplamStok;
     bool stoktaVar = secenekler.Any()
         ? secenekler.Any(x => stoktaYokSatisIzni || x.SatinAlinabilirMi)
@@ -348,7 +348,9 @@
                     </div>
                 }
 
-                @await Html.PartialAsync("_ProductBadges", badges)
+                <div id="productBadgeHost">
+                    @await Html.PartialAsync("_ProductBadges", badges)
+                </div>
 
                 @* Galeri ok tu�lar� � RTL/LTR uyumlu (mant�ksal prev/next; start/end always visual)
                    Mant�ksal olarak prev/next tipleri i�in ui ikonu locale g�re ters �evrilir. *@
@@ -1246,23 +1248,73 @@ document.querySelectorAll('.gift-package-radio').forEach(function (radio) {
     });
 });
 
+function updateDiscountDisplays(oldPrice, effectivePrice) {
+    var oldPriceDisplay = document.getElementById('oldPriceDisplay');
+    var discountBadge = document.getElementById('discountBadge');
+    var discount = window.caDiscountCalculator.calculatePercentage(oldPrice, effectivePrice);
+    var hasDiscount = discount !== null;
+
+    if (oldPriceDisplay) {
+        oldPriceDisplay.classList.toggle('hidden', !hasDiscount);
+        if (hasDiscount) {
+            oldPriceDisplay.innerHTML = window.formatMoney(oldPrice);
+        }
+    }
+
+    if (discountBadge) {
+        discountBadge.classList.toggle('hidden', !hasDiscount);
+        if (hasDiscount) {
+            discountBadge.innerHTML = '%' + discount + ' @Localizer["Discount"]';
+        }
+    }
+
+    var badgeHost = document.getElementById('productBadgeHost');
+    if (!badgeHost) return;
+
+    var badgeGroup = badgeHost.querySelector('[data-product-badges]');
+    var imageDiscountBadge = badgeHost.querySelector('.product-badge--discount');
+    if (!hasDiscount) {
+        if (imageDiscountBadge) imageDiscountBadge.remove();
+        return;
+    }
+
+    if (!badgeGroup) {
+        badgeGroup = document.createElement('div');
+        badgeGroup.className = 'product-badge-group';
+        badgeGroup.setAttribute('data-product-badges', '');
+        badgeHost.appendChild(badgeGroup);
+    }
+
+    if (!imageDiscountBadge) {
+        imageDiscountBadge = document.createElement('span');
+        imageDiscountBadge.className = 'product-badge product-badge--discount';
+        imageDiscountBadge.setAttribute('data-badge-key', 'Badge_Discount');
+        badgeGroup.appendChild(imageDiscountBadge);
+    }
+    imageDiscountBadge.textContent = '-' + discount + '%';
+}
+
 function updatePriceWithFrame() {
     var selectedVariant = document.querySelector('.variant-radio:checked');
     var selectedFrame = document.querySelector('.frame-radio:checked');
     if (!selectedVariant) return;
 
     var basePrice = parseFloat(selectedVariant.getAttribute('data-price')) || 0;
+    var oldBasePrice = parseFloat(selectedVariant.getAttribute('data-oldprice')) || 0;
     var olcu = selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '';
     var cerceve = selectedFrame ? selectedFrame.value : null;
     var cerceveFarki = calcFrameFiyat(olcu, cerceve || 'Çerçevesiz');
     var selectedGiftPackage = document.querySelector('.gift-package-radio:checked');
     var giftPrice = selectedGiftPackage ? parseFloat(selectedGiftPackage.dataset.price || '0') || 0 : 0;
-    var newPrice = basePrice + cerceveFarki + giftPrice;
+    var additionalPrice = cerceveFarki + giftPrice;
+    var newPrice = basePrice + additionalPrice;
+    var newOldPrice = oldBasePrice > 0 ? oldBasePrice + additionalPrice : 0;
 
     var priceDisplay = document.getElementById('priceDisplay');
     if (priceDisplay) {
         priceDisplay.innerHTML = window.formatMoney(newPrice);
     }
+    updateDiscountDisplays(newOldPrice, newPrice);
 
     var frameFarkiInput = document.getElementById('selectedFrameFarki');
     if (frameFarkiInput) {
@@ -1304,8 +1356,6 @@ function updateVariantCardStyles() {
 document.querySelectorAll('.variant-radio').forEach(function(radio) {
     radio.addEventListener('change', function() {
         if (this.checked) {
-            var price = parseFloat(this.getAttribute('data-price')) || 0;
-            var oldPrice = parseFloat(this.getAttribute('data-oldprice')) || 0;
             var imageUrl = this.getAttribute('data-image');
             var label = this.getAttribute('data-label');
             var isPreorder = this.getAttribute('data-preorder') === 'true';
@@ -1319,32 +1369,6 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
             updatePriceWithFrame();
             updateWhatsappOrderLink();
 
-            var oldPriceDisplay = document.getElementById('oldPriceDisplay');
-            var discountBadge = document.getElementById('discountBadge');
-            var selectedFrame = document.querySelector('.frame-radio:checked');
-            var cerceveFarki = 0;
-            if (selectedFrame) {
-                var olcuText = this.getAttribute('data-olcu') || this.getAttribute('data-label') || '';
-                cerceveFarki = calcFrameFiyat(olcuText, selectedFrame.value);
-            }
-            var effectivePrice = price + cerceveFarki;
-            var effectiveOldPrice = oldPrice > 0 ? oldPrice + cerceveFarki : 0;
-            
-            if (effectiveOldPrice > effectivePrice) {
-                if (oldPriceDisplay) {
-                    oldPriceDisplay.innerHTML = window.formatMoney(effectiveOldPrice) + ' ' + PRODUCT_CURRENCY;
-                    oldPriceDisplay.classList.remove('hidden');
-                }
-                if (discountBadge) {
-                    var discount = Math.round((1 - (effectivePrice / effectiveOldPrice)) * 100);
-                    discountBadge.innerHTML = '%' + discount + ' @Localizer["Discount"]';
-                    discountBadge.classList.remove('hidden');
-                }
-            } else {
-                if (oldPriceDisplay) oldPriceDisplay.classList.add('hidden');
-                if (discountBadge) discountBadge.classList.add('hidden');
-            }
-            
             if (imageUrl) {
                 changeProductImage(imageUrl, null, label);
             }

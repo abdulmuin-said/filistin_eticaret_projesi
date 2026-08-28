@@ -1,4 +1,5 @@
 using FilistinProje.Core.DTOs;
+using FilistinProje.Core.Helpers;
 
 namespace FilistinProje.Web.Models
 {
@@ -16,8 +17,15 @@ namespace FilistinProje.Web.Models
         public decimal Fiyat { get; set; }
         public decimal? IndirimliFiyat { get; set; }
         public decimal? TopFiyat { get; set; }
-        public bool IndirimVarMi { get; set; }
-        public int IndirimYuzdesi { get; set; }
+        public decimal EtkinFiyat =>
+            IsWholesale && TopFiyat.HasValue && TopFiyat.Value > 0
+                ? TopFiyat.Value
+                : IndirimliFiyat.HasValue && IndirimliFiyat.Value > 0 && IndirimliFiyat.Value < Fiyat &&
+                  (!KampanyaBitisTarihi.HasValue || KampanyaBitisTarihi.Value > DateTime.UtcNow)
+                    ? IndirimliFiyat.Value
+                    : Fiyat;
+        public bool IndirimVarMi => IndirimYuzdesi.HasValue;
+        public int? IndirimYuzdesi => IndirimHesaplayici.YuzdeHesapla(Fiyat, EtkinFiyat);
         public bool YeniUrunMu { get; set; }
         public bool StoktaVarMi { get; set; }
         public int ToplamStok { get; set; }
@@ -55,8 +63,8 @@ namespace FilistinProje.Web.Models
                 KampanyaliMi = KampanyaliMi,
                 KampanyaBitisTarihi = KampanyaBitisTarihi,
                 FiyatGizliMi = FiyatGizliMi,
-                IndirimVarMi = IndirimVarMi,
-                IndirimYuzdesi = IndirimYuzdesi,
+                EskiFiyat = Fiyat,
+                EtkinFiyat = EtkinFiyat,
                 ToptanFiyatVarMi = TopFiyat.HasValue && TopFiyat.Value > 0,
                 YeniUrunMu = YeniUrunMu,
                 OneCikanMi = OneCikanMi,
