@@ -76,7 +76,7 @@
                         </div>
                         <div class="col-lg-2 col-md-6">
                             <label class="ca-label" data-label-for="RenkKodu">@Localizer["Admin_ColorCode"]</label>
-                            <input class="ca-input" type="color" data-variant-field="RenkKodu" name="UrunSecenek[@i].RenkKodu" value="@(string.IsNullOrWhiteSpace(variant.RenkKodu) ? "#31543b" : variant.RenkKodu)" />
+                            <input class="ca-input" type="text" maxlength="7" pattern="#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?" placeholder="#RRGGBB" autocomplete="off" data-variant-field="RenkKodu" name="UrunSecenek[@i].RenkKodu" value="@variant.RenkKodu" />
                         </div>
                         <div class="col-lg-3 col-md-6" data-canvas-option>
                             <label class="ca-label" data-label-for="CerceveTipi">@Localizer["Admin_FrameType"]</label>
@@ -214,7 +214,7 @@
                     </div>
                     <div class="col-lg-2 col-md-6">
                         <label class="ca-label" data-label-for="RenkKodu">@Localizer["Admin_ColorCode"]</label>
-                        <input class="ca-input" type="color" data-variant-field="RenkKodu" name="UrunSecenek[__index__].RenkKodu" value="#31543b" />
+                        <input class="ca-input" type="text" maxlength="7" pattern="#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?" placeholder="#RRGGBB" autocomplete="off" data-variant-field="RenkKodu" name="UrunSecenek[__index__].RenkKodu" value="" />
                     </div>
                     <div class="col-lg-3 col-md-6" data-canvas-option>
                         <label class="ca-label" data-label-for="CerceveTipi">@Localizer["Admin_FrameType"]</label>

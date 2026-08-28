@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Text.Json;
 using System.Xml.Linq;
+using FilistinProje.Core.Helpers;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Core.Models;
@@ -29,11 +30,15 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         public async Task<IActionResult> SecenekEkle(UrunSecenek secenek)
         {
             var urunVarMi = await _context.Urunler.AnyAsync(x => x.Id == secenek.UrunId && !x.SilindiMi);
-            if (!urunVarMi || secenek.SatisFiyati <= 0)
+            var renkKoduGecerli = string.IsNullOrWhiteSpace(secenek.RenkKodu) ||
+                                  VaryantRenkYardimcisi.TryNormalizeHex(secenek.RenkKodu, out _);
+            if (!urunVarMi || secenek.SatisFiyati <= 0 || !renkKoduGecerli)
             {
                 return RedirectToAction("Secenekler", "Urun", new { area = "", id = secenek.UrunId });
             }
 
+            secenek.Renk = (secenek.Renk ?? string.Empty).Trim();
+            secenek.RenkKodu = VaryantRenkYardimcisi.NormalizeForPersistence(secenek.RenkKodu, secenek.Renk);
             secenek.Id = 0;
             secenek.OlusturulmaTarihi = DateTime.UtcNow;
             secenek.SilindiMi = false;
@@ -3392,6 +3397,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     ModelState.AddModelError($"{prefix}.Desi", $"Varyasyon {row}: desi negatif olamaz.");
                 }
 
+                if (!string.IsNullOrWhiteSpace(variant.RenkKodu) &&
+                    !VaryantRenkYardimcisi.TryNormalizeHex(variant.RenkKodu, out _))
+                {
+                    ModelState.AddModelError(
+                        $"{prefix}.RenkKodu",
+                        $"Varyasyon {row}: renk kodu #RGB veya #RRGGBB biçiminde olmalıdır.");
+                }
+
                 if (variant.Id > 0 && currentProductId.HasValue && !ownedVariantIds.Contains(variant.Id))
                 {
                     ModelState.AddModelError($"{prefix}.Id", $"Varyasyon {row}: bu kayıt ürüne ait değil.");
@@ -3438,7 +3451,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             variant.Olcu = (variant.Olcu ?? string.Empty).Trim();
             variant.Beden = (variant.Beden ?? string.Empty).Trim();
             variant.Renk = (variant.Renk ?? string.Empty).Trim();
-            variant.RenkKodu = (variant.RenkKodu ?? string.Empty).Trim();
+            variant.RenkKodu = VaryantRenkYardimcisi.NormalizeForPersistence(variant.RenkKodu, variant.Renk);
             variant.OlcuBirimi = (variant.OlcuBirimi ?? string.Empty).Trim();
             variant.CerceveTipi = (variant.CerceveTipi ?? string.Empty).Trim();
             variant.CerceveRengi = (variant.CerceveRengi ?? string.Empty).Trim();

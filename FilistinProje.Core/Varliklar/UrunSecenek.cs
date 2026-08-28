@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using FilistinProje.Core.Helpers;
 
 namespace FilistinProje.Core.Varliklar
 {
@@ -40,6 +41,9 @@ namespace FilistinProje.Core.Varliklar
 
         [NotMapped]
         public bool SatinAlinabilirMi => AktifMi && (StokAdedi > 0 || OnSipariseAcikMi);
+
+        [NotMapped]
+        public string GuvenliRenkKodu => VaryantRenkYardimcisi.Resolve(RenkKodu, Renk);
 
         [NotMapped]
         public string VaryantBasligi => string.Join(" / ", new[]

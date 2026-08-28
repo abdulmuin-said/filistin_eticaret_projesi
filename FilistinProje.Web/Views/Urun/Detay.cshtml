@@ -507,7 +507,7 @@
                                     {
                                         <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" disabled="@(!varyantSatinAlinabilir ? "disabled" : null)" data-price="@varyant.SatisFiyati.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
                                     }
-                                    @if (!string.IsNullOrWhiteSpace(varyant.RenkKodu)) { <span class="me-1 inline-block h-3 w-3 rounded-full border border-black/15 align-middle" style="background-color:@varyant.RenkKodu"></span> }
+                                    @if (!string.IsNullOrWhiteSpace(varyant.RenkKodu) || !string.IsNullOrWhiteSpace(varyant.Renk)) { <span class="me-1 inline-block h-3 w-3 rounded-full border align-middle" data-variant-color="@varyant.Id" style="background-color:@varyant.GuvenliRenkKodu;border-color:rgba(0,0,0,.35)"></span> }
                                     @varyantEtiket
                                 </label>
                             }
@@ -557,7 +557,7 @@
                                 var varyantEskiFiyat = Model.Fiyat > varyant.SatisFiyati ? Model.Fiyat : 0;
                                 <label class="relative cursor-pointer rounded border border-brand-border px-4 py-2 text-sm transition-colors hover:border-brand-gold has-[:checked]:border-brand-olive has-[:checked]:bg-brand-olive has-[:checked]:text-white @(!varyantSatinAlinabilir ? "cursor-not-allowed opacity-45" : "")">
                                     <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" disabled="@(!varyantSatinAlinabilir ? "disabled" : null)" data-price="@varyant.SatisFiyati.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
-                                    @if (!string.IsNullOrWhiteSpace(varyant.RenkKodu)) { <span class="me-1 inline-block h-3 w-3 rounded-full border border-black/15 align-middle" style="background-color:@varyant.RenkKodu"></span> }
+                                    @if (!string.IsNullOrWhiteSpace(varyant.RenkKodu) || !string.IsNullOrWhiteSpace(varyant.Renk)) { <span class="me-1 inline-block h-3 w-3 rounded-full border align-middle" data-variant-color="@varyant.Id" style="background-color:@varyant.GuvenliRenkKodu;border-color:rgba(0,0,0,.35)"></span> }
                                     @varyantEtiket
                                 </label>
                             }

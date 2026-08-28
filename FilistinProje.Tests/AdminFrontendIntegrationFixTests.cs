@@ -53,6 +53,38 @@ namespace FilistinProje.Tests
             Assert.Equal(expected, IndirimHesaplayici.YuzdeHesapla(eskiFiyat, etkinFiyat));
         }
 
+        [Theory]
+        [InlineData("#F00", "#FF0000")]
+        [InlineData("#16a34a", "#16A34A")]
+        [InlineData("#111827", "#111827")]
+        public void VaryantRenkKodu_ValidHex_IsNormalized(string input, string expected)
+        {
+            Assert.True(VaryantRenkYardimcisi.TryNormalizeHex(input, out var normalized));
+            Assert.Equal(expected, normalized);
+        }
+
+        [Theory]
+        [InlineData("red", "#DC2626")]
+        [InlineData("kırmızı", "#DC2626")]
+        [InlineData("أخضر", "#16A34A")]
+        [InlineData("black", "#111827")]
+        [InlineData("tanınmayan renk", VaryantRenkYardimcisi.NotrRenkKodu)]
+        public void VaryantRenkKodu_EmptyCode_UsesSafeNameFallback(string colorName, string expected)
+        {
+            Assert.Equal(expected, VaryantRenkYardimcisi.Resolve(string.Empty, colorName));
+        }
+
+        [Theory]
+        [InlineData("red")]
+        [InlineData("#12")]
+        [InlineData("#12345G")]
+        [InlineData("#123456;")]
+        [InlineData("url(javascript:alert(1))")]
+        public void VaryantRenkKodu_UnsafeValue_IsRejected(string input)
+        {
+            Assert.False(VaryantRenkYardimcisi.TryNormalizeHex(input, out _));
+        }
+
         [Fact]
         public void EtkinFiyat_FutureCampaignDate_ReturnsDiscountedPrice()
         {
