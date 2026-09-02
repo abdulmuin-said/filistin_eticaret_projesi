@@ -76,7 +76,10 @@
                         </div>
                         <div class="col-lg-2 col-md-6">
                             <label class="ca-label" data-label-for="RenkKodu">@Localizer["Admin_ColorCode"]</label>
-                            <input class="ca-input" type="text" maxlength="7" pattern="#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?" placeholder="#RRGGBB" autocomplete="off" data-variant-field="RenkKodu" name="UrunSecenek[@i].RenkKodu" value="@variant.RenkKodu" />
+                            <div class="ca-variant-color-control">
+                                <input class="ca-variant-color-picker" type="color" value="@variant.GuvenliRenkKodu" data-variant-color-picker aria-label="@Localizer["Admin_ColorPicker"]" />
+                                <input class="ca-input" type="text" maxlength="7" pattern="#[0-9A-Fa-f]{6}" placeholder="#RRGGBB" autocomplete="off" data-variant-field="RenkKodu" name="UrunSecenek[@i].RenkKodu" value="@variant.RenkKodu" />
+                            </div>
                         </div>
                         <div class="col-lg-3 col-md-6" data-canvas-option>
                             <label class="ca-label" data-label-for="CerceveTipi">@Localizer["Admin_FrameType"]</label>
@@ -119,6 +122,10 @@
                         <div class="col-lg-2 col-md-6">
                             <label class="ca-label" data-label-for="SatisFiyati">@Localizer["Admin_SalePrice"] (₪)</label>
                             <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="SatisFiyati" name="UrunSecenek[@i].SatisFiyati" value="@variant.SatisFiyati.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" />
+                        </div>
+                        <div class="col-lg-2 col-md-6">
+                            <label class="ca-label" data-label-for="IndirimliFiyat">@Localizer["Admin_VariantDiscountPrice"] (₪)</label>
+                            <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="IndirimliFiyat" name="UrunSecenek[@i].IndirimliFiyat" value="@(variant.IndirimliFiyat?.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty)" placeholder="—" />
                         </div>
                         <div class="col-lg-2 col-md-6">
                             <label class="ca-label" data-label-for="FiyatFarki">@Localizer["Admin_PriceDifference"] (₪)</label>
@@ -214,7 +221,10 @@
                     </div>
                     <div class="col-lg-2 col-md-6">
                         <label class="ca-label" data-label-for="RenkKodu">@Localizer["Admin_ColorCode"]</label>
-                        <input class="ca-input" type="text" maxlength="7" pattern="#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?" placeholder="#RRGGBB" autocomplete="off" data-variant-field="RenkKodu" name="UrunSecenek[__index__].RenkKodu" value="" />
+                        <div class="ca-variant-color-control">
+                            <input class="ca-variant-color-picker" type="color" value="#6B7280" data-variant-color-picker aria-label="@Localizer["Admin_ColorPicker"]" />
+                            <input class="ca-input" type="text" maxlength="7" pattern="#[0-9A-Fa-f]{6}" placeholder="#RRGGBB" autocomplete="off" data-variant-field="RenkKodu" name="UrunSecenek[__index__].RenkKodu" value="" />
+                        </div>
                     </div>
                     <div class="col-lg-3 col-md-6" data-canvas-option>
                         <label class="ca-label" data-label-for="CerceveTipi">@Localizer["Admin_FrameType"]</label>
@@ -257,6 +267,10 @@
                     <div class="col-lg-2 col-md-6">
                         <label class="ca-label" data-label-for="SatisFiyati">@Localizer["Admin_SalePrice"] (₪)</label>
                         <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="SatisFiyati" name="UrunSecenek[__index__].SatisFiyati" value="0" />
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <label class="ca-label" data-label-for="IndirimliFiyat">@Localizer["Admin_VariantDiscountPrice"] (₪)</label>
+                        <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="IndirimliFiyat" name="UrunSecenek[__index__].IndirimliFiyat" value="" placeholder="—" />
                     </div>
                     <div class="col-lg-2 col-md-6">
                         <label class="ca-label" data-label-for="FiyatFarki">@Localizer["Admin_PriceDifference"] (₪)</label>
@@ -356,6 +370,23 @@
         flex-wrap: wrap;
         gap: 18px;
         padding-top: 4px;
+    }
+
+    .ca-variant-color-control {
+        display: flex;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .ca-variant-color-picker {
+        width: 46px;
+        min-width: 46px;
+        min-height: 42px;
+        padding: 3px;
+        border: 1px solid var(--ca-border);
+        border-radius: 8px;
+        background: #fff;
+        cursor: pointer;
     }
 
     .ca-canvas-option-hidden {
@@ -534,6 +565,29 @@
                 defaultCheckbox.addEventListener('change', function () {
                     syncDefaultCheckbox(this);
                     reindex();
+                });
+            }
+
+            const colorText = selector(card, 'RenkKodu');
+            const colorPicker = card.querySelector('[data-variant-color-picker]');
+            if (colorText && colorPicker) {
+                const normalizeColor = (value) => /^#[0-9a-f]{6}$/i.test(value || '') ? value.toUpperCase() : null;
+                const initialColor = normalizeColor(colorText.value);
+                if (initialColor) {
+                    colorPicker.value = initialColor;
+                    colorText.value = initialColor;
+                }
+
+                colorPicker.addEventListener('input', () => {
+                    colorText.value = colorPicker.value.toUpperCase();
+                    colorText.dispatchEvent(new Event('input', { bubbles: true }));
+                });
+
+                colorText.addEventListener('input', () => {
+                    const color = normalizeColor(colorText.value);
+                    if (color) {
+                        colorPicker.value = color;
+                    }
                 });
             }
         }

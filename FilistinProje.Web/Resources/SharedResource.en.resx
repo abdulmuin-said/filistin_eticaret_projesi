@@ -5827,5 +5827,8 @@
   <data name="Admin_MinQty" xml:space="preserve"><value>Minimum quantity</value></data>
   <data name="Admin_AllProduct" xml:space="preserve"><value>All products</value></data>
   <data name="Admin_TierExample" xml:space="preserve"><value>Example: 10 pcs → ₪42, 25 pcs → ₪38. The tier with the highest applicable minimum is selected automatically.</value></data>
+  <data name="Admin_VariantDiscountPrice" xml:space="preserve"><value>Discounted variant price</value></data>
+  <data name="Admin_Product_VariantDiscountPriceInvalid" xml:space="preserve"><value>Variant {0}: discounted price must be greater than zero and lower than the regular price.</value></data>
+  <data name="Admin_ColorPicker" xml:space="preserve"><value>Choose color</value></data>
 </root>
 

@@ -213,6 +213,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Ekle(Kategori kategori, IFormFile? gorselDosyasi, IFormFile? bannerDosyasi)
         {
             NormalizeLocalizedCategoryFields(kategori);
+            ModelState.Clear();
             await ValidateImageUploadAsync(gorselDosyasi, "gorselDosyasi");
             await ValidateImageUploadAsync(bannerDosyasi, "bannerDosyasi");
             if (!await ValidateCategoryAsync(kategori))
@@ -259,6 +260,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            PrepareLocalizedCategoryFields(kategori);
             PopulateCategoryEditStats(kategori);
             await PopulateParentCategoriesAsync(kategori.ParentKategoriId, kategori.Id);
             return View(kategori);
@@ -274,6 +276,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            NormalizeLocalizedCategoryFields(model);
+            ModelState.Clear();
             await ValidateImageUploadAsync(gorselDosyasi, "gorselDosyasi");
             await ValidateImageUploadAsync(bannerDosyasi, "bannerDosyasi");
             if (!await ValidateCategoryAsync(model))
@@ -367,31 +371,44 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         private static void NormalizeLocalizedCategoryFields(Kategori kategori)
         {
-            kategori.Ad = kategori.Ad?.Trim() ?? string.Empty;
             kategori.AdEn = kategori.AdEn?.Trim() ?? string.Empty;
             kategori.AdAr = kategori.AdAr?.Trim() ?? string.Empty;
-            kategori.KisaAciklama = kategori.KisaAciklama?.Trim() ?? string.Empty;
+            kategori.Ad = FirstNotEmpty(kategori.AdAr, kategori.AdEn, kategori.Ad);
             kategori.KisaAciklamaEn = kategori.KisaAciklamaEn?.Trim() ?? string.Empty;
             kategori.KisaAciklamaAr = kategori.KisaAciklamaAr?.Trim() ?? string.Empty;
-            kategori.Aciklama = kategori.Aciklama?.Trim() ?? string.Empty;
+            kategori.KisaAciklama = FirstNotEmpty(kategori.KisaAciklamaAr, kategori.KisaAciklamaEn, kategori.KisaAciklama);
             kategori.AciklamaEn = kategori.AciklamaEn?.Trim() ?? string.Empty;
             kategori.AciklamaAr = kategori.AciklamaAr?.Trim() ?? string.Empty;
-            kategori.SeoTitle = kategori.SeoTitle?.Trim() ?? string.Empty;
+            kategori.Aciklama = FirstNotEmpty(kategori.AciklamaAr, kategori.AciklamaEn, kategori.Aciklama);
             kategori.SeoTitleEn = kategori.SeoTitleEn?.Trim() ?? string.Empty;
             kategori.SeoTitleAr = kategori.SeoTitleAr?.Trim() ?? string.Empty;
-            kategori.SeoDescription = kategori.SeoDescription?.Trim() ?? string.Empty;
+            kategori.SeoTitle = FirstNotEmpty(kategori.SeoTitleAr, kategori.SeoTitleEn, kategori.SeoTitle);
             kategori.SeoDescriptionEn = kategori.SeoDescriptionEn?.Trim() ?? string.Empty;
             kategori.SeoDescriptionAr = kategori.SeoDescriptionAr?.Trim() ?? string.Empty;
-            kategori.UstMetin = kategori.UstMetin?.Trim() ?? string.Empty;
+            kategori.SeoDescription = FirstNotEmpty(kategori.SeoDescriptionAr, kategori.SeoDescriptionEn, kategori.SeoDescription);
             kategori.UstMetinEn = kategori.UstMetinEn?.Trim() ?? string.Empty;
             kategori.UstMetinAr = kategori.UstMetinAr?.Trim() ?? string.Empty;
-            kategori.AltMetin = kategori.AltMetin?.Trim() ?? string.Empty;
+            kategori.UstMetin = FirstNotEmpty(kategori.UstMetinAr, kategori.UstMetinEn, kategori.UstMetin);
             kategori.AltMetinEn = kategori.AltMetinEn?.Trim() ?? string.Empty;
             kategori.AltMetinAr = kategori.AltMetinAr?.Trim() ?? string.Empty;
-            kategori.KampanyaEtiketi = kategori.KampanyaEtiketi?.Trim() ?? string.Empty;
+            kategori.AltMetin = FirstNotEmpty(kategori.AltMetinAr, kategori.AltMetinEn, kategori.AltMetin);
             kategori.KampanyaEtiketiEn = kategori.KampanyaEtiketiEn?.Trim() ?? string.Empty;
             kategori.KampanyaEtiketiAr = kategori.KampanyaEtiketiAr?.Trim() ?? string.Empty;
+            kategori.KampanyaEtiketi = FirstNotEmpty(kategori.KampanyaEtiketiAr, kategori.KampanyaEtiketiEn, kategori.KampanyaEtiketi);
         }
+
+        private static void PrepareLocalizedCategoryFields(Kategori kategori)
+        {
+            kategori.AdAr = FirstNotEmpty(kategori.AdAr, kategori.Ad);
+            kategori.AdEn = FirstNotEmpty(kategori.AdEn, kategori.Ad);
+            kategori.KisaAciklamaAr = FirstNotEmpty(kategori.KisaAciklamaAr, kategori.KisaAciklama);
+            kategori.KisaAciklamaEn = FirstNotEmpty(kategori.KisaAciklamaEn, kategori.KisaAciklama);
+            kategori.AciklamaAr = FirstNotEmpty(kategori.AciklamaAr, kategori.Aciklama);
+            kategori.AciklamaEn = FirstNotEmpty(kategori.AciklamaEn, kategori.Aciklama);
+        }
+
+        private static string FirstNotEmpty(params string?[] values) =>
+            values.FirstOrDefault(x => !string.IsNullOrWhiteSpace(x))?.Trim() ?? string.Empty;
 
         private IQueryable<Kategori> BuildCategoryListQuery(string? arama, string? durum, string? tip)
         {
@@ -612,5 +629,3 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 }
-
-

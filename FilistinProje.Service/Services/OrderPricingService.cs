@@ -383,7 +383,7 @@ namespace FilistinProje.Service.Services
 
             if (secenek != null && secenek.SatisFiyati > 0)
             {
-                birimFiyatBase = secenek.SatisFiyati;
+                birimFiyatBase = secenek.EtkinFiyat;
             }
             else if (isWholesale)
             {

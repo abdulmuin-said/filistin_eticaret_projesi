@@ -352,7 +352,7 @@ namespace FilistinProje.Service
             }
 
             var price = secenek is { SatisFiyati: > 0 }
-                ? secenek.SatisFiyati
+                ? secenek.EtkinFiyat
                 : isWholesale ? urun.EtkinTopFiyat : urun.EtkinFiyat;
 
             if (isWholesale && urun.ToptanciUrunGrubuId.HasValue)

@@ -128,6 +128,26 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Sil(int id)
+        {
+            var firma = await _context.KargoFirmalari.FirstOrDefaultAsync(x => x.Id == id && !x.SilindiMi);
+            if (firma == null)
+            {
+                TempData["Mesaj"] = _localizer["Admin_CarrierNotFound"].Value;
+                TempData["Durum"] = "danger";
+                return RedirectToAction(nameof(Index));
+            }
+            firma.SilindiMi = true;
+            firma.AktifMi = false;
+            firma.VarsayilanMi = false;
+            await _context.SaveChangesAsync();
+            TempData["Mesaj"] = _localizer["Admin_IslemBasarili"].Value;
+            TempData["Durum"] = "success";
+            return RedirectToAction(nameof(Index));
+        }
+
         public async Task<IActionResult> BolgeListesi()
         {
             var bolgeler = await _context.KargoBolgeler
@@ -246,7 +266,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 }
                 else
                 {
-                    var sehir = await _context.KargoBolgeSehirler.FirstOrDefaultAsync(x => x.Id == id);
+                    var sehir = await _context.KargoBolgeSehirler.FirstOrDefaultAsync(x => x.Id == id && x.BolgeId == bolgeId && !x.SilindiMi);
                     if (sehir == null)
                         return Json(new { success = false, message = _localizer["Admin_CityNotFound"].Value });
 
@@ -272,7 +292,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 if (sehir == null)
                     return Json(new { success = false, message = _localizer["Admin_CityNotFound"].Value });
 
-                _context.KargoBolgeSehirler.Remove(sehir);
+                sehir.SilindiMi = true;
                 await _context.SaveChangesAsync();
                 return Json(new { success = true, message = _localizer["Admin_CityDeleted"].Value });
             }
@@ -357,5 +377,4 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 }
-
 

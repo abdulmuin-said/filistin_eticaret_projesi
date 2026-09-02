@@ -362,14 +362,52 @@
 
                                     </div>
                                 </div>
-                                <div class="row g-3">
-                                    <div class="col-md-6"><label class="ca-label">Instagram</label><input asp-for="InstagramUrl" class="ca-input" placeholder="https://instagram.com/7anrps48" /></div>
-                                    <div class="col-md-6"><label class="ca-label">Facebook</label><input asp-for="FacebookUrl" class="ca-input" placeholder="https://facebook.com/7anrps48" /></div>
-                                    <div class="col-md-6"><label class="ca-label">TikTok</label><input asp-for="TiktokUrl" class="ca-input" placeholder="https://tiktok.com/username" /></div>
-                                    <div class="col-md-6"><label class="ca-label">YouTube</label><input asp-for="YoutubeUrl" class="ca-input" placeholder="https://youtube.com/..." /></div>
-                                    <div class="col-md-6"><label class="ca-label">Pinterest</label><input asp-for="PinterestUrl" class="ca-input" placeholder="https://pinterest.com/7anrps48" /></div>
-                                    <div class="col-md-6"><label class="ca-label">X / Twitter</label><input asp-for="TwitterUrl" class="ca-input" placeholder="https://x.com/7anrps48" /></div>
+                                <input asp-for="InstagramUrl" type="hidden" /><input asp-for="FacebookUrl" type="hidden" />
+                                <input asp-for="TiktokUrl" type="hidden" /><input asp-for="YoutubeUrl" type="hidden" />
+                                <input asp-for="PinterestUrl" type="hidden" /><input asp-for="TwitterUrl" type="hidden" />
+                                <div id="socialLinksList" class="d-grid gap-2 mb-3">
+                                    @foreach (var link in (ViewBag.SosyalMedyaLinkleri as IEnumerable<FilistinProje.Core.Varliklar.SosyalMedyaLink> ?? Enumerable.Empty<FilistinProje.Core.Varliklar.SosyalMedyaLink>()))
+                                    {
+                                        <div class="border rounded-3 p-3 social-link-row" data-id="@link.Id">
+                                            <div class="row g-2 align-items-end">
+                                                <div class="col-md-2"><label class="ca-label">@Localizer["Admin_SosyalMedya_PlatformAdi"]</label><input class="ca-input social-platform" value="@link.PlatformAdi" /></div>
+                                                <div class="col-md-4"><label class="ca-label">URL</label><input class="ca-input social-url" value="@link.Url" dir="ltr" /></div>
+                                                <div class="col-md-2"><label class="ca-label">@Localizer["Admin_SosyalMedya_IkonSinifi"]</label><input class="ca-input social-icon" value="@link.IkonSinifi" dir="ltr" /></div>
+                                                <div class="col-md-1"><label class="ca-label">@Localizer["Admin_Sira"]</label><input class="ca-input social-order" type="number" value="@link.Sira" /></div>
+                                                <div class="col-md-1"><label class="ca-label">@Localizer["Admin_Aktif"]</label><input class="form-check-input social-active d-block mt-2" type="checkbox" checked="@link.AktifMi" /></div>
+                                                <div class="col-md-2 d-flex gap-1"><button type="button" class="ca-btn ca-btn-primary social-save"><i class="fas fa-save"></i></button><button type="button" class="ca-btn ca-btn-outline text-danger social-delete"><i class="fas fa-trash"></i></button></div>
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
+                                <button type="button" id="addSocialLink" class="ca-btn ca-btn-outline"><i class="fas fa-plus"></i> @Localizer["Admin_SosyalMedya_YeniEkle"]</button>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', () => {
+                                        const list = document.getElementById('socialLinksList');
+                                        const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+                                        const wire = row => {
+                                            row.querySelector('.social-save')?.addEventListener('click', async () => {
+                                                const fd = new FormData(); fd.append('__RequestVerificationToken', token); fd.append('id', row.dataset.id || '0');
+                                                fd.append('platformAdi', row.querySelector('.social-platform').value); fd.append('url', row.querySelector('.social-url').value);
+                                                fd.append('ikonSinifi', row.querySelector('.social-icon').value); fd.append('sira', row.querySelector('.social-order').value || '0'); fd.append('aktifMi', row.querySelector('.social-active').checked);
+                                                const data = await (await fetch('/Admin/SosyalMedya/KaydetJson', { method:'POST', body:fd })).json();
+                                                if (data.success) location.href='/Admin/Ayarlar?tab=sosyal'; else alert(data.message);
+                                            });
+                                            row.querySelector('.social-delete')?.addEventListener('click', async () => {
+                                                if (!confirm('@Localizer["Admin_AreYouSure"]')) return;
+                                                const fd = new FormData(); fd.append('__RequestVerificationToken', token); fd.append('id', row.dataset.id);
+                                                const data = await (await fetch('/Admin/SosyalMedya/SilJson', { method:'POST', body:fd })).json();
+                                                if (data.success) row.remove(); else alert(data.message);
+                                            });
+                                        };
+                                        list.querySelectorAll('.social-link-row').forEach(wire);
+                                        document.getElementById('addSocialLink')?.addEventListener('click', () => {
+                                            const row = document.createElement('div'); row.className='border rounded-3 p-3 social-link-row'; row.dataset.id='0';
+                                            row.innerHTML='<div class="row g-2 align-items-end"><div class="col-md-2"><label class="ca-label">Platform</label><input class="ca-input social-platform"></div><div class="col-md-4"><label class="ca-label">URL</label><input class="ca-input social-url" dir="ltr"></div><div class="col-md-2"><label class="ca-label">Icon</label><input class="ca-input social-icon" dir="ltr"></div><div class="col-md-1"><label class="ca-label">#</label><input class="ca-input social-order" type="number" value="0"></div><div class="col-md-1"><input class="form-check-input social-active" type="checkbox" checked></div><div class="col-md-2"><button type="button" class="ca-btn ca-btn-primary social-save"><i class="fas fa-save"></i></button></div></div>';
+                                            list.appendChild(row); wire(row); row.querySelector('input').focus();
+                                        });
+                                    });
+                                </script>
                             </div>
                         </div>
                     </section>

@@ -20,13 +20,42 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
 
         // GET /Admin/SosyalMedya
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var linkler = await _context.SosyalMedyaLinkleri
-                .OrderBy(x => x.Sira)
-                .ThenBy(x => x.Id)
-                .ToListAsync();
-            return View(linkler);
+            return RedirectToAction("Index", "Ayarlar", new { area = "Admin", tab = "sosyal" });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> KaydetJson(int id, string platformAdi, string url, string? ikonSinifi, int sira, bool aktifMi)
+        {
+            if (string.IsNullOrWhiteSpace(platformAdi))
+                return Json(new { success = false, message = _localizer["Admin_SosyalMedya_PlatformZorunlu"].Value });
+            if (!IsGecerliUrl(url))
+                return Json(new { success = false, message = _localizer["Admin_SosyalMedya_GeçersizUrl"].Value });
+
+            var link = id == 0 ? new SosyalMedyaLink { OlusturulmaTarihi = DateTime.UtcNow } :
+                await _context.SosyalMedyaLinkleri.FindAsync(id);
+            if (link == null) return NotFound();
+            link.PlatformAdi = platformAdi.Trim();
+            link.Url = url.Trim();
+            link.IkonSinifi = (ikonSinifi ?? string.Empty).Trim();
+            link.Sira = sira;
+            link.AktifMi = aktifMi;
+            if (id == 0) _context.SosyalMedyaLinkleri.Add(link);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = id == 0 ? _localizer["Admin_SosyalMedya_Eklendi"].Value : _localizer["Admin_SosyalMedya_Guncellendi"].Value });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SilJson(int id)
+        {
+            var link = await _context.SosyalMedyaLinkleri.FindAsync(id);
+            if (link == null) return NotFound();
+            _context.SosyalMedyaLinkleri.Remove(link);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, message = _localizer["Admin_SosyalMedya_Silindi"].Value });
         }
 
         // POST /Admin/SosyalMedya/Ekle
@@ -123,6 +152,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         // POST /Admin/SosyalMedya/SiraGuncelle  (JSON: [{id,sira},...])
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SiraGuncelle([FromBody] List<SiraGuncelleDto> satirlar)
         {
             if (satirlar == null || satirlar.Count == 0)

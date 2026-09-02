@@ -5810,5 +5810,8 @@
   <data name="Admin_MinQty" xml:space="preserve"><value>الحد الأدنى للكمية</value></data>
   <data name="Admin_AllProduct" xml:space="preserve"><value>جميع المنتجات</value></data>
   <data name="Admin_TierExample" xml:space="preserve"><value>مثال: 10 قطع ← 42 ₪، 25 قطعة ← 38 ₪. يُختار تلقائياً الشريحة ذات الحد الأدنى الأعلى.</value></data>
+  <data name="Admin_VariantDiscountPrice" xml:space="preserve"><value>سعر المتغير بعد الخصم</value></data>
+  <data name="Admin_Product_VariantDiscountPriceInvalid" xml:space="preserve"><value>المتغير {0}: يجب أن يكون سعر الخصم أكبر من صفر وأقل من السعر العادي.</value></data>
+  <data name="Admin_ColorPicker" xml:space="preserve"><value>اختيار اللون</value></data>
 </root>
 

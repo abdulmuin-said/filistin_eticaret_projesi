@@ -27,6 +27,7 @@ namespace FilistinProje.Core.Varliklar
         public string OzelTasarimNotu { get; set; } = string.Empty;
         public decimal FiyatFarki { get; set; }
         public decimal SatisFiyati { get; set; }
+        public decimal? IndirimliFiyat { get; set; }
         public decimal MaliyetFiyati { get; set; }
         public int StokAdedi { get; set; } = 100;
         public int UretimSuresiGun { get; set; }
@@ -41,6 +42,12 @@ namespace FilistinProje.Core.Varliklar
 
         [NotMapped]
         public bool SatinAlinabilirMi => AktifMi && (StokAdedi > 0 || OnSipariseAcikMi);
+
+        [NotMapped]
+        public bool IndirimVarMi => IndirimliFiyat.HasValue && IndirimliFiyat.Value > 0 && IndirimliFiyat.Value < SatisFiyati;
+
+        [NotMapped]
+        public decimal EtkinFiyat => IndirimVarMi ? IndirimliFiyat!.Value : SatisFiyati;
 
         [NotMapped]
         public string GuvenliRenkKodu => VaryantRenkYardimcisi.Resolve(RenkKodu, Renk);

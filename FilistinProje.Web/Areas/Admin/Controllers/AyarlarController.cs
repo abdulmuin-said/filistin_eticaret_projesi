@@ -37,6 +37,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Index(string? tab = null)
         {
             await HazirlaKargoFirmaSecenekleriAsync();
+            ViewBag.SosyalMedyaLinkleri = await _context.SosyalMedyaLinkleri
+                .OrderBy(x => x.Sira).ThenBy(x => x.Id).ToListAsync();
             ViewBag.ActiveTab = string.IsNullOrWhiteSpace(tab) ? "genel" : tab;
             return View(_siteSettingsService.GetSettings());
         }

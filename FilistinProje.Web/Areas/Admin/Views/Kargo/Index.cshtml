@@ -145,6 +145,13 @@
                                                         <i class="fas fa-pen me-2"></i> @Localizer["Admin_Duzenle"]
                                                     </button>
                                                 </li>
+                                                <li><hr class="dropdown-divider" /></li>
+                                                <li>
+                                                    <form method="post" action="/Admin/Kargo/Sil/@firma.Id" class="m-0" onsubmit="return confirm('@Localizer["Admin_AreYouSure"]');">
+                                                        @Html.AntiForgeryToken()
+                                                        <button class="dropdown-item text-danger" type="submit"><i class="fas fa-trash me-2"></i> @Localizer["Admin_Sil"]</button>
+                                                    </form>
+                                                </li>
                                             </ul>
                                         </div>
                                     </td>
@@ -526,6 +533,13 @@
                     badge.className = 'badge fs-6 fw-normal py-2 px-3 me-1 mb-1';
                     badge.style.cssText = 'background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;border-radius:20px;';
                     badge.appendChild(document.createTextNode(String(s.sehirAdi || '')));
+                    const cityEdit = document.createElement('button');
+                    cityEdit.type = 'button';
+                    cityEdit.className = 'btn btn-sm p-0 ms-2';
+                    cityEdit.title = '@Localizer["Admin_Duzenle"]';
+                    cityEdit.innerHTML = '<i class="fas fa-pen"></i>';
+                    cityEdit.addEventListener('click', () => window.bolgeApp.duzenleSehir(s.id, b.id, s.sehirAdi || ''));
+                    badge.appendChild(cityEdit);
                     const cityRemove = document.createElement('button');
                     cityRemove.type = 'button';
                     cityRemove.className = 'btn-close btn-close-sm ms-2';
@@ -568,6 +582,12 @@
     }
 
     window.bolgeApp = {
+        duzenleSehir(id, bolgeId, ad) {
+            document.getElementById('SehirId').value = id;
+            document.getElementById('SehirBolgeId').value = bolgeId;
+            document.getElementById('SehirAdi').value = ad;
+            document.getElementById('SehirAdi').focus();
+        },
         duzenleBolge(id, ad, ulke, aciklama, sira, fiyat) {
             document.getElementById('BolgeId').value = id;
             document.getElementById('BolgeAd').value = ad;
@@ -663,6 +683,7 @@
             .then(d => {
                 showToast(d.message, d.success ? 'success' : 'error');
                 if (d.success) {
+                    document.getElementById('SehirId').value = '0';
                     document.getElementById('SehirAdi').value = '';
                     loadBolgeler();
                 }

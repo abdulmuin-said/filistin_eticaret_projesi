@@ -32,7 +32,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var urunVarMi = await _context.Urunler.AnyAsync(x => x.Id == secenek.UrunId && !x.SilindiMi);
             var renkKoduGecerli = string.IsNullOrWhiteSpace(secenek.RenkKodu) ||
                                   VaryantRenkYardimcisi.TryNormalizeHex(secenek.RenkKodu, out _);
-            if (!urunVarMi || secenek.SatisFiyati <= 0 || !renkKoduGecerli)
+            if (!urunVarMi || secenek.SatisFiyati <= 0 ||
+                (secenek.IndirimliFiyat.HasValue &&
+                 (secenek.IndirimliFiyat.Value <= 0 || secenek.IndirimliFiyat.Value >= secenek.SatisFiyati)) ||
+                !renkKoduGecerli)
             {
                 return RedirectToAction("Secenekler", "Urun", new { area = "", id = secenek.UrunId });
             }
@@ -393,7 +396,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         private async Task SyncProductPricesWithVariantsAsync(Urun urun, Urun model)
         {
-            var basePrice = model.IndirimliFiyat ?? model.Fiyat;
+            var basePrice = model.Fiyat;
             var defaultVariant = urun.UrunSecenek
                 .FirstOrDefault(x => x.VarsayilanMi && !x.SilindiMi)
                 ?? urun.UrunSecenek.FirstOrDefault(x => !x.SilindiMi);
@@ -3369,6 +3372,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     ModelState.AddModelError($"{prefix}.SatisFiyati", string.Format(_localizer["Admin_Product_VariantNegativeSalePrice"].Value, row));
                 }
 
+                if (variant.IndirimliFiyat.HasValue &&
+                    (variant.IndirimliFiyat.Value <= 0 || variant.IndirimliFiyat.Value >= variant.SatisFiyati))
+                {
+                    ModelState.AddModelError(
+                        $"{prefix}.IndirimliFiyat",
+                        string.Format(_localizer["Admin_Product_VariantDiscountPriceInvalid"].Value, row));
+                }
+
                 if (variant.MaliyetFiyati < 0)
                 {
                     ModelState.AddModelError($"{prefix}.MaliyetFiyati", $"Varyasyon {row}: maliyet negatif olamaz.");
@@ -3435,6 +3446,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 || !string.IsNullOrWhiteSpace(variant.OzelTasarimNotu)
                 || !string.IsNullOrWhiteSpace(variant.GorselUrl)
                 || variant.SatisFiyati > 0
+                || variant.IndirimliFiyat.HasValue
                 || variant.MaliyetFiyati > 0
                 || variant.FiyatFarki != 0
                 || variant.StokAdedi > 0
@@ -3459,6 +3471,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             variant.KisilestirmeMetni = (variant.KisilestirmeMetni ?? string.Empty).Trim();
             variant.OzelTasarimNotu = (variant.OzelTasarimNotu ?? string.Empty).Trim();
             variant.GorselUrl = variant.GorselUrl?.Trim() ?? string.Empty;
+            variant.SatisFiyati = decimal.Round(Math.Max(0, variant.SatisFiyati), 2);
+            variant.IndirimliFiyat = variant.IndirimliFiyat.HasValue && variant.IndirimliFiyat.Value > 0
+                ? decimal.Round(variant.IndirimliFiyat.Value, 2)
+                : null;
             variant.ParcaSayisi = variant.ParcaSayisi < 1 ? 1 : variant.ParcaSayisi;
             variant.StokAdedi = variant.StokAdedi < 0 ? 0 : variant.StokAdedi;
             variant.UretimSuresiGun = variant.UretimSuresiGun < 0 ? 0 : variant.UretimSuresiGun;
@@ -3468,7 +3484,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         private static decimal ResolveVariantSalePrice(Urun urun, UrunSecenek variant)
         {
-            var basePrice = urun.IndirimliFiyat ?? urun.Fiyat;
+            var basePrice = urun.Fiyat;
             if (variant.SatisFiyati > 0)
             {
                 return variant.SatisFiyati;
@@ -3496,6 +3512,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             target.OzelTasarimNotu = source.OzelTasarimNotu;
             target.FiyatFarki = source.FiyatFarki;
             target.SatisFiyati = source.SatisFiyati;
+            target.IndirimliFiyat = source.IndirimliFiyat;
             target.MaliyetFiyati = source.MaliyetFiyati;
             target.StokAdedi = source.StokAdedi;
             target.UretimSuresiGun = source.UretimSuresiGun;
@@ -3601,8 +3618,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         }
     }
 }
-
-
 
 
 
