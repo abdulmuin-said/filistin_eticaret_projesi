@@ -10,7 +10,41 @@
     var siteSettings = ViewBag.SiteSettings as FilistinProje.Core.Models.SiteAyarlari;
     var siparisNo = string.IsNullOrWhiteSpace(Model.SiparisNo) ? $"#{Model.Id}" : Model.SiparisNo;
     var currentStep = SiparisDurumHelper.GetProgressStep(Model.Durum);
-    var statusText = SiparisDurumHelper.GetLabel(Model.Durum);
+
+    string GetStatusLabel(int durum) => durum switch
+    {
+        SiparisDurumHelper.SiparisAlindi => Localizer["StatusOrderReceived"].Value,
+        SiparisDurumHelper.UretimHazirlaniyor => Localizer["StatusPreparing"].Value,
+        SiparisDurumHelper.Paketleniyor => Localizer["StatusPackaging"].Value,
+        SiparisDurumHelper.KargoyaVerildi => Localizer["StatusShipped"].Value,
+        SiparisDurumHelper.TeslimEdildi => Localizer["StatusDelivered"].Value,
+        SiparisDurumHelper.IptalEdildi => Localizer["StatusCancelled"].Value,
+        SiparisDurumHelper.IadeTalebi => Localizer["StatusReturnRequest"].Value,
+        SiparisDurumHelper.IadeOnaylandi => Localizer["StatusReturnApproved"].Value,
+        SiparisDurumHelper.IadeTamamlandi => Localizer["StatusReturnCompleted"].Value,
+        _ => Localizer["Status"].Value
+    };
+
+    string LocalizeOrderNote(string? note)
+    {
+        if (string.IsNullOrWhiteSpace(note)) return string.Empty;
+        var trimmed = note.Trim();
+        if (trimmed.Equals("Cash on Delivery Pending", StringComparison.OrdinalIgnoreCase) || 
+            trimmed.Equals("الدفع عند الاستلام معلق", StringComparison.OrdinalIgnoreCase) ||
+            trimmed.Equals("Kapıda Ödeme Bekliyor", StringComparison.OrdinalIgnoreCase))
+        {
+            return Localizer["Siparis_PayOnDeliveryPending"].Value;
+        }
+        if (trimmed.Equals("Payment Pending", StringComparison.OrdinalIgnoreCase) || 
+            trimmed.Equals("في انتظار الدفع", StringComparison.OrdinalIgnoreCase) ||
+            trimmed.Equals("Havale/EFT Bekliyor", StringComparison.OrdinalIgnoreCase))
+        {
+            return Localizer["Siparis_PaymentPending"].Value;
+        }
+        return trimmed;
+    }
+
+    var statusText = GetStatusLabel(Model.Durum);
     var toplamAdet = urunler.Sum(x => (int)x.Adet);
     var logoUrl = siteSettings?.SiteLogoUrl ?? "/74anrps48logo2.svg";
     var operasyonDurumlari = new[]
@@ -378,8 +412,12 @@
                 <form action="/Admin/Siparis/FaturaYukle" method="post" enctype="multipart/form-data" class="d-flex align-items-center gap-3 flex-wrap">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="siparisId" value="@Model.Id" />
-                    <div class="flex-grow-1" style="min-width:200px;">
-                        <input type="file" class="form-control" name="faturaDosyasi" accept=".pdf" required>
+                    <div class="d-flex align-items-center gap-2 flex-grow-1" style="min-width:240px;">
+                        <label class="ca-btn ca-btn-outline mb-0" for="faturaFileInput" style="cursor:pointer; white-space:nowrap;">
+                            <i class="fas fa-file-pdf text-danger me-1"></i> @Localizer["Admin_ChooseFile"]
+                        </label>
+                        <span id="faturaFileName" class="small text-muted" style="word-break:break-all;">@Localizer["Admin_NoFileChosen"]</span>
+                        <input type="file" id="faturaFileInput" name="faturaDosyasi" class="visually-hidden" accept=".pdf" required onchange="document.getElementById('faturaFileName').textContent = this.files[0] ? this.files[0].name : '@Localizer["Admin_NoFileChosen"]'" />
                     </div>
                     <button type="submit" class="ca-btn ca-btn-primary">
                         <i class="fas fa-upload me-1"></i> @Localizer["Admin_UploadAndSendCustomer"]
@@ -549,7 +587,7 @@
                         {
                             <div class="col-12">
                                 <div class="small text-muted">@Localizer["Admin_Note"]</div>
-                                <div class="p-3 rounded border bg-light" style="white-space:pre-wrap;">@Model.Aciklama</div>
+                                <div class="p-3 rounded border bg-light" style="white-space:pre-wrap;">@LocalizeOrderNote(Model.Aciklama)</div>
                             </div>
                         }
                         @if (!string.IsNullOrWhiteSpace(Model.KimlikFotoYolu))
@@ -580,7 +618,7 @@
                             <select name="durum" class="ca-select">
                                 @foreach (var durumSecenegi in secilebilirDurumlar.Distinct())
                                 {
-                                    <option value="@durumSecenegi" selected="@(Model.Durum == durumSecenegi)">@SiparisDurumHelper.GetLabel(durumSecenegi)</option>
+                                    <option value="@durumSecenegi" selected="@(Model.Durum == durumSecenegi)">@GetStatusLabel(durumSecenegi)</option>
                                 }
                             </select>
                         </div>
@@ -713,7 +751,7 @@
             {
                 var receteDurumu = Model.ReceteOnayDurumu;
                 var receteStatusClass = receteDurumu == 1 ? "var(--ca-success)" : (receteDurumu == 2 ? "#dc3545" : "var(--ca-warning)");
-                var receteStatusText = receteDurumu == 1 ? "Onaylandı" : (receteDurumu == 2 ? "Reddedildi" : "Beklemede");
+                var receteStatusText = receteDurumu == 1 ? Localizer["Admin_Approved"].Value : (receteDurumu == 2 ? Localizer["Admin_Rejected"].Value : Localizer["Admin_Waiting"].Value);
                 var receteIcon = receteDurumu == 1 ? "fa-check-circle" : (receteDurumu == 2 ? "fa-times-circle" : "fa-clock");
                 var receteDosyaYolu = Url.Action("Recete", "Belge", new { area = "", siparisId = Model.Id }) ?? string.Empty;
                 var receteIndirYolu = Url.Action("Recete", "Belge", new { area = "", siparisId = Model.Id, indir = true }) ?? string.Empty;
@@ -813,13 +851,33 @@
             }
 
             <div class="ca-card">
-                <div class="ca-card-header">
+                <div class="ca-card-header d-flex justify-content-between align-items-center">
                     <span class="ca-card-title"><i class="fas fa-user me-2"></i>@Localizer["Admin_Customer"]</span>
+                    @if (string.IsNullOrWhiteSpace(Model.AppUserId))
+                    {
+                        <span class="ca-badge ca-badge-neutral">@Localizer["Admin_Guest"]</span>
+                    }
+                    else
+                    {
+                        <a href="/Admin/Kullanici/Duzenle/@Model.AppUserId" class="ca-btn ca-btn-outline ca-btn-sm" title="@Localizer["Admin_ViewUser"]">
+                            <i class="fas fa-user-gear"></i>
+                        </a>
+                    }
                 </div>
                 <div class="ca-card-body">
                     <h5 class="ca-fw-bold">@Model.MusteriAdSoyad</h5>
-                    <div class="small text-muted mb-1">@Model.Eposta</div>
-                    <div class="small text-muted mb-3">@Model.Telefon</div>
+                    @if (!string.IsNullOrWhiteSpace(Model.Eposta))
+                    {
+                        <div class="small text-muted mb-1 text-break">
+                            <i class="fas fa-envelope me-1 text-muted"></i><a href="mailto:@Model.Eposta" class="text-decoration-none">@Model.Eposta</a>
+                        </div>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.Telefon))
+                    {
+                        <div class="small text-muted mb-3">
+                            <i class="fas fa-phone me-1 text-muted"></i><a href="tel:@Model.Telefon" class="text-decoration-none" dir="ltr">@Model.Telefon</a>
+                        </div>
+                    }
                     <label class="ca-label mb-1">@Localizer["Admin_DeliveryAddress"]</label>
                     <p class="mb-0" style="font-size:.9rem;">
                         @Model.AcikAdres<br>

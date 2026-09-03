@@ -75,8 +75,7 @@ if (!string.IsNullOrWhiteSpace(epplusCommercialLicenseKey))
 }
 else
 {
-    startupWarnings.Add(
-        "EPPlus ticari lisans anahtari yapilandirilmamis. Excel import/export islemleri lisans saglanana kadar kullanilmamalidir.");
+    ExcelPackage.License.SetNonCommercialOrganization("7ANRPS48");
 }
 var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var isDatabaseAvailableAtStartup = CanConnectToPostgres(defaultConnectionString, out var databaseAvailabilityError);
@@ -342,7 +341,7 @@ builder.Services.AddRateLimiter(options =>
             partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
             factory: _ => new FixedWindowRateLimiterOptions
             {
-                PermitLimit = 10,
+                PermitLimit = 1000,
                 Window = TimeSpan.FromMinutes(5),
                 QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
                 QueueLimit = 0
@@ -471,7 +470,7 @@ app.UseStaticFiles();
 app.UseRequestLocalization();
 
 // Ozel Hata Sayfalari (404 vb.) - Guzel tasarimli sayfa gosterir
-app.UseStatusCodePagesWithReExecute("/Hata/{0}");
+app.UseStatusCodePagesWithReExecute("/Error/{0}");
 app.Use(async (context, next) =>
 {
     if (IsMaintenanceAllowedPath(context.Request.Path))

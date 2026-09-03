@@ -148,11 +148,11 @@
                             <div class="ca-seo-preview-grid">
                                 <div>
                                     <label class="ca-label">Slug</label>
-                                    <input asp-for="Slug" id="slugInput" class="ca-input" placeholder="urun-adi-otomatik-olusturulur" readonly />
+                                    <input asp-for="Slug" id="slugInput" class="ca-input" placeholder="@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "يتم التوليد تلقائياً من اسم المنتج" : "Auto-generated from title")" readonly />
                                 </div>
                                 <div>
                                     <label class="ca-label">SEO URL</label>
-                                    <input asp-for="UrlYolu" id="seoUrlInput" class="ca-input" placeholder="urun-adi-otomatik-olusturulur" readonly />
+                                    <input asp-for="UrlYolu" id="seoUrlInput" class="ca-input" placeholder="@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "يتم التوليد تلقائياً من اسم المنتج" : "Auto-generated from title")" readonly />
                                 </div>
                             </div>
                             <div class="small text-muted mt-1">@Localizer["Admin_ProductAutoSlugHelp"]</div>
@@ -188,7 +188,7 @@
 
                         <div class="col-12">
                             <label class="ca-label">@Localizer["Admin_MainImageUrl"]</label>
-                            <input asp-for="AnaGorselUrl" id="mainImgUrl" class="ca-input" placeholder="/img/products/ornek.webp" onchange="updatePreviewFromUrl('mainImgUrl','mainImgPreview')" />
+                            <input asp-for="AnaGorselUrl" id="mainImgUrl" class="ca-input" placeholder="/img/products/sample.webp" onchange="updatePreviewFromUrl('mainImgUrl','mainImgPreview')" />
                             <span asp-validation-for="AnaGorselUrl" class="text-danger small"></span>
                             <div class="small text-muted mt-1">@Localizer["Admin_MainImageHelp"]</div>
                         </div>

@@ -121,6 +121,7 @@ namespace FilistinProje.Web.Controllers
             if (model.ToptanciMi)
             {
                 user.WholesaleStatus = WholesaleStatus.Pending;
+                user.BasvuruTarihi = DateTime.UtcNow;
                 await _userManager.UpdateAsync(user);
             }
 

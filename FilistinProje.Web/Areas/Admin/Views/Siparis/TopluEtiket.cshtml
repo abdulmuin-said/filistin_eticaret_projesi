@@ -9,7 +9,7 @@
     var siteSettings = ViewBag.SiteSettings as FilistinProje.Core.Models.SiteAyarlari;
     var logoUrl = siteSettings?.SiteLogoUrl ?? "/74anrps48logo2.svg";
     var requestCulture = Context.Features.Get<IRequestCultureFeature>()?.RequestCulture.Culture;
-    var htmlLang = requestCulture?.Name ?? "tr";
+    var htmlLang = requestCulture?.Name ?? "ar";
     var htmlDir = requestCulture?.TextInfo.IsRightToLeft == true ? "rtl" : "ltr";
 
     KargoFirmasi? FirmaBul(Siparis siparis)

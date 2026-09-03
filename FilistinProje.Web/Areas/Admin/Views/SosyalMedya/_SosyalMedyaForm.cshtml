@@ -17,26 +17,73 @@
     <div class="form-text text-danger"><i class="fas fa-shield-alt me-1"></i>@Localizer["Admin_SosyalMedya_UrlGuvenlik"]</div>
 </div>
 
+@{
+    var formIsAr = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar";
+}
 <div class="mb-3">
-    <label class="form-label fw-semibold">@Localizer["Admin_SosyalMedya_IkonSinifi"]</label>
+    <label class="form-label fw-semibold">@(formIsAr ? "الشبكة / الأيقونة" : "Network & Icon")</label>
     <div class="input-group">
-        <input type="text" name="ikonSinifi" class="form-control"
-               value="@Model.IkonSinifi"
-               placeholder="fab fa-snapchat"
-               maxlength="100"
-               oninput="gosterIkonOnizleme(this)" />
-        <span class="input-group-text">
-            <i class="ikon-preview @(string.IsNullOrWhiteSpace(Model.IkonSinifi) ? "fas fa-share-nodes" : Model.IkonSinifi)"></i>
+        <span class="input-group-text bg-light modal-icon-badge" style="font-size:1.2rem; min-width:45px; justify-content:center;">
+            <i class="@(string.IsNullOrWhiteSpace(Model.IkonSinifi) ? "fas fa-share-nodes" : Model.IkonSinifi)"></i>
         </span>
+        <select class="form-select modal-preset-select" onchange="modalSyncPreset(this)">
+            <option value="fab fa-facebook-f" data-platform="Facebook" data-color="#1877f2" data-ph="https://facebook.com/...">Facebook</option>
+            <option value="fab fa-instagram" data-platform="Instagram" data-color="#e1306c" data-ph="https://instagram.com/...">Instagram</option>
+            <option value="fab fa-whatsapp" data-platform="WhatsApp" data-color="#25d366" data-ph="https://wa.me/970...">WhatsApp</option>
+            <option value="fab fa-tiktok" data-platform="TikTok" data-color="#000000" data-ph="https://tiktok.com/@@...">TikTok</option>
+            <option value="fab fa-x-twitter" data-platform="X (Twitter)" data-color="#000000" data-ph="https://x.com/...">X (Twitter)</option>
+            <option value="fab fa-youtube" data-platform="YouTube" data-color="#ff0000" data-ph="https://youtube.com/@@...">YouTube</option>
+            <option value="fab fa-telegram" data-platform="Telegram" data-color="#0088cc" data-ph="https://t.me/...">Telegram</option>
+            <option value="fab fa-snapchat" data-platform="Snapchat" data-color="#ca8a04" data-ph="https://snapchat.com/add/...">Snapchat</option>
+            <option value="fab fa-linkedin-in" data-platform="LinkedIn" data-color="#0a66c2" data-ph="https://linkedin.com/company/...">LinkedIn</option>
+            <option value="fab fa-pinterest-p" data-platform="Pinterest" data-color="#bd081c" data-ph="https://pinterest.com/...">Pinterest</option>
+            <option value="fas fa-globe" data-platform="@(formIsAr ? "موقع إلكتروني" : "Website")" data-color="#475569" data-ph="https://...">@(formIsAr ? "موقع آخر / مخصص" : "Other / Custom")</option>
+        </select>
     </div>
-    <div class="form-text">
-        @Localizer["Admin_SosyalMedya_IkonYardim"]
-        <code>fab fa-snapchat</code> &nbsp;
-        <code>fab fa-instagram</code> &nbsp;
-        <code>fab fa-tiktok</code> &nbsp;
-        <code>fab fa-linkedin</code>
-    </div>
+    <input type="hidden" name="ikonSinifi" class="modal-ikon-input" value="@Model.IkonSinifi" />
 </div>
+
+<script>
+    function modalSyncPreset(selectElem) {
+        const modal = selectElem.closest('.modal-content') || selectElem.closest('form');
+        if (!modal) return;
+        const opt = selectElem.options[selectElem.selectedIndex];
+        const iconInput = modal.querySelector('.modal-ikon-input');
+        const badge = modal.querySelector('.modal-icon-badge');
+        const platformInput = modal.querySelector('input[name="platformAdi"]');
+        const urlInput = modal.querySelector('input[name="url"]');
+
+        if (iconInput) iconInput.value = opt.value;
+        if (badge) {
+            badge.innerHTML = `<i class="${opt.value}"></i>`;
+            badge.style.color = opt.dataset.color || '#475569';
+        }
+        if (platformInput && (!platformInput.value || Object.values(selectElem.options).some(o => o.dataset.platform === platformInput.value))) {
+            platformInput.value = opt.dataset.platform || '';
+        }
+        if (urlInput && !urlInput.value) {
+            urlInput.placeholder = opt.dataset.ph || 'https://...';
+        }
+    }
+    // initialize matching preset if any
+    (function() {
+        setTimeout(() => {
+            document.querySelectorAll('.modal-preset-select').forEach(sel => {
+                const modal = sel.closest('.modal-content') || sel.closest('form');
+                const val = modal?.querySelector('.modal-ikon-input')?.value;
+                if (val) {
+                    for (let opt of sel.options) {
+                        if (opt.value === val) {
+                            sel.value = val;
+                            modalSyncPreset(sel);
+                            break;
+                        }
+                    }
+                }
+            });
+        }, 100);
+    })();
+</script>
 
 <div class="row g-3">
     <div class="col-6">

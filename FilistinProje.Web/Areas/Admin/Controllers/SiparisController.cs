@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using FilistinProje.Core.Helpers;
 using FilistinProje.Core.Interfaces;
 using FilistinProje.Core.Varliklar;
@@ -123,7 +123,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .ToListAsync();
 
             var sayfaSiparisIdleri = sayfaSiparisleri.Select(x => x.Id).ToList();
-            ViewBag.SiparisDetayOzetleri = await _context.SiparisDetaylari
+            var ozetListesi = await _context.SiparisDetaylari
                 .AsNoTracking()
                 .Where(x => sayfaSiparisIdleri.Contains(x.SiparisId))
                 .GroupBy(x => x.SiparisId)
@@ -133,9 +133,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     UrunSayisi = x.Count(),
                     Adet = x.Sum(v => v.Adet)
                 })
-                .ToDictionaryAsync(
-                    x => x.SiparisId,
-                    x => $"{x.UrunSayisi} Ã¼rÃ¼n / {x.Adet} adet");
+                .ToListAsync();
+
+            ViewBag.SiparisDetayOzetleri = ozetListesi.ToDictionary(
+                x => x.SiparisId,
+                x => _localizer["Admin_OrderSummaryContent", x.UrunSayisi, x.Adet].Value);
 
             return View(sayfaSiparisleri);
         }
@@ -367,6 +369,40 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             ViewBag.SiteSettings = _siteSettingsService.GetSettings();
 
             return View("TopluEtiket", siparisler);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EtiketYazdir(int id)
+        {
+            if (id <= 0)
+            {
+                return NotFound();
+            }
+
+            var siparis = await _context.Siparisler
+                .AsNoTracking()
+                .Include(x => x.SiparisDetaylari)
+                    .ThenInclude(x => x.Urun)
+                .Include(x => x.SiparisDetaylari)
+                    .ThenInclude(x => x.UrunSecenek)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (siparis == null)
+            {
+                return NotFound();
+            }
+
+            var kargoFirmalari = await _context.KargoFirmalari
+                .AsNoTracking()
+                .Where(x => !x.SilindiMi && x.AktifMi)
+                .OrderByDescending(x => x.VarsayilanMi)
+                .ThenBy(x => x.Ad)
+                .ToListAsync();
+
+            ViewBag.KargoFirmalari = kargoFirmalari;
+            ViewBag.SiteSettings = _siteSettingsService.GetSettings();
+
+            return View("TopluEtiket", new List<Siparis> { siparis });
         }
 
         [HttpPost]

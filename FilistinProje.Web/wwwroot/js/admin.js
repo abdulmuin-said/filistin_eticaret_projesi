@@ -135,7 +135,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // =============================================
     document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(function (el) {
         if (typeof bootstrap !== 'undefined' && bootstrap.Dropdown) {
-            bootstrap.Dropdown.getOrCreateInstance(el);
+            bootstrap.Dropdown.getOrCreateInstance(el, {
+                popperConfig: function (defaultBsPopperConfig) {
+                    return Object.assign({}, defaultBsPopperConfig, { strategy: 'fixed' });
+                }
+            });
         }
 
         el.addEventListener('click', function (event) {
@@ -255,23 +259,31 @@ function previewImage(event) {
 // GLOBAL: CONFIRM DELETE (SweetAlert fallback)
 // =============================================
 function confirmDelete(url, itemName) {
+    var isAr = (document.documentElement.lang || '').toLowerCase() === 'ar';
+    var title = isAr ? 'هل أنت متأكد؟' : 'Are you sure?';
+    var text = isAr
+        ? ('سيتم حذف ' + (itemName || 'هذا العنصر') + '. لا يمكن التراجع عن هذا الإجراء.')
+        : ((itemName || 'This item') + ' will be deleted. This action cannot be undone.');
+    var confirmText = isAr ? 'نعم، احذف' : 'Yes, Delete';
+    var cancelText = isAr ? 'إلغاء' : 'Cancel';
+
     if (typeof Swal !== 'undefined') {
         Swal.fire({
-            title: 'Emin misiniz?',
-            text: (itemName || 'Bu öğe') + ' silinecektir. Bu işlem geri alınamaz.',
+            title: title,
+            text: text,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#ef4444',
             cancelButtonColor: '#64748b',
-            confirmButtonText: 'Evet, Sil',
-            cancelButtonText: 'İptal'
+            confirmButtonText: confirmText,
+            cancelButtonText: cancelText
         }).then(function (result) {
             if (result.isConfirmed) {
                 window.location.href = url;
             }
         });
     } else {
-        if (confirm('Bu öğeyi silmek istediğinize emin misiniz?')) {
+        if (confirm(text)) {
             window.location.href = url;
         }
     }

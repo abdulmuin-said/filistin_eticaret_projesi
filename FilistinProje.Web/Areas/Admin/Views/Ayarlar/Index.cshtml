@@ -4,6 +4,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = Localizer["Admin_Site_Ayarlari"];
     var kargoFirmalari = ViewBag.KargoFirmalari as List<KargoFirmasi> ?? new List<KargoFirmasi>();
+    var isAr = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar";
 }
 
 <style>
@@ -216,7 +217,6 @@
                 <button type="button" class="ca-settings-tab" data-target="iletisim"><i class="fas fa-address-card"></i> @Localizer["Admin_Contact"]</button>
                 <button type="button" class="ca-settings-tab" data-target="sosyal"><i class="fas fa-share-nodes"></i> @Localizer["Admin_Social"]</button>
                 <button type="button" class="ca-settings-tab" data-target="satis"><i class="fas fa-cart-shopping"></i> @Localizer["Admin_Sales"]</button>
-                <button type="button" class="ca-settings-tab" data-target="odeme"><i class="fas fa-credit-card"></i> @Localizer["Admin_Odeme"]</button>
                 <button type="button" class="ca-settings-tab" data-target="kapida-odeme"><i class="fas fa-hand-holding-dollar"></i> @Localizer["Admin_Kapida_Odeme"]</button>
                 <button type="button" class="ca-settings-tab" data-target="seo"><i class="fas fa-magnifying-glass-chart"></i> SEO</button>
                 <button type="button" class="ca-settings-tab" data-target="mail"><i class="fas fa-envelope"></i> @Localizer["Admin_Mail"]</button>
@@ -359,23 +359,70 @@
                                     <div>
                                          <h2>@Localizer["Admin_SocialMediaLinks"]</h2>
                                          <p>@Localizer["Admin_SocialMediaLinksDesc"]</p>
-
                                     </div>
                                 </div>
                                 <input asp-for="InstagramUrl" type="hidden" /><input asp-for="FacebookUrl" type="hidden" />
                                 <input asp-for="TiktokUrl" type="hidden" /><input asp-for="YoutubeUrl" type="hidden" />
                                 <input asp-for="PinterestUrl" type="hidden" /><input asp-for="TwitterUrl" type="hidden" />
-                                <div id="socialLinksList" class="d-grid gap-2 mb-3">
+                                
+                                <div class="mb-3 p-3 rounded-3" style="background:#f8fafc; border:1px solid #e2e8f0;">
+                                    <div class="small text-muted mb-0 d-flex align-items-center gap-2">
+                                        <i class="fas fa-circle-info text-primary fa-lg"></i>
+                                        <span>
+                                            @(isAr 
+                                                ? "اختر شبكة التواصل من القائمة المنسدلة وسيتم تعيين الأيقونة والاسم ولون المنصة تلقائياً وبشكل احترافي دون الحاجة لكتابة أكواد Font Awesome يدوياً."
+                                                : "Select a social network from the dropdown; the icon, branding, and name are configured automatically without manual Font Awesome codes.")
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div id="socialLinksList" class="d-grid gap-3 mb-3">
                                     @foreach (var link in (ViewBag.SosyalMedyaLinkleri as IEnumerable<FilistinProje.Core.Varliklar.SosyalMedyaLink> ?? Enumerable.Empty<FilistinProje.Core.Varliklar.SosyalMedyaLink>()))
                                     {
-                                        <div class="border rounded-3 p-3 social-link-row" data-id="@link.Id">
+                                        <div class="border rounded-3 p-3 social-link-row shadow-sm" data-id="@link.Id" style="background:#fff;">
                                             <div class="row g-2 align-items-end">
-                                                <div class="col-md-2"><label class="ca-label">@Localizer["Admin_SosyalMedya_PlatformAdi"]</label><input class="ca-input social-platform" value="@link.PlatformAdi" /></div>
-                                                <div class="col-md-4"><label class="ca-label">URL</label><input class="ca-input social-url" value="@link.Url" dir="ltr" /></div>
-                                                <div class="col-md-2"><label class="ca-label">@Localizer["Admin_SosyalMedya_IkonSinifi"]</label><input class="ca-input social-icon" value="@link.IkonSinifi" dir="ltr" /></div>
-                                                <div class="col-md-1"><label class="ca-label">@Localizer["Admin_Sira"]</label><input class="ca-input social-order" type="number" value="@link.Sira" /></div>
-                                                <div class="col-md-1"><label class="ca-label">@Localizer["Admin_Aktif"]</label><input class="form-check-input social-active d-block mt-2" type="checkbox" checked="@link.AktifMi" /></div>
-                                                <div class="col-md-2 d-flex gap-1"><button type="button" class="ca-btn ca-btn-primary social-save"><i class="fas fa-save"></i></button><button type="button" class="ca-btn ca-btn-outline text-danger social-delete"><i class="fas fa-trash"></i></button></div>
+                                                <div class="col-md-3">
+                                                    <label class="ca-label">@(isAr ? "الشبكة / الأيقونة" : "Network & Icon")</label>
+                                                    <div class="d-flex gap-2 align-items-center">
+                                                        <span class="social-icon-badge rounded-2 d-inline-flex align-items-center justify-content-center shadow-sm" style="width:38px; height:38px; min-width:38px; background:#f1f5f9; font-size:1.15rem;">
+                                                            <i class="@(string.IsNullOrWhiteSpace(link.IkonSinifi) ? "fas fa-share-nodes" : link.IkonSinifi)"></i>
+                                                        </span>
+                                                        <select class="ca-select social-preset-select">
+                                                            <option value="fab fa-facebook-f" data-platform="Facebook" data-color="#1877f2" data-bg="#eff6ff" data-ph="https://facebook.com/...">Facebook</option>
+                                                            <option value="fab fa-instagram" data-platform="Instagram" data-color="#e1306c" data-bg="#fdf2f8" data-ph="https://instagram.com/...">Instagram</option>
+                                                            <option value="fab fa-whatsapp" data-platform="WhatsApp" data-color="#25d366" data-bg="#f0fdf4" data-ph="https://wa.me/970...">WhatsApp</option>
+                                                            <option value="fab fa-tiktok" data-platform="TikTok" data-color="#000000" data-bg="#f8fafc" data-ph="https://tiktok.com/@@...">TikTok</option>
+                                                            <option value="fab fa-x-twitter" data-platform="X (Twitter)" data-color="#000000" data-bg="#f8fafc" data-ph="https://x.com/...">X (Twitter)</option>
+                                                            <option value="fab fa-youtube" data-platform="YouTube" data-color="#ff0000" data-bg="#fef2f2" data-ph="https://youtube.com/@@...">YouTube</option>
+                                                            <option value="fab fa-telegram" data-platform="Telegram" data-color="#0088cc" data-bg="#f0f9ff" data-ph="https://t.me/...">Telegram</option>
+                                                            <option value="fab fa-snapchat" data-platform="Snapchat" data-color="#ca8a04" data-bg="#fefce8" data-ph="https://snapchat.com/add/...">Snapchat</option>
+                                                            <option value="fab fa-linkedin-in" data-platform="LinkedIn" data-color="#0a66c2" data-bg="#eff6ff" data-ph="https://linkedin.com/company/...">LinkedIn</option>
+                                                            <option value="fab fa-pinterest-p" data-platform="Pinterest" data-color="#bd081c" data-bg="#fef2f2" data-ph="https://pinterest.com/...">Pinterest</option>
+                                                            <option value="fas fa-globe" data-platform="@(isAr ? "موقع إلكتروني" : "Website")" data-color="#475569" data-bg="#f1f5f9" data-ph="https://...">@(isAr ? "موقع آخر / مخصص" : "Other / Custom")</option>
+                                                        </select>
+                                                    </div>
+                                                    <input type="hidden" class="social-icon" value="@link.IkonSinifi" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="ca-label">@(isAr ? "اسم العرض" : "Display Name")</label>
+                                                    <input class="ca-input social-platform" value="@link.PlatformAdi" placeholder="Facebook, Instagram..." />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="ca-label">URL</label>
+                                                    <input class="ca-input social-url" value="@link.Url" dir="ltr" placeholder="https://..." />
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <label class="ca-label">@Localizer["Admin_Sira"]</label>
+                                                    <input class="ca-input social-order" type="number" value="@link.Sira" min="0" />
+                                                </div>
+                                                <div class="col-md-1 text-center">
+                                                    <label class="ca-label">@Localizer["Admin_Aktif"]</label>
+                                                    <input class="form-check-input social-active d-block mx-auto mt-2" type="checkbox" checked="@link.AktifMi" style="width:2.2em; height:1.2em;" />
+                                                </div>
+                                                <div class="col-md-1 d-flex gap-1 justify-content-end">
+                                                    <button type="button" class="ca-btn ca-btn-primary social-save" title="@(isAr ? "حفظ" : "Save")"><i class="fas fa-save"></i></button>
+                                                    <button type="button" class="ca-btn ca-btn-outline text-danger social-delete" title="@(isAr ? "حذف" : "Delete")"><i class="fas fa-trash"></i></button>
+                                                </div>
                                             </div>
                                         </div>
                                     }
@@ -385,26 +432,157 @@
                                     document.addEventListener('DOMContentLoaded', () => {
                                         const list = document.getElementById('socialLinksList');
                                         const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+
+                                        const syncPreset = (row, presetVal) => {
+                                            const select = row.querySelector('.social-preset-select');
+                                            const badge = row.querySelector('.social-icon-badge');
+                                            const iconInput = row.querySelector('.social-icon');
+                                            const platformInput = row.querySelector('.social-platform');
+                                            const urlInput = row.querySelector('.social-url');
+
+                                            let matched = false;
+                                            if (presetVal) {
+                                                for (let opt of select.options) {
+                                                    if (opt.value === presetVal) {
+                                                        select.value = presetVal;
+                                                        matched = true;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            if (!matched && presetVal) {
+                                                select.value = 'fas fa-globe';
+                                            }
+
+                                            const selectedOpt = select.options[select.selectedIndex];
+                                            if (selectedOpt) {
+                                                const iconClass = selectedOpt.value;
+                                                const color = selectedOpt.dataset.color || '#475569';
+                                                const bg = selectedOpt.dataset.bg || '#f1f5f9';
+                                                const platform = selectedOpt.dataset.platform || '';
+                                                const placeholder = selectedOpt.dataset.ph || 'https://...';
+
+                                                badge.innerHTML = `<i class="${iconClass}"></i>`;
+                                                badge.style.color = color;
+                                                badge.style.background = bg;
+                                                iconInput.value = iconClass;
+                                                if (urlInput && !urlInput.value) {
+                                                    urlInput.placeholder = placeholder;
+                                                }
+                                            }
+                                        };
+
                                         const wire = row => {
-                                            row.querySelector('.social-save')?.addEventListener('click', async () => {
-                                                const fd = new FormData(); fd.append('__RequestVerificationToken', token); fd.append('id', row.dataset.id || '0');
-                                                fd.append('platformAdi', row.querySelector('.social-platform').value); fd.append('url', row.querySelector('.social-url').value);
-                                                fd.append('ikonSinifi', row.querySelector('.social-icon').value); fd.append('sira', row.querySelector('.social-order').value || '0'); fd.append('aktifMi', row.querySelector('.social-active').checked);
-                                                const data = await (await fetch('/Admin/SosyalMedya/KaydetJson', { method:'POST', body:fd })).json();
-                                                if (data.success) location.href='/Admin/Ayarlar?tab=sosyal'; else alert(data.message);
+                                            const select = row.querySelector('.social-preset-select');
+                                            const iconInput = row.querySelector('.social-icon');
+                                            const platformInput = row.querySelector('.social-platform');
+                                            const urlInput = row.querySelector('.social-url');
+
+                                            // initialize preset
+                                            if (iconInput && iconInput.value) {
+                                                syncPreset(row, iconInput.value);
+                                            } else if (select) {
+                                                syncPreset(row, select.value);
+                                            }
+
+                                            select?.addEventListener('change', () => {
+                                                const opt = select.options[select.selectedIndex];
+                                                syncPreset(row, opt.value);
+                                                if (!platformInput.value || Object.values(select.options).some(o => o.dataset.platform === platformInput.value)) {
+                                                    platformInput.value = opt.dataset.platform || '';
+                                                }
+                                                if (urlInput && (!urlInput.value || urlInput.value === 'https://')) {
+                                                    urlInput.placeholder = opt.dataset.ph || 'https://...';
+                                                }
                                             });
+
+                                            row.querySelector('.social-save')?.addEventListener('click', async () => {
+                                                const fd = new FormData(); 
+                                                fd.append('__RequestVerificationToken', token); 
+                                                fd.append('id', row.dataset.id || '0');
+                                                fd.append('platformAdi', row.querySelector('.social-platform').value); 
+                                                fd.append('url', row.querySelector('.social-url').value);
+                                                fd.append('ikonSinifi', row.querySelector('.social-icon').value); 
+                                                fd.append('sira', row.querySelector('.social-order').value || '0'); 
+                                                fd.append('aktifMi', row.querySelector('.social-active').checked);
+
+                                                const data = await (await fetch('/Admin/SosyalMedya/KaydetJson', { method:'POST', body:fd })).json();
+                                                if (data.success) {
+                                                    location.href = '/Admin/Ayarlar?tab=sosyal';
+                                                } else {
+                                                    alert(data.message);
+                                                }
+                                            });
+
                                             row.querySelector('.social-delete')?.addEventListener('click', async () => {
                                                 if (!confirm('@Localizer["Admin_AreYouSure"]')) return;
-                                                const fd = new FormData(); fd.append('__RequestVerificationToken', token); fd.append('id', row.dataset.id);
+                                                const fd = new FormData(); 
+                                                fd.append('__RequestVerificationToken', token); 
+                                                fd.append('id', row.dataset.id);
                                                 const data = await (await fetch('/Admin/SosyalMedya/SilJson', { method:'POST', body:fd })).json();
-                                                if (data.success) row.remove(); else alert(data.message);
+                                                if (data.success) {
+                                                    row.remove();
+                                                } else {
+                                                    alert(data.message);
+                                                }
                                             });
                                         };
+
                                         list.querySelectorAll('.social-link-row').forEach(wire);
+
                                         document.getElementById('addSocialLink')?.addEventListener('click', () => {
-                                            const row = document.createElement('div'); row.className='border rounded-3 p-3 social-link-row'; row.dataset.id='0';
-                                            row.innerHTML='<div class="row g-2 align-items-end"><div class="col-md-2"><label class="ca-label">Platform</label><input class="ca-input social-platform"></div><div class="col-md-4"><label class="ca-label">URL</label><input class="ca-input social-url" dir="ltr"></div><div class="col-md-2"><label class="ca-label">Icon</label><input class="ca-input social-icon" dir="ltr"></div><div class="col-md-1"><label class="ca-label">#</label><input class="ca-input social-order" type="number" value="0"></div><div class="col-md-1"><input class="form-check-input social-active" type="checkbox" checked></div><div class="col-md-2"><button type="button" class="ca-btn ca-btn-primary social-save"><i class="fas fa-save"></i></button></div></div>';
-                                            list.appendChild(row); wire(row); row.querySelector('input').focus();
+                                            const row = document.createElement('div'); 
+                                            row.className = 'border rounded-3 p-3 social-link-row shadow-sm'; 
+                                            row.dataset.id = '0';
+                                            row.style.background = '#fff';
+                                            row.innerHTML = `
+                                                <div class="row g-2 align-items-end">
+                                                    <div class="col-md-3">
+                                                        <label class="ca-label">@(isAr ? "الشبكة / الأيقونة" : "Network & Icon")</label>
+                                                        <div class="d-flex gap-2 align-items-center">
+                                                            <span class="social-icon-badge rounded-2 d-inline-flex align-items-center justify-content-center shadow-sm" style="width:38px; height:38px; min-width:38px; background:#eff6ff; font-size:1.15rem; color:#1877f2;">
+                                                                <i class="fab fa-facebook-f"></i>
+                                                            </span>
+                                                            <select class="ca-select social-preset-select">
+                                                                <option value="fab fa-facebook-f" data-platform="Facebook" data-color="#1877f2" data-bg="#eff6ff" data-ph="https://facebook.com/..." selected>Facebook</option>
+                                                                <option value="fab fa-instagram" data-platform="Instagram" data-color="#e1306c" data-bg="#fdf2f8" data-ph="https://instagram.com/...">Instagram</option>
+                                                                <option value="fab fa-whatsapp" data-platform="WhatsApp" data-color="#25d366" data-bg="#f0fdf4" data-ph="https://wa.me/970...">WhatsApp</option>
+                                                                <option value="fab fa-tiktok" data-platform="TikTok" data-color="#000000" data-bg="#f8fafc" data-ph="https://tiktok.com/@@...">TikTok</option>
+                                                                <option value="fab fa-x-twitter" data-platform="X (Twitter)" data-color="#000000" data-bg="#f8fafc" data-ph="https://x.com/...">X (Twitter)</option>
+                                                                <option value="fab fa-youtube" data-platform="YouTube" data-color="#ff0000" data-bg="#fef2f2" data-ph="https://youtube.com/@@...">YouTube</option>
+                                                                <option value="fab fa-telegram" data-platform="Telegram" data-color="#0088cc" data-bg="#f0f9ff" data-ph="https://t.me/...">Telegram</option>
+                                                                <option value="fab fa-snapchat" data-platform="Snapchat" data-color="#ca8a04" data-bg="#fefce8" data-ph="https://snapchat.com/add/...">Snapchat</option>
+                                                                <option value="fab fa-linkedin-in" data-platform="LinkedIn" data-color="#0a66c2" data-bg="#eff6ff" data-ph="https://linkedin.com/company/...">LinkedIn</option>
+                                                                <option value="fab fa-pinterest-p" data-platform="Pinterest" data-color="#bd081c" data-bg="#fef2f2" data-ph="https://pinterest.com/...">Pinterest</option>
+                                                                <option value="fas fa-globe" data-platform="@(isAr ? "موقع إلكتروني" : "Website")" data-color="#475569" data-bg="#f1f5f9" data-ph="https://...">@(isAr ? "موقع آخر / مخصص" : "Other / Custom")</option>
+                                                            </select>
+                                                        </div>
+                                                        <input type="hidden" class="social-icon" value="fab fa-facebook-f" />
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="ca-label">@(isAr ? "اسم العرض" : "Display Name")</label>
+                                                        <input class="ca-input social-platform" value="Facebook" placeholder="Facebook" />
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="ca-label">URL</label>
+                                                        <input class="ca-input social-url" dir="ltr" placeholder="https://facebook.com/..." />
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label class="ca-label">@Localizer["Admin_Sira"]</label>
+                                                        <input class="ca-input social-order" type="number" value="0" min="0" />
+                                                    </div>
+                                                    <div class="col-md-1 text-center">
+                                                        <label class="ca-label">@Localizer["Admin_Aktif"]</label>
+                                                        <input class="form-check-input social-active d-block mx-auto mt-2" type="checkbox" checked style="width:2.2em; height:1.2em;" />
+                                                    </div>
+                                                    <div class="col-md-1 d-flex gap-1 justify-content-end">
+                                                        <button type="button" class="ca-btn ca-btn-primary social-save" title="@(isAr ? "حفظ" : "Save")"><i class="fas fa-save"></i></button>
+                                                        <button type="button" class="ca-btn ca-btn-outline text-danger social-delete" title="@(isAr ? "حذف" : "Delete")"><i class="fas fa-trash"></i></button>
+                                                    </div>
+                                                </div>`;
+                                            list.appendChild(row); 
+                                            wire(row); 
+                                            row.querySelector('.social-url').focus();
                                         });
                                     });
                                 </script>
@@ -559,25 +737,98 @@
                     </section>
 
                     <section class="ca-settings-panel" id="panel-seo">
-                        <div class="ca-card">
+                        <!-- Card 1: Search Engine Optimization -->
+                        <div class="ca-card mb-3">
                             <div class="ca-card-body">
                                 <div class="ca-section-heading">
-                                    <i class="fas fa-magnifying-glass-chart"></i>
+                                    <i class="fas fa-magnifying-glass"></i>
                                     <div>
-                                         <h2>@Localizer["Admin_SEOAnalytics"]</h2>
-                                         <p>@Localizer["Admin_SEOAnalyticsDesc"]</p>
-
+                                         <h2>@(isAr ? "تهيئة محركات البحث (SEO)" : "Search Engine Optimization (SEO)")</h2>
+                                         <p>@(isAr ? "إعداد عنوان ووصف المتجر كما يظهر في نتائج بحث جوجل ومحركات البحث الأخرى" : "Configure how your store appears in Google and other search engine results")</p>
                                     </div>
                                 </div>
                                 <div class="row g-3">
-                                    <div class="col-md-6"><label class="ca-label">Meta Title</label><input asp-for="MetaTitle" class="ca-input" /></div>
-                                    <div class="col-md-6"><label class="ca-label">Meta Keywords</label><input asp-for="MetaKeywords" class="ca-input" /></div>
-                                    <div class="col-12"><label class="ca-label">Meta Description</label><textarea asp-for="MetaDescription" class="ca-textarea" rows="3"></textarea></div>
-                                    <div class="col-md-6"><label class="ca-label">Google Analytics ID</label><input asp-for="GoogleAnalyticsId" class="ca-input" placeholder="G-XXXXXXXXXX" /></div>
-                                    <div class="col-md-6"><label class="ca-label">Facebook Pixel ID</label><input asp-for="FacebookPixelId" class="ca-input" /></div>
-                                     <div class="col-md-6"><label class="ca-label">@Localizer["Admin_DefaultSocialShareImage"]</label><input asp-for="VarsayilanSosyalPaylasimGorseliUrl" class="ca-input" placeholder="/img/share-default.jpg" /></div>
-                                     <div class="col-md-6"><label class="ca-label">@Localizer["Admin_CookieNoticeText"]</label><input asp-for="CookieMetni" class="ca-input" /></div>
+                                    <div class="col-md-12">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="ca-label mb-0">@(isAr ? "عنوان المتجر في نتائج البحث (SEO Title)" : "Store Title in Search Results (SEO Title)")</label>
+                                            <span class="small text-muted">@(isAr ? "الموصى به: 50 - 60 حرفاً" : "Recommended: 50-60 chars")</span>
+                                        </div>
+                                        <input asp-for="MetaTitle" class="ca-input" maxlength="70" placeholder="@(isAr ? "مثال: 7ANRPS48 - متجرك الإلكتروني | تسوق أونلاين" : "e.g. 7ANRPS48 - Online Shopping")" />
+                                        <small class="text-muted">@(isAr ? "العنوان الرئيسي الذي يظهر باللون الأزرق لزوار محركات البحث." : "The main headline displayed in search engine results.")</small>
+                                    </div>
 
+                                    <div class="col-md-12">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="ca-label mb-0">@(isAr ? "وصف المتجر في نتائج البحث (SEO Description)" : "Store Description in Search Results (SEO Description)")</label>
+                                            <span class="small text-muted">@(isAr ? "الموصى به: 140 - 160 حرفاً" : "Recommended: 140-160 chars")</span>
+                                        </div>
+                                        <textarea asp-for="MetaDescription" class="ca-textarea" rows="2" maxlength="170" placeholder="@(isAr ? "اكتب نبذة جذابة وموجزة عن متجرك وخدمات التوصيل السريع..." : "Write a concise, compelling summary about your store and delivery services...")"></textarea>
+                                        <small class="text-muted">@(isAr ? "يظهر تحت العنوان في جوجل لتوضيح محتوى متجرك وتشجيع الزوار على الدخول." : "Appears beneath the title on Google to encourage searchers to visit your store.")</small>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="ca-label">@(isAr ? "الكلمات الدلالية المفتاحية (Keywords)" : "Search Keywords")</label>
+                                        <input asp-for="MetaKeywords" class="ca-input" placeholder="@(isAr ? "تسوق, أونلاين, فلسطين, توصيل سريع, عروض" : "shopping, palestine, online store, fast delivery")" />
+                                        <small class="text-muted">@(isAr ? "كلمات مفتاحية تفصل بينها فواصل توضح تصنيفات ونشاط متجرك." : "Comma-separated keywords representing your store offerings.")</small>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="ca-label">@(isAr ? "صورة المشاركة على وسائل التواصل (Social Share Image)" : "Social Media Share Image (OpenGraph)")</label>
+                                        <input asp-for="VarsayilanSosyalPaylasimGorseliUrl" class="ca-input" placeholder="/img/share-default.jpg" dir="ltr" />
+                                        <small class="text-muted">@(isAr ? "الصورة الترويجية التي تظهر تلقائياً عند إرسال رابط متجرك في واتساب أو فيسبوك." : "Preview image displayed when sharing your store link on WhatsApp or Facebook.")</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Analytics & Tracking -->
+                        <div class="ca-card mb-3">
+                            <div class="ca-card-body">
+                                <div class="ca-section-heading">
+                                    <i class="fas fa-chart-line"></i>
+                                    <div>
+                                         <h2>@(isAr ? "أدوات التحليل والتتبع الإعلاني" : "Analytics & Tracking Tools")</h2>
+                                         <p>@(isAr ? "ربط متجرك مع منصات التحليلات الرقمية لمتابعة عدد الزوار والصفحات الأكثر مشاهدة وقياس مبيعات الحملات الإعلانية" : "Connect your store with analytics platforms to monitor visitors, popular pages, and campaign conversions")</p>
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="ca-label">@(isAr ? "معرف إحصائيات جوجل (Google Analytics 4 ID)" : "Google Analytics 4 ID")</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light text-muted"><i class="fab fa-google"></i></span>
+                                            <input asp-for="GoogleAnalyticsId" class="ca-input" placeholder="G-XXXXXXXXXX" dir="ltr" />
+                                        </div>
+                                        <small class="text-muted">@(isAr ? "معرف قياس Google Analytics لمتابعة حركة الزوار (يبدأ بـ G-)." : "Your GA4 Measurement ID for tracking store visits (starts with G-).")</small>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="ca-label">@(isAr ? "معرف بكسل فيسبوك / ميتا (Meta Pixel ID)" : "Meta (Facebook) Pixel ID")</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light text-muted"><i class="fab fa-meta"></i></span>
+                                            <input asp-for="FacebookPixelId" class="ca-input" placeholder="123456789012345" dir="ltr" />
+                                        </div>
+                                        <small class="text-muted">@(isAr ? "معرف البكسل المكون من 15-16 رقماً لتتبع الإعلانات والمبيعات على فيسبوك وإنستغرام." : "15-16 digit numeric ID used for tracking ad conversions on Facebook & Instagram.")</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Cookie Banner / Privacy -->
+                        <div class="ca-card">
+                            <div class="ca-card-body">
+                                <div class="ca-section-heading">
+                                    <i class="fas fa-cookie-bite"></i>
+                                    <div>
+                                         <h2>@(isAr ? "إشعار ملفات تعريف الارتباط والخصوصية" : "Cookie Consent Banner")</h2>
+                                         <p>@(isAr ? "الرسالة التي تظهر أسفل الشاشة للزوار لإبلاغهم بسياسة الخصوصية واستخدام ملفات الكوكيز" : "Privacy notice banner displayed at the bottom of the page informing visitors about cookies")</p>
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label class="ca-label">@(isAr ? "نص الإشعار المعروض للزائر" : "Banner Notice Text")</label>
+                                        <textarea asp-for="CookieMetni" class="ca-textarea" rows="2" placeholder="@(isAr ? "نستخدم ملفات تعريف الارتباط لتحسين تجربتك على موقعنا..." : "We use cookies to improve your experience on our website...")"></textarea>
+                                        <small class="text-muted">@(isAr ? "سيظهر هذا النص في شريط التنبيه أسفل الموقع عند زيارة العميل لأول مرة." : "This text is displayed in the consent bar at the bottom of the store for first-time visitors.")</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>

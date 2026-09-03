@@ -1,4 +1,4 @@
-﻿using FilistinProje.Core.Models;
+using FilistinProje.Core.Models;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Web.Resources;
@@ -121,6 +121,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .OrderByDescending(x => x.OlusturulmaTarihi)
                 .ToListAsync();
 
+            ExcelPackage.License.SetNonCommercialOrganization("7ANRPS48");
             using var package = new ExcelPackage();
             var worksheet = package.Workbook.Worksheets.Add(_localizer["Admin_VisitorTrafficWorksheet"].Value);
             var headers = new[]

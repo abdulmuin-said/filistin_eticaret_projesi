@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FilistinProje.Web.Controllers
 {
     public class HataController : Controller
     {
+        [Route("Error/{statusCode}")]
         [Route("Hata/{statusCode}")]
         public IActionResult Index(int statusCode)
         {

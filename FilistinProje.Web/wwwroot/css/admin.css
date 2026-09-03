@@ -1313,6 +1313,7 @@ a {
     border-radius: var(--ca-radius) !important;
     padding: 8px !important;
     min-width: 200px;
+    z-index: 1065 !important;
 }
 
 .ca-dropdown-menu .dropdown-item {

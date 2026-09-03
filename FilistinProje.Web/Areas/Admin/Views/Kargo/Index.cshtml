@@ -36,7 +36,7 @@
                                 <input name="Kod" class="ca-input" placeholder="palestine-post" />
                             </div>
                             <div class="col-12">
-                                <label class="ca-label">@Localizer["Admin_LogoUrl"]</label>
+                                <label class="ca-label">@Localizer["Admin_LogoURL"]</label>
                                 <input name="LogoUrl" class="ca-input" placeholder="/img/shipping/company-logo.svg" />
                             </div>
                             <div class="col-md-4">
@@ -127,8 +127,7 @@
                                     </td>
                                     <td class="text-end pe-4">
                                         <div class="dropdown">
-                                             <button class="ca-btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="@Localizer["Admin_Actions"]">
-
+                                             <button class="ca-btn-icon" type="button" data-bs-toggle="dropdown" data-bs-popper-config='{"strategy":"fixed"}' aria-expanded="false" title="@Localizer["Admin_Actions"]">
                                                 <i class="fas fa-ellipsis-v"></i>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end ca-dropdown-menu">
@@ -162,28 +161,57 @@
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="Id" value="@firma.Id" />
                                             <div class="row g-3">
-                                                <div class="col-md-3"><input name="Ad" value="@firma.Ad" class="ca-input" placeholder="@Localizer["Admin_Firma_Adi"]" /></div>
-                                                 <div class="col-md-2"><input name="Kod" value="@firma.Kod" class="ca-input" placeholder="@Localizer["Admin_Code"]" /></div>
-                                                <div class="col-md-2"><input name="Telefon" value="@firma.Telefon" class="ca-input" placeholder="@Localizer["Admin_Telefon"]" /></div>
-                                                <div class="col-md-2"><input name="Fiyat" value="@firma.Fiyat.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)" class="ca-input" type="text" inputmode="decimal" data-decimal min="0" placeholder="@Localizer["Admin_Kargo_Ucreti"]" required /></div>
                                                 <div class="col-md-3">
+                                                    <label class="ca-label">@Localizer["Admin_Firma_Adi"]</label>
+                                                    <input name="Ad" value="@firma.Ad" class="ca-input" placeholder="@Localizer["Admin_Firma_Adi"]" required />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="ca-label">@Localizer["Admin_Code"]</label>
+                                                    <input name="Kod" value="@firma.Kod" class="ca-input" placeholder="@Localizer["Admin_Code"]" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="ca-label">@Localizer["Admin_Telefon"]</label>
+                                                    <input name="Telefon" value="@firma.Telefon" class="ca-input" placeholder="@Localizer["Admin_Telefon"]" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label class="ca-label">@Localizer["Admin_ShippingFee"] (₪)</label>
+                                                    <input name="Fiyat" value="@firma.Fiyat.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)" class="ca-input" type="text" inputmode="decimal" data-decimal min="0" placeholder="@Localizer["Admin_Kargo_Ucreti"]" required />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="ca-label">@Localizer["Admin_Durum"]</label>
                                                     <select name="AktifMi" class="ca-select">
                                                         <option value="true" selected="@firma.AktifMi">@Localizer["Admin_Aktif"]</option>
                                                         <option value="false" selected="@(!firma.AktifMi)">@Localizer["Admin_Pasif"]</option>
                                                     </select>
                                                 </div>
-                                                <div class="col-md-6"><input name="LogoUrl" value="@firma.LogoUrl" class="ca-input" /></div>
-                                                <div class="col-md-6"><input name="TakipUrl" value="@firma.TakipUrl" class="ca-input" /></div>
-                                                <div class="col-md-4"><input name="GondericiUnvan" value="@firma.GondericiUnvan" class="ca-input" /></div>
-                                                <div class="col-md-5"><input name="GondericiAdres" value="@firma.GondericiAdres" class="ca-input" /></div>
-                                                <div class="col-md-3"><input name="GondericiTelefon" value="@firma.GondericiTelefon" class="ca-input" /></div>
+                                                <div class="col-md-6">
+                                                    <label class="ca-label">@Localizer["Admin_LogoURL"]</label>
+                                                    <input name="LogoUrl" value="@firma.LogoUrl" class="ca-input" placeholder="/img/shipping/company-logo.svg" />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="ca-label">@Localizer["Admin_TrackingUrl"]</label>
+                                                    <input name="TakipUrl" value="@firma.TakipUrl" class="ca-input" placeholder="https://..." />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="ca-label">@Localizer["Admin_Gonderici_Unvani"]</label>
+                                                    <input name="GondericiUnvan" value="@firma.GondericiUnvan" class="ca-input" />
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <label class="ca-label">@Localizer["Admin_Gonderici_Adresi"]</label>
+                                                    <input name="GondericiAdres" value="@firma.GondericiAdres" class="ca-input" placeholder="@Localizer["Admin_SenderAddressPlaceholder"]" />
+                                                </div>
                                                 <div class="col-md-3">
+                                                    <label class="ca-label">@Localizer["Admin_Gonderici_Telefonu"]</label>
+                                                    <input name="GondericiTelefon" value="@firma.GondericiTelefon" class="ca-input" />
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label class="ca-label">@Localizer["Admin_Varsayilan"]</label>
                                                     <select name="VarsayilanMi" class="ca-select">
                                                         <option value="false" selected="@(!firma.VarsayilanMi)">@Localizer["Admin_NotDefault"]</option>
                                                         <option value="true" selected="@firma.VarsayilanMi">@Localizer["Admin_Varsayilan"]</option>
                                                     </select>
                                                 </div>
-                                                <div class="col-md-9 text-end">
+                                                <div class="col-md-9 text-end d-flex align-items-end justify-content-end">
                                                     <button class="ca-btn ca-btn-primary" type="submit"><i class="fas fa-save"></i> @Localizer["Admin_Guncelle"]</button>
                                                 </div>
                                             </div>
@@ -339,6 +367,9 @@
     const noCarrierProvinceText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_NoCarrierProvince"].Value));
     const editRegionText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_EditRegion"].Value));
     const provinceText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Province"].Value));
+    const editBtnText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Duzenle"].Value));
+    const deleteBtnText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Sil"].Value));
+    const newRegionTitleText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_NewRegion"].Value));
 
     function getToken() {
         return document.querySelector('#bolgeForm input[name="__RequestVerificationToken"]')?.value
@@ -466,8 +497,11 @@
 
     function renderBolgeler(bolgeler) {
         const container = document.getElementById('bolgeListesi');
-        const ulkeFilter = document.getElementById('bolgeFiltreUlke')?.value || '';
-        const filtered = ulkeFilter ? bolgeler.filter(b => b.ulke === ulkeFilter) : bolgeler;
+        const ulkeFilter = (document.getElementById('bolgeFiltreUlke')?.value || '').toLowerCase().trim();
+        const filtered = ulkeFilter ? bolgeler.filter(b => {
+            const bUlke = (b.ulke || '').toLowerCase().trim();
+            return bUlke === ulkeFilter || (ulkeFilter === 'palestine' && bUlke === 'filistin');
+        }) : bolgeler;
 
         if (!filtered.length) {
             showPanelMessage(container, noRegionText, 'col-12 text-center text-muted py-4');
@@ -502,13 +536,13 @@
             const edit = document.createElement('button');
             edit.type = 'button';
             edit.className = 'ca-btn-icon';
-            edit.title = '@Localizer["Admin_Duzenle"]';
+            edit.title = editBtnText;
             edit.appendChild(Object.assign(document.createElement('i'), { className: 'fas fa-pen' }));
             edit.addEventListener('click', () => window.bolgeApp.duzenleBolge(b.id, b.ad || '', b.ulke || '', b.aciklama || '', b.sira, b.fiyat));
             const remove = document.createElement('button');
             remove.type = 'button';
             remove.className = 'ca-btn-icon text-danger';
-            remove.title = '@Localizer["Admin_Sil"]';
+            remove.title = deleteBtnText;
             remove.appendChild(Object.assign(document.createElement('i'), { className: 'fas fa-trash' }));
             remove.addEventListener('click', () => window.bolgeApp.silBolge(b.id, b.ad || ''));
             actions.append(edit, remove);
@@ -536,7 +570,7 @@
                     const cityEdit = document.createElement('button');
                     cityEdit.type = 'button';
                     cityEdit.className = 'btn btn-sm p-0 ms-2';
-                    cityEdit.title = '@Localizer["Admin_Duzenle"]';
+                    cityEdit.title = editBtnText;
                     cityEdit.innerHTML = '<i class="fas fa-pen"></i>';
                     cityEdit.addEventListener('click', () => window.bolgeApp.duzenleSehir(s.id, b.id, s.sehirAdi || ''));
                     badge.appendChild(cityEdit);
@@ -544,7 +578,7 @@
                     cityRemove.type = 'button';
                     cityRemove.className = 'btn-close btn-close-sm ms-2';
                     cityRemove.style.fontSize = '0.6rem';
-                    cityRemove.title = '@Localizer["Admin_Sil"]';
+                    cityRemove.title = deleteBtnText;
                     cityRemove.addEventListener('click', () => window.bolgeApp.silSehir(s.id, s.sehirAdi || ''));
                     badge.appendChild(cityRemove);
                     cityList.appendChild(badge);
@@ -660,7 +694,7 @@
                 if (d.success) {
                     this.reset();
                     document.getElementById('BolgeId').value = '0';
-                    setRegionFormTitle('fas fa-plus me-2', '@Localizer["Admin_NewRegion"]');
+                    setRegionFormTitle('fas fa-plus me-2', newRegionTitleText);
                     document.getElementById('bolgeIptalBtn').style.display = 'none';
                     loadBolgeler();
                 }
@@ -670,7 +704,7 @@
     document.getElementById('bolgeIptalBtn').addEventListener('click', function() {
         document.getElementById('bolgeForm').reset();
         document.getElementById('BolgeId').value = '0';
-        setRegionFormTitle('fas fa-plus me-2', '@Localizer["Admin_NewRegion"]');
+        setRegionFormTitle('fas fa-plus me-2', newRegionTitleText);
         this.style.display = 'none';
     });
 

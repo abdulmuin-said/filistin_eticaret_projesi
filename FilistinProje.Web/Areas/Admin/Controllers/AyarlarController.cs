@@ -1,4 +1,4 @@
-﻿using System.Net.Mail;
+using System.Net.Mail;
 using FilistinProje.Core.Interfaces;
 using FilistinProje.Core.Models;
 using FilistinProje.Core.Varliklar;
@@ -36,6 +36,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(string? tab = null)
         {
+            if (string.Equals(tab, "odeme", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction(nameof(Index), new { tab = "kapida-odeme" });
+            }
+
             await HazirlaKargoFirmaSecenekleriAsync();
             ViewBag.SosyalMedyaLinkleri = await _context.SosyalMedyaLinkleri
                 .OrderBy(x => x.Sira).ThenBy(x => x.Id).ToListAsync();

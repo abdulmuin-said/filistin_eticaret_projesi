@@ -252,7 +252,7 @@
                                         </form>
                                         @if (item.AktifMi)
                                         {
-                                            <form action="/Admin/Urun/GizleGoster" method="post" class="d-inline">
+                                            <form action="/Admin/Urun/GizleGoster" method="post" class="d-inline" onsubmit="return confirm(@System.Text.Json.JsonSerializer.Serialize(item.YayindaMi ? Localizer["Admin_ProductVisibilityHideConfirm"].Value : Localizer["Admin_ProductVisibilityShowConfirm"].Value))">
                                                 @Html.AntiForgeryToken()
                                                 <input type="hidden" name="id" value="@item.Id" />
                                                 <input type="hidden" name="yayinda" value="@(!item.YayindaMi)" />

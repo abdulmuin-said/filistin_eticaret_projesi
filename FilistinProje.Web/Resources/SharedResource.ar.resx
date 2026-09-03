@@ -2766,8 +2766,8 @@
   <data name="Admin_Bugun" xml:space="preserve">
     <value>اليوم</value>
   </data>
-  <data name="Admin_siparis" xml:space="preserve">
-    <value>طلب</value>
+  <data name="Admin_Siparis" xml:space="preserve">
+    <value>الطلب</value>
   </data>
   <data name="Admin_Kargoya_hazir" xml:space="preserve">
     <value>جاهز للشحن</value>
@@ -3052,7 +3052,7 @@
     <value>المجموع</value>
   </data>
   <data name="Admin_Kullanici" xml:space="preserve">
-    <value>Kullanıcı</value>
+    <value>المستخدم</value>
   </data>
   <data name="Admin_Ayarlar" xml:space="preserve">
     <value>الإعدادات</value>
@@ -3064,7 +3064,7 @@
     <value>عرض في الصفحة الرئيسية</value>
   </data>
   <data name="Admin_Canli_Siteyi_Goruntule" xml:space="preserve">
-    <value>Canlı Siteyi Görüntüle</value>
+    <value>عرض الموقع المباشر</value>
   </data>
   <data name="Admin_ProductCatalog" xml:space="preserve">
     <value>كتالوج المنتجات</value>
@@ -5813,5 +5813,14 @@
   <data name="Admin_VariantDiscountPrice" xml:space="preserve"><value>سعر المتغير بعد الخصم</value></data>
   <data name="Admin_Product_VariantDiscountPriceInvalid" xml:space="preserve"><value>المتغير {0}: يجب أن يكون سعر الخصم أكبر من صفر وأقل من السعر العادي.</value></data>
   <data name="Admin_ColorPicker" xml:space="preserve"><value>اختيار اللون</value></data>
+  <data name="Admin_ProductVisibilityShowConfirm" xml:space="preserve"><value>هل تريد إظهار هذا المنتج في الواجهة؟</value></data>
+  <data name="Admin_ProductVisibilityHideConfirm" xml:space="preserve"><value>هل تريد إخفاء هذا المنتج من الواجهة؟</value></data>
+  <data name="Admin_AccountOwnerPlaceholder" xml:space="preserve"><value>اسم صاحب الحساب أو الشركة</value></data>
+  <data name="Admin_BankNamePlaceholder" xml:space="preserve"><value>اسم البنك (مثال: بنك فلسطين)</value></data>
+  <data name="Admin_RegisteredAccounts" xml:space="preserve"><value>الحسابات المسجلة</value></data>
+  <data name="Admin_NoBankAccountsYet" xml:space="preserve"><value>لا توجد حسابات بنكية مضافة حتى الآن.</value></data>
+  <data name="Admin_BankOrAccountOwner" xml:space="preserve"><value>البنك وصاحب الحساب</value></data>
+  <data name="Admin_Branch" xml:space="preserve"><value>الفرع</value></data>
+  <data name="Admin_DeleteBankAccountConfirm" xml:space="preserve"><value>هل أنت متأكد من رغبتك في حذف هذا الحساب البنكي؟</value></data>
 </root>
 
