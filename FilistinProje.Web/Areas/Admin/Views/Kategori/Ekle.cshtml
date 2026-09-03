@@ -185,22 +185,103 @@
                                 <label class="ca-label">@Localizer["Admin_UploadCategoryImage"]</label>
                                 <input type="file" name="gorselDosyasi" id="categoryImageFile" class="ca-input" accept=".jpg,.jpeg,.png,.webp" onchange="previewCategoryFile(event)" />
                                 <span class="text-danger small" data-valmsg-for="gorselDosyasi"></span>
-                                <div class="small text-muted mt-1">@Localizer["Admin_CategoryCardImageSizeHelp"]</div>
-                            </div>
-                            <div class="col-lg-6">
-                                  <label class="ca-label">@Localizer["Admin_Kategori_Banner_URL"]</label>
+                                                           <!-- فاصل احترافي لبانر وترويج الكاتيجوري -->
+                            <div class="col-12 mt-4 pt-3 border-top">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <i class="fas fa-panorama text-warning fa-lg"></i>
+                                        <h5 class="fw-bold mb-0 text-dark">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "بانر وترويج الكاتيجوري في صفحة المنتجات (Hero Banner)" : "Category Hero Banner & Promotional Intro")</h5>
+                                    </div>
+                                    <span class="badge bg-warning text-dark px-3 py-1 rounded-pill">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "يظهر في أعلى صفحة المنتجات" : "Shown on top of Products page")</span>
+                                </div>
 
-                                <input asp-for="BannerUrl" class="ca-input" />
+                                <!-- دليل المقاسات الموصى بها -->
+                                <div class="alert alert-light border rounded-3 p-3 mb-4 shadow-sm" style="background:#fffdf9; border-color:#e9dec4 !important;">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <i class="fas fa-ruler-combined text-warning fa-2x mt-1"></i>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold mb-1" style="color:#313511;">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "دليل المقاسات الموصى بها للصور (Image Dimensions Guide)" : "Recommended Image Sizes Guide")</div>
+                                            <p class="small text-muted mb-2">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "لضمان ظهور البانر والصور بجودة فائقة وبدون تشوه أو بطء في التصفح:" : "Ensure crisp, fast-loading images on desktop and mobile:")</p>
+                                            <div class="row g-2 small">
+                                                <div class="col-md-4">
+                                                    <div class="p-2 rounded border bg-white">
+                                                        <strong class="d-block text-dark"><i class="fas fa-desktop text-primary me-1"></i> @(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "سطح المكتب (Desktop)" : "Desktop Banner")</strong>
+                                                        <span class="badge bg-success mt-1">1400 × 450 px</span> أو <span>1200 × 400 px</span>
+                                                        <div class="text-muted text-xs mt-1">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "نسبة عرض إلى ارتفاع عريضة (16:5)" : "Wide aspect ratio (16:5)")</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="p-2 rounded border bg-white">
+                                                        <strong class="d-block text-dark"><i class="fas fa-mobile-screen text-success me-1"></i> @(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "الهواتف الذكية (Mobile)" : "Mobile Banner")</strong>
+                                                        <span class="badge bg-info text-dark mt-1">600 × 400 px</span>
+                                                        <div class="text-muted text-xs mt-1">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "التركيز في المنتصف لتفادي القص" : "Centered focus to prevent cropping")</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="p-2 rounded border bg-white">
+                                                        <strong class="d-block text-dark"><i class="fas fa-grip text-warning me-1"></i> @(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "صورة الكرت والقائمة" : "Card & Menu Image")</strong>
+                                                        <span class="badge bg-secondary mt-1">600 × 600 px</span> أو <span>400 × 300 px</span>
+                                                        <div class="text-muted text-xs mt-1">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "مربعة (1:1) أو (4:3)" : "Square (1:1) or (4:3)")</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label class="ca-label">@Localizer["Admin_Kategori_Banner_URL"]</label>
+                                <input asp-for="BannerUrl" class="ca-input" id="categoryBannerUrl" dir="ltr" placeholder="https://... أو /uploads/kategoriler/..." onchange="updateBannerPreview()" />
+                                <div class="small text-muted mt-1">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "رابط مباشر لصورة خلفية البانر الترويجي" : "Direct URL of the category hero banner")</div>
                             </div>
                             <div class="col-lg-6">
                                 <label class="ca-label">@Localizer["Admin_UploadCategoryBanner"]</label>
-                                <input type="file" name="bannerDosyasi" class="ca-input" accept=".jpg,.jpeg,.png,.webp" />
+                                <input type="file" name="bannerDosyasi" id="categoryBannerFile" class="ca-input" accept=".jpg,.jpeg,.png,.webp" onchange="previewBannerFile(event)" />
                                 <span class="text-danger small" data-valmsg-for="bannerDosyasi"></span>
                                 <div class="small text-muted mt-1">@Localizer["Admin_CategoryBannerSizeHelp"]</div>
                             </div>
+
+                            <!-- معاينة البانر -->
+                            <div class="col-12" id="bannerPreviewContainer" style="display:none;">
+                                <label class="ca-label">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "معاينة البانر الترويجي:" : "Banner Preview:")</label>
+                                <div class="rounded-3 overflow-hidden border shadow-sm position-relative" style="max-height: 200px; background: #182f22;">
+                                    <img id="categoryBannerPreviewImg" src="" alt="Banner Preview" style="width: 100%; height: 200px; object-fit: cover;" />
+                                    <div class="position-absolute bottom-0 start-0 p-3 text-white" style="background: linear-gradient(0deg, rgba(0,0,0,0.75) 0%, transparent 100%); width: 100%;">
+                                        <span class="badge bg-warning text-dark mb-1">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "معاينة مباشرة" : "Live Preview")</span>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="col-lg-6">
+                                <label class="ca-label">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "وسم الحملة الترويجية (العربية)" : "Campaign Tag (Arabic)")</label>
+                                <input asp-for="KampanyaEtiketiAr" class="ca-input" dir="rtl" placeholder="@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "مثال: تخفيضات الموسم 30%" : "e.g. Special Season Offers")" />
+                                <div class="small text-muted mt-1">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "يظهر كشعار ذهبي براق فوق عنوان الكاتيجوري" : "Gold glowing badge above category title")</div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="ca-label">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "وسم الحملة الترويجية (English)" : "Campaign Tag (English)")</label>
+                                <input asp-for="KampanyaEtiketiEn" class="ca-input" dir="ltr" placeholder="e.g. Summer Collection / Limited Edition" />
+                                <div class="small text-muted mt-1">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "الترجمة الإنجليزية لوسم الحملة" : "English campaign tag text")</div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label class="ca-label">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "النص الترويجي للبانر (العربية)" : "Hero Subtitle / Promo Text (Arabic)")</label>
+                                <textarea asp-for="UstMetinAr" class="ca-textarea" rows="3" dir="rtl" placeholder="@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "اكتب نبذة ترويجية جذابة تظهر في البانر وتشجع الزوار على تصفح المنتجات..." : "Write a compelling category intro for the banner...")"></textarea>
+                                <div class="small text-muted mt-1">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "يظهر أسفل اسم الكاتيجوري مباشرة داخل البانر" : "Displayed beneath category title in the banner")</div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="ca-label">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "النص الترويجي للبانر (English)" : "Hero Subtitle / Promo Text (English)")</label>
+                                <textarea asp-for="UstMetinEn" class="ca-textarea" rows="3" dir="ltr" placeholder="Write an engaging overview for the category hero banner..."></textarea>
+                                <div class="small text-muted mt-1">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "الترجمة الإنجليزية للنص الترويجي" : "English banner subtitle")</div>
+                            </div>
+
+                            <div class="col-12 mt-3 pt-3 border-top">
+                                <h6 class="fw-bold mb-3 text-dark">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "إعدادات القائمة والنشر الإضافية" : "Menu & Publishing Settings")</h6>
+                            </div>
+
+                            <div class="col-lg-4">
                                 <label class="ca-label">صورة القائمة / Menu image URL</label>
-                                <input asp-for="MenuGorselUrl" class="ca-input" placeholder="Special image shown in the menu" />
+                                <input asp-for="MenuGorselUrl" class="ca-input" dir="ltr" placeholder="Special image shown in the dropdown menu" />
                             </div>
                             <div class="d-none">
                                 <label class="ca-label">@Localizer["Admin_SEO_Basligi"]</label>
@@ -300,5 +381,31 @@
         const imageUrl = URL.createObjectURL(file);
         preview.innerHTML = `<img src="${imageUrl}" alt="@Localizer["Admin_Kategori_Gorsel"]">`;
         preview.querySelector('img').addEventListener('load', () => URL.revokeObjectURL(imageUrl), { once: true });
+    }
+
+    function updateBannerPreview() {
+        const urlInput = document.getElementById('categoryBannerUrl');
+        const container = document.getElementById('bannerPreviewContainer');
+        const img = document.getElementById('categoryBannerPreviewImg');
+        if (!urlInput || !container || !img) return;
+
+        if (urlInput.value.trim()) {
+            img.src = urlInput.value.trim();
+            container.style.display = '';
+        } else {
+            container.style.display = 'none';
+        }
+    }
+
+    function previewBannerFile(event) {
+        const file = event.target.files && event.target.files[0];
+        const container = document.getElementById('bannerPreviewContainer');
+        const img = document.getElementById('categoryBannerPreviewImg');
+        if (!file || !container || !img) return;
+
+        const url = URL.createObjectURL(file);
+        img.src = url;
+        container.style.display = '';
+        img.addEventListener('load', () => URL.revokeObjectURL(url), { once: true });
     }
 </script>

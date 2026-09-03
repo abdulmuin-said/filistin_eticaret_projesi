@@ -70,13 +70,14 @@
 
 <!-- Floating Cart Button -->
 <a href="/cart" aria-label="@Localizer["Cart"]"
-    class="fixed bottom-6 start-6 z-50 bg-brand-olive text-white rounded-full shadow-xl hover:bg-[#1c2001] hover:scale-110 transition-all duration-300 group floating-cart-btn floating-action-btn flex items-center justify-center"
+    class="fixed bottom-6 start-6 z-50 text-white rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.3)] ring-2 ring-white/90 hover:scale-110 transition-all duration-300 group floating-cart-btn floating-action-btn flex items-center justify-center"
+    style="background: linear-gradient(135deg, #c5a880 0%, #b38e4a 50%, #947132 100%);"
     title="@Localizer["MyCart"]">
-    <svg fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
         <path d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     @if (sepetCount > 0)
     {
-        <span class="absolute -top-1 -end-1 bg-brand-gold text-white text-sm w-7 h-7 rounded-full flex items-center justify-center font-bold shadow-md">@sepetCount</span>
+        <span class="absolute -top-1 -end-1 bg-[#182f22] text-[#f2d99f] text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shadow-lg ring-2 ring-white">@sepetCount</span>
     }
 </a>

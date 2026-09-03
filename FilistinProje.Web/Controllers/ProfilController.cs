@@ -1,4 +1,4 @@
-﻿using FilistinProje.Core.Interfaces;
+using FilistinProje.Core.Interfaces;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Service.Services;
@@ -620,10 +620,94 @@ namespace FilistinProje.Web.Controllers
                 : $"<tr><td colspan='3' style='padding:12px; color:#6f6a5e;'>{_localizer["Profil_ProductDetailNotFound"].Value}</td></tr>";
         }
 
+        [HttpPost("update")]
+        [HttpPost("/Profil/Guncelle")]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Guncelle(string adSoyad, string? phoneNumber, string? sehir, string? adres)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Challenge();
+            }
+
+            user.AdSoyad = adSoyad?.Trim() ?? string.Empty;
+            if (!string.IsNullOrWhiteSpace(phoneNumber))
+            {
+                if (FilistinProje.Web.Services.PhoneNumberNormalizer.TryNormalize(phoneNumber, out var normalizedPhone))
+                {
+                    user.PhoneNumber = normalizedPhone;
+                }
+                else
+                {
+                    user.PhoneNumber = phoneNumber.Trim();
+                }
+            }
+            else
+            {
+                user.PhoneNumber = null;
+            }
+
+            user.Sehir = sehir?.Trim();
+            user.Adres = adres?.Trim();
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                TempData["Mesaj"] = _localizer["Profile_UpdatedSuccess"].Value;
+            }
+            else
+            {
+                TempData["Hata"] = string.Join(" ", result.Errors.Select(e => e.Description));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost("change-password")]
+        [HttpPost("/Profil/SifreDegistir")]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SifreDegistir(string mevcutSifre, string yeniSifre, string yeniSifreTekrar)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Challenge();
+            }
+
+            if (string.IsNullOrWhiteSpace(mevcutSifre) || string.IsNullOrWhiteSpace(yeniSifre) || string.IsNullOrWhiteSpace(yeniSifreTekrar))
+            {
+                TempData["Hata"] = _localizer["Profile_PasswordRequired"].Value;
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (yeniSifre != yeniSifreTekrar)
+            {
+                TempData["Hata"] = _localizer["Profile_PasswordMismatch"].Value;
+                return RedirectToAction(nameof(Index));
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, mevcutSifre, yeniSifre);
+            if (result.Succeeded)
+            {
+                await _signInManager.RefreshSignInAsync(user);
+                TempData["Mesaj"] = _localizer["Profile_PasswordChangedSuccess"].Value;
+            }
+            else
+            {
+                var errors = result.Errors.Select(e => e.Code == "PasswordMismatch" ? _localizer["Profile_CurrentPasswordIncorrect"].Value : e.Description);
+                TempData["Hata"] = string.Join(" ", errors);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
         private string GetCurrencySymbol()
         {
             var settings = _siteSettingsService.GetSettings();
-            return string.IsNullOrWhiteSpace(settings.ParaBirimi) ? "â‚ª" : settings.ParaBirimi;
+            return string.IsNullOrWhiteSpace(settings.ParaBirimi) ? "₪" : settings.ParaBirimi;
         }
     }
 }

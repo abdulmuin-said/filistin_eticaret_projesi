@@ -63,11 +63,15 @@
         maxSiparisAdedi = minSiparisAdedi;
     }
 
+    var isAr = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar";
     var rawVaryantMetni = varsayilanSecenek != null 
-        ? (string.IsNullOrWhiteSpace(varsayilanSecenek.VaryantBasligi) ? (varsayilanSecenek.Olcu ?? "Standart") : varsayilanSecenek.VaryantBasligi) 
+        ? (string.IsNullOrWhiteSpace(varsayilanSecenek.VaryantBasligi) ? (varsayilanSecenek.Olcu ?? string.Empty) : varsayilanSecenek.VaryantBasligi) 
         : string.Empty;
-    var seciliVaryantMetni = string.Join(" / ", rawVaryantMetni.Split(new[] { " / " }, StringSplitOptions.RemoveEmptyEntries).Where(x => !x.Contains("Standart", StringComparison.OrdinalIgnoreCase) && !x.Contains("Bask", StringComparison.OrdinalIgnoreCase)));
-    if (string.IsNullOrWhiteSpace(seciliVaryantMetni) && !string.IsNullOrWhiteSpace(rawVaryantMetni)) seciliVaryantMetni = rawVaryantMetni.Split('/')[0].Trim();
+    var seciliVaryantMetni = string.Join(" / ", rawVaryantMetni.Split(new[] { " / " }, StringSplitOptions.RemoveEmptyEntries).Where(x => !x.Contains("Standart", StringComparison.OrdinalIgnoreCase) && !x.Contains("Standard", StringComparison.OrdinalIgnoreCase) && !x.Contains("Bask", StringComparison.OrdinalIgnoreCase)));
+    if (string.IsNullOrWhiteSpace(seciliVaryantMetni) && !string.IsNullOrWhiteSpace(rawVaryantMetni) && !rawVaryantMetni.Contains("Standart", StringComparison.OrdinalIgnoreCase) && !rawVaryantMetni.Contains("Standard", StringComparison.OrdinalIgnoreCase))
+    {
+        seciliVaryantMetni = rawVaryantMetni.Split('/')[0].Trim();
+    }
     if (secenekler.Count <= 1)
     {
         seciliVaryantMetni = string.Empty;
@@ -105,17 +109,80 @@
         .Where(x => x.UrunOzellikTanimi.TeknikTablodaGoster)
         .Select(x => (x.UrunOzellikTanimi.Ad, x.DegerGosterimi)));
 
-    foreach (var satir in teknikSatirlari)
+    foreach (var rawSatir in teknikSatirlari)
     {
-        var ayiriciIndex = satir.IndexOf(':');
-        if (ayiriciIndex > 0 && ayiriciIndex < satir.Length - 1)
+        var satir = rawSatir.Trim();
+        if (string.IsNullOrWhiteSpace(satir)) continue;
+
+        string baslik = string.Empty;
+        string deger = string.Empty;
+
+        if (satir.Contains('|'))
         {
-            teknikTabloSatirlari.Add((satir[..ayiriciIndex].Trim(), satir[(ayiriciIndex + 1)..].Trim()));
+            var parts = satir.Split('|', StringSplitOptions.TrimEntries);
+            if (parts.Length == 2)
+            {
+                var targetPart = isAr ? parts[1] : parts[0];
+                var colonIdx = targetPart.IndexOf(':');
+                if (colonIdx > 0 && colonIdx < targetPart.Length - 1)
+                {
+                    baslik = targetPart[..colonIdx].Trim();
+                    deger = targetPart[(colonIdx + 1)..].Trim();
+                }
+                else
+                {
+                    deger = targetPart;
+                }
+            }
+        }
+
+        if (string.IsNullOrWhiteSpace(baslik))
+        {
+            var ayiriciIndex = satir.IndexOf(':');
+            if (ayiriciIndex > 0 && ayiriciIndex < satir.Length - 1)
+            {
+                baslik = satir[..ayiriciIndex].Trim();
+                deger = satir[(ayiriciIndex + 1)..].Trim();
+            }
+            else
+            {
+                baslik = isAr ? "التفاصيل" : "Detail";
+                deger = satir;
+            }
+        }
+
+        if (isAr)
+        {
+            if (baslik.Contains("Brand", StringComparison.OrdinalIgnoreCase)) baslik = "🏷️ العلامة التجارية";
+            else if (baslik.Contains("SKU", StringComparison.OrdinalIgnoreCase)) baslik = "🔖 رمز المنتج";
+            else if (baslik.Contains("Category", StringComparison.OrdinalIgnoreCase)) baslik = "📦 الفئة";
+            else if (baslik.Contains("Availability", StringComparison.OrdinalIgnoreCase)) baslik = "✅ حالة التوفر";
+            else if (baslik.Equals("Detay", StringComparison.OrdinalIgnoreCase)) baslik = "التفاصيل";
         }
         else
         {
-            teknikTabloSatirlari.Add(("Detay", satir));
+            if (baslik.Contains("العلامة", StringComparison.OrdinalIgnoreCase)) baslik = "🏷️ Brand";
+            else if (baslik.Contains("رمز المنتج", StringComparison.OrdinalIgnoreCase)) baslik = "🔖 SKU";
+            else if (baslik.Contains("الفئة", StringComparison.OrdinalIgnoreCase)) baslik = "📦 Category";
+            else if (baslik.Contains("المتوفر", StringComparison.OrdinalIgnoreCase) || baslik.Contains("التوفر", StringComparison.OrdinalIgnoreCase)) baslik = "✅ Availability";
+            else if (baslik.Equals("Detay", StringComparison.OrdinalIgnoreCase)) baslik = "Detail";
         }
+
+        if (deger.Contains('|'))
+        {
+            var dParts = deger.Split('|', StringSplitOptions.TrimEntries);
+            if (dParts.Length == 2)
+            {
+                deger = isAr ? dParts[1] : dParts[0];
+                if (deger.Contains(':'))
+                {
+                    var cIdx = deger.IndexOf(':');
+                    deger = deger[(cIdx + 1)..].Trim();
+                }
+            }
+        }
+
+        teknikTabloSatirlari.Add((baslik, deger));
     }
 
     var tumMedya = ViewBag.TumMedya as List<FilistinProje.Core.Varliklar.UrunResim> ?? new List<FilistinProje.Core.Varliklar.UrunResim>();

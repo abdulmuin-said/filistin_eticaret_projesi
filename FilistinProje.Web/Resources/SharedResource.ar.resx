@@ -1452,7 +1452,7 @@
   <data name="IdentityPhotoRequiredWarning" xml:space="preserve">
     <value>مطلوب تحميل صورة الهوية للتسجيل. لا يمكن إكمال التسجيل بدون صورة الهوية.</value>
   </data>
-  <!-- HesapController -->
+  
   <data name="Hesap_UserNotFound" xml:space="preserve">
     <value>المستخدم غير موجود.</value>
   </data>
@@ -1492,7 +1492,7 @@
   <data name="Hesap_PasswordResetFailed" xml:space="preserve">
     <value>تعذر إرسال بريد إعادة تعيين كلمة المرور: </value>
   </data>
-  <!-- SepetController -->
+  
   <data name="Sepet_EnterCouponCode" xml:space="preserve">
     <value>يرجى إدخال رمز القسيمة.</value>
   </data>
@@ -1526,7 +1526,7 @@
   <data name="Sepet_CartClearFailed" xml:space="preserve">
     <value>حدث خطأ أثناء إفراغ السلة.</value>
   </data>
-  <!-- FavoriController -->
+  
   <data name="Favori_LoginRequired" xml:space="preserve">
     <value>يرجى تسجيل الدخول أولاً.</value>
   </data>
@@ -1542,14 +1542,14 @@
   <data name="Favori_NotInWishlist" xml:space="preserve">
     <value>هذا المنتج غير موجود في قائمة المفضلة لديك.</value>
   </data>
-  <!-- KurumsalController -->
+  
   <data name="Kurumsal_FillAllFields" xml:space="preserve">
     <value>يرجى ملء جميع الحقول بالكامل.</value>
   </data>
   <data name="Kurumsal_MessageSent" xml:space="preserve">
     <value>تم إرسال رسالتك بنجاح. سنتواصل معك في أقرب وقت ممكن.</value>
   </data>
-  <!-- UrunController -->
+  
   <data name="Urun_GuestUser" xml:space="preserve">
     <value>مستخدم ضيف</value>
   </data>
@@ -1562,7 +1562,7 @@
   <data name="Urun_No" xml:space="preserve">
     <value>لا</value>
   </data>
-  <!-- HomeController -->
+  
   <data name="Home_InvalidEmail" xml:space="preserve">
     <value>يرجى إدخال عنوان بريد إلكتروني صالح.</value>
   </data>
@@ -1581,7 +1581,7 @@
   <data name="Home_ReviewReceived" xml:space="preserve">
     <value>تم استلام تقييمك. سيتم نشره بعد الموافقة عليه.</value>
   </data>
-  <!-- ProfilController -->
+  
   <data name="Profil_ReturnOnlyDelivered" xml:space="preserve">
     <value>يمكنك فقط إنشاء طلب إرجاع للطلبات التي تم تسليمها.</value>
   </data>
@@ -1648,7 +1648,7 @@
   <data name="Profil_ReturnOnlyDeliveredPost" xml:space="preserve">
     <value>يمكن إنشاء طلب الإرجاع فقط للطلبات التي تم تسليمها.</value>
   </data>
-  <!-- SiparisController -->
+  
   <data name="Siparis_FormValidationError" xml:space="preserve">
     <value>يرجى ملء جميع معلومات التوصيل بالكامل وبصيغة صالحة.</value>
   </data>
@@ -1712,7 +1712,7 @@
   <data name="Siparis_EmailFrame" xml:space="preserve">
     <value>إطار: {0}</value>
   </data>
-  <!-- ProfilController Email -->
+  
   <data name="Profil_EmailReturnReceivedSubject" xml:space="preserve">
     <value>تم استلام طلب الإرجاع</value>
   </data>
@@ -1893,7 +1893,7 @@
   <data name="Admin_CarkOdul_Deleted" xml:space="preserve">
     <value>تم حذف جائزة العجلة.</value>
   </data>
-  <!-- HaberBandi (News Ticker) -->
+  
   <data name="Admin_HaberBandi_Title" xml:space="preserve">
     <value>شريط الأخبار</value>
   </data>
@@ -2050,7 +2050,7 @@
   <data name="FreeShippingCheckoutBanner" xml:space="preserve">
     <value>أضف {0} أخرى إلى سلتك للشحن المجاني!</value>
   </data>
-  <!-- Odeme نوع التوصيل -->
+  
   <data name="DeliverToAddress" xml:space="preserve">
     <value>توصيل إلى العنوان</value>
   </data>
@@ -2078,7 +2078,7 @@
   <data name="StorePickupAddress" xml:space="preserve">
     <value>مولا فناري محل، شارع ترك أوجاغي رقم 3، فاتح/إسطنبول</value>
   </data>
-  <!-- الخطوة 57: ملاحظة الطلب -->
+  
   <data name="OrderNote" xml:space="preserve">
     <value>ملاحظة الطلب</value>
   </data>
@@ -2091,7 +2091,7 @@
   <data name="Siparis_TermsRequired" xml:space="preserve">
     <value>يجب الموافقة على الشروط والأحكام للمتابعة.</value>
   </data>
-  <!-- الخطوة 56: التقاط صورة الهوية / تحميل -->
+  
   <data name="IdentityVerification" xml:space="preserve">
     <value>التحقق من الهوية</value>
   </data>
@@ -2174,7 +2174,7 @@
     <value>ينقص {0} {1} للوصول إلى الحد الأدنى.</value>
   </data>
 
-  <!-- مجموعات منتجات الجملة -->
+  
   <data name="WholesaleProductGroups" xml:space="preserve">
     <value>مجموعات منتجات الجملة</value>
   </data>
@@ -2314,7 +2314,7 @@
     <value>فلسطين</value>
   </data>
 
-  <!-- ===== LOCALIZATION: Error Pages ===== -->
+  
   <data name="ErrorMessage" xml:space="preserve">
     <value>حدث خطأ غير متوقع. إذا استمرت المشكلة، يرجى الاتصال بنا.</value>
   </data>
@@ -2337,7 +2337,7 @@
     <value>لا ينبغي تمكين بيئة التطوير للتطبيقات المنشورة.</value>
   </data>
 
-  <!-- ===== LOCALIZATION: Site Review ===== -->
+  
   <data name="SiteReview" xml:space="preserve">
     <value>تقييم الموقع</value>
   </data>
@@ -2372,7 +2372,7 @@
     <value>تقييمات</value>
   </data>
 
-  <!-- ===== LOCALIZATION: Account Pages ===== -->
+  
   <data name="LoginRequiredMessage" xml:space="preserve">
     <value>يجب تسجيل الدخول للتسوق. إذا لم تكن عضوًا بعد، يمكنك التسجيل.</value>
   </data>
@@ -2383,7 +2383,7 @@
     <value>سيتم تفعيل تسجيل الجملة بعد موافقة المسؤول. يمكنك عرض أسعار الجملة بعد الموافقة.</value>
   </data>
 
-  <!-- ===== LOCALIZATION: Product Pages ===== -->
+  
   <data name="AddNewCanvas" xml:space="preserve">
     <value>إضافة لوحة كانفاس جديدة</value>
   </data>
@@ -2499,7 +2499,7 @@
     <value>إخفاء</value>
   </data>
 
-  <!-- ===== LOCALIZATION: Shared Components ===== -->
+  
   <data name="PremiumTableAndDecor" xml:space="preserve">
     <value>طاولات وديكور فاخر</value>
   </data>
@@ -2507,7 +2507,7 @@
     <value>ملف PDF</value>
   </data>
 
-  <!-- ===== LOCALIZATION: Corporate Pages ===== -->
+  
   <data name="AboutQuote" xml:space="preserve">
     <value>أعمال مختارة بعناية لأماكن المعيشة، تشغيل نظيف وخدمة موثوقة.</value>
   </data>
@@ -2701,7 +2701,7 @@
     <value>تكتمل عملية استرداد الأموال خلال 3-5 أيام عمل بعد وصول المنتج إلى مستودعنا.</value>
   </data>
 
-  <!-- ===== LOCALIZATION: Corporate Section Titles ===== -->
+  
   <data name="SectionParties" xml:space="preserve">
     <value>الأطراف</value>
   </data>
@@ -3675,10 +3675,10 @@
     <value>يرجى تحديد طلب واحد على الأقل</value>
   </data>
   <data name="Admin_BulkShippedConfirm" xml:space="preserve">
-    <value>سيتم تحويل {0} طلب إلى حالة &quot;تم الشحن&quot;. هل تريد المتابعة؟</value>
+    <value>سيتم تحويل {0} طلب إلى حالة "تم الشحن". هل تريد المتابعة؟</value>
   </data>
   <data name="Admin_BulkPackingConfirm" xml:space="preserve">
-    <value>سيتم تحويل {0} طلب إلى حالة &quot;جاري التغليف&quot;. هل تريد المتابعة؟</value>
+    <value>سيتم تحويل {0} طلب إلى حالة "جاري التغليف". هل تريد المتابعة؟</value>
   </data>
   <data name="Admin_BulkCancelConfirm" xml:space="preserve">
     <value>سيتم إلغاء {0} طلب وإرسال بريد للعميل. هل تريد المتابعة؟</value>
@@ -3765,13 +3765,13 @@
     <value>تعديل المنطقة</value>
   </data>
   <data name="Admin_DeleteRegionConfirm" xml:space="preserve">
-    <value>سيتم حذف المنطقة &quot;{0}&quot; وكل مدنها!</value>
+    <value>سيتم حذف المنطقة "{0}" وكل مدنها!</value>
   </data>
   <data name="Admin_DeleteCity" xml:space="preserve">
     <value>حذف المدينة</value>
   </data>
   <data name="Admin_DeleteCityConfirm" xml:space="preserve">
-    <value>سيتم حذف المدينة &quot;{0}&quot;!</value>
+    <value>سيتم حذف المدينة "{0}"!</value>
   </data>
   <data name="Admin_Packing" xml:space="preserve">
     <value>قيد التغليف</value>
@@ -5822,5 +5822,4 @@
   <data name="Admin_BankOrAccountOwner" xml:space="preserve"><value>البنك وصاحب الحساب</value></data>
   <data name="Admin_Branch" xml:space="preserve"><value>الفرع</value></data>
   <data name="Admin_DeleteBankAccountConfirm" xml:space="preserve"><value>هل أنت متأكد من رغبتك في حذف هذا الحساب البنكي؟</value></data>
-</root>
-
+<data name="HelloUser" xml:space="preserve"><value>مرحباً، {0}</value></data><data name="Profile_UpdateInfo" xml:space="preserve"><value>تعديل المعلومات</value></data><data name="Profile_ChangePassword" xml:space="preserve"><value>تغيير كلمة المرور</value></data><data name="Profile_UpdatedSuccess" xml:space="preserve"><value>تم تحديث معلومات الحساب بنجاح.</value></data><data name="Profile_CurrentPassword" xml:space="preserve"><value>كلمة المرور الحالية</value></data><data name="Profile_NewPassword" xml:space="preserve"><value>كلمة المرور الجديدة</value></data><data name="Profile_ConfirmNewPassword" xml:space="preserve"><value>تأكيد كلمة المرور الجديدة</value></data><data name="Profile_PasswordChangedSuccess" xml:space="preserve"><value>تم تغيير كلمة المرور بنجاح.</value></data><data name="Profile_PasswordMismatch" xml:space="preserve"><value>كلمة المرور الجديدة وتأكيدها غير متطابقين.</value></data><data name="Profile_PasswordRequired" xml:space="preserve"><value>يرجى إدخال جميع حقول كلمة المرور.</value></data><data name="Profile_EmailCannotBeChanged" xml:space="preserve"><value>لا يمكن تغيير عنوان البريد الإلكتروني لأسباب أمنية</value></data><data name="Profile_CurrentPasswordIncorrect" xml:space="preserve"><value>كلمة المرور الحالية غير صحيحة.</value></data></root>

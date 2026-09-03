@@ -273,6 +273,22 @@ cd FilistinProje.Web && npm run watch:storefront-css
 - [x] **Adım 132**: `Admin/Ayarlar` sekme çubuğundaki içeriksiz boş `odeme` sekme butonu kaldırıldı; `AyarlarController.cs`'de geriye dönük uyumluluk için `tab=odeme` istekleri `tab=kapida-odeme` sekmesine yönlendirildi.
 - [x] **Adım 133**: `Admin/Ayarlar?tab=seo` sekmesindeki ham/teknik alanlar kullanıcı dostu 3 karta dönüştürüldü: 1) Arama Motoru Optimizasyonu (SEO Title, Description, Keywords, OG Share Image); 2) Analitik ve Piksel Takip Araçları (Google Analytics 4, Meta Pixel ID); 3) Çerez Bildirimi (Cookie Consent Banner) çift dilli rehber metinlerle yapılandırıldı.
 
+### Faz 15 (Storefront & Admin İyileştirmeleri — 3 Eylül 2026)
+- [x] **Adım 134**: `Admin/Ayarlar?tab=sosyal` grid sütunları yeniden yapılandırılarak `social-save` ve `social-delete` butonlarının üst üste binmesi tamamen giderildi.
+- [x] **Adım 135**: Font Awesome 6.4.0'da eksik olan yeni `X (Twitter)` ikonu için `admin.css` ve storefront `_Layout.cshtml` dosyalarına SVG mask tabanlı `.fa-x-twitter` sınıfı eklendi.
+- [x] **Adım 136**: Veritabanındaki sahte/test kaydı olan `Test Ürün 1787679181417` (ID: 142) ve 11 ilişkili tablodaki bağımlılıkları temizlendi.
+- [x] **Adım 137**: `/favorites` sayfasındaki fiyat düşüş alarmı zil ikonuna tıklandığında oluşan 404 hatası giderildi; `FavoriController.cs`'de `TogglePriceNotification` action'ına açık route eşleştirmeleri eklendi.
+- [x] **Adım 138**: Header arama kutusundaki arama temizleme (X) ikonunun Arapça (RTL) modunda sola yapışıp metni kapatması `ms-3 me-1 p-1` ile düzeltildi.
+- [x] **Adım 139**: `/profile` karşılama metni resx anahtarına bağlandı (`مرحباً، {0}`); veritabanındaki admin kullanıcısının adı `مدير 7ANRPS48` olarak güncellendi.
+- [x] **Adım 140**: `/profile` sayfasına "تعديل المعلومات" (Bilgileri Güncelle) ve "تغيير كلمة المرور" (Şifre Değiştir) butonları ile modern, yüksek z-index'li (`z-[100000]`) modallar eklendi; e-posta alanı salt okunur yapıldı ve güvenlik uyarısı eklendi; `ProfilController.cs`'de `update` ve `change-password` action'ları yazıldı.
+- [x] **Adım 141**: `profile/Adreslerim` sayfasındaki adres ekleme modalının (`#adresModal`) header altında kalma sorunu `z-[100000]` ile çözüldü.
+- [x] **Adım 142**: Ekranın sağ/sol altında yüzen sepet butonunun (`_FloatingButtons.cshtml`) footer ile görsel çakışması lüks altın degradesi (`linear-gradient(135deg, #c5a880...)`), beyaz kontrast halkası ve koyu yeşil/altın rozet ile çözüldü.
+- [x] **Adım 143**: `Admin/Kategori` düzenleme ve ekleme ekranlarına kategori hero banner yönetimi eklendi; canlı banner görsel önizlemesi, kampanya etiketi ve üst metin alanları yerleştirildi; mobil (600x400), masaüstü (1400x450) ve kart/menü (600x600) için piksel boyut rehberi eklendi. Kategori 78 (أثاث منزلي) örnek banner ve kampanya etiketiyle yapılandırıldı.
+- [x] **Adım 144**: Ürün detayında tek varyantlı ürünlerde (ör. Yumurta #134) gereksiz yere görünen "Standart / Standard" seçim butonu `@if (secenekler.Count > 1)` koşuluyla gizlendi; varyant etiketlerindeki Türkçe "Standart" kalıntıları temizlendi.
+- [x] **Adım 145**: `Urunler.TeknikOzellikler` kolonundaki import kalıntısı İngilizce başlıklar ve çift dilli pipe strings temizlendi; Razor motoruna akıllı parser eklenerek ürün detayındaki teknik özellikler tablosu saf Arapça (`🏷️ العلامة التجارية`, `🔖 رمز المنتج`, `📦 الفئة`, `✅ المتوفر`) olarak render edildi.
+
+
+
 ### Hassas dosya mimarisi (B25)
 - **Storage root**: `<ContentRoot>/secure-storage/hassas/{kategori}/` (wwwroot dışında).
   - `kategori` ∈ `kimlikler` (jpg/jpeg/png/webp, max 8MB), `receteler` (jpg/jpeg/png/webp/pdf, max 12MB).

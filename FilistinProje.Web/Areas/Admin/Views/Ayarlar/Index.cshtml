@@ -380,8 +380,8 @@
                                     @foreach (var link in (ViewBag.SosyalMedyaLinkleri as IEnumerable<FilistinProje.Core.Varliklar.SosyalMedyaLink> ?? Enumerable.Empty<FilistinProje.Core.Varliklar.SosyalMedyaLink>()))
                                     {
                                         <div class="border rounded-3 p-3 social-link-row shadow-sm" data-id="@link.Id" style="background:#fff;">
-                                            <div class="row g-2 align-items-end">
-                                                <div class="col-md-3">
+                                            <div class="row g-3 align-items-end">
+                                                <div class="col-lg-3 col-md-3">
                                                     <label class="ca-label">@(isAr ? "الشبكة / الأيقونة" : "Network & Icon")</label>
                                                     <div class="d-flex gap-2 align-items-center">
                                                         <span class="social-icon-badge rounded-2 d-inline-flex align-items-center justify-content-center shadow-sm" style="width:38px; height:38px; min-width:38px; background:#f1f5f9; font-size:1.15rem;">
@@ -403,25 +403,27 @@
                                                     </div>
                                                     <input type="hidden" class="social-icon" value="@link.IkonSinifi" />
                                                 </div>
-                                                <div class="col-md-2">
+                                                <div class="col-lg-2 col-md-3">
                                                     <label class="ca-label">@(isAr ? "اسم العرض" : "Display Name")</label>
                                                     <input class="ca-input social-platform" value="@link.PlatformAdi" placeholder="Facebook, Instagram..." />
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-lg-3 col-md-3">
                                                     <label class="ca-label">URL</label>
                                                     <input class="ca-input social-url" value="@link.Url" dir="ltr" placeholder="https://..." />
                                                 </div>
-                                                <div class="col-md-1">
+                                                <div class="col-lg-1 col-md-1">
                                                     <label class="ca-label">@Localizer["Admin_Sira"]</label>
                                                     <input class="ca-input social-order" type="number" value="@link.Sira" min="0" />
                                                 </div>
-                                                <div class="col-md-1 text-center">
-                                                    <label class="ca-label">@Localizer["Admin_Aktif"]</label>
-                                                    <input class="form-check-input social-active d-block mx-auto mt-2" type="checkbox" checked="@link.AktifMi" style="width:2.2em; height:1.2em;" />
+                                                <div class="col-lg-1 col-md-2 text-center">
+                                                    <label class="ca-label mb-1">@Localizer["Admin_Aktif"]</label>
+                                                    <div class="d-flex justify-content-center align-items-center" style="height:38px;">
+                                                        <input class="form-check-input social-active m-0" type="checkbox" checked="@link.AktifMi" style="width:2.2em; height:1.2em;" />
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-1 d-flex gap-1 justify-content-end">
-                                                    <button type="button" class="ca-btn ca-btn-primary social-save" title="@(isAr ? "حفظ" : "Save")"><i class="fas fa-save"></i></button>
-                                                    <button type="button" class="ca-btn ca-btn-outline text-danger social-delete" title="@(isAr ? "حذف" : "Delete")"><i class="fas fa-trash"></i></button>
+                                                <div class="col-lg-2 col-md-12 d-flex gap-2 justify-content-end align-items-center" style="height:38px;">
+                                                    <button type="button" class="ca-btn ca-btn-primary social-save flex-grow-1" style="min-width:44px;" title="@(isAr ? "حفظ التعديلات" : "Save Changes")"><i class="fas fa-save me-1"></i> <span class="d-none d-lg-inline">@(isAr ? "حفظ" : "Save")</span></button>
+                                                    <button type="button" class="ca-btn ca-btn-outline text-danger social-delete" style="min-width:44px;" title="@(isAr ? "حذف" : "Delete")"><i class="fas fa-trash"></i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -536,8 +538,8 @@
                                             row.dataset.id = '0';
                                             row.style.background = '#fff';
                                             row.innerHTML = `
-                                                <div class="row g-2 align-items-end">
-                                                    <div class="col-md-3">
+                                                <div class="row g-3 align-items-end">
+                                                    <div class="col-lg-3 col-md-3">
                                                         <label class="ca-label">@(isAr ? "الشبكة / الأيقونة" : "Network & Icon")</label>
                                                         <div class="d-flex gap-2 align-items-center">
                                                             <span class="social-icon-badge rounded-2 d-inline-flex align-items-center justify-content-center shadow-sm" style="width:38px; height:38px; min-width:38px; background:#eff6ff; font-size:1.15rem; color:#1877f2;">
@@ -559,25 +561,27 @@
                                                         </div>
                                                         <input type="hidden" class="social-icon" value="fab fa-facebook-f" />
                                                     </div>
-                                                    <div class="col-md-2">
+                                                    <div class="col-lg-2 col-md-3">
                                                         <label class="ca-label">@(isAr ? "اسم العرض" : "Display Name")</label>
                                                         <input class="ca-input social-platform" value="Facebook" placeholder="Facebook" />
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-lg-3 col-md-3">
                                                         <label class="ca-label">URL</label>
                                                         <input class="ca-input social-url" dir="ltr" placeholder="https://facebook.com/..." />
                                                     </div>
-                                                    <div class="col-md-1">
+                                                    <div class="col-lg-1 col-md-1">
                                                         <label class="ca-label">@Localizer["Admin_Sira"]</label>
                                                         <input class="ca-input social-order" type="number" value="0" min="0" />
                                                     </div>
-                                                    <div class="col-md-1 text-center">
-                                                        <label class="ca-label">@Localizer["Admin_Aktif"]</label>
-                                                        <input class="form-check-input social-active d-block mx-auto mt-2" type="checkbox" checked style="width:2.2em; height:1.2em;" />
+                                                    <div class="col-lg-1 col-md-2 text-center">
+                                                        <label class="ca-label mb-1">@Localizer["Admin_Aktif"]</label>
+                                                        <div class="d-flex justify-content-center align-items-center" style="height:38px;">
+                                                            <input class="form-check-input social-active m-0" type="checkbox" checked style="width:2.2em; height:1.2em;" />
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-1 d-flex gap-1 justify-content-end">
-                                                        <button type="button" class="ca-btn ca-btn-primary social-save" title="@(isAr ? "حفظ" : "Save")"><i class="fas fa-save"></i></button>
-                                                        <button type="button" class="ca-btn ca-btn-outline text-danger social-delete" title="@(isAr ? "حذف" : "Delete")"><i class="fas fa-trash"></i></button>
+                                                    <div class="col-lg-2 col-md-12 d-flex gap-2 justify-content-end align-items-center" style="height:38px;">
+                                                        <button type="button" class="ca-btn ca-btn-primary social-save flex-grow-1" style="min-width:44px;" title="@(isAr ? "حفظ" : "Save")"><i class="fas fa-save me-1"></i> <span class="d-none d-lg-inline">@(isAr ? "حفظ" : "Save")</span></button>
+                                                        <button type="button" class="ca-btn ca-btn-outline text-danger social-delete" style="min-width:44px;" title="@(isAr ? "حذف" : "Delete")"><i class="fas fa-trash"></i></button>
                                                     </div>
                                                 </div>`;
                                             list.appendChild(row); 

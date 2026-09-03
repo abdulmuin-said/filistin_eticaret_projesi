@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using FilistinProje.Core.Varliklar;
@@ -85,9 +85,14 @@ namespace FilistinProje.Web.Controllers
         }
 
         /// <summary>
-        /// Fiyat dÃ¼ÅŸÃ¼ÅŸ bildirimini aÃ§/kapat
+        /// Fiyat düşüş bildirimini aç/kapat
         /// </summary>
-        [HttpPost("toggle-notify")] [Authorize] [ValidateAntiForgeryToken] public async Task<IActionResult> TogglePriceNotification(int urunId)
+        [HttpPost("toggle-notify")]
+        [HttpPost("TogglePriceNotification")]
+        [HttpPost("/Favori/TogglePriceNotification")]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> TogglePriceNotification(int urunId)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
