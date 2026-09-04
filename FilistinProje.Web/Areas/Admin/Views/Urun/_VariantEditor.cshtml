@@ -8,6 +8,8 @@
         .ToList();
     var canvasOptionCategoryIds = ViewBag.CanvasOptionCategoryIds as IEnumerable<int> ?? Enumerable.Empty<int>();
     var canvasOptionCategoryIdJson = System.Text.Json.JsonSerializer.Serialize(canvasOptionCategoryIds);
+    var productImages = (ViewBag.UrunGorselleri as IEnumerable<string> ?? Enumerable.Empty<string>()).ToList();
+    var urunId = ViewBag.UrunId as int? ?? 0;
 }
 
 <div class="ca-card mt-4" style="border:1px solid var(--ca-border);">
@@ -143,16 +145,65 @@
                             <label class="ca-label" data-label-for="Desi">@Localizer["Admin_Weight"]</label>
                             <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="Desi" name="UrunSecenek[@i].Desi" value="@variant.Desi.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" />
                         </div>
-                        <div class="col-lg-2 col-md-6">
+                        <div class="col-lg-6 col-md-12">
                             <label class="ca-label" data-label-for="GorselUrl">@Localizer["Admin_VariantImage"]</label>
-                            <input class="ca-input" data-variant-field="GorselUrl" name="UrunSecenek[@i].GorselUrl" value="@variant.GorselUrl" />
+                            <div class="ca-variant-image-widget p-2 rounded border d-flex align-items-center gap-3" style="background:#f8fafc;">
+                                <div class="ca-variant-thumb position-relative" style="width:58px; height:58px; min-width:58px; border-radius:8px; overflow:hidden; border:1px solid var(--ca-border); background:#fff; display:flex; align-items:center; justify-content:center;">
+                                    <img src="@(string.IsNullOrWhiteSpace(variant.GorselUrl) ? "/img/products/placeholder.webp" : variant.GorselUrl)" 
+                                         alt="Variant" 
+                                         class="ca-variant-thumb-img w-100 h-100" 
+                                         style="object-fit:cover; display:@(string.IsNullOrWhiteSpace(variant.GorselUrl) ? "none" : "block");" 
+                                         data-variant-img-preview />
+                                    <i class="fas fa-image text-muted fs-4 @(!string.IsNullOrWhiteSpace(variant.GorselUrl) ? "d-none" : "")" data-variant-img-placeholder></i>
+                                    <div class="ca-variant-img-spinner position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none align-items-center justify-content-center" data-variant-img-spinner>
+                                        <i class="fas fa-spinner fa-spin text-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                        <button type="button" class="ca-btn ca-btn-outline ca-btn-sm py-1 px-2" data-variant-upload-trigger>
+                                            <i class="fas fa-upload me-1"></i> @Localizer["Admin_UploadImage"]
+                                        </button>
+                                        <input type="file" accept=".jpg,.jpeg,.png,.webp" class="d-none" data-variant-file-input />
+                                        
+                                        @if (productImages.Any())
+                                        {
+                                            <div class="dropdown d-inline-block">
+                                                <button type="button" class="ca-btn ca-btn-outline ca-btn-sm py-1 px-2 dropdown-toggle" data-bs-toggle="dropdown" title="@Localizer["Admin_SelectFromGallery"]">
+                                                    <i class="fas fa-images me-1"></i> @Localizer["Admin_SelectFromGallery"]
+                                                </button>
+                                                <div class="dropdown-menu p-2 shadow" style="min-width:260px; max-height:220px; overflow-y:auto; z-index:1070;">
+                                                    <div class="small fw-bold text-muted mb-2 px-1">@Localizer["Admin_SelectFromGallery"]</div>
+                                                    <div class="d-flex flex-wrap gap-2">
+                                                        @foreach (var pImg in productImages)
+                                                        {
+                                                            <button type="button" class="border rounded p-0 btn btn-sm btn-light" style="width:46px; height:46px; overflow:hidden;" data-variant-gallery-pick="@pImg" title="@pImg">
+                                                                <img src="@pImg" style="width:100%; height:100%; object-fit:cover;" />
+                                                            </button>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        <button type="button" class="ca-btn ca-btn-icon ca-btn-sm text-danger @(string.IsNullOrWhiteSpace(variant.GorselUrl) ? "d-none" : "")" data-variant-img-remove title="@Localizer["Admin_RemoveImage"]">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                    <input class="ca-input ca-input-sm" style="font-size:0.78rem; height:28px; padding:2px 8px;" 
+                                           data-variant-field="GorselUrl" 
+                                           name="UrunSecenek[@i].GorselUrl" 
+                                           value="@variant.GorselUrl" 
+                                           placeholder="https://... /img/..." />
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="col-lg-6">
+                        <div class="col-lg-3 col-md-6">
                             <label class="ca-label" data-label-for="KisilestirmeMetni">@Localizer["Admin_PersonalizationText"]</label>
                             <textarea class="ca-textarea" rows="2" data-variant-field="KisilestirmeMetni" name="UrunSecenek[@i].KisilestirmeMetni">@temizKisilestirmeMetni</textarea>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-3 col-md-6">
                             <label class="ca-label" data-label-for="OzelTasarimNotu">@Localizer["Admin_CustomDesignNote"]</label>
                             <textarea class="ca-textarea" rows="2" data-variant-field="OzelTasarimNotu" name="UrunSecenek[@i].OzelTasarimNotu">@temizOzelTasarimNotu</textarea>
                         </div>
@@ -288,16 +339,65 @@
                         <label class="ca-label" data-label-for="Desi">@Localizer["Admin_Weight"]</label>
                         <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="Desi" name="UrunSecenek[__index__].Desi" value="0" />
                     </div>
-                    <div class="col-lg-2 col-md-6">
+                    <div class="col-lg-6 col-md-12">
                         <label class="ca-label" data-label-for="GorselUrl">@Localizer["Admin_VariantImage"]</label>
-                        <input class="ca-input" data-variant-field="GorselUrl" name="UrunSecenek[__index__].GorselUrl" value="" />
+                        <div class="ca-variant-image-widget p-2 rounded border d-flex align-items-center gap-3" style="background:#f8fafc;">
+                            <div class="ca-variant-thumb position-relative" style="width:58px; height:58px; min-width:58px; border-radius:8px; overflow:hidden; border:1px solid var(--ca-border); background:#fff; display:flex; align-items:center; justify-content:center;">
+                                <img src="/img/products/placeholder.webp" 
+                                     alt="Variant" 
+                                     class="ca-variant-thumb-img w-100 h-100" 
+                                     style="object-fit:cover; display:none;" 
+                                     data-variant-img-preview />
+                                <i class="fas fa-image text-muted fs-4" data-variant-img-placeholder></i>
+                                <div class="ca-variant-img-spinner position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-none align-items-center justify-content-center" data-variant-img-spinner>
+                                    <i class="fas fa-spinner fa-spin text-primary"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <button type="button" class="ca-btn ca-btn-outline ca-btn-sm py-1 px-2" data-variant-upload-trigger>
+                                        <i class="fas fa-upload me-1"></i> @Localizer["Admin_UploadImage"]
+                                    </button>
+                                    <input type="file" accept=".jpg,.jpeg,.png,.webp" class="d-none" data-variant-file-input />
+                                    
+                                    @if (productImages.Any())
+                                    {
+                                        <div class="dropdown d-inline-block">
+                                            <button type="button" class="ca-btn ca-btn-outline ca-btn-sm py-1 px-2 dropdown-toggle" data-bs-toggle="dropdown" title="@Localizer["Admin_SelectFromGallery"]">
+                                                <i class="fas fa-images me-1"></i> @Localizer["Admin_SelectFromGallery"]
+                                            </button>
+                                            <div class="dropdown-menu p-2 shadow" style="min-width:260px; max-height:220px; overflow-y:auto; z-index:1070;">
+                                                <div class="small fw-bold text-muted mb-2 px-1">@Localizer["Admin_SelectFromGallery"]</div>
+                                                <div class="d-flex flex-wrap gap-2">
+                                                    @foreach (var pImg in productImages)
+                                                    {
+                                                        <button type="button" class="border rounded p-0 btn btn-sm btn-light" style="width:46px; height:46px; overflow:hidden;" data-variant-gallery-pick="@pImg" title="@pImg">
+                                                            <img src="@pImg" style="width:100%; height:100%; object-fit:cover;" />
+                                                        </button>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <button type="button" class="ca-btn ca-btn-icon ca-btn-sm text-danger d-none" data-variant-img-remove title="@Localizer["Admin_RemoveImage"]">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                                <input class="ca-input ca-input-sm" style="font-size:0.78rem; height:28px; padding:2px 8px;" 
+                                       data-variant-field="GorselUrl" 
+                                       name="UrunSecenek[__index__].GorselUrl" 
+                                       value="" 
+                                       placeholder="https://... /img/..." />
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="col-lg-6">
+                    <div class="col-lg-3 col-md-6">
                         <label class="ca-label" data-label-for="KisilestirmeMetni">@Localizer["Admin_PersonalizationText"]</label>
                         <textarea class="ca-textarea" rows="2" data-variant-field="KisilestirmeMetni" name="UrunSecenek[__index__].KisilestirmeMetni"></textarea>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-3 col-md-6">
                         <label class="ca-label" data-label-for="OzelTasarimNotu">@Localizer["Admin_CustomDesignNote"]</label>
                         <textarea class="ca-textarea" rows="2" data-variant-field="OzelTasarimNotu" name="UrunSecenek[__index__].OzelTasarimNotu"></textarea>
                     </div>
@@ -587,6 +687,128 @@
                     const color = normalizeColor(colorText.value);
                     if (color) {
                         colorPicker.value = color;
+                    }
+                });
+            }
+
+            // Variant Image Handling
+            const uploadTrigger = card.querySelector('[data-variant-upload-trigger]');
+            const fileInput = card.querySelector('[data-variant-file-input]');
+            const urlInput = selector(card, 'GorselUrl');
+            const imgPreview = card.querySelector('[data-variant-img-preview]');
+            const placeholder = card.querySelector('[data-variant-img-placeholder]');
+            const imgRemove = card.querySelector('[data-variant-img-remove]');
+            const spinner = card.querySelector('[data-variant-img-spinner]');
+
+            if (uploadTrigger && fileInput) {
+                uploadTrigger.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    fileInput.click();
+                });
+
+                fileInput.addEventListener('change', async () => {
+                    const file = fileInput.files?.[0];
+                    if (!file) return;
+
+                    if (spinner) {
+                        spinner.classList.remove('d-none');
+                        spinner.classList.add('d-flex');
+                    }
+
+                    try {
+                        const formData = new FormData();
+                        formData.append('dosya', file);
+                        const urunIdInput = document.querySelector('input[name="Id"]');
+                        formData.append('urunId', urunIdInput?.value || '0');
+                        const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+                        if (tokenInput) {
+                            formData.append('__RequestVerificationToken', tokenInput.value);
+                        }
+
+                        const res = await fetch('/Admin/Urun/VaryantGorselYukle', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        const data = await res.json();
+
+                        if (data && data.success && data.url) {
+                            if (urlInput) {
+                                urlInput.value = data.url;
+                                urlInput.dispatchEvent(new Event('input', { bubbles: true }));
+                            }
+                            if (imgPreview) {
+                                imgPreview.src = data.url;
+                                imgPreview.style.display = 'block';
+                            }
+                            if (placeholder) placeholder.classList.add('d-none');
+                            if (imgRemove) imgRemove.classList.remove('d-none');
+                        } else {
+                            alert(data?.message || 'Upload error');
+                        }
+                    } catch (err) {
+                        alert('Upload failed: ' + err.message);
+                    } finally {
+                        if (spinner) {
+                            spinner.classList.remove('d-flex');
+                            spinner.classList.add('d-none');
+                        }
+                    }
+                });
+            }
+
+            card.querySelectorAll('[data-variant-gallery-pick]').forEach((btn) => {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const pickUrl = this.getAttribute('data-variant-gallery-pick');
+                    if (!pickUrl) return;
+
+                    if (urlInput) {
+                        urlInput.value = pickUrl;
+                        urlInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    }
+                    if (imgPreview) {
+                        imgPreview.src = pickUrl;
+                        imgPreview.style.display = 'block';
+                    }
+                    if (placeholder) placeholder.classList.add('d-none');
+                    if (imgRemove) imgRemove.classList.remove('d-none');
+                });
+            });
+
+            if (imgRemove) {
+                imgRemove.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (urlInput) {
+                        urlInput.value = '';
+                        urlInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    }
+                    if (imgPreview) {
+                        imgPreview.src = '';
+                        imgPreview.style.display = 'none';
+                    }
+                    if (placeholder) placeholder.classList.remove('d-none');
+                    if (fileInput) fileInput.value = '';
+                    imgRemove.classList.add('d-none');
+                });
+            }
+
+            if (urlInput) {
+                urlInput.addEventListener('input', function () {
+                    const val = this.value.trim();
+                    if (val) {
+                        if (imgPreview) {
+                            imgPreview.src = val;
+                            imgPreview.style.display = 'block';
+                        }
+                        if (placeholder) placeholder.classList.add('d-none');
+                        if (imgRemove) imgRemove.classList.remove('d-none');
+                    } else {
+                        if (imgPreview) {
+                            imgPreview.src = '';
+                            imgPreview.style.display = 'none';
+                        }
+                        if (placeholder) placeholder.classList.remove('d-none');
+                        if (imgRemove) imgRemove.classList.add('d-none');
                     }
                 });
             }

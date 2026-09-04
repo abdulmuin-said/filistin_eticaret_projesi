@@ -65,6 +65,37 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             return RedirectToAction("Secenekler", "Urun", new { area = "", id = secenek.UrunId });
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> VaryantGorselYukle(IFormFile? dosya, int urunId = 0)
+        {
+            if (dosya == null || dosya.Length == 0)
+            {
+                return Json(new { success = false, message = _localizer["Admin_PleaseSelectFile"].Value });
+            }
+
+            try
+            {
+                var title = "variant";
+                if (urunId > 0)
+                {
+                    var urun = await _context.Urunler.AsNoTracking().FirstOrDefaultAsync(x => x.Id == urunId);
+                    if (urun != null && !string.IsNullOrWhiteSpace(urun.Baslik))
+                    {
+                        title = urun.Baslik;
+                    }
+                }
+
+                var url = await SaveImageAsync(dosya, title, "variant", 1600, 1600);
+                return Json(new { success = true, url });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Varyant gorseli yuklenirken hata olustu. UrunId={UrunId}", urunId);
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
         private static readonly HashSet<string> AllowedImageExtensions = new(StringComparer.OrdinalIgnoreCase)
         {
             ".jpg",
@@ -155,6 +186,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             await PopulateCategorySelectListAsync();
             await PopulateProductMetadataAsync(UrunOzellikCatalog.Genel);
+            ViewBag.UrunGorselleri = new List<string>();
+            ViewBag.UrunId = 0;
 
             return View(new Urun
             {
@@ -431,7 +464,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             TempData["Mesaj"] = _localizer["Admin_Product_Archived"].Value;
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { area = "Admin" });
         }
 
         [HttpPost]
@@ -447,7 +480,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 TempData["Mesaj"] = _localizer["Admin_Product_SelectToArchive"].Value;
                 TempData["Durum"] = "warning";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { area = "Admin" });
             }
 
             var urunler = await _context.Urunler
@@ -464,7 +497,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             TempData["Mesaj"] = string.Format(_localizer["Admin_Product_ArchivedCount"].Value, urunler.Count);
             TempData["Durum"] = "success";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { area = "Admin" });
         }
 
         [HttpPost]
@@ -474,17 +507,29 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var urun = await _context.Urunler.FirstOrDefaultAsync(x => x.Id == id);
             if (urun == null)
             {
-                TempData["Mesaj"] = _localizer["Admin_Product_NotFound"].Value;
+                var notFoundMsg = _localizer["Admin_Product_NotFound"].Value;
+                TempData["Mesaj"] = notFoundMsg;
                 TempData["Durum"] = "warning";
-                return RedirectToAction(nameof(Index));
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return Json(new { success = false, message = notFoundMsg });
+                }
+                return RedirectToAction(nameof(Index), new { area = "Admin" });
             }
 
             urun.YayindaMi = yayinda;
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = yayinda ? _localizer["Admin_Product_Published"].Value : _localizer["Admin_Product_Hidden"].Value;
+            var msg = yayinda ? _localizer["Admin_Product_Published"].Value : _localizer["Admin_Product_Hidden"].Value;
+            TempData["Mesaj"] = msg;
             TempData["Durum"] = "success";
-            return RedirectToAction(nameof(Index));
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return Json(new { success = true, yayinda = urun.YayindaMi, message = msg });
+            }
+
+            return RedirectToAction(nameof(Index), new { area = "Admin" });
         }
 
         [HttpPost]
@@ -494,17 +539,29 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var urun = await _context.Urunler.FirstOrDefaultAsync(x => x.Id == id);
             if (urun == null)
             {
-                TempData["Mesaj"] = _localizer["Admin_Product_NotFound"].Value;
+                var notFoundMsg = _localizer["Admin_Product_NotFound"].Value;
+                TempData["Mesaj"] = notFoundMsg;
                 TempData["Durum"] = "warning";
-                return RedirectToAction(nameof(Index));
+                if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    return Json(new { success = false, message = notFoundMsg });
+                }
+                return RedirectToAction(nameof(Index), new { area = "Admin" });
             }
 
             urun.AktifMi = aktif;
             await _context.SaveChangesAsync();
 
-            TempData["Mesaj"] = aktif ? _localizer["Admin_Product_Activated"].Value : _localizer["Admin_Product_Deactivated"].Value;
+            var msg = aktif ? _localizer["Admin_Product_Activated"].Value : _localizer["Admin_Product_Deactivated"].Value;
+            TempData["Mesaj"] = msg;
             TempData["Durum"] = "success";
-            return RedirectToAction(nameof(Index));
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return Json(new { success = true, aktif = urun.AktifMi, message = msg });
+            }
+
+            return RedirectToAction(nameof(Index), new { area = "Admin" });
         }
 
         [HttpPost]
@@ -520,7 +577,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 TempData["Mesaj"] = _localizer["Admin_Product_SelectAtLeastOne"].Value;
                 TempData["Durum"] = "warning";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { area = "Admin" });
             }
 
             var urunler = await _context.Urunler
@@ -538,7 +595,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 ? $"{urunler.Count} منتج تم تفعيله."
                 : $"{urunler.Count} منتج تم تعطيله.";
             TempData["Durum"] = "success";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { area = "Admin" });
         }
 
         [HttpPost]
@@ -549,7 +606,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             TempData["Mesaj"] = sonuc.message;
             TempData["Durum"] = sonuc.deletedCount > 0 && sonuc.blockedCount == 0 ? "success" : "warning";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { area = "Admin" });
         }
 
         [HttpPost]
@@ -565,14 +622,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 TempData["Mesaj"] = _localizer["Admin_Product_SelectToArchive"].Value;
                 TempData["Durum"] = "warning";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { area = "Admin" });
             }
 
             var sonuc = await TryHardDeleteProductsAsync(urunIds);
 
             TempData["Mesaj"] = sonuc.message;
             TempData["Durum"] = sonuc.deletedCount > 0 && sonuc.blockedCount == 0 ? "success" : "warning";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { area = "Admin" });
         }
 
         [HttpPost]
@@ -618,7 +675,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             TempData["Mesaj"] = string.Format(_localizer["Admin_Product_UpdatedSKUCount"].Value, updatedProducts, updatedVariants);
             TempData["Durum"] = "success";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { area = "Admin" });
         }
 
         private async Task<(int deletedCount, int blockedCount, string message)> TryHardDeleteProductsAsync(IEnumerable<int> productIds)
@@ -779,10 +836,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 resim.Urun.UrunResimleri.Remove(resim);
                 await EnsureDefaultProductMediaAsync(resim.Urun);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Duzenle), new { id = resim.UrunId });
+                return RedirectToAction(nameof(Duzenle), new { area = "Admin", id = resim.UrunId });
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { area = "Admin" });
         }
 
         [HttpPost]
@@ -880,7 +937,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (medya == null)
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { area = "Admin" });
             }
 
             var urunId = medya.UrunId;
@@ -2278,6 +2335,24 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     Text = string.IsNullOrWhiteSpace(x.VaryantBasligi) ? $"Varyasyon #{x.Id}" : x.VaryantBasligi
                 })
                 .ToList();
+
+            var gorseller = new List<string>();
+            if (!string.IsNullOrWhiteSpace(urun.AnaGorselUrl))
+            {
+                gorseller.Add(urun.AnaGorselUrl);
+            }
+            if (urun.UrunResimleri != null)
+            {
+                foreach (var r in urun.UrunResimleri.Where(x => !x.SilindiMi && !x.VideoMu && !string.IsNullOrWhiteSpace(x.ResimYolu)))
+                {
+                    if (!gorseller.Contains(r.ResimYolu))
+                    {
+                        gorseller.Add(r.ResimYolu);
+                    }
+                }
+            }
+            ViewBag.UrunGorselleri = gorseller;
+            ViewBag.UrunId = urun.Id;
         }
 
         private async Task<List<SelectListItem>> BuildCategorySelectListAsync(int? selectedId)

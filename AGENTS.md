@@ -287,6 +287,23 @@ cd FilistinProje.Web && npm run watch:storefront-css
 - [x] **Adım 144**: Ürün detayında tek varyantlı ürünlerde (ör. Yumurta #134) gereksiz yere görünen "Standart / Standard" seçim butonu `@if (secenekler.Count > 1)` koşuluyla gizlendi; varyant etiketlerindeki Türkçe "Standart" kalıntıları temizlendi.
 - [x] **Adım 145**: `Urunler.TeknikOzellikler` kolonundaki import kalıntısı İngilizce başlıklar ve çift dilli pipe strings temizlendi; Razor motoruna akıllı parser eklenerek ürün detayındaki teknik özellikler tablosu saf Arapça (`🏷️ العلامة التجارية`, `🔖 رمز المنتج`, `📦 الفئة`, `✅ المتوفر`) olarak render edildi.
 
+### Faz 16 (Admin Ürün Görünürlük & Yönlendirme Düzeltmeleri — 4 Eylül 2026)
+- [x] **Adım 146**: `Admin/Urun` tablosundaki vitrin görünürlük butonundaki Razor boolean attribute hatası (`value="value"`) düzeltildi; `value="@(item.YayindaMi ? "false" : "true")"` ve `DurumGuncelle` için `value="@(item.AktifMi ? "false" : "true")"` yapılarak her tıklamada ürünün istisnasız gizlenmesi sorunu giderildi.
+- [x] **Adım 147**: `Admin/UrunController.cs` içerisindeki tüm action yönlendirmelerine (`GizleGoster`, `DurumGuncelle`, `Sil`, `TopluSil` vb.) `new { area = "Admin" }` rotası eklendi; LinkGenerator'ın admin isteklerini vitrindeki `/Urun` rotasına yönlendirip admini dışarı atması ve 404 üretmesi engellendi.
+- [x] **Adım 148**: Eksik `Admin_Product_Published`, `Admin_Product_Hidden`, `Admin_Product_Activated`, `Admin_Product_Deactivated`, `Admin_Product_NotFound` resx anahtarları Arapça ve İngilizce kaynaklara eklendi; ham toast metinleri ("Admin_Product_Hidden") düzeltildi.
+- [x] **Adım 149**: Vitrin görünürlük butonunun ikon ve tooltip mantığı düzeltildi; ürün yayındayken açık göz (`fa-eye`), gizliyken üzeri çizgili göz (`fa-eye-slash`) gösterilmesi sağlandı.
+- [x] **Adım 150**: Vitrin `UrunController.Detay` sorgusunda admin kullanıcılar için `YayindaMi` zorunluluğu bypass edildi; yöneticilerin taslak/gizli ürünleri sitede 404 almadan önizleyebilmeleri sağlandı.
+
+### Faz 17 (Veritabanı Türkçe Veri Temizliği & Çok Dilli Varyasyon Sistemi — 4 Eylül 2026)
+- [x] **Adım 151**: `UrunSecenekleri` tablosundaki Ürün #112'ye ait Türkçe ve test amaçlı 8 varyant temizlendi; 4 temiz kozmetik varyantı (`أسود` / Black #111827, `أزرق` / Blue #2563EB, `أخضر` / Green #16A34A, `بنفسجي` / Purple #7C3AED) olarak yapılandırıldı, `Beden` alanlarındaki "VFIX" ve "RENK" kalıntıları silindi.
+- [x] **Adım 152**: `VaryantRenkYardimcisi.cs` içine `RenkCevirileri` sözlüğü ve `GetLocalizedRenk(string? renkAdi, bool isAr)` metodu eklendi; Türkçe veya İngilizce girilse dahi renklerin daima aktif dilde (Arapça / İngilizce) render edilmesi garanti altına alındı.
+- [x] **Adım 153**: `UrunSecenek.cs` içine `GetLocalizedVaryantBasligi(bool isAr)` metodu eklendi; `Views/Urun/Detay.cshtml` bu metoda bağlanarak ürün detayında varyant etiketlerinin ve seçili varyant özetinin dinamik lokalizasyonu sağlandı.
+- [x] **Adım 154**: `KargoBolgeler` tablosundaki 5 bölge Arapça standart isim ve açıklamalara güncellendi (`المناطق الداخلية 48 (شمال)`, `الضفة الغربية`, `القدس`, `قطاع غزة`), ülke alanı `Palestine` yapıldı.
+- [x] **Adım 155**: `KargoBolgeSehirler` tablosundaki 11 mükerrer satır temizlendi; 24 Filistin şehrinin `SehirAdi` alanları saf Arapça (`القدس`, `الناصرة`, `بيت لحم`, vb.), `SehirAdiEn` alanları ise saf İngilizce (`Nazareth`, `Bethlehem`, `Jerusalem`) yapıldı.
+- [x] **Adım 156**: `UrunHediyePaketSecenekleri` ("تغليف قياسي"), `KargoFirmalari` ("Ramallah, Palestine"), `AspNetUsers`, `IletisimMesajlari` ve `Siparisler` tablolarındaki tüm Türkçe veri kalıntıları temizlendi.
+- [x] **Adım 157**: `DbSeeder.cs` içindeki bölge ve şehir tohumlama verileri Arapça/İngilizce yapıya geçirildi, uygulamanın yeniden başlatıldığında Türkçe kayıt üretmesi kalıcı olarak engellendi.
+
+
 
 
 ### Hassas dosya mimarisi (B25)
@@ -492,3 +509,17 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
 - `/health/live` → body `"alive"` (plain text). Yalnız process alive kontrolü. Hiçbir DB/CONN/stack yok.
 - `/health/ready` → JSON `{status: "Healthy|Degraded|Unhealthy", results: {"database": {status, description, durationMs}, "startup": {status, description, durationMs}}}`. description'da sadece "ready" / "booting" / "db_unavailable" / "schema_drift_failed" / "migration_failed" / "seed_failed" gibi enum etiketleri. Exception message dahil DEĞİLDİR.
 - Hiçbir endpoint body'sinde connection string, exception stack trace, IP, port, password yoktur.
+
+### Faz 18 (Fiyat Rakamlarının Standart / Latin 0-9 Formatına Getirilmesi — 4 Eylül 2026)
+- [x] **Adım 146**: `Program.cs` — Arapça kültür (`ar`) yapılandırmasına `DigitSubstitution = DigitShapes.None`, `NativeDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]` ve `NumberDecimalSeparator = "."`, `CurrencyDecimalSeparator = "."`, `PercentDecimalSeparator = "."` tanımlandı. Böylece sunucu taraflı tüm `@amount.ToString(...)` çağrıları standart 0-9 Latin rakamları ve nokta ayırıcı ile basılır.
+- [x] **Adım 147**: `Views/Urun/Detay.cshtml` — `priceDisplay`, `oldPriceDisplay`, hediye paketi, toptan fiyat kademeleri, birlikte alınanlar ve önerilen ürünlerin fiyat çağrıları `ToString("N2", CultureInfo.InvariantCulture)` ile garanti altına alındı. Satır 1326'daki Türkçe `(birim: ...)` metni `isAr ? "للقطعة" : "unit"` dinamik etiketine çevrildi.
+- [x] **Adım 148**: `Views/Shared/_Layout.cshtml` — `window.formatMoney` istemci fonksiyonu baştan yazılarak `num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ₪'` çıktısı vermesi sağlandı; varyant ve seçenek seçimlerinde fiyatların Doğu Arap rakamlarına (`٩٫٩٩`) dönüşmesi engellendi.
+- [x] **Adım 149**: `wwwroot/js/admin.js` — admin arayüzündeki `formatMoney` fonksiyonu da standart Latin rakam formatına getirildi.
+
+### Faz 19 (Twitter / X İkonu & Doğal Varyant Görselleri — 4 Eylül 2026)
+- [x] **Adım 150**: `_Footer.cshtml` — Sosyal medya ikon döngüsünde `fa-x-twitter` / `twitter` kontrolü ile doğrudan saf inline SVG X logosu render edildi; vitrinde Twitter / X logosunun görünmemesi sorunu tamamen çözüldü.
+- [x] **Adım 151**: `_Layout.cshtml` & `admin.css` — FontAwesome `.fa-x-twitter` fallback mask CSS tanımındaki SVG URI URL-encode (`%3Csvg...`) edilerek modern tarayıcılardaki CSS sözdizimi hatası giderildi.
+- [x] **Adım 152**: Yapay şeritli ve metinli görseller (`essence-mascara-*.webp`) diskten silindi; veritabanındaki test varyantları saf, müdahalesiz orijinal ürün fotoğraflarıyla güncellendi.
+- [x] **Adım 153**: `Views/Urun/Detay.cshtml` — Fotoğrafı yüklenmemiş varyantlar için `MAIN_PRODUCT_IMAGE` (`Model.AnaGorselUrl`) otomatik fallback mantığı entegre edildi; varyanta fotoğraf yüklenmemişse ürünün ana görselinin gösterilmesi garanti altına alındı.
+
+

@@ -392,6 +392,7 @@ namespace FilistinProje.Web.Controllers
                 return NotFound();
             }
 
+            var isAdmin = User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Editor");
             var detaySorgusu = _context.Urunler
                 .Include(x => x.Kategori!)
                     .ThenInclude(x => x.ParentKategori)
@@ -402,11 +403,9 @@ namespace FilistinProje.Web.Controllers
                 .Include(x => x.UrunOzellikleri)
                     .ThenInclude(x => x.UrunOzellikTanimi)
                 .Where(x =>
-                    x.AktifMi &&
-                    x.YayindaMi &&
                     !x.SilindiMi &&
                     x.Kategori != null &&
-                    x.Kategori.AktifMi)
+                    (isAdmin || (x.AktifMi && x.YayindaMi && x.Kategori.AktifMi)))
                 .AsSplitQuery();
 
             Urun? urun;
@@ -485,6 +484,28 @@ namespace FilistinProje.Web.Controllers
                 });
             }
 
+            if (urun.UrunSecenek != null)
+            {
+                foreach (var secenek in urun.UrunSecenek.Where(x => !x.SilindiMi && x.AktifMi && !string.IsNullOrWhiteSpace(x.GorselUrl)))
+                {
+                    if (!tumMedya.Any(m => string.Equals(m.ResimYolu, secenek.GorselUrl, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        tumMedya.Add(new UrunResim
+                        {
+                            UrunId = urun.Id,
+                            ResimYolu = secenek.GorselUrl,
+                            ThumbnailYolu = secenek.GorselUrl,
+                            Baslik = string.IsNullOrWhiteSpace(secenek.VaryantBasligi) ? urun.Baslik : secenek.VaryantBasligi,
+                            AltMetin = string.IsNullOrWhiteSpace(secenek.VaryantBasligi) ? urun.Baslik : secenek.VaryantBasligi,
+                            MedyaTipi = UrunMedyaCatalog.Gorsel,
+                            MedyaAlani = UrunMedyaCatalog.Galeri,
+                            UrunSecenekId = secenek.Id,
+                            VarsayilanMi = false
+                        });
+                    }
+                }
+            }
+
             ViewBag.TumMedya = tumMedya;
             ViewBag.Galeri = tumMedya
                 .Where(x => !x.VideoMu && (x.MedyaAlani == UrunMedyaCatalog.Galeri || x.VarsayilanMi || x.MedyaAlani == UrunMedyaCatalog.YakinDetay))
@@ -500,7 +521,7 @@ namespace FilistinProje.Web.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             var isWholesale = currentUser != null && await _userManager.IsInRoleAsync(currentUser, "Wholesale");
             ViewBag.IsWholesale = isWholesale;
-            ViewBag.Secenekler = urun.UrunSecenek
+            ViewBag.Secenekler = (urun.UrunSecenek ?? new List<UrunSecenek>())
                 .Where(x => !x.SilindiMi && x.AktifMi)
                 .Where(x => siteSettings.StoktaYokSatisIzni || siteSettings.StokBiteniGriGoster || x.StokAdedi > 0 || x.OnSipariseAcikMi)
                 .OrderByDescending(x => x.VarsayilanMi)

@@ -69,7 +69,7 @@
 
     var isAr = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar";
     var rawVaryantMetni = varsayilanSecenek != null 
-        ? (string.IsNullOrWhiteSpace(varsayilanSecenek.VaryantBasligi) ? (varsayilanSecenek.Olcu ?? string.Empty) : varsayilanSecenek.VaryantBasligi) 
+        ? (string.IsNullOrWhiteSpace(varsayilanSecenek.GetLocalizedVaryantBasligi(isAr)) ? (varsayilanSecenek.Olcu ?? string.Empty) : varsayilanSecenek.GetLocalizedVaryantBasligi(isAr)) 
         : string.Empty;
     var seciliVaryantMetni = string.Join(" / ", rawVaryantMetni.Split(new[] { " / " }, StringSplitOptions.RemoveEmptyEntries).Where(x => !x.Contains("Standart", StringComparison.OrdinalIgnoreCase) && !x.Contains("Standard", StringComparison.OrdinalIgnoreCase) && !x.Contains("Bask", StringComparison.OrdinalIgnoreCase)));
     if (string.IsNullOrWhiteSpace(seciliVaryantMetni) && !string.IsNullOrWhiteSpace(rawVaryantMetni) && !rawVaryantMetni.Contains("Standart", StringComparison.OrdinalIgnoreCase) && !rawVaryantMetni.Contains("Standard", StringComparison.OrdinalIgnoreCase))
@@ -445,7 +445,7 @@
                     @foreach (var medya in galeriMedyalari.Where(x => !string.IsNullOrWhiteSpace(x.ResimYolu)))
                     {
                         var thumbAlt = !string.IsNullOrWhiteSpace(medya.AltMetin) ? medya.AltMetin : Model.LocalizedBaslik;
-                        var isActive = medya == varsayilanMedya;
+                        var isActive = string.Equals(medya.ResimYolu, varsayilanGaleriGorseli, StringComparison.OrdinalIgnoreCase) || (string.IsNullOrWhiteSpace(varsayilanGaleriGorseli) && medya == varsayilanMedya);
                         <button type="button"
                                 class="thumbnail-item h-20 w-20 shrink-0 overflow-hidden rounded-xl border @(isActive ? "border-brand-olive ring-2 ring-brand-olive/40" : "border-transparent") bg-white p-1 transition-colors hover:border-brand-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
                                 data-image="@Url.Content(medya.ResimYolu)"
@@ -519,10 +519,10 @@
             @if (!Model.FiyatGizliMi)
             {
                 <div class="flex flex-wrap items-end gap-3 border-b border-brand-border py-6">
-                    <span id="priceDisplay" class="text-3xl font-medium tracking-tight text-brand-darktext">@gosterilecekFiyat.ToString("N2") @currencySymbol</span>
+                    <span id="priceDisplay" class="text-3xl font-medium tracking-tight text-brand-darktext">@gosterilecekFiyat.ToString("N2", System.Globalization.CultureInfo.InvariantCulture) @currencySymbol</span>
                     @if (gosterilecekEskiFiyat.HasValue)
                     {
-                        <span id="oldPriceDisplay" class="pb-1 text-lg text-brand-mutedtext line-through">@gosterilecekEskiFiyat.Value.ToString("N2") @currencySymbol</span>
+                        <span id="oldPriceDisplay" class="pb-1 text-lg text-brand-mutedtext line-through">@gosterilecekEskiFiyat.Value.ToString("N2", System.Globalization.CultureInfo.InvariantCulture) @currencySymbol</span>
                     }
                     else { <span id="oldPriceDisplay" class="hidden"></span> }
                     @if (gosterilecekIndirimYuzdesi.HasValue)
@@ -561,7 +561,7 @@
                             @foreach (var varyant in secenekler)
                             {
                                 var varyantSatinAlinabilir = stoktaYokSatisIzni || varyant.SatinAlinabilirMi;
-                                var varyantEtiket = string.IsNullOrWhiteSpace(varyant.VaryantBasligi) ? (string.IsNullOrWhiteSpace(varyant.Olcu) ? (isAr ? "افتراضي" : "Standard") : varyant.Olcu) : varyant.VaryantBasligi;
+                                var varyantEtiket = string.IsNullOrWhiteSpace(varyant.GetLocalizedVaryantBasligi(isAr)) ? (string.IsNullOrWhiteSpace(varyant.Olcu) ? (isAr ? "افتراضي" : "Standard") : varyant.Olcu) : varyant.GetLocalizedVaryantBasligi(isAr);
                                 if (varyantEtiket.Equals("Standart", StringComparison.OrdinalIgnoreCase) || varyantEtiket.Equals("Standard", StringComparison.OrdinalIgnoreCase)) { varyantEtiket = isAr ? "افتراضي" : "Standard"; }
                                 var varyantGorseli = !string.IsNullOrWhiteSpace(varyant.GorselUrl) ? varyant.GorselUrl : (varyantMedyaHaritasi.TryGetValue(varyant.Id, out var eslesen) ? eslesen : string.Empty);
                                 var varyantEskiFiyat = varyant.IndirimVarMi ? varyant.SatisFiyati : 0;
@@ -620,7 +620,7 @@
                             @foreach (var varyant in secenekler)
                             {
                                 var varyantSatinAlinabilir = stoktaYokSatisIzni || varyant.SatinAlinabilirMi;
-                                var varyantEtiket = string.IsNullOrWhiteSpace(varyant.VaryantBasligi) ? (string.IsNullOrWhiteSpace(varyant.Olcu) ? (isAr ? "افتراضي" : "Standard") : varyant.Olcu) : varyant.VaryantBasligi;
+                                var varyantEtiket = string.IsNullOrWhiteSpace(varyant.GetLocalizedVaryantBasligi(isAr)) ? (string.IsNullOrWhiteSpace(varyant.Olcu) ? (isAr ? "افتراضي" : "Standard") : varyant.Olcu) : varyant.GetLocalizedVaryantBasligi(isAr);
                                 if (varyantEtiket.Equals("Standart", StringComparison.OrdinalIgnoreCase) || varyantEtiket.Equals("Standard", StringComparison.OrdinalIgnoreCase)) { varyantEtiket = isAr ? "افتراضي" : "Standard"; }
                                 var varyantGorseli = !string.IsNullOrWhiteSpace(varyant.GorselUrl) ? varyant.GorselUrl : (varyantMedyaHaritasi.TryGetValue(varyant.Id, out var eslesen) ? eslesen : string.Empty);
                                 var varyantEskiFiyat = varyant.IndirimVarMi ? varyant.SatisFiyati : 0;
@@ -672,7 +672,7 @@
                                 <label class="cursor-pointer rounded-xl border border-brand-border bg-white px-3 py-3 text-sm transition hover:border-brand-gold has-[:checked]:border-brand-olive has-[:checked]:bg-brand-warmcream">
                                     <input type="radio" name="giftPackageOption" value="@paket.Id" data-price="@paket.Fiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)" class="gift-package-radio me-2 accent-brand-gold" />
                                     <span class="font-semibold text-brand-olive">@paket.LocalizedAd</span>
-                                    <span class="ms-1 text-xs text-brand-mutedtext">(+@paket.Fiyat.ToString("N2") @currencySymbol / @Localizer["Piece"])</span>
+                                    <span class="ms-1 text-xs text-brand-mutedtext">(+@paket.Fiyat.ToString("N2", System.Globalization.CultureInfo.InvariantCulture) @currencySymbol / @Localizer["Piece"])</span>
                                 </label>
                             }
                         </div>
@@ -698,7 +698,7 @@
                             var tierVariant = Model.UrunSecenek.FirstOrDefault(x => x.Id == tier.UrunSecenekId);
                             <div class="flex items-center justify-between rounded-xl bg-white px-3 py-2 text-xs shadow-sm">
                                 <span class="text-brand-mutedtext">@tier.MinAdet+ @Localizer["Piece"] @(tierVariant == null ? "" : $"· {tierVariant.VaryantBasligi}")</span>
-                                <strong class="text-emerald-800">@tier.BirimFiyat.ToString("N2") @currencySymbol</strong>
+                                <strong class="text-emerald-800">@tier.BirimFiyat.ToString("N2", System.Globalization.CultureInfo.InvariantCulture) @currencySymbol</strong>
                             </div>
                         }
                     </div>
@@ -816,7 +816,7 @@
                         <h3 class="mt-2 line-clamp-2 text-xs font-semibold text-brand-darktext">@item.LocalizedBaslik</h3>
                         @if (!item.FiyatGizliMi)
                         {
-                            <p class="mt-1 text-sm font-bold text-brand-olive">@item.GosterFiyat.ToString("N2") @currencySymbol</p>
+                            <p class="mt-1 text-sm font-bold text-brand-olive">@item.GosterFiyat.ToString("N2", System.Globalization.CultureInfo.InvariantCulture) @currencySymbol</p>
                         }
                         else
                         {
@@ -878,10 +878,10 @@
                         @if (!item.FiyatGizliMi)
                         {
                             <div class="flex items-center gap-2">
-                                <span class="text-sm font-bold text-brand-olive">@itemFiyat.ToString("N2") @currencySymbol</span>
+                                <span class="text-sm font-bold text-brand-olive">@itemFiyat.ToString("N2", System.Globalization.CultureInfo.InvariantCulture) @currencySymbol</span>
                                 @if (bEskiFiyat != null)
                                 {
-                                    <span class="text-xs text-[#999] line-through">@bEskiFiyat?.ToString("N2") @currencySymbol</span>
+                                    <span class="text-xs text-[#999] line-through">@bEskiFiyat?.ToString("N2", System.Globalization.CultureInfo.InvariantCulture) @currencySymbol</span>
                                 }
                             </div>
                         }
@@ -1218,7 +1218,21 @@ function updateDesktopTransform() {
     }
 }
 
+const MAIN_PRODUCT_IMAGE = '@Url.Content(Model.AnaGorselUrl)';
+const DEFAULT_PRODUCT_IMAGE = '@Url.Content(varsayilanGaleriGorseli)';
+
 function changeProductImage(imageUrl, thumbnailElement, altText) {
+    // If thumbnail was clicked, check if it belongs to a variant and auto-select that variant
+    if (thumbnailElement && imageUrl) {
+        const matchingRadio = Array.from(document.querySelectorAll('.variant-radio'))
+            .find(r => r.getAttribute('data-image') === imageUrl);
+        if (matchingRadio && !matchingRadio.checked && !matchingRadio.disabled) {
+            matchingRadio.checked = true;
+            matchingRadio.dispatchEvent(new Event('change'));
+            return;
+        }
+    }
+
     if (!thumbnailElement && imageUrl) {
         thumbnailElement = Array.from(document.querySelectorAll('.thumbnail-item'))
             .find(item => item.getAttribute('data-image') === imageUrl) || null;
@@ -1323,7 +1337,8 @@ function updateSelectionSummary() {
 
     var summaryBirimFiyatEl = document.getElementById('summaryBirimFiyat');
     if (summaryBirimFiyatEl) {
-        summaryBirimFiyatEl.textContent = adet > 1 ? `(birim: ${window.formatMoney(toplamBirimGift)})` : '';
+        var unitLabel = '@(isAr ? "للقطعة" : "unit")';
+        summaryBirimFiyatEl.textContent = adet > 1 ? `(${unitLabel}: ${window.formatMoney(toplamBirimGift)})` : '';
     }
 
     var giftBadge = document.getElementById('summaryGiftBadge');
@@ -1488,8 +1503,9 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
             updatePriceWithFrame();
             updateWhatsappOrderLink();
 
-            if (imageUrl) {
-                changeProductImage(imageUrl, null, label);
+            var targetImg = (imageUrl && imageUrl.trim() !== '') ? imageUrl : (MAIN_PRODUCT_IMAGE || DEFAULT_PRODUCT_IMAGE);
+            if (targetImg) {
+                changeProductImage(targetImg, null, label);
             }
             
             var variantSummary = document.getElementById('variantSummaryText');

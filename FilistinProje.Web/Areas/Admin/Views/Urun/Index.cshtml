@@ -243,7 +243,7 @@
                                         <form action="/Admin/Urun/DurumGuncelle" method="post" class="d-inline">
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="id" value="@item.Id" />
-                                            <input type="hidden" name="aktif" value="@(!item.AktifMi)" />
+                                            <input type="hidden" name="aktif" value="@(item.AktifMi ? "false" : "true")" />
                                             <button type="submit"
                                                     class="ca-btn-icon @(item.AktifMi ? "delete" : "view")"
                                                     title="@(item.AktifMi ? Localizer["Admin_Deactivate"].Value : Localizer["Admin_Activate"].Value)">
@@ -255,11 +255,11 @@
                                             <form action="/Admin/Urun/GizleGoster" method="post" class="d-inline" onsubmit="return confirm(@System.Text.Json.JsonSerializer.Serialize(item.YayindaMi ? Localizer["Admin_ProductVisibilityHideConfirm"].Value : Localizer["Admin_ProductVisibilityShowConfirm"].Value))">
                                                 @Html.AntiForgeryToken()
                                                 <input type="hidden" name="id" value="@item.Id" />
-                                                <input type="hidden" name="yayinda" value="@(!item.YayindaMi)" />
+                                                <input type="hidden" name="yayinda" value="@(item.YayindaMi ? "false" : "true")" />
                                                 <button type="submit"
-                                                        class="ca-btn-icon @(item.YayindaMi ? "delete" : "view")"
+                                                        class="ca-btn-icon @(item.YayindaMi ? "view" : "delete")"
                                                         title="@(item.YayindaMi ? Localizer["Admin_HideFromStorefront"].Value : Localizer["Admin_ShowInStorefront"].Value)">
-                                                    <i class="fas @(item.YayindaMi ? "fa-eye-slash" : "fa-eye")"></i>
+                                                    <i class="fas @(item.YayindaMi ? "fa-eye" : "fa-eye-slash")"></i>
                                                 </button>
                                             </form>
                                         }

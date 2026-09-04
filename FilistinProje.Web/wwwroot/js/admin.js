@@ -178,20 +178,15 @@ document.addEventListener('DOMContentLoaded', function () {
 // =============================================
 // GLOBAL: MONEY FORMATTING
 // =============================================
-function formatMoney(amount, culture) {
-    if (typeof amount !== 'number' || !isFinite(amount)) return '\u20AA' + amount;
-    var lang = culture || document.documentElement.lang || 'ar';
-    var locale = lang === 'ar' ? 'ar-PS' : 'en-IL';
-    var currency = 'ILS';
+function formatMoney(amount, includeCurrency) {
+    if (includeCurrency === undefined) includeCurrency = true;
+    var num = (typeof amount === 'number' && isFinite(amount)) ? amount : (parseFloat(amount) || 0);
     try {
-        return new Intl.NumberFormat(locale, {
-            style: 'currency',
-            currency: currency,
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }).format(amount).replace(/[\s]*ILS/i, '').trim();
+        var formattedNum = num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return includeCurrency ? (formattedNum + ' \u20AA') : formattedNum;
     } catch (e) {
-        return '\u20AA' + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        var fallback = num.toFixed(2);
+        return includeCurrency ? (fallback + ' \u20AA') : fallback;
     }
 }
 

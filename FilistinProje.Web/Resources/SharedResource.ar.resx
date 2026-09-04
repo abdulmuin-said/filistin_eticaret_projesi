@@ -3390,6 +3390,18 @@
   <data name="Admin_VariantImage" xml:space="preserve">
     <value>صورة الخيار</value>
   </data>
+  <data name="Admin_SelectFromGallery" xml:space="preserve">
+    <value>اختر من المعرض</value>
+  </data>
+  <data name="Admin_RemoveImage" xml:space="preserve">
+    <value>إزالة الصورة</value>
+  </data>
+  <data name="Admin_ImageUploading" xml:space="preserve">
+    <value>جارٍ الرفع...</value>
+  </data>
+  <data name="Admin_PleaseSelectFile" xml:space="preserve">
+    <value>يرجى اختيار ملف</value>
+  </data>
   <data name="Admin_PersonalizationText" xml:space="preserve">
     <value>نص التخصيص</value>
   </data>
@@ -5822,4 +5834,34 @@
   <data name="Admin_BankOrAccountOwner" xml:space="preserve"><value>البنك وصاحب الحساب</value></data>
   <data name="Admin_Branch" xml:space="preserve"><value>الفرع</value></data>
   <data name="Admin_DeleteBankAccountConfirm" xml:space="preserve"><value>هل أنت متأكد من رغبتك في حذف هذا الحساب البنكي؟</value></data>
-<data name="HelloUser" xml:space="preserve"><value>مرحباً، {0}</value></data><data name="Profile_UpdateInfo" xml:space="preserve"><value>تعديل المعلومات</value></data><data name="Profile_ChangePassword" xml:space="preserve"><value>تغيير كلمة المرور</value></data><data name="Profile_UpdatedSuccess" xml:space="preserve"><value>تم تحديث معلومات الحساب بنجاح.</value></data><data name="Profile_CurrentPassword" xml:space="preserve"><value>كلمة المرور الحالية</value></data><data name="Profile_NewPassword" xml:space="preserve"><value>كلمة المرور الجديدة</value></data><data name="Profile_ConfirmNewPassword" xml:space="preserve"><value>تأكيد كلمة المرور الجديدة</value></data><data name="Profile_PasswordChangedSuccess" xml:space="preserve"><value>تم تغيير كلمة المرور بنجاح.</value></data><data name="Profile_PasswordMismatch" xml:space="preserve"><value>كلمة المرور الجديدة وتأكيدها غير متطابقين.</value></data><data name="Profile_PasswordRequired" xml:space="preserve"><value>يرجى إدخال جميع حقول كلمة المرور.</value></data><data name="Profile_EmailCannotBeChanged" xml:space="preserve"><value>لا يمكن تغيير عنوان البريد الإلكتروني لأسباب أمنية</value></data><data name="Profile_CurrentPasswordIncorrect" xml:space="preserve"><value>كلمة المرور الحالية غير صحيحة.</value></data></root>
+<data name="HelloUser" xml:space="preserve"><value>مرحباً، {0}</value></data><data name="Profile_UpdateInfo" xml:space="preserve"><value>تعديل المعلومات</value></data><data name="Profile_ChangePassword" xml:space="preserve"><value>تغيير كلمة المرور</value></data><data name="Profile_UpdatedSuccess" xml:space="preserve"><value>تم تحديث معلومات الحساب بنجاح.</value></data><data name="Profile_CurrentPassword" xml:space="preserve"><value>كلمة المرور الحالية</value></data><data name="Profile_NewPassword" xml:space="preserve"><value>كلمة المرور الجديدة</value></data><data name="Profile_ConfirmNewPassword" xml:space="preserve"><value>تأكيد كلمة المرور الجديدة</value></data><data name="Profile_PasswordChangedSuccess" xml:space="preserve"><value>تم تغيير كلمة المرور بنجاح.</value></data><data name="Profile_PasswordMismatch" xml:space="preserve"><value>كلمة المرور الجديدة وتأكيدها غير متطابقين.</value></data><data name="Profile_PasswordRequired" xml:space="preserve"><value>يرجى إدخال جميع حقول كلمة المرور.</value></data><data name="Profile_EmailCannotBeChanged" xml:space="preserve"><value>لا يمكن تغيير عنوان البريد الإلكتروني لأسباب أمنية</value></data><data name="Profile_CurrentPasswordIncorrect" xml:space="preserve"><value>كلمة المرور الحالية غير صحيحة.</value></data>  <data name="Admin_Product_Published" xml:space="preserve">
+    <value>تم إظهار المنتج ونشره في المتجر بنجاح.</value>
+  </data>
+  <data name="Admin_Product_Hidden" xml:space="preserve">
+    <value>تم إخفاء المنتج من المتجر بنجاح.</value>
+  </data>
+  <data name="Admin_Product_Activated" xml:space="preserve">
+    <value>تم تفعيل المنتج بنجاح.</value>
+  </data>
+  <data name="Admin_Product_Deactivated" xml:space="preserve">
+    <value>تم إيقاف تفعيل المنتج بنجاح.</value>
+  </data>
+  <data name="Admin_Product_NotFound" xml:space="preserve">
+    <value>المنتج غير موجود.</value>
+  </data>
+  <data name="Admin_Product_Archived" xml:space="preserve">
+    <value>تم أرشفة المنتج بنجاح.</value>
+  </data>
+  <data name="Admin_Product_ArchivedCount" xml:space="preserve">
+    <value>تم أرشفة {0} منتج بنجاح.</value>
+  </data>
+  <data name="Admin_Product_SelectToArchive" xml:space="preserve">
+    <value>يرجى تحديد منتج واحد على الأقل للأرشفة.</value>
+  </data>
+  <data name="Admin_Product_SelectAtLeastOne" xml:space="preserve">
+    <value>يرجى تحديد منتج واحد على الأقل.</value>
+  </data>
+  <data name="Admin_Product_UpdatedSKUCount" xml:space="preserve">
+    <value>تم تحديث الباركود لـ {0} منتج و {1} خيار.</value>
+  </data>
+</root>

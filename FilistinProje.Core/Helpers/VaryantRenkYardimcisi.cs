@@ -57,6 +57,84 @@ namespace FilistinProje.Core.Helpers
                 ["بيج"] = "#D6C6A5"
             };
 
+        private static readonly IReadOnlyDictionary<string, (string Ar, string En)> RenkCevirileri =
+            new Dictionary<string, (string Ar, string En)>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["red"] = ("أحمر", "Red"),
+                ["kırmızı"] = ("أحمر", "Red"),
+                ["kirmizi"] = ("أحمر", "Red"),
+                ["أحمر"] = ("أحمر", "Red"),
+                ["احمر"] = ("أحمر", "Red"),
+
+                ["green"] = ("أخضر", "Green"),
+                ["yeşil"] = ("أخضر", "Green"),
+                ["yesil"] = ("أخضر", "Green"),
+                ["أخضر"] = ("أخضر", "Green"),
+                ["اخضر"] = ("أخضر", "Green"),
+
+                ["black"] = ("أسود", "Black"),
+                ["siyah"] = ("أسود", "Black"),
+                ["أسود"] = ("أسود", "Black"),
+                ["اسود"] = ("أسود", "Black"),
+
+                ["white"] = ("أبيض", "White"),
+                ["beyaz"] = ("أبيض", "White"),
+                ["أبيض"] = ("أبيض", "White"),
+                ["ابيض"] = ("أبيض", "White"),
+
+                ["blue"] = ("أزرق", "Blue"),
+                ["mavi"] = ("أزرق", "Blue"),
+                ["أزرق"] = ("أزرق", "Blue"),
+                ["ازرق"] = ("أزرق", "Blue"),
+
+                ["yellow"] = ("أصفر", "Yellow"),
+                ["sarı"] = ("أصفر", "Yellow"),
+                ["sari"] = ("أصفر", "Yellow"),
+                ["أصفر"] = ("أصفر", "Yellow"),
+                ["اصفر"] = ("أصفر", "Yellow"),
+
+                ["orange"] = ("برتقالي", "Orange"),
+                ["turuncu"] = ("برتقالي", "Orange"),
+                ["برتقالي"] = ("برتقالي", "Orange"),
+
+                ["purple"] = ("بنفسجي", "Purple"),
+                ["mor"] = ("بنفسجي", "Purple"),
+                ["بنفسجي"] = ("بنفسجي", "Purple"),
+
+                ["pink"] = ("وردي", "Pink"),
+                ["pembe"] = ("وردي", "Pink"),
+                ["وردي"] = ("وردي", "Pink"),
+
+                ["gray"] = ("رمادي", "Gray"),
+                ["grey"] = ("رمادي", "Gray"),
+                ["gri"] = ("رمادي", "Gray"),
+                ["رمادي"] = ("رمادي", "Gray"),
+
+                ["brown"] = ("بني", "Brown"),
+                ["kahverengi"] = ("بني", "Brown"),
+                ["بني"] = ("بني", "Brown"),
+
+                ["beige"] = ("بيج", "Beige"),
+                ["bej"] = ("بيج", "Beige"),
+                ["بيج"] = ("بيج", "Beige")
+            };
+
+        public static string GetLocalizedRenk(string? renkAdi, bool isAr)
+        {
+            if (string.IsNullOrWhiteSpace(renkAdi))
+            {
+                return string.Empty;
+            }
+
+            var normalized = NormalizeName(renkAdi);
+            if (RenkCevirileri.TryGetValue(normalized, out var pair))
+            {
+                return isAr ? pair.Ar : pair.En;
+            }
+
+            return renkAdi.Trim();
+        }
+
         public static bool TryNormalizeHex(string? renkKodu, out string normalized)
         {
             var value = renkKodu?.Trim() ?? string.Empty;

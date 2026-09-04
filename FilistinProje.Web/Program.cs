@@ -316,13 +316,23 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
+    var arCulture = new CultureInfo("ar");
+    arCulture.NumberFormat.DigitSubstitution = DigitShapes.None;
+    arCulture.NumberFormat.NativeDigits = new[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+    arCulture.NumberFormat.NumberDecimalSeparator = ".";
+    arCulture.NumberFormat.NumberGroupSeparator = ",";
+    arCulture.NumberFormat.CurrencyDecimalSeparator = ".";
+    arCulture.NumberFormat.CurrencyGroupSeparator = ",";
+    arCulture.NumberFormat.PercentDecimalSeparator = ".";
+    arCulture.NumberFormat.PercentGroupSeparator = ",";
+
     var supportedCultures = new[]
     {
-        new CultureInfo("ar"),
+        arCulture,
         new CultureInfo("en")
     };
 
-    options.DefaultRequestCulture = new RequestCulture("ar");
+    options.DefaultRequestCulture = new RequestCulture(arCulture);
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
     options.RequestCultureProviders = new[]

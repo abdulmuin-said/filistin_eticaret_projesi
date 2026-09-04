@@ -61,6 +61,18 @@ namespace FilistinProje.Core.Varliklar
             }
             .Where(x => !string.IsNullOrWhiteSpace(x)));
 
+        public string GetLocalizedVaryantBasligi(bool isAr)
+        {
+            var localizedRenk = VaryantRenkYardimcisi.GetLocalizedRenk(Renk, isAr);
+            return string.Join(" / ", new[]
+            {
+                localizedRenk,
+                Beden,
+                string.IsNullOrWhiteSpace(OlcuBirimi) ? Olcu : $"{Olcu} {OlcuBirimi}"
+            }
+            .Where(x => !string.IsNullOrWhiteSpace(x)));
+        }
+
         [NotMapped]
         public string VaryantOzeti
         {

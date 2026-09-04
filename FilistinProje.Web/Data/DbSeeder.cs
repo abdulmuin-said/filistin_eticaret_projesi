@@ -57,7 +57,7 @@ namespace FilistinProje.Web.Data
                         {
                             UserName = adminEmail,
                             Email = adminEmail,
-                            AdSoyad = "Sistem Yöneticisi",
+                            AdSoyad = "مدير 7ANRPS48",
                             Sehir = "Ramallah",
                             EmailConfirmed = true
                         };
@@ -104,7 +104,7 @@ namespace FilistinProje.Web.Data
                     Telefon = "+970 000 000 000",
                     TakipUrl = "https://tracking.unitedexpress.ps/?track=",
                     GondericiUnvan = "7ANRPS48",
-                    GondericiAdres = "Ramallah, Filistin",
+                    GondericiAdres = "Ramallah, Palestine",
                     GondericiTelefon = "+970 000 000 000",
                     AktifMi = true,
                     VarsayilanMi = true,
@@ -116,20 +116,21 @@ namespace FilistinProje.Web.Data
                 logger.LogInformation("[Seed] United Express kargo firmasi eklendi (takip URL ve fiyat gercek değil, admin duzeltmeli).");
             }
 
-            // Kargo bölgeleri (48 Bölge – 3 bölge: İç/Kuzey/Merkez, Batı Şeria alt bölgeleri, Kudüs)
+            // Kargo bölgeleri (48 Bölge – 3 bölge: İç/Kuzey/Merkez, Batı Şeria alt bölgeleri, Kudüs, Gazze)
             var bolgeAdlari = new (string Ad, string? Ulke, string? Aciklama, int Sira)[]
             {
-                ("48 İç Bölge (Kuzey)", "Filistin", "Hayfa - Nasıra - Akka - Ümmü'l-Fahm (48 kuzey)", 1),
-                ("48 İç Bölge (Merkez)", "Filistin", "Yafa - Lydda - Ramla - Taybe (48 merkez)", 2),
-                ("Batı Şeria (Kuzey / Merkez)", "Filistin", "Cenin - Nablus - Ramallah - El-Halil - Beytüllahim - Salfit - Tubas - Tulkarim - Kalkilya - Eriha", 3),
-                ("Kudüs", "Filistin", "El-Kudüs (ayrı bölge)", 4),
-                ("Gazze Şeridi", "Filistin", "Gazze - Han Yunus - Refah - Kuzey Gazze - Deyr el-Balah", 5),
+                ("المناطق الداخلية 48 (شمال)", "Palestine", "حيفا - الناصرة - عكا - أم الفحم", 1),
+                ("المناطق الداخلية 48 (وسط)", "Palestine", "يافا - اللد - الرملة - الطيبة", 2),
+                ("الضفة الغربية (شمال / وسط)", "Palestine", "جنين - نابلس - رام الله - الخليل - بيت لحم - سلفيت - طوباس - طولكرم - قلقيلية - أريحا", 3),
+                ("القدس", "Palestine", "القدس وضواحيها", 4),
+                ("قطاع غزة", "Palestine", "غزة - خان يونس - رفح - شمال غزة - دير البلح", 5),
             };
 
-            var bolgeLookup = await db.KargoBolgeler.IgnoreQueryFilters().ToDictionaryAsync(x => x.Ad, x => x);
+            var existingBolgeler = await db.KargoBolgeler.IgnoreQueryFilters().ToListAsync();
             foreach (var (ad, ulke, aciklama, sira) in bolgeAdlari)
             {
-                if (!bolgeLookup.ContainsKey(ad))
+                var mevcut = existingBolgeler.FirstOrDefault(x => x.Sira == sira || x.Ad == ad);
+                if (mevcut == null)
                 {
                     db.KargoBolgeler.Add(new KargoBolge
                     {
@@ -144,9 +145,9 @@ namespace FilistinProje.Web.Data
                 }
                 else
                 {
-                    var mevcut = bolgeLookup[ad];
-                    mevcut.Ulke ??= ulke;
-                    mevcut.Aciklama ??= aciklama;
+                    mevcut.Ad = ad;
+                    mevcut.Ulke = ulke;
+                    mevcut.Aciklama = aciklama;
                     mevcut.Sira = sira;
                     mevcut.SilindiMi = false;
                 }
@@ -156,30 +157,30 @@ namespace FilistinProje.Web.Data
             // Şehirler
             var sehirler = new (string SehirAdi, string SehirAdiEn, string SehirAdiAr, string BolgeAdi)[]
             {
-                ("Hayfa", "Haifa", "حيفا", "48 İç Bölge (Kuzey)"),
-                ("Nasıra", "Nazareth", "الناصرة", "48 İç Bölge (Kuzey)"),
-                ("Akka", "Acre", "عكا", "48 İç Bölge (Kuzey)"),
-                ("Ümmü'l-Fahm", "Umm al-Fahm", "أم الفحم", "48 İç Bölge (Kuzey)"),
-                ("Yafa", "Jaffa", "يافا", "48 İç Bölge (Merkez)"),
-                ("Lydda", "Lydda", "اللد", "48 İç Bölge (Merkez)"),
-                ("Ramla", "Ramla", "الرملة", "48 İç Bölge (Merkez)"),
-                ("Taybe", "Tayibe", "الطيبة", "48 İç Bölge (Merkez)"),
-                ("Cenin", "Jenin", "جنين", "Batı Şeria (Kuzey / Merkez)"),
-                ("Nablus", "Nablus", "نابلس", "Batı Şeria (Kuzey / Merkez)"),
-                ("Ramallah ve El-Bireh", "Ramallah and al-Bireh", "رام الله والبيرة", "Batı Şeria (Kuzey / Merkez)"),
-                ("El-Halil", "Hebron", "الخليل", "Batı Şeria (Kuzey / Merkez)"),
-                ("Beytüllahim", "Bethlehem", "بيت لحم", "Batı Şeria (Kuzey / Merkez)"),
-                ("Salfit", "Salfit", "سلفيت", "Batı Şeria (Kuzey / Merkez)"),
-                ("Tubas", "Tubas", "طوباس", "Batı Şeria (Kuzey / Merkez)"),
-                ("Tulkarim", "Tulkarm", "طولكرم", "Batı Şeria (Kuzey / Merkez)"),
-                ("Kalkilya", "Qalqilya", "قلقيلية", "Batı Şeria (Kuzey / Merkez)"),
-                ("Eriha", "Jericho", "أريحا", "Batı Şeria (Kuzey / Merkez)"),
-                ("El-Kudüs", "Jerusalem", "القدس", "Kudüs"),
-                ("Gazze", "Gaza", "غزة", "Gazze Şeridi"),
-                ("Han Yunus", "Khan Yunis", "خان يونس", "Gazze Şeridi"),
-                ("Refah", "Rafah", "رفح", "Gazze Şeridi"),
-                ("Kuzey Gazze", "North Gaza", "شمال غزة", "Gazze Şeridi"),
-                ("Deyr el-Balah", "Deir al-Balah", "دير البلح", "Gazze Şeridi"),
+                ("حيفا", "Haifa", "حيفا", "المناطق الداخلية 48 (شمال)"),
+                ("الناصرة", "Nazareth", "الناصرة", "المناطق الداخلية 48 (شمال)"),
+                ("عكا", "Acre", "عكا", "المناطق الداخلية 48 (شمال)"),
+                ("أم الفحم", "Umm al-Fahm", "أم الفحم", "المناطق الداخلية 48 (شمال)"),
+                ("يافا", "Jaffa", "يافا", "المناطق الداخلية 48 (وسط)"),
+                ("اللد", "Lydda", "اللد", "المناطق الداخلية 48 (وسط)"),
+                ("الرملة", "Ramla", "الرملة", "المناطق الداخلية 48 (وسط)"),
+                ("الطيبة", "Tayibe", "الطيبة", "المناطق الداخلية 48 (وسط)"),
+                ("جنين", "Jenin", "جنين", "الضفة الغربية (شمال / وسط)"),
+                ("نابلس", "Nablus", "نابلس", "الضفة الغربية (شمال / وسط)"),
+                ("رام الله والبيرة", "Ramallah and al-Bireh", "رام الله والبيرة", "الضفة الغربية (شمال / وسط)"),
+                ("الخليل", "Hebron", "الخليل", "الضفة الغربية (شمال / وسط)"),
+                ("بيت لحم", "Bethlehem", "بيت لحم", "الضفة الغربية (شمال / وسط)"),
+                ("سلفيت", "Salfit", "سلفيت", "الضفة الغربية (شمال / وسط)"),
+                ("طوباس", "Tubas", "طوباس", "الضفة الغربية (شمال / وسط)"),
+                ("طولكرم", "Tulkarm", "طولكرم", "الضفة الغربية (شمال / وسط)"),
+                ("قلقيلية", "Qalqilya", "قلقيلية", "الضفة الغربية (شمال / وسط)"),
+                ("أريحا", "Jericho", "أريحا", "الضفة الغربية (شمال / وسط)"),
+                ("القدس", "Jerusalem", "القدس", "القدس"),
+                ("غزة", "Gaza", "غزة", "قطاع غزة"),
+                ("خان يونس", "Khan Yunis", "خان يونس", "قطاع غزة"),
+                ("رفح", "Rafah", "رفح", "قطاع غزة"),
+                ("شمال غزة", "North Gaza", "شمال غزة", "قطاع غزة"),
+                ("دير البلح", "Deir al-Balah", "دير البلح", "قطاع غزة"),
             };
 
             var bolgeler = await db.KargoBolgeler.IgnoreQueryFilters().Where(x => !x.SilindiMi).ToListAsync();
@@ -192,7 +193,7 @@ namespace FilistinProje.Web.Data
 
                 var mevcutSehir = mevcutSehirler.FirstOrDefault(x =>
                     x.BolgeId == bolge.Id &&
-                    (x.SehirAdi == sehirAdi || x.SehirAdiEn == sehirAdiEn));
+                    (x.SehirAdiEn == sehirAdiEn || x.SehirAdiAr == sehirAdiAr || x.SehirAdi == sehirAdi));
                 if (mevcutSehir != null)
                 {
                     mevcutSehir.SehirAdi = sehirAdi;
