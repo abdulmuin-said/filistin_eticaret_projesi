@@ -603,6 +603,41 @@
                     checkbox.checked = false;
                 }
             });
+
+            // Auto-sync default variant fields to main product inputs (Item 16)
+            const card = activeCheckbox.closest('[data-variant-card]');
+            if (card) {
+                const satisFiyati = selector(card, 'SatisFiyati')?.value;
+                const indirimliFiyat = selector(card, 'IndirimliFiyat')?.value;
+                const maliyetFiyati = selector(card, 'MaliyetFiyati')?.value;
+                const stokAdedi = selector(card, 'StokAdedi')?.value;
+                const varyantSku = selector(card, 'VaryantSku')?.value;
+
+                const mainFiyat = document.querySelector('input[name="Fiyat"]');
+                const mainIndirimliFiyat = document.querySelector('input[name="IndirimliFiyat"]');
+                const mainMaliyet = document.querySelector('input[name="Maliyet"]');
+                const mainSku = document.querySelector('input[name="SKU"]');
+                const mainStokDurumu = document.querySelector('select[name="StokDurumu"]');
+
+                if (mainFiyat && satisFiyati && parseFloat(satisFiyati.replace(',', '.')) > 0) {
+                    mainFiyat.value = satisFiyati;
+                }
+                if (mainIndirimliFiyat && indirimliFiyat !== undefined && indirimliFiyat !== '') {
+                    mainIndirimliFiyat.value = indirimliFiyat;
+                }
+                if (mainMaliyet && maliyetFiyati) {
+                    mainMaliyet.value = maliyetFiyati;
+                }
+                if (mainSku && varyantSku) {
+                    mainSku.value = varyantSku;
+                }
+                if (mainStokDurumu && stokAdedi !== undefined && stokAdedi !== '') {
+                    const parsedStok = parseInt(stokAdedi, 10);
+                    if (!isNaN(parsedStok)) {
+                        mainStokDurumu.value = parsedStok > 0 ? 'Stokta' : 'Tukendi';
+                    }
+                }
+            }
         }
 
         function reindex() {

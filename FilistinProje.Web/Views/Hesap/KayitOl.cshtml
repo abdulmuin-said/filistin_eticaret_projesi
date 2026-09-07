@@ -14,7 +14,7 @@
         <div asp-validation-summary="ModelOnly" class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded mb-6 hidden [&:not(:empty)]:block"></div>
 
         <div class="bg-white border border-brand-border rounded-lg p-8 shadow-sm">
-            <form asp-action="KayitOl" method="post" enctype="multipart/form-data" class="space-y-4" novalidate>
+            <form asp-action="KayitOl" method="post" enctype="multipart/form-data" class="space-y-4" id="kayitForm" novalidate>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
@@ -54,37 +54,6 @@
                 </div>
 
                 <div>
-                    <label asp-for="Adres" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["Address"]</label>
-                    <textarea asp-for="Adres" placeholder="@Localizer["AddressPlaceholder"]" rows="2"
-                              class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream resize-none"></textarea>
-                    <span asp-validation-for="Adres" class="text-red-600 text-xs mt-1 block"></span>
-                </div>
-
-                <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-2">
-                    <div class="flex items-start gap-2">
-                        <svg class="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <p class="text-xs text-amber-800 leading-relaxed">@Localizer["IdentityPhotoRequiredWarning"]</p>
-                    </div>
-                    <div class="ps-7">
-                        <label asp-for="KimlikFoto" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["IdentityPhoto"] <span class="text-red-500">*</span></label>
-                        <div class="overflow-hidden rounded border border-brand-border bg-white focus-within:border-brand-gold focus-within:ring-1 focus-within:ring-[#b58735]">
-                            <input asp-for="KimlikFoto" type="file" accept="image/png,image/jpeg,image/webp" required class="sr-only" aria-describedby="identityFileName identityFileHelp" />
-                            <label for="KimlikFoto" class="flex min-h-12 cursor-pointer items-center gap-3 px-3 py-2.5">
-                                <span class="inline-flex shrink-0 items-center gap-2 rounded bg-brand-olive px-4 py-2 text-[11px] font-medium uppercase tracking-wider text-white transition-colors hover:bg-[#1c2001]">
-                                    <i class="fas fa-upload" aria-hidden="true"></i>
-                                    @Localizer["ChooseFile"]
-                                </span>
-                                <span id="identityFileName" class="min-w-0 truncate text-xs text-brand-mutedtext" data-empty-text="@Localizer["NoFileSelected"]">@Localizer["NoFileSelected"]</span>
-                            </label>
-                        </div>
-                        <p id="identityFileHelp" class="text-brand-mutedtext text-xs mt-1">@Localizer["IdentityPhotoHelp"]</p>
-                        <span asp-validation-for="KimlikFoto" class="text-red-600 text-xs mt-1 block"></span>
-                    </div>
-                </div>
-
-                <div>
                     <label asp-for="Sehir" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["City"]</label>
                      <select asp-for="Sehir" class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream">
                          <option value="">@Localizer["SelectCity"]</option>
@@ -99,6 +68,38 @@
                          <option>Jerusalem</option><option>Al-Ram</option><option>Al-Eizariya</option>
                      </select>
                     <span asp-validation-for="Sehir" class="text-red-600 text-xs mt-1 block"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Adres" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["Address"]</label>
+                    <textarea asp-for="Adres" placeholder="@Localizer["AddressPlaceholder"]" rows="2"
+                              class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream resize-none"></textarea>
+                    <span asp-validation-for="Adres" class="text-red-600 text-xs mt-1 block"></span>
+                </div>
+
+                <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-2">
+                    <div class="flex items-start gap-2">
+                        <svg class="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p class="text-xs text-amber-800 leading-relaxed">@Localizer["IdentityPhotoRequiredWarning"]</p>
+                    </div>
+                    <div class="ps-7">
+                        <label asp-for="KimlikFoto" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["IdentityPhoto"] <span class="text-red-600 font-bold">*</span></label>
+                        <div id="identityUploadBox" class="overflow-hidden rounded border border-brand-border bg-white focus-within:border-brand-gold focus-within:ring-1 focus-within:ring-[#b58735]">
+                            <input asp-for="KimlikFoto" type="file" accept="image/png,image/jpeg,image/webp" required class="sr-only" aria-describedby="identityFileName identityFileHelp identityFileError" />
+                            <label for="KimlikFoto" class="flex min-h-12 cursor-pointer items-center gap-3 px-3 py-2.5">
+                                <span class="inline-flex shrink-0 items-center gap-2 rounded bg-brand-olive px-4 py-2 text-[11px] font-medium uppercase tracking-wider text-white transition-colors hover:bg-[#1c2001]">
+                                    <i class="fas fa-upload" aria-hidden="true"></i>
+                                    @Localizer["ChooseFile"]
+                                </span>
+                                <span id="identityFileName" class="min-w-0 truncate text-xs text-brand-mutedtext" data-empty-text="@Localizer["NoFileSelected"]">@Localizer["NoFileSelected"]</span>
+                            </label>
+                        </div>
+                        <p id="identityFileHelp" class="text-brand-mutedtext text-xs mt-1">@Localizer["IdentityPhotoHelp"]</p>
+                        <span asp-validation-for="KimlikFoto" class="text-red-600 text-xs mt-1 block"></span>
+                        <span id="identityFileError" class="text-red-600 text-xs mt-1 hidden block font-medium">@Localizer["IDPhotoRequiredError"]</span>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -147,6 +148,10 @@
     document.addEventListener('DOMContentLoaded', function () {
         const input = document.getElementById('KimlikFoto');
         const fileName = document.getElementById('identityFileName');
+        const uploadBox = document.getElementById('identityUploadBox');
+        const errorMsg = document.getElementById('identityFileError');
+        const form = input ? input.closest('form') : document.getElementById('kayitForm');
+
         if (!input || !fileName) return;
 
         input.addEventListener('change', function () {
@@ -154,6 +159,35 @@
             fileName.textContent = selected || fileName.dataset.emptyText;
             fileName.classList.toggle('text-brand-darktext', Boolean(selected));
             fileName.classList.toggle('text-brand-mutedtext', !selected);
+
+            if (selected) {
+                if (errorMsg) {
+                    errorMsg.classList.add('hidden');
+                }
+                if (uploadBox) {
+                    uploadBox.classList.remove('border-red-500');
+                    uploadBox.classList.add('border-brand-border');
+                }
+            }
         });
+
+        if (form) {
+            form.addEventListener('submit', function (e) {
+                const hasFile = input.files && input.files.length > 0;
+                if (!hasFile) {
+                    e.preventDefault();
+                    if (errorMsg) {
+                        errorMsg.textContent = '@Localizer["IDPhotoRequiredError"]';
+                        errorMsg.classList.remove('hidden');
+                    }
+                    if (uploadBox) {
+                        uploadBox.classList.remove('border-brand-border');
+                        uploadBox.classList.add('border-red-500');
+                    }
+                    uploadBox ? uploadBox.scrollIntoView({ behavior: 'smooth', block: 'center' }) : input.focus();
+                    return false;
+                }
+            });
+        }
     });
 </script>

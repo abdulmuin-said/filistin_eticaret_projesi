@@ -76,8 +76,19 @@
                                 <input name="MinAdet" class="ca-input" type="number" min="1" value="10" required />
                             </div>
                             <div class="col-md-6">
+                                <label class="ca-label">@Localizer["DiscountType"]</label>
+                                <select name="IskontoTipi" class="ca-select" id="topIskontoTipi" onchange="toggleTopDiscountFields()">
+                                    <option value="Yuzde">@Localizer["DiscountTypePercentage"]</option>
+                                    <option value="Tutar">@Localizer["DiscountTypeFixed"]</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6" id="topYuzdeField">
                                 <label class="ca-label">@Localizer["Admin_IskontoYuzdesi"]</label>
-                                <input name="IskontoYuzdesi" class="ca-input" type="number" min="0" max="100" step="0.5" value="5" required />
+                                <input name="IskontoYuzdesi" class="ca-input" type="number" min="0" max="100" step="0.5" value="5" />
+                            </div>
+                            <div class="col-md-6" id="topTutarField" style="display:none;">
+                                <label class="ca-label">@Localizer["DiscountAmount"] (₪)</label>
+                                <input name="IskontoTutari" class="ca-input" type="number" min="0" step="0.01" value="0" />
                             </div>
                         </div>
                         <button class="ca-btn ca-btn-primary mt-3" type="submit">
@@ -191,13 +202,32 @@
                                                 {
                                                     <div class="table-responsive">
                                                         <table class="table table-sm mb-2">
-                                                            <thead><tr><th>@Localizer["Admin_MinAdet"]</th><th>@Localizer["Admin_IskontoYuzdesi"]</th><th>@Localizer["Admin_Durum"]</th><th class="text-end">@Localizer["Admin_Sil"]</th></tr></thead>
+                                                            <thead><tr><th>@Localizer["Admin_MinAdet"]</th><th>@Localizer["DiscountType"]</th><th>@Localizer["Admin_IskontoYuzdesi"] / @Localizer["DiscountAmount"]</th><th>@Localizer["Admin_Durum"]</th><th class="text-end">@Localizer["Admin_Sil"]</th></tr></thead>
                                                             <tbody>
                                                                 @foreach (var iskonto in grup.IskontoOranlari.Where(i => !i.SilindiMi).OrderBy(i => i.MinAdet))
                                                                 {
                                                                     <tr>
                                                                         <td>@iskonto.MinAdet</td>
-                                                                        <td>@iskonto.IskontoYuzdesi%</td>
+                                                                        <td>
+                                                                            @if (iskonto.IskontoTipi == "Tutar")
+                                                                            {
+                                                                                <span class="ca-badge ca-badge-warning">@Localizer["DiscountTypeFixed"]</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span class="ca-badge ca-badge-info">@Localizer["DiscountTypePercentage"]</span>
+                                                                            }
+                                                                        </td>
+                                                                        <td>
+                                                                            @if (iskonto.IskontoTipi == "Tutar")
+                                                                            {
+                                                                                <span>₪@iskonto.IskontoTutari.ToString("N2")</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>@iskonto.IskontoYuzdesi%</span>
+                                                                            }
+                                                                        </td>
                                                                         <td><span class="ca-badge @(iskonto.AktifMi ? "ca-badge-success" : "ca-badge-neutral")">@(iskonto.AktifMi ? Localizer["Admin_Aktif"] : Localizer["Admin_Pasif"])</span></td>
                                                                         <td class="text-end">
                                                                             <form method="post" action="/Admin/Toptanci/IskontoSil/@iskonto.Id" class="m-0" onsubmit="return confirm('@Localizer["Admin_IskontoSilConfirm"]');">
@@ -217,7 +247,14 @@
                                                     <input type="hidden" name="ToptanciUrunGrubuId" value="@grup.Id" />
                                                     <div class="row g-2">
                                                         <div class="col"><input name="MinAdet" class="ca-input form-control-sm" type="number" min="1" placeholder='@Localizer["Admin_MinAdet"]' required /></div>
-                                                        <div class="col"><input name="IskontoYuzdesi" class="ca-input form-control-sm" type="number" min="0" max="100" step="0.5" placeholder='@Localizer["Admin_IskontoYuzdesi"]' required /></div>
+                                                        <div class="col">
+                                                            <select name="IskontoTipi" class="ca-select form-control-sm" onchange="toggleInlineDiscount(this)">
+                                                                <option value="Yuzde">%</option>
+                                                                <option value="Tutar">₪</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col inline-yuzde-@grup.Id"><input name="IskontoYuzdesi" class="ca-input form-control-sm" type="number" min="0" max="100" step="0.5" placeholder='@Localizer["Admin_IskontoYuzdesi"]' /></div>
+                                                        <div class="col inline-tutar-@grup.Id" style="display:none;"><input name="IskontoTutari" class="ca-input form-control-sm" type="number" min="0" step="0.01" placeholder='@Localizer["DiscountAmount"]' /></div>
                                                         <div class="col-auto"><button class="ca-btn ca-btn-sm ca-btn-primary" type="submit"><i class="fas fa-plus"></i> @Localizer["Admin_Ekle"]</button></div>
                                                     </div>
                                                 </form>
@@ -233,3 +270,34 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+<script>
+    function toggleTopDiscountFields() {
+        var sel = document.getElementById('topIskontoTipi');
+        var yuzde = document.getElementById('topYuzdeField');
+        var tutar = document.getElementById('topTutarField');
+        if (sel.value === 'Tutar') {
+            yuzde.style.display = 'none';
+            tutar.style.display = '';
+        } else {
+            yuzde.style.display = '';
+            tutar.style.display = 'none';
+        }
+    }
+
+    function toggleInlineDiscount(select) {
+        var form = select.closest('form');
+        var row = form.querySelector('.row');
+        var yuzdeCol = row.querySelector('[class*="inline-yuzde"]');
+        var tutarCol = row.querySelector('[class*="inline-tutar"]');
+        if (select.value === 'Tutar') {
+            if (yuzdeCol) yuzdeCol.style.display = 'none';
+            if (tutarCol) tutarCol.style.display = '';
+        } else {
+            if (yuzdeCol) yuzdeCol.style.display = '';
+            if (tutarCol) tutarCol.style.display = 'none';
+        }
+    }
+</script>
+}

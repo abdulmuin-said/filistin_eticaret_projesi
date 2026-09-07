@@ -134,6 +134,19 @@ namespace FilistinProje.Web.Controllers
                 ModelState.AddModelError(nameof(dto.ReceteDosyaYolu), _localizer["Siparis_PrescriptionRequired"].Value);
             }
 
+            if (string.Equals(dto.OdemeYontemi, "BankaHavalesi", StringComparison.OrdinalIgnoreCase))
+            {
+                if (string.IsNullOrWhiteSpace(dto.OdemeDekontYolu) ||
+                    !IsSafeUploadedPath(dto.OdemeDekontYolu, HassasBelgeKategorisi.Dekont, allowPdf: true, sessionId))
+                {
+                    ModelState.AddModelError(nameof(dto.OdemeDekontYolu), _localizer["PaymentReceiptRequired"].Value);
+                }
+            }
+            else
+            {
+                dto.OdemeDekontYolu = null;
+            }
+
             if (!string.IsNullOrWhiteSpace(dto.KimlikFotoYolu) && !IsSafeUploadedPath(dto.KimlikFotoYolu, HassasBelgeKategorisi.Kimlik, allowPdf: false, sessionId))
             {
                 ModelState.AddModelError(nameof(dto.KimlikFotoYolu), _localizer["Siparis_FileUploadError"].Value);
@@ -159,15 +172,21 @@ namespace FilistinProje.Web.Controllers
 
             var temporaryReceteReference = dto.ReceteDosyaYolu;
             var temporaryKimlikReference = dto.KimlikFotoYolu;
+            var temporaryDekontReference = dto.OdemeDekontYolu;
             var recetePromoted = PromoteCheckoutDocument(
                 temporaryReceteReference, sessionId, HassasBelgeKategorisi.Recete, out var receteReference);
             string? kimlikReference = null;
             var kimlikPromoted = recetePromoted && PromoteCheckoutDocument(
                 temporaryKimlikReference, sessionId, HassasBelgeKategorisi.Kimlik, out kimlikReference);
+            string? dekontReference = null;
+            var dekontPromoted = kimlikPromoted && (string.IsNullOrWhiteSpace(temporaryDekontReference) ||
+                PromoteCheckoutDocument(temporaryDekontReference, sessionId, HassasBelgeKategorisi.Dekont, out dekontReference));
 
-            if (!recetePromoted || !kimlikPromoted)
+            if (!recetePromoted || !kimlikPromoted || !dekontPromoted)
             {
                 RollBackPromotedDocument(receteReference, sessionId, HassasBelgeKategorisi.Recete);
+                RollBackPromotedDocument(kimlikReference, sessionId, HassasBelgeKategorisi.Kimlik);
+                RollBackPromotedDocument(dekontReference, sessionId, HassasBelgeKategorisi.Dekont);
                 ModelState.AddModelError(string.Empty, _localizer["Siparis_FileUploadError"].Value);
                 await PrepareCheckoutViewDataAsync(userId, sessionId, sepetItems);
                 ViewBag.FormHata = _localizer["Siparis_FileUploadError"].Value;
@@ -176,6 +195,7 @@ namespace FilistinProje.Web.Controllers
 
             dto.ReceteDosyaYolu = receteReference;
             dto.KimlikFotoYolu = kimlikReference;
+            dto.OdemeDekontYolu = dekontReference;
 
             var placeOrderResult = await _purchaseOrderService.PlaceOrderAsync(new PlaceOrderRequest
             {
@@ -196,8 +216,10 @@ namespace FilistinProje.Web.Controllers
             {
                 RollBackPromotedDocument(receteReference, sessionId, HassasBelgeKategorisi.Recete);
                 RollBackPromotedDocument(kimlikReference, sessionId, HassasBelgeKategorisi.Kimlik);
+                RollBackPromotedDocument(dekontReference, sessionId, HassasBelgeKategorisi.Dekont);
                 dto.ReceteDosyaYolu = temporaryReceteReference;
                 dto.KimlikFotoYolu = temporaryKimlikReference;
+                dto.OdemeDekontYolu = temporaryDekontReference;
 
                 if (placeOrderResult.Status == PlaceOrderStatus.InvalidCoupon)
                 {
@@ -354,6 +376,42 @@ namespace FilistinProje.Web.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error uploading prescription.");
+                return Json(new { success = false, message = _localizer["Siparis_FileUploadError"].Value });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("checkout-upload")]
+        public async Task<IActionResult> YukleDekont(IFormFile? dosya)
+        {
+            try
+            {
+                if (dosya == null || dosya.Length == 0)
+                {
+                    return Json(new { success = false, message = _localizer["Siparis_FileNotSelected"].Value });
+                }
+
+                if (!await ValidateCheckoutUploadCapabilityAsync(dosya.Length))
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden, new { success = false, message = _localizer["Siparis_FileUploadError"].Value });
+                }
+
+                var sonuc = await _dosyaServisi.GeciciHassasBelgeKaydetAsync(
+                    dosya,
+                    HassasBelgeKategorisi.Dekont,
+                    GetCheckoutStorageKey(HttpContext.Session.Id));
+                if (!sonuc.Success)
+                {
+                    return Json(new { success = false, message = sonuc.ErrorMessage });
+                }
+
+                RegisterSuccessfulCheckoutUpload(sonuc.Url!, dosya.Length);
+                return Json(new { success = true, url = sonuc.Url });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error uploading bank receipt.");
                 return Json(new { success = false, message = _localizer["Siparis_FileUploadError"].Value });
             }
         }

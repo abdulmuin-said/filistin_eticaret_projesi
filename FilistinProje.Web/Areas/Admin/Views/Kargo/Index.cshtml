@@ -373,7 +373,9 @@
 
     function getToken() {
         return document.querySelector('#bolgeForm input[name="__RequestVerificationToken"]')?.value
-            || document.querySelector('#sehirForm input[name="__RequestVerificationToken"]')?.value;
+            || document.querySelector('#sehirForm input[name="__RequestVerificationToken"]')?.value
+            || document.querySelector('input[name="__RequestVerificationToken"]')?.value
+            || '';
     }
 
     function showToast(message, type) {
@@ -686,7 +688,6 @@
     document.getElementById('bolgeForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const fd = new FormData(this);
-        fd.append('__RequestVerificationToken', getToken());
         fetch('/Admin/Kargo/BolgeKaydet', { method: 'POST', body: fd })
             .then(r => r.json())
             .then(d => {
@@ -711,7 +712,6 @@
     document.getElementById('sehirForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const fd = new FormData(this);
-        fd.append('__RequestVerificationToken', getToken());
         fetch('/Admin/Kargo/SehirKaydet', { method: 'POST', body: fd })
             .then(r => r.json())
             .then(d => {

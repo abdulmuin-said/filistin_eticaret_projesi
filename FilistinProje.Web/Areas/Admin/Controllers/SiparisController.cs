@@ -137,7 +137,16 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             ViewBag.SiparisDetayOzetleri = ozetListesi.ToDictionary(
                 x => x.SiparisId,
-                x => _localizer["Admin_OrderSummaryContent", x.UrunSayisi, x.Adet].Value);
+                x =>
+                {
+                    var localized = _localizer["Admin_OrderSummaryContent", x.UrunSayisi, x.Adet].Value;
+                    if (string.IsNullOrWhiteSpace(localized) || localized == "Admin_OrderSummaryContent")
+                    {
+                        var isAr = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("ar", StringComparison.OrdinalIgnoreCase);
+                        return isAr ? $"{x.UrunSayisi} منتج / {x.Adet} قطعة" : $"{x.UrunSayisi} products / {x.Adet} pcs";
+                    }
+                    return localized;
+                });
 
             return View(sayfaSiparisleri);
         }

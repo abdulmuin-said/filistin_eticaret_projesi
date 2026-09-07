@@ -399,18 +399,29 @@ namespace FilistinProje.Service.Services
                 && toptanciGrupIskonto.TryGetValue(urun.ToptanciUrunGrubuId.Value, out var oranlar)
                 && oranlar.Count > 0)
             {
-                decimal enYuksekIskonto = 0m;
+                // Find best applicable discount (highest MinAdet that the quantity meets)
+                ToptanciIskontoOrani? bestDiscount = null;
                 foreach (var oran in oranlar)
                 {
-                    if (adet >= oran.MinAdet && oran.IskontoYuzdesi > enYuksekIskonto)
+                    if (adet >= oran.MinAdet &&
+                        (bestDiscount == null || oran.MinAdet > bestDiscount.MinAdet))
                     {
-                        enYuksekIskonto = oran.IskontoYuzdesi;
+                        bestDiscount = oran;
                     }
                 }
 
-                if (enYuksekIskonto > 0)
+                if (bestDiscount != null)
                 {
-                    birimFiyatBase = birimFiyatBase * (1m - enYuksekIskonto / 100m);
+                    if (bestDiscount.IskontoTipi == "Tutar" && bestDiscount.IskontoTutari > 0)
+                    {
+                        // Fixed amount discount per unit
+                        birimFiyatBase = System.Math.Max(0m, birimFiyatBase - bestDiscount.IskontoTutari);
+                    }
+                    else if (bestDiscount.IskontoYuzdesi > 0)
+                    {
+                        // Percentage discount
+                        birimFiyatBase = birimFiyatBase * (1m - bestDiscount.IskontoYuzdesi / 100m);
+                    }
                 }
             }
 

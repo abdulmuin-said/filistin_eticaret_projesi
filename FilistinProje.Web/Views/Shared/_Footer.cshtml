@@ -17,6 +17,13 @@
         .OrderBy(x => x.Sira)
         .ThenBy(x => x.Id)
         .ToList();
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
+    var freeShippingLimitText = siteSettings.UcretsizKargoLimiti == decimal.Truncate(siteSettings.UcretsizKargoLimiti)
+        ? siteSettings.UcretsizKargoLimiti.ToString("N0")
+        : siteSettings.UcretsizKargoLimiti.ToString("N2");
+    var freeShippingMessage = siteSettings.UcretsizKargoLimiti > 0
+        ? string.Format(Localizer["FreeShippingLimit"], freeShippingLimitText, currencySymbol)
+        : Localizer["FreeShipping"].Value;
 }
 
 <footer class="bg-brand-olive text-white pt-0 pb-8 mt-auto" dir="@(isRtl ? "rtl" : "ltr")" style="color: #ffffff;">
@@ -30,7 +37,7 @@
                 </span>
                 <div>
                     <div class="text-[10px] uppercase leading-tight tracking-widest text-[#d9ddaa] md:text-xs">@Localizer["AcrossPalestine"]</div>
-                    <div class="text-xs font-semibold leading-tight text-white md:text-sm">@Localizer["FreeShipping"]</div>
+                    <div class="text-xs font-semibold leading-tight text-white md:text-sm">@freeShippingMessage</div>
                 </div>
             </div>
             <div class="flex flex-col items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-2 py-3 md:flex-row md:gap-3 md:border-0 md:bg-transparent md:px-0 md:py-0">

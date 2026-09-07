@@ -704,6 +704,36 @@
                     </div>
                 </div>
             }
+            @if (Model.ToptanciUrunGrubu != null && Model.ToptanciUrunGrubu.IskontoOranlari.Any(x => x.AktifMi && !x.SilindiMi))
+            {
+                <div class="mt-3 rounded-2xl border border-blue-200 bg-blue-50/70 p-4">
+                    <div class="mb-3 flex items-center gap-2 text-sm font-bold text-blue-900">
+                        <i class="fas fa-tags"></i>
+                        @Localizer["SpecialDiscountTiers"] (@Model.ToptanciUrunGrubu.Ad)
+                    </div>
+                    <div class="grid gap-2 sm:grid-cols-2">
+                        @foreach (var disc in Model.ToptanciUrunGrubu.IskontoOranlari.Where(x => x.AktifMi && !x.SilindiMi).OrderBy(x => x.MinAdet))
+                        {
+                            <div class="flex items-center justify-between rounded-xl bg-white px-3 py-2 text-xs shadow-sm">
+                                <span class="text-brand-mutedtext">@disc.MinAdet+ @Localizer["Piece"]</span>
+                                <strong class="text-blue-800">
+                                    @if (disc.IskontoTipi == "Tutar")
+                                    {
+                                        <span>-@currencySymbol@disc.IskontoTutari.ToString("N2") / @Localizer["Piece"]</span>
+                                    }
+                                    else
+                                    {
+                                        <span>%@disc.IskontoYuzdesi.ToString("0.##") @Localizer["Discount"]</span>
+                                    }
+                                </strong>
+                            </div>
+                        }
+                    </div>
+                    <div class="mt-2 text-[11px] text-blue-700 italic">
+                        <i class="fas fa-info-circle me-1"></i>@Localizer["WholesaleTierNotice"]
+                    </div>
+                </div>
+            }
             <div class="mt-7 grid grid-cols-3 border-y border-brand-border py-5 text-center">
                 <div><i class="fas fa-shield-alt mb-2 text-brand-gold"></i><p class="text-xs font-semibold text-brand-darktext">@Localizer["SecurePayment"]</p></div>
                 <div><i class="fas fa-truck mb-2 text-brand-gold"></i><p class="text-xs font-semibold text-brand-darktext">@Localizer["FreeShipping"]</p></div>
@@ -780,12 +810,27 @@
                         @foreach (var yorum in yorumlar.Take(3))
                         {
                             var adParcalari = (yorum.AdSoyad ?? string.Empty).Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                            var basHarfler = adParcalari.Length == 0 ? "?" : string.Concat(adParcalari.Take(1).Select(x => x[0]), adParcalari.Skip(1).TakeLast(1).Select(x => x[0]));
+                            var basHarfler = adParcalari.Length == 0 ? "?" : string.Concat(adParcalari.Select(x => x[0]));
                             <article class="rounded-lg border border-brand-border bg-white p-4">
                                 <div class="mb-3 flex items-start justify-between gap-3">
                                     <div class="flex items-center gap-3">
                                         <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-cream text-sm font-semibold text-brand-olive">@basHarfler</span>
-                                        <div><strong class="block text-sm text-brand-darktext">@yorum.AdSoyad</strong><span class="text-[10px] text-brand-gold">@string.Concat(Enumerable.Repeat("?", yorum.Puan))</span></div>
+                                        <div>
+                                            <strong class="block text-sm text-brand-darktext">@yorum.AdSoyad</strong>
+                                            <span class="text-[10px]">
+                                                @for (var yildiz = 1; yildiz <= 5; yildiz++)
+                                                {
+                                                    if (yildiz <= yorum.Puan)
+                                                    {
+                                                        <i class="fas fa-star text-warning"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="far fa-star text-muted"></i>
+                                                    }
+                                                }
+                                            </span>
+                                        </div>
                                     </div>
                                     <time class="text-[10px] text-brand-mutedtext">@yorum.OlusturulmaTarihi.ToString("dd MMM yyyy")</time>
                                 </div>
@@ -901,6 +946,8 @@
 }
 
 <style>
+    .text-warning { color: #b58735 !important; }
+    .text-muted { color: #9ca3af !important; }
     #mainProductImageContainer { aspect-ratio: 4 / 3; height: clamp(17rem, 62vw, 32rem); max-height: 62vh; }
     .product-benefit-card { border: 1px solid #e5e2dc; background: #fff; padding: 1rem; }
     .product-benefit-card > i { color: #b58735; margin-bottom: .65rem; }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic; // cache-invalidation comment to trigger dotnet watch reload
+using System.Collections.Generic; // cache-invalidation comment to trigger dotnet watch reload
 using System.Diagnostics;
 using FilistinProje.Core.Interfaces;
 using FilistinProje.Core.Varliklar;
@@ -59,25 +59,30 @@ namespace FilistinProje.Web.Controllers
 
             var secilenUrunler = new HashSet<int>();
 
-            var besParcaliKoleksiyon = await aktifUrunler
-                .Where(u =>
-                    u.OneCikanMi || u.AnaSayfadaGoster)
-                .OrderBy(u => u.Sira)
-                .ThenByDescending(u => u.OneCikanMi)
-                .ThenByDescending(u => u.GoruntulenmeSayisi)
-                .ThenByDescending(u => u.OlusturulmaTarihi)
-                .Take(15)
-                .ToListAsync();
+            var sections = await _homePageSectionService.GetActiveSectionsAsync();
 
-            secilenUrunler.UnionWith(besParcaliKoleksiyon.Select(x => x.Id));
-            await TamamlayiciUrunleriEkleAsync(
-                besParcaliKoleksiyon,
-                aktifUrunler
+            var besParcaliKoleksiyon = new List<Urun>();
+            if (sections.Any(s => s.SectionType == HomePageSectionType.AutoBesParcali))
+            {
+                besParcaliKoleksiyon = await aktifUrunler
+                    .Where(u => u.OneCikanMi || u.AnaSayfadaGoster)
                     .OrderBy(u => u.Sira)
+                    .ThenByDescending(u => u.OneCikanMi)
                     .ThenByDescending(u => u.GoruntulenmeSayisi)
-                    .ThenByDescending(u => u.OlusturulmaTarihi),
-                secilenUrunler,
-                15);
+                    .ThenByDescending(u => u.OlusturulmaTarihi)
+                    .Take(15)
+                    .ToListAsync();
+
+                secilenUrunler.UnionWith(besParcaliKoleksiyon.Select(x => x.Id));
+                await TamamlayiciUrunleriEkleAsync(
+                    besParcaliKoleksiyon,
+                    aktifUrunler
+                        .OrderBy(u => u.Sira)
+                        .ThenByDescending(u => u.GoruntulenmeSayisi)
+                        .ThenByDescending(u => u.OlusturulmaTarihi),
+                    secilenUrunler,
+                    15);
+            }
 
             var vitrinUrunleri = await aktifUrunler
                 .Where(u => (u.AnaSayfadaGoster || u.OneCikanMi || u.YeniUrunMu) && !secilenUrunler.Contains(u.Id))
@@ -119,12 +124,23 @@ namespace FilistinProje.Web.Controllers
                 .Take(8)
                 .ToListAsync();
 
-            secilenUrunler.UnionWith(firsatUrunleri.Select(x => x.Id));
-            await TamamlayiciUrunleriEkleAsync(
-                firsatUrunleri,
-                aktifUrunler.OrderBy(u => u.IndirimliFiyat ?? u.Fiyat).ThenBy(u => u.Sira),
-                secilenUrunler,
-                8);
+            if (firsatUrunleri.Count < 4)
+            {
+                var fallbackFirsat = await aktifUrunler
+                    .Where(u => u.KampanyaliMi || (u.IndirimliFiyat.HasValue && u.IndirimliFiyat > 0 && u.IndirimliFiyat < u.Fiyat))
+                    .OrderByDescending(u => u.KampanyaliMi)
+                    .ThenBy(u => u.IndirimliFiyat ?? u.Fiyat)
+                    .Take(8)
+                    .ToListAsync();
+                foreach (var item in fallbackFirsat)
+                {
+                    if (!firsatUrunleri.Any(x => x.Id == item.Id))
+                    {
+                        firsatUrunleri.Add(item);
+                        if (firsatUrunleri.Count >= 8) break;
+                    }
+                }
+            }
 
             var kategoriler = await _context.Kategoriler
                 .AsNoTracking()
@@ -184,8 +200,6 @@ namespace FilistinProje.Web.Controllers
                 .Where(s => s.AktifMi)
                 .OrderBy(s => s.Sira)
                 .ToListAsync();
-
-            var sections = await _homePageSectionService.GetActiveSectionsAsync();
 
             var viewModel = new HomeViewModel
             {

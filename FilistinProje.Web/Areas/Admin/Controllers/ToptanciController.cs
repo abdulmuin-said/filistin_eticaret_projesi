@@ -1,4 +1,4 @@
-﻿using FilistinProje.Core.Enums;
+using FilistinProje.Core.Enums;
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Web.Resources;
@@ -299,10 +299,30 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return RedirectToAction(nameof(UrunGruplari));
             }
 
-            if (model.IskontoYuzdesi < 0 || model.IskontoYuzdesi > 100)
+            // Normalize discount type
+            if (string.IsNullOrWhiteSpace(model.IskontoTipi) || 
+                (model.IskontoTipi != "Yuzde" && model.IskontoTipi != "Tutar"))
             {
-                TempData["Hata"] = _localizer["Admin_WholesaleDiscountRateInvalid"].Value;
-                return RedirectToAction(nameof(UrunGruplari));
+                model.IskontoTipi = "Yuzde";
+            }
+
+            if (model.IskontoTipi == "Yuzde")
+            {
+                if (model.IskontoYuzdesi < 0 || model.IskontoYuzdesi > 100)
+                {
+                    TempData["Hata"] = _localizer["Admin_WholesaleDiscountRateInvalid"].Value;
+                    return RedirectToAction(nameof(UrunGruplari));
+                }
+                model.IskontoTutari = 0; // Clear fixed amount when percentage mode
+            }
+            else // Tutar
+            {
+                if (model.IskontoTutari <= 0)
+                {
+                    TempData["Hata"] = _localizer["Admin_WholesaleDiscountAmountInvalid"].Value;
+                    return RedirectToAction(nameof(UrunGruplari));
+                }
+                model.IskontoYuzdesi = 0; // Clear percentage when fixed amount mode
             }
 
             if (model.Id > 0)
@@ -314,7 +334,9 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     return RedirectToAction(nameof(UrunGruplari));
                 }
                 existing.MinAdet = model.MinAdet;
+                existing.IskontoTipi = model.IskontoTipi;
                 existing.IskontoYuzdesi = model.IskontoYuzdesi;
+                existing.IskontoTutari = model.IskontoTutari;
                 existing.AktifMi = model.AktifMi;
                 _db.ToptanciIskontoOranlari.Update(existing);
             }

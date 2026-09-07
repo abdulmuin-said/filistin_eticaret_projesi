@@ -42,6 +42,7 @@ namespace FilistinProje.Core.Varliklar
         public string? ReceteRedSebebi { get; set; }
         public string? KimlikFotoYolu { get; set; }
         public string OdemeYontemi { get; set; } = "BankaHavalesi";
+        public string? OdemeDekontYolu { get; set; }
         public decimal KapidaOdemeHizmetBedeli { get; set; } = 0;
         public string? Aciklama { get; set; }
         

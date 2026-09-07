@@ -688,6 +688,29 @@
                                          </div>
                                      </div>
 
+                                     <div class="col-md-6">
+                                         <div class="ca-toggle-box">
+                                             <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
+                                                 <span>
+                                                     <strong>@Localizer["Admin_AddressDeliveryActive"]</strong><br>
+                                                     <small class="text-muted">@(isAr ? "السماح للعملاء باختيار التوصيل إلى العنوان عبر شركات الشحن" : "Allow customers to choose courier delivery to address")</small>
+                                                 </span>
+                                                 <input asp-for="AdreseTeslimAktifMi" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div class="col-md-6">
+                                         <div class="ca-toggle-box">
+                                             <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
+                                                 <span>
+                                                     <strong>@Localizer["Admin_StorePickupActive"]</strong><br>
+                                                     <small class="text-muted">@(isAr ? "السماح للعملاء باختيار الاستلام الذاتي من المتجر مباشرة" : "Allow customers to pick up orders directly from the store")</small>
+                                                 </span>
+                                                 <input asp-for="MagazadanTeslimAktifMi" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
+                                             </div>
+                                         </div>
+                                     </div>
+
                                 </div>
                             </div>
                         </div>

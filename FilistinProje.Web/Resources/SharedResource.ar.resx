@@ -2085,6 +2085,9 @@
   <data name="OrderNotePlaceholder" xml:space="preserve">
     <value>اكتب ملاحظة حول طلبك...</value>
   </data>
+  <data name="OrderConfirmation" xml:space="preserve">
+    <value>تأكيد الطلب</value>
+  </data>
   <data name="MaxChars" xml:space="preserve">
     <value>الحد الأقصى {0} حرف</value>
   </data>
@@ -4451,6 +4454,9 @@
   <data name="Admin_TestMailFailed" xml:space="preserve">
     <value>تعذر إرسال رسالة الاختبار: {0}</value>
   </data>
+  <data name="Admin_TestMailDisabled" xml:space="preserve">
+    <value>تم تعطيل إرسال البريد الإلكتروني في الإعدادات.</value>
+  </data>
   <data name="Admin_Test" xml:space="preserve">
     <value>اختبار</value>
   </data>
@@ -5863,5 +5869,152 @@
   </data>
   <data name="Admin_Product_UpdatedSKUCount" xml:space="preserve">
     <value>تم تحديث الباركود لـ {0} منتج و {1} خيار.</value>
+  </data>
+  <data name="Admin_Product_PriceGreaterThanZero" xml:space="preserve">
+    <value>يجب أن يكون السعر أكبر من صفر.</value>
+  </data>
+  <data name="Admin_Product_DiscountPriceLowerThanOriginal" xml:space="preserve">
+    <value>يجب أن يكون سعر الخصم أقل من السعر الأصلي.</value>
+  </data>
+  <data name="Admin_Product_MinOrderAtLeastOne" xml:space="preserve">
+    <value>يجب أن يكون الحد الأدنى للطلب 1 على الأقل.</value>
+  </data>
+  <data name="Admin_Product_MaxOrderLowerThanMin" xml:space="preserve">
+    <value>لا يمكن أن يكون الحد الأقصى للطلب أقل من الحد الأدنى للطلب.</value>
+  </data>
+  <data name="PaymentReceipt" xml:space="preserve">
+    <value>إيصال التحويل البنكي</value>
+  </data>
+  <data name="PaymentReceiptRequired" xml:space="preserve">
+    <value>يرجى إرفاق إيصال التحويل البنكي لإتمام الطلب.</value>
+  </data>
+  <data name="PaymentReceiptHelp" xml:space="preserve">
+    <value>يرجى رفع صورة إشعار أو إيصال التحويل (JPG, PNG, PDF)</value>
+  </data>
+  <data name="Admin_PaymentReceipt" xml:space="preserve">
+    <value>إيصال الدفع البنكي</value>
+  </data>
+  <data name="Admin_ViewReceipt" xml:space="preserve">
+    <value>عرض الإيصال</value>
+  </data>
+  <data name="Admin_NoReceiptUploaded" xml:space="preserve">
+    <value>لم يتم إرفاق إيصال بنكي</value>
+  </data>
+  <data name="TestMailSuccess" xml:space="preserve">
+    <value>تم إرسال البريد التجريبي بنجاح.</value>
+  </data>
+  <data name="TestMailDisabled" xml:space="preserve">
+    <value>تم تعطيل إرسال البريد الإلكتروني في الإعدادات.</value>
+  </data>
+  <data name="IDPhotoRequiredError" xml:space="preserve">
+    <value>يرجى تحميل صورة بطاقة الهوية لإتمام التسجيل.</value>
+  </data>
+  <data name="DiscountType" xml:space="preserve">
+    <value>نوع الخصم</value>
+  </data>
+  <data name="DiscountTypePercentage" xml:space="preserve">
+    <value>نسبة مئوية (%)</value>
+  </data>
+  <data name="DiscountTypeFixed" xml:space="preserve">
+    <value>مبلغ ثابت (₪)</value>
+  </data>
+  <data name="DiscountAmount" xml:space="preserve">
+    <value>مبلغ الخصم</value>
+  </data>
+  <data name="DiscountedProducts" xml:space="preserve">
+    <value>المنتجات المخفضة</value>
+  </data>
+  <data name="SpecialDiscountTiers" xml:space="preserve">
+    <value>خصومات الكمية والجملة</value>
+  </data>
+  <data name="WholesaleTierNotice" xml:space="preserve">
+    <value>اشتري أكثر ووفر أكثر</value>
+  </data>
+  <data name="Admin_CategoryNameAr" xml:space="preserve">
+    <value>اسم الفئة (بالعربية)</value>
+  </data>
+  <data name="Admin_CategoryNameEn" xml:space="preserve">
+    <value>اسم الفئة (بالإنجليزية)</value>
+  </data>
+  <data name="Admin_CategoryDescAr" xml:space="preserve">
+    <value>وصف الفئة (بالعربية)</value>
+  </data>
+  <data name="Admin_CategoryDescEn" xml:space="preserve">
+    <value>وصف الفئة (بالإنجليزية)</value>
+  </data>
+  <data name="Admin_CategorySlug" xml:space="preserve">
+    <value>الرابط الدائم (Slug)</value>
+  </data>
+  <data name="Admin_CategoryParent" xml:space="preserve">
+    <value>الفئة الرئيسية</value>
+  </data>
+  <data name="Admin_CategoryPrescriptionRequired" xml:space="preserve">
+    <value>يتطلب وصفة طبية</value>
+  </data>
+  <data name="Admin_AddressDeliveryActive" xml:space="preserve">
+    <value>تفعيل التوصيل إلى العنوان</value>
+  </data>
+  <data name="Admin_StorePickupActive" xml:space="preserve">
+    <value>تفعيل الاستلام من المتجر</value>
+  </data>
+  <data name="Admin_ShippingDeliveryMethods" xml:space="preserve">
+    <value>طرق التسليم والشحن المتاحة</value>
+  </data>
+  <data name="Admin_WholesaleDiscountAmountInvalid" xml:space="preserve">
+    <value>مبلغ الخصم يجب أن يكون أكبر من صفر.</value>
+  </data>
+  <data name="Admin_ChooseImage" xml:space="preserve">
+    <value>اختر صورة</value>
+  </data>
+  <data name="Admin_CategoryShortDescAr" xml:space="preserve">
+    <value>الوصف القصير (بالعربية)</value>
+  </data>
+  <data name="Admin_CategoryShortDescEn" xml:space="preserve">
+    <value>الوصف القصير (بالإنجليزية)</value>
+  </data>
+  <data name="Admin_CategoryTopTextAr" xml:space="preserve">
+    <value>النص العلوي (بالعربية)</value>
+  </data>
+  <data name="Admin_CategoryTopTextEn" xml:space="preserve">
+    <value>النص العلوي (بالإنجليزية)</value>
+  </data>
+  <data name="Admin_CategoryBottomTextAr" xml:space="preserve">
+    <value>النص السفلي (بالعربية)</value>
+  </data>
+  <data name="Admin_CategoryBottomTextEn" xml:space="preserve">
+    <value>النص السفلي (بالإنجليزية)</value>
+  </data>
+  <data name="Admin_CategoryCampaignAr" xml:space="preserve">
+    <value>وسم الحملة (بالعربية)</value>
+  </data>
+  <data name="Admin_CategoryCampaignEn" xml:space="preserve">
+    <value>وسم الحملة (بالإنجليزية)</value>
+  </data>
+  <data name="Admin_CategorySeoTitleAr" xml:space="preserve">
+    <value>عنوان SEO (بالعربية)</value>
+  </data>
+  <data name="Admin_CategorySeoTitleEn" xml:space="preserve">
+    <value>عنوان SEO (بالإنجليزية)</value>
+  </data>
+  <data name="Admin_CategorySeoDescAr" xml:space="preserve">
+    <value>وصف SEO (بالعربية)</value>
+  </data>
+  <data name="Admin_CategorySeoDescEn" xml:space="preserve">
+    <value>وصف SEO (بالإنجليزية)</value>
+  </data>
+  <data name="Admin_CategoryMenuImageUrl" xml:space="preserve">
+    <value>رابط صورة القائمة</value>
+  </data>
+  <data name="Admin_CategoryBilingualContent" xml:space="preserve">
+    <value>المحتوى العربي والإنجليزي</value>
+  </data>
+  <data name="Decrease" xml:space="preserve">
+    <value>تقليل الكمية</value>
+  </data>
+  <data name="Increase" xml:space="preserve">
+    <value>زيادة الكمية</value>
+  </data>
+  <data name="Admin_OrderSummaryContent" xml:space="preserve">
+    <value>{0} منتج / {1} قطعة</value>
   </data>
 </root>

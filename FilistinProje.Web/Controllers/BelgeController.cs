@@ -1,4 +1,4 @@
-﻿using FilistinProje.Core.Varliklar;
+using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Service.Interfaces;
 using FilistinProje.Service.Services;
@@ -131,6 +131,27 @@ namespace FilistinProje.Web.Controllers
                 HassasBelgeKategorisi.Fatura,
                 indir,
                 $"fatura_{siparis.Id}");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Dekont(int siparisId, bool indir = false)
+        {
+            var siparis = await _context.Siparisler
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == siparisId && !x.SilindiMi);
+
+            if (siparis == null || string.IsNullOrWhiteSpace(siparis.OdemeDekontYolu))
+            {
+                return NotFound();
+            }
+
+            var auth = await CanAccessOrderDocumentAsync(siparis);
+            if (!auth)
+            {
+                return Forbid();
+            }
+
+            return await ReturnSensitiveDocumentAsync(siparis.OdemeDekontYolu, HassasBelgeKategorisi.Dekont, indir, $"dekont_{siparis.Id}");
         }
 
         private async Task<bool> CanAccessOrderDocumentAsync(Siparis siparis)

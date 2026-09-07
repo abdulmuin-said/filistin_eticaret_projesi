@@ -120,10 +120,22 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Hata"] = ex is TimeoutException
-                    ? _localizer["Admin_TestMailTimeout"].Value
-                    : _localizer["Admin_TestMailFailed", ex.Message].Value;
-                TempData["Durum"] = "danger";
+                if (string.Equals(ex.Message, SmtpEmailService.EmailDisabledError, StringComparison.OrdinalIgnoreCase))
+                {
+                    var disabledMsg = _localizer["Admin_TestMailDisabled"];
+                    TempData["Hata"] = disabledMsg.ResourceNotFound ? _localizer["TestMailDisabled"].Value : disabledMsg.Value;
+                    TempData["Durum"] = "warning";
+                }
+                else if (ex is TimeoutException)
+                {
+                    TempData["Hata"] = _localizer["Admin_TestMailTimeout"].Value;
+                    TempData["Durum"] = "danger";
+                }
+                else
+                {
+                    TempData["Hata"] = _localizer["Admin_TestMailFailed", ex.Message].Value;
+                    TempData["Durum"] = "danger";
+                }
             }
 
             return RedirectToAction(nameof(Index));

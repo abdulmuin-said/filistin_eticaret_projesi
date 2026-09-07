@@ -2,10 +2,19 @@
 @using FilistinProje.Core.Varliklar
 @using System.Text.Encodings.Web
 @inject IStringLocalizer<SharedResource> Localizer
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
 @{
     var kayitliAdresler = ViewBag.KayitliAdresler as List<Adres>;
     var sehirler = ViewBag.Sehirler as List<string> ?? new List<string>();
     bool girisYapmis = User.Identity?.IsAuthenticated == true;
+    var settings = SiteSettingsService.GetSettings();
+    bool adreseTeslim = settings.AdreseTeslimAktifMi;
+    bool magazadanTeslim = settings.MagazadanTeslimAktifMi;
+    if (!adreseTeslim && !magazadanTeslim) { adreseTeslim = true; }
+    if (string.IsNullOrWhiteSpace(Model.TeslimatTipi))
+    {
+        Model.TeslimatTipi = adreseTeslim ? "AdreseTeslim" : "MagazadanTeslim";
+    }
 }
 
 <section class="checkout-card" aria-labelledby="delivery-heading">
@@ -31,26 +40,37 @@
         </div>
     }
 
-    <div class="mb-7 grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="@Localizer["DeliveryType"]">
-        <label class="checkout-choice">
-            <input type="radio" asp-for="TeslimatTipi" value="AdreseTeslim" class="peer sr-only" onchange="toggleDeliveryType()">
-            <span class="checkout-choice-icon"><i class="fas fa-truck-fast"></i></span>
-            <span class="min-w-0">
-                <span class="block text-sm font-semibold text-brand-darktext">@Localizer["DeliverToAddress"]</span>
-                <span class="mt-1 block text-xs leading-relaxed text-brand-mutedtext">@Localizer["DeliverToAddressDesc"]</span>
-            </span>
-            <span class="checkout-choice-check"><i class="fas fa-check"></i></span>
-        </label>
-        <label class="checkout-choice">
-            <input type="radio" asp-for="TeslimatTipi" value="MagazadanTeslim" class="peer sr-only" onchange="toggleDeliveryType()">
-            <span class="checkout-choice-icon"><i class="fas fa-store"></i></span>
-            <span class="min-w-0">
-                <span class="block text-sm font-semibold text-brand-darktext">@Localizer["StorePickup"]</span>
-                <span class="mt-1 block text-xs leading-relaxed text-brand-mutedtext">@Localizer["StorePickupDesc"]</span>
-            </span>
-            <span class="checkout-choice-check"><i class="fas fa-check"></i></span>
-        </label>
-    </div>
+    @if (adreseTeslim && magazadanTeslim)
+    {
+        <div class="mb-7 grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="@Localizer["DeliveryType"]">
+            <label class="checkout-choice">
+                <input type="radio" asp-for="TeslimatTipi" value="AdreseTeslim" class="peer sr-only" onchange="toggleDeliveryType()">
+                <span class="checkout-choice-icon"><i class="fas fa-truck-fast"></i></span>
+                <span class="min-w-0">
+                    <span class="block text-sm font-semibold text-brand-darktext">@Localizer["DeliverToAddress"]</span>
+                    <span class="mt-1 block text-xs leading-relaxed text-brand-mutedtext">@Localizer["DeliverToAddressDesc"]</span>
+                </span>
+                <span class="checkout-choice-check"><i class="fas fa-check"></i></span>
+            </label>
+            <label class="checkout-choice">
+                <input type="radio" asp-for="TeslimatTipi" value="MagazadanTeslim" class="peer sr-only" onchange="toggleDeliveryType()">
+                <span class="checkout-choice-icon"><i class="fas fa-store"></i></span>
+                <span class="min-w-0">
+                    <span class="block text-sm font-semibold text-brand-darktext">@Localizer["StorePickup"]</span>
+                    <span class="mt-1 block text-xs leading-relaxed text-brand-mutedtext">@Localizer["StorePickupDesc"]</span>
+                </span>
+                <span class="checkout-choice-check"><i class="fas fa-check"></i></span>
+            </label>
+        </div>
+    }
+    else if (adreseTeslim)
+    {
+        <input type="hidden" name="TeslimatTipi" id="TeslimatTipi" value="AdreseTeslim" />
+    }
+    else
+    {
+        <input type="hidden" name="TeslimatTipi" id="TeslimatTipi" value="MagazadanTeslim" />
+    }
 
     <div id="storePickupInfo" class="mb-7 hidden rounded-xl border border-[#cbd3a3] bg-[#f7f8ed] p-4 text-sm text-brand-olive">
         <div class="flex items-start gap-3">

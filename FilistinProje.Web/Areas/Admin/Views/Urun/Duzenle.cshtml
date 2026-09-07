@@ -1,4 +1,4 @@
-﻿@model FilistinProje.Core.Varliklar.Urun
+@model FilistinProje.Core.Varliklar.Urun
 @{
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = Localizer["Admin_EditProduct"];
@@ -680,34 +680,6 @@
                         </div>
                     </div>
 
-                    <div class="ca-card mt-3">
-                        <div class="ca-card-header">
-                            <span class="ca-card-title">@Localizer["Admin_WholesaleSettings"]</span>
-                        </div>
-                        <div class="ca-card-body">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="ca-label">@Localizer["Admin_WholesaleProductGroup"]</label>
-                                    <select asp-for="ToptanciUrunGrubuId" class="ca-select">
-                                        <option value="">@Localizer["Admin_NoGroup"]</option>
-                                        @{
-                                            var toptanciGruplar = ViewBag.ToptanciUrunGruplari as IEnumerable<SelectListItem> ?? Enumerable.Empty<SelectListItem>();
-                                        }
-                                        @foreach (var grup in toptanciGruplar)
-                                        {
-                                            <option value="@grup.Value" selected="@(Model.ToptanciUrunGrubuId?.ToString() == grup.Value ? "selected" : null)">@grup.Text</option>
-                                        }
-                                    </select>
-                                    <div class="small text-muted mt-1">@Localizer["Admin_WholesaleGroupHelp"]</div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="ca-label">@Localizer["Admin_WholesalePrice"] (₪)</label>
-                                    <input asp-for="TopFiyat" class="ca-input" type="text" inputmode="decimal" data-decimal placeholder="@Localizer["Admin_WholesalePricePlaceholder"]" />
-                                    <div class="small text-muted mt-1">@Localizer["Admin_WholesalePriceHelp"]</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </section>
 
                 <section class="ca-editor-panel" data-product-panel="icerik">

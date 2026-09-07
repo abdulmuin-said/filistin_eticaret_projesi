@@ -53,6 +53,10 @@ namespace FilistinProje.Core.DTOs
         /// <summary>Sözleşme onaylandı mı?</summary>
         public bool SozlesmeOnaylandi { get; set; }
 
+        /// <summary>Banka havalesi dekont dosyası yolu</summary>
+        [MaxLength(500)]
+        public string? OdemeDekontYolu { get; set; }
+
         /// <summary>"BankaHavalesi" veya "KapidaOdeme"</summary>
         [Required, MaxLength(30)]
         public string OdemeYontemi { get; set; } = "BankaHavalesi";
@@ -75,6 +79,7 @@ namespace FilistinProje.Core.DTOs
                 Aciklama = Aciklama?.Trim(),
                 ReceteDosyaYolu = ReceteDosyaYolu?.Trim(),
                 KimlikFotoYolu = KimlikFotoYolu?.Trim(),
+                OdemeDekontYolu = OdemeDekontYolu?.Trim(),
             };
         }
     }

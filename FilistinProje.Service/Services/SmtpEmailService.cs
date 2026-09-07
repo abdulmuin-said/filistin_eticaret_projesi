@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Globalization;
@@ -9,6 +9,8 @@ namespace FilistinProje.Service.Services
 {
     public class SmtpEmailService : IEmailService
     {
+        public const string EmailDisabledError = "EMAIL_DISABLED";
+
         private readonly IConfiguration _config;
         private readonly IWebHostEnvironment _env;
         private readonly ISiteSettingsService _siteSettingsService;
@@ -35,7 +37,7 @@ namespace FilistinProje.Service.Services
         {
             if (!_config.GetValue<bool>("EmailSettings:Enabled"))
             {
-                throw new InvalidOperationException("E-posta gonderimi yapilandirmada devre disi.");
+                throw new InvalidOperationException(EmailDisabledError);
             }
 
             var host = _config["EmailSettings:Host"] ?? string.Empty;

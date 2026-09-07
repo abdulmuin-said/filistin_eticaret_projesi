@@ -2565,6 +2565,19 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             urun.KampanyaEtiketRengi ??= "#31543B";
             urun.IndirimEtiketRengi ??= "#B86A2F";
 
+            // Normalize zero/negative discount price to null before validation
+            // so that "0" from empty form fields doesn't trigger discount < original price error
+            if (urun.IndirimliFiyat.HasValue && urun.IndirimliFiyat.Value <= 0)
+            {
+                urun.IndirimliFiyat = null;
+            }
+
+            // Same for TopFiyat (wholesale price)
+            if (urun.TopFiyat.HasValue && urun.TopFiyat.Value <= 0)
+            {
+                urun.TopFiyat = null;
+            }
+
             foreach (var option in urun.HediyePaketSecenekleri ?? Enumerable.Empty<UrunHediyePaketSecenegi>())
             {
                 option.Ad ??= string.Empty;

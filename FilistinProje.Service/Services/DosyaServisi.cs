@@ -409,6 +409,7 @@ namespace FilistinProje.Service.Services
                 "kimlikler" => HassasBelgeKategorisi.Kimlik,
                 "receteler" => HassasBelgeKategorisi.Recete,
                 "faturalar" => HassasBelgeKategorisi.Fatura,
+                "dekontlar" => HassasBelgeKategorisi.Dekont,
                 _ => default
             };
 
@@ -447,6 +448,7 @@ namespace FilistinProje.Service.Services
             {
                 "kimlikler" => HassasBelgeKategorisi.Kimlik,
                 "receteler" => HassasBelgeKategorisi.Recete,
+                "dekontlar" => HassasBelgeKategorisi.Dekont,
                 _ => default
             };
             if (kategori == default)
@@ -472,6 +474,7 @@ namespace FilistinProje.Service.Services
             {
                 HassasBelgeKategorisi.Recete => "receteler",
                 HassasBelgeKategorisi.Fatura => "faturalar",
+                HassasBelgeKategorisi.Dekont => "dekontlar",
                 _ => "kimlikler"
             };
         }

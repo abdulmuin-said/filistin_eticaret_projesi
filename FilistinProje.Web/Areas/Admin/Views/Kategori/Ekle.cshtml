@@ -62,6 +62,36 @@
         background: linear-gradient(180deg, rgba(247, 244, 238, 0), #f7f4ee 34%);
     }
 
+    .ca-file-upload {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px 16px;
+        background: var(--ca-bg);
+        border: 1.5px dashed var(--ca-border);
+        border-radius: var(--ca-radius);
+        color: var(--ca-text);
+        font-size: .88rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all var(--ca-transition);
+        width: 100%;
+        text-align: center;
+        user-select: none;
+    }
+
+    .ca-file-upload:hover {
+        border-color: var(--ca-primary);
+        background: rgba(30, 58, 47, 0.04);
+        color: var(--ca-primary);
+    }
+
+    .ca-file-upload i {
+        font-size: 1.25rem;
+        color: var(--ca-primary);
+    }
+
     @@media (max-width: 1180px) {
         .category-edit-layout {
             grid-template-columns: 1fr;
@@ -108,13 +138,13 @@
                                  <label class="ca-label">@Localizer["Admin_Kategori_Adi"]</label>
                             </div>
                             <div class="col-lg-4">
-                                 <label class="ca-label">@Localizer["Admin_ParentCategories"]</label>
+                                 <label class="ca-label">@Localizer["Admin_CategoryParent"]</label>
 
                                 <select asp-for="ParentKategoriId" asp-items="ViewBag.ParentKategoriler" class="ca-select"></select>
                             </div>
                             <div class="col-lg-4">
-                                <label class="ca-label">Slug</label>
-                                <input asp-for="Slug" class="ca-input" placeholder="cam-tablo" />
+                                <label class="ca-label">@Localizer["Admin_CategorySlug"]</label>
+                                <input asp-for="Slug" class="ca-input" placeholder="@Localizer["Admin_SlugPlaceholder"]" />
                             </div>
                             <div class="col-lg-4">
                                 <label class="ca-label">@Localizer["Admin_Sira"]</label>
@@ -146,25 +176,25 @@
                 </div>
 
                 <div class="ca-card mb-3">
-                    <div class="ca-card-header"><span class="ca-card-title">المحتوى العربي والإنجليزي / Arabic &amp; English</span></div>
+                    <div class="ca-card-header"><span class="ca-card-title">@Localizer["Admin_CategoryBilingualContent"]</span></div>
                     <div class="ca-card-body">
                         <div class="row g-3">
-                            <div class="col-lg-6"><label class="ca-label">@Localizer["CategoryNameAR"]</label><input asp-for="AdAr" class="ca-input" dir="rtl" /></div>
-                            <div class="col-lg-6"><label class="ca-label">@Localizer["CategoryNameEN"]</label><input asp-for="AdEn" class="ca-input" dir="ltr" /></div>
-                            <div class="col-lg-6"><label class="ca-label">الوصف القصير (العربية)</label><textarea asp-for="KisaAciklamaAr" class="ca-textarea" rows="2" dir="rtl"></textarea></div>
-                            <div class="col-lg-6"><label class="ca-label">Short description (English)</label><textarea asp-for="KisaAciklamaEn" class="ca-textarea" rows="2" dir="ltr"></textarea></div>
-                            <div class="col-lg-6"><label class="ca-label">الوصف (العربية)</label><textarea asp-for="AciklamaAr" class="ca-textarea" rows="4" dir="rtl"></textarea></div>
-                            <div class="col-lg-6"><label class="ca-label">Description (English)</label><textarea asp-for="AciklamaEn" class="ca-textarea" rows="4" dir="ltr"></textarea></div>
-                            <div class="col-lg-6"><label class="ca-label">النص العلوي (العربية)</label><textarea asp-for="UstMetinAr" class="ca-textarea" rows="3" dir="rtl"></textarea></div>
-                            <div class="col-lg-6"><label class="ca-label">Top text (English)</label><textarea asp-for="UstMetinEn" class="ca-textarea" rows="3" dir="ltr"></textarea></div>
-                            <div class="col-lg-6"><label class="ca-label">النص السفلي (العربية)</label><textarea asp-for="AltMetinAr" class="ca-textarea" rows="3" dir="rtl"></textarea></div>
-                            <div class="col-lg-6"><label class="ca-label">Bottom text (English)</label><textarea asp-for="AltMetinEn" class="ca-textarea" rows="3" dir="ltr"></textarea></div>
-                            <div class="col-lg-6"><label class="ca-label">وسم الحملة (العربية)</label><input asp-for="KampanyaEtiketiAr" class="ca-input" dir="rtl" /></div>
-                            <div class="col-lg-6"><label class="ca-label">Campaign label (English)</label><input asp-for="KampanyaEtiketiEn" class="ca-input" dir="ltr" /></div>
-                            <div class="col-lg-6"><label class="ca-label">عنوان SEO (العربية)</label><input asp-for="SeoTitleAr" class="ca-input" dir="rtl" /></div>
-                            <div class="col-lg-6"><label class="ca-label">SEO title (English)</label><input asp-for="SeoTitleEn" class="ca-input" dir="ltr" /></div>
-                            <div class="col-lg-6"><label class="ca-label">وصف SEO (العربية)</label><textarea asp-for="SeoDescriptionAr" class="ca-textarea" rows="2" dir="rtl"></textarea></div>
-                            <div class="col-lg-6"><label class="ca-label">SEO description (English)</label><textarea asp-for="SeoDescriptionEn" class="ca-textarea" rows="2" dir="ltr"></textarea></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["Admin_CategoryNameAr"]</label><input asp-for="AdAr" class="ca-input" dir="rtl" /></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["Admin_CategoryNameEn"]</label><input asp-for="AdEn" class="ca-input" dir="ltr" /></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["Admin_CategoryShortDescAr"]</label><textarea asp-for="KisaAciklamaAr" class="ca-textarea" rows="2" dir="rtl"></textarea></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["Admin_CategoryShortDescEn"]</label><textarea asp-for="KisaAciklamaEn" class="ca-textarea" rows="2" dir="ltr"></textarea></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["Admin_CategoryDescAr"]</label><textarea asp-for="AciklamaAr" class="ca-textarea" rows="4" dir="rtl"></textarea></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["Admin_CategoryDescEn"]</label><textarea asp-for="AciklamaEn" class="ca-textarea" rows="4" dir="ltr"></textarea></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["Admin_CategoryTopTextAr"]</label><textarea asp-for="UstMetinAr" class="ca-textarea" rows="3" dir="rtl"></textarea></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["Admin_CategoryTopTextEn"]</label><textarea asp-for="UstMetinEn" class="ca-textarea" rows="3" dir="ltr"></textarea></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["Admin_CategoryBottomTextAr"]</label><textarea asp-for="AltMetinAr" class="ca-textarea" rows="3" dir="rtl"></textarea></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["Admin_CategoryBottomTextEn"]</label><textarea asp-for="AltMetinEn" class="ca-textarea" rows="3" dir="ltr"></textarea></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["Admin_CategoryCampaignAr"]</label><input asp-for="KampanyaEtiketiAr" class="ca-input" dir="rtl" /></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["Admin_CategoryCampaignEn"]</label><input asp-for="KampanyaEtiketiEn" class="ca-input" dir="ltr" /></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["Admin_CategorySeoTitleAr"]</label><input asp-for="SeoTitleAr" class="ca-input" dir="rtl" /></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["Admin_CategorySeoTitleEn"]</label><input asp-for="SeoTitleEn" class="ca-input" dir="ltr" /></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["Admin_CategorySeoDescAr"]</label><textarea asp-for="SeoDescriptionAr" class="ca-textarea" rows="2" dir="rtl"></textarea></div>
+                            <div class="col-lg-6"><label class="ca-label">@Localizer["Admin_CategorySeoDescEn"]</label><textarea asp-for="SeoDescriptionEn" class="ca-textarea" rows="2" dir="ltr"></textarea></div>
                         </div>
                     </div>
                 </div>
@@ -183,9 +213,16 @@
                             </div>
                             <div class="col-lg-6">
                                 <label class="ca-label">@Localizer["Admin_UploadCategoryImage"]</label>
-                                <input type="file" name="gorselDosyasi" id="categoryImageFile" class="ca-input" accept=".jpg,.jpeg,.png,.webp" onchange="previewCategoryFile(event)" />
+                                <label class="ca-file-upload">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>@Localizer["Admin_ChooseImage"]</span>
+                                    <input type="file" name="gorselDosyasi" id="categoryImageFile" accept=".jpg,.jpeg,.png,.webp" onchange="previewCategoryFile(event)" hidden />
+                                </label>
                                 <span class="text-danger small" data-valmsg-for="gorselDosyasi"></span>
-                                                           <!-- فاصل احترافي لبانر وترويج الكاتيجوري -->
+                                <div class="small text-muted mt-1">@Localizer["Admin_CategoryCardImageSizeHelp"]</div>
+                            </div>
+
+                            <!-- فاصل احترافي لبانر وترويج الكاتيجوري -->
                             <div class="col-12 mt-4 pt-3 border-top">
                                 <div class="d-flex align-items-center justify-content-between mb-3">
                                     <div class="d-flex align-items-center gap-2">
@@ -237,7 +274,11 @@
                             </div>
                             <div class="col-lg-6">
                                 <label class="ca-label">@Localizer["Admin_UploadCategoryBanner"]</label>
-                                <input type="file" name="bannerDosyasi" id="categoryBannerFile" class="ca-input" accept=".jpg,.jpeg,.png,.webp" onchange="previewBannerFile(event)" />
+                                <label class="ca-file-upload">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>@Localizer["Admin_ChooseImage"]</span>
+                                    <input type="file" name="bannerDosyasi" id="categoryBannerFile" accept=".jpg,.jpeg,.png,.webp" onchange="previewBannerFile(event)" hidden />
+                                </label>
                                 <span class="text-danger small" data-valmsg-for="bannerDosyasi"></span>
                                 <div class="small text-muted mt-1">@Localizer["Admin_CategoryBannerSizeHelp"]</div>
                             </div>
@@ -280,7 +321,7 @@
                             </div>
 
                             <div class="col-lg-4">
-                                <label class="ca-label">صورة القائمة / Menu image URL</label>
+                                <label class="ca-label">@Localizer["Admin_CategoryMenuImageUrl"]</label>
                                 <input asp-for="MenuGorselUrl" class="ca-input" dir="ltr" placeholder="Special image shown in the dropdown menu" />
                             </div>
                             <div class="d-none">
@@ -309,7 +350,7 @@
                             <div class="col-lg-4 d-flex align-items-end">
                                 <label class="form-check form-switch w-100" style="padding:14px 16px; background:var(--ca-bg); border-radius:var(--ca-radius); border:1px solid var(--ca-border);">
                                     <input asp-for="ReceteGerekliMi" class="form-check-input" type="checkbox" style="width:3em; height:1.5em;">
-                                     <span class="form-check-label ms-2">@Localizer["Admin_RecipeRequired"]</span>
+                                     <span class="form-check-label ms-2">@Localizer["Admin_CategoryPrescriptionRequired"]</span>
 
                                 </label>
                             </div>
@@ -378,6 +419,9 @@
         const preview = document.getElementById('categoryPreview');
         if (!file || !preview) return;
 
+        const labelSpan = event.target.closest('.ca-file-upload')?.querySelector('span');
+        if (labelSpan) labelSpan.textContent = file.name;
+
         const imageUrl = URL.createObjectURL(file);
         preview.innerHTML = `<img src="${imageUrl}" alt="@Localizer["Admin_Kategori_Gorsel"]">`;
         preview.querySelector('img').addEventListener('load', () => URL.revokeObjectURL(imageUrl), { once: true });
@@ -402,6 +446,9 @@
         const container = document.getElementById('bannerPreviewContainer');
         const img = document.getElementById('categoryBannerPreviewImg');
         if (!file || !container || !img) return;
+
+        const labelSpan = event.target.closest('.ca-file-upload')?.querySelector('span');
+        if (labelSpan) labelSpan.textContent = file.name;
 
         const url = URL.createObjectURL(file);
         img.src = url;

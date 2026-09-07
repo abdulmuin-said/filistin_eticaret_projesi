@@ -2088,6 +2088,9 @@
   <data name="OrderNotePlaceholder" xml:space="preserve">
     <value>Write a note about your order...</value>
   </data>
+  <data name="OrderConfirmation" xml:space="preserve">
+    <value>Order Confirmation</value>
+  </data>
   <data name="MaxChars" xml:space="preserve">
     <value>Max {0} characters</value>
   </data>
@@ -4490,6 +4493,9 @@
   <data name="Admin_TestMailFailed" xml:space="preserve">
     <value>The test email could not be sent: {0}</value>
   </data>
+  <data name="Admin_TestMailDisabled" xml:space="preserve">
+    <value>Email sending is disabled in configuration.</value>
+  </data>
   <data name="Admin_Test" xml:space="preserve">
     <value>Test</value>
   </data>
@@ -5882,5 +5888,149 @@
   </data>
   <data name="Admin_Product_UpdatedSKUCount" xml:space="preserve">
     <value>SKUs updated for {0} products and {1} variants.</value>
+  </data>
+  <data name="Admin_Product_PriceGreaterThanZero" xml:space="preserve">
+    <value>Product price must be greater than zero.</value>
+  </data>
+  <data name="Admin_Product_DiscountPriceLowerThanOriginal" xml:space="preserve">
+    <value>Discount price must be lower than original price.</value>
+  </data>
+  <data name="Admin_Product_MinOrderAtLeastOne" xml:space="preserve">
+    <value>Minimum order quantity must be at least 1.</value>
+  </data>
+  <data name="Admin_Product_MaxOrderLowerThanMin" xml:space="preserve">
+    <value>Maximum order quantity cannot be lower than minimum order quantity.</value>
+  </data>
+  <data name="PaymentReceipt" xml:space="preserve">
+    <value>Bank Transfer Receipt</value>
+  </data>
+  <data name="PaymentReceiptRequired" xml:space="preserve">
+    <value>Please upload the bank transfer receipt to complete your order.</value>
+  </data>
+  <data name="PaymentReceiptHelp" xml:space="preserve">
+    <value>Please upload transfer confirmation or receipt (JPG, PNG, PDF)</value>
+  </data>
+  <data name="Admin_PaymentReceipt" xml:space="preserve">
+    <value>Bank Payment Receipt</value>
+  </data>
+  <data name="Admin_ViewReceipt" xml:space="preserve">
+    <value>View Receipt</value>
+  </data>
+  <data name="Admin_NoReceiptUploaded" xml:space="preserve">
+    <value>No receipt uploaded</value>
+  </data>
+  <data name="TestMailSuccess" xml:space="preserve">
+    <value>Test email sent successfully.</value>
+  </data>
+  <data name="TestMailDisabled" xml:space="preserve">
+    <value>Email sending is disabled in configuration.</value>
+  </data>
+  <data name="IDPhotoRequiredError" xml:space="preserve">
+    <value>Please upload an ID photo to complete registration.</value>
+  </data>
+  <data name="DiscountType" xml:space="preserve">
+    <value>Discount Type</value>
+  </data>
+  <data name="DiscountTypePercentage" xml:space="preserve">
+    <value>Percentage (%)</value>
+  </data>
+  <data name="DiscountTypeFixed" xml:space="preserve">
+    <value>Fixed Amount (₪)</value>
+  </data>
+  <data name="DiscountAmount" xml:space="preserve">
+    <value>Discount Amount</value>
+  </data>
+  <data name="DiscountedProducts" xml:space="preserve">
+    <value>Discounted Products</value>
+  </data>
+  <data name="SpecialDiscountTiers" xml:space="preserve">
+    <value>Quantity &amp; Wholesale Discounts</value>
+  </data>
+  <data name="WholesaleTierNotice" xml:space="preserve">
+    <value>Buy more, save more</value>
+  </data>
+  <data name="Admin_CategoryNameAr" xml:space="preserve">
+    <value>Category Name (Arabic)</value>
+  </data>
+  <data name="Admin_CategoryNameEn" xml:space="preserve">
+    <value>Category Name (English)</value>
+  </data>
+  <data name="Admin_CategoryDescAr" xml:space="preserve">
+    <value>Category Description (Arabic)</value>
+  </data>
+  <data name="Admin_CategoryDescEn" xml:space="preserve">
+    <value>Category Description (English)</value>
+  </data>
+  <data name="Admin_CategorySlug" xml:space="preserve">
+    <value>Slug</value>
+  </data>
+  <data name="Admin_CategoryParent" xml:space="preserve">
+    <value>Parent Category</value>
+  </data>
+  <data name="Admin_CategoryPrescriptionRequired" xml:space="preserve">
+    <value>Prescription Required</value>
+  </data>
+  <data name="Admin_AddressDeliveryActive" xml:space="preserve">
+    <value>Enable Deliver to Address</value>
+  </data>
+  <data name="Admin_StorePickupActive" xml:space="preserve">
+    <value>Enable Store Pickup</value>
+  </data>
+  <data name="Admin_ShippingDeliveryMethods" xml:space="preserve">
+    <value>Available Delivery &amp; Shipping Methods</value>
+  </data>
+  <data name="Admin_WholesaleDiscountAmountInvalid" xml:space="preserve">
+    <value>Discount amount must be greater than zero.</value>
+  </data>
+  <data name="Admin_ChooseImage" xml:space="preserve">
+    <value>Choose Image</value>
+  </data>
+  <data name="Admin_CategoryShortDescAr" xml:space="preserve">
+    <value>Short Description (Arabic)</value>
+  </data>
+  <data name="Admin_CategoryShortDescEn" xml:space="preserve">
+    <value>Short Description (English)</value>
+  </data>
+  <data name="Admin_CategoryTopTextAr" xml:space="preserve">
+    <value>Top Text (Arabic)</value>
+  </data>
+  <data name="Admin_CategoryTopTextEn" xml:space="preserve">
+    <value>Top Text (English)</value>
+  </data>
+  <data name="Admin_CategoryBottomTextAr" xml:space="preserve">
+    <value>Bottom Text (Arabic)</value>
+  </data>
+  <data name="Admin_CategoryBottomTextEn" xml:space="preserve">
+    <value>Bottom Text (English)</value>
+  </data>
+  <data name="Admin_CategoryCampaignAr" xml:space="preserve">
+    <value>Campaign Tag (Arabic)</value>
+  </data>
+  <data name="Admin_CategoryCampaignEn" xml:space="preserve">
+    <value>Campaign Tag (English)</value>
+  </data>
+  <data name="Admin_CategorySeoTitleAr" xml:space="preserve">
+    <value>SEO Title (Arabic)</value>
+  </data>
+  <data name="Admin_CategorySeoTitleEn" xml:space="preserve">
+    <value>SEO Title (English)</value>
+  </data>
+  <data name="Admin_CategorySeoDescAr" xml:space="preserve">
+    <value>SEO Description (Arabic)</value>
+  </data>
+  <data name="Admin_CategorySeoDescEn" xml:space="preserve">
+    <value>SEO Description (English)</value>
+  </data>
+  <data name="Admin_CategoryMenuImageUrl" xml:space="preserve">
+    <value>Menu Image URL</value>
+  </data>
+  <data name="Admin_CategoryBilingualContent" xml:space="preserve">
+    <value>Arabic &amp; English Content</value>
+  </data>
+  <data name="Decrease" xml:space="preserve">
+    <value>Decrease</value>
+  </data>
+  <data name="Increase" xml:space="preserve">
+    <value>Increase</value>
   </data>
 </root>

@@ -8,7 +8,8 @@ namespace FilistinProje.Service.Interfaces
     {
         Kimlik = 1,
         Recete = 2,
-        Fatura = 3
+        Fatura = 3,
+        Dekont = 4
     }
 
     public interface IDosyaServisi

@@ -51,18 +51,18 @@ namespace FilistinProje.Service.Services
             if (string.IsNullOrWhiteSpace(sehir))
                 return false;
 
-            var bolgeFiyatVar = await _context.KargoBolgeler
+            var bolgeVar = await _context.KargoBolgeler
                 .Where(x => !x.SilindiMi)
                 .Where(x => x.Sehirler.Any(s =>
                     !s.SilindiMi &&
                     (s.SehirAdi == sehir || s.SehirAdiEn == sehir || s.SehirAdiAr == sehir)))
-                .AnyAsync(x => x.Fiyat > 0);
+                .AnyAsync();
 
-            if (bolgeFiyatVar)
+            if (bolgeVar)
                 return true;
 
             var firmaFiyatVar = await _context.KargoBolgeFiyatlari
-                .Where(x => !x.SilindiMi && x.Fiyat > 0)
+                .Where(x => !x.SilindiMi)
                 .Where(x => x.Bolge.Sehirler.Any(s =>
                     !s.SilindiMi &&
                     (s.SehirAdi == sehir || s.SehirAdiEn == sehir || s.SehirAdiAr == sehir)))
