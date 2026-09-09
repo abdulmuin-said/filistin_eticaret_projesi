@@ -1,19 +1,44 @@
-﻿using FilistinProje.Core.Varliklar;
+using FilistinProje.Core.Varliklar;
+using FilistinProje.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FilistinProje.Web.Controllers
 {
     public class SozlesmelerController : Controller
     {
-        [HttpGet]
-        public IActionResult Gizlilik()
+        private readonly KanvasDbContext _context;
+
+        public SozlesmelerController(KanvasDbContext context)
         {
+            _context = context;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Gizlilik()
+        {
+            var sayfa = await _context.KurumsalSayfalar
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => !x.SilindiMi && x.UrlSlug == "gizlilik");
+            if (sayfa != null)
+            {
+                ViewData["Title"] = sayfa.LocalizedBaslik;
+                return View("~/Views/Kurumsal/Detay.cshtml", sayfa);
+            }
             return View("~/Views/Kurumsal/Gizlilik.cshtml");
         }
 
         [HttpGet]
-        public IActionResult MesafeliSatis()
+        public async Task<IActionResult> MesafeliSatis()
         {
+            var sayfa = await _context.KurumsalSayfalar
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => !x.SilindiMi && x.UrlSlug == "mesafeli-satis");
+            if (sayfa != null)
+            {
+                ViewData["Title"] = sayfa.LocalizedBaslik;
+                return View("~/Views/Kurumsal/Detay.cshtml", sayfa);
+            }
             return View("~/Views/Kurumsal/Detay.cshtml", MesafeliSatisSayfasi());
         }
 

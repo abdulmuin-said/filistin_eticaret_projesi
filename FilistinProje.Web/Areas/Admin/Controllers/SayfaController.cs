@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using FilistinProje.Data;
 using FilistinProje.Core.Varliklar;
 using Microsoft.EntityFrameworkCore;
@@ -102,6 +102,23 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             model.BaslikAr = model.BaslikAr?.Trim() ?? string.Empty;
             model.IcerikEn = model.IcerikEn?.Trim() ?? string.Empty;
             model.IcerikAr = model.IcerikAr?.Trim() ?? string.Empty;
+
+            if (string.IsNullOrWhiteSpace(model.Baslik))
+            {
+                model.Baslik = !string.IsNullOrWhiteSpace(model.BaslikAr) ? model.BaslikAr : model.BaslikEn;
+            }
+            if (string.IsNullOrWhiteSpace(model.BaslikAr))
+            {
+                model.BaslikAr = model.Baslik;
+            }
+            if (string.IsNullOrWhiteSpace(model.Icerik))
+            {
+                model.Icerik = !string.IsNullOrWhiteSpace(model.IcerikAr) ? model.IcerikAr : model.IcerikEn;
+            }
+            if (string.IsNullOrWhiteSpace(model.IcerikAr))
+            {
+                model.IcerikAr = model.Icerik;
+            }
         }
     }
 }

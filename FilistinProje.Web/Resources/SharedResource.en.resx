@@ -6053,4 +6053,37 @@
   <data name="Validation_RegionRequired" xml:space="preserve">
     <value>Please select a region</value>
   </data>
+  <data name="LoginWithGoogle" xml:space="preserve">
+    <value>Sign in with Google</value>
+  </data>
+  <data name="RegisterWithGoogle" xml:space="preserve">
+    <value>Sign up with Google</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+    <value>OR</value>
+  </data>
+  <data name="CompleteProfile" xml:space="preserve">
+    <value>Complete Account Details</value>
+  </data>
+  <data name="CompleteProfile_Desc" xml:space="preserve">
+    <value>Welcome! Please complete your essential information to activate your account and continue shopping.</value>
+  </data>
+  <data name="CompleteProfile_Success" xml:space="preserve">
+    <value>Your profile details have been completed successfully.</value>
+  </data>
+  <data name="CompleteProfile_Save" xml:space="preserve">
+    <value>Save and Continue</value>
+  </data>
+  <data name="Admin_PageTitleAr" xml:space="preserve">
+    <value>Page Title (Arabic)</value>
+  </data>
+  <data name="Admin_PageContentAr" xml:space="preserve">
+    <value>Page Content (Arabic)</value>
+  </data>
+  <data name="Admin_PageTitleEn" xml:space="preserve">
+    <value>Page Title (English)</value>
+  </data>
+  <data name="Admin_PageContentEn" xml:space="preserve">
+    <value>Page Content (English)</value>
+  </data>
 </root>

@@ -90,6 +90,7 @@ namespace FilistinProje.Web.Data
             }
 
             await SeedKargoVeBankaAsync(dbContext, logger);
+            await SeedKurumsalSayfalarAsync(dbContext, logger);
         }
 
         private static async Task SeedKargoVeBankaAsync(KanvasDbContext db, Microsoft.Extensions.Logging.ILogger logger)
@@ -218,6 +219,98 @@ namespace FilistinProje.Web.Data
 
             await db.SaveChangesAsync();
             logger.LogInformation("[Seed] {N} sehir {R} bolge icin dogrulandi.", sehirler.Length, bolgeAdlari.Length);
+        }
+
+        private static async Task SeedKurumsalSayfalarAsync(KanvasDbContext db, Microsoft.Extensions.Logging.ILogger logger)
+        {
+            var anySayfa = await db.KurumsalSayfalar.AnyAsync();
+            if (anySayfa) return;
+
+            var sayfalar = new List<KurumsalSayfa>
+            {
+                new()
+                {
+                    UrlSlug = "hakkimizda",
+                    Sira = 1,
+                    Baslik = "من نحن",
+                    BaslikAr = "من نحن",
+                    BaslikEn = "About Us",
+                    Icerik = "<p>نصلكم بأجود المنتجات الفلسطينية والعالمية المختارة بعناية فائقة، ملتزمين بأعلى معايير الجودة والأصالة.</p>",
+                    IcerikAr = "<p>نصلكم بأجود المنتجات الفلسطينية والعالمية المختارة بعناية فائقة، ملتزمين بأعلى معايير الجودة والأصالة.</p>",
+                    IcerikEn = "<p>Connecting you with premier products chosen with utmost care, committed to high quality and authenticity.</p>",
+                    OlusturulmaTarihi = DateTime.UtcNow,
+                    SilindiMi = false
+                },
+                new()
+                {
+                    UrlSlug = "gizlilik",
+                    Sira = 2,
+                    Baslik = "سياسة الخصوصية والأمان",
+                    BaslikAr = "سياسة الخصوصية والأمان",
+                    BaslikEn = "Privacy and Security Policy",
+                    Icerik = "<p>نولي في منصة 7ANRPS48 أقصى درجات الاهتمام لحماية خصوصية بياناتكم وأمان معاملاتكم الإلكترونية.</p>",
+                    IcerikAr = "<p>نولي في منصة 7ANRPS48 أقصى درجات الاهتمام لحماية خصوصية بياناتكم وأمان معاملاتكم الإلكترونية.</p>",
+                    IcerikEn = "<p>At 7ANRPS48, we place paramount importance on safeguarding your privacy and ensuring the security of your transactions.</p>",
+                    OlusturulmaTarihi = DateTime.UtcNow,
+                    SilindiMi = false
+                },
+                new()
+                {
+                    UrlSlug = "kullanici-sozlesmesi",
+                    Sira = 3,
+                    Baslik = "اتفاقية المستخدم والشروط",
+                    BaslikAr = "اتفاقية المستخدم والشروط",
+                    BaslikEn = "Terms of Service",
+                    Icerik = "<p>مرحباً بكم في منصة 7ANRPS48. استخدامكم لهذا الموقع وإتمام أي عملية شراء يعد موافقة صريحة على الالتزام بالشروط والأحكام.</p>",
+                    IcerikAr = "<p>مرحباً بكم في منصة 7ANRPS48. استخدامكم لهذا الموقع وإتمام أي عملية شراء يعد موافقة صريحة على الالتزام بالشروط والأحكام.</p>",
+                    IcerikEn = "<p>Welcome to 7ANRPS48. Accessing our website and placing orders constitutes your acceptance of these terms and conditions.</p>",
+                    OlusturulmaTarihi = DateTime.UtcNow,
+                    SilindiMi = false
+                },
+                new()
+                {
+                    UrlSlug = "mesafeli-satis",
+                    Sira = 4,
+                    Baslik = "عقد البيع عن بُعد",
+                    BaslikAr = "عقد البيع عن بُعد",
+                    BaslikEn = "Distance Selling Agreement",
+                    Icerik = "<p>يوضّح هذا العقد شروط البيع عن بُعد بين البائع (7ANRPS48) والمشتري للطلبات المُقدَّمة عبر الموقع الإلكتروني.</p>",
+                    IcerikAr = "<p>يوضّح هذا العقد شروط البيع عن بُعد بين البائع (7ANRPS48) والمشتري للطلبات المُقدَّمة عبر الموقع الإلكتروني.</p>",
+                    IcerikEn = "<p>This agreement outlines the distance selling terms between the seller (7ANRPS48) and the buyer.</p>",
+                    OlusturulmaTarihi = DateTime.UtcNow,
+                    SilindiMi = false
+                },
+                new()
+                {
+                    UrlSlug = "iade-kosullari",
+                    Sira = 5,
+                    Baslik = "سياسة الشحن والإرجاع والاستبدال",
+                    BaslikAr = "سياسة الشحن والإرجاع والاستبدال",
+                    BaslikEn = "Shipping & Return Policy",
+                    Icerik = "<p>نحرص في 7ANRPS48 على رضاكم التام عن كل عملية شراء. توضح هذه السياسة شروط ومواعيد الشحن، بالإضافة إلى إجراءات الإرجاع.</p>",
+                    IcerikAr = "<p>نحرص في 7ANRPS48 على رضاكم التام عن كل عملية شراء. توضح هذه السياسة شروط ومواعيد الشحن، بالإضافة إلى إجراءات الإرجاع.</p>",
+                    IcerikEn = "<p>At 7ANRPS48, customer satisfaction is our prime commitment. This policy outlines shipping timelines and returns.</p>",
+                    OlusturulmaTarihi = DateTime.UtcNow,
+                    SilindiMi = false
+                },
+                new()
+                {
+                    UrlSlug = "sss",
+                    Sira = 6,
+                    Baslik = "الأسئلة الشائعة",
+                    BaslikAr = "الأسئلة الشائعة",
+                    BaslikEn = "Frequently Asked Questions",
+                    Icerik = "<p>إليك إجابات لأكثر الأسئلة تكراراً حول التسوق والطلب والتوصيل في متجر 7ANRPS48.</p>",
+                    IcerikAr = "<p>إليك إجابات لأكثر الأسئلة تكراراً حول التسوق والطلب والتوصيل في متجر 7ANRPS48.</p>",
+                    IcerikEn = "<p>Here are answers to the most common questions regarding shopping, ordering, and delivery at 7ANRPS48.</p>",
+                    OlusturulmaTarihi = DateTime.UtcNow,
+                    SilindiMi = false
+                }
+            };
+
+            db.KurumsalSayfalar.AddRange(sayfalar);
+            await db.SaveChangesAsync();
+            logger.LogInformation("[Seed] 6 kurumsal sayfa basariyla eklendi.");
         }
     }
 }

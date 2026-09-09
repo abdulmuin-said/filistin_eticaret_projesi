@@ -17,6 +17,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using FilistinProje.Web.Attributes;
 using FilistinProje.Web.Caching;
 using FilistinProje.Web.Diagnostics;
@@ -129,6 +130,18 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 .AddErrorDescriber<FilistinProje.Core.Helpers.TurkceIdentityErrorDescriber>()
 .AddEntityFrameworkStores<KanvasDbContext>()
 .AddDefaultTokenProviders();
+
+var googleClientId = builder.Configuration["Authentication:Google:ClientId"];
+var googleClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+if (!string.IsNullOrWhiteSpace(googleClientId) && !string.IsNullOrWhiteSpace(googleClientSecret))
+{
+    builder.Services.AddAuthentication()
+        .AddGoogle(options =>
+        {
+            options.ClientId = googleClientId;
+            options.ClientSecret = googleClientSecret;
+        });
+}
 
 builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 {

@@ -1,13 +1,29 @@
 @model FilistinProje.Core.Varliklar.KurumsalSayfa
-@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+@inject IStringLocalizer<SharedResource> Localizer
+@inject FilistinProje.Service.Services.ISiteSettingsService SiteSettingsService
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var siteSettings = SiteSettingsService.GetSettings();
+    var markaAdi = string.IsNullOrWhiteSpace(siteSettings.MarkaAdi) ? siteSettings.SiteAdi : siteSettings.MarkaAdi;
+    ViewData["Title"] = Model.LocalizedBaslik;
+    ViewData["SeoTitle"] = Model.LocalizedBaslik + " - " + markaAdi;
+}
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-10">
-            <h1 class="fw-bold mb-4 text-center border-bottom pb-3">@Model.LocalizedBaslik</h1>
-            <div class="content p-4 bg-white shadow-sm rounded">
-                @Html.SanitizeHtml(Model.LocalizedIcerik)
-            </div>
-        </div>
+<div class="bg-brand-cream border-b border-brand-border py-3">
+    <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-brand-mutedtext">
+        <a href="/" class="hover:text-brand-olive transition-colors">@Localizer["HomePage"]</a>
+        <span>/</span>
+        <span class="text-brand-darktext font-medium">@Model.LocalizedBaslik</span>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-16 max-w-4xl">
+    <div class="text-center mb-12">
+        <h1 class="font-serif text-3xl md:text-5xl text-brand-olive mb-4">@Model.LocalizedBaslik</h1>
+        <div class="w-16 h-1 bg-brand-gold mx-auto"></div>
+    </div>
+
+    <div class="bg-white border border-brand-border rounded-lg p-8 md:p-12 shadow-sm prose prose-sm md:prose-base max-w-none prose-headings:font-serif prose-headings:text-brand-olive prose-a:text-brand-gold prose-strong:text-brand-darktext leading-relaxed">
+        @Html.SanitizeHtml(Model.LocalizedIcerik)
     </div>
 </div>

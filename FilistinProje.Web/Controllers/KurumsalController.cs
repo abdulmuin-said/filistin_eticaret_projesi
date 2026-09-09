@@ -32,7 +32,8 @@ namespace FilistinProje.Web.Controllers
             _localizer = localizer;
         }
 
-        [Route("Kurumsal/Detay/{slug}")]
+        [HttpGet("/Kurumsal/Detay/{slug}")]
+        [HttpGet("{slug}")]
         public async Task<IActionResult> Detay(string slug)
         {
             var normalizedSlug = NormalizeSlug(slug);
@@ -121,7 +122,7 @@ namespace FilistinProje.Web.Controllers
 
         [HttpGet("faq")]
         [HttpGet("/Kurumsal/SSS")]
-        public IActionResult SSS() => View();
+        public async Task<IActionResult> SSS() => await GetDynamicOrFallbackViewAsync("sss", "SSS");
         
         [HttpGet("bank-accounts")]
         [HttpGet("/Kurumsal/BankaHesaplari")]
