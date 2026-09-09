@@ -103,6 +103,9 @@ namespace FilistinProje.Service.Services
                 existing.BakimModuAktif = normalized.BakimModuAktif;
                 existing.BakimModuMesaji = normalized.BakimModuMesaji;
                 existing.GirisZorunluMu = normalized.GirisZorunluMu;
+                existing.AdreseTeslimAktifMi = normalized.AdreseTeslimAktifMi;
+                existing.MagazadanTeslimAktifMi = normalized.MagazadanTeslimAktifMi;
+                existing.BankaHavalesiAktifMi = normalized.BankaHavalesiAktifMi;
                 existing.KapidaOdemeAktifMi = normalized.KapidaOdemeAktifMi;
                 existing.KapidaOdemeHizmetBedeli = normalized.KapidaOdemeHizmetBedeli;
                 existing.KapidaOdemeLimiti = normalized.KapidaOdemeLimiti;

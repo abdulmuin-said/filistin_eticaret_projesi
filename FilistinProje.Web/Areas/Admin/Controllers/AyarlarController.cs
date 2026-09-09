@@ -80,7 +80,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 TempData["Hata"] = _localizer["Admin_TestMailRecipientRequired"].Value;
                 TempData["Durum"] = "warning";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { tab = "mail" });
             }
 
             var smtpUser = _config["EmailSettings:Username"];
@@ -95,14 +95,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 TempData["Hata"] = _localizer["Admin_SmtpSettingsMissing"].Value;
                 TempData["Durum"] = "warning";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { tab = "mail" });
             }
 
             if (!IsValidEmail(recipientEmail))
             {
                 TempData["Hata"] = _localizer["Admin_TestMailInvalidRecipient"].Value;
                 TempData["Durum"] = "warning";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { tab = "mail" });
             }
 
             try
@@ -120,10 +120,25 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                if (string.Equals(ex.Message, SmtpEmailService.EmailDisabledError, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(ex.Message, SmtpEmailService.EmailDisabledError, StringComparison.OrdinalIgnoreCase) ||
+                    ex.Message.Contains("EMAIL_DISABLED", StringComparison.OrdinalIgnoreCase) ||
+                    ex.Message.Contains("devre disi", StringComparison.OrdinalIgnoreCase) ||
+                    ex.Message.Contains("yapilandirmada", StringComparison.OrdinalIgnoreCase))
                 {
                     var disabledMsg = _localizer["Admin_TestMailDisabled"];
                     TempData["Hata"] = disabledMsg.ResourceNotFound ? _localizer["TestMailDisabled"].Value : disabledMsg.Value;
+                    TempData["Durum"] = "warning";
+                }
+                else if (string.Equals(ex.Message, "SMTP_CONFIG_MISSING", StringComparison.OrdinalIgnoreCase) ||
+                         ex.Message.Contains("SMTP ayarlari", StringComparison.OrdinalIgnoreCase))
+                {
+                    TempData["Hata"] = _localizer["Admin_SmtpSettingsMissing"].Value;
+                    TempData["Durum"] = "warning";
+                }
+                else if (string.Equals(ex.Message, "INVALID_RECIPIENT_EMAIL", StringComparison.OrdinalIgnoreCase) ||
+                         ex.Message.Contains("Alici e-posta", StringComparison.OrdinalIgnoreCase))
+                {
+                    TempData["Hata"] = _localizer["Admin_TestMailInvalidRecipient"].Value;
                     TempData["Durum"] = "warning";
                 }
                 else if (ex is TimeoutException)
@@ -138,7 +153,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { tab = "mail" });
         }
 
         private async Task HazirlaKargoFirmaSecenekleriAsync()

@@ -222,7 +222,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         {
             var gruplar = await _db.ToptanciUrunGruplari
                 .Include(g => g.IskontoOranlari.Where(i => !i.SilindiMi))
-                .Include(g => g.Urunler)
+                    .ThenInclude(i => i.Urun)
+                .Include(g => g.Urunler.Where(u => !u.SilindiMi))
                 .Where(g => !g.SilindiMi)
                 .OrderBy(g => g.Sira)
                 .ThenBy(g => g.Ad)
@@ -333,6 +334,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     TempData["Hata"] = _localizer["Admin_WholesaleDiscountNotFound"].Value;
                     return RedirectToAction(nameof(UrunGruplari));
                 }
+                existing.UrunId = (model.UrunId.HasValue && model.UrunId.Value > 0) ? model.UrunId : null;
                 existing.MinAdet = model.MinAdet;
                 existing.IskontoTipi = model.IskontoTipi;
                 existing.IskontoYuzdesi = model.IskontoYuzdesi;
@@ -348,6 +350,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 {
                     TempData["Hata"] = _localizer["Admin_WholesaleGroupNotFound"].Value;
                     return RedirectToAction(nameof(UrunGruplari));
+                }
+
+                if (model.UrunId.HasValue && model.UrunId.Value <= 0)
+                {
+                    model.UrunId = null;
                 }
 
                 model.SilindiMi = false;
@@ -373,6 +380,22 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             TempData["Basari"] = _localizer["WholesaleDiscountDeleted"].Value;
             return RedirectToAction(nameof(UrunGruplari));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetGrupUrunleri(int grupId)
+        {
+            var urunler = await _db.Urunler
+                .Where(u => u.ToptanciUrunGrubuId == grupId && !u.SilindiMi)
+                .OrderBy(u => u.Baslik)
+                .Select(u => new
+                {
+                    u.Id,
+                    Baslik = !string.IsNullOrWhiteSpace(u.BaslikAr) ? u.BaslikAr : (!string.IsNullOrWhiteSpace(u.BaslikEn) ? u.BaslikEn : u.Baslik)
+                })
+                .ToListAsync();
+
+            return Json(urunler);
         }
 
         #endregion

@@ -2,6 +2,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = @Localizer["Register"];
+    bool isAr = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar";
 }
 
 <div class="min-h-[80vh] flex items-center justify-center py-16 px-4 bg-brand-cream">
@@ -53,21 +54,25 @@
                     <span asp-validation-for="Eposta" class="text-red-600 text-xs mt-1 block"></span>
                 </div>
 
-                <div>
-                    <label asp-for="Sehir" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["City"]</label>
-                     <select asp-for="Sehir" class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream">
-                         <option value="">@Localizer["SelectCity"]</option>
-                         <option>Gaza</option><option>North Gaza</option><option>Beit Hanoun</option>
-                         <option>Beit Lahiya</option><option>Jabalia</option><option>Ramallah</option>
-                         <option>El-Bireh</option><option>Birzeit</option><option>Abu Dis</option>
-                         <option>Nablus</option><option>Tubas</option><option>Qalqilya</option>
-                         <option>Salfit</option><option>Jenin</option><option>Hebron</option>
-                         <option>Yatta</option><option>Dura</option><option>Halhul</option>
-                         <option>Bethlehem</option><option>Beit Jala</option><option>Artas</option>
-                         <option>Tulkarm</option><option>Ajjah</option><option>Jericho</option>
-                         <option>Jerusalem</option><option>Al-Ram</option><option>Al-Eizariya</option>
-                     </select>
-                    <span asp-validation-for="Sehir" class="text-red-600 text-xs mt-1 block"></span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label asp-for="Bolge" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["Region"]</label>
+                        <select asp-for="Bolge" id="BolgeSelect" class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream">
+                            <option value="">@Localizer["SelectRegion"]</option>
+                            <option value="القدس">@(isAr ? "القدس وضواحيها" : "Jerusalem & Suburbs")</option>
+                            <option value="الضفة الغربية">@(isAr ? "الضفة الغربية" : "West Bank")</option>
+                            <option value="قطاع غزة">@(isAr ? "قطاع غزة" : "Gaza Strip")</option>
+                            <option value="المناطق الداخلية 48">@(isAr ? "المناطق الداخلية 48" : "Interior 48 Areas")</option>
+                        </select>
+                        <span asp-validation-for="Bolge" class="text-red-600 text-xs mt-1 block"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Sehir" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["City"]</label>
+                        <select asp-for="Sehir" id="SehirSelect" class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream" data-selected="@(Model?.Sehir ?? string.Empty)">
+                            <option value="">@Localizer["SelectCity"]</option>
+                        </select>
+                        <span asp-validation-for="Sehir" class="text-red-600 text-xs mt-1 block"></span>
+                    </div>
                 </div>
 
                 <div>
@@ -98,7 +103,7 @@
                         </div>
                         <p id="identityFileHelp" class="text-brand-mutedtext text-xs mt-1">@Localizer["IdentityPhotoHelp"]</p>
                         <span asp-validation-for="KimlikFoto" class="text-red-600 text-xs mt-1 block"></span>
-                        <span id="identityFileError" class="text-red-600 text-xs mt-1 hidden block font-medium">@Localizer["IDPhotoRequiredError"]</span>
+                        <span id="identityFileError" class="text-red-600 text-xs mt-1 hidden block font-medium">@Html.Raw(Localizer["IDPhotoRequiredError"].Value)</span>
                     </div>
                 </div>
 
@@ -146,45 +151,138 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // --- Region & City Dynamic Dropdown Logic ---
+        const isAr = @(isAr ? "true" : "false");
+        const regionCities = {
+            'القدس': [
+                { ar: 'القدس', en: 'Jerusalem' },
+                { ar: 'العيزرية', en: 'Al-Eizariya' },
+                { ar: 'الرام', en: 'Al-Ram' },
+                { ar: 'أبو ديس', en: 'Abu Dis' }
+            ],
+            'الضفة الغربية': [
+                { ar: 'رام الله والبيرة', en: 'Ramallah & Al-Bireh' },
+                { ar: 'نابلس', en: 'Nablus' },
+                { ar: 'الخليل', en: 'Hebron' },
+                { ar: 'جنين', en: 'Jenin' },
+                { ar: 'بيت لحم', en: 'Bethlehem' },
+                { ar: 'طولكرم', en: 'Tulkarm' },
+                { ar: 'قلقيلية', en: 'Qalqilya' },
+                { ar: 'أريحا', en: 'Jericho' },
+                { ar: 'سلفيت', en: 'Salfit' },
+                { ar: 'طوباس', en: 'Tubas' },
+                { ar: 'بيرزيت', en: 'Birzeit' },
+                { ar: 'حلحول', en: 'Halhul' },
+                { ar: 'يطا', en: 'Yatta' },
+                { ar: 'دورا', en: 'Dura' },
+                { ar: 'بيت جالا', en: 'Beit Jala' }
+            ],
+            'قطاع غزة': [
+                { ar: 'غزة', en: 'Gaza' },
+                { ar: 'خان يونس', en: 'Khan Yunis' },
+                { ar: 'رفح', en: 'Rafah' },
+                { ar: 'دير البلح', en: 'Deir al-Balah' },
+                { ar: 'شمال غزة', en: 'North Gaza' },
+                { ar: 'بيت حانون', en: 'Beit Hanoun' },
+                { ar: 'بيت لاهيا', en: 'Beit Lahiya' },
+                { ar: 'جباليا', en: 'Jabalia' }
+            ],
+            'المناطق الداخلية 48': [
+                { ar: 'يافا', en: 'Jaffa' },
+                { ar: 'حيفا', en: 'Haifa' },
+                { ar: 'عكا', en: 'Acre' },
+                { ar: 'الناصرة', en: 'Nazareth' },
+                { ar: 'اللد', en: 'Lydda' },
+                { ar: 'الرملة', en: 'Ramla' },
+                { ar: 'أم الفحم', en: 'Umm al-Fahm' },
+                { ar: 'الطيبة', en: 'Tayibe' }
+            ]
+        };
+
+        const bolgeSelect = document.getElementById('BolgeSelect');
+        const sehirSelect = document.getElementById('SehirSelect');
+
+        function updateCities(region, preselectedCity) {
+            if (!sehirSelect) return;
+            const defaultText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["SelectCity"].Value));
+            sehirSelect.innerHTML = '<option value="">' + defaultText + '</option>';
+
+            if (!region || !regionCities[region]) return;
+
+            const list = regionCities[region];
+            list.forEach(function (c) {
+                const opt = document.createElement('option');
+                const val = isAr ? c.ar : c.en;
+                opt.value = val;
+                opt.textContent = isAr ? c.ar : c.en;
+                if (preselectedCity && (preselectedCity === c.ar || preselectedCity === c.en || preselectedCity === val)) {
+                    opt.selected = true;
+                }
+                sehirSelect.appendChild(opt);
+            });
+        }
+
+        if (bolgeSelect && sehirSelect) {
+            bolgeSelect.addEventListener('change', function () {
+                updateCities(this.value, null);
+            });
+
+            const initialRegion = bolgeSelect.value;
+            const initialCity = sehirSelect.dataset.selected || '';
+            if (initialRegion) {
+                updateCities(initialRegion, initialCity);
+            } else if (initialCity) {
+                for (const [reg, clist] of Object.entries(regionCities)) {
+                    if (clist.some(c => c.ar === initialCity || c.en === initialCity)) {
+                        bolgeSelect.value = reg;
+                        updateCities(reg, initialCity);
+                        break;
+                    }
+                }
+            }
+        }
+
+        // --- ID Photo Upload Handling & Form Validation ---
         const input = document.getElementById('KimlikFoto');
         const fileName = document.getElementById('identityFileName');
         const uploadBox = document.getElementById('identityUploadBox');
         const errorMsg = document.getElementById('identityFileError');
         const form = input ? input.closest('form') : document.getElementById('kayitForm');
 
-        if (!input || !fileName) return;
+        if (input && fileName) {
+            input.addEventListener('change', function () {
+                const selected = this.files && this.files.length ? this.files[0].name : '';
+                fileName.textContent = selected || fileName.dataset.emptyText;
+                fileName.classList.toggle('text-brand-darktext', Boolean(selected));
+                fileName.classList.toggle('text-brand-mutedtext', !selected);
 
-        input.addEventListener('change', function () {
-            const selected = this.files && this.files.length ? this.files[0].name : '';
-            fileName.textContent = selected || fileName.dataset.emptyText;
-            fileName.classList.toggle('text-brand-darktext', Boolean(selected));
-            fileName.classList.toggle('text-brand-mutedtext', !selected);
-
-            if (selected) {
-                if (errorMsg) {
-                    errorMsg.classList.add('hidden');
+                if (selected) {
+                    if (errorMsg) {
+                        errorMsg.classList.add('hidden');
+                    }
+                    if (uploadBox) {
+                        uploadBox.classList.remove('border-red-500');
+                        uploadBox.classList.add('border-brand-border');
+                    }
                 }
-                if (uploadBox) {
-                    uploadBox.classList.remove('border-red-500');
-                    uploadBox.classList.add('border-brand-border');
-                }
-            }
-        });
+            });
+        }
 
+        const idPhotoErrorText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["IDPhotoRequiredError"].Value));
         if (form) {
             form.addEventListener('submit', function (e) {
-                const hasFile = input.files && input.files.length > 0;
+                const hasFile = input && input.files && input.files.length > 0;
                 if (!hasFile) {
                     e.preventDefault();
                     if (errorMsg) {
-                        errorMsg.textContent = '@Localizer["IDPhotoRequiredError"]';
+                        errorMsg.textContent = idPhotoErrorText;
                         errorMsg.classList.remove('hidden');
                     }
                     if (uploadBox) {
                         uploadBox.classList.remove('border-brand-border');
                         uploadBox.classList.add('border-red-500');
                     }
-                    uploadBox ? uploadBox.scrollIntoView({ behavior: 'smooth', block: 'center' }) : input.focus();
+                    uploadBox ? uploadBox.scrollIntoView({ behavior: 'smooth', block: 'center' }) : (input ? input.focus() : null);
                     return false;
                 }
             });

@@ -4043,6 +4043,9 @@
   <data name="Admin_Yeni_KategoriDesc" xml:space="preserve">
     <value>أنشئ فئة رئيسية أو فرعية؛ سيتم تحديث قائمة المتجر تلقائيًا.</value>
   </data>
+  <data name="Admin_CategoryType" xml:space="preserve">
+    <value>نوع الفئة</value>
+  </data>
   <data name="Admin_BackToCategories" xml:space="preserve">
     <value>العودة إلى الفئات</value>
   </data>
@@ -4884,6 +4887,8 @@
   <data name="Admin_IskontoOraniEkle" xml:space="preserve"><value>إضافة نسبة خصم</value></data>
   <data name="Admin_UrunGrubu" xml:space="preserve"><value>مجموعة المنتجات</value></data>
   <data name="Admin_GrupSecin" xml:space="preserve"><value>اختر المجموعة</value></data>
+  <data name="Admin_WholesaleAllProductsInGroup" xml:space="preserve"><value>جميع منتجات المجموعة</value></data>
+  <data name="Admin_WholesaleProductOptionalHint" xml:space="preserve"><value>اختر منتجًا محددًا لتطبيق الخصم عليه حصراً، أو اتركه لتطبيق الخصم على كامل المجموعة.</value></data>
   <data name="Admin_MinAdet" xml:space="preserve"><value>الحد الأدنى للكمية</value></data>
   <data name="Admin_IskontoYuzdesi" xml:space="preserve"><value>نسبة الخصم (%)</value></data>
   <data name="Admin_IskontoKaydet" xml:space="preserve"><value>حفظ الخصم</value></data>
@@ -6016,5 +6021,20 @@
   </data>
   <data name="Admin_OrderSummaryContent" xml:space="preserve">
     <value>{0} منتج / {1} قطعة</value>
+  </data>
+  <data name="Admin_BankTransferActivated" xml:space="preserve">
+    <value>تم تفعيل الدفع عبر التحويل البنكي (الآيبان) بنجاح.</value>
+  </data>
+  <data name="Admin_BankTransferDeactivated" xml:space="preserve">
+    <value>تم تعطيل الدفع عبر التحويل البنكي (الآيبان).</value>
+  </data>
+  <data name="Region" xml:space="preserve">
+    <value>المنطقة</value>
+  </data>
+  <data name="SelectRegion" xml:space="preserve">
+    <value>اختر المنطقة أولاً</value>
+  </data>
+  <data name="Validation_RegionRequired" xml:space="preserve">
+    <value>يرجى اختيار المنطقة</value>
   </data>
 </root>

@@ -1,4 +1,4 @@
-﻿using FilistinProje.Core.Varliklar;
+using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
 using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Mvc;
@@ -162,8 +162,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     b.Aciklama,
                     b.Sira,
                     b.Fiyat,
-                    SehirSayisi = b.Sehirler.Count,
-                    Sehirler = b.Sehirler.Select(s => new { s.Id, s.SehirAdi }).OrderBy(s => s.SehirAdi).ToList()
+                    SehirSayisi = b.Sehirler.Count(s => !s.SilindiMi),
+                    Sehirler = b.Sehirler.Where(s => !s.SilindiMi).Select(s => new { s.Id, s.SehirAdi }).OrderBy(s => s.SehirAdi).ToList()
                 })
                 .ToListAsync();
 

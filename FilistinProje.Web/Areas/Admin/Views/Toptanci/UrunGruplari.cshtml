@@ -63,13 +63,20 @@
                         <div class="row g-3">
                             <div class="col-12">
                                 <label class="ca-label">@Localizer["Admin_UrunGrubu"]</label>
-                                <select name="ToptanciUrunGrubuId" class="ca-select" required>
+                                <select name="ToptanciUrunGrubuId" id="mainGrupSelect" class="ca-select" required onchange="onMainGroupChange(this.value)">
                                     <option value="">-- @Localizer["Admin_GrupSecin"] --</option>
                                     @foreach (var g in gruplar.Where(g => g.AktifMi).OrderBy(g => g.Sira))
                                     {
                                         <option value="@g.Id">@g.Ad</option>
                                     }
                                 </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="ca-label">@Localizer["Admin_Urun"]</label>
+                                <select name="UrunId" id="mainUrunSelect" class="ca-select">
+                                    <option value="">-- @Localizer["Admin_WholesaleAllProductsInGroup"] --</option>
+                                </select>
+                                <small class="text-muted d-block mt-1">@Localizer["Admin_WholesaleProductOptionalHint"]</small>
                             </div>
                             <div class="col-md-6">
                                 <label class="ca-label">@Localizer["Admin_MinAdet"]</label>
@@ -202,12 +209,22 @@
                                                 {
                                                     <div class="table-responsive">
                                                         <table class="table table-sm mb-2">
-                                                            <thead><tr><th>@Localizer["Admin_MinAdet"]</th><th>@Localizer["DiscountType"]</th><th>@Localizer["Admin_IskontoYuzdesi"] / @Localizer["DiscountAmount"]</th><th>@Localizer["Admin_Durum"]</th><th class="text-end">@Localizer["Admin_Sil"]</th></tr></thead>
+                                                            <thead><tr><th>@Localizer["Admin_MinAdet"]</th><th>@Localizer["Admin_Urun"]</th><th>@Localizer["DiscountType"]</th><th>@Localizer["Admin_IskontoYuzdesi"] / @Localizer["DiscountAmount"]</th><th>@Localizer["Admin_Durum"]</th><th class="text-end">@Localizer["Admin_Sil"]</th></tr></thead>
                                                             <tbody>
                                                                 @foreach (var iskonto in grup.IskontoOranlari.Where(i => !i.SilindiMi).OrderBy(i => i.MinAdet))
                                                                 {
                                                                     <tr>
                                                                         <td>@iskonto.MinAdet</td>
+                                                                        <td>
+                                                                            @if (iskonto.Urun != null)
+                                                                            {
+                                                                                <span class="ca-badge ca-badge-info"><i class="fas fa-box me-1"></i>@(iskonto.Urun.BaslikAr ?? iskonto.Urun.BaslikEn ?? iskonto.Urun.Baslik)</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span class="ca-badge ca-badge-neutral"><i class="fas fa-layer-group me-1"></i>@Localizer["Admin_WholesaleAllProductsInGroup"]</span>
+                                                                            }
+                                                                        </td>
                                                                         <td>
                                                                             @if (iskonto.IskontoTipi == "Tutar")
                                                                             {
@@ -246,6 +263,15 @@
                                                     <input type="hidden" name="Id" value="0" />
                                                     <input type="hidden" name="ToptanciUrunGrubuId" value="@grup.Id" />
                                                     <div class="row g-2">
+                                                        <div class="col-12 mb-1">
+                                                            <select name="UrunId" class="ca-select form-control-sm">
+                                                                <option value="">-- @Localizer["Admin_WholesaleAllProductsInGroup"] --</option>
+                                                                @foreach (var u in grup.Urunler.Where(u => !u.SilindiMi).OrderBy(u => u.Baslik))
+                                                                {
+                                                                    <option value="@u.Id">@(u.BaslikAr ?? u.BaslikEn ?? u.Baslik)</option>
+                                                                }
+                                                            </select>
+                                                        </div>
                                                         <div class="col"><input name="MinAdet" class="ca-input form-control-sm" type="number" min="1" placeholder='@Localizer["Admin_MinAdet"]' required /></div>
                                                         <div class="col">
                                                             <select name="IskontoTipi" class="ca-select form-control-sm" onchange="toggleInlineDiscount(this)">
@@ -273,6 +299,29 @@
 
 @section Scripts {
 <script>
+    function onMainGroupChange(groupId) {
+        var urunSelect = document.getElementById('mainUrunSelect');
+        if (!urunSelect) return;
+        urunSelect.innerHTML = '<option value="">-- ' + @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_WholesaleAllProductsInGroup"].Value)) + ' --</option>';
+        if (!groupId) return;
+
+        fetch('/Admin/Toptanci/GetGrupUrunleri?grupId=' + encodeURIComponent(groupId))
+            .then(function(r) { return r.json(); })
+            .then(function(items) {
+                if (Array.isArray(items)) {
+                    items.forEach(function(item) {
+                        var opt = document.createElement('option');
+                        opt.value = item.id;
+                        opt.textContent = item.baslik;
+                        urunSelect.appendChild(opt);
+                    });
+                }
+            })
+            .catch(function(err) {
+                console.error('Error fetching group products:', err);
+            });
+    }
+
     function toggleTopDiscountFields() {
         var sel = document.getElementById('topIskontoTipi');
         var yuzde = document.getElementById('topYuzdeField');

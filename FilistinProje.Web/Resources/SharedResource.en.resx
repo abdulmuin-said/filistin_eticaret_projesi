@@ -4082,6 +4082,9 @@
   <data name="Admin_Yeni_KategoriDesc" xml:space="preserve">
     <value>Create a parent or subcategory; the store menu will update automatically.</value>
   </data>
+  <data name="Admin_CategoryType" xml:space="preserve">
+    <value>Category Type</value>
+  </data>
   <data name="Admin_BackToCategories" xml:space="preserve">
     <value>Back to Categories</value>
   </data>
@@ -4923,6 +4926,8 @@
   <data name="Admin_IskontoOraniEkle" xml:space="preserve"><value>Add Discount Rate</value></data>
   <data name="Admin_UrunGrubu" xml:space="preserve"><value>Product Group</value></data>
   <data name="Admin_GrupSecin" xml:space="preserve"><value>Select Group</value></data>
+  <data name="Admin_WholesaleAllProductsInGroup" xml:space="preserve"><value>All products in this group</value></data>
+  <data name="Admin_WholesaleProductOptionalHint" xml:space="preserve"><value>Select a specific product to apply discount exclusively, or leave blank for the entire group.</value></data>
   <data name="Admin_MinAdet" xml:space="preserve"><value>Min. Qty</value></data>
   <data name="Admin_IskontoYuzdesi" xml:space="preserve"><value>Discount (%)</value></data>
   <data name="Admin_IskontoKaydet" xml:space="preserve"><value>Save Discount</value></data>
@@ -6032,5 +6037,20 @@
   </data>
   <data name="Increase" xml:space="preserve">
     <value>Increase</value>
+  </data>
+  <data name="Admin_BankTransferActivated" xml:space="preserve">
+    <value>Bank transfer (IBAN) payment has been activated successfully.</value>
+  </data>
+  <data name="Admin_BankTransferDeactivated" xml:space="preserve">
+    <value>Bank transfer (IBAN) payment has been deactivated.</value>
+  </data>
+  <data name="Region" xml:space="preserve">
+    <value>Region</value>
+  </data>
+  <data name="SelectRegion" xml:space="preserve">
+    <value>Select region first</value>
+  </data>
+  <data name="Validation_RegionRequired" xml:space="preserve">
+    <value>Please select a region</value>
   </data>
 </root>

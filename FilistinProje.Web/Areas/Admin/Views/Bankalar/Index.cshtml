@@ -14,6 +14,40 @@
         </div>
     </div>
 
+    @{
+        bool havaleAktif = ViewBag.BankaHavalesiAktifMi is bool b && b;
+        bool isAr = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar";
+    }
+
+    <!-- Master IBAN / Havale Toggle -->
+    <div class="ca-card mb-4 border-0 shadow-sm" style="background:#fff;border-radius:14px;">
+        <div class="ca-card-body p-4">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div style="width:48px;height:48px;background:rgba(181,135,53,0.12);color:#b58735;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;">
+                        <i class="fas fa-building-columns"></i>
+                    </div>
+                    <div>
+                        <h4 class="m-0 font-weight-bold" style="font-size:1rem;color:var(--ca-text,#313511);">
+                            @(isAr ? "تفعيل الدفع عبر الآيبان / التحويل البنكي" : "Enable Bank Transfer / IBAN Payment")
+                        </h4>
+                        <p class="text-muted m-0 small">
+                            @(isAr ? "عند التفعيل، يمكن للعملاء اختيار الدفع بالتحويل البنكي وإرفاق إيصال السداد. عند التعطيل، يتم إخفاء هذا الخيار من صفحة الدفع." : "When enabled, customers can choose bank transfer at checkout. When disabled, this option is hidden/disabled at checkout.")
+                        </p>
+                    </div>
+                </div>
+                <form method="post" action="/Admin/Bankalar/ToggleHavale" class="m-0 d-flex align-items-center">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="aktif" value="@((!havaleAktif).ToString().ToLowerInvariant())" />
+                    <button type="submit" class="btn @(havaleAktif ? "btn-success" : "btn-secondary") d-flex align-items-center gap-2 px-4 py-2 font-weight-bold rounded-pill shadow-sm" style="transition:all 0.2s ease;">
+                        <i class="fas @(havaleAktif ? "fa-toggle-on fa-lg" : "fa-toggle-off fa-lg")"></i>
+                        <span>@(havaleAktif ? (isAr ? "مفعل (نشط)" : "Active") : (isAr ? "معطل (غير نشط)" : "Inactive"))</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="row g-4">
         <div class="col-lg-5">
             <div class="ca-card">

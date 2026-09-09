@@ -357,11 +357,23 @@ namespace FilistinProje.Service
 
             if (isWholesale && urun.ToptanciUrunGrubuId.HasValue)
             {
-                var bestDiscount = await _context.ToptanciIskontoOranlari
+                var discountQuery = _context.ToptanciIskontoOranlari
                     .AsNoTracking()
-                    .Where(x => x.AktifMi && !x.SilindiMi && x.ToptanciUrunGrubuId == urun.ToptanciUrunGrubuId && adet >= x.MinAdet)
+                    .Where(x => x.AktifMi && !x.SilindiMi && x.ToptanciUrunGrubuId == urun.ToptanciUrunGrubuId && adet >= x.MinAdet);
+
+                var bestDiscount = await discountQuery
+                    .Where(x => x.UrunId == urun.Id)
                     .OrderByDescending(x => x.MinAdet)
                     .FirstOrDefaultAsync();
+
+                if (bestDiscount == null)
+                {
+                    bestDiscount = await discountQuery
+                        .Where(x => !x.UrunId.HasValue)
+                        .OrderByDescending(x => x.MinAdet)
+                        .FirstOrDefaultAsync();
+                }
+
                 if (bestDiscount != null)
                 {
                     if (bestDiscount.IskontoTipi == "Tutar" && bestDiscount.IskontoTutari > 0)

@@ -535,7 +535,7 @@ namespace FilistinProje.Web.Controllers
                 .ThenBy(x => x.BankaAdi)
                 .ToListAsync();
 
-            ViewBag.BankaHavaleAktifMi = ViewBag.BankaHesaplari is List<BankaHesap> hesaplar && hesaplar.Any();
+            ViewBag.BankaHavaleAktifMi = settings.BankaHavalesiAktifMi && ViewBag.BankaHesaplari is List<BankaHesap> hesaplar && hesaplar.Any();
 
             ViewBag.KapidaOdemeLimiti = settings.KapidaOdemeLimiti;
             ViewBag.KapidaOdemeAktifMi = settings.KapidaOdemeAktifMi && (sepetToplamiIndirimli <= settings.KapidaOdemeLimiti);

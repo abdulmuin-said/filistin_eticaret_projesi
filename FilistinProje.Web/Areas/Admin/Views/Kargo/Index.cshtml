@@ -54,22 +54,6 @@
                                     <option value="true">@Localizer["Admin_Evet"]</option>
                                 </select>
                             </div>
-                            <div class="col-12">
-                                <label class="ca-label">@Localizer["Admin_TrackingUrl"]</label>
-                                <input name="TakipUrl" class="ca-input" placeholder="https://..." />
-                            </div>
-                            <div class="col-12">
-                                <label class="ca-label">@Localizer["Admin_Gonderici_Unvani"]</label>
-                                <input name="GondericiUnvan" class="ca-input" value="7ANRPS48" />
-                            </div>
-                            <div class="col-12">
-                                <label class="ca-label">@Localizer["Admin_Gonderici_Adresi"]</label>
-                                <textarea name="GondericiAdres" class="ca-textarea" rows="2" placeholder="@Localizer["Admin_SenderAddressPlaceholder"]"></textarea>
-                            </div>
-                            <div class="col-12">
-                                <label class="ca-label">@Localizer["Admin_Gonderici_Telefonu"]</label>
-                                <input name="GondericiTelefon" class="ca-input" placeholder="+970 599 123 456" />
-                            </div>
                         </div>
                         <button class="ca-btn ca-btn-primary mt-3" type="submit">
                             <i class="fas fa-save"></i> @Localizer["Admin_Firmayi_Kaydet"]
@@ -89,7 +73,7 @@
                         <thead>
                             <tr>
                                 <th class="ps-4">@Localizer["Admin_Company"]</th>
-                                <th>@Localizer["Admin_Tracking"]</th>
+                                <th>@Localizer["Admin_Telefon"]</th>
                                 <th>@Localizer["Admin_Kargo_Ucreti"]</th>
                                 <th>@Localizer["Admin_Durum"]</th>
                                 <th class="text-end pe-4">@Localizer["Admin_Islem"]</th>
@@ -112,8 +96,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="small">@firma.Telefon</div>
-                                        <div class="small text-muted text-truncate" style="max-width:240px;">@firma.TakipUrl</div>
+                                        <div class="small">@(string.IsNullOrWhiteSpace(firma.Telefon) ? "-" : firma.Telefon)</div>
                                     </td>
                                     <td class="ca-fw-bold">
                                         @firma.Fiyat.ToString("N2") ₪
@@ -188,22 +171,6 @@
                                                     <label class="ca-label">@Localizer["Admin_LogoURL"]</label>
                                                     <input name="LogoUrl" value="@firma.LogoUrl" class="ca-input" placeholder="/img/shipping/company-logo.svg" />
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <label class="ca-label">@Localizer["Admin_TrackingUrl"]</label>
-                                                    <input name="TakipUrl" value="@firma.TakipUrl" class="ca-input" placeholder="https://..." />
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="ca-label">@Localizer["Admin_Gonderici_Unvani"]</label>
-                                                    <input name="GondericiUnvan" value="@firma.GondericiUnvan" class="ca-input" />
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <label class="ca-label">@Localizer["Admin_Gonderici_Adresi"]</label>
-                                                    <input name="GondericiAdres" value="@firma.GondericiAdres" class="ca-input" placeholder="@Localizer["Admin_SenderAddressPlaceholder"]" />
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <label class="ca-label">@Localizer["Admin_Gonderici_Telefonu"]</label>
-                                                    <input name="GondericiTelefon" value="@firma.GondericiTelefon" class="ca-input" />
-                                                </div>
                                                 <div class="col-md-3">
                                                     <label class="ca-label">@Localizer["Admin_Varsayilan"]</label>
                                                     <select name="VarsayilanMi" class="ca-select">
@@ -211,8 +178,8 @@
                                                         <option value="true" selected="@firma.VarsayilanMi">@Localizer["Admin_Varsayilan"]</option>
                                                     </select>
                                                 </div>
-                                                <div class="col-md-9 text-end d-flex align-items-end justify-content-end">
-                                                    <button class="ca-btn ca-btn-primary" type="submit"><i class="fas fa-save"></i> @Localizer["Admin_Guncelle"]</button>
+                                                <div class="col-md-3 text-end d-flex align-items-end justify-content-end">
+                                                    <button class="ca-btn ca-btn-primary w-100" type="submit"><i class="fas fa-save"></i> @Localizer["Admin_Guncelle"]</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -329,31 +296,6 @@
     </div>
 </div>
 
-<div class="container-fluid ca-fade-in mt-4">
-    <div class="ca-page-header">
-        <div>
-            <h2 class="ca-page-title"><i class="fas fa-shekel-sign me-2"></i>@Localizer["Admin_PalestineProvinceShippingPrices"]</h2>
-            <p class="ca-page-subtitle">@Localizer["Admin_PalestineProvinceShippingPricesDesc"]</p>
-        </div>
-    </div>
-
-    <div class="ca-card">
-        <div class="ca-card-header d-flex justify-content-between align-items-center">
-            <h3 class="ca-card-title"><i class="fas fa-map-marked-alt me-2"></i>@Localizer["Admin_ProvincePriceMatrix"]</h3>
-            <button type="button" class="ca-btn ca-btn-secondary" id="bolgeFiyatYenileBtn">
-                <i class="fas fa-rotate me-1"></i> @Localizer["Admin_Refresh"]
-            </button>
-        </div>
-        <div class="ca-card-body">
-            <div id="bolgeFiyatListesi" class="table-responsive">
-                <div class="text-center py-5 text-muted">
-                    <i class="fas fa-spinner fa-spin me-2"></i> @Localizer["Admin_Loading"]
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 @section Scripts {
 <script>
 (function() {
@@ -363,10 +305,7 @@
     const noCityText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_NoCity"].Value));
     const cityCountText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_CityCount"].Value));
     const loadErrorText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_LoadError"].Value));
-    const priceLoadErrorText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_PriceLoadError"].Value));
-    const noCarrierProvinceText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_NoCarrierProvince"].Value));
     const editRegionText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_EditRegion"].Value));
-    const provinceText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Province"].Value));
     const editBtnText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Duzenle"].Value));
     const deleteBtnText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Sil"].Value));
     const newRegionTitleText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_NewRegion"].Value));
@@ -411,90 +350,6 @@
                  showPanelMessage(document.getElementById('bolgeListesi'), loadErrorText, 'col-12 text-center text-danger py-4');
              });
 
-    }
-
-    function loadBolgeFiyatlari() {
-        fetch('/Admin/Kargo/BolgeFiyatListesi')
-            .then(r => r.json())
-            .then(renderBolgeFiyatlari)
-             .catch(() => {
-                 showPanelMessage(document.getElementById('bolgeFiyatListesi'), priceLoadErrorText, 'text-center text-danger py-4');
-             });
-
-    }
-
-    function renderBolgeFiyatlari(data) {
-        const container = document.getElementById('bolgeFiyatListesi');
-        const firmalar = data.firmalar || [];
-        const bolgeler = data.bolgeler || [];
-        const fiyatlar = data.fiyatlar || [];
-
-        if (!firmalar.length || !bolgeler.length) {
-            showPanelMessage(container, noCarrierProvinceText, 'text-center text-muted py-4');
-            return;
-        }
-
-        const fiyatMap = new Map(fiyatlar.map(f => [f.kargoFirmasiId + '-' + f.bolgeId, f.fiyat]));
-        const table = document.createElement('table');
-        table.className = 'ca-table';
-        const thead = document.createElement('thead');
-        const headerRow = document.createElement('tr');
-        const provinceHeader = document.createElement('th');
-        provinceHeader.className = 'ps-4';
-        provinceHeader.textContent = provinceText;
-        headerRow.appendChild(provinceHeader);
-        firmalar.forEach(firma => {
-            const th = document.createElement('th');
-            th.textContent = String(firma.ad || '');
-            headerRow.appendChild(th);
-        });
-        thead.appendChild(headerRow);
-        const tbody = document.createElement('tbody');
-
-        bolgeler.forEach(bolge => {
-            const row = document.createElement('tr');
-            const regionCell = document.createElement('td');
-            regionCell.className = 'ps-4 ca-fw-bold';
-            regionCell.textContent = String(bolge.ad || '');
-            row.appendChild(regionCell);
-            firmalar.forEach(firma => {
-                const value = fiyatMap.has(firma.id + '-' + bolge.id) ? fiyatMap.get(firma.id + '-' + bolge.id) : firma.fiyat;
-                const cell = document.createElement('td');
-                const group = document.createElement('div');
-                group.className = 'input-group input-group-sm';
-                group.style.minWidth = '130px';
-                const input = document.createElement('input');
-                input.className = 'form-control bolge-fiyat-input';
-                input.type = 'text';
-                input.inputMode = 'decimal';
-                input.dataset.decimal = '';
-                input.value = Number(value || 0).toFixed(2);
-                input.dataset.firmaId = String(firma.id);
-                input.dataset.bolgeId = String(bolge.id);
-                const currency = document.createElement('span');
-                currency.className = 'input-group-text';
-                currency.textContent = '₪';
-                group.append(input, currency);
-                cell.appendChild(group);
-                row.appendChild(cell);
-            });
-            tbody.appendChild(row);
-        });
-
-        table.append(thead, tbody);
-        container.replaceChildren(table);
-    }
-
-    function saveBolgeFiyat(input) {
-        const fd = new FormData();
-        fd.append('kargoFirmasiId', input.dataset.firmaId);
-        fd.append('bolgeId', input.dataset.bolgeId);
-        fd.append('fiyat', input.value || '0');
-        fd.append('__RequestVerificationToken', getToken());
-
-        fetch('/Admin/Kargo/BolgeFiyatKaydet', { method: 'POST', body: fd })
-            .then(r => r.json())
-            .then(d => showToast(d.message, d.success ? 'success' : 'error'));
     }
 
     function renderBolgeler(bolgeler) {
@@ -669,7 +524,7 @@
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
                 cancelButtonText: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Iptal"].Value)),
-                confirmButtonText: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Delete"].Value))
+                confirmButtonText: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Sil"].Value))
             }).then(result => {
                 if (!result.isConfirmed) return;
                 const fd = new FormData();
@@ -730,15 +585,7 @@
             .then(data => renderBolgeler(data));
     });
 
-    document.getElementById('bolgeFiyatYenileBtn')?.addEventListener('click', loadBolgeFiyatlari);
-    document.getElementById('bolgeFiyatListesi')?.addEventListener('change', function(e) {
-        if (e.target.classList.contains('bolge-fiyat-input')) {
-            saveBolgeFiyat(e.target);
-        }
-    });
-
     loadBolgeler();
-    loadBolgeFiyatlari();
 })();
 </script>
 }

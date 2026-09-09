@@ -387,10 +387,15 @@ namespace FilistinProje.Data
             {
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.ToptanciUrunGrubuId);
+                entity.HasIndex(e => e.UrunId);
                 entity.HasOne(e => e.ToptanciUrunGrubu)
                     .WithMany(e => e.IskontoOranlari)
                     .HasForeignKey(e => e.ToptanciUrunGrubuId)
                     .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(e => e.Urun)
+                    .WithMany()
+                    .HasForeignKey(e => e.UrunId)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
 
             modelBuilder.Entity<UrunToptanFiyatKademesi>(entity =>

@@ -711,6 +711,18 @@
                                          </div>
                                      </div>
 
+                                     <div class="col-md-6">
+                                         <div class="ca-toggle-box">
+                                             <div class="form-check form-switch d-flex align-items-center w-100 ps-0">
+                                                 <span>
+                                                     <strong>@(isAr ? "تفعيل الدفع بالتحويل البنكي (الآيبان)" : "Enable Bank Transfer (IBAN)")</strong><br>
+                                                     <small class="text-muted">@(isAr ? "السماح للعملاء باختيار التحويل البنكي وإرفاق إيصال السداد" : "Allow customers to pay via bank transfer and upload receipt")</small>
+                                                 </span>
+                                                 <input asp-for="BankaHavalesiAktifMi" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
+                                             </div>
+                                         </div>
+                                     </div>
+
                                 </div>
                             </div>
                         </div>

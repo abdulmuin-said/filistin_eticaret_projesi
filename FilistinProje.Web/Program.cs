@@ -1476,6 +1476,7 @@ BEGIN
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "HeroGorselUrl" text NOT NULL DEFAULT '/slider-demo.jpg';
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "AdreseTeslimAktifMi" boolean NOT NULL DEFAULT true;
     ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "MagazadanTeslimAktifMi" boolean NOT NULL DEFAULT true;
+    ALTER TABLE "SiteAyarlari" ADD COLUMN IF NOT EXISTS "BankaHavalesiAktifMi" boolean NOT NULL DEFAULT true;
 
     -- Filistin kargo bölgeleri: Ulke, Aciklama ve Fiyat alanları
     ALTER TABLE "KargoBolgeler" ADD COLUMN IF NOT EXISTS "Ulke" character varying(100) NULL;
@@ -1512,8 +1513,10 @@ BEGIN
 
     ALTER TABLE "ToptanciIskontoOranlari" ADD COLUMN IF NOT EXISTS "IskontoTipi" text NOT NULL DEFAULT 'Yuzde';
     ALTER TABLE "ToptanciIskontoOranlari" ADD COLUMN IF NOT EXISTS "IskontoTutari" numeric NOT NULL DEFAULT 0;
+    ALTER TABLE "ToptanciIskontoOranlari" ADD COLUMN IF NOT EXISTS "UrunId" integer NULL;
 
     CREATE INDEX IF NOT EXISTS "IX_ToptanciIskontoOranlari_ToptanciUrunGrubuId" ON "ToptanciIskontoOranlari" ("ToptanciUrunGrubuId");
+    CREATE INDEX IF NOT EXISTS "IX_ToptanciIskontoOranlari_UrunId" ON "ToptanciIskontoOranlari" ("UrunId");
 
     -- Genel varyant olculeri ve urun/varyant bazli dogrudan toptan fiyat kademeleri
     ALTER TABLE "UrunSecenekleri" ADD COLUMN IF NOT EXISTS "Beden" text NOT NULL DEFAULT '';

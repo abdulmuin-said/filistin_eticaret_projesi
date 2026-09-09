@@ -399,14 +399,29 @@ namespace FilistinProje.Service.Services
                 && toptanciGrupIskonto.TryGetValue(urun.ToptanciUrunGrubuId.Value, out var oranlar)
                 && oranlar.Count > 0)
             {
-                // Find best applicable discount (highest MinAdet that the quantity meets)
+                // Find best applicable discount: prioritize product-specific discount first
                 ToptanciIskontoOrani? bestDiscount = null;
+
+                // 1. Check for product-specific discounts
                 foreach (var oran in oranlar)
                 {
-                    if (adet >= oran.MinAdet &&
+                    if (oran.UrunId == urun.Id && adet >= oran.MinAdet &&
                         (bestDiscount == null || oran.MinAdet > bestDiscount.MinAdet))
                     {
                         bestDiscount = oran;
+                    }
+                }
+
+                // 2. If no product-specific discount matched, fallback to group-wide discount
+                if (bestDiscount == null)
+                {
+                    foreach (var oran in oranlar)
+                    {
+                        if (!oran.UrunId.HasValue && adet >= oran.MinAdet &&
+                            (bestDiscount == null || oran.MinAdet > bestDiscount.MinAdet))
+                        {
+                            bestDiscount = oran;
+                        }
                     }
                 }
 

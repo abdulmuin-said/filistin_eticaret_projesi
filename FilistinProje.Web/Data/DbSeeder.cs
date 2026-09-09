@@ -199,7 +199,6 @@ namespace FilistinProje.Web.Data
                     mevcutSehir.SehirAdi = sehirAdi;
                     mevcutSehir.SehirAdiEn = sehirAdiEn;
                     mevcutSehir.SehirAdiAr = sehirAdiAr;
-                    mevcutSehir.SilindiMi = false;
                 }
                 else
                 {

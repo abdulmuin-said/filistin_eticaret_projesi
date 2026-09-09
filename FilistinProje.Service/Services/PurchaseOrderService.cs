@@ -149,6 +149,16 @@ namespace FilistinProje.Service.Services
 
             if (odemeForPricing == "BankaHavalesi")
             {
+                if (!settings.BankaHavalesiAktifMi)
+                {
+                    return new PlaceOrderResult
+                    {
+                        Status = PlaceOrderStatus.NoActiveBankAccount,
+                        Pricing = pricing,
+                        MessageKey = "Siparis_NoActiveBankAccount"
+                    };
+                }
+
                 var aktifBankaVarMi = await _context.BankaHesaplari
                     .Where(x => !x.SilindiMi && x.AktifMi)
                     .AnyAsync();

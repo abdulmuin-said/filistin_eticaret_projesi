@@ -60,14 +60,14 @@ namespace FilistinProje.Service.Services
 
             if (!TryCreateMailAddress(fromEmail, fromName, out var fromAddress) || string.IsNullOrWhiteSpace(host) || string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
-                _logger.LogWarning("SMTP e-posta ayarlari eksik oldugu icin mail gonderimi atlandi. Subject={Subject}", subject);
-                throw new InvalidOperationException("SMTP ayarlari eksik. Sunucu, kullanici, parola ve gonderici e-posta adresini kontrol edin.");
+                _logger.LogWarning("SMTP email settings missing. Subject={Subject}", subject);
+                throw new InvalidOperationException("SMTP_CONFIG_MISSING");
             }
 
             if (!TryCreateMailAddress(to, null, out var toAddress))
             {
-                _logger.LogWarning("Gecersiz alici e-posta adresi nedeniyle mail gonderimi atlandi. To={To}, Subject={Subject}", to, subject);
-                throw new InvalidOperationException("Alici e-posta adresi gecersiz.");
+                _logger.LogWarning("Invalid recipient email address. To={To}, Subject={Subject}", to, subject);
+                throw new InvalidOperationException("INVALID_RECIPIENT_EMAIL");
             }
 
             using var client = new SmtpClient(host, port)
@@ -270,13 +270,13 @@ namespace FilistinProje.Service.Services
             {
                 if (!_config.GetValue<bool>("EmailSettings:Enabled"))
                 {
-                    _logger.LogWarning("E-posta devre disi oldugu icin fatura maili gonderilmedi.");
+                    _logger.LogWarning("Email sending is disabled; invoice email not sent.");
                     return false;
                 }
 
                 if (!File.Exists(filePath))
                 {
-                    _logger.LogWarning("Fatura dosyasi bulunamadi: {FilePath}", filePath);
+                    _logger.LogWarning("Invoice file not found: {FilePath}", filePath);
                     return false;
                 }
 

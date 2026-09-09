@@ -1,17 +1,27 @@
-﻿using FilistinProje.Core.Varliklar;
+using FilistinProje.Core.Varliklar;
 using FilistinProje.Data;
+using FilistinProje.Service.Services;
+using FilistinProje.Web.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace FilistinProje.Web.Areas.Admin.Controllers
 {
     public class BankalarController : AdminBaseController
     {
         private readonly KanvasDbContext _context;
+        private readonly ISiteSettingsService _siteSettingsService;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public BankalarController(KanvasDbContext context)
+        public BankalarController(
+            KanvasDbContext context,
+            ISiteSettingsService siteSettingsService,
+            IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
+            _siteSettingsService = siteSettingsService;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index()
@@ -23,7 +33,29 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .ThenBy(x => x.BankaAdi)
                 .ToListAsync();
 
+            ViewBag.BankaHavalesiAktifMi = _siteSettingsService.GetSettings().BankaHavalesiAktifMi;
             return View(hesaplar);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleHavale(bool aktif)
+        {
+            try
+            {
+                var settings = _siteSettingsService.GetSettings();
+                settings.BankaHavalesiAktifMi = aktif;
+                _siteSettingsService.SaveSettings(settings);
+                TempData["Mesaj"] = _localizer[aktif ? "Admin_BankTransferActivated" : "Admin_BankTransferDeactivated"].Value;
+                TempData["Durum"] = "success";
+            }
+            catch (Exception ex)
+            {
+                TempData["Mesaj"] = ex.Message;
+                TempData["Durum"] = "danger";
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]

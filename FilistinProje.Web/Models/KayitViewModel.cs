@@ -37,6 +37,10 @@ namespace FilistinProje.Web.Models
         [Display(Name = "KimlikFoto")]
         public IFormFile? KimlikFoto { get; set; }
 
+        [Required(ErrorMessage = "Validation_RegionRequired")]
+        [Display(Name = "Region")]
+        public string? Bolge { get; set; }
+
         [Required(ErrorMessage = "Validation_CityRequired")]
         [Display(Name = "Sehir")]
         public string Sehir { get; set; } = string.Empty;

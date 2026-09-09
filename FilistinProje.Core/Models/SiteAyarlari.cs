@@ -45,6 +45,7 @@ namespace FilistinProje.Core.Models
         public int IadeHakkiGun { get; set; } = 7;
         public bool AdreseTeslimAktifMi { get; set; } = true;
         public bool MagazadanTeslimAktifMi { get; set; } = true;
+        public bool BankaHavalesiAktifMi { get; set; } = true;
 
         public string MetaTitle { get; set; } = "7ANRPS48 - متجر إلكتروني فلسطيني | تسوق أونلاين";
         public string MetaDescription { get; set; } = "تسوق أونلاين من 7ANRPS48. منتجات متنوعة بأفضل الأسعار مع توصيل سريع لجميع مدن فلسطين.";
