@@ -5,11 +5,11 @@ using FilistinProje.Web.Resources;
 namespace FilistinProje.Core.Helpers
 {
     /// <summary>Localizes ASP.NET Identity errors using the active storefront culture.</summary>
-    public class TurkceIdentityErrorDescriber : IdentityErrorDescriber
+    public class LocalizedIdentityErrorDescriber : IdentityErrorDescriber
     {
         private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public TurkceIdentityErrorDescriber(IStringLocalizer<SharedResource> localizer)
+        public LocalizedIdentityErrorDescriber(IStringLocalizer<SharedResource> localizer)
         {
             _localizer = localizer;
         }

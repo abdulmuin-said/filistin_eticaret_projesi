@@ -312,7 +312,7 @@ namespace FilistinProje.Service.Services
                 if (affected != 1)
                 {
                     _logger.LogWarning(
-                        "Atomic stok düşüm başarısız. UrunSecenekId={SecenekId}, IstenenAdet={Adet}, Affected={Affected}",
+                        "Atomic stock deduction failed. OptionId={SecenekId}, RequestedQty={Adet}, Affected={Affected}",
                         secenekId, adet, affected);
 
                     return new StockDeductionResult

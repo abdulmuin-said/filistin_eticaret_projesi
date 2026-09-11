@@ -25,6 +25,7 @@
     // Sehir listesi veritabanindaki KargoBolgeSehirler'den gelir.
     var sehirListesi = ViewBag.Sehirler as List<string> ?? new List<string>();
     var sehirler = sehirListesi;
+    var isAr = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar";
 }
 
 <style>
@@ -100,6 +101,98 @@
 <script>
     const checkoutUploadToken = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.CheckoutUploadToken as string ?? string.Empty));
     const currencySymbol = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(currencySymbol));
+    const isAr = @(isAr ? "true" : "false");
+
+    const regionCities = {
+        'القدس': [
+            { ar: 'القدس', en: 'Jerusalem' },
+            { ar: 'العيزرية', en: 'Al-Eizariya' },
+            { ar: 'الرام', en: 'Al-Ram' },
+            { ar: 'أبو ديس', en: 'Abu Dis' }
+        ],
+        'الضفة الغربية': [
+            { ar: 'رام الله والبيرة', en: 'Ramallah & Al-Bireh' },
+            { ar: 'نابلس', en: 'Nablus' },
+            { ar: 'الخليل', en: 'Hebron' },
+            { ar: 'جنين', en: 'Jenin' },
+            { ar: 'بيت لحم', en: 'Bethlehem' },
+            { ar: 'طولكرم', en: 'Tulkarm' },
+            { ar: 'قلقيلية', en: 'Qalqilya' },
+            { ar: 'أريحا', en: 'Jericho' },
+            { ar: 'سلفيت', en: 'Salfit' },
+            { ar: 'طوباس', en: 'Tubas' },
+            { ar: 'بيرزيت', en: 'Birzeit' },
+            { ar: 'حلحول', en: 'Halhul' },
+            { ar: 'يطا', en: 'Yatta' },
+            { ar: 'دورا', en: 'Dura' },
+            { ar: 'بيت جالا', en: 'Beit Jala' }
+        ],
+        'قطاع غزة': [
+            { ar: 'غزة', en: 'Gaza' },
+            { ar: 'خان يونس', en: 'Khan Yunis' },
+            { ar: 'رفح', en: 'Rafah' },
+            { ar: 'دير البلح', en: 'Deir al-Balah' },
+            { ar: 'شمال غزة', en: 'North Gaza' },
+            { ar: 'بيت حانون', en: 'Beit Hanoun' },
+            { ar: 'بيت لاهيا', en: 'Beit Lahiya' },
+            { ar: 'جباليا', en: 'Jabalia' }
+        ],
+        'المناطق الداخلية 48': [
+            { ar: 'يافا', en: 'Jaffa' },
+            { ar: 'حيفا', en: 'Haifa' },
+            { ar: 'عكا', en: 'Acre' },
+            { ar: 'الناصرة', en: 'Nazareth' },
+            { ar: 'اللد', en: 'Lydda' },
+            { ar: 'الرملة', en: 'Ramla' },
+            { ar: 'أم الفحم', en: 'Umm al-Fahm' },
+            { ar: 'الطيبة', en: 'Tayibe' }
+        ]
+    };
+
+    function updateCheckoutCities(region, preselectedCity) {
+        var sehirSelect = document.getElementById('Sehir');
+        if (!sehirSelect) return;
+        var defaultText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["SelectCity"].Value));
+        sehirSelect.innerHTML = '<option value="">' + defaultText + '</option>';
+
+        if (!region || !regionCities[region]) return;
+
+        var list = regionCities[region];
+        list.forEach(function (c) {
+            var opt = document.createElement('option');
+            var val = isAr ? c.ar : c.en;
+            opt.value = val;
+            opt.textContent = isAr ? c.ar : c.en;
+            if (preselectedCity && (preselectedCity === c.ar || preselectedCity === c.en || preselectedCity === val)) {
+                opt.selected = true;
+            }
+            sehirSelect.appendChild(opt);
+        });
+    }
+
+    function findRegionForCity(cityName) {
+        if (!cityName) return null;
+        for (var reg in regionCities) {
+            if (Object.prototype.hasOwnProperty.call(regionCities, reg)) {
+                var clist = regionCities[reg];
+                for (var i = 0; i < clist.length; i++) {
+                    var c = clist[i];
+                    if (c.ar === cityName || c.en === cityName || cityName.indexOf(c.ar) !== -1 || cityName.indexOf(c.en) !== -1) {
+                        return reg;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    function getDeliveryType() {
+        var radio = document.querySelector('input[name="TeslimatTipi"]:checked');
+        if (radio) return radio.value;
+        var hidden = document.querySelector('input[name="TeslimatTipi"]');
+        if (hidden) return hidden.value;
+        return 'AdreseTeslim';
+    }
 
     function formatCheckoutNumber(amount) {
         return Number(amount).toLocaleString(document.documentElement.lang === 'ar' ? 'ar-PS' : 'en-US', {
@@ -109,11 +202,28 @@
     }
 
     function selectAddress(ad, tel, sehir, ilce, acikAdres) {
-        document.getElementById("MusteriAdSoyad").value = ad;
-        document.getElementById("Telefon").value = tel;
-        document.getElementById("Sehir").value = sehir;
-        document.getElementById("Ilce").value = ilce;
-        document.getElementById("AcikAdres").value = acikAdres;
+        var nameInput = document.getElementById("MusteriAdSoyad");
+        if (nameInput) nameInput.value = ad;
+        var phoneInput = document.getElementById("Telefon");
+        if (phoneInput) phoneInput.value = tel;
+        var districtInput = document.getElementById("Ilce");
+        if (districtInput) districtInput.value = ilce;
+        var addressInput = document.getElementById("AcikAdres");
+        if (addressInput) addressInput.value = acikAdres;
+
+        var bolgeSelect = document.getElementById("BolgeSelect");
+        var sehirSelect = document.getElementById("Sehir");
+        var reg = findRegionForCity(sehir);
+        if (reg && bolgeSelect) {
+            bolgeSelect.value = reg;
+            updateCheckoutCities(reg, sehir);
+        } else if (sehirSelect) {
+            sehirSelect.value = sehir;
+        }
+
+        if (typeof sehirKargoHesapla === 'function') {
+            sehirKargoHesapla();
+        }
 
         if (window.showToast) {
             window.showToast('@Localizer["AddressLoaded"]', 'success');
@@ -286,15 +396,17 @@
     }
 
     function toggleDeliveryType() {
-        var isStorePickup = document.querySelector('input[name="TeslimatTipi"]:checked')?.value === 'MagazadanTeslim';
+        var isStorePickup = getDeliveryType() === 'MagazadanTeslim';
         var adresAlanlari = document.getElementById('adresAlanlari');
         var shippingAddressFields = [
+            document.getElementById('adresBolgeAlani'),
             document.getElementById('adresSehirAlani'),
             document.getElementById('adresIlceAlani'),
             document.getElementById('adresAcikAdresAlani'),
             document.getElementById('adresKaydetAlani')
         ];
         var requiredShippingInputs = [
+            document.getElementById('BolgeSelect'),
             document.getElementById('Sehir'),
             document.getElementById('Ilce'),
             document.getElementById('AcikAdres')
@@ -368,6 +480,7 @@
         MusteriAdSoyad: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Siparis_NameRequired"].Value)),
         Eposta: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Siparis_EmailRequired"].Value)),
         Telefon: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Siparis_PhoneRequired"].Value)),
+        Bolge: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["SelectRegion"].Value)),
         Sehir: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Siparis_CityRequired"].Value)),
         Ilce: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Siparis_DistrictRequired"].Value)),
         AcikAdres: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Siparis_AddressRequired"].Value)),
@@ -402,10 +515,10 @@
     form.addEventListener('submit', function(e) {
         const errors = [];
         let firstInvalidField = null;
-        const requiredFields = ['MusteriAdSoyad', 'Eposta', 'Telefon', 'Sehir', 'Ilce', 'AcikAdres'];
+        const requiredFields = ['MusteriAdSoyad', 'Eposta', 'Telefon', 'Bolge', 'Sehir', 'Ilce', 'AcikAdres'];
 
         requiredFields.forEach(function(fieldName) {
-            const field = document.getElementById(fieldName);
+            const field = document.getElementById(fieldName) || document.querySelector('[name="' + fieldName + '"]');
             if (!field || field.disabled || !field.required) return;
             const empty = !field.value.trim();
             const invalidEmail = fieldName === 'Eposta' && !empty && !field.validity.valid;
@@ -498,7 +611,7 @@
             if (checkoutCodSurchargeSatiri) checkoutCodSurchargeSatiri.classList.add('hidden');
         }
 
-        var isStorePickup = document.querySelector('input[name="TeslimatTipi"]:checked')?.value === 'MagazadanTeslim';
+        var isStorePickup = getDeliveryType() === 'MagazadanTeslim';
         if (!isStorePickup && typeof sehirKargoHesapla === 'function') {
             sehirKargoHesapla();
         }
@@ -506,7 +619,7 @@
 
     // --- Dinamik Kargo Hesaplama (Şehir Bazlı) ---
     function sehirKargoHesapla() {
-        const isStorePickup = document.querySelector('input[name="TeslimatTipi"]:checked')?.value === 'MagazadanTeslim';
+        const isStorePickup = getDeliveryType() === 'MagazadanTeslim';
         if (isStorePickup) return;
 
         const sehir = document.getElementById("Sehir")?.value;
@@ -517,7 +630,7 @@
         fetch(url)
             .then(r => r.json())
             .then(data => {
-                const pickupSelected = document.querySelector('input[name="TeslimatTipi"]:checked')?.value === 'MagazadanTeslim';
+                const pickupSelected = getDeliveryType() === 'MagazadanTeslim';
                 if (pickupSelected) return;
 
                 if (data.success) {
@@ -528,7 +641,7 @@
                     const freeShippingBanner = document.getElementById("checkoutFreeShippingBanner");
 
                     const araToplam = parseFloat("@((araToplam - indirim).ToString(System.Globalization.CultureInfo.InvariantCulture))");
-                    const codBedel = parseFloat("@codBedel.ToString(System.Globalization.CultureInfo.InvariantCulture)");
+                    const codBedel = parseFloat("@codBedel.ToString(System.Globalization.CultureInfo.InvariantCulture))");
                     const selectedPayment = document.querySelector('input[name="odemeYontemi"]:checked')?.value || 'BankaHavalesi';
                     const codPrice = (selectedPayment === 'KapidaOdeme') ? codBedel : 0;
 
@@ -580,24 +693,42 @@
             .catch(err => console.error("Kargo hesaplama hatası:", err));
     }
 
-    // Şehir değişince kargo hesapla
     document.addEventListener("DOMContentLoaded", function () {
+        const bolgeSelect = document.getElementById("BolgeSelect");
         const sehirSelect = document.getElementById("Sehir");
+
+        if (bolgeSelect && sehirSelect) {
+            bolgeSelect.addEventListener("change", function () {
+                updateCheckoutCities(this.value, null);
+                sehirKargoHesapla();
+            });
+
+            const initialRegion = bolgeSelect.value;
+            const initialCity = sehirSelect.dataset.selected || sehirSelect.value || '';
+            if (initialRegion) {
+                updateCheckoutCities(initialRegion, initialCity);
+            } else if (initialCity) {
+                const matchedReg = findRegionForCity(initialCity);
+                if (matchedReg) {
+                    bolgeSelect.value = matchedReg;
+                    updateCheckoutCities(matchedReg, initialCity);
+                }
+            }
+        }
+
         if (sehirSelect) {
             sehirSelect.addEventListener("change", sehirKargoHesapla);
         }
-    });
 
-    document.addEventListener("DOMContentLoaded", function () {
         const kargoDisplay = document.getElementById("checkoutKargoUcreti");
         const totalDisplay = document.getElementById("checkoutGenelToplam");
         const btnTotalDisplay = document.getElementById("checkoutBtnTotal");
         const subtotal = parseFloat("@((araToplam - indirim).ToString(System.Globalization.CultureInfo.InvariantCulture))");
-        const codBedel = parseFloat("@codBedel.ToString(System.Globalization.CultureInfo.InvariantCulture)");
-        const codLimit = parseFloat("@codLimit.ToString(System.Globalization.CultureInfo.InvariantCulture)");
+        const codBedel = parseFloat("@codBedel.ToString(System.Globalization.CultureInfo.InvariantCulture))");
+        const codLimit = parseFloat("@codLimit.ToString(System.Globalization.CultureInfo.InvariantCulture))");
 
         function updateCheckoutTotals() {
-            const isStorePickup = document.querySelector('input[name="TeslimatTipi"]:checked')?.value === 'MagazadanTeslim';
+            const isStorePickup = getDeliveryType() === 'MagazadanTeslim';
 
             const codPaymentOption = document.getElementById('codPaymentOption');
             if (subtotal > codLimit) {
@@ -656,7 +787,6 @@
         const selectedPayment = document.querySelector('input[name="odemeYontemi"]:checked');
         if (selectedPayment) togglePaymentMethod(selectedPayment.value);
     });
-
     function copyIban(elementId, btn) {
         const el = document.getElementById(elementId);
         if (!el) return;

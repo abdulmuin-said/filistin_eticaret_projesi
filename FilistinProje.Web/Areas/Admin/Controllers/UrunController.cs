@@ -91,7 +91,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Varyant gorseli yuklenirken hata olustu. UrunId={UrunId}", urunId);
+                _logger.LogError(ex, "Error uploading variant image. ProductId={UrunId}", urunId);
                 return Json(new { success = false, message = ex.Message });
             }
         }
@@ -209,7 +209,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             if (!await ValidateProductAsync(urun, resimDosyasi, galeriDosyalari: galeriDosyalari))
             {
                 _logger.LogWarning(
-                    "Urun ekleme dogrulamasi basarisiz. HataSayisi={ValidationErrorCount}",
+                    "Product creation validation failed. ErrorCount={ValidationErrorCount}",
                     ModelState.Values.Sum(state => state.Errors.Count));
 
                 await PopulateCategorySelectListAsync(urun.KategoriId);
@@ -819,7 +819,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogWarning(ex, "Urun medya dosyasi silinemedi; orphan cleanup gerekli. Yol={RelativePath}", relativePath);
+                    _logger.LogWarning(ex, "Failed to delete product media file; orphan cleanup required. Path={RelativePath}", relativePath);
                 }
             }
         }
@@ -3664,7 +3664,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             // Veritabanı hata ayrıntıları form değerleri veya sağlayıcı detayları içerebilir.
             // Operasyonel tanılama için yalnızca güvenli kimlik ve hata türünü kaydet.
             _logger.LogError(
-                "Urun {Operation} kaydi basarisiz. UrunId={ProductId}, HataTuru={ErrorType}",
+                "Product {Operation} save failed. ProductId={ProductId}, ErrorType={ErrorType}",
                 operation,
                 productId,
                 exception.GetType().Name);

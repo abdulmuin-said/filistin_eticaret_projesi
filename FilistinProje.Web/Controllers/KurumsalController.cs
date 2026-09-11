@@ -113,7 +113,7 @@ namespace FilistinProje.Web.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogWarning(ex, "Iletisim formu mail bildirimi gonderilemedi. MesajId={MesajId}, Alici={Alici}", model.Id, recipientEmail);
+                    _logger.LogWarning(ex, "Failed to send contact form email notification. MessageId={MesajId}, Recipient={Alici}", model.Id, recipientEmail);
                 }
             }
 

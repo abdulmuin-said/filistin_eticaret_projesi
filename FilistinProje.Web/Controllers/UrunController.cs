@@ -457,8 +457,7 @@ namespace FilistinProje.Web.Controllers
                 }
                 catch (Exception ex)
                 {
-                    // SayaÃ§ analitiktir; baÅŸarÄ±sÄ±zlÄ±ÄŸÄ± Ã¼rÃ¼n gÃ¶rÃ¼ntÃ¼lemeyi engellememelidir.
-                    _logger.LogWarning(ex, "Urun goruntulenme sayaci artirilamadi. UrunId={UrunId}", urun.Id);
+                    _logger.LogWarning(ex, "Failed to increment product view counter. ProductId={UrunId}", urun.Id);
                 }
             }
 

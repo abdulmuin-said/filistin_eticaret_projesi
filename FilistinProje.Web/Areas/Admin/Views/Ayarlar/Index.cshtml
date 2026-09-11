@@ -695,7 +695,7 @@
                                                      <strong>@Localizer["Admin_AddressDeliveryActive"]</strong><br>
                                                      <small class="text-muted">@(isAr ? "السماح للعملاء باختيار التوصيل إلى العنوان عبر شركات الشحن" : "Allow customers to choose courier delivery to address")</small>
                                                  </span>
-                                                 <input asp-for="AdreseTeslimAktifMi" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
+                                                 <input asp-for="AdreseTeslimAktifMi" id="adreseTeslimToggle" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
                                              </div>
                                          </div>
                                      </div>
@@ -706,7 +706,7 @@
                                                      <strong>@Localizer["Admin_StorePickupActive"]</strong><br>
                                                      <small class="text-muted">@(isAr ? "السماح للعملاء باختيار الاستلام الذاتي من المتجر مباشرة" : "Allow customers to pick up orders directly from the store")</small>
                                                  </span>
-                                                 <input asp-for="MagazadanTeslimAktifMi" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
+                                                 <input asp-for="MagazadanTeslimAktifMi" id="magazadanTeslimToggle" class="form-check-input ms-auto" type="checkbox" style="width:3em; height:1.5em;">
                                              </div>
                                          </div>
                                      </div>
@@ -1039,6 +1039,25 @@
                     takipInput.value = takipUrl;
                 }
             });
+
+            const adreseTeslimToggle = document.getElementById('adreseTeslimToggle');
+            const magazadanTeslimToggle = document.getElementById('magazadanTeslimToggle');
+
+            if (adreseTeslimToggle && magazadanTeslimToggle) {
+                adreseTeslimToggle.addEventListener('change', function () {
+                    if (!this.checked && !magazadanTeslimToggle.checked) {
+                        magazadanTeslimToggle.checked = true;
+                        alert('@(isAr ? "يجب تفعيل خيار توصيل واحد على الأقل" : "At least one delivery method must be active")');
+                    }
+                });
+
+                magazadanTeslimToggle.addEventListener('change', function () {
+                    if (!this.checked && !adreseTeslimToggle.checked) {
+                        adreseTeslimToggle.checked = true;
+                        alert('@(isAr ? "يجب تفعيل خيار توصيل واحد على الأقل" : "At least one delivery method must be active")');
+                    }
+                });
+            }
         });
     </script>
 }

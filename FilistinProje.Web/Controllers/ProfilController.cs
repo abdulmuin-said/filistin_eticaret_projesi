@@ -524,7 +524,7 @@ namespace FilistinProje.Web.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogWarning(ex, "Musteri iade talebi maili gonderilemedi. SiparisNo={SiparisNo}, Email={Email}", siparis.SiparisNo, siparis.Eposta);
+                    _logger.LogWarning(ex, "Failed to send customer return request email. OrderNo={SiparisNo}, Email={Email}", siparis.SiparisNo, siparis.Eposta);
                 }
             }
 
@@ -573,7 +573,7 @@ namespace FilistinProje.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Admin iade talebi maili gonderilemedi. SiparisNo={SiparisNo}, TalepId={TalepId}", siparis.SiparisNo, talep.Id);
+                _logger.LogWarning(ex, "Failed to send admin return request email. OrderNo={SiparisNo}, RequestId={TalepId}", siparis.SiparisNo, talep.Id);
             }
         }
 

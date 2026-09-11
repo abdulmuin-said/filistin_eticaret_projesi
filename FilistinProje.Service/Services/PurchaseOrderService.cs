@@ -202,7 +202,7 @@ namespace FilistinProje.Service.Services
                 if (!stokSonuc.Basarili)
                 {
                     _logger.LogWarning(
-                        "Siparis stok dusumu basarisiz. Transaction rollback. SecenekId={SecenekId}, Mesaj={Mesaj}",
+                        "Order stock deduction failed. Transaction rollback. OptionId={SecenekId}, Message={Mesaj}",
                         stokSonuc.BasarisizUrunSecenekId,
                         stokSonuc.HataMesaji);
 
@@ -280,7 +280,7 @@ namespace FilistinProje.Service.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Siparis transaction hatasi. Transaction rollback.");
+                _logger.LogError(ex, "Order transaction error. Transaction rollback.");
                 await transaction.RollbackAsync();
                 return BusinessError("Siparis_OrderFailed", pricing);
             }

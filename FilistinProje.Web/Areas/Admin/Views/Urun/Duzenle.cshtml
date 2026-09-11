@@ -5,6 +5,13 @@
     var detailUrl = "/Urun/Detay/" + (string.IsNullOrWhiteSpace(Model.Slug) ? Model.Id.ToString() : Model.Slug + "-" + Model.Id);
     var variantCount = Model.UrunSecenek?.Count(x => !x.SilindiMi) ?? 0;
     var mediaCount = Model.UrunResimleri?.Count(x => !x.SilindiMi) ?? 0;
+    var isAr = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar";
+    var mainDiscountAmount = (Model.IndirimliFiyat.HasValue && Model.IndirimliFiyat.Value > 0 && Model.IndirimliFiyat.Value < Model.Fiyat)
+        ? (Model.Fiyat - Model.IndirimliFiyat.Value)
+        : (decimal?)null;
+    var mainDiscountPercent = (mainDiscountAmount.HasValue && Model.Fiyat > 0)
+        ? Math.Round((mainDiscountAmount.Value / Model.Fiyat) * 100m, 2)
+        : (decimal?)null;
     var previewItems = new List<(string Type, string Url, string Poster, string Alt)>();
 
     if (!string.IsNullOrWhiteSpace(Model.AnaGorselUrl))
@@ -565,12 +572,28 @@
                         <div class="ca-card-body">
                             <div class="row g-3">
                                 <div class="col-md-6 col-xl-3">
-                                    <label class="ca-label">@Localizer["Admin_SalePrice"]</label>
-                                    <input asp-for="Fiyat" class="ca-input" type="text" inputmode="decimal" data-decimal />
+                                    <label class="ca-label">@Localizer["Admin_SalePrice"] (₪)</label>
+                                    <input asp-for="Fiyat" class="ca-input" type="text" inputmode="decimal" data-decimal id="mainProductFiyat" />
                                 </div>
                                 <div class="col-md-6 col-xl-3">
-                                    <label class="ca-label">@Localizer["Admin_DiscountPrice"]</label>
-                                    <input asp-for="IndirimliFiyat" class="ca-input" type="text" inputmode="decimal" data-decimal />
+                                    <label class="ca-label">@Localizer["DiscountType"]</label>
+                                    <select class="ca-select" id="mainProductDiscountType">
+                                        <option value="" selected="@(string.IsNullOrEmpty(mainDiscountPercent.HasValue ? "Percentage" : "") ? "selected" : null)">@(isAr ? "بدون خصم / مباشر" : "Direct / None")</option>
+                                        <option value="Percentage" selected="@(mainDiscountPercent.HasValue ? "selected" : null)">@Localizer["DiscountTypePercentage"]</option>
+                                        <option value="Fixed">@Localizer["DiscountTypeFixed"]</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 col-xl-3">
+                                    <label class="ca-label">@Localizer["DiscountTypePercentage"]</label>
+                                    <input class="ca-input" type="number" min="0" max="100" step="any" id="mainProductDiscountPercent" value="@(mainDiscountPercent?.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty)" placeholder="%" />
+                                </div>
+                                <div class="col-md-6 col-xl-3">
+                                    <label class="ca-label">@Localizer["DiscountTypeFixed"]</label>
+                                    <input class="ca-input" type="text" inputmode="decimal" data-decimal id="mainProductDiscountAmount" value="@(mainDiscountAmount?.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty)" placeholder="₪" />
+                                </div>
+                                <div class="col-md-6 col-xl-3">
+                                    <label class="ca-label">@Localizer["Admin_DiscountPrice"] (₪)</label>
+                                    <input asp-for="IndirimliFiyat" class="ca-input" type="text" inputmode="decimal" data-decimal id="mainProductIndirimliFiyat" />
                                 </div>
                                 <div class="col-md-6 col-xl-3">
                                     <label class="ca-label">@Localizer["Admin_Cost"]</label>
@@ -929,4 +952,108 @@
             preview.src = input.value;
         }
     }
+
+    // Main Product Discount Calculation
+    (function () {
+        const fiyatInput = document.getElementById('mainProductFiyat');
+        const discountTypeSelect = document.getElementById('mainProductDiscountType');
+        const percentInput = document.getElementById('mainProductDiscountPercent');
+        const amountInput = document.getElementById('mainProductDiscountAmount');
+        const discountedInput = document.getElementById('mainProductIndirimliFiyat');
+
+        if (!fiyatInput || !discountedInput) return;
+
+        function parseNum(val) {
+            if (!val) return 0;
+            const n = parseFloat(String(val).replace(',', '.'));
+            return isNaN(n) ? 0 : n;
+        }
+
+        function formatNum(n) {
+            if (n <= 0) return '';
+            return (Math.round(n * 100) / 100).toFixed(2).replace(/\.00$/, '');
+        }
+
+        function calcFromPercent() {
+            const f = parseNum(fiyatInput.value);
+            const p = parseNum(percentInput?.value);
+            if (f > 0 && p > 0) {
+                const disc = (f * p) / 100;
+                const finalP = Math.max(0, f - disc);
+                if (amountInput) amountInput.value = formatNum(disc);
+                discountedInput.value = formatNum(finalP);
+            } else if (p === 0) {
+                if (amountInput) amountInput.value = '';
+                discountedInput.value = '';
+            }
+        }
+
+        function calcFromAmount() {
+            const f = parseNum(fiyatInput.value);
+            const a = parseNum(amountInput?.value);
+            if (f > 0 && a > 0) {
+                const finalP = Math.max(0, f - a);
+                const pct = (a / f) * 100;
+                if (percentInput) percentInput.value = formatNum(pct);
+                discountedInput.value = formatNum(finalP);
+            } else if (a === 0) {
+                if (percentInput) percentInput.value = '';
+                discountedInput.value = '';
+            }
+        }
+
+        function calcFromDiscounted() {
+            const f = parseNum(fiyatInput.value);
+            const discP = parseNum(discountedInput.value);
+            if (f > 0 && discP > 0 && discP < f) {
+                const a = f - discP;
+                const pct = (a / f) * 100;
+                if (amountInput) amountInput.value = formatNum(a);
+                if (percentInput) percentInput.value = formatNum(pct);
+                if (discountTypeSelect && !discountTypeSelect.value) {
+                    discountTypeSelect.value = 'Percentage';
+                }
+            } else if (!discountedInput.value.trim()) {
+                if (amountInput) amountInput.value = '';
+                if (percentInput) percentInput.value = '';
+            }
+        }
+
+        percentInput?.addEventListener('input', calcFromPercent);
+        amountInput?.addEventListener('input', calcFromAmount);
+        discountedInput.addEventListener('input', calcFromDiscounted);
+
+        fiyatInput.addEventListener('input', function () {
+            const mode = discountTypeSelect?.value;
+            if (mode === 'Percentage') {
+                calcFromPercent();
+            } else if (mode === 'Fixed') {
+                calcFromAmount();
+            } else {
+                calcFromDiscounted();
+            }
+        });
+
+        discountTypeSelect?.addEventListener('change', function () {
+            if (this.value === 'Percentage') {
+                if (percentInput && !percentInput.value && discountedInput.value) {
+                    calcFromDiscounted();
+                } else {
+                    calcFromPercent();
+                }
+                percentInput?.focus();
+            } else if (this.value === 'Fixed') {
+                if (amountInput && !amountInput.value && discountedInput.value) {
+                    calcFromDiscounted();
+                } else {
+                    calcFromAmount();
+                }
+                amountInput?.focus();
+            } else {
+                if (percentInput) percentInput.value = '';
+                if (amountInput) amountInput.value = '';
+                discountedInput.value = '';
+            }
+        });
+    })();
 </script>

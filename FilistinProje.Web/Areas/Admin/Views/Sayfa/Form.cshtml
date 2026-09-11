@@ -26,11 +26,33 @@
                         @Html.AntiForgeryToken()
                         <input type="hidden" asp-for="Id" />
 
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger mb-4 rounded-3" role="alert">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    <strong>@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "يرجى تصحيح الأخطاء التالية:" : "Please correct the following errors:")</strong>
+                                </div>
+                                <div asp-validation-summary="All" class="small mb-0"></div>
+                            </div>
+                        }
+
                         <div class="row g-4 mb-4">
-                            <div class="col-md-9">
+                            <div class="col-md-5">
                                 <div class="ca-form-group">
-                                    <label class="ca-label">@Localizer["Admin_SayfaBasligi"]</label>
+                                    <label class="ca-label">@Localizer["Admin_SayfaBasligi"] <span class="text-danger">*</span></label>
                                     <input asp-for="Baslik" class="ca-input" placeholder='@Localizer["Admin_SayfaBasligiPlaceholder"]' required />
+                                    <span asp-validation-for="Baslik" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="ca-form-group">
+                                    <label class="ca-label">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "الرابط الدائم (Slug)" : "URL Slug")</label>
+                                    <input asp-for="UrlSlug" class="ca-input" placeholder="page-url-slug" dir="ltr" />
+                                    <small class="ca-text-muted" style="font-size:.78rem;">
+                                        @(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "اتركه فارغاً للتوليد التلقائي" : "Leave empty to auto-generate")
+                                    </small>
+                                    <span asp-validation-for="UrlSlug" class="text-danger small"></span>
                                 </div>
                             </div>
                             <div class="col-md-3">

@@ -15,6 +15,7 @@
     {
         Model.TeslimatTipi = adreseTeslim ? "AdreseTeslim" : "MagazadanTeslim";
     }
+    bool isAr = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar";
 }
 
 <section class="checkout-card" aria-labelledby="delivery-heading">
@@ -63,13 +64,27 @@
             </label>
         </div>
     }
-    else if (adreseTeslim)
+    else if (magazadanTeslim)
     {
-        <input type="hidden" name="TeslimatTipi" id="TeslimatTipi" value="AdreseTeslim" />
+        <input type="hidden" name="TeslimatTipi" id="TeslimatTipi" value="MagazadanTeslim" />
+        <div class="mb-7 flex items-center gap-3 rounded-xl border border-brand-border bg-brand-cream/60 p-4">
+            <span class="checkout-choice-icon"><i class="fas fa-store text-brand-olive"></i></span>
+            <div>
+                <span class="block text-sm font-semibold text-brand-darktext">@Localizer["StorePickup"]</span>
+                <span class="mt-0.5 block text-xs text-brand-mutedtext">@Localizer["StorePickupDesc"]</span>
+            </div>
+        </div>
     }
     else
     {
-        <input type="hidden" name="TeslimatTipi" id="TeslimatTipi" value="MagazadanTeslim" />
+        <input type="hidden" name="TeslimatTipi" id="TeslimatTipi" value="AdreseTeslim" />
+        <div class="mb-7 flex items-center gap-3 rounded-xl border border-brand-border bg-brand-cream/60 p-4">
+            <span class="checkout-choice-icon"><i class="fas fa-truck-fast text-brand-olive"></i></span>
+            <div>
+                <span class="block text-sm font-semibold text-brand-darktext">@Localizer["DeliverToAddress"]</span>
+                <span class="mt-0.5 block text-xs text-brand-mutedtext">@Localizer["DeliverToAddressDesc"]</span>
+            </div>
+        </div>
     }
 
     <div id="storePickupInfo" class="mb-7 hidden rounded-xl border border-[#cbd3a3] bg-[#f7f8ed] p-4 text-sm text-brand-olive">
@@ -104,9 +119,20 @@
             <input asp-for="Telefon" id="Telefon" type="tel" inputmode="tel" autocomplete="tel" class="checkout-input" placeholder="@Localizer["PhonePlaceholder"]" maxlength="20" required>
             <span asp-validation-for="Telefon" class="checkout-field-error"></span>
         </div>
+        <div id="adresBolgeAlani">
+            <label class="checkout-label" for="BolgeSelect">@Localizer["Region"] <span aria-hidden="true">*</span></label>
+            <select asp-for="Bolge" id="BolgeSelect" class="checkout-input" required>
+                <option value="">@Localizer["SelectRegion"]</option>
+                <option value="القدس">@(isAr ? "القدس وضواحيها" : "Jerusalem & Suburbs")</option>
+                <option value="الضفة الغربية">@(isAr ? "الضفة الغربية" : "West Bank")</option>
+                <option value="قطاع غزة">@(isAr ? "قطاع غزة" : "Gaza Strip")</option>
+                <option value="المناطق الداخلية 48">@(isAr ? "المناطق الداخلية 48" : "Interior 48 Areas")</option>
+            </select>
+            <span asp-validation-for="Bolge" class="checkout-field-error"></span>
+        </div>
         <div id="adresSehirAlani">
             <label class="checkout-label" for="Sehir">@Localizer["City"] <span aria-hidden="true">*</span></label>
-            <select asp-for="Sehir" id="Sehir" class="checkout-input" required>
+            <select asp-for="Sehir" id="Sehir" class="checkout-input" required data-selected="@(Model?.Sehir ?? string.Empty)">
                 <option value="">@Localizer["SelectCity"]</option>
                 @foreach (var sehir in sehirler) { <option value="@sehir">@sehir</option> }
             </select>

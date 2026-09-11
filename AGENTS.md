@@ -303,6 +303,14 @@ cd FilistinProje.Web && npm run watch:storefront-css
 - [x] **Adım 156**: `UrunHediyePaketSecenekleri` ("تغليف قياسي"), `KargoFirmalari` ("Ramallah, Palestine"), `AspNetUsers`, `IletisimMesajlari` ve `Siparisler` tablolarındaki tüm Türkçe veri kalıntıları temizlendi.
 - [x] **Adım 157**: `DbSeeder.cs` içindeki bölge ve şehir tohumlama verileri Arapça/İngilizce yapıya geçirildi, uygulamanın yeniden başlatıldığında Türkçe kayıt üretmesi kalıcı olarak engellendi.
 
+### Faz 18 (Varyant İndirimleri, Teslimat Toggle Düzeltmesi, Kurumsal Sayfa CRUD & Misafir Bölge Seçimi — 11 Eylül 2026)
+- [x] **Adım 158**: `_VariantEditor.cshtml`'e İndirim Türü (بدون خصم / مباشر, نسبة مئوية %, مبلغ ثابت ₪), Yüzde (%) ve Sabit Tutar (₪) alanları hem kart döngüsüne hem template'e eklendi; çift yönlü anlık dinamik hesaplama sağlandı.
+- [x] **Adım 159**: `Ekle.cshtml` ve `Duzenle.cshtml` ana ürün fiyatlandırma paneline İndirim Türü, % ve ₪ indirim inputları ve anlık otomatik hesaplama entegre edildi.
+- [x] **Adım 160**: Teslimat Seçenekleri (Toggle) hatası giderildi; `Odeme.cshtml` içinde hidden input desteği sunan `getDeliveryType()` tanımlandı, `:checked` seçici bağımlılığı kaldırıldı; `toggleDeliveryType()`, `togglePaymentMethod()`, `sehirKargoHesapla()` ve `updateCheckoutTotals()` senkronize edildi.
+- [x] **Adım 161**: `SiteSettingsService.cs` ve `Ayarlar/Index.cshtml` içine her iki teslimat türünün aynı anda kapatılmasını engelleyen güvenlik önlemleri ve kullanıcı uyarıları eklendi.
+- [x] **Adım 162**: Kurumsal Sayfalar (`SayfaController.cs`) sessiz kayıt ve güncelleme başarısızlığı giderildi; `NormalizeContent` öne alındı, otomatik slug üretiminde `ModelState.Remove(nameof(model.UrlSlug))` uygulandı; mevcut sayfaların diller arası içerik güncellemesi sağlandı; `Form.cshtml`'e validation summary ve `UrlSlug` alanı eklendi.
+- [x] **Adım 163**: Misafir sipariş akışında şehir (`Sehir`) öncesine Bölge (`BolgeSelect`) kademeli dropdown'u eklendi; `regionCities` sözlüğü ile şehirlere dinamik filtreleme ve anlık kargo hesaplaması bağlandı; kayıtlı adresten seçimde (`selectAddress`) bölge eşleştirmesi eklendi; `CheckoutRequestDto.cs` ve `SiparisController.ValidateCheckoutInput` güncellendi.
+
 
 
 
@@ -569,6 +577,20 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
 - [x] **Adım 186 (Kurumsal Sayfalar CMS & PostgreSQL Tohumlama)**: 6 temel kurumsal sayfa (`hakkimizda`, `gizlilik`, `kullanici-sozlesmesi`, `mesafeli-satis`, `iade-kosullari`, `sss`) çift dilli (Arapça & İngilizce) zengin içeriklerle PostgreSQL `"KurumsalSayfalar"` tablosuna ve `DbSeeder.cs`'e tohumlandı.
 - [x] **Adım 187 (Kurumsal Sayfalar Yönetim Paneli & Dinamik Vitrin)**: `/Admin/Sayfa` ve `/Admin/Sayfa/Form/{id}` sayfalarındaki Türkçe etiketler çok dilli resx anahtarlarına bağlandı; `KurumsalController.cs` hem `/pages/{slug}` hem `/Kurumsal/Detay/{slug}` rotalarını destekleyecek şekilde dinamik `Detay` aksiyonuna bağlandı; `Detay.cshtml` Tailwind CSS zengin tipografiyle yenilendi.
 - [x] **Adım 188 (Uçtan Uca Doğrulama)**: Playwright ile `/Admin/Sayfa`, `/Admin/Sayfa/Form/1`, `/pages/about`, `/Kurumsal/Detay/hakkimizda`, `/Kurumsal/Detay/gizlilik`, `/account/GirisYap`, `/account/KayitOl` ve `/Hesap/ProfilTamamla` canlı olarak test edilip ekran görüntüleri kaydedildi; 98 birim testin tümü başarıyla geçti (`98/98 passed`).
+
+### Faz 24 (Varyant İndirimleri, Teslimat Toggle, Google OAuth Prod Düzeltmeleri & Sıfır Türkçe Log Standardı — 11 Eylül 2026)
+- [x] **Adım 189 (Varyant İndirim Türleri & Dinamik Hesaplama)**: `_VariantEditor.cshtml` içinde her varyant için yüzde (%) ve sabit tutar indirim inputları eklendi. `variant-editor.js` ve form submit akışı güncellenerek son satış fiyatının bu indirim alanlarına göre frontend ve backend tarafında senkronize hesaplanması sağlandı.
+- [x] **Adım 190 (Teslimat Seçenekleri Toggle Fix)**: `Admin/Ayarlar` teslimat toggle'larının form post ve save mekanizması onarıldı, switch durumlarının veritabanında doğru kalıcı olması sağlandı.
+- [x] **Adım 191 (Google OAuth Production & Reverse Proxy Onarımı)**: Canlı sunucuda Google ile giriş tıklandığında 500 hatası alınması sorunu çözüldü:
+  - `docker-compose.yml` ve `.env.example` içerisine `GOOGLE_CLIENT_ID` ve `GOOGLE_CLIENT_SECRET` ortam değişkenleri eklendi.
+  - `Program.cs`'de Nginx/Docker arkasındaki SSL sonlandırmasını desteklemek için `ForwardedHeadersOptions` güvenilir container/reverse proxy IP ağları (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `127.0.0.1`) ile donatıldı.
+  - Google Correlation Cookie için `SameSiteMode.Lax` ve CallbackPath (`/signin-google`) güvenli politikası yapılandırıldı.
+  - `HesapController.cs`'de `GetExternalAuthenticationSchemesAsync` kontrolü ve try/catch loglama eklenerek sağlayıcı eksik olduğunda 500 çökmesi yerine kullanıcı dostu uyarı gösterildi.
+- [x] **Adım 192 (Sıfır Türkçe Log & Katı Dil Kuralı Standardizasyonu)**: Proje genelindeki tüm Türkçe log mesajları, startup uyarıları ve arka plan servis günlükleri İngilizceye çevrildi:
+  - `Program.cs` startup uyarıları ve migration logları (PostgreSQL bağlantı uyarısı, schema drift, EF migration, hassas dosya taşıma, seed logları).
+  - `DbSeeder.cs`, `SiparisController.cs`, `HesapController.cs`, `HomeController.cs`, `KurumsalController.cs`, `ProfilController.cs`, `UrunController.cs`, `Areas/Admin/Controllers/UrunController.cs`.
+  - `SepetService.cs`, `AbandonedCartService.cs`, `FavoriPriceDropService.cs`, `FirebaseNotificationService.cs`, `OrderPricingService.cs`, `PurchaseOrderService.cs`, `SmtpEmailService.cs`, `StockAlertService.cs`.
+  - `TurkceIdentityErrorDescriber` sınıfı `LocalizedIdentityErrorDescriber` olarak yeniden adlandırıldı ve refactor edildi.
 
 
 

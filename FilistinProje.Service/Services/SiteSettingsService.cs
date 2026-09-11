@@ -210,6 +210,11 @@ namespace FilistinProje.Service.Services
             settings.KapidaOdemeLimiti = settings.KapidaOdemeLimiti <= 0 ? 2000 : settings.KapidaOdemeLimiti;
             settings.IptalSuresiSaat = Math.Max(0, settings.IptalSuresiSaat);
 
+            if (!settings.AdreseTeslimAktifMi && !settings.MagazadanTeslimAktifMi)
+            {
+                settings.AdreseTeslimAktifMi = true;
+            }
+
             settings.MetaTitle = string.IsNullOrWhiteSpace(settings.MetaTitle)
                 ? $"{settings.MarkaAdi} - Filistin E-Ticaret Mağazası | Online Alışveriş"
                 : settings.MetaTitle.Trim();

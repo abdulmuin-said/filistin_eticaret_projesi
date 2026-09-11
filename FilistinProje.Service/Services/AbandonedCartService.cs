@@ -43,7 +43,7 @@ public class AbandonedCartService : BackgroundService
 
                 if (!IsSmtpConfigured())
                 {
-                    _logger.LogWarning("SMTP ayarlari yapilandirilmadigi icin terk edilmis sepet e-posta kontrolu atlandi.");
+                    _logger.LogWarning("SMTP settings not configured, skipping abandoned cart email check.");
                     try
                     {
                         await Task.Delay(_checkInterval, stoppingToken);

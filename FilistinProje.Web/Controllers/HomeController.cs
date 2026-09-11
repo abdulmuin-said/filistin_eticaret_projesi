@@ -278,7 +278,7 @@ namespace FilistinProje.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Bulten aboneligi kaydedilemedi. Email: {Email}", email);
+                _logger.LogError(ex, "Failed to save newsletter subscription. Email: {Email}", email);
                 return Json(new { success = false, message = _localizer["Home_SubscriptionFailed"].Value });
             }
 
@@ -298,7 +298,7 @@ namespace FilistinProje.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Bulten hos geldiniz e-postasi gonderilemedi. Email: {Email}", email);
+                _logger.LogWarning(ex, "Failed to send newsletter welcome email. Email: {Email}", email);
             }
 
             try
@@ -322,7 +322,7 @@ namespace FilistinProje.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Bulten admin bildirimi gonderilemedi. Email: {Email}", email);
+                _logger.LogWarning(ex, "Failed to send newsletter admin notification. Email: {Email}", email);
             }
 
             return Json(new { success = true, message = _localizer["Home_SubscriptionSuccess"].Value });

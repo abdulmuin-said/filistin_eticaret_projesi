@@ -119,7 +119,7 @@ namespace FilistinProje.Service.Services
                     (ex is SmtpException || ex is TimeoutException))
                 {
                     _logger.LogWarning(
-                        "SMTP gonderimi gecici olarak basarisiz. Deneme={Attempt}/{MaxAttempts}, HataTuru={ErrorType}",
+                        "SMTP send temporarily failed. Attempt={Attempt}/{MaxAttempts}, ErrorType={ErrorType}",
                         attempt,
                         maxAttempts,
                         ex.GetType().Name);
@@ -207,7 +207,7 @@ namespace FilistinProje.Service.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Kargo email gonderim hatasi. SiparisNo={SiparisNo}", siparisNo);
+                _logger.LogError(ex, "Shipping email send error. OrderNo={SiparisNo}", siparisNo);
                 return false;
             }
         }
@@ -235,7 +235,7 @@ namespace FilistinProje.Service.Services
             if (!Uri.TryCreate(trackingUrl, UriKind.Absolute, out var trackingUri) ||
                 (trackingUri.Scheme != Uri.UriSchemeHttps && trackingUri.Scheme != Uri.UriSchemeHttp))
             {
-                _logger.LogWarning("Gecersiz kargo takip URL sablonu nedeniyle takip linki gosterilmedi. Template={Template}", trackingUrlTemplate);
+                _logger.LogWarning("Tracking link not displayed due to invalid shipping tracking URL template. Template={Template}", trackingUrlTemplate);
                 return string.Empty;
             }
 
@@ -295,13 +295,13 @@ namespace FilistinProje.Service.Services
 
                 if (string.IsNullOrWhiteSpace(host) || string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
                 {
-                    _logger.LogWarning("SMTP ayarlari eksik - fatura maili gonderilemedi");
+                    _logger.LogWarning("SMTP settings missing - invoice email not sent.");
                     return false;
                 }
 
                 if (!TryCreateMailAddress(fromEmail, fromName, out var fromAddress) || !TryCreateMailAddress(toEmail, null, out var toAddress))
                 {
-                    _logger.LogWarning("Gecersiz e-posta adresi - fatura maili gonderilemedi");
+                    _logger.LogWarning("Invalid recipient email address - invoice email not sent.");
                     return false;
                 }
 
@@ -367,12 +367,12 @@ namespace FilistinProje.Service.Services
                 mailMessage.Attachments.Add(attachment);
 
                 await SendWithBoundedRetryAsync(client, mailMessage);
-                _logger.LogInformation("Fatura maili basariyla gonderildi. SiparisNo={SiparisNo}, To={To}", siparisNo, toEmail);
+                _logger.LogInformation("Invoice email sent successfully. OrderNo={SiparisNo}, To={To}", siparisNo, toEmail);
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Fatura maili gonderim hatasi. SiparisNo={SiparisNo}", siparisNo);
+                _logger.LogError(ex, "Invoice email send error. OrderNo={SiparisNo}", siparisNo);
                 return false;
             }
         }

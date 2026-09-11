@@ -31,7 +31,7 @@ namespace FilistinProje.Service.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("StockAlertService başlatıldı. Kontrol aralığı: {Interval}", _checkInterval);
+            _logger.LogInformation("StockAlertService started. Check interval: {Interval}", _checkInterval);
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -47,7 +47,7 @@ namespace FilistinProje.Service.Services
                 await CheckStockAndNotifyAsync(stoppingToken);
             }
 
-            _logger.LogInformation("StockAlertService durduruldu.");
+            _logger.LogInformation("StockAlertService stopped.");
         }
 
         private async Task CheckStockAndNotifyAsync(CancellationToken ct)
@@ -61,7 +61,7 @@ namespace FilistinProje.Service.Services
 
                 var settings = siteSettingsService.GetSettings();
 
-                // Stok uyarıları kapalıysa veya bildirim alıcısı yoksa atla
+                // Skip if stock alerts disabled or no recipient configured
                 if (!settings.StokUyarisiMailBildirimi)
                 {
                     return;
@@ -70,7 +70,7 @@ namespace FilistinProje.Service.Services
                 var recipientEmail = settings.BildirimAliciEmail;
                 if (string.IsNullOrWhiteSpace(recipientEmail) || !IsValidEmail(recipientEmail))
                 {
-                    _logger.LogWarning("Stok uyarisi icin gecerli bir alici e-postasi tanimlanmamis.");
+                    _logger.LogWarning("No valid recipient email configured for stock alerts.");
                     return;
                 }
 
@@ -190,12 +190,12 @@ namespace FilistinProje.Service.Services
                 await context.SaveChangesAsync(ct);
 
                 _logger.LogInformation(
-                    "Stok uyarisi gonderildi. {Count} urun icin bildirim yapildi. Alici={Email}",
+                    "Stock alert sent. Notified for {Count} products. Recipient={Email}",
                     uyarilacakVaryantlar.Count, recipientEmail);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "StockAlertService stok kontrolu sirasinda hata.");
+                _logger.LogError(ex, "Error during StockAlertService stock check.");
             }
         }
 

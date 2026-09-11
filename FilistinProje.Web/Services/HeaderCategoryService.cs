@@ -42,7 +42,7 @@ public sealed class HeaderCategoryService : IHeaderCategoryService
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Header kategorileri yuklenemedi; bos menu gosteriliyor.");
+            _logger.LogWarning(ex, "Failed to load header categories; empty menu displayed.");
             return Array.Empty<Kategori>();
         }
     }

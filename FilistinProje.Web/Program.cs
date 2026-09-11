@@ -43,7 +43,7 @@ builder.Configuration.AddEnvironmentVariables();
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-    options.ForwardLimit = 1;
+    options.ForwardLimit = null;
     options.RequireHeaderSymmetry = false;
     options.KnownIPNetworks.Clear();
     options.KnownProxies.Clear();
@@ -66,6 +66,16 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
             options.KnownIPNetworks.Add(new System.Net.IPNetwork(prefix, prefixLength));
         }
     }
+
+    // If no explicit proxy configured, trust standard Docker and local reverse proxy networks
+    if (options.KnownProxies.Count == 0 && options.KnownIPNetworks.Count == 0)
+    {
+        options.KnownIPNetworks.Add(new System.Net.IPNetwork(IPAddress.Parse("10.0.0.0"), 8));
+        options.KnownIPNetworks.Add(new System.Net.IPNetwork(IPAddress.Parse("172.16.0.0"), 12));
+        options.KnownIPNetworks.Add(new System.Net.IPNetwork(IPAddress.Parse("192.168.0.0"), 16));
+        options.KnownProxies.Add(IPAddress.Loopback);
+        options.KnownProxies.Add(IPAddress.IPv6Loopback);
+    }
 });
 
 var startupWarnings = new List<string>();
@@ -83,7 +93,7 @@ var isDatabaseAvailableAtStartup = CanConnectToPostgres(defaultConnectionString,
 
 if (!isDatabaseAvailableAtStartup && !string.IsNullOrWhiteSpace(databaseAvailabilityError))
 {
-    startupWarnings.Add($"PostgreSQL baglantisi kurulamadi. Hangfire ve zamanlanmis isler kapatildi. Detay: {databaseAvailabilityError}");
+    startupWarnings.Add($"Could not connect to PostgreSQL. Hangfire and scheduled jobs are disabled. Details: {databaseAvailabilityError}");
 }
 
 var dataProtectionKeysPath = Environment.GetEnvironmentVariable("DATA_PROTECTION_KEYS_PATH");
@@ -127,7 +137,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
     options.Lockout.AllowedForNewUsers = true;
 })
-.AddErrorDescriber<FilistinProje.Core.Helpers.TurkceIdentityErrorDescriber>()
+.AddErrorDescriber<FilistinProje.Core.Helpers.LocalizedIdentityErrorDescriber>()
 .AddEntityFrameworkStores<KanvasDbContext>()
 .AddDefaultTokenProviders();
 
@@ -138,9 +148,19 @@ if (!string.IsNullOrWhiteSpace(googleClientId) && !string.IsNullOrWhiteSpace(goo
     builder.Services.AddAuthentication()
         .AddGoogle(options =>
         {
-            options.ClientId = googleClientId;
-            options.ClientSecret = googleClientSecret;
+            options.ClientId = googleClientId.Trim();
+            options.ClientSecret = googleClientSecret.Trim();
+            options.CallbackPath = "/signin-google";
+            options.SaveTokens = true;
+            options.CorrelationCookie.SameSite = SameSiteMode.Lax;
+            options.CorrelationCookie.SecurePolicy = builder.Environment.IsDevelopment()
+                ? CookieSecurePolicy.SameAsRequest
+                : CookieSecurePolicy.Always;
         });
+}
+else
+{
+    startupWarnings.Add("Google authentication configuration (Authentication:Google:ClientId/ClientSecret) is missing. Google login is disabled.");
 }
 
 builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
@@ -715,7 +735,7 @@ using (var scope = app.Services.CreateScope())
         if (!isDatabaseAvailableAtStartup)
         {
             startupReadinessState.Transition(StartupReadinessPhase.DatabaseUnavailable);
-            logger.LogWarning("Veritabanina erisilemedigi icin migration ve seed adimlari atlandi. Phase=DatabaseUnavailable; /health/live=alive; /health/ready=503");
+            logger.LogWarning("Skipping migration and seed steps because the database is unreachable. Phase=DatabaseUnavailable; /health/live=alive; /health/ready=503");
             return;
         }
 
@@ -726,7 +746,7 @@ using (var scope = app.Services.CreateScope())
         catch (Exception ex)
         {
             startupReadinessState.Transition(StartupReadinessPhase.SchemaDriftFailed, ex);
-            logger.LogError(ex, "Schema drift kontrolu basarisiz oldu.");
+            logger.LogError(ex, "Schema drift check failed.");
             migrationFailure = true;
             throw;
         }
@@ -739,7 +759,7 @@ using (var scope = app.Services.CreateScope())
         catch (Exception ex)
         {
             startupReadinessState.Transition(StartupReadinessPhase.MigrationFailed, ex);
-            logger.LogError(ex, "EF Migration sirasinda kritik hata olustu. Veritabanini uygulama semasina eslemek icin operasyon mudahalesi gerekiyor.");
+            logger.LogError(ex, "Critical error occurred during EF Migration. Operational intervention required to align database schema.");
             migrationFailure = true;
             throw;
         }
@@ -750,7 +770,7 @@ using (var scope = app.Services.CreateScope())
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex, "Legacy hassas dosya migration tamamlanamadi; dosyalar public URL ile servis edilmiyor (route 404 guard).");
+            logger.LogWarning(ex, "Legacy sensitive file migration could not complete; files are not served via public URL (route 404 guard).");
         }
 
         try
@@ -760,24 +780,24 @@ using (var scope = app.Services.CreateScope())
         catch (Exception ex)
         {
             startupReadinessState.Transition(StartupReadinessPhase.SeedFailed, ex);
-            logger.LogError(ex, "Seed verileri yuklenemedi.");
+            logger.LogError(ex, "Failed to load seed data.");
             migrationFailure = true;
             throw;
         }
 
         startupReadinessState.Transition(StartupReadinessPhase.Ready);
-        logger.LogInformation("Startup readiness tamamlandi. Phase=Ready.");
+        logger.LogInformation("Startup readiness completed. Phase=Ready.");
     }
     catch (Exception ex)
     {
         if (migrationFailure && isProduction)
         {
-            logger.LogCritical(ex, "PROD FAIL-FAST: Kritik migration veya seed hata nedeniyle uygulama baslatilmiyor. Veritabanini geri almak veya migrate'i manuel calistirmak gerekli.");
+            logger.LogCritical(ex, "PROD FAIL-FAST: Application startup aborted due to critical migration or seed failure. Please roll back database or run migrations manually.");
             app.Lifetime.StopApplication();
             return;
         }
 
-        logger.LogError(ex, "Veritabani migration islemi sirasinda bir hata olustu. Development modunda uygulama calismaya devam ediyor.");
+        logger.LogError(ex, "An error occurred during database migration. Application continuing in development mode.");
     }
 }
 
@@ -914,11 +934,11 @@ static async Task EnsureSensitiveUploadsMigratedAsync(KanvasDbContext context, I
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex, "Legacy hassas dosya silinemedi. Dosya public URL ile servis edilmeyecek.");
+            logger.LogWarning(ex, "Could not delete legacy sensitive file. File will not be served via public URL.");
         }
     }
 
-    logger.LogInformation("Legacy hassas upload path migration tamamlandi. KayitSayisi={Count}", deleteAfterSave.Count);
+    logger.LogInformation("Legacy sensitive upload path migration completed. RecordCount={Count}", deleteAfterSave.Count);
 }
 
 static bool TryCopyLegacySensitiveFile(
@@ -1215,7 +1235,7 @@ WHERE NOT EXISTS (SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '2
 """;
 
     await context.Database.ExecuteSqlRawAsync(sql);
-    logger.LogInformation("Bilinen schema drift kontrolleri tamamlandi.");
+    logger.LogInformation("Known schema drift checks completed.");
 }
 
 static async Task EnsureMissingMarch2026SchemaAsync(KanvasDbContext context, Microsoft.Extensions.Logging.ILogger<Program> logger)
@@ -1716,7 +1736,7 @@ WHERE src."UrunId" = u."Id"
 """;
 
     await context.Database.ExecuteSqlRawAsync(sql);
-    logger.LogInformation("Eksik Mart 2026 katalog semasi kontrol edildi.");
+    logger.LogInformation("March 2026 catalog schema checked.");
 }
 
 static async Task EnsureMigrationHistoryConsistencyAsync(KanvasDbContext context, Microsoft.Extensions.Logging.ILogger<Program> logger)
@@ -1803,5 +1823,5 @@ WHERE NOT EXISTS (
 )
 AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'UrunSecenekleri' AND column_name = 'IndirimliFiyat');
 ");
-    logger.LogInformation("Migration history tutarlilik kontrolu tamamlandi.");
+    logger.LogInformation("Migration history consistency check completed.");
 }

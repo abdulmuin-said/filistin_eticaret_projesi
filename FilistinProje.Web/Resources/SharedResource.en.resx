@@ -6086,4 +6086,13 @@
   <data name="Admin_PageContentEn" xml:space="preserve">
     <value>Page Content (English)</value>
   </data>
+  <data name="Hesap_GoogleNotConfigured" xml:space="preserve">
+    <value>Google authentication is currently not configured on this server. Please use email and password to log in.</value>
+  </data>
+  <data name="Hesap_GoogleAuthFailed" xml:space="preserve">
+    <value>Google authentication failed. Please try again or use your email and password.</value>
+  </data>
+  <data name="Hesap_GoogleEmailMissing" xml:space="preserve">
+    <value>Could not retrieve email address from Google account.</value>
+  </data>
 </root>

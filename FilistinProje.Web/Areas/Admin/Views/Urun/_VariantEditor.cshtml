@@ -10,6 +10,7 @@
     var canvasOptionCategoryIdJson = System.Text.Json.JsonSerializer.Serialize(canvasOptionCategoryIds);
     var productImages = (ViewBag.UrunGorselleri as IEnumerable<string> ?? Enumerable.Empty<string>()).ToList();
     var urunId = ViewBag.UrunId as int? ?? 0;
+    var isAr = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar";
 }
 
 <div class="ca-card mt-4" style="border:1px solid var(--ca-border);">
@@ -41,6 +42,13 @@
                 var temizOzelTasarimNotu = (variant.OzelTasarimNotu ?? string.Empty).Trim();
                 var temizVaryantBasligi = (variant.VaryantBasligi ?? string.Empty).Trim();
                 var temizVaryantOzeti = (variant.VaryantOzeti ?? string.Empty).Trim();
+                var varDiscountAmount = (variant.IndirimliFiyat.HasValue && variant.IndirimliFiyat.Value > 0 && variant.IndirimliFiyat.Value < variant.SatisFiyati)
+                    ? (variant.SatisFiyati - variant.IndirimliFiyat.Value)
+                    : (decimal?)null;
+                var varDiscountPercent = (varDiscountAmount.HasValue && variant.SatisFiyati > 0)
+                    ? Math.Round((varDiscountAmount.Value / variant.SatisFiyati) * 100m, 2)
+                    : (decimal?)null;
+                var varDiscountType = varDiscountPercent.HasValue ? "Percentage" : "";
                 <div class="ca-variant-card" data-variant-card data-index="@i">
                     <div class="ca-variant-card-head">
                         <div>
@@ -124,6 +132,22 @@
                         <div class="col-lg-2 col-md-6">
                             <label class="ca-label" data-label-for="SatisFiyati">@Localizer["Admin_SalePrice"] (₪)</label>
                             <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="SatisFiyati" name="UrunSecenek[@i].SatisFiyati" value="@variant.SatisFiyati.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" />
+                        </div>
+                        <div class="col-lg-2 col-md-6">
+                            <label class="ca-label" data-label-for="IndirimTuru">@Localizer["DiscountType"]</label>
+                            <select class="ca-select" data-variant-field="IndirimTuru">
+                                <option value="" selected="@(string.IsNullOrEmpty(varDiscountType) ? "selected" : null)">@(isAr ? "بدون خصم / مباشر" : "Direct / None")</option>
+                                <option value="Percentage" selected="@(varDiscountType == "Percentage" ? "selected" : null)">@Localizer["DiscountTypePercentage"]</option>
+                                <option value="Fixed">@Localizer["DiscountTypeFixed"]</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-md-6">
+                            <label class="ca-label" data-label-for="IndirimOrani">@Localizer["DiscountTypePercentage"]</label>
+                            <input class="ca-input" type="number" min="0" max="100" step="any" data-variant-field="IndirimOrani" value="@(varDiscountPercent?.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty)" placeholder="%" />
+                        </div>
+                        <div class="col-lg-2 col-md-6">
+                            <label class="ca-label" data-label-for="IndirimTutari">@Localizer["DiscountTypeFixed"]</label>
+                            <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="IndirimTutari" value="@(varDiscountAmount?.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty)" placeholder="₪" />
                         </div>
                         <div class="col-lg-2 col-md-6">
                             <label class="ca-label" data-label-for="IndirimliFiyat">@Localizer["Admin_VariantDiscountPrice"] (₪)</label>
@@ -318,6 +342,22 @@
                     <div class="col-lg-2 col-md-6">
                         <label class="ca-label" data-label-for="SatisFiyati">@Localizer["Admin_SalePrice"] (₪)</label>
                         <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="SatisFiyati" name="UrunSecenek[__index__].SatisFiyati" value="0" />
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <label class="ca-label" data-label-for="IndirimTuru">@Localizer["DiscountType"]</label>
+                        <select class="ca-select" data-variant-field="IndirimTuru">
+                            <option value="">@(isAr ? "بدون خصم / مباشر" : "Direct / None")</option>
+                            <option value="Percentage">@Localizer["DiscountTypePercentage"]</option>
+                            <option value="Fixed">@Localizer["DiscountTypeFixed"]</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <label class="ca-label" data-label-for="IndirimOrani">@Localizer["DiscountTypePercentage"]</label>
+                        <input class="ca-input" type="number" min="0" max="100" step="any" data-variant-field="IndirimOrani" value="" placeholder="%" />
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <label class="ca-label" data-label-for="IndirimTutari">@Localizer["DiscountTypeFixed"]</label>
+                        <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="IndirimTutari" value="" placeholder="₪" />
                     </div>
                     <div class="col-lg-2 col-md-6">
                         <label class="ca-label" data-label-for="IndirimliFiyat">@Localizer["Admin_VariantDiscountPrice"] (₪)</label>
@@ -847,6 +887,106 @@
                     }
                 });
             }
+
+            // Variant Discount Calculation
+            const satisInput = selector(card, 'SatisFiyati');
+            const discountTypeSelect = selector(card, 'IndirimTuru');
+            const percentInput = selector(card, 'IndirimOrani');
+            const amountInput = selector(card, 'IndirimTutari');
+            const discountedInput = selector(card, 'IndirimliFiyat');
+
+            function parsePrice(val) {
+                if (!val) return 0;
+                const n = parseFloat(String(val).replace(',', '.'));
+                return isNaN(n) ? 0 : n;
+            }
+
+            function formatPrice(n) {
+                if (n <= 0) return '';
+                return (Math.round(n * 100) / 100).toFixed(2).replace(/\.00$/, '');
+            }
+
+            function calcFromPercent() {
+                const satis = parsePrice(satisInput?.value);
+                const pct = parsePrice(percentInput?.value);
+                if (satis > 0 && pct > 0) {
+                    const disc = (satis * pct) / 100;
+                    const finalP = Math.max(0, satis - disc);
+                    if (amountInput) amountInput.value = formatPrice(disc);
+                    if (discountedInput) discountedInput.value = formatPrice(finalP);
+                } else if (pct === 0) {
+                    if (amountInput) amountInput.value = '';
+                    if (discountedInput) discountedInput.value = '';
+                }
+            }
+
+            function calcFromAmount() {
+                const satis = parsePrice(satisInput?.value);
+                const amt = parsePrice(amountInput?.value);
+                if (satis > 0 && amt > 0) {
+                    const finalP = Math.max(0, satis - amt);
+                    const pct = (amt / satis) * 100;
+                    if (percentInput) percentInput.value = formatPrice(pct);
+                    if (discountedInput) discountedInput.value = formatPrice(finalP);
+                } else if (amt === 0) {
+                    if (percentInput) percentInput.value = '';
+                    if (discountedInput) discountedInput.value = '';
+                }
+            }
+
+            function calcFromDiscounted() {
+                const satis = parsePrice(satisInput?.value);
+                const finalP = parsePrice(discountedInput?.value);
+                if (satis > 0 && finalP > 0 && finalP < satis) {
+                    const amt = satis - finalP;
+                    const pct = (amt / satis) * 100;
+                    if (amountInput) amountInput.value = formatPrice(amt);
+                    if (percentInput) percentInput.value = formatPrice(pct);
+                    if (discountTypeSelect && !discountTypeSelect.value) {
+                        discountTypeSelect.value = 'Percentage';
+                    }
+                } else if (!discountedInput?.value.trim()) {
+                    if (amountInput) amountInput.value = '';
+                    if (percentInput) percentInput.value = '';
+                }
+            }
+
+            percentInput?.addEventListener('input', calcFromPercent);
+            amountInput?.addEventListener('input', calcFromAmount);
+            discountedInput?.addEventListener('input', calcFromDiscounted);
+
+            satisInput?.addEventListener('input', function () {
+                const mode = discountTypeSelect?.value;
+                if (mode === 'Percentage') {
+                    calcFromPercent();
+                } else if (mode === 'Fixed') {
+                    calcFromAmount();
+                } else {
+                    calcFromDiscounted();
+                }
+            });
+
+            discountTypeSelect?.addEventListener('change', function () {
+                if (this.value === 'Percentage') {
+                    if (percentInput && !percentInput.value && discountedInput?.value) {
+                        calcFromDiscounted();
+                    } else {
+                        calcFromPercent();
+                    }
+                    percentInput?.focus();
+                } else if (this.value === 'Fixed') {
+                    if (amountInput && !amountInput.value && discountedInput?.value) {
+                        calcFromDiscounted();
+                    } else {
+                        calcFromAmount();
+                    }
+                    amountInput?.focus();
+                } else {
+                    if (percentInput) percentInput.value = '';
+                    if (amountInput) amountInput.value = '';
+                    if (discountedInput) discountedInput.value = '';
+                }
+            });
         }
 
         function addCard() {

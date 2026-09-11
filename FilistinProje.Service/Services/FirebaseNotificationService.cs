@@ -63,7 +63,7 @@ namespace FilistinProje.Service.Services
         {
             if (!_isConfigured)
             {
-                _logger.LogWarning("Firebase yapılandırılmamış. Push gönderilemedi.");
+                _logger.LogWarning("Firebase not configured. Push notification could not be sent.");
                 return false;
             }
 
@@ -106,7 +106,7 @@ namespace FilistinProje.Service.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    // Başarısız token'ları temizle (cihaz abonelikten çıkmış)
+                    // Clean up failed tokens (device unregistered)
                     var result = JsonSerializer.Deserialize<FcmResponse>(responseBody);
                     if (result?.failure > 0 && result.results != null)
                     {
@@ -121,18 +121,18 @@ namespace FilistinProje.Service.Services
                     return true;
                 }
 
-                _logger.LogWarning("FCM hatası: {StatusCode} - {Body}", response.StatusCode, responseBody);
+                _logger.LogWarning("FCM error: {StatusCode} - {Body}", response.StatusCode, responseBody);
                 return false;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Push bildirimi gönderilirken hata oluştu.");
+                _logger.LogError(ex, "Error sending push notification.");
                 return false;
             }
         }
 
         /// <summary>
-        /// Tüm aktif abonelere toplu push bildirimi gönderir.
+        /// Sends bulk push notification to all active subscribers.
         /// </summary>
         public async Task<int> SendBulkPushAsync(string title, string body, string? clickUrl = null)
         {
@@ -153,7 +153,7 @@ namespace FilistinProje.Service.Services
                 if (sent) successCount++;
             }
 
-            _logger.LogInformation("Toplu push: {sent}/{total} başarılı.", successCount, tokens.Count);
+            _logger.LogInformation("Bulk push: {sent}/{total} successful.", successCount, tokens.Count);
             return successCount;
         }
 

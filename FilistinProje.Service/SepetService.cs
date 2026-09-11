@@ -183,7 +183,7 @@ namespace FilistinProje.Service
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Sepete ekleme hatasi. UrunId={UrunId}, SecenekId={SecenekId}", urunId, urunSecenekId);
+                _logger.LogError(ex, "Error adding item to cart. ProductId={UrunId}, OptionId={SecenekId}", urunId, urunSecenekId);
                 return false;
             }
         }
@@ -241,7 +241,7 @@ namespace FilistinProje.Service
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Adet guncelleme hatasi. SepetItemId={SepetItemId}", sepetItemId);
+                _logger.LogError(ex, "Error updating cart item quantity. CartItemId={SepetItemId}", sepetItemId);
                 return false;
             }
         }
@@ -265,7 +265,7 @@ namespace FilistinProje.Service
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Sepetten cikarma hatasi. SepetItemId={SepetItemId}", sepetItemId);
+                _logger.LogError(ex, "Error removing item from cart. CartItemId={SepetItemId}", sepetItemId);
                 return false;
             }
         }
@@ -426,7 +426,7 @@ namespace FilistinProje.Service
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Sepet temizleme hatasi");
+                _logger.LogError(ex, "Error clearing cart.");
                 return false;
             }
         }
@@ -621,7 +621,7 @@ namespace FilistinProje.Service
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Sepet birlestirme hatasi.");
+                _logger.LogError(ex, "Error merging carts.");
                 await transaction.RollbackAsync();
                 result.Basarili = false;
                 result.MessageKey = "Sepet_MergeFailed";

@@ -35,9 +35,9 @@ namespace FilistinProje.Service.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Favori Fiyat Düşüş Bildirim Servisi başlatılıyor.");
+            _logger.LogInformation("Favorite Price Drop Notification Service starting.");
 
-            // İlk çalışmada 2 dakika bekle — uygulama tam başlasın
+            // Delay 2 minutes on first run to ensure app startup completes
             try
             {
                 await Task.Delay(TimeSpan.FromMinutes(2), stoppingToken);
@@ -49,11 +49,11 @@ namespace FilistinProje.Service.Services
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("Favori fiyat düşüşü kontrolü başlıyor...");
+                _logger.LogInformation("Checking for favorite price drops...");
 
                 if (!IsSmtpConfigured())
                 {
-                    _logger.LogWarning("SMTP ayarları yapılandırılmadığı için favori fiyat düşüş bildirimi atlandı.");
+                    _logger.LogWarning("SMTP settings not configured, skipping favorite price drop notification check.");
                     try
                     {
                         await Task.Delay(_checkInterval, stoppingToken);
@@ -74,7 +74,7 @@ namespace FilistinProje.Service.Services
                     var siteSettings = siteSettingsService.GetSettings();
                     var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
 
-                    // Fiyat düşüşü bildirimi açık olan tüm favorileri çek
+                    // Fetch all favorites with price drop alerts enabled
                     var favoriler = await context.Favoriler
                         .Include(f => f.Urun)
                         .Include(f => f.AppUser)
@@ -85,11 +85,11 @@ namespace FilistinProje.Service.Services
 
                     if (!favoriler.Any())
                     {
-                        _logger.LogInformation("Fiyat bildirimi açık favori bulunamadı.");
+                        _logger.LogInformation("No favorites with price alert enabled found.");
                     }
                     else
                     {
-                        _logger.LogInformation("Fiyat kontrolü yapılacak {Count} favori bulundu.", favoriler.Count);
+                        _logger.LogInformation("Found {Count} favorites with price drop tracking.", favoriler.Count);
 
                         var bildirimSayisi = 0;
 
@@ -164,28 +164,28 @@ namespace FilistinProje.Service.Services
 
                                     bildirimSayisi++;
                                     _logger.LogInformation(
-                                        "Fiyat düşüş bildirimi gönderildi. Kullanıcı={Email}, Ürün={UrunId}, Eski={EskiFiyat}, Yeni={YeniFiyat}",
+                                        "Price drop notification sent. User={Email}, Product={UrunId}, OldPrice={EskiFiyat}, NewPrice={YeniFiyat}",
                                         favori.AppUser.Email, favori.UrunId, eskiFiyat, mevcutFiyat);
                                 }
                                 catch (Exception ex)
                                 {
-                                    _logger.LogError(ex, "Fiyat düşüş bildirimi gönderilemedi. FavoriId={FavoriId}", favori.Id);
+                                    _logger.LogError(ex, "Failed to send price drop notification. FavoriteId={FavoriId}", favori.Id);
                                 }
                             }
                             else if (mevcutFiyat != eskiFiyat)
                             {
-                                // Fiyat yükseldiyse, EskiFiyat'ı güncelle — bir sonraki düşüşte doğru karşılaştırma olsun
+                                // If price went up, update EskiFiyat so next drop is accurately compared
                                 favori.EskiFiyat = mevcutFiyat;
                             }
                         }
 
                         await context.SaveChangesAsync(stoppingToken);
-                        _logger.LogInformation("Fiyat düşüş kontrolü tamamlandı. {Count} bildirim gönderildi.", bildirimSayisi);
+                        _logger.LogInformation("Price drop check completed. {Count} notifications sent.", bildirimSayisi);
                     }
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Favori fiyat düşüş servisi hatası.");
+                    _logger.LogError(ex, "Error in favorite price drop service.");
                 }
 
                 // Bir sonraki kontrol için bekle

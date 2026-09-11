@@ -66,7 +66,7 @@ public sealed class TemporaryUploadCleanupService : BackgroundService
 
             if (deleted > 0)
             {
-                _logger.LogInformation("Süresi dolan geçici checkout dosyaları temizlendi. Adet={Count}", deleted);
+                _logger.LogInformation("Expired temporary checkout files cleaned up. Count={Count}", deleted);
             }
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
@@ -74,7 +74,7 @@ public sealed class TemporaryUploadCleanupService : BackgroundService
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Geçici checkout dosyaları temizlenemedi.");
+            _logger.LogWarning(ex, "Failed to clean up temporary checkout files.");
         }
     }
 }

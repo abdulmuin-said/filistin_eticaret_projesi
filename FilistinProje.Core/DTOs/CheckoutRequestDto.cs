@@ -21,6 +21,9 @@ namespace FilistinProje.Core.DTOs
         public string Telefon { get; set; } = string.Empty;
 
         [MaxLength(100)]
+        public string? Bolge { get; set; }
+
+        [MaxLength(100)]
         public string? Sehir { get; set; }
 
         [MaxLength(100)]

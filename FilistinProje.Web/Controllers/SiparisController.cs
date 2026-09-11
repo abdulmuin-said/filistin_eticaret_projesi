@@ -251,14 +251,14 @@ namespace FilistinProje.Web.Controllers
             if (siparis == null)
             {
                 _logger.LogWarning(
-                    "Siparis commit edildi ancak commit sonrasi email icin tekrar okunamadi. SiparisId={SiparisId}, SiparisNo={SiparisNo}",
+                    "Order committed but could not be reloaded for email sending. OrderId={SiparisId}, OrderNo={SiparisNo}",
                     placeOrderResult.SiparisId,
                     placeOrderResult.SiparisNo);
                 return RedirectToAction(nameof(Beklemede), new { siparisNo = placeOrderResult.SiparisNo });
             }
 
             _logger.LogInformation(
-                "Siparis odeme bekliyor durumunda olusturuldu. SiparisNo={SiparisNo}, Tutar={Tutar}",
+                "Order created in payment pending status. OrderNo={SiparisNo}, Amount={Tutar}",
                 siparis.SiparisNo, siparis.ToplamTutar);
 
             await SendAdminOrderNotificationEmailAsync(siparis);
@@ -554,6 +554,7 @@ namespace FilistinProje.Web.Controllers
         {
             dto.MusteriAdSoyad = dto.MusteriAdSoyad?.Trim() ?? string.Empty;
             dto.Eposta = dto.Eposta?.Trim() ?? string.Empty;
+            dto.Bolge = dto.Bolge?.Trim();
             dto.Sehir = dto.Sehir?.Trim() ?? string.Empty;
             dto.Ilce = dto.Ilce?.Trim() ?? string.Empty;
             dto.AcikAdres = dto.AcikAdres?.Trim() ?? string.Empty;
@@ -565,7 +566,19 @@ namespace FilistinProje.Web.Controllers
 
         private bool ValidateCheckoutInput(CheckoutRequestDto dto)
         {
-            dto.TeslimatTipi = dto.TeslimatTipi == "MagazadanTeslim" ? "MagazadanTeslim" : "AdreseTeslim";
+            var settings = _siteSettingsService.GetSettings();
+            if (!settings.AdreseTeslimAktifMi && settings.MagazadanTeslimAktifMi)
+            {
+                dto.TeslimatTipi = "MagazadanTeslim";
+            }
+            else if (settings.AdreseTeslimAktifMi && !settings.MagazadanTeslimAktifMi)
+            {
+                dto.TeslimatTipi = "AdreseTeslim";
+            }
+            else
+            {
+                dto.TeslimatTipi = dto.TeslimatTipi == "MagazadanTeslim" ? "MagazadanTeslim" : "AdreseTeslim";
+            }
 
             if (string.IsNullOrWhiteSpace(dto.MusteriAdSoyad))
             {
@@ -593,6 +606,11 @@ namespace FilistinProje.Web.Controllers
 
             if (dto.TeslimatTipi != "MagazadanTeslim")
             {
+                if (string.IsNullOrWhiteSpace(dto.Bolge))
+                {
+                    ModelState.AddModelError(nameof(dto.Bolge), _localizer["SelectRegion"].Value);
+                }
+
                 if (string.IsNullOrWhiteSpace(dto.Sehir))
                 {
                     ModelState.AddModelError(nameof(dto.Sehir), _localizer["Siparis_CityRequired"].Value);
@@ -789,7 +807,7 @@ namespace FilistinProje.Web.Controllers
                     out _))
             {
                 _logger.LogError(
-                    "Checkout belge terfisi geri alinamadi. Kategori={Category}",
+                    "Failed to rollback checkout document promotion. Category={Category}",
                     category);
             }
         }
@@ -910,7 +928,7 @@ namespace FilistinProje.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Yeni siparis mail bildirimi gonderilemedi. SiparisNo={SiparisNo}", siparis.SiparisNo);
+                _logger.LogWarning(ex, "Failed to send new order email notification. OrderNo={SiparisNo}", siparis.SiparisNo);
             }
         }
 
@@ -918,7 +936,7 @@ namespace FilistinProje.Web.Controllers
         {
             if (string.IsNullOrWhiteSpace(siparis.Eposta))
             {
-                _logger.LogWarning("Musteri emaili eksik, siparis onay maili gonderilemedi. SiparisNo={SiparisNo}", siparis.SiparisNo);
+                _logger.LogWarning("Customer email missing, order confirmation email not sent. OrderNo={SiparisNo}", siparis.SiparisNo);
                 return;
             }
 
@@ -1019,7 +1037,7 @@ namespace FilistinProje.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Musteri siparis onay maili gonderilemedi. SiparisNo={SiparisNo}, Email={Email}", siparis.SiparisNo, siparis.Eposta);
+                _logger.LogWarning(ex, "Failed to send customer order confirmation email. OrderNo={SiparisNo}, Email={Email}", siparis.SiparisNo, siparis.Eposta);
             }
         }
 

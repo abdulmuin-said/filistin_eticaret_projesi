@@ -69,7 +69,7 @@ namespace FilistinProje.Web.Services
             });
 
             var pdfBytes = document.GeneratePdf();
-            _logger.LogInformation("PDF fatura oluşturuldu. SiparisId={SiparisId}, Boyut={Size} bytes", siparisId, pdfBytes.Length);
+            _logger.LogInformation("PDF invoice generated. OrderId={SiparisId}, Size={Size} bytes", siparisId, pdfBytes.Length);
             return pdfBytes;
         }
 

@@ -39,15 +39,15 @@ namespace FilistinProje.Web.Data
             {
                 if (env.IsProduction())
                 {
-                    logger.LogWarning("AdminSettings:SeedDefaultAdmin=true, ancak uretim ortaminda sabit yonetici parolasi olusturulmasi reddedildi. Lutfen AdminSettings:Email ve AdminSettings:Password degerlerini guvenli sekilde (ortam degiskenleri / secrets store) temin edin.");
+                    logger.LogWarning("AdminSettings:SeedDefaultAdmin=true, but creating a fixed admin password in production is rejected. Please provide AdminSettings:Email and AdminSettings:Password securely (environment variables / secrets store).");
                 }
                 else if (string.IsNullOrWhiteSpace(adminEmail) || string.IsNullOrWhiteSpace(adminPassword))
                 {
-                    logger.LogWarning("AdminSettings:SeedDefaultAdmin=true, ancak AdminSettings:Email veya AdminSettings:Password bos. Development'ta acilir sekilde uyari veriliyor; uretimde bu durum sessizce gecilecekti. Lutfen .NET User Secrets veya ortam degiskeni uzerinden tanimlayin.");
+                    logger.LogWarning("AdminSettings:SeedDefaultAdmin=true, but AdminSettings:Email or AdminSettings:Password is empty. In development this warning is shown; in production this would be skipped. Please set via .NET User Secrets or environment variables.");
                 }
                 else
                 {
-                    logger.LogWarning("Development ortaminda AdminSettings:SeedDefaultAdmin aktif. Bu ozellik sadece gelistirme kolayligi icindir; uretime deploy edilirken SeedDefaultAdmin=false yapin veya ortam degiskeni ile override edin.");
+                    logger.LogWarning("AdminSettings:SeedDefaultAdmin is active in development. This is for development convenience only; set SeedDefaultAdmin=false or override via environment variable before deploying to production.");
 
                     var adminUser = await userManager.FindByEmailAsync(adminEmail);
 
@@ -66,7 +66,7 @@ namespace FilistinProje.Web.Data
                         if (!createResult.Succeeded)
                         {
                             adminUser = null;
-                            logger.LogWarning("Seed admin kullanicisi olusturulamadi. ASP.NET Identity hatalarini kontrol edin.");
+                            logger.LogWarning("Failed to create seed admin user. Check ASP.NET Identity errors.");
                         }
                     }
 
@@ -114,7 +114,7 @@ namespace FilistinProje.Web.Data
                     SilindiMi = false
                 });
                 await db.SaveChangesAsync();
-                logger.LogInformation("[Seed] United Express kargo firmasi eklendi (takip URL ve fiyat gercek değil, admin duzeltmeli).");
+                logger.LogInformation("[Seed] United Express shipping company added (admin should verify tracking URL and price).");
             }
 
             // Kargo bölgeleri (48 Bölge – 3 bölge: İç/Kuzey/Merkez, Batı Şeria alt bölgeleri, Kudüs, Gazze)
@@ -218,7 +218,7 @@ namespace FilistinProje.Web.Data
             // Gazze şehirleri ayrı bölgeye eklendi.
 
             await db.SaveChangesAsync();
-            logger.LogInformation("[Seed] {N} sehir {R} bolge icin dogrulandi.", sehirler.Length, bolgeAdlari.Length);
+            logger.LogInformation("[Seed] {N} cities verified across {R} regions.", sehirler.Length, bolgeAdlari.Length);
         }
 
         private static async Task SeedKurumsalSayfalarAsync(KanvasDbContext db, Microsoft.Extensions.Logging.ILogger logger)
@@ -310,7 +310,7 @@ namespace FilistinProje.Web.Data
 
             db.KurumsalSayfalar.AddRange(sayfalar);
             await db.SaveChangesAsync();
-            logger.LogInformation("[Seed] 6 kurumsal sayfa basariyla eklendi.");
+            logger.LogInformation("[Seed] 6 corporate pages successfully seeded.");
         }
     }
 }

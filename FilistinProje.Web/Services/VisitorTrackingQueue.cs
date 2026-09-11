@@ -67,7 +67,7 @@ public sealed class VisitorTrackingQueue : BackgroundService, IVisitorTrackingQu
         var dropped = Interlocked.Increment(ref _droppedEntries);
         if (dropped == 1 || dropped % 100 == 0)
         {
-            _logger.LogWarning("Ziyaretci takip kuyrugu dolu; dusurulen kayit sayisi={DroppedCount}", dropped);
+            _logger.LogWarning("Visitor tracking queue is full; dropped entries count={DroppedCount}", dropped);
         }
 
         return false;
@@ -147,7 +147,7 @@ public sealed class VisitorTrackingQueue : BackgroundService, IVisitorTrackingQu
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Ziyaretci takip batch'i yazilamadi. KayitSayisi={Count}", batch.Count);
+            _logger.LogError(ex, "Failed to persist visitor tracking batch. BatchCount={Count}", batch.Count);
         }
     }
 
@@ -161,11 +161,11 @@ public sealed class VisitorTrackingQueue : BackgroundService, IVisitorTrackingQu
             var deleted = await context.ZiyaretciLoglari
                 .Where(x => x.OlusturulmaTarihi < cutoffUtc)
                 .ExecuteDeleteAsync(cancellationToken);
-            _logger.LogInformation("Ziyaretci retention temizligi tamamlandi. Silinen={DeletedCount}", deleted);
+            _logger.LogInformation("Visitor retention cleanup completed. DeletedCount={DeletedCount}", deleted);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Ziyaretci retention temizligi basarisiz.");
+            _logger.LogError(ex, "Visitor retention cleanup failed.");
         }
     }
 

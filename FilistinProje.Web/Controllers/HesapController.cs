@@ -285,8 +285,16 @@ namespace FilistinProje.Web.Controllers
         [HttpPost("external-login")]
         [HttpGet("/Hesap/ExternalLogin")]
         [HttpPost("/Hesap/ExternalLogin")]
-        public IActionResult ExternalLogin(string provider = "Google", string? returnUrl = null)
+        public async Task<IActionResult> ExternalLogin(string provider = "Google", string? returnUrl = null)
         {
+            var schemes = await _signInManager.GetExternalAuthenticationSchemesAsync();
+            if (!schemes.Any(s => string.Equals(s.Name, provider, StringComparison.OrdinalIgnoreCase)))
+            {
+                _logger.LogWarning("External login provider '{Provider}' is not configured or registered.", provider);
+                TempData["Hata"] = _localizer["Hesap_GoogleNotConfigured"].Value;
+                return RedirectToAction(nameof(GirisYap), new { returnUrl });
+            }
+
             var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Hesap", new { returnUrl });
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return Challenge(properties, provider);
@@ -296,121 +304,132 @@ namespace FilistinProje.Web.Controllers
         [HttpGet("/Hesap/ExternalLoginCallback")]
         public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null, string? remoteError = null)
         {
-            if (remoteError != null)
+            try
             {
-                TempData["Hata"] = remoteError;
-                return RedirectToAction(nameof(GirisYap), new { returnUrl });
-            }
-
-            var info = await _signInManager.GetExternalLoginInfoAsync();
-            if (info == null)
-            {
-                TempData["Hata"] = _localizer["Hesap_GoogleAuthFailed"]?.Value ?? "Google authentication failed.";
-                return RedirectToAction(nameof(GirisYap), new { returnUrl });
-            }
-
-            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                TempData["Hata"] = _localizer["Hesap_GoogleEmailMissing"]?.Value ?? "Could not retrieve email from Google account.";
-                return RedirectToAction(nameof(GirisYap), new { returnUrl });
-            }
-
-            var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: true, bypassTwoFactor: true);
-            AppUser? user = null;
-            bool isNewUser = false;
-
-            if (signInResult.Succeeded)
-            {
-                user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey)
-                       ?? await _userManager.FindByEmailAsync(email);
-                isNewUser = false;
-            }
-            else
-            {
-                user = await _userManager.FindByEmailAsync(email);
-                if (user != null)
+                if (remoteError != null)
                 {
-                    // Mevcut hesap bulundu: Direkt giriş yapılır, kayıt tamamlama ekranı açılmaz
+                    _logger.LogWarning("External login error from remote provider: {RemoteError}", remoteError);
+                    TempData["Hata"] = remoteError;
+                    return RedirectToAction(nameof(GirisYap), new { returnUrl });
+                }
+
+                var info = await _signInManager.GetExternalLoginInfoAsync();
+                if (info == null)
+                {
+                    _logger.LogWarning("GetExternalLoginInfoAsync returned null. Check correlation cookie or HTTPS reverse proxy headers.");
+                    TempData["Hata"] = _localizer["Hesap_GoogleAuthFailed"].Value;
+                    return RedirectToAction(nameof(GirisYap), new { returnUrl });
+                }
+
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                if (string.IsNullOrWhiteSpace(email))
+                {
+                    TempData["Hata"] = _localizer["Hesap_GoogleEmailMissing"].Value;
+                    return RedirectToAction(nameof(GirisYap), new { returnUrl });
+                }
+
+                var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: true, bypassTwoFactor: true);
+                AppUser? user = null;
+                bool isNewUser = false;
+
+                if (signInResult.Succeeded)
+                {
+                    user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey)
+                           ?? await _userManager.FindByEmailAsync(email);
                     isNewUser = false;
-                    await _userManager.AddLoginAsync(user, info);
-                    if (!user.EmailConfirmed)
-                    {
-                        user.EmailConfirmed = true;
-                        await _userManager.UpdateAsync(user);
-                    }
-                    await _signInManager.SignInAsync(user, isPersistent: true);
                 }
                 else
                 {
-                    // Hesap yok / üye değil: Yeni hesap oluşturulur ve kayıt tamamlama ekranına yönlendirilir
-                    isNewUser = true;
-                    var name = info.Principal.FindFirstValue(ClaimTypes.Name) ?? email.Split('@')[0];
-                    user = new AppUser
+                    user = await _userManager.FindByEmailAsync(email);
+                    if (user != null)
                     {
-                        UserName = email,
-                        Email = email,
-                        AdSoyad = name,
-                        EmailConfirmed = true
-                    };
+                        // Existing user found: sign in directly without completing profile
+                        isNewUser = false;
+                        await _userManager.AddLoginAsync(user, info);
+                        if (!user.EmailConfirmed)
+                        {
+                            user.EmailConfirmed = true;
+                            await _userManager.UpdateAsync(user);
+                        }
+                        await _signInManager.SignInAsync(user, isPersistent: true);
+                    }
+                    else
+                    {
+                        // New user: create account and redirect to profile completion
+                        isNewUser = true;
+                        var name = info.Principal.FindFirstValue(ClaimTypes.Name) ?? email.Split('@')[0];
+                        user = new AppUser
+                        {
+                            UserName = email,
+                            Email = email,
+                            AdSoyad = name,
+                            EmailConfirmed = true
+                        };
 
-                    var createResult = await _userManager.CreateAsync(user);
-                    if (!createResult.Succeeded)
+                        var createResult = await _userManager.CreateAsync(user);
+                        if (!createResult.Succeeded)
+                        {
+                            TempData["Hata"] = string.Join(" ", createResult.Errors.Select(e => e.Description));
+                            return RedirectToAction(nameof(GirisYap), new { returnUrl });
+                        }
+
+                        await _userManager.AddToRoleAsync(user, AdminSecurityRoles.Uye);
+                        await _userManager.AddLoginAsync(user, info);
+                        await _signInManager.SignInAsync(user, isPersistent: true);
+                    }
+                }
+
+                if (user != null)
+                {
+                    try
                     {
-                        TempData["Hata"] = string.Join(" ", createResult.Errors.Select(e => e.Description));
-                        return RedirectToAction(nameof(GirisYap), new { returnUrl });
+                        var sessionId = HttpContext.Session.Id;
+                        var sepetService = HttpContext.RequestServices.GetRequiredService<ISepetService>();
+                        await sepetService.MergeSepetlerDetailedAsync(sessionId, user.Id);
+                    }
+                    catch {}
+
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (roles.Any(AdminSecurityRoles.IsAdminRole))
+                    {
+                        var roleLabel = AdminSecurityRoles.GetPrimaryRoleLabel(roles);
+                        var sessionState = await _adminSessionStateService.RegisterSessionAsync(
+                            user,
+                            roleLabel,
+                            HttpContext.Connection.RemoteIpAddress?.ToString());
+
+                        HttpContext.Session.SetString(AdminSessionConstants.SessionKey, sessionState.CurrentSessionToken);
+
+                        await _adminSecurityAuditService.LogAsync(
+                            HttpContext,
+                            "admin_login_success",
+                            "Admin account logged in successfully with Google.",
+                            "/Admin",
+                            user.Id,
+                            user.UserName ?? user.Email);
                     }
 
-                    await _userManager.AddToRoleAsync(user, AdminSecurityRoles.Uye);
-                    await _userManager.AddLoginAsync(user, info);
-                    await _signInManager.SignInAsync(user, isPersistent: true);
+                    // Only new users need profile completion
+                    if (isNewUser)
+                    {
+                        return RedirectToAction(nameof(ProfilTamamla), new { returnUrl });
+                    }
                 }
-            }
 
-            if (user != null)
+                // Mevcut hesap ile giriş yapıldıysa doğrudan hedef sayfaya gidilir (kayıt tamamlama ekranı açılmaz)
+                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
             {
-                try
-                {
-                    var sessionId = HttpContext.Session.Id;
-                    var sepetService = HttpContext.RequestServices.GetRequiredService<ISepetService>();
-                    await sepetService.MergeSepetlerDetailedAsync(sessionId, user.Id);
-                }
-                catch {}
-
-                var roles = await _userManager.GetRolesAsync(user);
-                if (roles.Any(AdminSecurityRoles.IsAdminRole))
-                {
-                    var roleLabel = AdminSecurityRoles.GetPrimaryRoleLabel(roles);
-                    var sessionState = await _adminSessionStateService.RegisterSessionAsync(
-                        user,
-                        roleLabel,
-                        HttpContext.Connection.RemoteIpAddress?.ToString());
-
-                    HttpContext.Session.SetString(AdminSessionConstants.SessionKey, sessionState.CurrentSessionToken);
-
-                    await _adminSecurityAuditService.LogAsync(
-                        HttpContext,
-                        "admin_login_success",
-                        "Admin hesabi Google ile basariyla giris yapti.",
-                        "/Admin",
-                        user.Id,
-                        user.UserName ?? user.Email);
-                }
-
-                // Sadece yeni üye olan kullanıcılar için kayıt tamamlama ekranı açılır
-                if (isNewUser)
-                {
-                    return RedirectToAction(nameof(ProfilTamamla), new { returnUrl });
-                }
+                _logger.LogError(ex, "Unexpected error in ExternalLoginCallback");
+                TempData["Hata"] = _localizer["Hesap_GoogleAuthFailed"].Value;
+                return RedirectToAction(nameof(GirisYap), new { returnUrl });
             }
-
-            // Mevcut hesap ile giriş yapıldıysa doğrudan hedef sayfaya gidilir (kayıt tamamlama ekranı açılmaz)
-            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-
-            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet("complete-profile")]
@@ -634,7 +653,7 @@ namespace FilistinProje.Web.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Parola sÄ±fÄ±rlama e-postasÄ± gÃ¶nderilemedi. UserId={UserId}", user.Id);
+                    _logger.LogError(ex, "Failed to send password reset email. UserId={UserId}", user.Id);
                 }
             }
 

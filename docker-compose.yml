@@ -39,6 +39,8 @@ services:
       - DOTNET_RUNNING_IN_CONTAINER=true
       - DATA_PROTECTION_KEYS_PATH=/app/secure-storage/dataprotection-keys
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=${POSTGRES_DB:-filistindb};Username=${POSTGRES_USER:-kanvasuser};Password=${POSTGRES_PASSWORD:-changeme_in_production}
+      - Authentication__Google__ClientId=${GOOGLE_CLIENT_ID:-}
+      - Authentication__Google__ClientSecret=${GOOGLE_CLIENT_SECRET:-}
       - EmailSettings__Host=${EMAIL_HOST:-host.docker.internal}
       - EmailSettings__Enabled=${EMAIL_ENABLED:-false}
       - EmailSettings__TestMode=${EMAIL_TEST_MODE:-false}

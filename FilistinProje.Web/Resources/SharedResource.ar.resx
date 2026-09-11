@@ -6070,4 +6070,13 @@
   <data name="Admin_PageContentEn" xml:space="preserve">
     <value>محتوى الصفحة (بالإنجليزية)</value>
   </data>
+  <data name="Hesap_GoogleNotConfigured" xml:space="preserve">
+    <value>خدمة تسجيل الدخول بواسطة Google غير مهيأة حالياً على الخادم. يرجى استخدام البريد الإلكتروني وكلمة المرور.</value>
+  </data>
+  <data name="Hesap_GoogleAuthFailed" xml:space="preserve">
+    <value>تعذر تسجيل الدخول بواسطة Google. يرجى المحاولة مرة أخرى أو استخدام البريد وكلمة المرور.</value>
+  </data>
+  <data name="Hesap_GoogleEmailMissing" xml:space="preserve">
+    <value>تعذر الحصول على عنوان البريد الإلكتروني من حساب Google.</value>
+  </data>
 </root>
