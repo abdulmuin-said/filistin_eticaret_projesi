@@ -140,6 +140,12 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 .AddErrorDescriber<FilistinProje.Core.Helpers.LocalizedIdentityErrorDescriber>()
 .AddEntityFrameworkStores<KanvasDbContext>()
 .AddDefaultTokenProviders();
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
+    options.KnownIPNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 
 var googleClientId = builder.Configuration["Authentication:Google:ClientId"];
 var googleClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
@@ -152,10 +158,37 @@ if (!string.IsNullOrWhiteSpace(googleClientId) && !string.IsNullOrWhiteSpace(goo
             options.ClientSecret = googleClientSecret.Trim();
             options.CallbackPath = "/signin-google";
             options.SaveTokens = true;
-            options.CorrelationCookie.SameSite = SameSiteMode.Lax;
-            options.CorrelationCookie.SecurePolicy = builder.Environment.IsDevelopment()
-                ? CookieSecurePolicy.SameAsRequest
-                : CookieSecurePolicy.Always;
+
+            options.CorrelationCookie.Name = ".AspNetCore.Correlation.Google.";
+            options.CorrelationCookie.HttpOnly = true;
+            options.CorrelationCookie.IsEssential = true;
+            options.CorrelationCookie.Path = "/";
+
+            if (builder.Environment.IsDevelopment())
+            {
+                options.CorrelationCookie.SameSite = SameSiteMode.Lax;
+                options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+            }
+            else
+            {
+                options.CorrelationCookie.SameSite = SameSiteMode.None;
+                options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
+            }
+
+            options.Events.OnRemoteFailure = context =>
+            {
+                var failure = context.Failure;
+                var errorMessage = failure?.Message ?? "Remote authentication failed.";
+
+                var loggerFactory = context.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>();
+                var logger = loggerFactory.CreateLogger("GoogleAuthentication");
+                logger.LogError(failure, "Google remote authentication failed: {Message}", errorMessage);
+
+                var redirectTarget = "/Hesap/GirisYap?remoteError=" + Uri.EscapeDataString(errorMessage);
+                context.Response.Redirect(redirectTarget);
+                context.HandleResponse();
+                return Task.CompletedTask;
+            };
         });
 }
 else
@@ -438,9 +471,24 @@ var runningInContainer = string.Equals(
     "true",
     StringComparison.OrdinalIgnoreCase);
 
-// Forwarded headers must run before HTTPS, authentication, rate limiting and IP consumers.
-// Untrusted senders are ignored unless their proxy/network is explicitly configured above.
 app.UseForwardedHeaders();
+
+// Ensure reverse proxy HTTPS scheme and host headers are respected
+app.Use(async (context, next) =>
+{
+    if (context.Request.Headers.TryGetValue("X-Forwarded-Proto", out var proto) &&
+        string.Equals(proto, "https", StringComparison.OrdinalIgnoreCase))
+    {
+        context.Request.Scheme = "https";
+    }
+    else if (!app.Environment.IsDevelopment() &&
+             context.Request.Host.Host.Contains("7anrps48.com", StringComparison.OrdinalIgnoreCase))
+    {
+        context.Request.Scheme = "https";
+    }
+
+    await next();
+});
 
 foreach (var startupWarning in startupWarnings)
 {

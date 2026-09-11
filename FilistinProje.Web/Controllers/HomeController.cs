@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using System.Net;
 using System.Net.Mail;
+using Microsoft.AspNetCore.Diagnostics;
 
 
 namespace FilistinProje.Web.Controllers
@@ -354,6 +355,16 @@ namespace FilistinProje.Web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            var exceptionFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            if (exceptionFeature?.Error != null)
+            {
+                _logger.LogError(
+                    exceptionFeature.Error,
+                    "Unhandled exception occurred on path '{Path}': {Message}",
+                    exceptionFeature.Path,
+                    exceptionFeature.Error.Message);
+            }
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 

@@ -14,11 +14,11 @@
         </div>
 
         <!-- Hata / Başarı Mesajları -->
-        @if (ViewBag.Hata != null)
+        @if (ViewBag.Hata != null || TempData["Hata"] != null)
         {
             <div class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded mb-6 flex items-center gap-2">
                 <i class="fas fa-circle-exclamation"></i>
-                @ViewBag.Hata
+                @(ViewBag.Hata ?? TempData["Hata"])
             </div>
         }
         @if (TempData.Peek("Basari") != null)

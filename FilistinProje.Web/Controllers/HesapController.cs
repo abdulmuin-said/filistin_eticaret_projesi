@@ -202,8 +202,14 @@ namespace FilistinProje.Web.Controllers
         [HttpGet("login")]
         [HttpGet("/Hesap/GirisYap")]
         [HttpGet("/account/GirisYap")]
-        public IActionResult GirisYap(string? returnUrl = null)
+        public IActionResult GirisYap(string? returnUrl = null, string? remoteError = null)
         {
+            if (!string.IsNullOrWhiteSpace(remoteError))
+            {
+                ViewBag.Hata = _localizer["Hesap_GoogleAuthFailed"].Value;
+                TempData["Hata"] = ViewBag.Hata;
+            }
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
