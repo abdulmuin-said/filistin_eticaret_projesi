@@ -595,6 +595,23 @@
                                     <label class="ca-label">@Localizer["Admin_DiscountPrice"] (₪)</label>
                                     <input asp-for="IndirimliFiyat" class="ca-input" type="text" inputmode="decimal" data-decimal id="mainProductIndirimliFiyat" />
                                 </div>
+                                <div class="col-md-6 col-xl-6 ca-discount-date-wrap" id="discountEndDateContainer">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <label asp-for="KampanyaBitisTarihi" class="ca-label mb-0">
+                                            <span class="ca-required text-danger" id="discountEndDateRequiredStar" style="display:@(Model.IndirimliFiyat.HasValue && Model.IndirimliFiyat.Value > 0 ? "inline" : "none");">*</span>
+                                            @Localizer["Admin_DiscountEndDate"]
+                                        </label>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="1" style="font-size:0.75rem;">@Localizer["QuickTime_1Day"]</button>
+                                            <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="3" style="font-size:0.75rem;">@Localizer["QuickTime_3Days"]</button>
+                                            <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="7" style="font-size:0.75rem;">@Localizer["QuickTime_1Week"]</button>
+                                            <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="30" style="font-size:0.75rem;">@Localizer["QuickTime_1Month"]</button>
+                                        </div>
+                                    </div>
+                                    <input asp-for="KampanyaBitisTarihi" id="mainProductKampanyaBitisTarihi" class="ca-input" type="datetime-local" value="@(Model.KampanyaBitisTarihi?.ToString("yyyy-MM-ddTHH:mm"))" />
+                                    <span asp-validation-for="KampanyaBitisTarihi" class="text-danger small"></span>
+                                    <div class="small text-muted mt-1">@Localizer["Admin_DiscountEndDateHelp"]</div>
+                                </div>
                                 <div class="col-md-6 col-xl-3">
                                     <label class="ca-label">@Localizer["Admin_Cost"]</label>
                                     <input asp-for="Maliyet" class="ca-input" type="text" inputmode="decimal" data-decimal />
@@ -671,11 +688,6 @@
                                     </span>
                                     <input asp-for="KampanyaliMi" class="form-check-input" type="checkbox">
                                 </label>
-                                <div class="ca-switch-field">
-                                    <label asp-for="KampanyaBitisTarihi" class="form-label fw-semibold">@Localizer["Admin_CampaignEndDate"]</label>
-                                    <input asp-for="KampanyaBitisTarihi" class="ca-input" type="datetime-local" value="@(Model.KampanyaBitisTarihi?.ToString("yyyy-MM-ddTHH:mm"))" />
-                                    <div class="small text-muted mt-1">@Localizer["Admin_CampaignEndDateHelp"]</div>
-                                </div>
                                 <label class="ca-switch-tile form-check form-switch">
                                     <span class="ca-switch-copy">
                                         <span class="form-check-label fw-semibold">@Localizer["Admin_Ana_Sayfa"]</span>
@@ -1053,6 +1065,51 @@
                 if (percentInput) percentInput.value = '';
                 if (amountInput) amountInput.value = '';
                 discountedInput.value = '';
+            }
+            updateDateRequirement();
+        });
+
+        const dateInput = document.getElementById('mainProductKampanyaBitisTarihi');
+        const starEl = document.getElementById('discountEndDateRequiredStar');
+
+        function updateDateRequirement() {
+            const discP = parseNum(discountedInput.value);
+            const hasDisc = discP > 0;
+            if (starEl) starEl.style.display = hasDisc ? 'inline' : 'none';
+        }
+
+        discountedInput.addEventListener('input', updateDateRequirement);
+        discountedInput.addEventListener('change', updateDateRequirement);
+        updateDateRequirement();
+
+        document.querySelectorAll('#discountEndDateContainer .quick-date-btn').forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (!dateInput) return;
+                const days = parseInt(this.getAttribute('data-days') || '1', 10);
+                const now = new Date();
+                now.setDate(now.getDate() + days);
+                const pad = (n) => String(n).padStart(2, '0');
+                const val = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+                dateInput.value = val;
+                dateInput.dispatchEvent(new Event('input', { bubbles: true }));
+                dateInput.dispatchEvent(new Event('change', { bubbles: true }));
+            });
+        });
+
+        const productForm = document.querySelector('form.ca-editor-layout') || document.querySelector('form');
+        productForm?.addEventListener('submit', function (e) {
+            const discP = parseNum(discountedInput.value);
+            if (discP > 0 && (!dateInput || !dateInput.value.trim())) {
+                e.preventDefault();
+                const tabBtn = document.querySelector('[data-product-tab="fiyat"]');
+                if (tabBtn) tabBtn.click();
+                if (dateInput) {
+                    dateInput.focus();
+                    dateInput.classList.add('is-invalid');
+                }
+                alert(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Product_DiscountEndDateRequired"].Value)));
+                return false;
             }
         });
     })();

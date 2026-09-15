@@ -6095,4 +6095,37 @@
   <data name="Hesap_GoogleEmailMissing" xml:space="preserve">
     <value>Could not retrieve email address from Google account.</value>
   </data>
+  <data name="DiscountEndsIn" xml:space="preserve">
+    <value>Discount ends in:</value>
+  </data>
+  <data name="DiscountEnded" xml:space="preserve">
+    <value>Discount ended</value>
+  </data>
+  <data name="DiscountEndsInHoursMinutes" xml:space="preserve">
+    <value>Discount ends in: {0}h {1}m</value>
+  </data>
+  <data name="Admin_DiscountEndDate" xml:space="preserve">
+    <value>Discount End Date</value>
+  </data>
+  <data name="Admin_DiscountEndDateHelp" xml:space="preserve">
+    <value>When a discounted price is set, discount end date and time is required. The product automatically reverts to normal price upon expiry.</value>
+  </data>
+  <data name="Admin_Product_DiscountEndDateRequired" xml:space="preserve">
+    <value>Discount end date and time is required when a discounted price is set for the product.</value>
+  </data>
+  <data name="Admin_Product_VariantDiscountEndDateRequired" xml:space="preserve">
+    <value>Variation {0}: Discount end date and time is required when a discounted price is set.</value>
+  </data>
+  <data name="QuickTime_1Day" xml:space="preserve">
+    <value>+1 Day</value>
+  </data>
+  <data name="QuickTime_3Days" xml:space="preserve">
+    <value>+3 Days</value>
+  </data>
+  <data name="QuickTime_1Week" xml:space="preserve">
+    <value>+1 Week</value>
+  </data>
+  <data name="QuickTime_1Month" xml:space="preserve">
+    <value>+1 Month</value>
+  </data>
 </root>

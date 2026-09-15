@@ -1384,6 +1384,13 @@ BEGIN
     ALTER TABLE "UrunSecenekleri" ADD COLUMN IF NOT EXISTS "Desi" numeric NOT NULL DEFAULT 0;
     ALTER TABLE "UrunSecenekleri" ADD COLUMN IF NOT EXISTS "FiyatFarki" numeric NOT NULL DEFAULT 0;
     ALTER TABLE "UrunSecenekleri" ADD COLUMN IF NOT EXISTS "IndirimliFiyat" numeric NULL;
+    ALTER TABLE "UrunSecenekleri" ADD COLUMN IF NOT EXISTS "IndirimBitisTarihi" timestamp with time zone NULL;
+    DO $$
+    BEGIN
+        IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'UrunSecenek') THEN
+            ALTER TABLE "UrunSecenek" ADD COLUMN IF NOT EXISTS "IndirimBitisTarihi" timestamp with time zone NULL;
+        END IF;
+    END $$;
     ALTER TABLE "UrunSecenekleri" ADD COLUMN IF NOT EXISTS "GorselUrl" text NOT NULL DEFAULT '';
     ALTER TABLE "UrunSecenekleri" ADD COLUMN IF NOT EXISTS "KisilestirmeMetni" text NOT NULL DEFAULT '';
     ALTER TABLE "UrunSecenekleri" ADD COLUMN IF NOT EXISTS "MalzemeTuru" text NOT NULL DEFAULT '';
@@ -1870,6 +1877,14 @@ WHERE NOT EXISTS (
     WHERE ""MigrationId"" = '20260902062834_AddVariantDiscountPrice'
 )
 AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'UrunSecenekleri' AND column_name = 'IndirimliFiyat');
+
+INSERT INTO ""__EFMigrationsHistory"" (""MigrationId"", ""ProductVersion"")
+SELECT '20260915120603_AddDiscountEndDateToVariants', '10.0.10'
+WHERE NOT EXISTS (
+    SELECT 1 FROM ""__EFMigrationsHistory""
+    WHERE ""MigrationId"" = '20260915120603_AddDiscountEndDateToVariants'
+)
+AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'UrunSecenekleri' AND column_name = 'IndirimBitisTarihi');
 ");
     logger.LogInformation("Migration history consistency check completed.");
 }

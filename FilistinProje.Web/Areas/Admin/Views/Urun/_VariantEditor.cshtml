@@ -153,6 +153,21 @@
                             <label class="ca-label" data-label-for="IndirimliFiyat">@Localizer["Admin_VariantDiscountPrice"] (₪)</label>
                             <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="IndirimliFiyat" name="UrunSecenek[@i].IndirimliFiyat" value="@(variant.IndirimliFiyat?.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) ?? string.Empty)" placeholder="—" />
                         </div>
+                        <div class="col-lg-3 col-md-6 ca-discount-date-wrap">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label class="ca-label mb-0" data-label-for="IndirimBitisTarihi">
+                                    <span class="ca-required text-danger variant-discount-star" style="display:@(variant.IndirimliFiyat.HasValue && variant.IndirimliFiyat.Value > 0 ? "inline" : "none");">*</span>
+                                    @Localizer["Admin_DiscountEndDate"]
+                                </label>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="1" style="font-size:0.7rem;">@Localizer["QuickTime_1Day"]</button>
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="3" style="font-size:0.7rem;">@Localizer["QuickTime_3Days"]</button>
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="7" style="font-size:0.7rem;">@Localizer["QuickTime_1Week"]</button>
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="30" style="font-size:0.7rem;">@Localizer["QuickTime_1Month"]</button>
+                                </div>
+                            </div>
+                            <input class="ca-input" type="datetime-local" data-variant-field="IndirimBitisTarihi" name="UrunSecenek[@i].IndirimBitisTarihi" value="@(variant.IndirimBitisTarihi?.ToString("yyyy-MM-ddTHH:mm"))" />
+                        </div>
                         <div class="col-lg-2 col-md-6">
                             <label class="ca-label" data-label-for="FiyatFarki">@Localizer["Admin_PriceDifference"] (₪)</label>
                             <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="FiyatFarki" name="UrunSecenek[@i].FiyatFarki" value="@variant.FiyatFarki.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" />
@@ -362,6 +377,21 @@
                     <div class="col-lg-2 col-md-6">
                         <label class="ca-label" data-label-for="IndirimliFiyat">@Localizer["Admin_VariantDiscountPrice"] (₪)</label>
                         <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="IndirimliFiyat" name="UrunSecenek[__index__].IndirimliFiyat" value="" placeholder="—" />
+                    </div>
+                    <div class="col-lg-3 col-md-6 ca-discount-date-wrap">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label class="ca-label mb-0" data-label-for="IndirimBitisTarihi">
+                                <span class="ca-required text-danger variant-discount-star" style="display:none;">*</span>
+                                @Localizer["Admin_DiscountEndDate"]
+                            </label>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="1" style="font-size:0.7rem;">@Localizer["QuickTime_1Day"]</button>
+                                <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="3" style="font-size:0.7rem;">@Localizer["QuickTime_3Days"]</button>
+                                <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="7" style="font-size:0.7rem;">@Localizer["QuickTime_1Week"]</button>
+                                <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="30" style="font-size:0.7rem;">@Localizer["QuickTime_1Month"]</button>
+                            </div>
+                        </div>
+                        <input class="ca-input" type="datetime-local" data-variant-field="IndirimBitisTarihi" name="UrunSecenek[__index__].IndirimBitisTarihi" value="" />
                     </div>
                     <div class="col-lg-2 col-md-6">
                         <label class="ca-label" data-label-for="FiyatFarki">@Localizer["Admin_PriceDifference"] (₪)</label>
@@ -986,6 +1016,35 @@
                     if (amountInput) amountInput.value = '';
                     if (discountedInput) discountedInput.value = '';
                 }
+                updateVariantDateRequirement();
+            });
+
+            const dateInput = selector(card, 'IndirimBitisTarihi');
+            const starEl = card.querySelector('.variant-discount-star');
+
+            function updateVariantDateRequirement() {
+                const discP = parsePrice(discountedInput?.value);
+                const hasDisc = discP > 0;
+                if (starEl) starEl.style.display = hasDisc ? 'inline' : 'none';
+            }
+
+            discountedInput?.addEventListener('input', updateVariantDateRequirement);
+            discountedInput?.addEventListener('change', updateVariantDateRequirement);
+            updateVariantDateRequirement();
+
+            card.querySelectorAll('.quick-date-btn').forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    if (!dateInput) return;
+                    const days = parseInt(this.getAttribute('data-days') || '1', 10);
+                    const now = new Date();
+                    now.setDate(now.getDate() + days);
+                    const pad = (n) => String(n).padStart(2, '0');
+                    const val = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+                    dateInput.value = val;
+                    dateInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    dateInput.dispatchEvent(new Event('change', { bubbles: true }));
+                });
             });
         }
 
@@ -1005,7 +1064,7 @@
         addButton?.addEventListener('click', addCard);
 
         if (form) {
-            form.addEventListener('submit', () => {
+            form.addEventListener('submit', (e) => {
                 reindex();
 
                 if (!supportsCanvasOptions()) {
@@ -1017,6 +1076,23 @@
                         input.value = input.min && parseFloat(input.min) > 0 ? input.min : '0';
                     }
                 });
+
+                let hasInvalidVariantDate = false;
+                list.querySelectorAll('[data-variant-card]').forEach((c) => {
+                    const dInput = selector(c, 'IndirimliFiyat');
+                    const dtInput = selector(c, 'IndirimBitisTarihi');
+                    const discP = parsePrice(dInput?.value);
+                    if (discP > 0 && (!dtInput || !dtInput.value.trim())) {
+                        hasInvalidVariantDate = true;
+                        dtInput?.classList.add('is-invalid');
+                    }
+                });
+
+                if (hasInvalidVariantDate) {
+                    e.preventDefault();
+                    alert(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Product_DiscountEndDateRequired"].Value)));
+                    return false;
+                }
             });
         }
 

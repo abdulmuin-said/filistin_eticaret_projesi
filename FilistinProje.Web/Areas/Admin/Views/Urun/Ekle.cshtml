@@ -198,6 +198,23 @@
                             <span asp-validation-for="IndirimliFiyat" class="text-danger small"></span>
                         </div>
 
+                        <div class="col-md-4 ca-discount-date-wrap" id="createDiscountEndDateContainer">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label asp-for="KampanyaBitisTarihi" class="ca-label mb-0">
+                                    <span class="ca-required text-danger" id="createDiscountEndDateRequiredStar" style="display:none;">*</span>
+                                    @Localizer["Admin_DiscountEndDate"]
+                                </label>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="1" style="font-size:0.75rem;">@Localizer["QuickTime_1Day"]</button>
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="3" style="font-size:0.75rem;">@Localizer["QuickTime_3Days"]</button>
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="7" style="font-size:0.75rem;">@Localizer["QuickTime_1Week"]</button>
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="30" style="font-size:0.75rem;">@Localizer["QuickTime_1Month"]</button>
+                                </div>
+                            </div>
+                            <input asp-for="KampanyaBitisTarihi" id="createKampanyaBitisTarihi" class="ca-input" type="datetime-local" />
+                            <span asp-validation-for="KampanyaBitisTarihi" class="text-danger small"></span>
+                        </div>
+
                         <div class="col-md-7">
                             <label class="ca-label"><span class="ca-required">*</span> @Localizer["Admin_MainImageFile"]</label>
                             <label class="ca-btn ca-btn-outline mb-0" for="mainImageFile"><i class="fas fa-upload"></i> @Localizer["Admin_ChooseFile"]</label>
@@ -291,7 +308,6 @@
                     <input asp-for="OneCikanMi" type="hidden" />
                     <input asp-for="YeniUrunMu" type="hidden" />
                     <input asp-for="KampanyaliMi" type="hidden" />
-                    <input asp-for="KampanyaBitisTarihi" type="hidden" />
                     <input asp-for="AnaSayfadaGoster" type="hidden" />
                     <input asp-for="Sira" type="hidden" />
                     <input asp-for="MinSiparisAdedi" type="hidden" />
@@ -515,6 +531,49 @@
                 if (percentInput) percentInput.value = '';
                 if (amountInput) amountInput.value = '';
                 discountedInput.value = '';
+            }
+            updateDateRequirement();
+        });
+
+        const createDateInput = document.getElementById('createKampanyaBitisTarihi');
+        const createStarEl = document.getElementById('createDiscountEndDateRequiredStar');
+
+        function updateDateRequirement() {
+            const discP = parseNum(discountedInput.value);
+            const hasDisc = discP > 0;
+            if (createStarEl) createStarEl.style.display = hasDisc ? 'inline' : 'none';
+        }
+
+        discountedInput.addEventListener('input', updateDateRequirement);
+        discountedInput.addEventListener('change', updateDateRequirement);
+        updateDateRequirement();
+
+        document.querySelectorAll('#createDiscountEndDateContainer .quick-date-btn').forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (!createDateInput) return;
+                const days = parseInt(this.getAttribute('data-days') || '1', 10);
+                const now = new Date();
+                now.setDate(now.getDate() + days);
+                const pad = (n) => String(n).padStart(2, '0');
+                const val = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+                createDateInput.value = val;
+                createDateInput.dispatchEvent(new Event('input', { bubbles: true }));
+                createDateInput.dispatchEvent(new Event('change', { bubbles: true }));
+            });
+        });
+
+        const addProductForm = document.querySelector('form');
+        addProductForm?.addEventListener('submit', function (e) {
+            const discP = parseNum(discountedInput.value);
+            if (discP > 0 && (!createDateInput || !createDateInput.value.trim())) {
+                e.preventDefault();
+                if (createDateInput) {
+                    createDateInput.focus();
+                    createDateInput.classList.add('is-invalid');
+                }
+                alert(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Product_DiscountEndDateRequired"].Value)));
+                return false;
             }
         });
     })();

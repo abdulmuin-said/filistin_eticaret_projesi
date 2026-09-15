@@ -6079,4 +6079,37 @@
   <data name="Hesap_GoogleEmailMissing" xml:space="preserve">
     <value>تعذر الحصول على عنوان البريد الإلكتروني من حساب Google.</value>
   </data>
+  <data name="DiscountEndsIn" xml:space="preserve">
+    <value>ينتهي الخصم خلال:</value>
+  </data>
+  <data name="DiscountEnded" xml:space="preserve">
+    <value>انتهى الخصم</value>
+  </data>
+  <data name="DiscountEndsInHoursMinutes" xml:space="preserve">
+    <value>ينتهي الخصم خلال: {0} ساعة و {1} دقيقة</value>
+  </data>
+  <data name="Admin_DiscountEndDate" xml:space="preserve">
+    <value>تاريخ انتهاء الخصم</value>
+  </data>
+  <data name="Admin_DiscountEndDateHelp" xml:space="preserve">
+    <value>إذا تم تحديد سعر مخفض، فيجب تحديد تاريخ ووقت انتهاء الخصم. يعود المنتج لسعره الأصلي تلقائياً بعد انتهاء الوقت.</value>
+  </data>
+  <data name="Admin_Product_DiscountEndDateRequired" xml:space="preserve">
+    <value>يجب تحديد تاريخ ووقت انتهاء الخصم عند إدخال سعر مخفض للمنتج.</value>
+  </data>
+  <data name="Admin_Product_VariantDiscountEndDateRequired" xml:space="preserve">
+    <value>المتغير {0}: يجب تحديد تاريخ ووقت انتهاء الخصم عند إدخال سعر مخفض.</value>
+  </data>
+  <data name="QuickTime_1Day" xml:space="preserve">
+    <value>+1 يوم</value>
+  </data>
+  <data name="QuickTime_3Days" xml:space="preserve">
+    <value>+3 أيام</value>
+  </data>
+  <data name="QuickTime_1Week" xml:space="preserve">
+    <value>+1 أسبوع</value>
+  </data>
+  <data name="QuickTime_1Month" xml:space="preserve">
+    <value>+1 شهر</value>
+  </data>
 </root>

@@ -59,6 +59,13 @@ namespace FilistinProje.Core.Varliklar
         public int MinSiparisAdedi { get; set; } = 1;
         public int? MaxSiparisAdedi { get; set; }
         public DateTime? KampanyaBitisTarihi { get; set; }
+
+        [NotMapped]
+        public DateTime? IndirimBitisTarihi
+        {
+            get => KampanyaBitisTarihi;
+            set => KampanyaBitisTarihi = value;
+        }
         public string SeoTitle { get; set; } = string.Empty;
         public string SeoTitleEn { get; set; } = string.Empty;
         public string SeoTitleAr { get; set; } = string.Empty;

@@ -28,6 +28,7 @@ namespace FilistinProje.Core.Varliklar
         public decimal FiyatFarki { get; set; }
         public decimal SatisFiyati { get; set; }
         public decimal? IndirimliFiyat { get; set; }
+        public DateTime? IndirimBitisTarihi { get; set; }
         public decimal MaliyetFiyati { get; set; }
         public int StokAdedi { get; set; } = 100;
         public int UretimSuresiGun { get; set; }
@@ -44,10 +45,18 @@ namespace FilistinProje.Core.Varliklar
         public bool SatinAlinabilirMi => AktifMi && (StokAdedi > 0 || OnSipariseAcikMi);
 
         [NotMapped]
-        public bool IndirimVarMi => IndirimliFiyat.HasValue && IndirimliFiyat.Value > 0 && IndirimliFiyat.Value < SatisFiyati;
+        public bool IndirimVarMi =>
+            IndirimliFiyat.HasValue &&
+            IndirimliFiyat.Value > 0 &&
+            IndirimliFiyat.Value < SatisFiyati &&
+            (!IndirimBitisTarihi.HasValue || IndirimBitisTarihi.Value > DateTime.UtcNow);
 
         [NotMapped]
         public decimal EtkinFiyat => IndirimVarMi ? IndirimliFiyat!.Value : SatisFiyati;
+
+        [NotMapped]
+        public int IndirimYuzdesi =>
+            FilistinProje.Core.Helpers.IndirimHesaplayici.YuzdeHesapla(SatisFiyati, EtkinFiyat) ?? 0;
 
         [NotMapped]
         public string GuvenliRenkKodu => VaryantRenkYardimcisi.Resolve(RenkKodu, Renk);

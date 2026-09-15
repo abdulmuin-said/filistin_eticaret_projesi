@@ -592,5 +592,27 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
   - `SepetService.cs`, `AbandonedCartService.cs`, `FavoriPriceDropService.cs`, `FirebaseNotificationService.cs`, `OrderPricingService.cs`, `PurchaseOrderService.cs`, `SmtpEmailService.cs`, `StockAlertService.cs`.
   - `TurkceIdentityErrorDescriber` sınıfı `LocalizedIdentityErrorDescriber` olarak yeniden adlandırıldı ve refactor edildi.
 
+### Faz 25 (İndirim Geçerlilik Süresi & Vitrin Canlı Geri Sayım Mekanizması — 15 Eylül 2026)
+- [x] **Adım 193 (Entity & Dual Migration Uyumlu Şema)**:
+  - `FilistinProje.Core/Varliklar/Urun.cs`: `[NotMapped] IndirimBitisTarihi` alias'ı eklendi (`KampanyaBitisTarihi` ile eşzamanlı). `EtkinFiyat`, `IndirimVarMi` ve `IndirimYuzdesi` süre kontrolü doğrulandı.
+  - `FilistinProje.Core/Varliklar/UrunSecenek.cs`: `IndirimBitisTarihi` (`DateTime?` UTC) kolonu eklendi; `IndirimVarMi` sürenin geçerliliğini (`!IndirimBitisTarihi.HasValue || IndirimBitisTarihi.Value > DateTime.UtcNow`) kontrol edecek şekilde güncellendi; `EtkinFiyat` ve `IndirimYuzdesi` entegre edildi.
+  - EF Core Migration `20260915120603_AddDiscountEndDateToVariants.cs` idempotent `IF NOT EXISTS` kontrolleriyle oluşturuldu ve veritabanına uygulandı (`dotnet ef database update`).
+  - `Program.cs` içerisindeki `EnsureMissingMarch2026SchemaAsync` raw SQL bloğuna `"UrunSecenekleri"` için `ALTER TABLE ... ADD COLUMN IF NOT EXISTS "IndirimBitisTarihi"` DDL komutu eklendi.
+- [x] **Adım 194 (Çok Dilli Lokalizasyon — AR & EN)**:
+  - `SharedResource.ar.resx` ve `SharedResource.en.resx` dosyalarına `DiscountEndsIn`, `DiscountEnded`, `Admin_DiscountEndDate`, `Admin_DiscountEndDateHelp`, `Admin_Product_DiscountEndDateRequired`, `Admin_Product_VariantDiscountEndDateRequired`, `QuickTime_1Day`, `QuickTime_3Days`, `QuickTime_1Week`, `QuickTime_1Month` anahtarları eklendi.
+- [x] **Adım 195 (Yönetim Paneli Formları, Hızlı Butonlar & Zorunluluk Validasyonu)**:
+  - `UrunController.cs`: `optionalVariantFields` listesine `IndirimBitisTarihi` eklendi; `ValidateProductAsync` ve `ValidateVariantsAsync` metodlarına indirimli fiyat girildiğinde geçerlilik süresinin zorunlu olması şartı eklendi; zaman dilimi dönüşümleri `BusinessTimeZoneService` ile Kudüs yerel saatinden UTC'ye normalize edildi.
+  - `Areas/Admin/Views/Urun/Duzenle.cshtml` ve `Ekle.cshtml`: İndirim bitiş tarihi alanı indirimli fiyatın hemen yanına konumlandırıldı; `+1 Gün`, `+3 Gün`, `+1 Hafta`, `+1 Ay` hızlı seçim butonları eklendi; indirimli fiyat girildiğinde zorunluluk yıldızı gösteren ve boş bırakıldığında formu engelleyen JS submit guard entegre edildi.
+  - `Areas/Admin/Views/Urun/_VariantEditor.cshtml`: Varyant döngüsüne ve dinamik varyant şablonuna (`#variantCardTemplate`) indirim bitiş tarihi ve hızlı butonlar eklendi.
+- [x] **Adım 196 (Vitrin Canlı Geri Sayım Sayacı & Otomatik Fiyat Dönüşü)**:
+  - `wwwroot/js/site-countdown.js`: Süre bittiğinde (`diff <= 0`) `countdown:ended` CustomEvent'i fırlatacak ve `#priceDisplay` fiyatını canlı olarak normal satış fiyatına çevirecek şekilde güçlendirildi.
+  - `Views/Shared/_Layout.cshtml`: Küresel scriptlere `site-countdown.js` eklendi.
+  - `Views/Urun/Detay.cshtml`: Fiyat bloğuna `#productDetailCountdown` rozeti eklendi; varyant radio butonlarına `data-enddate` bağlandı; varyant değiştiğinde sayaç ve fiyatın anlık güncellenmesi sağlandı.
+- [x] **Adım 197 (Uçtan Uca Playwright E2E Doğrulama)**:
+  - Admin panelinden Ürün #112'ye 200 ₪ normal fiyat, 150 ₪ indirimli fiyat ve +3 gün süre tanımlanarak kaydedildi; vitrinde 150 ₪, üstü çizili 200 ₪, %25 indirim rozeti ve canlı geri sayım sayacı doğrulandı (`step-b-active-countdown.png`).
+  - İndirim bitiş tarihi geçmiş tarihe çekilerek kaydedildi; vitrinde fiyatın otomatik normal fiyata (200 ₪) döndüğü, eski fiyatın ve geri sayım sayacının gizlendiği doğrulandı (`step-d-expired-revert-normal-price.png`).
+  - Varyant seviyesinde siyah varyanta (`Id: 117`) indirim ve süre tanımlanıp mavi varyant (`Id: 148`) indirimsiz bırakılarak canlı geçiş test edildi; siyah seçildiğinde indirim ve sayaç belirdi, maviye geçildiğinde normal fiyata dönüp sayaç gizlendi (`variant-black-discount-active.png`, `variant-blue-normal-price.png`).
+  - Zorunlu alan kontrolü test edildi; indirimli fiyat girilip süre boş bırakıldığında form gönderimi başarıyla engellendi.
+
 
 

@@ -301,6 +301,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             RepairProductTextForDisplay(urun);
             urun.KampanyaBitisTarihi = BusinessTimeZoneService.ConvertUtcToStoreLocal(urun.KampanyaBitisTarihi);
+            foreach (var variant in urun.UrunSecenek ?? Enumerable.Empty<UrunSecenek>())
+            {
+                variant.IndirimBitisTarihi = BusinessTimeZoneService.ConvertUtcToStoreLocal(variant.IndirimBitisTarihi);
+            }
             await PopulateCategorySelectListAsync(urun.KategoriId);
             await PopulateProductMetadataAsync(urun.UrunTipi);
             PopulateMediaMetadata(urun);
@@ -2487,6 +2491,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 nameof(UrunSecenek.VarsayilanMi),
                 nameof(UrunSecenek.TukeninceGizle),
                 nameof(UrunSecenek.OnSipariseAcikMi),
+                nameof(UrunSecenek.IndirimBitisTarihi),
                 nameof(UrunSecenek.Urun)
             };
 
@@ -2629,6 +2634,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 (urun.IndirimliFiyat.Value <= 0 || urun.IndirimliFiyat.Value >= urun.Fiyat))
             {
                 ModelState.AddModelError(nameof(Urun.IndirimliFiyat), _localizer["Admin_Product_DiscountPriceLowerThanOriginal"].Value);
+            }
+
+            if (urun.IndirimliFiyat.HasValue && urun.IndirimliFiyat.Value > 0 && !urun.KampanyaBitisTarihi.HasValue)
+            {
+                ModelState.AddModelError(nameof(Urun.KampanyaBitisTarihi), _localizer["Admin_Product_DiscountEndDateRequired"].Value);
             }
 
             if (urun.MinSiparisAdedi < 1)
@@ -3468,6 +3478,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                         string.Format(_localizer["Admin_Product_VariantDiscountPriceInvalid"].Value, row));
                 }
 
+                if (variant.IndirimliFiyat.HasValue && variant.IndirimliFiyat.Value > 0 && !variant.IndirimBitisTarihi.HasValue)
+                {
+                    ModelState.AddModelError(
+                        $"{prefix}.IndirimBitisTarihi",
+                        string.Format(_localizer["Admin_Product_VariantDiscountEndDateRequired"].Value, row));
+                }
+
                 if (variant.MaliyetFiyati < 0)
                 {
                     ModelState.AddModelError($"{prefix}.MaliyetFiyati", $"Varyasyon {row}: maliyet negatif olamaz.");
@@ -3563,6 +3580,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             variant.IndirimliFiyat = variant.IndirimliFiyat.HasValue && variant.IndirimliFiyat.Value > 0
                 ? decimal.Round(variant.IndirimliFiyat.Value, 2)
                 : null;
+            if (!variant.IndirimliFiyat.HasValue)
+            {
+                variant.IndirimBitisTarihi = null;
+            }
+            else
+            {
+                variant.IndirimBitisTarihi = BusinessTimeZoneService.ConvertStoreLocalToUtc(variant.IndirimBitisTarihi);
+            }
             variant.ParcaSayisi = variant.ParcaSayisi < 1 ? 1 : variant.ParcaSayisi;
             variant.StokAdedi = variant.StokAdedi < 0 ? 0 : variant.StokAdedi;
             variant.UretimSuresiGun = variant.UretimSuresiGun < 0 ? 0 : variant.UretimSuresiGun;
@@ -3601,6 +3626,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             target.FiyatFarki = source.FiyatFarki;
             target.SatisFiyati = source.SatisFiyati;
             target.IndirimliFiyat = source.IndirimliFiyat;
+            target.IndirimBitisTarihi = source.IndirimBitisTarihi;
             target.MaliyetFiyati = source.MaliyetFiyati;
             target.StokAdedi = source.StokAdedi;
             target.UretimSuresiGun = source.UretimSuresiGun;
