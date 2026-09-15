@@ -1,28 +1,7 @@
 
 services:
   # ==========================================
-  # PostgreSQL Veritabanı
-  # ==========================================
-  db:
-    image: postgres:16-alpine
-    container_name: filistinproje-db
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-filistindb}
-      POSTGRES_USER: ${POSTGRES_USER:-kanvasuser}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme_in_production}
-    volumes:
-      - filistin_postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5434:5432"
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-kanvasuser} -d ${POSTGRES_DB:-filistindb}" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # ==========================================
-  # Web Uygulaması
+  # Web Uygulaması (Veritabanı sunucunun yerel PostgreSQL servisinde çalışmaktadır)
   # ==========================================
   web:
     build:
@@ -38,7 +17,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - DOTNET_RUNNING_IN_CONTAINER=true
       - DATA_PROTECTION_KEYS_PATH=/app/secure-storage/dataprotection-keys
-      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=${POSTGRES_DB:-filistindb};Username=${POSTGRES_USER:-kanvasuser};Password=${POSTGRES_PASSWORD:-changeme_in_production}
+      - ConnectionStrings__DefaultConnection=Host=host.docker.internal;Port=5434;Database=${POSTGRES_DB:-filistindb};Username=${POSTGRES_USER:-kanvasuser};Password=${POSTGRES_PASSWORD:-changeme_in_production}
       - Authentication__Google__ClientId=${GOOGLE_CLIENT_ID:-}
       - Authentication__Google__ClientSecret=${GOOGLE_CLIENT_SECRET:-}
       - EmailSettings__Host=${EMAIL_HOST:-host.docker.internal}
@@ -57,13 +36,8 @@ services:
       - filistin_app_data:/app/App_Data
       - filistin_app_secure_storage:/app/secure-storage
       - filistin_app_wwwroot_uploads:/app/wwwroot/uploads
-    depends_on:
-      db:
-        condition: service_healthy
 
 volumes:
-  filistin_postgres_data:
-    driver: local
   filistin_app_uploads:
     driver: local
   filistin_app_media:

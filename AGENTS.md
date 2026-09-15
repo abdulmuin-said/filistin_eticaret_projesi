@@ -63,7 +63,8 @@ cd FilistinProje.Web && npm run watch:storefront-css
 ## DB conventions
 
 - Tables/columns use **Turkish PascalCase** with double quotes in raw SQL
-- Connection: `Host=localhost;Port=5434;Database=filistindb;Username=kanvasuser;Password=changeme_in_production`
+- Central Remote DB: `Host=canvasia-server;Port=5434;Database=filistindb;Username=kanvasuser;Password=changeme_in_production` (canvasia-server üzerinde yerel PostgreSQL 18 servisi, Tailscale üzerinden bağlı)
+- Local Docker Compose: Sadece `web` servisi çalışır (DB konteyneri kaldırıldı).
 
 ## What NOT to do
 
