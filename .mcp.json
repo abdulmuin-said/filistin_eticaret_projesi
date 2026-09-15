@@ -7,7 +7,7 @@
         "postgres-mcp-readonly"
       ],
       "env": {
-        "DATABASE_URL": "postgresql://kanvasuser:changeme_in_production@localhost:5434/filistindb"
+        "DATABASE_URL": "postgresql://kanvasuser:changeme_in_production@canvasia-server:5434/filistindb"
       }
     },
     "docker": {
@@ -98,7 +98,7 @@
         "@modelcontextprotocol/server-postgres"
       ],
       "env": {
-        "POSTGRES_CONNECTION_STRING": "postgresql://user:password@localhost:5432/dbname"
+        "POSTGRES_CONNECTION_STRING": "postgresql://user:password@canvasia-server:5434/dbname"
       }
     },
     "fetch": {

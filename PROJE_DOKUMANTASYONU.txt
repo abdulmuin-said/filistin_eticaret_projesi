@@ -41,11 +41,11 @@ Container      : kanvasproje-db
 Veritabanı     : kanvasdb           (küçük harf!)
 Kullanıcı      : kanvasuser
 Şifre          : changeme_in_production
-Port           : 5432 (host) → 5432 (container)
+Port           : 5434 (host) → 5434 (container)
 PostgreSQL     : 16-alpine
 
 ### Önemli: Bağlantı Dizesi (secrets.json ve appsettings.Development.json)
-  Host=localhost;Port=5432;Database=kanvasdb;Username=kanvasuser;Password=changeme_in_production
+  Host=canvasia-server;Port=5434;Database=kanvasdb;Username=kanvasuser;Password=changeme_in_production
 
 ### Veritabanı İçeriği (Nisan 2026 itibariyle):
   - Urunler        : ~1.360 ürün
@@ -203,7 +203,7 @@ Icon Library   : Font Awesome 6.4.0
   app_data        → /app/App_Data
 
 ### Port Mapping:
-  5432:5432  → PostgreSQL
+  5434:5434  → PostgreSQL
   8080:8080  → Web uygulaması
 
 ===============================================================
