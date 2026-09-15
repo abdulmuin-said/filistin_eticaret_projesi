@@ -4951,9 +4951,12 @@
   <data name="Admin_SayfaDuzenle" xml:space="preserve"><value>Edit Page</value></data>
   <data name="Admin_SayfaYonetimAciklama" xml:space="preserve"><value>Manage corporate page content from here.</value></data>
   <data name="Admin_SayfaBasligiPlaceholder" xml:space="preserve"><value>e.g. Return Policy</value></data>
-  <data name="Admin_SayfaIcerik" xml:space="preserve"><value>Content (HTML)</value></data>
+  <data name="Admin_SayfaIcerik" xml:space="preserve"><value>Page Content</value></data>
   <data name="Admin_SayfaIcerikPlaceholder" xml:space="preserve"><value>Write page content here...</value></data>
-  <data name="Admin_SayfaIcerikHint" xml:space="preserve"><value>You may use HTML tags (h1, p, b, br) if needed.</value></data>
+  <data name="Admin_SayfaIcerikHint" xml:space="preserve"><value>Use the visual editor to format text easily like Word, no coding required.</value></data>
+  <data name="Admin_ToggleHtml" xml:space="preserve"><value>View / Edit HTML Code</value></data>
+  <data name="Admin_ArabicContentTab" xml:space="preserve"><value>Arabic (Primary)</value></data>
+  <data name="Admin_EnglishContentTab" xml:space="preserve"><value>English (Optional)</value></data>
   <data name="Admin_WholesaleAppManagement" xml:space="preserve"><value>Wholesale Application Management</value></data>
   <data name="Admin_WholesaleAppSubtitle" xml:space="preserve"><value>Approve or reject wholesale applications.</value></data>
   <data name="Admin_SearchUserAppPlaceholder" xml:space="preserve"><value>Search by name or email...</value></data>

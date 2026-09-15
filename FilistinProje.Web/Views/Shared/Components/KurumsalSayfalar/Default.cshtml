@@ -1,0 +1,17 @@
+﻿@model IEnumerable<FilistinProje.Core.Varliklar.KurumsalSayfa>
+@inject IStringLocalizer<SharedResource> Localizer
+
+<ul class="space-y-2 text-sm font-light text-gray-100 text-start md:text-end">
+    @foreach (var sayfa in Model)
+    {
+        <li>
+            <a class="hover:text-white transition-colors" href="/pages/@sayfa.UrlSlug">
+                @sayfa.LocalizedBaslik
+            </a>
+        </li>
+    }
+    @if (!Model.Any(x => x.UrlSlug.Equals("contact", StringComparison.OrdinalIgnoreCase) || x.UrlSlug.Equals("iletisim", StringComparison.OrdinalIgnoreCase)))
+    {
+        <li><a class="hover:text-white transition-colors" href="/pages/Iletisim">@Localizer["Contact"]</a></li>
+    }
+</ul>

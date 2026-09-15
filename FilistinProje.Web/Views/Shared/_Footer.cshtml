@@ -105,13 +105,7 @@
             <!-- Corporate Links & Socials -->
             <div class="flex flex-col md:items-end">
                 <h4 class="font-bold text-sm tracking-widest mb-4 uppercase text-white drop-shadow-sm">@Localizer["Corporate"]</h4>
-                <ul class="space-y-2 text-sm font-light text-gray-100 text-start md:text-end">
-                    <li><a class="hover:text-white transition-colors" href="/pages/about">@Localizer["AboutUs"]</a></li>
-                    <li><a class="hover:text-white transition-colors" href="/pages/contact">@Localizer["Contact"]</a></li>
-                    <li><a class="hover:text-white transition-colors" href="/products">@Localizer["AllProducts"]</a></li>
-                    <li><a class="hover:text-white transition-colors" href="/Sozlesmeler/Gizlilik">@Localizer["PrivacyPolicy"]</a></li>
-                    <li><a class="hover:text-white transition-colors" href="/Sozlesmeler/MesafeliSatis">@Localizer["DistanceSalesContract"]</a></li>
-                </ul>
+                @await Component.InvokeAsync("KurumsalSayfalar")
                 <div class="mt-6 flex gap-3 text-gray-100">
                     @foreach (var link in sosyalMedyaLinkleri)
                     {
@@ -140,7 +134,7 @@
                 <p class="text-[11px] tracking-wide">© @DateTime.Now.Year <span class="text-white font-medium">@brandName</span> — @Localizer["AllRightsReserved"]</p>
             </div>
             <div class="mb-4 md:mb-0 order-1 md:order-2">
-                <a href="/Sozlesmeler/Gizlilik" class="text-[11px] text-gray-200 hover:text-white transition-colors mx-2">@Localizer["PrivacyPolicy"]</a>
+                <a href="/pages/gizlilik" class="text-[11px] text-gray-200 hover:text-white transition-colors mx-2">@Localizer["PrivacyPolicy"]</a>
                 <span class="text-gray-600">|</span>
                 <a href="/pages/return-policy" class="text-[11px] text-gray-200 hover:text-white transition-colors mx-2">@Localizer["ReturnExchange"]</a>
                 <span class="text-gray-600">|</span>

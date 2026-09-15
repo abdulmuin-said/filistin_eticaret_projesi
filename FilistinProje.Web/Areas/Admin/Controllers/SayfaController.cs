@@ -32,6 +32,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             {
                 var sayfa = await _context.KurumsalSayfalar.FindAsync(id.Value);
                 if (sayfa == null) return NotFound();
+                if (string.IsNullOrWhiteSpace(sayfa.BaslikAr) && !string.IsNullOrWhiteSpace(sayfa.Baslik))
+                {
+                    sayfa.BaslikAr = sayfa.Baslik;
+                }
+                if (string.IsNullOrWhiteSpace(sayfa.IcerikAr) && !string.IsNullOrWhiteSpace(sayfa.Icerik))
+                {
+                    sayfa.IcerikAr = sayfa.Icerik;
+                }
                 return View(sayfa);
             }
             return View(new KurumsalSayfa());

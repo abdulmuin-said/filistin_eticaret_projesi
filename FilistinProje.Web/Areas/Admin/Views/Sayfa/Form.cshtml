@@ -4,9 +4,99 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+<style>
+    .ca-page-tabs {
+        display: flex;
+        gap: 8px;
+        border-bottom: 2px solid var(--ca-border, #e5e7eb);
+        margin-bottom: 24px;
+        padding-bottom: 2px;
+    }
+    .ca-page-tab-btn {
+        background: transparent;
+        border: none;
+        outline: none;
+        padding: 10px 18px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--ca-muted, #6b7280);
+        border-radius: 8px 8px 0 0;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+    }
+    .ca-page-tab-btn:hover {
+        color: var(--ca-dark, #1f2937);
+        background: rgba(0,0,0,0.03);
+    }
+    .ca-page-tab-btn.active {
+        color: #b8860b;
+        background: #fff;
+        border-bottom: 3px solid #b8860b;
+        margin-bottom: -2px;
+    }
+    .ca-editor-wrapper {
+        border: 1px solid var(--ca-border, #e5e7eb);
+        border-radius: 8px;
+        background: #fff;
+        overflow: hidden;
+    }
+    .ca-editor-wrapper .ql-toolbar {
+        border: none !important;
+        border-bottom: 1px solid var(--ca-border, #e5e7eb) !important;
+        background: #f9fafb;
+    }
+    .ca-editor-wrapper .ql-container {
+        border: none !important;
+        font-size: 1rem;
+        font-family: inherit;
+        min-height: 280px;
+    }
+    .ql-snow .ql-editor {
+        min-height: 280px;
+        line-height: 1.8;
+    }
+    .ql-snow .ql-editor.ql-blank::before {
+        font-style: normal;
+        color: #9ca3af;
+    }
+    .ca-editor-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+    .ca-toggle-code-btn {
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 6px;
+        border: 1px solid var(--ca-border, #d1d5db);
+        background: #f3f4f6;
+        color: #4b5563;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.15s ease;
+    }
+    .ca-toggle-code-btn:hover {
+        background: #e5e7eb;
+        color: #111827;
+    }
+    .ca-toggle-code-btn.active {
+        background: #1f2937;
+        color: #fff;
+        border-color: #1f2937;
+    }
+</style>
+
 <div class="container-fluid ca-fade-in">
     <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col-lg-10 col-xl-9">
             <div class="ca-card">
                 <div class="ca-form-header">
                     <div class="d-flex align-items-center position-relative" style="z-index:2;">
@@ -22,9 +112,13 @@
                 </div>
 
                 <div class="ca-card-body">
-                    <form method="post">
+                    <form method="post" id="kurumsalSayfaForm">
                         @Html.AntiForgeryToken()
                         <input type="hidden" asp-for="Id" />
+
+                        @* Eski tek dilli alanlar arka planda otomatik senkronize edilir *@
+                        <input type="hidden" asp-for="Baslik" id="legacyBaslik" />
+                        <textarea asp-for="Icerik" id="legacyIcerik" style="display:none;"></textarea>
 
                         @if (!ViewData.ModelState.IsValid)
                         {
@@ -37,68 +131,110 @@
                             </div>
                         }
 
-                        <div class="row g-4 mb-4">
-                            <div class="col-md-5">
-                                <div class="ca-form-group">
-                                    <label class="ca-label">@Localizer["Admin_SayfaBasligi"] <span class="text-danger">*</span></label>
-                                    <input asp-for="Baslik" class="ca-input" placeholder='@Localizer["Admin_SayfaBasligiPlaceholder"]' required />
-                                    <span asp-validation-for="Baslik" class="text-danger small"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="ca-form-group">
+                        @* 1. GENEL AYARLAR (SLUG & SIRA) *@
+                        <div class="row g-4 mb-4 pb-3 border-bottom">
+                            <div class="col-md-7">
+                                <div class="ca-form-group mb-0">
                                     <label class="ca-label">@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "الرابط الدائم (Slug)" : "URL Slug")</label>
-                                    <input asp-for="UrlSlug" class="ca-input" placeholder="page-url-slug" dir="ltr" />
+                                    <input asp-for="UrlSlug" class="ca-input" placeholder="about-us" dir="ltr" />
                                     <small class="ca-text-muted" style="font-size:.78rem;">
-                                        @(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "اتركه فارغاً للتوليد التلقائي" : "Leave empty to auto-generate")
+                                        @(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "اتركه فارغاً للتوليد التلقائي بناءً على عنوان الصفحة" : "Leave empty to auto-generate from page title")
                                     </small>
                                     <span asp-validation-for="UrlSlug" class="text-danger small"></span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="ca-form-group">
+                            <div class="col-md-5">
+                                <div class="ca-form-group mb-0">
                                     <label class="ca-label">@Localizer["Admin_Sira"]</label>
                                     <input asp-for="Sira" type="number" class="ca-input" value="@(Model.Id==0 ? 1 : Model.Sira)" />
+                                    <small class="ca-text-muted" style="font-size:.78rem;">
+                                        @(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "ترتيب ظهور الصفحة في القوائم والتذييل" : "Order in menus and footer")
+                                    </small>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="ca-form-group">
-                            <label class="ca-label">@Localizer["Admin_SayfaIcerik"]</label>
-                            <textarea asp-for="Icerik" class="ca-textarea" rows="15" placeholder='@Localizer["Admin_SayfaIcerikPlaceholder"]'></textarea>
-                            <small class="ca-text-muted" style="font-size:.8rem;">
-                                <i class="fas fa-info-circle me-1"></i> @Localizer["Admin_SayfaIcerikHint"]
-                            </small>
+                        @* 2. ÇOK DİLLİ SEKME NAVİGASYONU *@
+                        <div class="ca-page-tabs" role="tablist">
+                            <button type="button" class="ca-page-tab-btn active" id="tabBtnAr" data-tab-target="panelAr">
+                                <i class="fas fa-globe-asia text-warning"></i>
+                                <span>@Localizer["Admin_ArabicContentTab"]</span>
+                            </button>
+                            <button type="button" class="ca-page-tab-btn" id="tabBtnEn" data-tab-target="panelEn">
+                                <i class="fas fa-globe-americas text-primary"></i>
+                                <span>@Localizer["Admin_EnglishContentTab"]</span>
+                            </button>
                         </div>
 
-                        <div class="row g-4 mt-1">
-                            <div class="col-md-6">
-                                <div class="ca-form-group">
-                                    <label class="ca-label">@Localizer["Admin_PageTitleAr"]</label>
-                                    <input asp-for="BaslikAr" class="ca-input" dir="rtl" />
-                                </div>
-                                <div class="ca-form-group">
-                                    <label class="ca-label">@Localizer["Admin_PageContentAr"]</label>
-                                    <textarea asp-for="IcerikAr" class="ca-textarea" rows="12" dir="rtl"></textarea>
-                                </div>
+                        @* 3. ARAPÇA İÇERİK PANELİ (ANA DİL) *@
+                        <div id="panelAr" class="ca-tab-panel">
+                            <div class="ca-form-group mb-4">
+                                <label class="ca-label">
+                                    @Localizer["Admin_PageTitleAr"] <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="BaslikAr" id="inputBaslikAr" class="ca-input fw-semibold" dir="rtl" placeholder='@Localizer["Admin_SayfaBasligiPlaceholder"]' required />
+                                <span asp-validation-for="BaslikAr" class="text-danger small"></span>
                             </div>
-                            <div class="col-md-6">
-                                <div class="ca-form-group">
-                                    <label class="ca-label">@Localizer["Admin_PageTitleEn"]</label>
-                                    <input asp-for="BaslikEn" class="ca-input" dir="ltr" />
+
+                            <div class="ca-form-group mb-4">
+                                <div class="ca-editor-header">
+                                    <label class="ca-label mb-0">@Localizer["Admin_SayfaIcerik"]</label>
+                                    <button type="button" class="ca-toggle-code-btn" data-editor="ar">
+                                        <i class="fas fa-code"></i>
+                                        <span>@Localizer["Admin_ToggleHtml"]</span>
+                                    </button>
                                 </div>
-                                <div class="ca-form-group">
-                                    <label class="ca-label">@Localizer["Admin_PageContentEn"]</label>
-                                    <textarea asp-for="IcerikEn" class="ca-textarea" rows="12" dir="ltr"></textarea>
+
+                                <div class="ca-editor-wrapper" id="editorWrapperAr">
+                                    <div id="quillEditorAr" dir="rtl"></div>
+                                </div>
+                                <textarea asp-for="IcerikAr" id="textareaIcerikAr" class="ca-textarea font-monospace d-none" rows="14" dir="rtl" style="font-size:0.9rem;"></textarea>
+
+                                <div class="mt-2 text-muted" style="font-size:.82rem;">
+                                    <i class="fas fa-magic text-warning me-1"></i> @Localizer["Admin_SayfaIcerikHint"]
                                 </div>
                             </div>
                         </div>
 
-                        <hr style="border-color:var(--ca-border); margin:24px 0;">
+                        @* 4. İNGİLİZCE İÇERİK PANELİ (OPSİYONEL) *@
+                        <div id="panelEn" class="ca-tab-panel d-none">
+                            <div class="ca-form-group mb-4">
+                                <label class="ca-label">
+                                    @Localizer["Admin_PageTitleEn"]
+                                </label>
+                                <input asp-for="BaslikEn" id="inputBaslikEn" class="ca-input fw-semibold" dir="ltr" placeholder="e.g. Return and Refund Policy" />
+                                <span asp-validation-for="BaslikEn" class="text-danger small"></span>
+                            </div>
 
-                        <div class="d-flex justify-content-end gap-2">
-                            <a href="/Admin/Sayfa" class="ca-btn ca-btn-outline">@Localizer["Admin_Iptal"]</a>
-                            <button type="submit" class="ca-btn ca-btn-success"><i class="fas fa-save"></i> @Localizer["Admin_Kaydet"]</button>
+                            <div class="ca-form-group mb-4">
+                                <div class="ca-editor-header">
+                                    <label class="ca-label mb-0">@Localizer["Admin_PageContentEn"]</label>
+                                    <button type="button" class="ca-toggle-code-btn" data-editor="en">
+                                        <i class="fas fa-code"></i>
+                                        <span>@Localizer["Admin_ToggleHtml"]</span>
+                                    </button>
+                                </div>
+
+                                <div class="ca-editor-wrapper" id="editorWrapperEn">
+                                    <div id="quillEditorEn" dir="ltr"></div>
+                                </div>
+                                <textarea asp-for="IcerikEn" id="textareaIcerikEn" class="ca-textarea font-monospace d-none" rows="14" dir="ltr" style="font-size:0.9rem;"></textarea>
+
+                                <div class="mt-2 text-muted" style="font-size:.82rem;">
+                                    <i class="fas fa-magic text-primary me-1"></i> @Localizer["Admin_SayfaIcerikHint"]
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr style="border-color:var(--ca-border); margin:28px 0 20px;">
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="/Admin/Sayfa" class="ca-btn ca-btn-outline">
+                                <i class="fas fa-arrow-right me-1"></i> @Localizer["Admin_Iptal"]
+                            </a>
+                            <button type="submit" class="ca-btn ca-btn-success px-4 py-2 fw-bold">
+                                <i class="fas fa-save me-1"></i> @Localizer["Admin_Kaydet"]
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -106,3 +242,113 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 1. SEKME GEÇİŞLERİ
+        const tabBtns = document.querySelectorAll('.ca-page-tab-btn');
+        const panels = document.querySelectorAll('.ca-tab-panel');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                panels.forEach(p => p.classList.add('d-none'));
+
+                this.classList.add('active');
+                const targetId = this.getAttribute('data-tab-target');
+                const targetPanel = document.getElementById(targetId);
+                if (targetPanel) {
+                    targetPanel.classList.remove('d-none');
+                }
+            });
+        });
+
+        // 2. QUILL TOOLBAR AYARLARI
+        const toolbarOptions = [
+            [{ 'header': [1, 2, 3, 4, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'color': [] }, { 'background': [] }],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            [{ 'align': [] }],
+            [{ 'direction': 'rtl' }],
+            ['link', 'blockquote', 'code-block'],
+            ['clean']
+        ];
+
+        // 3. ARAPÇA VE İNGİLİZCE EDİTÖRLERİNİN BAŞLATILMASI
+        const textareaAr = document.getElementById('textareaIcerikAr');
+        const textareaEn = document.getElementById('textareaIcerikEn');
+        const legacyIcerik = document.getElementById('legacyIcerik');
+
+        const quillAr = new Quill('#quillEditorAr', {
+            theme: 'snow',
+            placeholder: '@(System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar" ? "اكتب محتوى الصفحة هنا بسهولة..." : "Write Arabic page content here...")',
+            modules: { toolbar: toolbarOptions }
+        });
+
+        const quillEn = new Quill('#quillEditorEn', {
+            theme: 'snow',
+            placeholder: 'Write English page content here...',
+            modules: { toolbar: toolbarOptions }
+        });
+
+        // Başlangıç değerlerini editörlere yükle
+        const initialContentAr = (textareaAr.value || legacyIcerik.value || '').trim();
+        if (initialContentAr) {
+            quillAr.root.innerHTML = initialContentAr;
+        }
+
+        const initialContentEn = (textareaEn.value || '').trim();
+        if (initialContentEn) {
+            quillEn.root.innerHTML = initialContentEn;
+        }
+
+        // 4. HTML KOD GÖSTER / GİZLE (TOGGLE)
+        document.querySelectorAll('.ca-toggle-code-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const editorType = this.getAttribute('data-editor');
+                const isArEditor = editorType === 'ar';
+                const wrapper = document.getElementById(isArEditor ? 'editorWrapperAr' : 'editorWrapperEn');
+                const textarea = isArEditor ? textareaAr : textareaEn;
+                const quill = isArEditor ? quillAr : quillEn;
+
+                const isCodeMode = !textarea.classList.contains('d-none');
+
+                if (isCodeMode) {
+                    quill.root.innerHTML = textarea.value;
+                    textarea.classList.add('d-none');
+                    wrapper.classList.remove('d-none');
+                    this.classList.remove('active');
+                } else {
+                    textarea.value = quill.root.innerHTML;
+                    wrapper.classList.add('d-none');
+                    textarea.classList.remove('d-none');
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // 5. FORM SUBMIT ESNASINDA İÇERİKLERİN VE ESKİ ALANLARIN SENKRONİZASYONU
+        const form = document.getElementById('kurumsalSayfaForm');
+        form.addEventListener('submit', function (e) {
+            // Arapça içerik senkronizasyonu
+            const isCodeModeAr = !textareaAr.classList.contains('d-none');
+            const finalHtmlAr = isCodeModeAr ? textareaAr.value : (quillAr.root.innerHTML === '<p><br></p>' ? '' : quillAr.root.innerHTML);
+            textareaAr.value = finalHtmlAr;
+            legacyIcerik.value = finalHtmlAr;
+
+            // İngilizce içerik senkronizasyonu
+            const isCodeModeEn = !textareaEn.classList.contains('d-none');
+            const finalHtmlEn = isCodeModeEn ? textareaEn.value : (quillEn.root.innerHTML === '<p><br></p>' ? '' : quillEn.root.innerHTML);
+            textareaEn.value = finalHtmlEn;
+
+            // Başlık senkronizasyonu
+            const inputBaslikAr = document.getElementById('inputBaslikAr');
+            const legacyBaslik = document.getElementById('legacyBaslik');
+            if (inputBaslikAr && legacyBaslik) {
+                legacyBaslik.value = inputBaslikAr.value.trim();
+            }
+        });
+    });
+</script>

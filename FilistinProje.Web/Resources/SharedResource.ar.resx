@@ -4912,9 +4912,12 @@
   <data name="Admin_SayfaDuzenle" xml:space="preserve"><value>تعديل الصفحة</value></data>
   <data name="Admin_SayfaYonetimAciklama" xml:space="preserve"><value>إدارة محتوى الصفحة المؤسسية من هنا.</value></data>
   <data name="Admin_SayfaBasligiPlaceholder" xml:space="preserve"><value>مثال: سياسة الإرجاع</value></data>
-  <data name="Admin_SayfaIcerik" xml:space="preserve"><value>المحتوى (HTML)</value></data>
+  <data name="Admin_SayfaIcerik" xml:space="preserve"><value>محتوى الصفحة</value></data>
   <data name="Admin_SayfaIcerikPlaceholder" xml:space="preserve"><value>اكتب محتوى الصفحة هنا...</value></data>
-  <data name="Admin_SayfaIcerikHint" xml:space="preserve"><value>يمكنك استخدام وسوم HTML (h1, p, b, br) إذا أردت.</value></data>
+  <data name="Admin_SayfaIcerikHint" xml:space="preserve"><value>استخدم المحرر المرئي لتنسيق النص بسهولة مثل Word، دون الحاجة لأي أكواد برمجة.</value></data>
+  <data name="Admin_ToggleHtml" xml:space="preserve"><value>عرض / تعديل كود HTML</value></data>
+  <data name="Admin_ArabicContentTab" xml:space="preserve"><value>اللغة العربية (الأساسية)</value></data>
+  <data name="Admin_EnglishContentTab" xml:space="preserve"><value>English (اختياري)</value></data>
   <data name="Admin_WholesaleAppManagement" xml:space="preserve"><value>إدارة طلبات الجملة</value></data>
   <data name="Admin_WholesaleAppSubtitle" xml:space="preserve"><value>الموافقة على طلبات الجملة أو رفضها.</value></data>
   <data name="Admin_SearchUserAppPlaceholder" xml:space="preserve"><value>ابحث بالاسم أو البريد الإلكتروني...</value></data>

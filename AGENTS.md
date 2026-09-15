@@ -614,5 +614,31 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
   - Varyant seviyesinde siyah varyanta (`Id: 117`) indirim ve süre tanımlanıp mavi varyant (`Id: 148`) indirimsiz bırakılarak canlı geçiş test edildi; siyah seçildiğinde indirim ve sayaç belirdi, maviye geçildiğinde normal fiyata dönüp sayaç gizlendi (`variant-black-discount-active.png`, `variant-blue-normal-price.png`).
   - Zorunlu alan kontrolü test edildi; indirimli fiyat girilip süre boş bırakıldığında form gönderimi başarıyla engellendi.
 
+### Faz 26 (Kurumsal Sayfalar Görsel WYSIWYG Editör Entegrasyonu & Form Sadeleştirme — 15 Eylül 2026)
+- [x] **Adım 198 (Mükerrer Alanların Temizlenmesi & Çok Dilli Sekme Mimarisi)**:
+  - `Areas/Admin/Views/Sayfa/Form.cshtml`: Proje sahibinin kafasını karıştıran mükerrer `المحتوى (HTML)` ve genel `عنوان الصفحة` kutuları arayüzden gizlendi (`hidden`); arka planda Arapça içerikle otomatik senkronize edilmesi sağlandı.
+  - İki dilli modern sekme yapısı kuruldu: 🇸🇦 `اللغة العربية (الأساسية)` ve 🇬🇧 `English (اختياري)`.
+- [x] **Adım 199 (Quill.js Görsel Zengin Metin Düzenleyici Entegrasyonu)**:
+  - HTML kodlama zorunluluğu tamamen ortadan kaldırıldı; Word benzeri görsel araç çubuğu (Kalın, İtalik, Başlıklar H1-H4, Listeler, Hizalama, RTL/LTR Yönü, Link Ekleme) entegre edildi.
+  - İhtiyaç duyulduğunda kaynak kod görebilmek için "عرض / تعديل كود HTML" toggle butonu eklendi.
+  - `SharedResource.ar.resx` ve `SharedResource.en.resx` dosyalarına `Admin_SayfaIcerik`, `Admin_SayfaIcerikHint`, `Admin_ToggleHtml`, `Admin_ArabicContentTab`, `Admin_EnglishContentTab` anahtarları güncellendi/eklendi.
+- [x] **Adım 200 (SayfaController Geriye Dönük Uyumluluk & E2E Doğrulama)**:
+  - `SayfaController.cs`: `Form` GET aksiyonunda eski sayfalarda `BaslikAr` veya `IcerikAr` boşsa ana `Baslik` ve `Icerik` kolonlarından otomatik doldurulması sağlandı.
+  - Playwright MCP ile `/Admin/Sayfa/Form/1` üzerinde yeni görsel editör, sekme geçişleri ve HTML kod toggle butonları test edildi (`sayfa-form-quill-editor.png`); form kaydedilip vitrin sayfasında (`/Kurumsal/Detay/hakkimizda`) içeriğin sorunsuz görüntülendiği doğrulandı (`storefront-corporate-page-verified.png`).
+
+### Faz 27 (Dinamik Kurumsal Sayfalar Footer & ViewComponent Entegrasyonu — 15 Eylül 2026)
+- [x] **Adım 201 (KurumsalSayfalarViewComponent Mimarisi)**:
+  - `FilistinProje.Web/ViewComponents/KurumsalSayfalarViewComponent.cs`: Kurumsal sayfaları veritabanından (`_context.KurumsalSayfalar`) asenkron ve `AsNoTracking()` ile sorgulayan, silinmemiş (`!SilindiMi`) ve geçerli slug'a sahip (`!string.IsNullOrWhiteSpace(UrlSlug)`) kayıtları sıra numarasına (`OrderBy(x => x.Sira).ThenBy(x => x.Id)`) göre listeleyen bağımsız ve yüksek performanslı bir ViewComponent geliştirildi.
+  - `Views/Shared/Components/KurumsalSayfalar/Default.cshtml`: Çoklu dil desteği (`@sayfa.LocalizedBaslik`) ve `/pages/@sayfa.UrlSlug` URL yapısıyla dinamik link render eden şablon oluşturuldu.
+- [x] **Adım 202 (_Footer.cshtml Entegrasyonu & Statik Link Temizliği)**:
+  - `Views/Shared/_Footer.cshtml`: "الروابط المؤسسية" (Kurumsal / Corporate) başlığı altındaki eski hardcoded/statik linkler (`/pages/about`, `/pages/contact`, `/products`, `/Sozlesmeler/Gizlilik`, `/Sozlesmeler/MesafeliSatis`) kaldırılarak `@await Component.InvokeAsync("KurumsalSayfalar")` çağrısıyla tamamen dinamik hale getirildi.
+  - Alt bilgi barındaki (bottom bar) eski `/Sozlesmeler/Gizlilik` linki de modern standart `/pages/gizlilik` URL'sine güncellendi.
+- [x] **Adım 203 (Uçtan Uca Playwright E2E Doğrulama)**:
+  - Admin panelinden (`/Admin/Sayfa/Form`) yeni bir test sayfası eklendi (Başlık: "شروط الضمان التجريبية", Slug: "test-warranty-policy", Sıra: 7, İçerik: "هذه صفحة اختبار تجريبية لشروط الضمان والخدمة.").
+  - Vitrin ana sayfasına (`http://localhost:5002/`) gidilerek sayfa sonuna (Footer) inildi; eklenen yeni kurumsal sayfa linkinin dinamik olarak listelendiği doğrulandı (`footer-corporate-links.png`).
+  - Linke tıklandı; tarayıcının `/pages/test-warranty-policy` adresine yönlendiği, sayfa başlığı (`شروط الضمان التجريبية`) ve içeriğinin zengin metin formatında başarıyla görüntülendiği test edildi ve görsel olarak doğrulandı (`corporate-page-detail-verified.png`).
+  - Test verisi temizlendi.
+
+
 
 
