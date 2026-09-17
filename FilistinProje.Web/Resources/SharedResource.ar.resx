@@ -6115,4 +6115,34 @@
   <data name="QuickTime_1Month" xml:space="preserve">
     <value>+1 شهر</value>
   </data>
+  <data name="Admin_NoExchangePolicy" xml:space="preserve">
+    <value>غير قابل للاستبدال أو الإرجاع</value>
+  </data>
+  <data name="Admin_NoExchangePolicyHelp" xml:space="preserve">
+    <value>تفعيل هذا الخيار يعني أنه لا يمكن استبدال أو إرجاع هذا المنتج لأسباب تتعلق بالنظافة أو العروض الخاصة.</value>
+  </data>
+  <data name="Admin_NoExchangeBadgeColor" xml:space="preserve">
+    <value>لون شارة عدم الاستبدال</value>
+  </data>
+  <data name="Admin_NoExchangeBadgeColorHelp" xml:space="preserve">
+    <value>حدد لون الشارة التحذيرية التي ستظهر في صفحة تفاصيل المنتج.</value>
+  </data>
+  <data name="Product_NoExchangeNotice" xml:space="preserve">
+    <value>هذا المنتج غير قابل للاستبدال أو الإرجاع</value>
+  </data>
+  <data name="Color_Red" xml:space="preserve">
+    <value>أحمر</value>
+  </data>
+  <data name="Color_Orange" xml:space="preserve">
+    <value>برتقالي</value>
+  </data>
+  <data name="Color_Dark" xml:space="preserve">
+    <value>داكن</value>
+  </data>
+  <data name="Color_Gold" xml:space="preserve">
+    <value>ذهبي</value>
+  </data>
+  <data name="Admin_FastPalette" xml:space="preserve">
+    <value>ألوان جاهزة</value>
+  </data>
 </root>

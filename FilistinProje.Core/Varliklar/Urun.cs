@@ -37,6 +37,15 @@ namespace FilistinProje.Core.Varliklar
         public decimal HediyePaketFiyati { get; set; }
         public bool WhatsappSiparisVarMi { get; set; }
         public bool FiyatGizliMi { get; set; }
+        public bool IsExchangeable { get; set; } = true;
+        public string? NoExchangeBadgeColor { get; set; } = "#DC2626";
+
+        [NotMapped]
+        public bool DegisimYapilamazMi
+        {
+            get => !IsExchangeable;
+            set => IsExchangeable = !value;
+        }
         public decimal Maliyet { get; set; }
         public decimal KdvOrani { get; set; } = 20;
         public int UretimSuresiGun { get; set; }

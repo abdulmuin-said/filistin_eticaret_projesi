@@ -6131,4 +6131,34 @@
   <data name="QuickTime_1Month" xml:space="preserve">
     <value>+1 Month</value>
   </data>
+  <data name="Admin_NoExchangePolicy" xml:space="preserve">
+    <value>Non-Exchangeable / No Return</value>
+  </data>
+  <data name="Admin_NoExchangePolicyHelp" xml:space="preserve">
+    <value>Enable this if the item cannot be exchanged or returned due to hygiene or special promotion policies.</value>
+  </data>
+  <data name="Admin_NoExchangeBadgeColor" xml:space="preserve">
+    <value>No-Exchange Badge Color</value>
+  </data>
+  <data name="Admin_NoExchangeBadgeColorHelp" xml:space="preserve">
+    <value>Select the warning badge color to display on the product details page.</value>
+  </data>
+  <data name="Product_NoExchangeNotice" xml:space="preserve">
+    <value>This item cannot be exchanged or returned</value>
+  </data>
+  <data name="Color_Red" xml:space="preserve">
+    <value>Red</value>
+  </data>
+  <data name="Color_Orange" xml:space="preserve">
+    <value>Orange</value>
+  </data>
+  <data name="Color_Dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Color_Gold" xml:space="preserve">
+    <value>Gold</value>
+  </data>
+  <data name="Admin_FastPalette" xml:space="preserve">
+    <value>Quick Palette</value>
+  </data>
 </root>

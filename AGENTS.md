@@ -640,6 +640,19 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
   - Linke tıklandı; tarayıcının `/pages/test-warranty-policy` adresine yönlendiği, sayfa başlığı (`شروط الضمان التجريبية`) ve içeriğinin zengin metin formatında başarıyla görüntülendiği test edildi ve görsel olarak doğrulandı (`corporate-page-detail-verified.png`).
   - Test verisi temizlendi.
 
-
-
-
+### Faz 28 (Değişim Yapılamaz Politikası & Dinamik Renk Seçici Rozeti — 17 Eylül 2026)
+- [x] **Adım 204 (Dual Migration & Entity Katmanı)**:
+  - `FilistinProje.Core/Varliklar/Urun.cs`: `IsExchangeable` (bool default `true`), `NoExchangeBadgeColor` (string default `'#DC2626'`) ve ters mantığı form bağlamayla köprüleyen `DegisimYapilamazMi` getter/setter eklendi.
+  - EF Core Migration `20260917163207_AddNoExchangeFieldsToUrunler.cs` oluşturuldu ve DB'ye uygulandı (`dotnet ef database update`).
+  - `Program.cs` `EnsureKnownSchemaDriftAsync` raw SQL bloğuna `ALTER TABLE "Urunler" ADD COLUMN IF NOT EXISTS "IsExchangeable" boolean NOT NULL DEFAULT true;` ve `ALTER TABLE "Urunler" ADD COLUMN IF NOT EXISTS "NoExchangeBadgeColor" text NOT NULL DEFAULT '#DC2626';` eklendi.
+- [x] **Adım 205 (Çok Dilli Lokalizasyon — AR & EN)**:
+  - `SharedResource.ar.resx` ve `SharedResource.en.resx`: `Admin_NoExchangePolicy`, `Admin_NoExchangePolicyHelp`, `Admin_NoExchangeBadgeColor`, `Admin_NoExchangeBadgeColorHelp`, `Product_NoExchangeNotice`, `Admin_FastPalette`, hazır renk etiketleri eklendi.
+- [x] **Adım 206 (Yönetim Paneli Formları & Dinamik Renk Seçici)**:
+  - `Areas/Admin/Controllers/UrunController.cs`: `ApplyProductFields` metodunda `IsExchangeable` ve `NoExchangeBadgeColor` eşlendi; `NormalizeProductInput` metodunda `NormalizeBadgeColor` ile renk doğrulaması yapıldı.
+  - `Areas/Admin/Views/Urun/Duzenle.cshtml` ve `Ekle.cshtml`: Fiyat ve işlemler sekmesine "غير قابل للاستبدال أو الإرجاع" switch tile'ı, açılır-kapanır yumuşak animasyonlu renk seçici kutusu, HTML5 color input, hex text input, hızlı hazır palet butonları (`#DC2626`, `#EA580C`, `#1F2937`, `#CA8A04`) ve canlı rozet önizlemesi eklendi.
+- [x] **Adım 207 (Vitrin Detay Sayfası Şık Uyarı Rozeti)**:
+  - `Views/Urun/Detay.cshtml`: Satın alma aksiyonlarının altına ürün `!Model.IsExchangeable` olduğunda adminin seçtiği arka plan rengiyle şık `<i class="fas fa-ban"></i>` ikonlu, kontrastı ayarlanmış (açık/koyu otomatik) çok dilli uyarı rozeti eklendi. Güven rozetleri alanındaki iade garantisi kutusu da bu ürünlerde dinamik olarak "غير قابل للاستبدال أو الإرجاع" olarak güncellendi.
+- [x] **Adım 208 (Playwright Uçtan Uca E2E Doğrulama)**:
+  - Admin panelinden Ürün #112 düzenlenerek toggle açıldı, `#7C3AED` özel mor renk seçilip kaydedildi.
+  - Vitrin detay sayfasında (`/Urun/Detay/test-1-essence-mascara-lash-princess-112`) rozetin mor arka plan (`rgb(124, 58, 237)`), beyaz metin ve Arapça/İngilizce olarak başarıyla görüntülendiği doğrulandı (`element-2026-09-17T16-40-38-641Z.png`).
+  - Panelden toggle kapatılıp kaydedildiğinde rozetin vitrinden anında kaybolduğu doğrulandı (`badgeExists: false`).

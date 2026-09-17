@@ -709,6 +709,58 @@
                                     </span>
                                     <input asp-for="FiyatGizliMi" class="form-check-input" type="checkbox">
                                 </label>
+                                <label class="ca-switch-tile form-check form-switch">
+                                    <span class="ca-switch-copy">
+                                        <span class="form-check-label fw-semibold">@Localizer["Admin_NoExchangePolicy"]</span>
+                                        <span class="small text-muted d-block mt-1">@Localizer["Admin_NoExchangePolicyHelp"]</span>
+                                    </span>
+                                    <input asp-for="DegisimYapilamazMi" id="noExchangeToggle" class="form-check-input" type="checkbox">
+                                </label>
+                            </div>
+
+                            <div id="noExchangeColorSection" class="ca-no-exchange-wrapper mt-3 p-3 rounded-3 border" style="background:#fffcf8; border-color:var(--ca-border); display: @(Model.DegisimYapilamazMi ? "block" : "none");">
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                                    <div>
+                                        <div class="fw-semibold text-dark"><i class="fas fa-palette me-1.5 text-danger"></i> @Localizer["Admin_NoExchangeBadgeColor"]</div>
+                                        <div class="small text-muted">@Localizer["Admin_NoExchangeBadgeColorHelp"]</div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="small text-muted">@Localizer["Admin_Preview"]:</span>
+                                        <span id="noExchangeBadgePreview" class="badge px-3 py-2 d-inline-flex align-items-center gap-2 text-white shadow-sm" style="background-color: @(string.IsNullOrWhiteSpace(Model.NoExchangeBadgeColor) ? "#DC2626" : Model.NoExchangeBadgeColor); font-size: 0.82rem; border-radius: 8px;">
+                                            <i class="fas fa-ban"></i>
+                                            <span>@Localizer["Product_NoExchangeNotice"]</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center flex-wrap gap-3 mt-3 pt-2 border-top" style="border-color:var(--ca-border);">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <input type="color" id="noExchangeColorPicker" class="form-control form-control-color border-0 p-0" style="width: 44px; height: 38px; cursor: pointer; border-radius: 8px; background: transparent;" value="@(string.IsNullOrWhiteSpace(Model.NoExchangeBadgeColor) ? "#DC2626" : Model.NoExchangeBadgeColor)" title="@Localizer["Admin_NoExchangeBadgeColor"]" />
+                                        <div class="input-group input-group-sm" style="width: 130px;">
+                                            <input type="text" asp-for="NoExchangeBadgeColor" id="noExchangeColorInput" class="form-control font-monospace text-uppercase" maxlength="7" placeholder="#DC2626" value="@(string.IsNullOrWhiteSpace(Model.NoExchangeBadgeColor) ? "#DC2626" : Model.NoExchangeBadgeColor)" />
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                                        <span class="small text-muted me-1">@Localizer["Admin_FastPalette"]:</span>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1.5 py-1 px-2.5 ca-palette-btn" data-color="#DC2626" style="border-radius: 6px; font-size: 0.78rem;">
+                                            <span style="width: 14px; height: 14px; border-radius: 50%; background: #DC2626; display: inline-block;"></span>
+                                            <span>@Localizer["Color_Red"]</span>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1.5 py-1 px-2.5 ca-palette-btn" data-color="#EA580C" style="border-radius: 6px; font-size: 0.78rem;">
+                                            <span style="width: 14px; height: 14px; border-radius: 50%; background: #EA580C; display: inline-block;"></span>
+                                            <span>@Localizer["Color_Orange"]</span>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1.5 py-1 px-2.5 ca-palette-btn" data-color="#1F2937" style="border-radius: 6px; font-size: 0.78rem;">
+                                            <span style="width: 14px; height: 14px; border-radius: 50%; background: #1F2937; display: inline-block;"></span>
+                                            <span>@Localizer["Color_Dark"]</span>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1.5 py-1 px-2.5 ca-palette-btn" data-color="#CA8A04" style="border-radius: 6px; font-size: 0.78rem;">
+                                            <span style="width: 14px; height: 14px; border-radius: 50%; background: #CA8A04; display: inline-block;"></span>
+                                            <span>@Localizer["Color_Gold"]</span>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             @await Html.PartialAsync("_BadgeColorEditor", Model)
                             @await Html.PartialAsync("_GiftPackageOptionEditor", Model)
@@ -1112,5 +1164,66 @@
                 return false;
             }
         });
+
+        // --- No Exchange Policy Toggle & Dynamic Color Picker ---
+        (function() {
+            const toggle = document.getElementById('noExchangeToggle');
+            const colorSection = document.getElementById('noExchangeColorSection');
+            const colorPicker = document.getElementById('noExchangeColorPicker');
+            const colorInput = document.getElementById('noExchangeColorInput');
+            const preview = document.getElementById('noExchangeBadgePreview');
+            const paletteBtns = document.querySelectorAll('.ca-palette-btn');
+
+            if (!toggle || !colorSection) return;
+
+            function syncColor(val) {
+                if (!val) return;
+                let hex = val.trim();
+                if (!hex.startsWith('#')) hex = '#' + hex;
+                if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
+                    if (colorPicker) colorPicker.value = hex;
+                    if (colorInput) colorInput.value = hex.toUpperCase();
+                    if (preview) preview.style.backgroundColor = hex;
+                }
+            }
+
+            toggle.addEventListener('change', function() {
+                if (this.checked) {
+                    colorSection.style.display = 'block';
+                    colorSection.style.opacity = '0';
+                    colorSection.style.transition = 'opacity 0.25s ease';
+                    requestAnimationFrame(() => {
+                        colorSection.style.opacity = '1';
+                    });
+                } else {
+                    colorSection.style.transition = 'opacity 0.2s ease';
+                    colorSection.style.opacity = '0';
+                    setTimeout(() => {
+                        colorSection.style.display = 'none';
+                    }, 200);
+                }
+            });
+
+            colorPicker?.addEventListener('input', function() {
+                syncColor(this.value);
+            });
+
+            colorInput?.addEventListener('input', function() {
+                syncColor(this.value);
+            });
+
+            paletteBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const color = this.getAttribute('data-color');
+                    if (color) syncColor(color);
+                });
+            });
+
+            // Initial sync
+            if (colorInput && colorInput.value) {
+                syncColor(colorInput.value);
+            }
+        })();
     })();
 </script>

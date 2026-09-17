@@ -2733,6 +2733,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             urun.YeniUrunEtiketRengi = NormalizeBadgeColor(urun.YeniUrunEtiketRengi, "#B33A3A");
             urun.KampanyaEtiketRengi = NormalizeBadgeColor(urun.KampanyaEtiketRengi, "#31543B");
             urun.IndirimEtiketRengi = NormalizeBadgeColor(urun.IndirimEtiketRengi, "#B86A2F");
+            urun.NoExchangeBadgeColor = NormalizeBadgeColor(urun.NoExchangeBadgeColor, "#DC2626");
         }
 
         private static void RepairProductTextForDisplay(Urun urun)
@@ -3676,6 +3677,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             target.AnaSayfadaGoster = source.AnaSayfadaGoster;
             target.WhatsappSiparisVarMi = source.WhatsappSiparisVarMi;
             target.FiyatGizliMi = source.FiyatGizliMi;
+            target.IsExchangeable = source.IsExchangeable;
+            target.NoExchangeBadgeColor = source.NoExchangeBadgeColor;
             target.MinSiparisAdedi = source.MinSiparisAdedi;
             target.MaxSiparisAdedi = source.MaxSiparisAdedi;
             target.KategoriId = source.KategoriId;
