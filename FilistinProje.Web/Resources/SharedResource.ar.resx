@@ -2038,6 +2038,24 @@
   <data name="GiftNotePlaceholder" xml:space="preserve">
     <value>اكتب ملاحظة الهدية الخاصة بك...</value>
   </data>
+  <data name="PackagingFee" xml:space="preserve">
+    <value>رسوم التغليف</value>
+  </data>
+  <data name="GiftPackaging" xml:space="preserve">
+    <value>تغليف هدية</value>
+  </data>
+  <data name="SelectionSummary" xml:space="preserve">
+    <value>ملخص الاختيار</value>
+  </data>
+  <data name="ProductUnitPrice" xml:space="preserve">
+    <value>سعر المنتج</value>
+  </data>
+  <data name="TotalPayable" xml:space="preserve">
+    <value>المجموع المستحق</value>
+  </data>
+  <data name="CalculationFormula" xml:space="preserve">
+    <value>تفاصيل الحساب</value>
+  </data>
   <data name="FreeShippingNotice" xml:space="preserve">
     <value>أضف {0} أخرى للشحن المجاني!</value>
   </data>

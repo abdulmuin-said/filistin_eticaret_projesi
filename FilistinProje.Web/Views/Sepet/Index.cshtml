@@ -7,6 +7,8 @@
     var siteSettings = SiteSettingsService.GetSettings();
     var toplamAdet = Model.Sum(x => x.Adet);
     var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
+    decimal urunlerToplami = Model.Sum(x => x.Fiyat * x.Adet);
+    decimal paketlemeToplami = Model.Where(x => x.HediyePaketi).Sum(x => x.HediyePaketFiyati * x.Adet);
     decimal sepetToplami = Model.Sum(x => x.Toplam);
     decimal indirimTutari = (decimal)(ViewBag.IndirimTutari ?? 0);
     decimal ucretsizKargoLimiti = (decimal)(ViewBag.UcretsizKargoLimiti ?? 500);
@@ -169,9 +171,16 @@
                                 }
                                 @if (item.HediyePaketi)
                                 {
-                                    <span class="inline-flex items-center gap-1 text-[10px] bg-brand-olive text-white font-semibold rounded-full px-2.5 py-0.5 mb-1">
-                                        <i class="fas fa-gift text-[10px]"></i> @(string.IsNullOrWhiteSpace(item.LocalizedHediyePaketAdi) ? Localizer["GiftWrapShort"].Value : item.LocalizedHediyePaketAdi) (+@item.HediyePaketFiyati.ToString("N2") @currencySymbol / @Localizer["Piece"])
-                                    </span>
+                                    <div class="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs text-brand-olive bg-brand-warmcream/90 border border-brand-border/80 rounded-lg px-2.5 py-1 w-fit shadow-xs">
+                                        <i class="fas fa-gift text-brand-gold text-[11px]"></i>
+                                        <span class="font-medium">@(string.IsNullOrWhiteSpace(item.LocalizedHediyePaketAdi) ? Localizer["GiftPackaging"].Value : item.LocalizedHediyePaketAdi):</span>
+                                        <span class="font-semibold text-brand-gold">+@item.HediyePaketFiyati.ToString("N2") @currencySymbol</span>
+                                        <span class="text-[10px] text-brand-mutedtext">/ @Localizer["Piece"]</span>
+                                        @if (item.Adet > 1)
+                                        {
+                                            <span class="text-[10px] text-brand-mutedtext font-medium">(@((item.HediyePaketFiyati * item.Adet).ToString("N2")) @currencySymbol)</span>
+                                        }
+                                    </div>
                                 }
                             </div>
                         </div>
@@ -283,8 +292,15 @@
                     <div class="space-y-3 text-sm mb-5">
                         <div class="flex justify-between text-brand-mutedtext">
                             <span>@Localizer["Subtotal"]</span>
-                            <span>@currencySymbol@sepetToplami.ToString("N2")</span>
+                            <span id="cartSubtotal">@currencySymbol@urunlerToplami.ToString("N2")</span>
                         </div>
+                        @if (paketlemeToplami > 0)
+                        {
+                            <div class="flex justify-between text-brand-mutedtext" id="cartPackagingFeeRow">
+                                <span class="flex items-center gap-1.5"><i class="fas fa-gift text-brand-gold text-xs"></i>@Localizer["PackagingFee"]</span>
+                                <span class="font-medium text-brand-olive" id="cartPackagingFee">+@currencySymbol@paketlemeToplami.ToString("N2")</span>
+                            </div>
+                        }
                         @if (indirimTutari > 0)
                         {
                             <div class="flex justify-between text-green-600">

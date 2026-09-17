@@ -677,3 +677,20 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
 - [x] **Adım 213 (Birim Testler & Playwright E2E Doğrulama)**:
   - `WholesaleTierPricingTests.cs` içine `CartPricing_HierarchicalWholesaleDiscountPriority_AppliesCorrectly` testi eklendi; varyant kuralının ürün ve grup kurallarını öncelikli olarak ezdiği hem sepet hem sipariş motorunda doğrulandı (`99/99 passed`).
   - Playwright MCP ile `/Admin/Toptanci/UrunGruplari` üzerinde grup ve çoklu varyantlı ürün seçildi, varyant dropdown'ının dinamik olarak yüklendiği (`اللون: أسود`, `اللون: أزرق` vb.), siyah varyanta (`Id: 117`) min. 15 adet ve %18 iskonto girilerek kaydedildiği ve kayıtlı iskontolar tablosunda varyant rozetiyle (`اللون: أسود`) listelendiği test edilip ekran görüntüsü alındı (`wholesale_variant_discount_verified.png`).
+
+### Faz 30 (Hediye ve Özel Paketleme Ücretinin Ayrıştırılması & Şeffaf Fiyatlandırma — 17 Eylül 2026)
+- [x] **Adım 214 (Frontend Dinamik Fiyat JS Mantığı & Vitrin Fiyatı İzolasyonu)**:
+  - `Views/Urun/Detay.cshtml` & `_ProductInfo.cshtml`: `updatePriceWithFrame()` fonksiyonundaki ek fiyat hesaplamasından `giftPrice` tamamen çıkarıldı; `#priceDisplay` ve `#oldPriceDisplay` hediye paketi seçildiğinde değişmez, saf `basePrice + cerceveFarki` değerinde sabit kalır.
+  - `#selectionSummary` özet bileşeni eklendi: varyant, çerçeve farkı, saf ürün birim fiyatı (`#summaryProductPrice`), seçilen hediye paketleme satırı (`#summaryGiftRow`), genel toplam (`#summaryFiyat`) ve matematiksel formül dökümü (`#summaryBreakdown` — örn. `(7.50 ₪ × 2) + (50.00 ₪ × 2) = 115.00 ₪`).
+- [x] **Adım 215 (Alışveriş Sepeti & Ödeme Şeffaf Ayrımı)**:
+  - `Views/Sepet/Index.cshtml`: Ürün satırında birim fiyat saf ürün fiyatı olarak tutuldu (`7.50 ₪ / قطعة`); hediye paketi ürün başlığı altında altın sarısı kutu ile ayrıştırıldı (`تغليف قياسي: +50.00 ₪ / قطعة (100.00 ₪)`).
+  - Sipariş özetinde `المجموع الفرعي` (Subtotal) yalnızca ürünleri kapsar (`15.00 ₪`); `رسوم التغليف` (Packaging Fee) bağımsız bir ara toplam satırı olarak dökülür (`+100.00 ₪`).
+  - `Views/Siparis/_OrderSummary.cshtml`: Ödeme adımında `#checkoutPackagingFeeRow` ile paketleme bedeli ayrı bir ara toplam kalemi olarak eklendi.
+- [x] **Adım 216 (Müşteri Sipariş Detayı & Fatura PDF Senkronizasyonu)**:
+  - `Views/Profil/SiparisDetay.cshtml`: Tablo özetinde ürünler toplamı ve paketleme bedeli ayrıştırıldı.
+  - `FilistinProje.Web/Services/FaturaPdfService.cs`: PDF faturada ürünler toplamından paketleme bedeli ayrılarak `"رسوم التغليف / Packaging Fee"` kalemi eklendi.
+- [x] **Adım 217 (Çok Dilli Lokalizasyon — AR & EN)**:
+  - `SharedResource.ar.resx` ve `SharedResource.en.resx`: `PackagingFee`, `GiftPackaging`, `SelectionSummary`, `ProductUnitPrice`, `TotalPayable`, `CalculationFormula` anahtarları eklendi.
+- [x] **Adım 218 (Birim Testler & Playwright E2E Doğrulama)**:
+  - `dotnet test FilistinProje.Tests` 99 test 0 hata ile doğrulandı.
+  - Playwright MCP ile ürün detayında hediye paketi seçildiğinde `#priceDisplay`'in sabit kaldığı (`7.50 ₪`), seçim özetinde şeffaf formülün basıldığı, sepete eklendiğinde `Subtotal: 15.00 ₪`, `Packaging Fee: +100.00 ₪`, `Total: 115.00 ₪` olarak hesaplandığı, ödeme sayfasında dökümün korunduğu ve İngilizce dilinde hatasız çalıştığı doğrulanarak ekran görüntüleri kaydedildi (`product_detail.png`, `cart_page.png`, `checkout_page.png`).

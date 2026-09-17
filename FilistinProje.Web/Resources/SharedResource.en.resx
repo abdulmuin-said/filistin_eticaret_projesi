@@ -2041,6 +2041,24 @@
   <data name="GiftNotePlaceholder" xml:space="preserve">
     <value>Write your gift note...</value>
   </data>
+  <data name="PackagingFee" xml:space="preserve">
+    <value>Packaging Fee</value>
+  </data>
+  <data name="GiftPackaging" xml:space="preserve">
+    <value>Gift Packaging</value>
+  </data>
+  <data name="SelectionSummary" xml:space="preserve">
+    <value>Selection Summary</value>
+  </data>
+  <data name="ProductUnitPrice" xml:space="preserve">
+    <value>Product Price</value>
+  </data>
+  <data name="TotalPayable" xml:space="preserve">
+    <value>Total Payable</value>
+  </data>
+  <data name="CalculationFormula" xml:space="preserve">
+    <value>Calculation Details</value>
+  </data>
   <data name="FreeShippingNotice" xml:space="preserve">
     <value>Add {0} more for free shipping!</value>
   </data>

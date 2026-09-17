@@ -11,6 +11,8 @@
     var sepetItems = ViewBag.SepetItems as List<FilistinProje.Core.Varliklar.SepetItem> ?? new List<FilistinProje.Core.Varliklar.SepetItem>();
     decimal ucretsizKargoLimiti = (decimal)(ViewBag.UcretsizKargoLimiti ?? 500);
     decimal codBedel = (decimal)(ViewBag.KapidaOdemeHizmetBedeli ?? 0);
+    decimal toplamPaketlemeUcreti = sepetItems.Where(x => x.HediyePaketi).Sum(x => x.HediyePaketFiyati * x.Adet);
+    decimal urunlerToplami = araToplam - toplamPaketlemeUcreti;
     decimal indirimliToplam = araToplam - indirim;
     decimal kalanTutar = Math.Max(0, ucretsizKargoLimiti - indirimliToplam);
     int shippingProgress = ucretsizKargoLimiti > 0 ? Math.Min(100, (int)(indirimliToplam / ucretsizKargoLimiti * 100)) : 100;
@@ -27,7 +29,7 @@
         {
             <div class="flex gap-3">
                 <div class="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-brand-cream"><img src="@item.UrunResimUrl" alt="@item.UrunBaslik" class="h-full w-full object-cover" loading="lazy"><span class="absolute end-1 top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-olive px-1 text-[10px] font-bold text-white">@item.Adet</span></div>
-                <div class="min-w-0 flex-1"><h3 class="line-clamp-2 text-xs font-semibold leading-relaxed text-brand-darktext">@item.UrunBaslik</h3>@if (!string.IsNullOrWhiteSpace(item.SecenekAdi)) { <p class="mt-0.5 truncate text-[11px] text-brand-mutedtext">@item.SecenekAdi</p> }@if (item.HediyePaketi) { <p class="mt-0.5 text-[11px] text-brand-gold"><i class="fas fa-gift me-1"></i>@(string.IsNullOrWhiteSpace(item.LocalizedHediyePaketAdi) ? Localizer["GiftWrap"].Value : item.LocalizedHediyePaketAdi) (+@item.HediyePaketFiyati.ToString("N2") @currencySymbol / @Localizer["Piece"])</p> }<p class="mt-1 text-xs font-semibold text-brand-olive">@item.Toplam.ToString("N2") @currencySymbol</p></div>
+                <div class="min-w-0 flex-1"><h3 class="line-clamp-2 text-xs font-semibold leading-relaxed text-brand-darktext">@item.UrunBaslik</h3>@if (!string.IsNullOrWhiteSpace(item.SecenekAdi)) { <p class="mt-0.5 truncate text-[11px] text-brand-mutedtext">@item.SecenekAdi</p> }@if (item.HediyePaketi) { <p class="mt-0.5 text-[11px] text-brand-gold font-medium flex items-center gap-1"><i class="fas fa-gift text-brand-gold text-[10px]"></i><span>@(string.IsNullOrWhiteSpace(item.LocalizedHediyePaketAdi) ? Localizer["GiftPackaging"].Value : item.LocalizedHediyePaketAdi) (+@item.HediyePaketFiyati.ToString("N2") @currencySymbol / @Localizer["Piece"])</span></p> }<p class="mt-1 text-xs font-semibold text-brand-olive">@item.Toplam.ToString("N2") @currencySymbol</p></div>
             </div>
         }
     </div>
@@ -44,7 +46,14 @@
     </div>
 
     <dl class="space-y-3 text-sm">
-        <div class="flex justify-between text-brand-mutedtext"><dt>@Localizer["Subtotal"]</dt><dd>@araToplam.ToString("N2") @currencySymbol</dd></div>
+        <div class="flex justify-between text-brand-mutedtext"><dt>@Localizer["Subtotal"]</dt><dd id="checkoutSubtotal">@urunlerToplami.ToString("N2") @currencySymbol</dd></div>
+        @if (toplamPaketlemeUcreti > 0)
+        {
+            <div id="checkoutPackagingFeeRow" class="flex justify-between text-brand-mutedtext">
+                <dt class="flex items-center gap-1.5"><i class="fas fa-gift text-brand-gold text-xs"></i>@Localizer["PackagingFee"]</dt>
+                <dd id="checkoutPackagingFee" class="font-medium text-brand-olive">+@toplamPaketlemeUcreti.ToString("N2") @currencySymbol</dd>
+            </div>
+        }
         @if (indirim > 0) { <div class="flex justify-between font-medium text-brand-gold"><dt>@Localizer["Discount"] (@kuponKodu)</dt><dd>-@indirim.ToString("N2") @currencySymbol</dd></div> }
         <div id="checkoutKargoSatiri" class="flex justify-between text-brand-mutedtext"><dt>@Localizer["ShippingFee"]</dt><dd id="checkoutKargoUcreti" class="font-medium text-brand-olive">@((ViewBag.GosterilecekKargoBedeli == 0) ? Localizer["Free"].Value : $"{((decimal)ViewBag.GosterilecekKargoBedeli):N2} {currencySymbol}")</dd></div>
         <div id="checkoutCodSurchargeSatiri" class="hidden justify-between text-brand-mutedtext"><dt>@Localizer["CODServiceFee"]</dt><dd id="checkoutCodSurchargeUcreti" class="font-medium text-brand-gold">@codBedel.ToString("N2") @currencySymbol</dd></div>

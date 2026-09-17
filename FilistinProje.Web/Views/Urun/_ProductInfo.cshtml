@@ -594,10 +594,6 @@ function toggleGiftWrap(container) {
             var cerceve = selectedFrame ? selectedFrame.value : null;
             var cerceveFarki = calcFrameFiyat(olcu, cerceve || 'Çerçevesiz');
             var totalPrice = basePrice + cerceveFarki;
-            if (checkbox.checked) {
-                var giftPriceInput = document.getElementById('hediyePaketFiyatiHidden');
-                if (giftPriceInput) totalPrice += parseFloat(giftPriceInput.value) || 0;
-            }
             priceDisplay.innerHTML = window.formatMoney(totalPrice) + ' @currencySymbol';
         }
     }

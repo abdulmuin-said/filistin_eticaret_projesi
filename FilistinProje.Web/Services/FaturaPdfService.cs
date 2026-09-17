@@ -285,9 +285,13 @@ namespace FilistinProje.Web.Services
 
                 col.Item().AlignRight().Width(260).PaddingTop(8).Column(summary =>
                 {
-                    var araToplam = siparis.SiparisDetaylari
+                    var urunlerToplami = siparis.SiparisDetaylari
                         .Where(d => !d.SilindiMi)
-                        .Sum(d => (d.Adet * d.BirimFiyat) + (d.HediyePaketi ? d.HediyePaketFiyati * d.Adet : 0));
+                        .Sum(d => d.Adet * d.BirimFiyat);
+
+                    var paketlemeToplami = siparis.SiparisDetaylari
+                        .Where(d => !d.SilindiMi && d.HediyePaketi)
+                        .Sum(d => d.HediyePaketFiyati * d.Adet);
 
                     void SummaryRow(string label, decimal amount, string? color = null, bool bold = false)
                     {
@@ -301,7 +305,10 @@ namespace FilistinProje.Web.Services
                         });
                     }
 
-                    SummaryRow("المجموع الفرعي / Subtotal", araToplam);
+                    SummaryRow("المجموع الفرعي / Subtotal", urunlerToplami);
+
+                    if (paketlemeToplami > 0)
+                        SummaryRow("رسوم التغليف / Packaging Fee", paketlemeToplami);
 
                     if (siparis.IndirimTutari > 0)
                         SummaryRow("الخصم / Discount", -siparis.IndirimTutari, Colors.Red.Medium);

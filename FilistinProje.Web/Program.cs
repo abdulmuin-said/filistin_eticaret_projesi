@@ -1385,12 +1385,9 @@ BEGIN
     ALTER TABLE "UrunSecenekleri" ADD COLUMN IF NOT EXISTS "FiyatFarki" numeric NOT NULL DEFAULT 0;
     ALTER TABLE "UrunSecenekleri" ADD COLUMN IF NOT EXISTS "IndirimliFiyat" numeric NULL;
     ALTER TABLE "UrunSecenekleri" ADD COLUMN IF NOT EXISTS "IndirimBitisTarihi" timestamp with time zone NULL;
-    DO $$
-    BEGIN
-        IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'UrunSecenek') THEN
-            ALTER TABLE "UrunSecenek" ADD COLUMN IF NOT EXISTS "IndirimBitisTarihi" timestamp with time zone NULL;
-        END IF;
-    END $$;
+    IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'UrunSecenek') THEN
+        ALTER TABLE "UrunSecenek" ADD COLUMN IF NOT EXISTS "IndirimBitisTarihi" timestamp with time zone NULL;
+    END IF;
     ALTER TABLE "UrunSecenekleri" ADD COLUMN IF NOT EXISTS "GorselUrl" text NOT NULL DEFAULT '';
     ALTER TABLE "UrunSecenekleri" ADD COLUMN IF NOT EXISTS "KisilestirmeMetni" text NOT NULL DEFAULT '';
     ALTER TABLE "UrunSecenekleri" ADD COLUMN IF NOT EXISTS "MalzemeTuru" text NOT NULL DEFAULT '';

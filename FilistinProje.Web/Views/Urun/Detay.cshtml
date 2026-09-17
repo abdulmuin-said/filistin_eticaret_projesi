@@ -713,6 +713,50 @@
                     </div>
                 }
 
+                <div id="selectionSummary" class="hidden rounded-xl border border-brand-border/80 bg-brand-warmcream/60 p-4 space-y-2 text-xs text-brand-darktext transition-all shadow-sm">
+                    <div class="flex items-center justify-between border-b border-brand-border/60 pb-2">
+                        <span class="font-semibold uppercase tracking-wider text-[11px] text-brand-olive flex items-center gap-1.5">
+                            <i class="fas fa-list-check text-brand-gold"></i>@Localizer["SelectionSummary"]
+                        </span>
+                        <span id="summaryGiftBadge" class="hidden inline-flex items-center gap-1 rounded-full bg-brand-olive px-2 py-0.5 text-[10px] font-medium text-white">
+                            <i class="fas fa-gift text-[9px]"></i>@Localizer["GiftPackaging"]
+                        </span>
+                    </div>
+
+                    <div id="summaryVariantRow" class="hidden flex items-center justify-between text-brand-mutedtext">
+                        <span>@Localizer["Variant"]:</span>
+                        <span id="summaryOlcu" class="font-medium text-brand-darktext">-</span>
+                    </div>
+
+                    <div id="summaryFrameRow" class="hidden flex items-center justify-between text-brand-mutedtext">
+                        <span>@Localizer["FrameLabel"]:</span>
+                        <span id="summaryCerceve" class="font-medium text-brand-darktext">-</span>
+                    </div>
+
+                    <div class="flex items-center justify-between text-brand-mutedtext">
+                        <span>@Localizer["ProductUnitPrice"]:</span>
+                        <span id="summaryProductPrice" class="font-medium text-brand-darktext">-</span>
+                    </div>
+
+                    <div id="summaryGiftRow" class="hidden flex items-center justify-between font-medium text-brand-olive">
+                        <span id="summaryGiftTitle" class="flex items-center gap-1">
+                            <i class="fas fa-gift text-brand-gold"></i>
+                            <span id="summaryGiftName">+ @Localizer["GiftPackaging"]:</span>
+                        </span>
+                        <span id="summaryGiftPrice" class="font-semibold text-brand-gold">-</span>
+                    </div>
+
+                    <div class="pt-2 border-t border-brand-border/70 flex items-center justify-between font-bold text-sm text-brand-olive">
+                        <span>@Localizer["TotalPayable"]:</span>
+                        <div class="text-end">
+                            <span id="summaryFiyat" class="text-base text-brand-olive"></span>
+                            <span id="summaryBirimFiyat" class="block text-[10px] font-normal text-brand-mutedtext"></span>
+                        </div>
+                    </div>
+
+                    <div id="summaryBreakdown" class="text-[11px] text-brand-mutedtext text-end font-mono"></div>
+                </div>
+
                 <div class="product-purchase-actions flex items-end gap-3">
                     <div><label class="mb-2 block text-xs font-medium uppercase tracking-widest text-brand-darktext">@Localizer["Quantity"]</label><div class="flex h-12 items-center border border-brand-border bg-white"><button type="button" class="flex h-full w-10 items-center justify-center hover:bg-brand-cream" onclick="decreaseQuantity()">-</button><input id="productQuantity" type="number" min="@minSiparisAdedi" max="@maxSiparisAdedi" value="@minSiparisAdedi" class="h-full w-12 border-0 bg-transparent p-0 text-center text-sm font-semibold focus:ring-0" readonly /><button type="button" class="flex h-full w-10 items-center justify-center hover:bg-brand-cream" onclick="increaseQuantity()">+</button></div></div>
                     <button id="ajaxSepetBtn" type="button" class="flex h-12 min-w-0 flex-1 items-center justify-center gap-2 bg-brand-olive px-4 text-xs font-bold uppercase tracking-widest text-white transition-colors hover:bg-[#1c2001] disabled:cursor-wait disabled:opacity-70"><i class="fas fa-shopping-bag add-to-cart-icon"></i><span class="add-to-cart-text">@Localizer["AddToCart"]</span></button>
@@ -1388,6 +1432,7 @@ function changeProductImage(imageUrl, thumbnailElement, altText) {
 
 }
 
+const PRODUCT_BASE_PRICE = @gosterilecekFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture);
 const FRAME_PRICE_PER_METER = 250;
 
 function parseOlcu(olcuText) {
@@ -1409,54 +1454,116 @@ function calcFrameFiyat(olcuText, cerceve) {
 }
 
 function updateSelectionSummary() {
-    var selectedVariant = document.querySelector('.variant-radio:checked');
-    var selectedFrame = document.querySelector('.frame-radio:checked');
     var summary = document.getElementById('selectionSummary');
     if (!summary) return;
 
-    if (!selectedVariant && !selectedFrame) {
+    var selectedVariant = document.querySelector('.variant-radio:checked');
+    var selectedFrame = document.querySelector('.frame-radio:checked');
+    var selectedGiftPackage = document.querySelector('.gift-package-radio:checked');
+
+    var olcu = selectedVariant ? (selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '-') : '-';
+    var cerceve = selectedFrame ? selectedFrame.value : null;
+    var temelFiyat = selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-price')) || 0) : PRODUCT_BASE_PRICE;
+    var adet = parseInt(document.getElementById('productQuantity')?.value) || 1;
+    var cerceveFarki = selectedVariant ? calcFrameFiyat(olcu, cerceve || 'Çerçevesiz') : 0;
+    var unitProductPrice = temelFiyat + cerceveFarki;
+    var productTotal = unitProductPrice * adet;
+
+    var giftPrice = selectedGiftPackage && selectedGiftPackage.value ? (parseFloat(selectedGiftPackage.dataset.price || '0') || 0) : 0;
+    var giftTotal = giftPrice * adet;
+    var grandTotal = productTotal + giftTotal;
+
+    var hasMultipleVariants = document.querySelectorAll('.variant-radio').length > 1;
+    var hasPackaging = giftPrice > 0;
+    var hasFrame = cerceveFarki > 0 || (selectedFrame && selectedFrame.value && selectedFrame.value !== 'Çerçevesiz');
+    var hasMultipleQty = adet > 1;
+
+    if (!hasPackaging && !hasFrame && !hasMultipleVariants && !hasMultipleQty) {
         summary.classList.add('hidden');
         return;
     }
 
-    var olcu = selectedVariant ? selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '-' : '-';
-    var cerceve = selectedFrame ? selectedFrame.value : null;
-    var temelFiyat = selectedVariant ? parseFloat(selectedVariant.getAttribute('data-price')) || 0 : 0;
-    var adet = parseInt(document.getElementById('productQuantity')?.value) || 1;
-    var cerceveFarki = selectedVariant ? calcFrameFiyat(olcu, cerceve || 'Çerçevesiz') : 0;
-    var toplamBirim = temelFiyat + cerceveFarki;
-    var toplam = toplamBirim * adet;
-
+    // Varyant satırı
+    var variantRow = document.getElementById('summaryVariantRow');
     var summaryOlcuEl = document.getElementById('summaryOlcu');
-    if (summaryOlcuEl) summaryOlcuEl.textContent = olcu;
-
-    var summaryCerceveEl = document.getElementById('summaryCerceve');
-    if (summaryCerceveEl) {
-        summaryCerceveEl.textContent = cerceve || '@Localizer["SelectFrame"]';
+    if (variantRow && summaryOlcuEl) {
+        if (hasMultipleVariants && olcu && olcu !== '-') {
+            summaryOlcuEl.textContent = olcu;
+            variantRow.classList.remove('hidden');
+        } else {
+            variantRow.classList.add('hidden');
+        }
     }
 
-    var selectedGiftPackage = document.querySelector('.gift-package-radio:checked');
-    var giftPrice = selectedGiftPackage ? parseFloat(selectedGiftPackage.dataset.price || '0') || 0 : 0;
-    var toplamBirimGift = toplamBirim + giftPrice;
-    var toplamGift = toplamBirimGift * adet;
+    // Çerçeve satırı
+    var frameRow = document.getElementById('summaryFrameRow');
+    var summaryCerceveEl = document.getElementById('summaryCerceve');
+    if (frameRow && summaryCerceveEl) {
+        if (hasFrame) {
+            summaryCerceveEl.textContent = cerceve || '@Localizer["SelectFrame"]';
+            frameRow.classList.remove('hidden');
+        } else {
+            frameRow.classList.add('hidden');
+        }
+    }
 
+    // Ürün Birim / Ara Toplam
+    var summaryProductPriceEl = document.getElementById('summaryProductPrice');
+    if (summaryProductPriceEl) {
+        if (adet > 1) {
+            summaryProductPriceEl.textContent = `${window.formatMoney(unitProductPrice)} × ${adet} = ${window.formatMoney(productTotal)}`;
+        } else {
+            summaryProductPriceEl.textContent = window.formatMoney(unitProductPrice);
+        }
+    }
+
+    // Hediye Paketi Satırı ve Rozeti
+    var giftRow = document.getElementById('summaryGiftRow');
+    var giftBadge = document.getElementById('summaryGiftBadge');
+    var giftPriceEl = document.getElementById('summaryGiftPrice');
+    var giftNameEl = document.getElementById('summaryGiftName');
+
+    if (giftPrice > 0 && selectedGiftPackage) {
+        var giftLabel = selectedGiftPackage.closest('label')?.querySelector('.font-semibold')?.textContent?.trim() || '@Localizer["GiftPackaging"]';
+        if (giftNameEl) giftNameEl.textContent = `+ ${giftLabel}:`;
+        if (giftPriceEl) {
+            if (adet > 1) {
+                giftPriceEl.textContent = `+${window.formatMoney(giftPrice)} × ${adet} = +${window.formatMoney(giftTotal)}`;
+            } else {
+                giftPriceEl.textContent = `+${window.formatMoney(giftPrice)}`;
+            }
+        }
+        if (giftRow) giftRow.classList.remove('hidden');
+        if (giftBadge) giftBadge.classList.remove('hidden');
+    } else {
+        if (giftRow) giftRow.classList.add('hidden');
+        if (giftBadge) giftBadge.classList.add('hidden');
+    }
+
+    // Toplam Tutar
     var summaryFiyatEl = document.getElementById('summaryFiyat');
     if (summaryFiyatEl) {
-        summaryFiyatEl.textContent = window.formatMoney(toplamGift);
+        summaryFiyatEl.textContent = window.formatMoney(grandTotal);
     }
 
     var summaryBirimFiyatEl = document.getElementById('summaryBirimFiyat');
     if (summaryBirimFiyatEl) {
         var unitLabel = '@(isAr ? "للقطعة" : "unit")';
-        summaryBirimFiyatEl.textContent = adet > 1 ? `(${unitLabel}: ${window.formatMoney(toplamBirimGift)})` : '';
+        var totalBirim = unitProductPrice + giftPrice;
+        summaryBirimFiyatEl.textContent = adet > 1 ? `(${unitLabel}: ${window.formatMoney(totalBirim)})` : '';
     }
 
-    var giftBadge = document.getElementById('summaryGiftBadge');
-    if (giftBadge) {
+    // Açık Formül Dökümü: (Ürün Fiyatı + Çerçeve Farkı) * Adet + Paketleme Ücreti
+    var breakdownEl = document.getElementById('summaryBreakdown');
+    if (breakdownEl) {
+        var prodFormula = adet > 1 ? `(${window.formatMoney(unitProductPrice)} × ${adet})` : window.formatMoney(unitProductPrice);
         if (giftPrice > 0) {
-            giftBadge.classList.remove('hidden');
+            var giftFormula = adet > 1 ? `(${window.formatMoney(giftPrice)} × ${adet})` : window.formatMoney(giftPrice);
+            breakdownEl.textContent = `${prodFormula} + ${giftFormula} = ${window.formatMoney(grandTotal)}`;
+        } else if (adet > 1 || cerceveFarki > 0) {
+            breakdownEl.textContent = `${prodFormula} = ${window.formatMoney(grandTotal)}`;
         } else {
-            giftBadge.classList.add('hidden');
+            breakdownEl.textContent = '';
         }
     }
 
@@ -1520,16 +1627,15 @@ function updateDiscountDisplays(oldPrice, effectivePrice) {
 function updatePriceWithFrame() {
     var selectedVariant = document.querySelector('.variant-radio:checked');
     var selectedFrame = document.querySelector('.frame-radio:checked');
-    if (!selectedVariant) return;
 
-    var basePrice = parseFloat(selectedVariant.getAttribute('data-price')) || 0;
-    var oldBasePrice = parseFloat(selectedVariant.getAttribute('data-oldprice')) || 0;
-    var olcu = selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '';
+    var basePrice = selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-price')) || 0) : PRODUCT_BASE_PRICE;
+    var oldBasePrice = selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-oldprice')) || 0) : 0;
+    var olcu = selectedVariant ? (selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '') : '';
     var cerceve = selectedFrame ? selectedFrame.value : null;
     var cerceveFarki = calcFrameFiyat(olcu, cerceve || 'Çerçevesiz');
-    var selectedGiftPackage = document.querySelector('.gift-package-radio:checked');
-    var giftPrice = selectedGiftPackage ? parseFloat(selectedGiftPackage.dataset.price || '0') || 0 : 0;
-    var additionalPrice = cerceveFarki + giftPrice;
+    
+    // Hediye paketi bedeli ana liste fiyatına (#priceDisplay / #oldPriceDisplay) eklenmez!
+    var additionalPrice = cerceveFarki;
     var newPrice = basePrice + additionalPrice;
     var newOldPrice = oldBasePrice > 0 ? oldBasePrice + additionalPrice : 0;
 
