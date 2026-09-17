@@ -231,6 +231,18 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .ThenBy(g => g.Ad)
                 .ToListAsync();
 
+            ViewBag.TumUrunler = await _db.Urunler
+                .Where(u => !u.SilindiMi && u.AktifMi)
+                .OrderBy(u => u.Baslik)
+                .Select(u => new
+                {
+                    u.Id,
+                    Baslik = !string.IsNullOrWhiteSpace(u.BaslikAr) ? u.BaslikAr : (!string.IsNullOrWhiteSpace(u.BaslikEn) ? u.BaslikEn : u.Baslik),
+                    u.ToptanciUrunGrubuId,
+                    GrupAdi = u.ToptanciUrunGrubu != null ? u.ToptanciUrunGrubu.Ad : null
+                })
+                .ToListAsync();
+
             return View(gruplar);
         }
 
@@ -381,6 +393,16 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await _db.ToptanciIskontoOranlari.AddAsync(model);
             }
 
+            if (model.UrunId.HasValue && model.UrunId.Value > 0)
+            {
+                var urun = await _db.Urunler.FirstOrDefaultAsync(u => u.Id == model.UrunId.Value && !u.SilindiMi);
+                if (urun != null && urun.ToptanciUrunGrubuId != model.ToptanciUrunGrubuId)
+                {
+                    urun.ToptanciUrunGrubuId = model.ToptanciUrunGrubuId;
+                    _db.Urunler.Update(urun);
+                }
+            }
+
             await _db.SaveChangesAsync();
             TempData["Basari"] = _localizer["WholesaleDiscountSaved"].Value;
             return RedirectToAction(nameof(UrunGruplari));
@@ -399,6 +421,64 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             TempData["Basari"] = _localizer["WholesaleDiscountDeleted"].Value;
             return RedirectToAction(nameof(UrunGruplari));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GrubaUrunAta(int grupId, int urunId)
+        {
+            var grup = await _db.ToptanciUrunGruplari.FirstOrDefaultAsync(g => g.Id == grupId && !g.SilindiMi);
+            if (grup == null)
+            {
+                TempData["Hata"] = _localizer["Admin_WholesaleGroupNotFound"].Value;
+                return RedirectToAction(nameof(UrunGruplari));
+            }
+
+            var urun = await _db.Urunler.FirstOrDefaultAsync(u => u.Id == urunId && !u.SilindiMi);
+            if (urun == null)
+            {
+                TempData["Hata"] = _localizer["Admin_Sonuc_bulunamadi"].Value;
+                return RedirectToAction(nameof(UrunGruplari));
+            }
+
+            urun.ToptanciUrunGrubuId = grupId;
+            await _db.SaveChangesAsync();
+
+            TempData["Basari"] = _localizer["WholesaleGroupSaved"].Value;
+            return RedirectToAction(nameof(UrunGruplari));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GruptanUrunCikar(int urunId)
+        {
+            var urun = await _db.Urunler.FirstOrDefaultAsync(u => u.Id == urunId && !u.SilindiMi);
+            if (urun != null)
+            {
+                urun.ToptanciUrunGrubuId = null;
+                await _db.SaveChangesAsync();
+            }
+
+            TempData["Basari"] = _localizer["WholesaleGroupSaved"].Value;
+            return RedirectToAction(nameof(UrunGruplari));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetTumAktifUrunler()
+        {
+            var urunler = await _db.Urunler
+                .Where(u => !u.SilindiMi && u.AktifMi)
+                .OrderBy(u => u.Baslik)
+                .Select(u => new
+                {
+                    u.Id,
+                    Baslik = !string.IsNullOrWhiteSpace(u.BaslikAr) ? u.BaslikAr : (!string.IsNullOrWhiteSpace(u.BaslikEn) ? u.BaslikEn : u.Baslik),
+                    u.ToptanciUrunGrubuId,
+                    GrupAdi = u.ToptanciUrunGrubu != null ? u.ToptanciUrunGrubu.Ad : null
+                })
+                .ToListAsync();
+
+            return Json(urunler);
         }
 
         [HttpGet]

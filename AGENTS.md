@@ -694,3 +694,19 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
 - [x] **Adım 218 (Birim Testler & Playwright E2E Doğrulama)**:
   - `dotnet test FilistinProje.Tests` 99 test 0 hata ile doğrulandı.
   - Playwright MCP ile ürün detayında hediye paketi seçildiğinde `#priceDisplay`'in sabit kaldığı (`7.50 ₪`), seçim özetinde şeffaf formülün basıldığı, sepete eklendiğinde `Subtotal: 15.00 ₪`, `Packaging Fee: +100.00 ₪`, `Total: 115.00 ₪` olarak hesaplandığı, ödeme sayfasında dökümün korunduğu ve İngilizce dilinde hatasız çalıştığı doğrulanarak ekran görüntüleri kaydedildi (`product_detail.png`, `cart_page.png`, `checkout_page.png`).
+
+### Faz 31 (Toptan Satış Grupları Ürün Seçim Listesi ve Ürün-Grup İlişkilendirme Onarımı — 17 Eylül 2026)
+- [x] **Adım 219 (Tüm Aktif Ürünleri Getiren Güvenli API Endpoint'i)**:
+  - `Areas/Admin/Controllers/ToptanciController.cs`: `[HttpGet] GetTumAktifUrunler()` endpoint'i eklendi (`!u.SilindiMi && u.AktifMi`, `Id`, `Baslik`, `ToptanciUrunGrubuId`, `GrupAdi`).
+  - `UrunGruplari()` GET action'ına `ViewBag.TumUrunler` eklenerek sayfa yüklenirken ürün verisinin hazır sunulması sağlandı.
+- [x] **Adım 220 (Otomatik Ürün-Grup İlişkilendirme & Grup Ürün Yönetimi)**:
+  - `IskontoKaydet` action'ında iskonto tanımlanan ürünün (`model.UrunId`) `ToptanciUrunGrubuId` değeri otomatik olarak hedef gruba eşitlendi.
+  - `[HttpPost] GrubaUrunAta(int grupId, int urunId)` ve `[HttpPost] GruptanUrunCikar(int urunId)` action'ları eklenerek grup seviyesinde doğrudan ürün atama/çıkarma desteği getirildi.
+- [x] **Adım 221 (Çok Dilli Lokalizasyon — AR & EN)**:
+  - `SharedResource.ar.resx` ve `SharedResource.en.resx`: `Admin_CurrentGroup` (`المجموعة الحالية` / `Current Group`), `Admin_GrubaUrunAta` (`تعيين منتج للمجموعة` / `Assign Product to Group`), `Admin_GruptanCikar` (`إزالة من المجموعة` / `Remove from Group`), `Admin_GruptakiUrunler` (`المنتجات في هذه المجموعة` / `Products in this Group`), `Admin_GruptaUrunYok` anahtarları eklendi.
+- [x] **Adım 222 (Frontend & Dropdown Dinamik Akışı)**:
+  - `Areas/Admin/Views/Toptanci/UrunGruplari.cshtml`: JavaScript akışı yeniden yapılandırıldı; `fetchAllActiveProducts` önbellek mekanizması, `DOMContentLoaded` anında ürünlerin yüklenmesi, grup seçildiğinde (`onMainGroupChange`) tüm aktif ürünlerin listelenmesi ve başka bir grupta olan ürünlerin yanında parantez içinde `(المجموعة الحالية: Grup Adı)` bilgisinin basılması sağlandı.
+  - Grup kartları altında "المنتجات في هذه المجموعة" listesi, silme butonu ve hızlı ürün atama dropdown'ı entegre edildi; satır içi iskonto formuna sistemdeki tüm ürünler dahil edildi.
+- [x] **Adım 223 (Uçtan Uca Playwright E2E Doğrulama)**:
+  - Playwright MCP ile yeni oluşturulan "مجموعة 50 التوفيرية" seçildi; `#mainUrunSelect` açılır menüsünün artık boş gelmediği, 31 ürünün tamamının başarıyla listelendiği doğrulandı.
+  - "أحمر الشفاه" ürünü seçilip min. 10 adet ve %15 iskonto kaydedildi; ürünün gruba otomatik bağlandığı, grup altında listelendiği, başka bir grup seçildiğinde ise ürünün yanında mevcut grup adının parantez içinde gösterildiği test edildi ve ekran görüntüsü alındı (`wholesale_product_groups_fixed.png`).

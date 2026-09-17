@@ -277,9 +277,25 @@
                                                         <div class="col-12 mb-1">
                                                             <select name="UrunId" class="ca-select form-control-sm">
                                                                 <option value="">-- @Localizer["Admin_WholesaleAllProductsInGroup"] --</option>
-                                                                @foreach (var u in grup.Urunler.Where(u => !u.SilindiMi).OrderBy(u => u.Baslik))
+                                                                @if (ViewBag.TumUrunler != null)
                                                                 {
-                                                                    <option value="@u.Id">@(u.BaslikAr ?? u.BaslikEn ?? u.Baslik)</option>
+                                                                    foreach (var p in (dynamic)ViewBag.TumUrunler)
+                                                                    {
+                                                                        var pGrupId = (int?)p.ToptanciUrunGrubuId;
+                                                                        var label = (string)p.Baslik;
+                                                                        if (pGrupId != null && pGrupId != grup.Id && !string.IsNullOrEmpty((string)p.GrupAdi))
+                                                                        {
+                                                                            label += $" ({Localizer["Admin_CurrentGroup"].Value}: {(string)p.GrupAdi})";
+                                                                        }
+                                                                        <option value="@p.Id">@label</option>
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    foreach (var u in grup.Urunler.Where(u => !u.SilindiMi).OrderBy(u => u.Baslik))
+                                                                    {
+                                                                        <option value="@u.Id">@(u.BaslikAr ?? u.BaslikEn ?? u.Baslik)</option>
+                                                                    }
                                                                 }
                                                             </select>
                                                         </div>
@@ -295,6 +311,63 @@
                                                         <div class="col-auto"><button class="ca-btn ca-btn-sm ca-btn-primary" type="submit"><i class="fas fa-plus"></i> @Localizer["Admin_Ekle"]</button></div>
                                                     </div>
                                                 </form>
+
+                                                <div class="mt-4 pt-3" style="border-top:1px dashed var(--ca-border);">
+                                                    <h6 class="mb-3 d-flex align-items-center justify-content-between">
+                                                        <span><i class="fas fa-boxes me-2"></i>@Localizer["Admin_GruptakiUrunler"] (@grup.Urunler.Count(u => !u.SilindiMi))</span>
+                                                    </h6>
+                                                    @if (!grup.Urunler.Any(u => !u.SilindiMi))
+                                                    {
+                                                        <p class="text-muted small mb-3">@Localizer["Admin_GruptaUrunYok"]</p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="d-flex flex-wrap gap-2 mb-3">
+                                                            @foreach (var u in grup.Urunler.Where(u => !u.SilindiMi).OrderBy(u => u.Baslik))
+                                                            {
+                                                                <span class="ca-badge ca-badge-info d-inline-flex align-items-center gap-1 p-2">
+                                                                    <i class="fas fa-box"></i>
+                                                                    <span>@(u.BaslikAr ?? u.BaslikEn ?? u.Baslik)</span>
+                                                                    <form method="post" action="/Admin/Toptanci/GruptanUrunCikar" class="d-inline m-0 p-0" onsubmit="return confirm('@Localizer["Admin_GrupSilConfirm"]');">
+                                                                        @Html.AntiForgeryToken()
+                                                                        <input type="hidden" name="urunId" value="@u.Id" />
+                                                                        <button type="submit" class="btn btn-link p-0 text-danger ms-1" style="line-height:1;" title="@Localizer["Admin_GruptanCikar"]">
+                                                                            <i class="fas fa-times-circle"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </span>
+                                                            }
+                                                        </div>
+                                                    }
+
+                                                    <form method="post" action="/Admin/Toptanci/GrubaUrunAta" class="row g-2 align-items-center">
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" name="grupId" value="@grup.Id" />
+                                                        <div class="col-sm-8">
+                                                            <select name="urunId" class="ca-select form-control-sm" required>
+                                                                <option value="">-- @Localizer["Admin_GrubaUrunAta"] --</option>
+                                                                @if (ViewBag.TumUrunler != null)
+                                                                {
+                                                                    foreach (var p in (dynamic)ViewBag.TumUrunler)
+                                                                    {
+                                                                        if (p.ToptanciUrunGrubuId == grup.Id) continue;
+                                                                        var label = (string)p.Baslik;
+                                                                        if (p.ToptanciUrunGrubuId != null && !string.IsNullOrEmpty((string)p.GrupAdi))
+                                                                        {
+                                                                            label += $" ({Localizer["Admin_CurrentGroup"].Value}: {(string)p.GrupAdi})";
+                                                                        }
+                                                                        <option value="@p.Id">@label</option>
+                                                                    }
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <button type="submit" class="ca-btn ca-btn-sm ca-btn-secondary w-100">
+                                                                <i class="fas fa-plus"></i> @Localizer["Admin_GrubaUrunAta"]
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -310,39 +383,71 @@
 
 @section Scripts {
 <script>
+    var allProductsCache = null;
+    var allProductsPromise = null;
+    var currentGroupLabel = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_CurrentGroup"].Value));
+    var allProductsPlaceholder = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_WholesaleAllProductsInGroup"].Value));
+    var allVariantsPlaceholder = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_WholesaleAllVariants"].Value));
+
     function resetMainVariantSelect() {
         var varyantContainer = document.getElementById('mainVaryantContainer');
         var varyantSelect = document.getElementById('mainVaryantSelect');
         if (varyantSelect) {
-            varyantSelect.innerHTML = '<option value="">' + @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_WholesaleAllVariants"].Value)) + '</option>';
+            varyantSelect.innerHTML = '<option value="">' + allVariantsPlaceholder + '</option>';
         }
         if (varyantContainer) {
             varyantContainer.style.display = 'none';
         }
     }
 
-    function onMainGroupChange(groupId) {
-        var urunSelect = document.getElementById('mainUrunSelect');
-        resetMainVariantSelect();
-        if (!urunSelect) return;
-        urunSelect.innerHTML = '<option value="">-- ' + @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_WholesaleAllProductsInGroup"].Value)) + ' --</option>';
-        if (!groupId) return;
+    function fetchAllActiveProducts() {
+        if (allProductsCache) {
+            return Promise.resolve(allProductsCache);
+        }
+        if (!allProductsPromise) {
+            allProductsPromise = fetch('/Admin/Toptanci/GetTumAktifUrunler')
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    allProductsCache = Array.isArray(data) ? data : [];
+                    return allProductsCache;
+                })
+                .catch(function(err) {
+                    console.error('Error fetching active products:', err);
+                    allProductsPromise = null;
+                    return [];
+                });
+        }
+        return allProductsPromise;
+    }
 
-        fetch('/Admin/Toptanci/GetGrupUrunleri?grupId=' + encodeURIComponent(groupId))
-            .then(function(r) { return r.json(); })
-            .then(function(items) {
-                if (Array.isArray(items)) {
-                    items.forEach(function(item) {
-                        var opt = document.createElement('option');
-                        opt.value = item.id;
-                        opt.textContent = item.baslik;
-                        urunSelect.appendChild(opt);
-                    });
-                }
-            })
-            .catch(function(err) {
-                console.error('Error fetching group products:', err);
-            });
+    function populateMainUrunDropdown(selectedGroupId) {
+        var urunSelect = document.getElementById('mainUrunSelect');
+        if (!urunSelect) return;
+        var prevVal = urunSelect.value;
+
+        fetchAllActiveProducts().then(function(items) {
+            urunSelect.innerHTML = '<option value="">-- ' + allProductsPlaceholder + ' --</option>';
+            if (Array.isArray(items)) {
+                items.forEach(function(item) {
+                    var opt = document.createElement('option');
+                    opt.value = item.id;
+                    var text = item.baslik;
+                    if (item.toptanciUrunGrubuId && item.grupAdi && item.toptanciUrunGrubuId != selectedGroupId) {
+                        text += ' (' + currentGroupLabel + ': ' + item.grupAdi + ')';
+                    }
+                    opt.textContent = text;
+                    urunSelect.appendChild(opt);
+                });
+            }
+            if (prevVal) {
+                urunSelect.value = prevVal;
+            }
+        });
+    }
+
+    function onMainGroupChange(groupId) {
+        resetMainVariantSelect();
+        populateMainUrunDropdown(groupId);
     }
 
     function onMainUrunChange(urunId) {
@@ -400,5 +505,10 @@
             if (tutarCol) tutarCol.style.display = 'none';
         }
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var initialGroupId = document.getElementById('mainGrupSelect')?.value;
+        populateMainUrunDropdown(initialGroupId);
+    });
 </script>
 }

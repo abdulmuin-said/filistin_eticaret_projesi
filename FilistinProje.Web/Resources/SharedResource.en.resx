@@ -4959,6 +4959,11 @@
   <data name="Admin_IskontoOranlari" xml:space="preserve"><value>Discount Rates</value></data>
   <data name="Admin_IskontoYok" xml:space="preserve"><value>No discount rate defined for this group yet.</value></data>
   <data name="Admin_IskontoSilConfirm" xml:space="preserve"><value>Are you sure you want to delete this discount rate?</value></data>
+  <data name="Admin_CurrentGroup" xml:space="preserve"><value>Current Group</value></data>
+  <data name="Admin_GrubaUrunAta" xml:space="preserve"><value>Assign Product to Group</value></data>
+  <data name="Admin_GruptanCikar" xml:space="preserve"><value>Remove from Group</value></data>
+  <data name="Admin_GruptakiUrunler" xml:space="preserve"><value>Products in this Group</value></data>
+  <data name="Admin_GruptaUrunYok" xml:space="preserve"><value>No products assigned to this group yet.</value></data>
   <data name="Admin_SayfaYonetimi" xml:space="preserve"><value>Page Management</value></data>
   <data name="Admin_KurumsalSayfalar" xml:space="preserve"><value>Corporate Pages</value></data>
   <data name="Admin_SayfaSubtitle" xml:space="preserve"><value>Manage pages like About Us, Return Policy.</value></data>
