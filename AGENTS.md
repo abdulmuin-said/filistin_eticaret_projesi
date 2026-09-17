@@ -710,3 +710,25 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
 - [x] **Adım 223 (Uçtan Uca Playwright E2E Doğrulama)**:
   - Playwright MCP ile yeni oluşturulan "مجموعة 50 التوفيرية" seçildi; `#mainUrunSelect` açılır menüsünün artık boş gelmediği, 31 ürünün tamamının başarıyla listelendiği doğrulandı.
   - "أحمر الشفاه" ürünü seçilip min. 10 adet ve %15 iskonto kaydedildi; ürünün gruba otomatik bağlandığı, grup altında listelendiği, başka bir grup seçildiğinde ise ürünün yanında mevcut grup adının parantez içinde gösterildiği test edildi ve ekran görüntüsü alındı (`wholesale_product_groups_fixed.png`).
+
+### Faz 32 (Genel Ayarlar Sekmeli Kısmi Güncelleme [Partial Update] & Veri Ezilme Koruması — 17 Eylül 2026)
+- [x] **Adım 224 (Servis Katmanı Kısmi Güncelleme [Patch] Mimarisi)**:
+  - `FilistinProje.Service/Services/SiteSettingsService.cs`: `ISiteSettingsService` arayüzüne `SaveSettings(SiteAyarlari settings, string? activeTab)` metodu eklendi (geriye dönük tam uyumluluk için varsayılan interface gövdesi tanımlandı).
+  - Veritabanındaki mevcut ayarları okuyan (`existing`), yalnızca post edilen sekmenin (`NormalizeTabName`: `genel`, `iletisim`, `sosyal`, `kargo`, `kapida-odeme`, `seo`, `mail`, `bakim`) alanlarını güncelleyen, diğer tüm sekmelerin verilerini ve formda yer almayan boolean alanları koruyan kısmi güncelleme alt metotları (`UpdateGenelSettings`, `UpdateIletisimSettings`, `UpdateSosyalSettings`, `UpdateKargoSettings`, `UpdateKapidaOdemeSettings`, `UpdateSeoSettings`, `UpdateMailSettings`, `UpdateBakimSettings`) geliştirildi.
+- [x] **Adım 225 (Admin AyarlarController Sekme Yönetimi & Kargo Güncelleme İzolasyonu)**:
+  - `Areas/Admin/Controllers/AyarlarController.cs`: `[HttpPost] Index(SiteAyarlari model, string? aktifSekme, [FromQuery] string? tab)` action'ı güncellendi.
+  - `NormalizeTab` helper'ı ile `satis`/`shipping` -> `kargo`, `odeme`/`payment` -> `kapida-odeme` eşitlemesi yapıldı.
+  - `VarsayilanKargoFirmasiniGuncelleAsync` işlemi yalnızca kargo sekmesi kaydedildiğinde (`normalizedTab == "kargo"`) çalışacak şekilde izole edildi; diğer sekmelerde gereksiz DB kargo güncellemesi engellendi.
+  - Form kaydedildikten sonra kullanıcının işlem yaptığı sekmede kalması sağlandı (`RedirectToAction(..., new { tab = normalizedTab })`).
+- [x] **Adım 226 (Admin/Ayarlar/Index.cshtml Bağımsız Form Mimarisi & Senkronize JS)**:
+  - Tek ve devasa dış `<form>` yapısı tamamen kaldırıldı.
+  - Her sekme paneli (`#panel-genel`, `#panel-iletisim`, `#panel-sosyal`, `#panel-kargo`, `#panel-kapida-odeme`, `#panel-seo`, `#panel-mail`, `#panel-bakim`) kendi bağımsız `<form method="post" asp-action="Index">`, `@Html.AntiForgeryToken()`, `<input type="hidden" name="aktifSekme" value="..." />` ve kendi kart içi "Kaydet" butonuna kavuşturuldu.
+  - Ekranın altındaki yapışkan (sticky) bar butonu (`#btnSaveActiveTab`), JavaScript ile o an ekranda aktif olan sekmenin formunu `activeForm.requestSubmit()` yöntemiyle tetikleyecek şekilde bağlandı.
+  - Sekme geçişleri (`activateTab`) URL query parametresi (`?tab=...`) ve `window.history.pushState` ile çift yönlü senkronize edildi.
+- [x] **Adım 227 (Birim Testler & Çözüm Derleme)**:
+  - `FilistinProje.Tests/SiteSettingsPartialUpdateTests.cs`: Kargo sekmesi, Kapıda Ödeme sekmesi ve Genel sekme güncellemelerinin diğer sekmelerdeki alanları ezmediğini (SiteAdi, Telefon, KargoBedeli, KapidaOdemeLimiti, boolean anahtarlar) doğrulayan birim testler yazıldı.
+  - `dotnet test` çalıştırıldı, tüm 102 birim test sıfır hata ile başarıyla geçti.
+- [x] **Adım 228 (Playwright E2E Uçtan Uca Tarayıcı Doğrulaması)**:
+  - Playwright MCP ile `http://localhost:5002/Hesap/GirisYap` üzerinden admin girişi yapıldı, `/Admin/Ayarlar?tab=genel` sayfasındaki ilk değerler okundu (`siteAdi: 7ANRPS48`, `telefon: +970-599-000-000`, `kargoBedeli: 15`, `kapidaOdemeLimit: 1500`).
+  - Kargo sekmesine geçilip kargo bedeli 45, ücretsiz kargo limiti 350 yapıldı ve yapışkan bar üzerinden kaydedildi; sayfanın `tab=kargo` sekmesinde kaldığı, kargo değerlerinin güncellendiği, Genel ve Ödeme sekmelerindeki verilerin kesinlikle ezilmediği doğrulandı.
+  - Kapıda Ödeme sekmesine geçilip kapıda ödeme limiti 1800 yapıldı ve kart içi kaydet butonuyla kaydedildi; sayfanın `tab=kapida-odeme` sekmesinde kaldığı, limitin güncellendiği, önceki kargo güncellemesi (45 ₪) ve genel ayarların bozulmadan korunduğu tam olarak kanıtlandı.

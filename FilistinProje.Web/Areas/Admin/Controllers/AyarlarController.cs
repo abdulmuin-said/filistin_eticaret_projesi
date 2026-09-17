@@ -36,26 +36,35 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(string? tab = null)
         {
-            if (string.Equals(tab, "odeme", StringComparison.OrdinalIgnoreCase))
+            var normalizedTab = NormalizeTab(tab);
+            if (!string.IsNullOrWhiteSpace(tab) && !string.Equals(tab, normalizedTab, StringComparison.OrdinalIgnoreCase))
             {
-                return RedirectToAction(nameof(Index), new { tab = "kapida-odeme" });
+                return RedirectToAction(nameof(Index), new { tab = normalizedTab });
             }
 
             await HazirlaKargoFirmaSecenekleriAsync();
             ViewBag.SosyalMedyaLinkleri = await _context.SosyalMedyaLinkleri
                 .OrderBy(x => x.Sira).ThenBy(x => x.Id).ToListAsync();
-            ViewBag.ActiveTab = string.IsNullOrWhiteSpace(tab) ? "genel" : tab;
+            ViewBag.ActiveTab = string.IsNullOrWhiteSpace(normalizedTab) ? "genel" : normalizedTab;
             return View(_siteSettingsService.GetSettings());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(SiteAyarlari model, string? aktifSekme)
+        public async Task<IActionResult> Index(SiteAyarlari model, string? aktifSekme, [FromQuery] string? tab)
         {
+            var rawTab = !string.IsNullOrWhiteSpace(aktifSekme) ? aktifSekme : tab;
+            var normalizedTab = NormalizeTab(rawTab);
+
             try
             {
-                await VarsayilanKargoFirmasiniGuncelleAsync(model.KargoFirmasi);
-                _siteSettingsService.SaveSettings(model);
+                if (string.Equals(normalizedTab, "kargo", StringComparison.OrdinalIgnoreCase) ||
+                    string.IsNullOrWhiteSpace(normalizedTab))
+                {
+                    await VarsayilanKargoFirmasiniGuncelleAsync(model.KargoFirmasi);
+                }
+
+                _siteSettingsService.SaveSettings(model, normalizedTab);
                 TempData["Basari"] = _localizer["Admin_SettingsSaveSuccess"].Value;
                 TempData["Durum"] = "success";
             }
@@ -65,7 +74,37 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 TempData["Durum"] = "danger";
             }
 
-            return RedirectToAction(nameof(Index), new { tab = aktifSekme });
+            return RedirectToAction(nameof(Index), new { tab = normalizedTab ?? "genel" });
+        }
+
+        private static string? NormalizeTab(string? tab)
+        {
+            if (string.IsNullOrWhiteSpace(tab)) return null;
+            var t = tab.Trim().ToLowerInvariant();
+            return t switch
+            {
+                "brand" => "genel",
+                "general" => "genel",
+                "store" => "genel",
+                "genel" => "genel",
+                "contact" => "iletisim",
+                "iletisim" => "iletisim",
+                "social" => "sosyal",
+                "sosyal" => "sosyal",
+                "satis" => "kargo",
+                "shipping" => "kargo",
+                "kargo" => "kargo",
+                "odeme" => "kapida-odeme",
+                "payment" => "kapida-odeme",
+                "cod" => "kapida-odeme",
+                "kapida-odeme" => "kapida-odeme",
+                "seo" => "seo",
+                "email" => "mail",
+                "mail" => "mail",
+                "maintenance" => "bakim",
+                "bakim" => "bakim",
+                _ => t
+            };
         }
 
         [HttpPost]

@@ -10,6 +10,7 @@ namespace FilistinProje.Service.Services
     {
         SiteAyarlari GetSettings();
         void SaveSettings(SiteAyarlari settings);
+        void SaveSettings(SiteAyarlari settings, string? activeTab) => SaveSettings(settings);
         string BuildAbsoluteUrl(string? path);
     }
 
@@ -50,83 +51,237 @@ namespace FilistinProje.Service.Services
 
         public void SaveSettings(SiteAyarlari settings)
         {
-            var normalized = NormalizeSettings(settings);
+            SaveSettings(settings, null);
+        }
 
+        public void SaveSettings(SiteAyarlari settings, string? activeTab)
+        {
             var existing = _context.SiteAyarlari.FirstOrDefault();
-            if (existing != null)
+            if (existing == null)
             {
-                existing.SiteAdi = normalized.SiteAdi;
-                existing.MarkaAdi = normalized.MarkaAdi;
-                existing.SiteBasligi = normalized.SiteBasligi;
-                existing.SiteAciklamasi = normalized.SiteAciklamasi;
-                existing.SiteLogoUrl = normalized.SiteLogoUrl;
-                existing.FaviconUrl = normalized.FaviconUrl;
-                existing.BaseUrl = normalized.BaseUrl;
-                existing.TemaRengi = normalized.TemaRengi;
-                existing.UstBarMesaji = normalized.UstBarMesaji;
-                existing.KampanyaMesaji = normalized.KampanyaMesaji;
-                existing.UstBarEtkin = normalized.UstBarEtkin;
-                existing.UstBarHizi = normalized.UstBarHizi;
-                existing.FooterAciklamasi = normalized.FooterAciklamasi;
-                existing.Telefon = normalized.Telefon;
-                existing.Email = normalized.Email;
-                existing.Adres = normalized.Adres;
-                existing.WhatsappNumarasi = normalized.WhatsappNumarasi;
-                existing.CalismaSaatleri = normalized.CalismaSaatleri;
-                existing.FacebookUrl = normalized.FacebookUrl;
-                existing.InstagramUrl = normalized.InstagramUrl;
-                existing.TwitterUrl = normalized.TwitterUrl;
-                existing.YoutubeUrl = normalized.YoutubeUrl;
-                existing.TiktokUrl = normalized.TiktokUrl;
-                existing.PinterestUrl = normalized.PinterestUrl;
-                existing.ParaBirimi = normalized.ParaBirimi;
-                existing.KargoBedeli = normalized.KargoBedeli;
-                existing.UcretsizKargoLimiti = normalized.UcretsizKargoLimiti;
-                existing.StokUyariLimiti = normalized.StokUyariLimiti;
-                existing.StoktaYokSatisIzni = normalized.StoktaYokSatisIzni;
-                existing.StokBiteniGriGoster = normalized.StokBiteniGriGoster;
-                existing.KargoFirmasi = normalized.KargoFirmasi;
-                existing.KargoTakipUrl = normalized.KargoTakipUrl;
-                existing.SiparisTeslimSuresiGun = normalized.SiparisTeslimSuresiGun;
-                existing.IadeHakkiGun = normalized.IadeHakkiGun;
-                existing.MetaTitle = normalized.MetaTitle;
-                existing.MetaDescription = normalized.MetaDescription;
-                existing.MetaKeywords = normalized.MetaKeywords;
-                existing.GoogleAnalyticsId = normalized.GoogleAnalyticsId;
-                existing.FacebookPixelId = normalized.FacebookPixelId;
-                existing.VarsayilanSosyalPaylasimGorseliUrl = normalized.VarsayilanSosyalPaylasimGorseliUrl;
-                existing.CookieMetni = normalized.CookieMetni;
-                existing.YeniSiparisMailBildirimi = normalized.YeniSiparisMailBildirimi;
-                existing.StokUyarisiMailBildirimi = normalized.StokUyarisiMailBildirimi;
-                existing.IadeTalebiMailBildirimi = normalized.IadeTalebiMailBildirimi;
-                existing.BildirimAliciEmail = normalized.BildirimAliciEmail;
-                existing.BakimModuAktif = normalized.BakimModuAktif;
-                existing.BakimModuMesaji = normalized.BakimModuMesaji;
-                existing.GirisZorunluMu = normalized.GirisZorunluMu;
-                existing.AdreseTeslimAktifMi = normalized.AdreseTeslimAktifMi;
-                existing.MagazadanTeslimAktifMi = normalized.MagazadanTeslimAktifMi;
-                existing.BankaHavalesiAktifMi = normalized.BankaHavalesiAktifMi;
-                existing.KapidaOdemeAktifMi = normalized.KapidaOdemeAktifMi;
-                existing.KapidaOdemeHizmetBedeli = normalized.KapidaOdemeHizmetBedeli;
-                existing.KapidaOdemeLimiti = normalized.KapidaOdemeLimiti;
-                existing.ToptanciMinSiparisTutari = normalized.ToptanciMinSiparisTutari;
-                existing.IptalSuresiSaat = normalized.IptalSuresiSaat;
-                existing.FooterAciklamasiEn = normalized.FooterAciklamasiEn;
-                existing.FooterAciklamasiAr = normalized.FooterAciklamasiAr;
-                existing.HeroBaslikAr = normalized.HeroBaslikAr;
-                existing.HeroBaslikEn = normalized.HeroBaslikEn;
-                existing.HeroAltBaslikAr = normalized.HeroAltBaslikAr;
-                existing.HeroAltBaslikEn = normalized.HeroAltBaslikEn;
-                existing.HeroGorselUrl = normalized.HeroGorselUrl;
-            }
-            else
-            {
+                var normalized = NormalizeSettings(settings);
                 normalized.Id = 1;
                 _context.SiteAyarlari.Add(normalized);
+                _context.SaveChanges();
+                _cache.Remove(CacheKey);
+                return;
+            }
+
+            var tab = NormalizeTabName(activeTab);
+
+            switch (tab)
+            {
+                case "genel":
+                    UpdateGenelSettings(existing, settings);
+                    break;
+
+                case "iletisim":
+                    UpdateIletisimSettings(existing, settings);
+                    break;
+
+                case "sosyal":
+                    UpdateSosyalSettings(existing, settings);
+                    break;
+
+                case "kargo":
+                case "satis":
+                    UpdateKargoSettings(existing, settings);
+                    break;
+
+                case "kapida-odeme":
+                case "odeme":
+                    UpdateKapidaOdemeSettings(existing, settings);
+                    break;
+
+                case "seo":
+                    UpdateSeoSettings(existing, settings);
+                    break;
+
+                case "mail":
+                    UpdateMailSettings(existing, settings);
+                    break;
+
+                case "bakim":
+                    UpdateBakimSettings(existing, settings);
+                    break;
+
+                default:
+                    UpdateAllSettings(existing, settings);
+                    break;
             }
 
             _context.SaveChanges();
             _cache.Remove(CacheKey);
+        }
+
+        private static string? NormalizeTabName(string? tab)
+        {
+            if (string.IsNullOrWhiteSpace(tab)) return null;
+            var t = tab.Trim().ToLowerInvariant();
+            return t switch
+            {
+                "brand" => "genel",
+                "general" => "genel",
+                "store" => "genel",
+                "genel" => "genel",
+                "contact" => "iletisim",
+                "iletisim" => "iletisim",
+                "social" => "sosyal",
+                "sosyal" => "sosyal",
+                "shipping" => "kargo",
+                "satis" => "kargo",
+                "kargo" => "kargo",
+                "odeme" => "kapida-odeme",
+                "payment" => "kapida-odeme",
+                "cod" => "kapida-odeme",
+                "kapida-odeme" => "kapida-odeme",
+                "seo" => "seo",
+                "email" => "mail",
+                "mail" => "mail",
+                "maintenance" => "bakim",
+                "bakim" => "bakim",
+                _ => t
+            };
+        }
+
+        private void UpdateGenelSettings(SiteAyarlari existing, SiteAyarlari input)
+        {
+            existing.SiteAdi = string.IsNullOrWhiteSpace(input.SiteAdi) ? "7ANRPS48" : input.SiteAdi.Trim();
+            existing.MarkaAdi = string.IsNullOrWhiteSpace(input.MarkaAdi) ? existing.SiteAdi : input.MarkaAdi.Trim();
+            existing.SiteBasligi = string.IsNullOrWhiteSpace(input.SiteBasligi) ? $"{existing.MarkaAdi} - متجرك الإلكتروني في فلسطين" : input.SiteBasligi.Trim();
+            existing.SiteAciklamasi = string.IsNullOrWhiteSpace(input.SiteAciklamasi)
+                ? "7ANRPS48 - Filistin'den online alışveriş. Moda, elektronik, ev & yaşam ürünlerinde hızlı teslimat."
+                : input.SiteAciklamasi.Trim();
+            existing.SiteLogoUrl = NormalizeLogoUrl(input.SiteLogoUrl);
+            existing.FaviconUrl = NormalizeFaviconUrl(input.FaviconUrl);
+            existing.BaseUrl = NormalizeBaseUrl(input.BaseUrl, ConfiguredBaseUrl(), IsProductionEnvironment());
+            existing.TemaRengi = NormalizeThemeColor(input.TemaRengi);
+            existing.UstBarMesaji = input.UstBarMesaji?.Trim() ?? string.Empty;
+            existing.KampanyaMesaji = input.KampanyaMesaji?.Trim() ?? string.Empty;
+            existing.UstBarEtkin = input.UstBarEtkin;
+            existing.UstBarHizi = input.UstBarHizi > 0 ? input.UstBarHizi : 34;
+            existing.FooterAciklamasi = string.IsNullOrWhiteSpace(input.FooterAciklamasi)
+                ? existing.SiteAciklamasi
+                : input.FooterAciklamasi.Trim();
+            if (!string.IsNullOrWhiteSpace(input.FooterAciklamasiEn))
+                existing.FooterAciklamasiEn = input.FooterAciklamasiEn.Trim();
+            if (!string.IsNullOrWhiteSpace(input.FooterAciklamasiAr))
+                existing.FooterAciklamasiAr = input.FooterAciklamasiAr.Trim();
+            if (!string.IsNullOrWhiteSpace(input.HeroBaslikAr))
+                existing.HeroBaslikAr = input.HeroBaslikAr.Trim();
+            if (!string.IsNullOrWhiteSpace(input.HeroBaslikEn))
+                existing.HeroBaslikEn = input.HeroBaslikEn.Trim();
+            if (!string.IsNullOrWhiteSpace(input.HeroAltBaslikAr))
+                existing.HeroAltBaslikAr = input.HeroAltBaslikAr.Trim();
+            if (!string.IsNullOrWhiteSpace(input.HeroAltBaslikEn))
+                existing.HeroAltBaslikEn = input.HeroAltBaslikEn.Trim();
+            existing.HeroGorselUrl = string.IsNullOrWhiteSpace(input.HeroGorselUrl) ? "/slider-demo.jpg" : input.HeroGorselUrl.Trim();
+        }
+
+        private static void UpdateIletisimSettings(SiteAyarlari existing, SiteAyarlari input)
+        {
+            existing.Telefon = input.Telefon?.Trim() ?? string.Empty;
+            existing.Email = input.Email?.Trim() ?? string.Empty;
+            existing.Adres = input.Adres?.Trim() ?? string.Empty;
+            existing.WhatsappNumarasi = input.WhatsappNumarasi?.Trim() ?? string.Empty;
+            existing.CalismaSaatleri = input.CalismaSaatleri?.Trim() ?? string.Empty;
+        }
+
+        private static void UpdateSosyalSettings(SiteAyarlari existing, SiteAyarlari input)
+        {
+            existing.FacebookUrl = input.FacebookUrl?.Trim() ?? string.Empty;
+            existing.InstagramUrl = input.InstagramUrl?.Trim() ?? string.Empty;
+            existing.TwitterUrl = input.TwitterUrl?.Trim() ?? string.Empty;
+            existing.YoutubeUrl = input.YoutubeUrl?.Trim() ?? string.Empty;
+            existing.TiktokUrl = input.TiktokUrl?.Trim() ?? string.Empty;
+            existing.PinterestUrl = input.PinterestUrl?.Trim() ?? string.Empty;
+        }
+
+        private static void UpdateKargoSettings(SiteAyarlari existing, SiteAyarlari input)
+        {
+            existing.ParaBirimi = string.IsNullOrWhiteSpace(input.ParaBirimi) ? "₪" : input.ParaBirimi.Trim();
+            existing.KargoBedeli = Math.Max(0, input.KargoBedeli);
+            existing.UcretsizKargoLimiti = Math.Max(0, input.UcretsizKargoLimiti);
+            existing.StokUyariLimiti = Math.Max(0, input.StokUyariLimiti);
+            existing.StoktaYokSatisIzni = input.StoktaYokSatisIzni;
+            existing.StokBiteniGriGoster = input.StokBiteniGriGoster;
+            existing.KargoFirmasi = string.IsNullOrWhiteSpace(input.KargoFirmasi) || IsLegacyTurkishCargoName(input.KargoFirmasi)
+                ? (string.IsNullOrWhiteSpace(existing.KargoFirmasi) ? "توصيل محلي" : existing.KargoFirmasi)
+                : input.KargoFirmasi.Trim();
+            existing.KargoTakipUrl = input.KargoTakipUrl?.Trim() ?? string.Empty;
+            existing.SiparisTeslimSuresiGun = input.SiparisTeslimSuresiGun <= 0 ? 3 : input.SiparisTeslimSuresiGun;
+            existing.IadeHakkiGun = input.IadeHakkiGun <= 0 ? 7 : input.IadeHakkiGun;
+            existing.IptalSuresiSaat = Math.Max(0, input.IptalSuresiSaat);
+            existing.GirisZorunluMu = input.GirisZorunluMu;
+            existing.AdreseTeslimAktifMi = input.AdreseTeslimAktifMi;
+            existing.MagazadanTeslimAktifMi = input.MagazadanTeslimAktifMi;
+            existing.BankaHavalesiAktifMi = input.BankaHavalesiAktifMi;
+
+            if (!existing.AdreseTeslimAktifMi && !existing.MagazadanTeslimAktifMi)
+            {
+                existing.AdreseTeslimAktifMi = true;
+            }
+        }
+
+        private static void UpdateKapidaOdemeSettings(SiteAyarlari existing, SiteAyarlari input)
+        {
+            existing.KapidaOdemeAktifMi = input.KapidaOdemeAktifMi;
+            existing.KapidaOdemeHizmetBedeli = Math.Max(0, input.KapidaOdemeHizmetBedeli);
+            existing.KapidaOdemeLimiti = input.KapidaOdemeLimiti <= 0 ? 2000 : input.KapidaOdemeLimiti;
+            existing.ToptanciMinSiparisTutari = Math.Max(0, input.ToptanciMinSiparisTutari);
+        }
+
+        private static void UpdateSeoSettings(SiteAyarlari existing, SiteAyarlari input)
+        {
+            existing.MetaTitle = string.IsNullOrWhiteSpace(input.MetaTitle)
+                ? $"{existing.MarkaAdi} - Filistin E-Ticaret Mağazası | Online Alışveriş"
+                : input.MetaTitle.Trim();
+            existing.MetaDescription = string.IsNullOrWhiteSpace(input.MetaDescription)
+                ? $"{existing.MarkaAdi}; Filistin'de güvenli online alışveriş, hızlı teslimat ve müşteri odaklı e-ticaret deneyimi sunar."
+                : input.MetaDescription.Trim();
+            existing.MetaKeywords = string.IsNullOrWhiteSpace(input.MetaKeywords)
+                ? "7ANRPS48; Filistin online alışveriş, moda, elektronik, ev & yaşam ürünleri"
+                : input.MetaKeywords.Trim();
+            existing.GoogleAnalyticsId = input.GoogleAnalyticsId?.Trim() ?? string.Empty;
+            existing.FacebookPixelId = input.FacebookPixelId?.Trim() ?? string.Empty;
+            existing.VarsayilanSosyalPaylasimGorseliUrl = NormalizeLogoUrl(input.VarsayilanSosyalPaylasimGorseliUrl);
+            existing.CookieMetni = string.IsNullOrWhiteSpace(input.CookieMetni)
+                ? "نستخدم ملفات تعريف الارتباط لتحسين تجربتك وتحليل حركة الموقع."
+                : input.CookieMetni.Trim();
+        }
+
+        private static void UpdateMailSettings(SiteAyarlari existing, SiteAyarlari input)
+        {
+            existing.BildirimAliciEmail = input.BildirimAliciEmail?.Trim() ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(existing.BildirimAliciEmail) ||
+                existing.BildirimAliciEmail.Equals("admin@7anrps48.com", StringComparison.OrdinalIgnoreCase) ||
+                existing.BildirimAliciEmail.Contains(LegacyBrandToken(), StringComparison.OrdinalIgnoreCase))
+            {
+                existing.BildirimAliciEmail = "info@7anrps48.com";
+            }
+            existing.YeniSiparisMailBildirimi = input.YeniSiparisMailBildirimi;
+            existing.StokUyarisiMailBildirimi = input.StokUyarisiMailBildirimi;
+            existing.IadeTalebiMailBildirimi = input.IadeTalebiMailBildirimi;
+        }
+
+        private static void UpdateBakimSettings(SiteAyarlari existing, SiteAyarlari input)
+        {
+            existing.BakimModuAktif = input.BakimModuAktif;
+            existing.BakimModuMesaji = string.IsNullOrWhiteSpace(input.BakimModuMesaji)
+                ? "نحن نعمل على تحسين الموقع لتقديم تجربة تسوق أفضل. سنعود قريباً!"
+                : input.BakimModuMesaji.Trim();
+        }
+
+        private void UpdateAllSettings(SiteAyarlari existing, SiteAyarlari input)
+        {
+            UpdateGenelSettings(existing, input);
+            UpdateIletisimSettings(existing, input);
+            UpdateSosyalSettings(existing, input);
+            UpdateKargoSettings(existing, input);
+            UpdateKapidaOdemeSettings(existing, input);
+            UpdateSeoSettings(existing, input);
+            UpdateMailSettings(existing, input);
+            UpdateBakimSettings(existing, input);
         }
 
         public string BuildAbsoluteUrl(string? path)
