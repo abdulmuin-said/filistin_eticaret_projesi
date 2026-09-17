@@ -361,15 +361,31 @@ namespace FilistinProje.Service
                     .AsNoTracking()
                     .Where(x => x.AktifMi && !x.SilindiMi && x.ToptanciUrunGrubuId == urun.ToptanciUrunGrubuId && adet >= x.MinAdet);
 
-                var bestDiscount = await discountQuery
-                    .Where(x => x.UrunId == urun.Id)
-                    .OrderByDescending(x => x.MinAdet)
-                    .FirstOrDefaultAsync();
+                ToptanciIskontoOrani? bestDiscount = null;
 
+                // 1. Variant-specific discount
+                if (secenek != null)
+                {
+                    bestDiscount = await discountQuery
+                        .Where(x => x.UrunSecenekId == secenek.Id)
+                        .OrderByDescending(x => x.MinAdet)
+                        .FirstOrDefaultAsync();
+                }
+
+                // 2. Product-specific discount
                 if (bestDiscount == null)
                 {
                     bestDiscount = await discountQuery
-                        .Where(x => !x.UrunId.HasValue)
+                        .Where(x => x.UrunId == urun.Id && !x.UrunSecenekId.HasValue)
+                        .OrderByDescending(x => x.MinAdet)
+                        .FirstOrDefaultAsync();
+                }
+
+                // 3. Group-wide discount
+                if (bestDiscount == null)
+                {
+                    bestDiscount = await discountQuery
+                        .Where(x => !x.UrunId.HasValue && !x.UrunSecenekId.HasValue)
                         .OrderByDescending(x => x.MinAdet)
                         .FirstOrDefaultAsync();
                 }

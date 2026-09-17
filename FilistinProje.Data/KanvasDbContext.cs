@@ -388,6 +388,7 @@ namespace FilistinProje.Data
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.ToptanciUrunGrubuId);
                 entity.HasIndex(e => e.UrunId);
+                entity.HasIndex(e => e.UrunSecenekId);
                 entity.HasOne(e => e.ToptanciUrunGrubu)
                     .WithMany(e => e.IskontoOranlari)
                     .HasForeignKey(e => e.ToptanciUrunGrubuId)
@@ -395,6 +396,10 @@ namespace FilistinProje.Data
                 entity.HasOne(e => e.Urun)
                     .WithMany()
                     .HasForeignKey(e => e.UrunId)
+                    .OnDelete(DeleteBehavior.SetNull);
+                entity.HasOne(e => e.UrunSecenek)
+                    .WithMany()
+                    .HasForeignKey(e => e.UrunSecenekId)
                     .OnDelete(DeleteBehavior.SetNull);
             });
 

@@ -11,6 +11,9 @@ namespace FilistinProje.Core.Varliklar
         public int? UrunId { get; set; }
         public virtual Urun? Urun { get; set; }
 
+        public int? UrunSecenekId { get; set; }
+        public virtual UrunSecenek? UrunSecenek { get; set; }
+
         public int MinAdet { get; set; } = 1;
         public string IskontoTipi { get; set; } = "Yuzde"; // "Yuzde" or "Tutar"
         public decimal IskontoYuzdesi { get; set; }

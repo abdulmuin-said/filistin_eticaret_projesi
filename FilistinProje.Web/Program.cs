@@ -1604,9 +1604,11 @@ BEGIN
     ALTER TABLE "ToptanciIskontoOranlari" ADD COLUMN IF NOT EXISTS "IskontoTipi" text NOT NULL DEFAULT 'Yuzde';
     ALTER TABLE "ToptanciIskontoOranlari" ADD COLUMN IF NOT EXISTS "IskontoTutari" numeric NOT NULL DEFAULT 0;
     ALTER TABLE "ToptanciIskontoOranlari" ADD COLUMN IF NOT EXISTS "UrunId" integer NULL;
+    ALTER TABLE "ToptanciIskontoOranlari" ADD COLUMN IF NOT EXISTS "UrunSecenekId" integer NULL;
 
     CREATE INDEX IF NOT EXISTS "IX_ToptanciIskontoOranlari_ToptanciUrunGrubuId" ON "ToptanciIskontoOranlari" ("ToptanciUrunGrubuId");
     CREATE INDEX IF NOT EXISTS "IX_ToptanciIskontoOranlari_UrunId" ON "ToptanciIskontoOranlari" ("UrunId");
+    CREATE INDEX IF NOT EXISTS "IX_ToptanciIskontoOranlari_UrunSecenekId" ON "ToptanciIskontoOranlari" ("UrunSecenekId");
 
     -- Genel varyant olculeri ve urun/varyant bazli dogrudan toptan fiyat kademeleri
     ALTER TABLE "UrunSecenekleri" ADD COLUMN IF NOT EXISTS "Beden" text NOT NULL DEFAULT '';

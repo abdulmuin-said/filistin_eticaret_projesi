@@ -82,6 +82,30 @@ namespace FilistinProje.Core.Varliklar
             .Where(x => !string.IsNullOrWhiteSpace(x)));
         }
 
+        public string GetDetailedVariantBadge(bool isAr)
+        {
+            var parts = new List<string>();
+            var localizedRenk = VaryantRenkYardimcisi.GetLocalizedRenk(Renk, isAr);
+            if (!string.IsNullOrWhiteSpace(localizedRenk))
+            {
+                parts.Add(isAr ? $"اللون: {localizedRenk}" : $"Color: {localizedRenk}");
+            }
+            if (!string.IsNullOrWhiteSpace(Beden))
+            {
+                parts.Add(isAr ? $"المقاس: {Beden}" : $"Size: {Beden}");
+            }
+            var olcuStr = string.IsNullOrWhiteSpace(OlcuBirimi) ? Olcu : $"{Olcu} {OlcuBirimi}";
+            if (!string.IsNullOrWhiteSpace(olcuStr))
+            {
+                parts.Add(isAr ? $"القياس: {olcuStr}" : $"Dimension: {olcuStr}");
+            }
+            if (parts.Count == 0)
+            {
+                return !string.IsNullOrWhiteSpace(VaryantBasligi) ? VaryantBasligi : $"#{Id}";
+            }
+            return string.Join(" / ", parts);
+        }
+
         [NotMapped]
         public string VaryantOzeti
         {

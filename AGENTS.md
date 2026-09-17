@@ -656,3 +656,24 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
   - Admin panelinden Ürün #112 düzenlenerek toggle açıldı, `#7C3AED` özel mor renk seçilip kaydedildi.
   - Vitrin detay sayfasında (`/Urun/Detay/test-1-essence-mascara-lash-princess-112`) rozetin mor arka plan (`rgb(124, 58, 237)`), beyaz metin ve Arapça/İngilizce olarak başarıyla görüntülendiği doğrulandı (`element-2026-09-17T16-40-38-641Z.png`).
   - Panelden toggle kapatılıp kaydedildiğinde rozetin vitrinden anında kaybolduğu doğrulandı (`badgeExists: false`).
+
+### Faz 29 (Varyasyon Seviyesinde Toptan Satış İskontosu & Hiyerarşik Fiyatlandırma Motoru — 17 Eylül 2026)
+- [x] **Adım 209 (Entity, Dual Migration & Şema)**:
+  - `FilistinProje.Core/Varliklar/ToptanciIskontoOrani.cs`: `UrunSecenekId` (`int?`) ve `UrunSecenek` navigation property'si eklendi.
+  - `FilistinProje.Core/Varliklar/UrunSecenek.cs`: Dropdown ve tablo rozet gösterimi için `GetDetailedVariantBadge(bool isAr)` metodu eklendi (`اللون: ... / المقاس: ... / القياس: ...`).
+  - `FilistinProje.Data/KanvasDbContext.cs`: `ToptanciIskontoOrani` için `UrunSecenekId` indeksi ve `SetNull` silme kuralı yapılandırıldı.
+  - EF Core Migration `20260917165846_AddUrunSecenekIdToToptanciIskontoOrani.cs` oluşturuldu ve DB'ye uygulandı (`dotnet ef database update`).
+  - `Program.cs` `EnsureMissingMarch2026SchemaAsync` raw SQL bloğuna `ALTER TABLE "ToptanciIskontoOranlari" ADD COLUMN IF NOT EXISTS "UrunSecenekId" integer NULL;` ve `CREATE INDEX IF NOT EXISTS "IX_ToptanciIskontoOranlari_UrunSecenekId"` eklendi.
+- [x] **Adım 210 (Backend & Controller)**:
+  - `Areas/Admin/Controllers/ToptanciController.cs`: `[HttpGet] GetUrunVaryantlari(int urunId)` endpoint'i eklendi (`Id`, `VaryantBasligi`, `Renk`, `Beden`, `Olcu`, `StokAdedi` JSON).
+  - `UrunGruplari()` action'ında `IskontoOranlari` sorgusuna `.ThenInclude(i => i.UrunSecenek)` dahil edildi.
+  - `IskontoKaydet` action'ında `UrunSecenekId` parametresi modele bağlandı, varlığı doğrulandı ve veritabanına kaydedildi/güncellendi.
+- [x] **Adım 211 (Admin Panel Arayüzü & Çok Dilli Lokalizasyon)**:
+  - `SharedResource.ar.resx` ve `SharedResource.en.resx`: `Admin_WholesaleAllVariants` ve `Admin_WholesaleVariantOptionalHint` anahtarları eklendi.
+  - `Areas/Admin/Views/Toptanci/UrunGruplari.cshtml`: `#mainUrunSelect` altına dinamik `#mainVaryantContainer` ve `#mainVaryantSelect` alanı eklendi; AJAX ile varyantların yüklenmesi ve sıfırlanması sağlandı.
+  - "Kayıtlı İskontolar" tablosunda kural spesifik bir varyanta aitse ürün başlığının yanında `.ca-badge-warning` ile varyant etiketi gösterildi.
+- [x] **Adım 212 (Hiyerarşik Fiyatlandırma & Sepet Motoru)**:
+  - `OrderPricingService.cs` ve `SepetService.cs`: 3 seviyeli hiyerarşik iskonto önceliği entegre edildi: (1) `UrunSecenekId == secenek.Id`, (2) `UrunId == urun.Id && !UrunSecenekId.HasValue`, (3) `!UrunId.HasValue && !UrunSecenekId.HasValue`.
+- [x] **Adım 213 (Birim Testler & Playwright E2E Doğrulama)**:
+  - `WholesaleTierPricingTests.cs` içine `CartPricing_HierarchicalWholesaleDiscountPriority_AppliesCorrectly` testi eklendi; varyant kuralının ürün ve grup kurallarını öncelikli olarak ezdiği hem sepet hem sipariş motorunda doğrulandı (`99/99 passed`).
+  - Playwright MCP ile `/Admin/Toptanci/UrunGruplari` üzerinde grup ve çoklu varyantlı ürün seçildi, varyant dropdown'ının dinamik olarak yüklendiği (`اللون: أسود`, `اللون: أزرق` vb.), siyah varyanta (`Id: 117`) min. 15 adet ve %18 iskonto girilerek kaydedildiği ve kayıtlı iskontolar tablosunda varyant rozetiyle (`اللون: أسود`) listelendiği test edilip ekran görüntüsü alındı (`wholesale_variant_discount_verified.png`).

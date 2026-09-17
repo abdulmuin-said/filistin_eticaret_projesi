@@ -6161,4 +6161,10 @@
   <data name="Admin_FastPalette" xml:space="preserve">
     <value>Quick Palette</value>
   </data>
+  <data name="Admin_WholesaleAllVariants" xml:space="preserve">
+    <value>-- Valid for All Variants --</value>
+  </data>
+  <data name="Admin_WholesaleVariantOptionalHint" xml:space="preserve">
+    <value>Optional. If selected, discount applies to this variant only.</value>
+  </data>
 </root>

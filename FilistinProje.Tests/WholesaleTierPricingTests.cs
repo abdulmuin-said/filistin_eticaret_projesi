@@ -152,6 +152,120 @@ public sealed class WholesaleTierPricingTests
     }
 
     [Fact]
+    public async Task CartPricing_HierarchicalWholesaleDiscountPriority_AppliesCorrectly()
+    {
+        await using var db = CreateContext();
+        const string userId = "hierarchy-user";
+        AddWholesaleRole(db, userId);
+
+        var group = new ToptanciUrunGrubu { Ad = "Hierarchical Group", AktifMi = true };
+        db.ToptanciUrunGruplari.Add(group);
+        await db.SaveChangesAsync();
+
+        var product1 = new Urun
+        {
+            Baslik = "Ürün 1",
+            Fiyat = 100m,
+            TopFiyat = 100m,
+            AktifMi = true,
+            YayindaMi = true,
+            ToptanciUrunGrubuId = group.Id
+        };
+        var variant1 = new UrunSecenek { Urun = product1, SatisFiyati = 100m, AktifMi = true, Renk = "Red", Beden = "M" };
+        var variant2 = new UrunSecenek { Urun = product1, SatisFiyati = 100m, AktifMi = true, Renk = "Blue", Beden = "L" };
+        product1.UrunSecenek.Add(variant1);
+        product1.UrunSecenek.Add(variant2);
+
+        var product2 = new Urun
+        {
+            Baslik = "Ürün 2",
+            Fiyat = 100m,
+            TopFiyat = 100m,
+            AktifMi = true,
+            YayindaMi = true,
+            ToptanciUrunGrubuId = group.Id
+        };
+
+        db.Urunler.AddRange(product1, product2);
+        await db.SaveChangesAsync();
+
+        // 1. Group-wide discount: 10%
+        var groupDiscount = new ToptanciIskontoOrani
+        {
+            ToptanciUrunGrubuId = group.Id,
+            UrunId = null,
+            UrunSecenekId = null,
+            MinAdet = 5,
+            IskontoTipi = "Yuzde",
+            IskontoYuzdesi = 10m,
+            AktifMi = true
+        };
+
+        // 2. Product 1-specific discount: 20%
+        var productDiscount = new ToptanciIskontoOrani
+        {
+            ToptanciUrunGrubuId = group.Id,
+            UrunId = product1.Id,
+            UrunSecenekId = null,
+            MinAdet = 5,
+            IskontoTipi = "Yuzde",
+            IskontoYuzdesi = 20m,
+            AktifMi = true
+        };
+
+        // 3. Variant 1-specific discount: 30%
+        var variantDiscount = new ToptanciIskontoOrani
+        {
+            ToptanciUrunGrubuId = group.Id,
+            UrunId = product1.Id,
+            UrunSecenekId = variant1.Id,
+            MinAdet = 5,
+            IskontoTipi = "Yuzde",
+            IskontoYuzdesi = 30m,
+            AktifMi = true
+        };
+
+        db.ToptanciIskontoOranlari.AddRange(groupDiscount, productDiscount, variantDiscount);
+
+        var cart = new Sepet { AppUserId = userId, SilindiMi = false };
+        // Variant 1 (5 pcs): should receive variant-specific 30% discount -> 70m
+        cart.SepetItems.Add(CartItem(product1.Id, 5, 100m, variantId: variant1.Id, product: product1));
+        // Variant 2 (5 pcs): should fallback to product-specific 20% discount -> 80m
+        cart.SepetItems.Add(CartItem(product1.Id, 5, 100m, variantId: variant2.Id, product: product1));
+        // Product 2 (5 pcs): should fallback to group-wide 10% discount -> 90m
+        cart.SepetItems.Add(CartItem(product2.Id, 5, 100m, product: product2));
+
+        db.Sepetler.Add(cart);
+        await db.SaveChangesAsync();
+
+        // Verify with SepetService
+        var sepetService = new SepetService(db, NullLogger<SepetService>.Instance);
+        var cartItems = await sepetService.GetSepetItemsAsync(userId, "unused-session");
+
+        Assert.Equal(3, cartItems.Count);
+        var itemV1 = cartItems.First(i => i.UrunSecenekId == variant1.Id);
+        var itemV2 = cartItems.First(i => i.UrunSecenekId == variant2.Id);
+        var itemP2 = cartItems.First(i => i.UrunId == product2.Id);
+
+        Assert.Equal(70m, itemV1.Fiyat); // 30% off 100
+        Assert.Equal(80m, itemV2.Fiyat); // 20% off 100
+        Assert.Equal(90m, itemP2.Fiyat); // 10% off 100
+
+        // Verify with OrderPricingService
+        var pricingService = CreateOrderPricingService(db);
+        var orderPricing = await pricingService.HesaplaAsync(cartItems, null, "BankaHavalesi", true, null);
+
+        Assert.Equal(3, orderPricing.Satirlar.Count);
+        var orderV1 = orderPricing.Satirlar.First(s => s.UrunSecenekId == variant1.Id);
+        var orderV2 = orderPricing.Satirlar.First(s => s.UrunSecenekId == variant2.Id);
+        var orderP2 = orderPricing.Satirlar.First(s => s.UrunId == product2.Id);
+
+        Assert.Equal(70m, orderV1.BirimFiyat);
+        Assert.Equal(80m, orderV2.BirimFiyat);
+        Assert.Equal(90m, orderP2.BirimFiyat);
+    }
+
+    [Fact]
     public void WholesaleTierIndexes_AreUniqueAndScopeFiltered()
     {
         using var db = CreateContext();

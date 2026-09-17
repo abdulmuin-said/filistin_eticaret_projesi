@@ -399,25 +399,44 @@ namespace FilistinProje.Service.Services
                 && toptanciGrupIskonto.TryGetValue(urun.ToptanciUrunGrubuId.Value, out var oranlar)
                 && oranlar.Count > 0)
             {
-                // Find best applicable discount: prioritize product-specific discount first
+                // Hierarchical Discount Priority:
+                // 1. Variant-specific discount (oran.UrunSecenekId == secenek.Id)
+                // 2. Product-specific discount (oran.UrunId == urun.Id && !oran.UrunSecenekId.HasValue)
+                // 3. Group-wide discount (!oran.UrunId.HasValue && !oran.UrunSecenekId.HasValue)
                 ToptanciIskontoOrani? bestDiscount = null;
 
-                // 1. Check for product-specific discounts
-                foreach (var oran in oranlar)
+                // 1. Check for variant-specific discounts
+                if (secenek != null)
                 {
-                    if (oran.UrunId == urun.Id && adet >= oran.MinAdet &&
-                        (bestDiscount == null || oran.MinAdet > bestDiscount.MinAdet))
+                    foreach (var oran in oranlar)
                     {
-                        bestDiscount = oran;
+                        if (oran.UrunSecenekId.HasValue && oran.UrunSecenekId.Value == secenek.Id && adet >= oran.MinAdet &&
+                            (bestDiscount == null || oran.MinAdet > bestDiscount.MinAdet))
+                        {
+                            bestDiscount = oran;
+                        }
                     }
                 }
 
-                // 2. If no product-specific discount matched, fallback to group-wide discount
+                // 2. If no variant-specific discount matched, check product-specific discounts
                 if (bestDiscount == null)
                 {
                     foreach (var oran in oranlar)
                     {
-                        if (!oran.UrunId.HasValue && adet >= oran.MinAdet &&
+                        if (oran.UrunId.HasValue && oran.UrunId.Value == urun.Id && !oran.UrunSecenekId.HasValue && adet >= oran.MinAdet &&
+                            (bestDiscount == null || oran.MinAdet > bestDiscount.MinAdet))
+                        {
+                            bestDiscount = oran;
+                        }
+                    }
+                }
+
+                // 3. If no product-specific discount matched, fallback to group-wide discount
+                if (bestDiscount == null)
+                {
+                    foreach (var oran in oranlar)
+                    {
+                        if (!oran.UrunId.HasValue && !oran.UrunSecenekId.HasValue && adet >= oran.MinAdet &&
                             (bestDiscount == null || oran.MinAdet > bestDiscount.MinAdet))
                         {
                             bestDiscount = oran;

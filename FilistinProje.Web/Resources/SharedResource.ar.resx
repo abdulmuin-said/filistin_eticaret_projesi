@@ -6145,4 +6145,10 @@
   <data name="Admin_FastPalette" xml:space="preserve">
     <value>ألوان جاهزة</value>
   </data>
+  <data name="Admin_WholesaleAllVariants" xml:space="preserve">
+    <value>-- صالح لجميع المتغيرات --</value>
+  </data>
+  <data name="Admin_WholesaleVariantOptionalHint" xml:space="preserve">
+    <value>اختياري. إذا تم تحديده، فسيتم تطبيق الخصم على هذا المتغير فقط.</value>
+  </data>
 </root>

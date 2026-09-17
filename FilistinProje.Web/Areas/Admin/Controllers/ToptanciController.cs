@@ -223,6 +223,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var gruplar = await _db.ToptanciUrunGruplari
                 .Include(g => g.IskontoOranlari.Where(i => !i.SilindiMi))
                     .ThenInclude(i => i.Urun)
+                .Include(g => g.IskontoOranlari.Where(i => !i.SilindiMi))
+                    .ThenInclude(i => i.UrunSecenek)
                 .Include(g => g.Urunler.Where(u => !u.SilindiMi))
                 .Where(g => !g.SilindiMi)
                 .OrderBy(g => g.Sira)
@@ -326,6 +328,27 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 model.IskontoYuzdesi = 0; // Clear percentage when fixed amount mode
             }
 
+            if (model.UrunSecenekId.HasValue && model.UrunSecenekId.Value <= 0)
+            {
+                model.UrunSecenekId = null;
+            }
+
+            if (model.UrunId.HasValue && model.UrunId.Value <= 0)
+            {
+                model.UrunId = null;
+            }
+
+            if (model.UrunSecenekId.HasValue)
+            {
+                var secenek = await _db.UrunSecenekleri.FirstOrDefaultAsync(s => s.Id == model.UrunSecenekId.Value && !s.SilindiMi);
+                if (secenek == null)
+                {
+                    TempData["Hata"] = _localizer["Admin_Sonuc_bulunamadi"].Value;
+                    return RedirectToAction(nameof(UrunGruplari));
+                }
+                model.UrunId = secenek.UrunId;
+            }
+
             if (model.Id > 0)
             {
                 var existing = await _db.ToptanciIskontoOranlari.FindAsync(model.Id);
@@ -335,6 +358,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     return RedirectToAction(nameof(UrunGruplari));
                 }
                 existing.UrunId = (model.UrunId.HasValue && model.UrunId.Value > 0) ? model.UrunId : null;
+                existing.UrunSecenekId = (model.UrunSecenekId.HasValue && model.UrunSecenekId.Value > 0) ? model.UrunSecenekId : null;
                 existing.MinAdet = model.MinAdet;
                 existing.IskontoTipi = model.IskontoTipi;
                 existing.IskontoYuzdesi = model.IskontoYuzdesi;
@@ -350,11 +374,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 {
                     TempData["Hata"] = _localizer["Admin_WholesaleGroupNotFound"].Value;
                     return RedirectToAction(nameof(UrunGruplari));
-                }
-
-                if (model.UrunId.HasValue && model.UrunId.Value <= 0)
-                {
-                    model.UrunId = null;
                 }
 
                 model.SilindiMi = false;
@@ -396,6 +415,29 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .ToListAsync();
 
             return Json(urunler);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUrunVaryantlari(int urunId)
+        {
+            var isAr = System.Globalization.CultureInfo.CurrentUICulture.Name.StartsWith("ar");
+            var varyantlar = await _db.UrunSecenekleri
+                .Where(s => s.UrunId == urunId && !s.SilindiMi && s.AktifMi)
+                .OrderBy(s => s.Sira)
+                .ThenBy(s => s.Id)
+                .ToListAsync();
+
+            var result = varyantlar.Select(s => new
+            {
+                s.Id,
+                VaryantBasligi = s.GetDetailedVariantBadge(isAr),
+                Renk = VaryantRenkYardimcisi.GetLocalizedRenk(s.Renk, isAr),
+                s.Beden,
+                Olcu = string.IsNullOrWhiteSpace(s.OlcuBirimi) ? s.Olcu : $"{s.Olcu} {s.OlcuBirimi}",
+                s.StokAdedi
+            });
+
+            return Json(result);
         }
 
         #endregion

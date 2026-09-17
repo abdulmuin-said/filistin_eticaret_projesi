@@ -73,10 +73,17 @@
                             </div>
                             <div class="col-12">
                                 <label class="ca-label">@Localizer["Admin_Urun"]</label>
-                                <select name="UrunId" id="mainUrunSelect" class="ca-select">
+                                <select name="UrunId" id="mainUrunSelect" class="ca-select" onchange="onMainUrunChange(this.value)">
                                     <option value="">-- @Localizer["Admin_WholesaleAllProductsInGroup"] --</option>
                                 </select>
                                 <small class="text-muted d-block mt-1">@Localizer["Admin_WholesaleProductOptionalHint"]</small>
+                            </div>
+                            <div class="col-12" id="mainVaryantContainer" style="display:none;">
+                                <label class="ca-label">@Localizer["Admin_Variant"]</label>
+                                <select name="UrunSecenekId" id="mainVaryantSelect" class="ca-select">
+                                    <option value="">@Localizer["Admin_WholesaleAllVariants"]</option>
+                                </select>
+                                <small class="text-muted d-block mt-1">@Localizer["Admin_WholesaleVariantOptionalHint"]</small>
                             </div>
                             <div class="col-md-6">
                                 <label class="ca-label">@Localizer["Admin_MinAdet"]</label>
@@ -219,6 +226,10 @@
                                                                             @if (iskonto.Urun != null)
                                                                             {
                                                                                 <span class="ca-badge ca-badge-info"><i class="fas fa-box me-1"></i>@(iskonto.Urun.BaslikAr ?? iskonto.Urun.BaslikEn ?? iskonto.Urun.Baslik)</span>
+                                                                                @if (iskonto.UrunSecenek != null)
+                                                                                {
+                                                                                    <span class="ca-badge ca-badge-warning ms-1"><i class="fas fa-tags me-1"></i>@(iskonto.UrunSecenek.GetDetailedVariantBadge(System.Globalization.CultureInfo.CurrentUICulture.Name.StartsWith("ar")))</span>
+                                                                                }
                                                                             }
                                                                             else
                                                                             {
@@ -299,8 +310,20 @@
 
 @section Scripts {
 <script>
+    function resetMainVariantSelect() {
+        var varyantContainer = document.getElementById('mainVaryantContainer');
+        var varyantSelect = document.getElementById('mainVaryantSelect');
+        if (varyantSelect) {
+            varyantSelect.innerHTML = '<option value="">' + @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_WholesaleAllVariants"].Value)) + '</option>';
+        }
+        if (varyantContainer) {
+            varyantContainer.style.display = 'none';
+        }
+    }
+
     function onMainGroupChange(groupId) {
         var urunSelect = document.getElementById('mainUrunSelect');
+        resetMainVariantSelect();
         if (!urunSelect) return;
         urunSelect.innerHTML = '<option value="">-- ' + @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_WholesaleAllProductsInGroup"].Value)) + ' --</option>';
         if (!groupId) return;
@@ -319,6 +342,35 @@
             })
             .catch(function(err) {
                 console.error('Error fetching group products:', err);
+            });
+    }
+
+    function onMainUrunChange(urunId) {
+        resetMainVariantSelect();
+        if (!urunId) return;
+
+        var varyantContainer = document.getElementById('mainVaryantContainer');
+        var varyantSelect = document.getElementById('mainVaryantSelect');
+
+        fetch('/Admin/Toptanci/GetUrunVaryantlari?urunId=' + encodeURIComponent(urunId))
+            .then(function(r) { return r.json(); })
+            .then(function(items) {
+                if (Array.isArray(items) && items.length > 0) {
+                    items.forEach(function(item) {
+                        var opt = document.createElement('option');
+                        opt.value = item.id;
+                        opt.textContent = item.varyantBasligi;
+                        varyantSelect.appendChild(opt);
+                    });
+                    if (varyantContainer) {
+                        varyantContainer.style.display = '';
+                    }
+                } else if (varyantContainer) {
+                    varyantContainer.style.display = 'none';
+                }
+            })
+            .catch(function(err) {
+                console.error('Error fetching variants:', err);
             });
     }
 
