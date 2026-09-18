@@ -29,10 +29,20 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SecenekEkle(UrunSecenek secenek)
         {
-            var urunVarMi = await _context.Urunler.AnyAsync(x => x.Id == secenek.UrunId && !x.SilindiMi);
+            var urun = await _context.Urunler.FirstOrDefaultAsync(x => x.Id == secenek.UrunId && !x.SilindiMi);
+            if (urun == null)
+            {
+                return RedirectToAction("Secenekler", "Urun", new { area = "", id = secenek.UrunId });
+            }
+
+            if (secenek.SatisFiyati <= 0)
+            {
+                secenek.SatisFiyati = ResolveVariantSalePrice(urun, secenek);
+            }
+
             var renkKoduGecerli = string.IsNullOrWhiteSpace(secenek.RenkKodu) ||
                                   VaryantRenkYardimcisi.TryNormalizeHex(secenek.RenkKodu, out _);
-            if (!urunVarMi || secenek.SatisFiyati <= 0 ||
+            if (secenek.SatisFiyati <= 0 ||
                 (secenek.IndirimliFiyat.HasValue &&
                  (secenek.IndirimliFiyat.Value <= 0 || secenek.IndirimliFiyat.Value >= secenek.SatisFiyati)) ||
                 !renkKoduGecerli)
@@ -433,23 +443,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         private async Task SyncProductPricesWithVariantsAsync(Urun urun, Urun model)
         {
-            var basePrice = model.Fiyat;
-            var defaultVariant = urun.UrunSecenek
-                .FirstOrDefault(x => x.VarsayilanMi && !x.SilindiMi)
-                ?? urun.UrunSecenek.FirstOrDefault(x => !x.SilindiMi);
-
-            if (defaultVariant != null && defaultVariant.SatisFiyati == 0)
+            var activeVariants = urun.UrunSecenek.Where(x => !x.SilindiMi).ToList();
+            foreach (var variant in activeVariants)
             {
-                defaultVariant.SatisFiyati = basePrice > 0 ? basePrice : 0;
-            }
-
-            var otherVariants = urun.UrunSecenek.Where(x => !x.SilindiMi && x.Id != defaultVariant?.Id);
-            foreach (var variant in otherVariants)
-            {
-                if (variant.SatisFiyati == 0 && variant.FiyatFarki != 0)
-                {
-                    variant.SatisFiyati = basePrice + variant.FiyatFarki;
-                }
+                variant.SatisFiyati = ResolveVariantSalePrice(urun, variant);
             }
 
             await _context.SaveChangesAsync();
@@ -3598,14 +3595,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         private static decimal ResolveVariantSalePrice(Urun urun, UrunSecenek variant)
         {
-            var basePrice = urun.Fiyat;
-            if (variant.SatisFiyati > 0)
-            {
-                return variant.SatisFiyati;
-            }
-
-            var resolvedPrice = basePrice + variant.FiyatFarki;
-            return resolvedPrice > 0 ? resolvedPrice : basePrice;
+            var resolvedPrice = urun.Fiyat + variant.FiyatFarki;
+            return resolvedPrice > 0 ? resolvedPrice : urun.Fiyat;
         }
 
         private static void ApplyVariantFields(UrunSecenek target, UrunSecenek source)

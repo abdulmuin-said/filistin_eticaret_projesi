@@ -732,3 +732,18 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
   - Playwright MCP ile `http://localhost:5002/Hesap/GirisYap` üzerinden admin girişi yapıldı, `/Admin/Ayarlar?tab=genel` sayfasındaki ilk değerler okundu (`siteAdi: 7ANRPS48`, `telefon: +970-599-000-000`, `kargoBedeli: 15`, `kapidaOdemeLimit: 1500`).
   - Kargo sekmesine geçilip kargo bedeli 45, ücretsiz kargo limiti 350 yapıldı ve yapışkan bar üzerinden kaydedildi; sayfanın `tab=kargo` sekmesinde kaldığı, kargo değerlerinin güncellendiği, Genel ve Ödeme sekmelerindeki verilerin kesinlikle ezilmediği doğrulandı.
   - Kapıda Ödeme sekmesine geçilip kapıda ödeme limiti 1800 yapıldı ve kart içi kaydet butonuyla kaydedildi; sayfanın `tab=kapida-odeme` sekmesinde kaldığı, limitin güncellendiği, önceki kargo güncellemesi (45 ₪) ve genel ayarların bozulmadan korunduğu tam olarak kanıtlandı.
+
+### Faz 33 (Ürün ve Varyant Fiyatlandırma Mimarisi Refactoring — 18 Eylül 2026)
+- [x] **Adım 229 (Admin UI Varyant Editörü & Önizleme Mekanizması)**:
+  - `Areas/Admin/Views/Urun/_VariantEditor.cshtml`: Bağımsız `SatisFiyati` inputu satırın sonundan kaldırılıp `FiyatFarki` (+/- Fark) alanı birincil odak alanı haline getirildi. Yanına salt-okunur (`readonly`, `#f1f5f9`) "Nihai Efektif Fiyat Önizlemesi" eklendi.
+  - `variantCardTemplate` şablonu da aynı yapıya güncellendi; yeni eklenen varyantlar varsayılan fark 0 ve ana taban fiyat önizlemesi ile oluşturulur.
+  - `syncDefaultCheckbox` içindeki `mainFiyat.value = satisFiyati;` ataması kaldırılarak varyant seçiminin ana taban fiyatı ezmesi engellendi.
+  - İstemci JS: `input[name="Fiyat"]` ve varyant `FiyatFarki` alanlarına anlık `input` dinleyicileri bağlanarak `(Ana Taban Fiyat + Fiyat Farkı)` formülüyle önizlemelerin ve indirimlerin canlı güncellenmesi sağlandı.
+- [x] **Adım 230 (Backend Mantığı & Çift Yönlü Fiyat Senkronizasyonu)**:
+  - `Areas/Admin/Controllers/UrunController.cs`: `ResolveVariantSalePrice` metodu `(urun.Fiyat + variant.FiyatFarki > 0 ? urun.Fiyat + variant.FiyatFarki : urun.Fiyat)` mantığıyla baştan yazıldı.
+  - `SyncVariantsAsync`: Varyantlar kaydedilirken `SatisFiyati` değeri ana fiyat + fiyat farkı üzerinden otomatik eşitlendi.
+  - `SyncProductPricesWithVariantsAsync`: Ana ürün fiyatı (`urun.Fiyat`) güncellendiğinde altındaki tüm aktif varyantların `SatisFiyati` değerleri `ResolveVariantSalePrice` ile otomatik senkronize edildi.
+- [x] **Adım 231 (Playwright E2E Uçtan Uca Tarayıcı Doğrulaması)**:
+  - Playwright MCP ile `/Admin/Urun/Duzenle/112` sayfasına gidildi, taban fiyat 100 ₪, Varyant 1 farkı 0 ₪, Varyant 2 farkı +25 ₪ olarak ayarlanıp kaydedildi.
+  - Vitrin detay sayfasında (`/Urun/Detay/...-112`) Varyant 1 seçildiğinde 100.00 ₪, Varyant 2 seçildiğinde 125.00 ₪ olduğu doğrulandı.
+  - Admin paneline dönülüp ana taban fiyat 150 ₪ yapılıp kaydedildi; vitrin sayfasında Varyant 1'in 150.00 ₪'ye, Varyant 2'nin ise otomatik olarak 175.00 ₪'ye yükseldiği teyit edilerek ekran görüntüleri alındı.
