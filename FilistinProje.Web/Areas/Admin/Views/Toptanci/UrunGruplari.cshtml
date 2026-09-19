@@ -430,10 +430,12 @@
             if (Array.isArray(items)) {
                 items.forEach(function(item) {
                     var opt = document.createElement('option');
-                    opt.value = item.id;
-                    var text = item.baslik;
-                    if (item.toptanciUrunGrubuId && item.grupAdi && item.toptanciUrunGrubuId != selectedGroupId) {
-                        text += ' (' + currentGroupLabel + ': ' + item.grupAdi + ')';
+                    opt.value = item.id != null ? item.id : item.Id;
+                    var text = item.baslik || item.Baslik;
+                    var itemGrupId = item.toptanciUrunGrubuId != null ? item.toptanciUrunGrubuId : item.ToptanciUrunGrubuId;
+                    var itemGrupAdi = item.grupAdi || item.GrupAdi;
+                    if (itemGrupId && itemGrupAdi && itemGrupId != selectedGroupId) {
+                        text += ' (' + currentGroupLabel + ': ' + itemGrupAdi + ')';
                     }
                     opt.textContent = text;
                     urunSelect.appendChild(opt);
@@ -463,8 +465,8 @@
                 if (Array.isArray(items) && items.length > 0) {
                     items.forEach(function(item) {
                         var opt = document.createElement('option');
-                        opt.value = item.id;
-                        opt.textContent = item.varyantBasligi;
+                        opt.value = item.id != null ? item.id : item.Id;
+                        opt.textContent = item.varyantBasligi || item.VaryantBasligi;
                         varyantSelect.appendChild(opt);
                     });
                     if (varyantContainer) {

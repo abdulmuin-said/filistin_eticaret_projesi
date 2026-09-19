@@ -1607,6 +1607,15 @@ BEGIN
     CREATE INDEX IF NOT EXISTS "IX_ToptanciIskontoOranlari_UrunId" ON "ToptanciIskontoOranlari" ("UrunId");
     CREATE INDEX IF NOT EXISTS "IX_ToptanciIskontoOranlari_UrunSecenekId" ON "ToptanciIskontoOranlari" ("UrunSecenekId");
 
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint
+        WHERE conname = 'FK_ToptanciIskontoOranlari_UrunSecenekleri_UrunSecenekId'
+          AND conrelid = '"ToptanciIskontoOranlari"'::regclass
+    ) THEN
+        ALTER TABLE "ToptanciIskontoOranlari" ADD CONSTRAINT "FK_ToptanciIskontoOranlari_UrunSecenekleri_UrunSecenekId"
+            FOREIGN KEY ("UrunSecenekId") REFERENCES "UrunSecenekleri" ("Id") ON DELETE SET NULL;
+    END IF;
+
     -- Genel varyant olculeri ve urun/varyant bazli dogrudan toptan fiyat kademeleri
     ALTER TABLE "UrunSecenekleri" ADD COLUMN IF NOT EXISTS "Beden" text NOT NULL DEFAULT '';
     ALTER TABLE "UrunSecenekleri" ADD COLUMN IF NOT EXISTS "Renk" text NOT NULL DEFAULT '';

@@ -747,3 +747,33 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
   - Playwright MCP ile `/Admin/Urun/Duzenle/112` sayfasına gidildi, taban fiyat 100 ₪, Varyant 1 farkı 0 ₪, Varyant 2 farkı +25 ₪ olarak ayarlanıp kaydedildi.
   - Vitrin detay sayfasında (`/Urun/Detay/...-112`) Varyant 1 seçildiğinde 100.00 ₪, Varyant 2 seçildiğinde 125.00 ₪ olduğu doğrulandı.
   - Admin paneline dönülüp ana taban fiyat 150 ₪ yapılıp kaydedildi; vitrin sayfasında Varyant 1'in 150.00 ₪'ye, Varyant 2'nin ise otomatik olarak 175.00 ₪'ye yükseldiği teyit edilerek ekran görüntüleri alındı.
+
+### Faz 34 (Toptan Satış Varyant Bazlı İskonto Tanımlama & Hiyerarşik Fiyatlandırma — 18 Eylül 2026)
+- [x] **Adım 232 (Entity & Dual Migration Uyumlu Şema Genişletmesi)**:
+  - `FilistinProje.Core/Varliklar/ToptanciIskontoOrani.cs`: `UrunSecenekId` (`int?`) ve `UrunSecenek` navigation property'si tanımlandı.
+  - `FilistinProje.Data/KanvasDbContext.cs`: `ToptanciIskontoOrani` için `UrunSecenekId` indeksi ve `SetNull` silme kuralı yapılandırıldı.
+  - EF Core Migration: `20260917165846_AddUrunSecenekIdToToptanciIskontoOrani.cs` oluşturuldu ve DB'ye uygulandı.
+  - `Program.cs` `EnsureMissingMarch2026SchemaAsync`: `ALTER TABLE "ToptanciIskontoOranlari" ADD COLUMN IF NOT EXISTS "UrunSecenekId" integer NULL;`, `CREATE INDEX IF NOT EXISTS "IX_ToptanciIskontoOranlari_UrunSecenekId"` ve `FK_ToptanciIskontoOranlari_UrunSecenekleri_UrunSecenekId` foreign key kontrolü eklendi.
+- [x] **Adım 233 (Backend & Servis Katmanı Hiyerarşik Fiyatlandırma)**:
+  - `Areas/Admin/Controllers/ToptanciController.cs`: `[HttpGet] GetUrunVaryantlari(int urunId)` endpoint'i (`Id`, `VaryantBasligi`, `Renk`, `Beden`, `Olcu`, `StokAdedi`) optimize edildi; `IskontoKaydet` action'ında formdan gelen `UrunSecenekId` doğrulandı; `UrunGruplari()` sorgusunda `UrunSecenek` ilişkisi `.Include` ile bağlandı.
+  - `SepetService.cs` ve `OrderPricingService.cs`: Toptancı sepet ve sipariş fiyatlandırmasında 3 seviyeli katı öncelik sırası uygulandı:
+    1. Varyanta Özel İskonto (`UrunSecenekId == secenek.Id`)
+    2. Ürüne Özel İskonto (`UrunId == urun.Id && !UrunSecenekId.HasValue`)
+    3. Grup Geneli İskonto (`!UrunId.HasValue && !UrunSecenekId.HasValue`)
+- [x] **Adım 234 (Admin UI Dinamik Varyant Seçimi & Tablo Rozet Entegrasyonu)**:
+  - `Areas/Admin/Views/Toptanci/UrunGruplari.cshtml`: Ürün seçimi (`#mainUrunSelect`) altına dinamik `#mainVaryantContainer` ve `#mainVaryantSelect` eklendi; varsayılan `-- Tüm Varyantlar İçin Geçerli --` seçeneği oluşturuldu; ürün seçildiğinde AJAX ile varyantlar yüklenip varyant yoksa alanın gizlenmesi sağlandı; casing-tolerant (camelCase / PascalCase) güvenliği sağlandı.
+  - "Kayıtlı İskontolar" tablosunda kural spesifik bir varyanta aitse ürün başlığının yanında `.ca-badge-warning` rozeti ve etiket ikonu ile varyant başlığı (`GetDetailedVariantBadge`) gösterildi.
+- [x] **Adım 235 (Birim Testler & Playwright E2E Uçtan Uca Tarayıcı Doğrulaması)**:
+  - `dotnet test FilistinProje.Tests`: 102 test sıfır hata ile başarıyla geçti (`WholesaleTierPricingTests` varyant hiyerarşisi dahil).
+  - Playwright MCP ile `/Admin/Toptanci/UrunGruplari` sayfasına gidildi; "مجموعة الجملة الأساسية" ve alt varyantları olan "ايسنس ماسكارا لاش برينسيس" seçildi; varyant açılır menüsünün otomatik dolduğu ve varyantsız ürünlerde gizlendiği test edildi.
+  - Varyant 117 (`اللون: أسود`) için 15 adet / %12.5 ve Varyant 148 (`اللون: أزرق`) için 20 adet / %25 iskonto kuralları kaydedildi; her iki varyantın da kayıtlı iskontolar tablosunda bağımsız satırlar halinde ve şık sarı rozetleriyle listelendiği tarayıcıda görsel olarak doğrulandı.
+### Faz 35 (Eksik Resx Lokalizasyonları, Varyant & Hediye Paketi E2E Doğrulaması — 19 Eylül 2026)
+- [x] **Adım 236 (Lokalizasyon Anahtarları & UTF-8 Bütünlüğü)**:
+  - `SharedResource.ar.resx` ve `SharedResource.en.resx`: Eksik olan 47 adet yerelleştirme anahtarı (`Admin_Variation`, `Variant`, `Admin_AreYouSure`, `Admin_DocumentUploaded`, `Profile_*`, `Contract_*`, `UserAgreement_*` vb.) eklendi.
+  - `Admin/Siparis/Detay` sayfasındaki raw `Admin_Variation` başlığı Arapça `المتغير` olarak çözümlendi.
+  - Vitrin ürün detayındaki `Variant:` etiketi Arapça modda `المتغير:` olarak dinamik ve doğru lokalizasyonla gösterildi.
+- [x] **Adım 237 (Uçtan Uca Playwright Testleri & Sepet/Checkout Doğrulaması)**:
+  - Ürün Detay: Varyant seçimi ile fiyat dinamik değişimi (150 ₪ -> 175 ₪), hediye paketi seçimi (+50 ₪ / parça) ve seçim özeti (`ملخص الاختيار`) matematiksel olarak doğrulandı.
+  - Sepet (`/Sepet`): 2 adet siyah (400 ₪) + 1 adet mavi (225 ₪) ürün, 150 ₪ paketleme ücreti, 475 ₪ ara toplam, 625 ₪ genel toplam ve ücretsiz kargo barajı testi hatasız geçti.
+  - Ödeme (`/Siparis/Odeme`): Filistin şehirleri, Bank of Palestine / Arab Bank IBAN seçenekleri, kapıda ödeme bedeli (+15 ₪), belge yükleme formatları ve özet kartı doğrulandı.
+  - `dotnet test`: 102/102 test sıfır hata ile geçti. Çözüm derlemesi `0 Hata` ile tamamlandı.
