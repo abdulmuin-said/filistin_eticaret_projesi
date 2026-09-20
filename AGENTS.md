@@ -283,6 +283,27 @@ cd FilistinProje.Web && npm run watch:storefront-css
 - [x] **Adım 139**: `/profile` karşılama metni resx anahtarına bağlandı (`مرحباً، {0}`); veritabanındaki admin kullanıcısının adı `مدير 7ANRPS48` olarak güncellendi.
 - [x] **Adım 140**: `/profile` sayfasına "تعديل المعلومات" (Bilgileri Güncelle) ve "تغيير كلمة المرور" (Şifre Değiştir) butonları ile modern, yüksek z-index'li (`z-[100000]`) modallar eklendi; e-posta alanı salt okunur yapıldı ve güvenlik uyarısı eklendi; `ProfilController.cs`'de `update` ve `change-password` action'ları yazıldı.
 - [x] **Adım 141**: `profile/Adreslerim` sayfasındaki adres ekleme modalının (`#adresModal`) header altında kalma sorunu `z-[100000]` ile çözüldü.
+
+### Faz 16 (Proje Sahibi Video Talepleri & Vitrin/Admin İyileştirmeleri — 20 Eylül 2026)
+- [x] **Adım 142**: Paketleme Seçenekleri UI Güncellemesi (`Views/Urun/Detay.cshtml`):
+  - Radyo buton kutuları yerine modern açılır menü (`<select id="giftPackageSelect">`) formatına geçildi.
+  - Seçenekler `Ad (+Fiyat ₪ / adet)` formatında dinamik listelendi.
+  - Başlığa proje sahibinin istediği `(يتم إضافة سعر التغليف على المنتج)` / `(Packaging fee is added to product price)` notu eklendi.
+  - Sepet ve özet hesaplama JS fonksiyonları (`updateSelectionSummary`, `ajaxSepetBtn`) select menüsüne bağlandı.
+- [x] **Adım 143**: Toptan Fiyat Kademeleri Tablo Tasarımı (`Views/Urun/Detay.cshtml`):
+  - Dağınık 2 kolonlu kart gridi yerine derli toplu, şık ve okunaklı bir mini tablo (`table`) tasarımına dönüştürüldü.
+  - Sütunlar: `@Localizer["WholesaleMinQty"]` (الكمية / Quantity), `@Localizer["WholesaleUnitPrice"]` (سعر القطعة / Unit Price).
+- [x] **Adım 144**: Vitrin Varyasyon Tıklama Hatası & Güvenlik Düzeltmeleri (`Views/Urun/Detay.cshtml`):
+  - Stoğu biten varyasyonlardaki `disabled` input kısıtlaması kaldırılarak `data-purchasable="false"` modeline geçildi; kullanıcı artık varyasyona tıklayıp resmini ve "Tükendi" uyarısını görebiliyor, sepete ekleme butonu kontrollü olarak devre dışı kalıyor.
+  - `updateDiscountDisplays` fonksiyonunda `window.caDiscountCalculator` için null-safety fallback eklendi (`calculatePercentage` tanımsızlık hatası engellendi).
+  - `updateVariantCardStyles` içinde renk regex'i büyük/küçük harf duyarsız yapıldı (`/^#[0-9A-Fa-f]{6}$/`).
+  - Varsayılan varyant seçimi mantığı onarıldı; admin panelde `VarsayilanMi` seçilmediyse hiçbir varyant öne çıkarılmıyor, ana ürünün temel fiyatı/resmi görüntüleniyor.
+- [x] **Adım 145**: İndirim Bitiş Tarihine Saatlik Hızlı Butonlar:
+  - `Admin/Urun/Duzenle.cshtml`, `Admin/Urun/_VariantEditor.cshtml` ve `Admin/Urun/Ekle.cshtml` dosyalarında gün butonlarının (`+1d, +3d, +1w, +1m`) önüne saat butonları (`+1h, +3h, +6h, +12h` / `+1 س, +3 س, +6 س, +12 س`) eklendi.
+  - JS motoru `data-hours` desteğiyle `now.setHours(now.getHours() + hours)` dinamik saat hesaplamasına kavuşturuldu.
+  - `SharedResource.ar.resx` ve `SharedResource.en.resx` dosyalarına `QuickTime_1Hour`, `QuickTime_3Hours`, `QuickTime_6Hours`, `QuickTime_12Hours`, `GiftPackagePriceNote` anahtarları eklendi.
+- [x] **Adım 146**: Admin Ürün Düzenleme Sabit Görsel Yükleme Kolaylığı (`Duzenle.cshtml`):
+  - Sağ taraftaki sabit ürün önizleme kartının hemen altına `Admin_UploadNewMainImage` butonu eklendi; admin kullanıcısı hangi sekmede (Fiyat, Temel Bilgiler vb.) olursa olsun sekmeler arası geçiş yapmadan tek tıkla ana ürün görselini güncelleyebiliyor.
 - [x] **Adım 142**: Ekranın sağ/sol altında yüzen sepet butonunun (`_FloatingButtons.cshtml`) footer ile görsel çakışması lüks altın degradesi (`linear-gradient(135deg, #c5a880...)`), beyaz kontrast halkası ve koyu yeşil/altın rozet ile çözüldü.
 - [x] **Adım 143**: `Admin/Kategori` düzenleme ve ekleme ekranlarına kategori hero banner yönetimi eklendi; canlı banner görsel önizlemesi, kampanya etiketi ve üst metin alanları yerleştirildi; mobil (600x400), masaüstü (1400x450) ve kart/menü (600x600) için piksel boyut rehberi eklendi. Kategori 78 (أثاث منزلي) örnek banner ve kampanya etiketiyle yapılandırıldı.
 - [x] **Adım 144**: Ürün detayında tek varyantlı ürünlerde (ör. Yumurta #134) gereksiz yere görünen "Standart / Standard" seçim butonu `@if (secenekler.Count > 1)` koşuluyla gizlendi; varyant etiketlerindeki Türkçe "Standart" kalıntıları temizlendi.

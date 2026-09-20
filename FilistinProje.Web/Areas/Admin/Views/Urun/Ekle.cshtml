@@ -204,11 +204,15 @@
                                     <span class="ca-required text-danger" id="createDiscountEndDateRequiredStar" style="display:none;">*</span>
                                     @Localizer["Admin_DiscountEndDate"]
                                 </label>
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="1" style="font-size:0.75rem;">@Localizer["QuickTime_1Day"]</button>
-                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="3" style="font-size:0.75rem;">@Localizer["QuickTime_3Days"]</button>
-                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="7" style="font-size:0.75rem;">@Localizer["QuickTime_1Week"]</button>
-                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="30" style="font-size:0.75rem;">@Localizer["QuickTime_1Month"]</button>
+                                <div class="d-flex flex-wrap gap-1" role="group">
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-hours="1" style="font-size:0.72rem;">@Localizer["QuickTime_1Hour"]</button>
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-hours="3" style="font-size:0.72rem;">@Localizer["QuickTime_3Hours"]</button>
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-hours="6" style="font-size:0.72rem;">@Localizer["QuickTime_6Hours"]</button>
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-hours="12" style="font-size:0.72rem;">@Localizer["QuickTime_12Hours"]</button>
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="1" style="font-size:0.72rem;">@Localizer["QuickTime_1Day"]</button>
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="3" style="font-size:0.72rem;">@Localizer["QuickTime_3Days"]</button>
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="7" style="font-size:0.72rem;">@Localizer["QuickTime_1Week"]</button>
+                                    <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1 quick-date-btn" data-days="30" style="font-size:0.72rem;">@Localizer["QuickTime_1Month"]</button>
                                 </div>
                             </div>
                             <input asp-for="KampanyaBitisTarihi" id="createKampanyaBitisTarihi" class="ca-input" type="datetime-local" />
@@ -605,9 +609,14 @@
             btn.addEventListener('click', function (e) {
                 e.preventDefault();
                 if (!createDateInput) return;
-                const days = parseInt(this.getAttribute('data-days') || '1', 10);
+                const hoursAttr = this.getAttribute('data-hours');
+                const daysAttr = this.getAttribute('data-days');
                 const now = new Date();
-                now.setDate(now.getDate() + days);
+                if (hoursAttr) {
+                    now.setHours(now.getHours() + parseInt(hoursAttr, 10));
+                } else {
+                    now.setDate(now.getDate() + parseInt(daysAttr || '1', 10));
+                }
                 const pad = (n) => String(n).padStart(2, '0');
                 const val = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
                 createDateInput.value = val;
