@@ -798,3 +798,16 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
   - Sepet (`/Sepet`): 2 adet siyah (400 ₪) + 1 adet mavi (225 ₪) ürün, 150 ₪ paketleme ücreti, 475 ₪ ara toplam, 625 ₪ genel toplam ve ücretsiz kargo barajı testi hatasız geçti.
   - Ödeme (`/Siparis/Odeme`): Filistin şehirleri, Bank of Palestine / Arab Bank IBAN seçenekleri, kapıda ödeme bedeli (+15 ₪), belge yükleme formatları ve özet kartı doğrulandı.
   - `dotnet test`: 102/102 test sıfır hata ile geçti. Çözüm derlemesi `0 Hata` ile tamamlandı.
+
+### Faz 36 (Proje Sahibi Video Talepleri & İndirim Sayacı Tasarımı — 20 Eylül 2026)
+- [x] **Adım 238**: Paketleme Seçenekleri UI Güncellemesi (`Views/Urun/Detay.cshtml`): Radyo buton kutuları yerine modern açılır menü (`<select id="giftPackageSelect">`) formatına geçildi; seçenekler `Ad (+Fiyat ₪ / adet)` formatında dinamik listelendi; başlığa `(يتم إضافة سعر التغليف على المنتج)` notu eklendi; sepet ve özet hesaplama JS motorları select menüsüne bağlandı.
+- [x] **Adım 239**: Toptan Fiyat Kademeleri Tablo Tasarımı (`Views/Urun/Detay.cshtml`): Dağınık 2 kolonlu kart gridi yerine derli toplu, şık ve okunaklı bir mini tablo (`table`) tasarımına dönüştürüldü; sütunlar `@Localizer["WholesaleMinQty"]` ve `@Localizer["WholesaleUnitPrice"]` olarak yapılandırıldı.
+- [x] **Adım 240**: Vitrin Varyasyon Tıklama & Out-of-Stock Satın Alma Durumu Onarımı (`Views/Urun/Detay.cshtml`): Stoğu biten varyasyonlardaki `disabled` input kısıtlaması kaldırılarak `data-purchasable="false"` modeline geçildi; kullanıcı artık varyasyona tıklayıp resmini ve "Tükendi" uyarısını görebiliyor, sepete ekleme butonu kontrollü olarak devre dışı kalıyor; `updateDiscountDisplays` null-safety sağlandı, varsayılan varyant seçimi mantığı onarıldı.
+- [x] **Adım 241**: İndirim Bitiş Tarihine Saatlik Hızlı Butonlar: `Admin/Urun/Duzenle.cshtml`, `Admin/Urun/_VariantEditor.cshtml` ve `Admin/Urun/Ekle.cshtml` dosyalarında gün butonlarının (`+1d, +3d, +1w, +1m`) önüne saat butonları (`+1h, +3h, +6h, +12h` / `+1 س, +3 س, +6 س, +12 س`) eklendi; JS motoru `data-hours` desteğiyle `now.setHours(...)` formülüne kavuşturuldu.
+- [x] **Adım 242**: Admin Ürün Düzenleme Sabit Görsel Yükleme Kolaylığı (`Duzenle.cshtml`): Sağ taraftaki sabit ürün önizleme kartının hemen altına `Admin_UploadNewMainImage` butonu eklendi; admin kullanıcısı sekme değiştirmeden tek tıkla ana ürün görselini güncelleyebiliyor.
+- [x] **Adım 243**: İndirim Sayacı ve Rozeti Canlı Kırmızı Tasarım Güncellemesi & Çift İki Nokta Onarımı (`Views/Urun/Detay.cshtml`, `Views/Shared/_CountdownPartial.cshtml`):
+  - Soluk/ölü krem tonları yerine sitenin açık zemininden net şekilde ayrışan canlı yakut/alev kırmızısı gradyan (`bg-gradient-to-r from-red-600 via-rose-600 to-red-700`, `box-shadow`) uygulandı.
+  - Dil dosyasındaki iki nokta ile şablondaki iki noktanın çakışmasından kaynaklanan `ينتهي الخصم خلال::` çift iki nokta yazım hatası giderildi.
+  - Geri sayım kutucukları yarı saydam koyu (`rgba(0,0,0,0.38)`) zemin, beyaz kalın font ve açık sarı gün/saat etiketleri ile yüksek kontrastlı ve okunur hale getirildi.
+  - İndirim rozeti (`#discountBadge`) parlayan şimşek ikonu ve kırmızı gradyan hap tasarımıyla aciliyet hissi verecek şekilde güçlendirildi.
+  - Varyant değişiminde varyantın özel indirim bitiş tarihi varsa sayacın canlı güncellenmesi sağlandı.

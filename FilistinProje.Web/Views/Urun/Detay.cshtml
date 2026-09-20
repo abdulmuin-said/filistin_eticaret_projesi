@@ -543,24 +543,34 @@
                     else { <span id="oldPriceDisplay" class="hidden"></span> }
                     @if (gosterilecekIndirimYuzdesi.HasValue)
                     {
-                        <span id="discountBadge" class="mb-1 rounded bg-brand-gold px-2 py-1 text-xs font-semibold text-white">%@gosterilecekIndirimYuzdesi @Localizer["Discount"]</span>
+                        <span id="discountBadge" class="product-discount-pill mb-1 inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-bold text-white shadow-sm">
+                            <i class="fas fa-bolt text-yellow-300 text-[11px]"></i>
+                            <span>%@gosterilecekIndirimYuzdesi @Localizer["Discount"]</span>
+                        </span>
                     }
                     else { <span id="discountBadge" class="hidden"></span> }
 
                     <div id="productDetailCountdown"
-                         class="@(gosterilecekIndirimBitisTarihi.HasValue && gosterilecekIndirimBitisTarihi.Value > DateTime.UtcNow ? "inline-flex" : "hidden") items-center gap-2 rounded-lg bg-rose-50 border border-rose-200 px-3 py-1.5 text-xs font-semibold text-rose-700 shadow-sm"
+                         class="product-countdown-card @(gosterilecekIndirimBitisTarihi.HasValue && gosterilecekIndirimBitisTarihi.Value > DateTime.UtcNow ? "inline-flex" : "hidden") items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-semibold text-white shadow-md"
                          data-countdown
                          data-end="@(gosterilecekIndirimBitisTarihi?.ToString("yyyy-MM-ddTHH:mm:ssZ"))"
                          data-original-price="@(gosterilecekEskiFiyat ?? gosterilecekFiyat)">
-                        <i class="fas fa-clock text-rose-500 animate-pulse"></i>
-                        <span class="cd-counter flex items-center gap-1 font-mono">
-                            <span class="text-rose-800 font-medium">@Localizer["DiscountEndsIn"]:</span>
-                            <span class="cd-days bg-white px-1.5 py-0.5 rounded border border-rose-200">0</span>d
-                            <span class="cd-hours bg-white px-1.5 py-0.5 rounded border border-rose-200">00</span>:
-                            <span class="cd-mins bg-white px-1.5 py-0.5 rounded border border-rose-200">00</span>:
-                            <span class="cd-secs bg-white px-1.5 py-0.5 rounded border border-rose-200">00</span>
-                        </span>
-                        <span class="cd-ended hidden text-rose-600 font-bold">@Localizer["DiscountEnded"]</span>
+                        <div class="countdown-pulse-icon flex items-center justify-center w-6 h-6 rounded-full bg-white/20 text-amber-300">
+                            <i class="fas fa-clock text-xs animate-pulse"></i>
+                        </div>
+                        <div class="cd-counter flex items-center gap-2 font-mono">
+                            <span class="countdown-label text-white/95 font-medium text-xs">@Localizer["DiscountEndsIn"]</span>
+                            <div class="countdown-boxes flex items-center gap-1" dir="ltr">
+                                <div class="cd-box"><span class="cd-days">0</span><small>@(isAr ? "ي" : "d")</small></div>
+                                <span class="cd-sep">:</span>
+                                <div class="cd-box"><span class="cd-hours">00</span></div>
+                                <span class="cd-sep">:</span>
+                                <div class="cd-box"><span class="cd-mins">00</span></div>
+                                <span class="cd-sep">:</span>
+                                <div class="cd-box"><span class="cd-secs">00</span></div>
+                            </div>
+                        </div>
+                        <span class="cd-ended hidden text-white font-bold">@Localizer["DiscountEnded"]</span>
                     </div>
                 </div>
             }
@@ -1111,6 +1121,52 @@
         color: #fff;
         box-shadow: 0 1px 5px rgba(0, 0, 0, .35);
     }
+    /* Canli ve Dikkat Cekici Indirim Rozeti & Sayac Stilleri */
+    .product-discount-pill {
+        background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+        color: #fff !important;
+        box-shadow: 0 3px 10px rgba(225, 29, 72, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .product-countdown-card {
+        background: linear-gradient(135deg, #be123c 0%, #9f1239 50%, #881337 100%);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        color: #fff !important;
+        box-shadow: 0 5px 16px rgba(159, 18, 57, 0.38);
+    }
+    .countdown-boxes {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        direction: ltr;
+    }
+    .cd-box {
+        background: rgba(0, 0, 0, 0.38);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 6px;
+        padding: 2px 6px;
+        min-width: 26px;
+        text-align: center;
+        font-weight: 700;
+        font-size: 0.82rem;
+        color: #fff !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        line-height: 1.2;
+    }
+    .cd-box small {
+        font-size: 0.65rem;
+        opacity: 0.9;
+        font-weight: 500;
+        color: #fef08a !important;
+    }
+    .cd-sep {
+        color: rgba(255, 255, 255, 0.75);
+        font-weight: 700;
+        font-size: 0.85rem;
+    }
     @@media (max-width: 1023px) { .product-detail-sections { margin-top: 3.5rem; } }
     @@media (min-width: 1024px) { #mainProductImageContainer { height: clamp(24rem, 58vh, 34rem); max-height: calc(100vh - 12rem); } }
     @@media (max-width: 767px) {
@@ -1458,6 +1514,7 @@ function changeProductImage(imageUrl, thumbnailElement, altText) {
 }
 
 const PRODUCT_BASE_PRICE = @gosterilecekFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture);
+const MAIN_CAMPAIGN_END_DATE = '@(gosterilecekIndirimBitisTarihi?.ToString("yyyy-MM-ddTHH:mm:ssZ") ?? "")';
 const FRAME_PRICE_PER_METER = 250;
 
 function parseOlcu(olcuText) {
@@ -1627,7 +1684,7 @@ function updateDiscountDisplays(oldPrice, effectivePrice) {
     if (discountBadge) {
         discountBadge.classList.toggle('hidden', !hasDiscount);
         if (hasDiscount) {
-            discountBadge.innerHTML = '%' + discount + ' @Localizer["Discount"]';
+            discountBadge.innerHTML = '<i class="fas fa-bolt text-yellow-300 text-[11px]"></i> <span>%' + discount + ' @Localizer["Discount"]</span>';
         }
     }
 
@@ -1778,6 +1835,23 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
             updateVariantCardStyles();
             updatePriceWithFrame();
             updateWhatsappOrderLink();
+
+            var variantEndDate = this.getAttribute('data-enddate');
+            var countdownEl = document.getElementById('productDetailCountdown');
+            if (countdownEl) {
+                var targetEndDate = variantEndDate || MAIN_CAMPAIGN_END_DATE;
+                if (targetEndDate && new Date(targetEndDate).getTime() > Date.now()) {
+                    countdownEl.setAttribute('data-end', targetEndDate);
+                    countdownEl.classList.remove('hidden');
+                    countdownEl.classList.add('inline-flex');
+                    if (window.CountdownTimer && typeof window.CountdownTimer.init === 'function') {
+                        window.CountdownTimer.init(countdownEl);
+                    }
+                } else {
+                    countdownEl.classList.add('hidden');
+                    countdownEl.classList.remove('inline-flex');
+                }
+            }
 
             var targetImg = (imageUrl && imageUrl.trim() !== '') ? imageUrl : (MAIN_PRODUCT_IMAGE || DEFAULT_PRODUCT_IMAGE);
             if (targetImg) {
