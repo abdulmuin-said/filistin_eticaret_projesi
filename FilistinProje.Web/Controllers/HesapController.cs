@@ -477,7 +477,8 @@ namespace FilistinProje.Web.Controllers
                 Sehir = user.Sehir ?? string.Empty,
                 Adres = user.Adres ?? string.Empty,
                 MevcutKimlikFotoUrl = user.KimlikFotografYolu,
-                ReturnUrl = returnUrl
+                ReturnUrl = returnUrl,
+                ToptanciMi = user.BasvuruTarihi.HasValue || user.WholesaleStatus == WholesaleStatus.Approved
             };
 
             return View(model);
@@ -545,6 +546,13 @@ namespace FilistinProje.Web.Controllers
             user.PhoneNumber = model.Telefon;
             user.Sehir = model.Sehir?.Trim() ?? string.Empty;
             user.Adres = model.Adres?.Trim() ?? string.Empty;
+
+            // Toptancı başvurusu: kutucuk işaretlendiyse ve daha önce başvurulmadıysa
+            if (model.ToptanciMi && !user.BasvuruTarihi.HasValue && user.WholesaleStatus != WholesaleStatus.Approved)
+            {
+                user.WholesaleStatus = WholesaleStatus.Pending;
+                user.BasvuruTarihi = DateTime.UtcNow;
+            }
 
             var updateResult = await _userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)

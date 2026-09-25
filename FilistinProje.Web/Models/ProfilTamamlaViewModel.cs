@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
 namespace FilistinProje.Web.Models
@@ -43,5 +43,8 @@ namespace FilistinProje.Web.Models
         public string? MevcutKimlikFotoUrl { get; set; }
 
         public string? ReturnUrl { get; set; }
+
+        [Display(Name = "RegisterAsWholesale")]
+        public bool ToptanciMi { get; set; }
     }
 }

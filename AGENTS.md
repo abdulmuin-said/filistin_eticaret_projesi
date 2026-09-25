@@ -333,8 +333,11 @@ cd FilistinProje.Web && npm run watch:storefront-css
 - [x] **Adım 162**: Kurumsal Sayfalar (`SayfaController.cs`) sessiz kayıt ve güncelleme başarısızlığı giderildi; `NormalizeContent` öne alındı, otomatik slug üretiminde `ModelState.Remove(nameof(model.UrlSlug))` uygulandı; mevcut sayfaların diller arası içerik güncellemesi sağlandı; `Form.cshtml`'e validation summary ve `UrlSlug` alanı eklendi.
 - [x] **Adım 163**: Misafir sipariş akışında şehir (`Sehir`) öncesine Bölge (`BolgeSelect`) kademeli dropdown'u eklendi; `regionCities` sözlüğü ile şehirlere dinamik filtreleme ve anlık kargo hesaplaması bağlandı; kayıtlı adresten seçimde (`selectAddress`) bölge eşleştirmesi eklendi; `CheckoutRequestDto.cs` ve `SiparisController.ValidateCheckoutInput` güncellendi.
 
-
-
+### Faz 19 (Google OAuth Profil Tamamlama & Toptancı Entegrasyonu — 25 Eylül 2026)
+- [x] **Adım 164**: Google ile kayıtta "Toptancı Olarak Kaydol" entegrasyonu (Video 2):
+  - `ProfilTamamlaViewModel.cs`: `ToptanciMi` boolean bayrağı ve `[Display(Name = "RegisterAsWholesale")]` eklendi.
+  - `HesapController.cs`: `ProfilTamamla` GET metodunda mevcut toptancı durumu (`user.BasvuruTarihi.HasValue || user.WholesaleStatus == WholesaleStatus.Approved`) modele aktarıldı. POST metodunda `model.ToptanciMi` seçildiyse ve kullanıcı henüz onaylı/başvurulu değilse `WholesaleStatus.Pending` ve `BasvuruTarihi = DateTime.UtcNow` ataması sağlandı.
+  - `ProfilTamamla.cshtml`: `KayitOl.cshtml` tasarımıyla birebir eşleşen toptancı onay kutusu (`التسجيل كتاجر جملة`) kimlik fotoğrafı alanının altına eklendi.
 
 ### Hassas dosya mimarisi (B25)
 - **Storage root**: `<ContentRoot>/secure-storage/hassas/{kategori}/` (wwwroot dışında).

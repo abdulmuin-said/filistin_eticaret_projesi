@@ -1,4 +1,4 @@
-﻿@model FilistinProje.Web.Models.ProfilTamamlaViewModel
+@model FilistinProje.Web.Models.ProfilTamamlaViewModel
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["CompleteProfile"];
@@ -124,6 +124,19 @@
                         <p id="identityFileError" class="text-red-600 text-xs mt-1 hidden"></p>
                         <span asp-validation-for="KimlikFoto" class="text-red-600 text-xs mt-1 block"></span>
                     </div>
+                </div>
+
+                <!-- Toptancı Olarak Kaydol -->
+                <div class="bg-[#f8f6f2] border border-brand-border rounded-lg p-4">
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input asp-for="ToptanciMi" type="checkbox"
+                               class="mt-0.5 w-4 h-4 rounded border-brand-border text-brand-olive focus:ring-[#b58735] focus:ring-1 focus:ring-offset-0" />
+                        <div>
+                            <span class="text-sm font-medium text-brand-darktext">@Localizer["RegisterAsWholesale"]</span>
+                            <p class="text-xs text-brand-mutedtext mt-0.5 leading-relaxed">@Localizer["WholesaleRegistrationInfo"]</p>
+                        </div>
+                    </label>
+                    <span asp-validation-for="ToptanciMi" class="text-red-600 text-xs mt-1 block"></span>
                 </div>
 
                 <div class="pt-2">
