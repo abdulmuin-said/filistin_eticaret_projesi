@@ -2633,11 +2633,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 ModelState.AddModelError(nameof(Urun.IndirimliFiyat), _localizer["Admin_Product_DiscountPriceLowerThanOriginal"].Value);
             }
 
-            if (urun.IndirimliFiyat.HasValue && urun.IndirimliFiyat.Value > 0 && !urun.KampanyaBitisTarihi.HasValue)
-            {
-                ModelState.AddModelError(nameof(Urun.KampanyaBitisTarihi), _localizer["Admin_Product_DiscountEndDateRequired"].Value);
-            }
-
             if (urun.MinSiparisAdedi < 1)
             {
                 ModelState.AddModelError(nameof(Urun.MinSiparisAdedi), _localizer["Admin_Product_MinOrderAtLeastOne"].Value);
@@ -3225,22 +3220,29 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .Select(x => x.Id)
                 .ToHashSet();
 
-            HashSet<int> ownedVariantIds = [];
+            // Also include new variants (Id == 0) — they'll get IDs after save
+            var hasNewVariants = (urun.UrunSecenek ?? Array.Empty<UrunSecenek>())
+                .Any(x => x.Id == 0 && IsMeaningfulVariant(x));
+
             HashSet<int> ownedTierIds = [];
             if (currentId.HasValue)
             {
-                ownedVariantIds = (await _context.UrunSecenekleri
-                    .AsNoTracking()
-                    .Where(x => x.UrunId == currentId.Value && postedVariantIds.Contains(x.Id) && !x.SilindiMi)
-                    .Select(x => x.Id)
-                    .ToListAsync())
-                    .ToHashSet();
                 ownedTierIds = (await _context.UrunToptanFiyatKademeleri
                     .AsNoTracking()
                     .Where(x => x.UrunId == currentId.Value)
                     .Select(x => x.Id)
                     .ToListAsync())
                     .ToHashSet();
+            }
+
+            // Auto-fix: If a tier references a variant that is being removed,
+            // null out the variant reference so the tier becomes product-level.
+            foreach (var tier in tiers)
+            {
+                if (tier.UrunSecenekId.HasValue && !postedVariantIds.Contains(tier.UrunSecenekId.Value))
+                {
+                    tier.UrunSecenekId = null;
+                }
             }
 
             var duplicateScopes = tiers
@@ -3267,11 +3269,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 if (tier.Id > 0 && !ownedTierIds.Contains(tier.Id))
                 {
                     ModelState.AddModelError($"{prefix}.Id", _localizer["Admin_Product_VariantPriceTierInvalid"].Value);
-                }
-
-                if (tier.UrunSecenekId.HasValue && !ownedVariantIds.Contains(tier.UrunSecenekId.Value))
-                {
-                    ModelState.AddModelError($"{prefix}.UrunSecenekId", _localizer["Admin_Product_VariantInvalid"].Value);
                 }
 
                 if (duplicateScopes.Contains((tier.UrunSecenekId, tier.MinAdet)))
@@ -3474,13 +3471,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     ModelState.AddModelError(
                         $"{prefix}.IndirimliFiyat",
                         string.Format(_localizer["Admin_Product_VariantDiscountPriceInvalid"].Value, row));
-                }
-
-                if (variant.IndirimliFiyat.HasValue && variant.IndirimliFiyat.Value > 0 && !variant.IndirimBitisTarihi.HasValue)
-                {
-                    ModelState.AddModelError(
-                        $"{prefix}.IndirimBitisTarihi",
-                        string.Format(_localizer["Admin_Product_VariantDiscountEndDateRequired"].Value, row));
                 }
 
                 if (variant.MaliyetFiyati < 0)

@@ -17,22 +17,44 @@
     var secenekler = ViewBag.Secenekler as List<FilistinProje.Core.Varliklar.UrunSecenek> ?? new List<FilistinProje.Core.Varliklar.UrunSecenek>();
     var stokBiteniGriGoster = siteSettings.StokBiteniGriGoster;
     var stoktaYokSatisIzni = siteSettings.StoktaYokSatisIzni;
-    var varsayilanSecenek = secenekler
-        .Where(x => x.VarsayilanMi)
-        .OrderBy(x => x.Sira)
-        .ThenBy(x => x.SatisFiyati)
-        .FirstOrDefault(x => stoktaYokSatisIzni || x.SatinAlinabilirMi)
-        ?? secenekler
+    var varsayilanSecenek = secenekler.Count <= 1
+        ? secenekler
             .Where(x => x.VarsayilanMi)
             .OrderBy(x => x.Sira)
             .ThenBy(x => x.SatisFiyati)
-            .FirstOrDefault();
+            .FirstOrDefault(x => stoktaYokSatisIzni || x.SatinAlinabilirMi)
+            ?? secenekler
+                .Where(x => x.VarsayilanMi)
+                .OrderBy(x => x.Sira)
+                .ThenBy(x => x.SatisFiyati)
+                .FirstOrDefault()
+        : null; // Multiple variants: don't auto-select, show main product price first
     var isWholesale = ViewBag.IsWholesale is bool ws && ws;
     decimal gosterilecekFiyat;
     decimal? gosterilecekEskiFiyat;
     DateTime? gosterilecekIndirimBitisTarihi;
 
-    if (varsayilanSecenek != null && varsayilanSecenek.IndirimVarMi)
+    // When multiple variants exist AND no default is pre-selected, show main product price
+    if (varsayilanSecenek == null)
+    {
+        if (Model.IndirimVarMi)
+        {
+            gosterilecekFiyat = isWholesale && Model.TopFiyat.HasValue && Model.TopFiyat.Value > 0
+                ? Model.TopFiyat.Value
+                : Model.EtkinFiyat;
+            gosterilecekEskiFiyat = Model.Fiyat;
+            gosterilecekIndirimBitisTarihi = Model.KampanyaBitisTarihi;
+        }
+        else
+        {
+            gosterilecekFiyat = isWholesale && Model.TopFiyat.HasValue && Model.TopFiyat.Value > 0
+                ? Model.TopFiyat.Value
+                : Model.Fiyat;
+            gosterilecekEskiFiyat = null;
+            gosterilecekIndirimBitisTarihi = null;
+        }
+    }
+    else if (varsayilanSecenek.IndirimVarMi)
     {
         gosterilecekFiyat = varsayilanSecenek.EtkinFiyat;
         gosterilecekEskiFiyat = varsayilanSecenek.SatisFiyati;
@@ -46,7 +68,7 @@
         gosterilecekEskiFiyat = Model.Fiyat;
         gosterilecekIndirimBitisTarihi = Model.KampanyaBitisTarihi;
     }
-    else if (varsayilanSecenek != null && varsayilanSecenek.SatisFiyati > 0)
+    else if (varsayilanSecenek.SatisFiyati > 0)
     {
         gosterilecekFiyat = varsayilanSecenek.SatisFiyati;
         gosterilecekEskiFiyat = null;
@@ -218,9 +240,7 @@
         .OrderByDescending(x => x.VarsayilanMi)
         .ThenBy(x => x.Sira)
         .FirstOrDefault();
-    var varsayilanGaleriGorseli = !string.IsNullOrWhiteSpace(varsayilanSecenek?.GorselUrl)
-        ? varsayilanSecenek.GorselUrl
-        : (varsayilanMedya?.ResimYolu ?? Model.AnaGorselUrl);
+    var varsayilanGaleriGorseli = (varsayilanMedya?.ResimYolu ?? Model.AnaGorselUrl);
     var varsayilanGaleriAltMetni = !string.IsNullOrWhiteSpace(varsayilanMedya?.AltMetin)
         ? varsayilanMedya.AltMetin
         : Model.LocalizedBaslik;
@@ -611,11 +631,11 @@
                                 <label class="variant-option-card relative cursor-pointer rounded border-2 border-brand-border bg-white px-4 py-3 text-sm text-brand-mutedtext transition-all duration-150 hover:border-brand-gold @(!varyantSatinAlinabilir ? "is-disabled" : "")">
                                     @if (Model.FiyatGizliMi)
                                     {
-                                        <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
+                                        <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(secenekler.Count <= 1 && varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
                                     }
                                     else
                                     {
-                                        <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-price="@varyant.EtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-enddate="@(varyant.IndirimVarMi && varyant.IndirimBitisTarihi.HasValue ? varyant.IndirimBitisTarihi.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
+                                        <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(secenekler.Count <= 1 && varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-price="@varyant.EtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-enddate="@(varyant.IndirimVarMi && varyant.IndirimBitisTarihi.HasValue ? varyant.IndirimBitisTarihi.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
                                     }
                                     @if (!string.IsNullOrWhiteSpace(varyant.RenkKodu) || !string.IsNullOrWhiteSpace(varyant.Renk)) { <span class="me-1 inline-block h-3 w-3 rounded-full border align-middle" data-variant-color="@varyant.Id" style="background-color:@varyant.GuvenliRenkKodu;border-color:rgba(0,0,0,.35)"></span> }
                                     @varyantEtiket
@@ -649,7 +669,7 @@
             <form id="addToCartForm" class="space-y-6 pt-6">
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="UrunId" value="@Model.Id" />
-                <input type="hidden" id="selectedVariantId" value="@varsayilanSecenek?.Id" />
+                <input type="hidden" id="selectedVariantId" value="@(secenekler.Count <= 1 ? varsayilanSecenek?.Id.ToString() : "")" />
                 <input type="hidden" id="selectedQuantity" name="Adet" value="@minSiparisAdedi" />
                 <input type="hidden" id="selectedFrameModel" value="" />
                 <input type="hidden" id="selectedFrameFarki" value="0" />
@@ -668,7 +688,7 @@
                                 var varyantEskiFiyat = varyant.IndirimVarMi ? varyant.SatisFiyati : 0;
                                 var varyantSecimRengi = FilistinProje.Core.Helpers.VaryantRenkYardimcisi.TryNormalizeHex(varyant.RenkKodu, out var guvenliVaryantRengi) ? guvenliVaryantRengi : string.Empty;
                                 <label class="variant-option-card relative cursor-pointer rounded border-2 border-brand-border bg-white px-4 py-3 text-sm text-brand-mutedtext transition-all duration-150 hover:border-brand-gold @(!varyantSatinAlinabilir ? "is-disabled" : "")">
-                                    <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-price="@varyant.EtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-enddate="@(varyant.IndirimVarMi && varyant.IndirimBitisTarihi.HasValue ? varyant.IndirimBitisTarihi.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
+                                    <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(secenekler.Count <= 1 && varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-price="@varyant.EtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-enddate="@(varyant.IndirimVarMi && varyant.IndirimBitisTarihi.HasValue ? varyant.IndirimBitisTarihi.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
                                     @if (!string.IsNullOrWhiteSpace(varyant.RenkKodu) || !string.IsNullOrWhiteSpace(varyant.Renk)) { <span class="me-1 inline-block h-3 w-3 rounded-full border align-middle" data-variant-color="@varyant.Id" style="background-color:@varyant.GuvenliRenkKodu;border-color:rgba(0,0,0,.35)"></span> }
                                     @varyantEtiket
                                 </label>
@@ -726,48 +746,42 @@
                     </div>
                 }
 
-                <div id="selectionSummary" class="hidden rounded-xl border border-brand-border/80 bg-brand-warmcream/60 p-4 space-y-2 text-xs text-brand-darktext transition-all shadow-sm">
-                    <div class="flex items-center justify-between border-b border-brand-border/60 pb-2">
-                        <span class="font-semibold uppercase tracking-wider text-[11px] text-brand-olive flex items-center gap-1.5">
-                            <i class="fas fa-list-check text-brand-gold"></i>@Localizer["SelectionSummary"]
+                <div id="selectionSummary" class="hidden rounded-xl border border-brand-border/80 bg-brand-warmcream/60 p-2.5 sm:p-3 space-y-1 text-[11px] text-brand-darktext transition-all shadow-sm">
+                    <div class="flex items-center justify-between border-b border-brand-border/60 pb-1.5">
+                        <span class="font-semibold uppercase tracking-wider text-[10px] text-brand-olive flex items-center gap-1">
+                            <i class="fas fa-list-check text-brand-gold text-[9px]"></i>@Localizer["SelectionSummary"]
                         </span>
-                        <span id="summaryGiftBadge" class="hidden inline-flex items-center gap-1 rounded-full bg-brand-olive px-2 py-0.5 text-[10px] font-medium text-white">
-                            <i class="fas fa-gift text-[9px]"></i>@Localizer["GiftPackaging"]
+                        <span id="summaryGiftBadge" class="hidden inline-flex items-center gap-1 rounded-full bg-brand-olive px-1.5 py-0.5 text-[9px] font-medium text-white">
+                            <i class="fas fa-gift text-[8px]"></i>@Localizer["GiftPackaging"]
                         </span>
                     </div>
-
                     <div id="summaryVariantRow" class="hidden flex items-center justify-between text-brand-mutedtext">
                         <span>@Localizer["Variant"]:</span>
                         <span id="summaryOlcu" class="font-medium text-brand-darktext">-</span>
                     </div>
-
                     <div id="summaryFrameRow" class="hidden flex items-center justify-between text-brand-mutedtext">
                         <span>@Localizer["FrameLabel"]:</span>
                         <span id="summaryCerceve" class="font-medium text-brand-darktext">-</span>
                     </div>
-
                     <div class="flex items-center justify-between text-brand-mutedtext">
                         <span>@Localizer["ProductUnitPrice"]:</span>
                         <span id="summaryProductPrice" class="font-medium text-brand-darktext">-</span>
                     </div>
-
                     <div id="summaryGiftRow" class="hidden flex items-center justify-between font-medium text-brand-olive">
                         <span id="summaryGiftTitle" class="flex items-center gap-1">
-                            <i class="fas fa-gift text-brand-gold"></i>
+                            <i class="fas fa-gift text-brand-gold text-[9px]"></i>
                             <span id="summaryGiftName">+ @Localizer["GiftPackaging"]:</span>
                         </span>
                         <span id="summaryGiftPrice" class="font-semibold text-brand-gold">-</span>
                     </div>
-
-                    <div class="pt-2 border-t border-brand-border/70 flex items-center justify-between font-bold text-sm text-brand-olive">
+                    <div class="pt-1 border-t border-brand-border/70 flex items-center justify-between font-bold text-[12px] text-brand-olive">
                         <span>@Localizer["TotalPayable"]:</span>
                         <div class="text-end">
-                            <span id="summaryFiyat" class="text-base text-brand-olive"></span>
-                            <span id="summaryBirimFiyat" class="block text-[10px] font-normal text-brand-mutedtext"></span>
+                            <span id="summaryFiyat" class="text-brand-olive"></span>
+                            <span id="summaryBirimFiyat" class="block text-[9px] font-normal text-brand-mutedtext"></span>
                         </div>
                     </div>
-
-                    <div id="summaryBreakdown" class="text-[11px] text-brand-mutedtext text-end font-mono"></div>
+                    <div id="summaryBreakdown" class="text-[10px] text-brand-mutedtext text-end font-mono"></div>
                 </div>
 
                 <div class="product-purchase-actions flex items-end gap-3">
@@ -804,38 +818,25 @@
             @if (!Model.FiyatGizliMi && Model.ToptanFiyatKademeleri.Any(x => x.AktifMi && !x.SilindiMi))
             {
                 <div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 shadow-sm">
-                    <div class="mb-3 flex items-center justify-between">
-                        <div class="flex items-center gap-2 text-sm font-bold text-emerald-900">
-                            <i class="fas fa-boxes-stacked text-emerald-600"></i>
-                            <span>@Localizer["WholesalePrices"]</span>
+                    <label for="wholesaleTierSelect" class="mb-2 flex items-center gap-2 text-sm font-bold text-emerald-900">
+                        <i class="fas fa-boxes-stacked text-emerald-600"></i>
+                        <span>@Localizer["WholesalePrices"]</span>
+                        <span class="ms-auto rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-800">@Localizer["WholesaleTierNotice"]</span>
+                    </label>
+                    <div class="relative">
+                        <select id="wholesaleTierSelect" class="w-full appearance-none rounded-xl border border-emerald-200 bg-white py-3 ps-4 pe-10 text-sm font-medium text-brand-darktext shadow-sm transition hover:border-emerald-400 focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer">
+                            <option value="" data-min="0" data-price="0">@(isAr ? "أسعار الجملة حسب الكمية (اضغط للعرض)" : "Wholesale Quantity Tiers (Click to view)")</option>
+                            @foreach (var tier in Model.ToptanFiyatKademeleri.Where(x => x.AktifMi && !x.SilindiMi).OrderBy(x => x.MinAdet))
+                            {
+                                var tierVariant = Model.UrunSecenek.FirstOrDefault(x => x.Id == tier.UrunSecenekId);
+                                var tierLabel = $"{tier.MinAdet}+ {Localizer["Piece"].Value}: {tier.BirimFiyat.ToString("N2", System.Globalization.CultureInfo.InvariantCulture)} {currencySymbol} / {Localizer["Piece"].Value}";
+                                if (tierVariant != null) { tierLabel += $" · {tierVariant.VaryantBasligi}"; }
+                                <option value="@tier.Id" data-min="@tier.MinAdet" data-price="@tier.BirimFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)">@tierLabel</option>
+                            }
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-3 text-emerald-600">
+                            <i class="fas fa-chevron-down text-xs"></i>
                         </div>
-                        <span class="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-800">
-                            @Localizer["WholesaleTierNotice"]
-                        </span>
-                    </div>
-                    <div class="overflow-hidden rounded-xl border border-emerald-100 bg-white shadow-xs">
-                        <table class="w-full text-start text-xs">
-                            <thead>
-                                <tr class="border-b border-emerald-100 bg-emerald-50/40 text-brand-mutedtext">
-                                    <th class="py-2.5 px-3 font-semibold text-start">@Localizer["WholesaleMinQty"]</th>
-                                    <th class="py-2.5 px-3 font-semibold text-end">@Localizer["WholesaleUnitPrice"]</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-emerald-50">
-                                @foreach (var tier in Model.ToptanFiyatKademeleri.Where(x => x.AktifMi && !x.SilindiMi).OrderBy(x => x.MinAdet))
-                                {
-                                    var tierVariant = Model.UrunSecenek.FirstOrDefault(x => x.Id == tier.UrunSecenekId);
-                                    <tr class="transition hover:bg-emerald-50/30">
-                                        <td class="py-2.5 px-3 text-brand-darktext font-medium">
-                                            @tier.MinAdet+ @Localizer["Piece"] @(tierVariant == null ? "" : $" · {tierVariant.VaryantBasligi}")
-                                        </td>
-                                        <td class="py-2.5 px-3 text-end font-bold text-emerald-700">
-                                            @tier.BirimFiyat.ToString("N2", System.Globalization.CultureInfo.InvariantCulture) @currencySymbol
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             }
@@ -1546,7 +1547,7 @@ function updateSelectionSummary() {
 
     var olcu = selectedVariant ? (selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '-') : '-';
     var cerceve = selectedFrame ? selectedFrame.value : null;
-    var temelFiyat = selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-price')) || 0) : PRODUCT_BASE_PRICE;
+    var temelFiyat = selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-price')) || PRODUCT_MAIN_PRICE) : PRODUCT_BASE_PRICE;
     var adet = parseInt(document.getElementById('productQuantity')?.value) || 1;
     var cerceveFarki = selectedVariant ? calcFrameFiyat(olcu, cerceve || 'Çerçevesiz') : 0;
     var unitProductPrice = temelFiyat + cerceveFarki;
@@ -1561,7 +1562,7 @@ function updateSelectionSummary() {
     var hasFrame = cerceveFarki > 0 || (selectedFrame && selectedFrame.value && selectedFrame.value !== 'Çerçevesiz');
     var hasMultipleQty = adet > 1;
 
-    if (!hasPackaging && !hasFrame && !hasMultipleVariants && !hasMultipleQty) {
+    if (!hasPackaging && !hasFrame) {
         summary.classList.add('hidden');
         return;
     }
