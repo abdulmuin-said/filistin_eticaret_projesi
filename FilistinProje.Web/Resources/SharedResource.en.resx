@@ -6220,4 +6220,7 @@
   <data name="QuickTime_12Hours" xml:space="preserve"><value>+12h</value></data>
   <data name="GiftPackagePriceNote" xml:space="preserve"><value>Packaging fee is added to product price</value></data>
   <data name="WholesaleUnitPrice" xml:space="preserve"><value>Unit Price</value></data>
+  <data name="StandardRetailPrice" xml:space="preserve"><value>Standard Retail Price</value></data>
+  <data name="SelectWholesaleTier" xml:space="preserve"><value>Select wholesale tier</value></data>
+  <data name="WholesaleTierSelectHelp" xml:space="preserve"><value>Select the desired wholesale tier to automatically apply the discounted unit price and quantity.</value></data>
 </root>

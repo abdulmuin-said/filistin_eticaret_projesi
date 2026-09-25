@@ -6199,12 +6199,6 @@
   <data name="TrustBar" xml:space="preserve"><value>شريط الثقة</value></data>
   <data name="Unknown" xml:space="preserve"><value>غير معروف</value></data>
   <data name="UploadDocument" xml:space="preserve"><value>رفع مستند</value></data>
-  <data name="Profile_ChangePassword" xml:space="preserve"><value>تغيير كلمة المرور</value></data>
-  <data name="Profile_ConfirmNewPassword" xml:space="preserve"><value>تأكيد كلمة المرور الجديدة</value></data>
-  <data name="Profile_CurrentPassword" xml:space="preserve"><value>كلمة المرور الحالية</value></data>
-  <data name="Profile_EmailCannotBeChanged" xml:space="preserve"><value>لا يمكن تغيير البريد الإلكتروني لأسباب أمنية</value></data>
-  <data name="Profile_NewPassword" xml:space="preserve"><value>كلمة المرور الجديدة</value></data>
-  <data name="Profile_UpdateInfo" xml:space="preserve"><value>تعديل الملف الشخصي</value></data>
   <data name="ContactContent" xml:space="preserve"><value>محتوى الاتصال</value></data>
   <data name="ContractDelivery" xml:space="preserve"><value>الشروط</value></data>
   <data name="ContractDispute" xml:space="preserve"><value>حل النزاعات</value></data>
@@ -6227,4 +6221,7 @@
   <data name="QuickTime_12Hours" xml:space="preserve"><value>+12 س</value></data>
   <data name="GiftPackagePriceNote" xml:space="preserve"><value>يتم إضافة سعر التغليف على المنتج</value></data>
   <data name="WholesaleUnitPrice" xml:space="preserve"><value>سعر القطعة</value></data>
+  <data name="StandardRetailPrice" xml:space="preserve"><value>سعر التجزئة العادي</value></data>
+  <data name="SelectWholesaleTier" xml:space="preserve"><value>اختر كمية الجملة</value></data>
+  <data name="WholesaleTierSelectHelp" xml:space="preserve"><value>حدد كمية الجملة المطلوبة وسيتم تطبيق السعر المخصص وتحديث الكمية تلقائياً.</value></data>
 </root>

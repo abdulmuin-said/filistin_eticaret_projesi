@@ -818,26 +818,30 @@
             @if (!Model.FiyatGizliMi && Model.ToptanFiyatKademeleri.Any(x => x.AktifMi && !x.SilindiMi))
             {
                 <div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 shadow-sm">
-                    <label for="wholesaleTierSelect" class="mb-2 flex items-center gap-2 text-sm font-bold text-emerald-900">
+                    <label for="wholesaleTierSelect" class="mb-2 block text-xs font-bold uppercase tracking-widest text-emerald-900 flex items-center gap-2">
                         <i class="fas fa-boxes-stacked text-emerald-600"></i>
                         <span>@Localizer["WholesalePrices"]</span>
-                        <span class="ms-auto rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-800">@Localizer["WholesaleTierNotice"]</span>
+                        <span class="text-[11px] font-normal text-emerald-700">(@Localizer["WholesaleTierNotice"])</span>
                     </label>
                     <div class="relative">
-                        <select id="wholesaleTierSelect" class="w-full appearance-none rounded-xl border border-emerald-200 bg-white py-3 ps-4 pe-10 text-sm font-medium text-brand-darktext shadow-sm transition hover:border-emerald-400 focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer">
-                            <option value="" data-min="0" data-price="0">@(isAr ? "أسعار الجملة حسب الكمية (اضغط للعرض)" : "Wholesale Quantity Tiers (Click to view)")</option>
+                        <select id="wholesaleTierSelect" class="w-full appearance-none rounded-xl border border-emerald-300 bg-white py-3 ps-4 pe-10 text-sm font-medium text-emerald-950 shadow-sm transition hover:border-emerald-500 focus:border-emerald-600 focus:outline-none cursor-pointer">
+                            <option value="" data-min="1" data-price="">@Localizer["StandardRetailPrice"] (@Localizer["SelectWholesaleTier"])</option>
                             @foreach (var tier in Model.ToptanFiyatKademeleri.Where(x => x.AktifMi && !x.SilindiMi).OrderBy(x => x.MinAdet))
                             {
                                 var tierVariant = Model.UrunSecenek.FirstOrDefault(x => x.Id == tier.UrunSecenekId);
-                                var tierLabel = $"{tier.MinAdet}+ {Localizer["Piece"].Value}: {tier.BirimFiyat.ToString("N2", System.Globalization.CultureInfo.InvariantCulture)} {currencySymbol} / {Localizer["Piece"].Value}";
-                                if (tierVariant != null) { tierLabel += $" · {tierVariant.VaryantBasligi}"; }
-                                <option value="@tier.Id" data-min="@tier.MinAdet" data-price="@tier.BirimFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)">@tierLabel</option>
+                                <option value="@tier.Id" 
+                                        data-min="@tier.MinAdet" 
+                                        data-price="@tier.BirimFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                                        data-variant-id="@(tier.UrunSecenekId ?? 0)">
+                                    @tier.MinAdet+ @Localizer["Piece"] — @tier.BirimFiyat.ToString("N2", System.Globalization.CultureInfo.InvariantCulture) @currencySymbol / @Localizer["Piece"] @(tierVariant == null ? "" : $" ({tierVariant.VaryantBasligi})")
+                                </option>
                             }
                         </select>
-                        <div class="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-3 text-emerald-600">
+                        <div class="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-3 text-emerald-700">
                             <i class="fas fa-chevron-down text-xs"></i>
                         </div>
                     </div>
+                    <p class="mt-2 text-xs text-emerald-700">@Localizer["WholesaleTierSelectHelp"]</p>
                 </div>
             }
             @if (Model.ToptanciUrunGrubu != null && Model.ToptanciUrunGrubu.IskontoOranlari.Any(x => x.AktifMi && !x.SilindiMi))
@@ -1208,6 +1212,22 @@ const PRODUCT_CURRENCY = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(cur
 const PRODUCT_ADDED_TEXT = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Added"].Value));
 const PRODUCT_ADDED_TO_CART_TEXT = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["AddedToCartSuccess"].Value));
 const PRODUCT_ADD_TO_CART_TEXT = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["AddToCart"].Value));
+const TXT_OUT_OF_STOCK = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["OutOfStock"].Value));
+const TXT_ADD_TO_CART = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["AddToCart"].Value));
+const TXT_PREORDER = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["PreOrderOpen"].Value));
+const TXT_MADE_TO_ORDER = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["MadeToOrder"].Value));
+const TXT_SELECT_FRAME = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["SelectFrame"].Value));
+const TXT_GIFT_PACKAGING = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["GiftPackaging"].Value));
+const TXT_DISCOUNT = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Discount"].Value));
+const TXT_FRAME_SELECTION_REQUIRED = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["FrameSelectionRequired"].Value));
+const TXT_ERROR_OCCURRED = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["ErrorOccurred"].Value));
+const TXT_CONNECTION_ERROR = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["ConnectionError"].Value));
+const TXT_CONNECTION_ERROR_SHORT = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["ConnectionErrorShort"].Value));
+const TXT_COPIED = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Copied"].Value));
+const TXT_PRODUCT_LINK = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["ProductLink"].Value));
+const TXT_BUSINESS_DAYS = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["BusinessDaysJS"].Value));
+const TXT_PRODUCTION_IN_DAYS = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["ProductionInDaysJS"].Value));
+const TXT_LOW_STOCK = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["LowStockText"].Value));
 const PRODUCT_STOKTA_YOK_SATIS_IZNI = @Json.Serialize(stoktaYokSatisIzni);
 const PRODUCT_WHATSAPP_NAME = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.LocalizedBaslik));
 const PRODUCT_WHATSAPP_URL = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(productUrl));
@@ -1564,7 +1584,12 @@ function updateSelectionSummary() {
 
     var olcu = selectedVariant ? (selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '-') : '-';
     var cerceve = selectedFrame ? selectedFrame.value : null;
-    var temelFiyat = selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-price')) || PRODUCT_MAIN_PRICE) : PRODUCT_BASE_PRICE;
+
+    var wholesaleSelect = document.getElementById('wholesaleTierSelect');
+    var selectedTierOption = wholesaleSelect && wholesaleSelect.value ? wholesaleSelect.options[wholesaleSelect.selectedIndex] : null;
+    var tierPrice = selectedTierOption ? parseFloat(selectedTierOption.getAttribute('data-price')) || 0 : 0;
+
+    var temelFiyat = tierPrice > 0 ? tierPrice : (selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-price')) || PRODUCT_MAIN_PRICE) : PRODUCT_BASE_PRICE);
     var adet = parseInt(document.getElementById('productQuantity')?.value) || 1;
     var cerceveFarki = selectedVariant ? calcFrameFiyat(olcu, cerceve || 'Çerçevesiz') : 0;
     var unitProductPrice = temelFiyat + cerceveFarki;
@@ -1578,8 +1603,9 @@ function updateSelectionSummary() {
     var hasPackaging = giftPrice > 0;
     var hasFrame = cerceveFarki > 0 || (selectedFrame && selectedFrame.value && selectedFrame.value !== 'Çerçevesiz');
     var hasMultipleQty = adet > 1;
+    var hasTier = tierPrice > 0;
 
-    if (!hasPackaging && !hasFrame) {
+    if (!hasPackaging && !hasFrame && !hasTier) {
         summary.classList.add('hidden');
         return;
     }
@@ -1601,7 +1627,7 @@ function updateSelectionSummary() {
     var summaryCerceveEl = document.getElementById('summaryCerceve');
     if (frameRow && summaryCerceveEl) {
         if (hasFrame) {
-            summaryCerceveEl.textContent = cerceve || '@Localizer["SelectFrame"]';
+            summaryCerceveEl.textContent = cerceve || TXT_SELECT_FRAME;
             frameRow.classList.remove('hidden');
         } else {
             frameRow.classList.add('hidden');
@@ -1625,7 +1651,7 @@ function updateSelectionSummary() {
     var giftNameEl = document.getElementById('summaryGiftName');
 
     if (giftPrice > 0 && selectedGiftOption) {
-        var giftLabel = selectedGiftOption.textContent?.trim() || '@Localizer["GiftPackaging"]';
+        var giftLabel = selectedGiftOption.textContent?.trim() || TXT_GIFT_PACKAGING;
         if (giftNameEl) giftNameEl.textContent = `+ ${giftLabel}:`;
         if (giftPriceEl) {
             if (adet > 1) {
@@ -1702,7 +1728,7 @@ function updateDiscountDisplays(oldPrice, effectivePrice) {
     if (discountBadge) {
         discountBadge.classList.toggle('hidden', !hasDiscount);
         if (hasDiscount) {
-            discountBadge.innerHTML = '<i class="fas fa-bolt text-yellow-300 text-[11px]"></i> <span>%' + discount + ' @Localizer["Discount"]</span>';
+            discountBadge.innerHTML = '<i class="fas fa-bolt text-yellow-300 text-[11px]"></i> <span>%' + discount + ' ' + TXT_DISCOUNT + '</span>';
         }
     }
 
@@ -1735,8 +1761,11 @@ function updateDiscountDisplays(oldPrice, effectivePrice) {
 function updatePriceWithFrame() {
     var selectedVariant = document.querySelector('.variant-radio:checked');
     var selectedFrame = document.querySelector('.frame-radio:checked');
+    var wholesaleSelect = document.getElementById('wholesaleTierSelect');
+    var selectedTierOption = wholesaleSelect && wholesaleSelect.value ? wholesaleSelect.options[wholesaleSelect.selectedIndex] : null;
+    var tierPrice = selectedTierOption ? parseFloat(selectedTierOption.getAttribute('data-price')) || 0 : 0;
 
-    var basePrice = selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-price')) || PRODUCT_MAIN_PRICE) : PRODUCT_BASE_PRICE;
+    var basePrice = tierPrice > 0 ? tierPrice : (selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-price')) || PRODUCT_MAIN_PRICE) : PRODUCT_BASE_PRICE);
     var oldBasePrice = selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-oldprice')) || 0) : PRODUCT_MAIN_OLD_PRICE;
     var olcu = selectedVariant ? (selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '') : '';
     var cerceve = selectedFrame ? selectedFrame.value : null;
@@ -1784,6 +1813,11 @@ function updatePriceWithFrame() {
         frameFarkiInput.value = cerceveFarki.toFixed(2);
     }
 
+    updateSelectionSummary();
+}
+
+function updateProductPricing() {
+    updatePriceWithFrame();
     updateSelectionSummary();
 }
 
@@ -1851,6 +1885,16 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
             if (selectedVariantId) selectedVariantId.value = this.value;
 
             updateVariantCardStyles();
+
+            var wholesaleSelect = document.getElementById('wholesaleTierSelect');
+            if (wholesaleSelect && wholesaleSelect.value) {
+                var selectedOption = wholesaleSelect.options[wholesaleSelect.selectedIndex];
+                var tierVariantId = parseInt(selectedOption?.getAttribute('data-variant-id')) || 0;
+                if (tierVariantId > 0 && tierVariantId != this.value) {
+                    wholesaleSelect.value = '';
+                }
+            }
+
             updatePriceWithFrame();
             updateWhatsappOrderLink();
 
@@ -1887,8 +1931,7 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
             if (lowStockWarning) {
                 if (!PRODUCT_STOKTA_YOK_SATIS_IZNI && stock >= 1 && stock <= 4) {
                     if (lowStockText) {
-                        var tpl = '@Html.Raw(Localizer["LowStockText"])';
-                        lowStockText.textContent = tpl.replace('{0}', stock);
+                        lowStockText.textContent = TXT_LOW_STOCK.replace('{0}', stock);
                     }
                     lowStockWarning.classList.remove('hidden');
                 } else {
@@ -1899,22 +1942,22 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
             var stockStatusText = document.getElementById('stockStatusText');
             if (stockStatusText) {
                 if (stock > 0) {
-                    stockStatusText.innerHTML = '<i class="fas fa-check-circle text-green-600"></i> @Localizer["MadeToOrder"]';
+                    stockStatusText.innerHTML = '<i class="fas fa-check-circle text-green-600"></i> ' + TXT_MADE_TO_ORDER;
                 } else if (isPreorder) {
-                    stockStatusText.innerHTML = '<i class="fas fa-clock text-blue-600"></i> @Localizer["PreOrder"]';
+                    stockStatusText.innerHTML = '<i class="fas fa-clock text-blue-600"></i> ' + TXT_PREORDER;
                 } else {
-                    stockStatusText.innerHTML = '<i class="fas fa-times-circle text-red-600"></i> @Localizer["OutOfStock"]';
+                    stockStatusText.innerHTML = '<i class="fas fa-times-circle text-red-600"></i> ' + TXT_OUT_OF_STOCK;
                 }
             }
 
             var productionTimeText = document.getElementById('productionTimeText');
             if (productionTimeText && productionDays > 0) {
-                productionTimeText.innerHTML = '<i class="fas fa-hammer text-brand-olive"></i> @Localizer["ProductionInDaysJS"]'.replace('{0}', productionDays);
+                productionTimeText.innerHTML = '<i class="fas fa-hammer text-brand-olive"></i> ' + TXT_PRODUCTION_IN_DAYS.replace('{0}', productionDays);
             }
 
             var productionCardText = document.getElementById('productionCardText');
             if (productionCardText && productionDays > 0) {
-                productionCardText.innerText = '@Localizer["BusinessDaysJS"]'.replace('{0}', productionDays);
+                productionCardText.innerText = TXT_BUSINESS_DAYS.replace('{0}', productionDays);
             }
             
             var quantityInput = document.getElementById('productQuantity');
@@ -1933,12 +1976,12 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
                     ajaxBtn.disabled = true;
                     ajaxBtn.classList.add('opacity-50', 'cursor-not-allowed');
                     var btnText = ajaxBtn.querySelector('.add-to-cart-text');
-                    if (btnText) btnText.textContent = '@Localizer["OutOfStock"]';
+                    if (btnText) btnText.textContent = TXT_OUT_OF_STOCK;
                 } else {
                     ajaxBtn.disabled = false;
                     ajaxBtn.classList.remove('opacity-50', 'cursor-not-allowed');
                     var btnText = ajaxBtn.querySelector('.add-to-cart-text');
-                    if (btnText) btnText.textContent = PRODUCT_ADD_TO_CART_TEXT;
+                    if (btnText) btnText.textContent = TXT_ADD_TO_CART;
                 }
             }
         }
@@ -2002,9 +2045,9 @@ if (ajaxSepetBtn) {
             frameSelectionBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
             if (window.showToast) {
-                window.showToast('@Localizer["FrameSelectionRequired"]', 'error');
+                window.showToast(TXT_FRAME_SELECTION_REQUIRED, 'error');
             } else {
-                alert('@Localizer["FrameSelectionRequired"]');
+                alert(TXT_FRAME_SELECTION_REQUIRED);
             }
 
             return;
@@ -2084,16 +2127,16 @@ if (ajaxSepetBtn) {
                         icon.classList.remove('fa-check');
                         icon.classList.add('fa-shopping-bag');
                     }
-                    if (text) text.textContent = PRODUCT_ADD_TO_CART_TEXT;
+                    if (text) text.textContent = TXT_ADD_TO_CART;
                     btn.classList.remove('bg-green-600');
                     btn.disabled = false;
                 }, 1000);
                 
             } else {
                 if (window.showToast) {
-                    window.showToast(data.message || '@Localizer["ErrorOccurred"]', 'error');
+                    window.showToast(data.message || TXT_ERROR_OCCURRED, 'error');
                 } else {
-                    alert(data.message || '@Localizer["ErrorOccurred"]');
+                    alert(data.message || TXT_ERROR_OCCURRED);
                 }
                 this.innerHTML = originalHtml;
                 this.disabled = false;
@@ -2102,9 +2145,9 @@ if (ajaxSepetBtn) {
         .catch(error => {
             console.error(error);
             if (window.showToast) {
-                window.showToast('@Localizer["ConnectionError"]', 'error');
+                window.showToast(TXT_CONNECTION_ERROR, 'error');
             } else {
-                alert('@Localizer["ConnectionErrorShort"]');
+                alert(TXT_CONNECTION_ERROR_SHORT);
             }
             this.innerHTML = originalHtml;
             this.disabled = false;
@@ -2145,7 +2188,7 @@ function copyProductLink(button) {
     const originalHtml = button.innerHTML;
 
     const markCopied = () => {
-        button.innerHTML = '<i class="fas fa-check text-xs"></i> @Localizer["Copied"]';
+        button.innerHTML = '<i class="fas fa-check text-xs"></i> ' + TXT_COPIED;
         setTimeout(() => {
             button.innerHTML = originalHtml;
         }, 1800);
@@ -2153,12 +2196,12 @@ function copyProductLink(button) {
 
     if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(url).then(markCopied).catch(() => {
-            window.prompt('@Localizer["ProductLink"]', url);
+            window.prompt(TXT_PRODUCT_LINK, url);
         });
         return;
     }
 
-    window.prompt('@Localizer["ProductLink"]', url);
+    window.prompt(TXT_PRODUCT_LINK, url);
 }
 
 function selectFrameOption(label, value) {
@@ -2190,29 +2233,47 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Wholesale tier dropdown: auto-set quantity and update price
-var wholesaleTierSelect = document.getElementById('wholesaleTierSelect');
-if (wholesaleTierSelect) {
-    wholesaleTierSelect.addEventListener('change', function() {
-        var selected = this.options[this.selectedIndex];
-        var minQty = parseInt(selected.getAttribute('data-min')) || 0;
-        var tierPrice = parseFloat(selected.getAttribute('data-price')) || 0;
-        var quantityInput = document.getElementById('productQuantity');
-        var selectedQuantity = document.getElementById('selectedQuantity');
-        if (minQty > 0 && quantityInput) {
-            // Expand max if needed
-            var currentMax = parseInt(quantityInput.getAttribute('max')) || 99;
+const wholesaleSelect = document.getElementById('wholesaleTierSelect');
+if (wholesaleSelect) {
+    wholesaleSelect.addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+        if (!selectedOption || !this.value) {
+            // Standart fiyata ve seçili varyanta geri dön
+            updateProductPricing();
+            return;
+        }
+        const minQty = parseInt(selectedOption.getAttribute('data-min')) || 1;
+        const tierPrice = parseFloat(selectedOption.getAttribute('data-price')) || 0;
+        const tierVariantId = parseInt(selectedOption.getAttribute('data-variant-id')) || 0;
+
+        // 1. Eğer kademe belirli bir varyanta aitse o varyantı seç
+        if (tierVariantId > 0) {
+            const matchingRadio = document.querySelector(`.variant-radio[value="${tierVariantId}"]`);
+            if (matchingRadio && !matchingRadio.checked) {
+                matchingRadio.checked = true;
+                matchingRadio.dispatchEvent(new Event('change'));
+            }
+        }
+
+        // 2. Adet kutusunu kademenin minimum adedine ayarla
+        const qtyInput = document.getElementById('productQuantity');
+        const hiddenQty = document.getElementById('selectedQuantity');
+        if (qtyInput && minQty > 1) {
+            const currentMax = parseInt(qtyInput.getAttribute('max')) || 99;
             if (minQty > currentMax) {
-                quantityInput.setAttribute('max', minQty + 100);
+                qtyInput.setAttribute('max', minQty + 1000);
             }
-            quantityInput.value = minQty;
-            if (selectedQuantity) selectedQuantity.value = minQty;
+            qtyInput.value = minQty;
+            if (hiddenQty) hiddenQty.value = minQty;
         }
-        if (tierPrice > 0) {
-            var priceDisplay = document.getElementById('priceDisplay');
-            if (priceDisplay) {
-                priceDisplay.innerHTML = window.formatMoney(tierPrice);
-            }
+
+        // 3. Fiyat göstergesini toptan birim fiyatıyla güncelle
+        const priceDisplay = document.getElementById('priceDisplay');
+        if (priceDisplay && tierPrice > 0) {
+            priceDisplay.textContent = window.formatMoney(tierPrice);
         }
+
+        // 4. Özet hesaplamasını tetikle
         updateSelectionSummary();
     });
 }

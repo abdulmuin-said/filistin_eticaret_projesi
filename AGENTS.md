@@ -346,6 +346,22 @@ cd FilistinProje.Web && npm run watch:storefront-css
   - Canlı dosya görsel geri bildirimi: Kimlik fotoğrafı seçildiği anda boyut (max 8MB) ve format (PNG, JPG, JPEG, WEBP) kontrolü yapılır, onay durumunda `border-emerald-500` ve `bg-emerald-50/20` ile belirginleştirilir, dosya adı yeşil onay ikonuyla (`<i class="fas fa-check-circle"></i> File selected: xxxx.png ✓`) gösterilir.
   - Sunucu taraflı geçici dosya koruması (Server-side fallback): Sunucu tarafında `ModelState.IsValid == false` olsa bile yüklenen yeni dosya hemen `_dosyaServisi.KaydetAsync` ile güvenli depolamaya kaydedilir, `model.MevcutKimlikFotoUrl` içine alınır ve form geri döndüğünde yeşil onay rozeti ("تم إرفاق صورة الهوية مسبقاً (يمكنك تغييرها إن أردت)") devreye girer. Kullanıcı eksik alanı düzeltip tekrar gönderdiğinde dosyayı yeniden arayıp yüklemek zorunda kalmaz.
 
+### Faz 21 (Buton Metni Encoding Bozulması & Toptancı Fiyat Kademesi İnteraktif Dropdown — 25 Eylül 2026)
+- [x] **Adım 166**: Buton Metnindeki HTML Entity / Encoding Bozulması Giderildi (Video 4):
+  - `Views/Urun/Detay.cshtml` içerisindeki tüm istemci taraflı Razor `@Localizer[...]` ifadeleri JavaScript string context'inde çift HTML-encode edilip ekranda `&#X83A;&#X64A;&#X631; &#X62A;&#X648;&#X641;&#X631;` oluşturması engellendi.
+  - Script bloğunun başında `@Html.Raw(System.Text.Json.JsonSerializer.Serialize(...))` ile güvenli JSON sabitleri (`TXT_OUT_OF_STOCK`, `TXT_ADD_TO_CART`, `TXT_PREORDER`, `TXT_MADE_TO_ORDER`, `TXT_SELECT_FRAME`, `TXT_GIFT_PACKAGING`, `TXT_DISCOUNT`, `TXT_FRAME_SELECTION_REQUIRED`, `TXT_ERROR_OCCURRED`, `TXT_CONNECTION_ERROR`, `TXT_LOW_STOCK`, `TXT_COPIED`, `TXT_PRODUCT_LINK`) tanımlandı.
+  - Stokta olmayan varyasyon seçildiğinde veya sepete ekleme butonunda temiz ve net Arapça "غير متوفر" gösterilmesi sağlandı.
+- [x] **Adım 167**: Toptan Fiyat Kademeleri İnteraktif Açılır Menüye (Dropdown) Dönüştürüldü (Video 4):
+  - `Views/Urun/Detay.cshtml` içindeki toptan fiyatlar statik yapıdan çıkarılıp modern, yeşil tonlarında `<select id="wholesaleTierSelect">` açılır listesine dönüştürüldü.
+  - Seçenekler `MinAdet+ Adet — Fiyat ₪ / Adet (Varyant)` formatında dinamik listelendi; varsayılan seçenek olarak `StandardRetailPrice (SelectWholesaleTier)` tanımlandı.
+  - `SharedResource.ar.resx` ve `SharedResource.en.resx` dosyalarına `StandardRetailPrice`, `SelectWholesaleTier`, `WholesaleTierSelectHelp` anahtarları eklendi.
+  - JavaScript dinleyicisi eklenerek toptancı müşteri kademeyi seçtiğinde:
+    1) Kademe belirli bir varyanta aitse o varyant kartı otomatik seçildi.
+    2) Sipariş adedi kutusu (`productQuantity` ve hidden `selectedQuantity`) kademenin minimum adedine (örn. 50+) otomatik ayarlandı, max sınır gerekiyorsa dinamik genişletildi.
+    3) Fiyat göstergesi toptan birim fiyatıyla güncellendi.
+    4) Sipariş seçim özeti (`updateSelectionSummary`) otomatik tetiklenerek toptan toplam tutar dinamik hesaplandı.
+    5) Standart fiyata dönüldüğünde (`value=""`) `updateProductPricing()` ile perakende fiyat ve varyant durumuna pürüzsüz geri dönülmesi sağlandı.
+
 ### Hassas dosya mimarisi (B25)
 - **Storage root**: `<ContentRoot>/secure-storage/hassas/{kategori}/` (wwwroot dışında).
   - `kategori` ∈ `kimlikler` (jpg/jpeg/png/webp, max 8MB), `receteler` (jpg/jpeg/png/webp/pdf, max 12MB).
