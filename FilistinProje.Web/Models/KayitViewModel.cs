@@ -32,10 +32,10 @@ namespace FilistinProje.Web.Models
         [Display(Name = "Adres")]
         public string Adres { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Validation_IdentityPhotoRequired")]
-        [DataType(DataType.Upload)]
         [Display(Name = "KimlikFoto")]
         public IFormFile? KimlikFoto { get; set; }
+
+        public string? MevcutKimlikFotoUrl { get; set; }
 
         [Required(ErrorMessage = "Validation_RegionRequired")]
         [Display(Name = "Region")]

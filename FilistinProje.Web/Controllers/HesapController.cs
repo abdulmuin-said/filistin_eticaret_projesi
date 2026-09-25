@@ -77,19 +77,41 @@ namespace FilistinProje.Web.Controllers
                 ModelState.AddModelError(nameof(model.Telefon), _localizer["Siparis_PhoneRequired"].Value);
             }
 
+            // Dosya yükleme ve koruma: Yeni dosya geldiyse hemen kaydet
+            if (model.KimlikFoto != null && model.KimlikFoto.Length > 0)
+            {
+                var kimlikFotoSonuc = await _dosyaServisi.KaydetAsync(model.KimlikFoto, "uploads/kimlikler");
+                if (!kimlikFotoSonuc.Success)
+                {
+                    ModelState.AddModelError(nameof(model.KimlikFoto), kimlikFotoSonuc.ErrorMessage ?? _localizer["Siparis_FileUploadError"].Value);
+                }
+                else
+                {
+                    model.MevcutKimlikFotoUrl = kimlikFotoSonuc.Url;
+                }
+            }
+            else if (!string.IsNullOrWhiteSpace(model.MevcutKimlikFotoUrl))
+            {
+                if (!DosyaServisi.TryParsePrivateReference(model.MevcutKimlikFotoUrl, out var kat, out _) || kat != HassasBelgeKategorisi.Kimlik)
+                {
+                    if (!_dosyaServisi.EskiWebRootYoluGecerliMi(model.MevcutKimlikFotoUrl, "uploads/kimlikler"))
+                    {
+                        model.MevcutKimlikFotoUrl = null;
+                        ModelState.AddModelError(nameof(model.KimlikFoto), _localizer["Validation_IdentityPhotoRequired"].Value);
+                    }
+                }
+            }
+            else
+            {
+                ModelState.AddModelError(nameof(model.KimlikFoto), _localizer["Validation_IdentityPhotoRequired"].Value);
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
             model.Telefon = normalizedPhone;
-
-            var kimlikFotoSonuc = await _dosyaServisi.KaydetAsync(model.KimlikFoto!, "uploads/kimlikler");
-            if (!kimlikFotoSonuc.Success)
-            {
-                ModelState.AddModelError(nameof(model.KimlikFoto), kimlikFotoSonuc.ErrorMessage ?? _localizer["Siparis_FileUploadError"].Value);
-                return View(model);
-            }
 
             var user = new AppUser
             {
@@ -101,14 +123,12 @@ namespace FilistinProje.Web.Controllers
                 PhoneNumber = model.Telefon,
                 Adres = model.Adres,
                 Sehir = model.Sehir,
-                KimlikFotografYolu = kimlikFotoSonuc.Url
+                KimlikFotografYolu = model.MevcutKimlikFotoUrl ?? string.Empty
             };
 
             var result = await _userManager.CreateAsync(user, model.Sifre);
             if (!result.Succeeded)
             {
-                _dosyaServisi.Sil(kimlikFotoSonuc.Url ?? string.Empty);
-
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -510,31 +530,55 @@ namespace FilistinProje.Web.Controllers
                 model.Telefon = normalizedPhone;
             }
 
-            if (string.IsNullOrWhiteSpace(user.KimlikFotografYolu) && model.KimlikFoto == null)
-            {
-                ModelState.AddModelError(nameof(model.KimlikFoto), _localizer["Validation_IdentityPhotoRequired"].Value);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                model.AdSoyad = user.AdSoyad ?? string.Empty;
-                model.Eposta = user.Email ?? string.Empty;
-                model.MevcutKimlikFotoUrl = user.KimlikFotografYolu;
-                return View(model);
-            }
-
+            // Dosya yükleme ve koruma: Kullanıcı yeni bir dosya yüklediyse hemen güvenli alana kaydet
             if (model.KimlikFoto != null && model.KimlikFoto.Length > 0)
             {
                 var fotoSonuc = await _dosyaServisi.KaydetAsync(model.KimlikFoto, "uploads/kimlikler");
                 if (!fotoSonuc.Success)
                 {
                     ModelState.AddModelError(nameof(model.KimlikFoto), fotoSonuc.ErrorMessage ?? _localizer["Siparis_FileUploadError"].Value);
-                    model.AdSoyad = user.AdSoyad ?? string.Empty;
-                    model.Eposta = user.Email ?? string.Empty;
-                    model.MevcutKimlikFotoUrl = user.KimlikFotografYolu;
-                    return View(model);
                 }
-                user.KimlikFotografYolu = fotoSonuc.Url;
+                else
+                {
+                    if (!string.IsNullOrWhiteSpace(user.KimlikFotografYolu) && user.KimlikFotografYolu != fotoSonuc.Url)
+                    {
+                        _dosyaServisi.Sil(user.KimlikFotografYolu);
+                    }
+                    user.KimlikFotografYolu = fotoSonuc.Url;
+                    model.MevcutKimlikFotoUrl = fotoSonuc.Url;
+                }
+            }
+            else if (!string.IsNullOrWhiteSpace(model.MevcutKimlikFotoUrl))
+            {
+                if (DosyaServisi.TryParsePrivateReference(model.MevcutKimlikFotoUrl, out var kat, out _) && kat == HassasBelgeKategorisi.Kimlik)
+                {
+                    user.KimlikFotografYolu = model.MevcutKimlikFotoUrl;
+                }
+                else if (_dosyaServisi.EskiWebRootYoluGecerliMi(model.MevcutKimlikFotoUrl, "uploads/kimlikler"))
+                {
+                    user.KimlikFotografYolu = model.MevcutKimlikFotoUrl;
+                }
+                else
+                {
+                    model.MevcutKimlikFotoUrl = null;
+                }
+            }
+            else if (!string.IsNullOrWhiteSpace(user.KimlikFotografYolu))
+            {
+                model.MevcutKimlikFotoUrl = user.KimlikFotografYolu;
+            }
+
+            if (string.IsNullOrWhiteSpace(user.KimlikFotografYolu) && string.IsNullOrWhiteSpace(model.MevcutKimlikFotoUrl))
+            {
+                ModelState.AddModelError(nameof(model.KimlikFoto), _localizer["Validation_IdentityPhotoRequired"].Value);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                model.AdSoyad = string.IsNullOrWhiteSpace(model.AdSoyad) ? (user.AdSoyad ?? string.Empty) : model.AdSoyad;
+                model.Eposta = user.Email ?? string.Empty;
+                model.MevcutKimlikFotoUrl = !string.IsNullOrWhiteSpace(user.KimlikFotografYolu) ? user.KimlikFotografYolu : model.MevcutKimlikFotoUrl;
+                return View(model);
             }
 
             if (!string.IsNullOrWhiteSpace(model.AdSoyad))

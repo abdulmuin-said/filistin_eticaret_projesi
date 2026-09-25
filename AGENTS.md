@@ -339,6 +339,13 @@ cd FilistinProje.Web && npm run watch:storefront-css
   - `HesapController.cs`: `ProfilTamamla` GET metodunda mevcut toptancı durumu (`user.BasvuruTarihi.HasValue || user.WholesaleStatus == WholesaleStatus.Approved`) modele aktarıldı. POST metodunda `model.ToptanciMi` seçildiyse ve kullanıcı henüz onaylı/başvurulu değilse `WholesaleStatus.Pending` ve `BasvuruTarihi = DateTime.UtcNow` ataması sağlandı.
   - `ProfilTamamla.cshtml`: `KayitOl.cshtml` tasarımıyla birebir eşleşen toptancı onay kutusu (`التسجيل كتاجر جملة`) kimlik fotoğrafı alanının altına eklendi.
 
+### Faz 20 (Profil Tamamlama & Kayıt Dosya Kaybı UX Çözümü — 25 Eylül 2026)
+- [x] **Adım 165**: Form Doğrulama Hatasında Kimlik Fotoğrafı Kaybını Önleme (Video 3):
+  - `ProfilTamamla.cshtml` & `KayitOl.cshtml` tam kapsamlı istemci taraflı JavaScript doğrulaması (Client-side validation): Form submit edildiğinde Ad Soyad, Kimlik No, Doğum Tarihi, Telefon, E-posta, Bölge, Şehir, Adres ve Kimlik Fotoğrafı alanları denetlenir. Eksik bir alan varsa `e.preventDefault()` ile formun sunucuya gitmesi ve sayfanın yenilenmesi engellenir; eksik alanın altına kırmızı uyarı mesajı yazılır ve ilk geçersiz öğeye `scrollIntoView` ile odaklanılır. Bu sayede sayfa yenilenmediği için dosya inputundaki seçili kimlik resmi asla kaybolmaz.
+  - Canlı hata temizleme (Real-time input clearing): Kullanıcı eksik bir alanı doldurmaya veya select'i değiştirmeye başladığı anda kırmızı kenarlık ve hata mesajı dinamik olarak temizlenir.
+  - Canlı dosya görsel geri bildirimi: Kimlik fotoğrafı seçildiği anda boyut (max 8MB) ve format (PNG, JPG, JPEG, WEBP) kontrolü yapılır, onay durumunda `border-emerald-500` ve `bg-emerald-50/20` ile belirginleştirilir, dosya adı yeşil onay ikonuyla (`<i class="fas fa-check-circle"></i> File selected: xxxx.png ✓`) gösterilir.
+  - Sunucu taraflı geçici dosya koruması (Server-side fallback): Sunucu tarafında `ModelState.IsValid == false` olsa bile yüklenen yeni dosya hemen `_dosyaServisi.KaydetAsync` ile güvenli depolamaya kaydedilir, `model.MevcutKimlikFotoUrl` içine alınır ve form geri döndüğünde yeşil onay rozeti ("تم إرفاق صورة الهوية مسبقاً (يمكنك تغييرها إن أردت)") devreye girer. Kullanıcı eksik alanı düzeltip tekrar gönderdiğinde dosyayı yeniden arayıp yüklemek zorunda kalmaz.
+
 ### Hassas dosya mimarisi (B25)
 - **Storage root**: `<ContentRoot>/secure-storage/hassas/{kategori}/` (wwwroot dışında).
   - `kategori` ∈ `kimlikler` (jpg/jpeg/png/webp, max 8MB), `receteler` (jpg/jpeg/png/webp/pdf, max 12MB).

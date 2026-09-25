@@ -16,48 +16,50 @@
 
         <div class="bg-white border border-brand-border rounded-lg p-8 shadow-sm">
             <form asp-action="KayitOl" method="post" enctype="multipart/form-data" class="space-y-4" id="kayitForm" novalidate>
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="MevcutKimlikFotoUrl" id="MevcutKimlikFotoUrl" />
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label asp-for="AdSoyad" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["FullName"]</label>
-                        <input asp-for="AdSoyad" placeholder="@Localizer["YourFullName"]" autocomplete="name"
-                               class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream" />
+                        <label asp-for="AdSoyad" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["FullName"] <span class="text-red-600">*</span></label>
+                        <input asp-for="AdSoyad" id="AdSoyad" placeholder="@Localizer["YourFullName"]" autocomplete="name" required
+                               class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream transition-colors" />
                         <span asp-validation-for="AdSoyad" class="text-red-600 text-xs mt-1 block"></span>
                     </div>
                     <div>
-                        <label asp-for="KimlikNo" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["NationalId"]</label>
-                        <input asp-for="KimlikNo" placeholder="@Localizer["NationalIdPlaceholder"]" autocomplete="off"
-                               class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream" />
+                        <label asp-for="KimlikNo" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["NationalId"] <span class="text-red-600">*</span></label>
+                        <input asp-for="KimlikNo" id="KimlikNo" placeholder="@Localizer["NationalIdPlaceholder"]" autocomplete="off" required
+                               class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream transition-colors" />
                         <span asp-validation-for="KimlikNo" class="text-red-600 text-xs mt-1 block"></span>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label asp-for="DogumTarihi" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["DateOfBirth"]</label>
-                        <input asp-for="DogumTarihi" type="date"
-                               class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream" />
+                        <label asp-for="DogumTarihi" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["DateOfBirth"] <span class="text-red-600">*</span></label>
+                        <input asp-for="DogumTarihi" id="DogumTarihi" type="date" required
+                               class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream transition-colors" />
                         <span asp-validation-for="DogumTarihi" class="text-red-600 text-xs mt-1 block"></span>
                     </div>
                     <div>
-                        <label asp-for="Telefon" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["Phone"]</label>
-                        <input asp-for="Telefon" type="tel" inputmode="tel" maxlength="20" placeholder="@Localizer["PhonePlaceholder"]" autocomplete="tel" required
-                               class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream" />
+                        <label asp-for="Telefon" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["Phone"] <span class="text-red-600">*</span></label>
+                        <input asp-for="Telefon" id="Telefon" type="tel" inputmode="tel" maxlength="20" placeholder="@Localizer["PhonePlaceholder"]" autocomplete="tel" required dir="ltr"
+                               class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream transition-colors" />
                         <span asp-validation-for="Telefon" class="text-red-600 text-xs mt-1 block"></span>
                     </div>
                 </div>
 
                 <div>
-                    <label asp-for="Eposta" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["Email"]</label>
-                    <input asp-for="Eposta" type="email" placeholder="@Localizer["ExampleEmail"]" autocomplete="email"
-                           class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream" />
+                    <label asp-for="Eposta" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["Email"] <span class="text-red-600">*</span></label>
+                    <input asp-for="Eposta" id="Eposta" type="email" placeholder="@Localizer["ExampleEmail"]" autocomplete="email" required dir="ltr"
+                           class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream transition-colors" />
                     <span asp-validation-for="Eposta" class="text-red-600 text-xs mt-1 block"></span>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label asp-for="Bolge" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["Region"]</label>
-                        <select asp-for="Bolge" id="BolgeSelect" class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream">
+                        <label asp-for="Bolge" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["Region"] <span class="text-red-600">*</span></label>
+                        <select asp-for="Bolge" id="BolgeSelect" required class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream transition-colors">
                             <option value="">@Localizer["SelectRegion"]</option>
                             <option value="القدس">@(isAr ? "القدس وضواحيها" : "Jerusalem & Suburbs")</option>
                             <option value="الضفة الغربية">@(isAr ? "الضفة الغربية" : "West Bank")</option>
@@ -67,8 +69,8 @@
                         <span asp-validation-for="Bolge" class="text-red-600 text-xs mt-1 block"></span>
                     </div>
                     <div>
-                        <label asp-for="Sehir" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["City"]</label>
-                        <select asp-for="Sehir" id="SehirSelect" class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream" data-selected="@(Model?.Sehir ?? string.Empty)">
+                        <label asp-for="Sehir" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["City"] <span class="text-red-600">*</span></label>
+                        <select asp-for="Sehir" id="SehirSelect" required class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream transition-colors" data-selected="@(Model?.Sehir ?? string.Empty)">
                             <option value="">@Localizer["SelectCity"]</option>
                         </select>
                         <span asp-validation-for="Sehir" class="text-red-600 text-xs mt-1 block"></span>
@@ -76,9 +78,9 @@
                 </div>
 
                 <div>
-                    <label asp-for="Adres" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["Address"]</label>
-                    <textarea asp-for="Adres" placeholder="@Localizer["AddressPlaceholder"]" rows="2"
-                              class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream resize-none"></textarea>
+                    <label asp-for="Adres" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["Address"] <span class="text-red-600">*</span></label>
+                    <textarea asp-for="Adres" id="Adres" placeholder="@Localizer["AddressPlaceholder"]" rows="2" required
+                              class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream resize-none transition-colors"></textarea>
                     <span asp-validation-for="Adres" class="text-red-600 text-xs mt-1 block"></span>
                 </div>
 
@@ -90,9 +92,18 @@
                         <p class="text-xs text-amber-800 leading-relaxed">@Localizer["IdentityPhotoRequiredWarning"]</p>
                     </div>
                     <div class="ps-7">
-                        <label asp-for="KimlikFoto" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["IdentityPhoto"] <span class="text-red-600 font-bold">*</span></label>
-                        <div id="identityUploadBox" class="overflow-hidden rounded border border-brand-border bg-white focus-within:border-brand-gold focus-within:ring-1 focus-within:ring-[#b58735]">
-                            <input asp-for="KimlikFoto" type="file" accept="image/png,image/jpeg,image/webp" required class="sr-only" aria-describedby="identityFileName identityFileHelp identityFileError" />
+                        <label asp-for="KimlikFoto" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">
+                            @Localizer["IdentityPhoto"] 
+                            <span id="identityRequiredStar" class="text-red-600 font-bold @(!string.IsNullOrWhiteSpace(Model?.MevcutKimlikFotoUrl) ? "hidden" : "")">*</span>
+                        </label>
+
+                        <div id="existingPhotoBadge" class="@(!string.IsNullOrWhiteSpace(Model?.MevcutKimlikFotoUrl) ? "" : "hidden") mb-2 inline-flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded font-medium shadow-sm">
+                            <i class="fas fa-check-circle text-emerald-600 text-sm"></i>
+                            <span id="existingPhotoText">@(isAr ? "تم إرفاق صورة الهوية مسبقاً (يمكنك تغييرها إن أردت)" : "ID Photo already attached (you can change it if needed)")</span>
+                        </div>
+
+                        <div id="identityUploadBox" class="overflow-hidden rounded border border-brand-border bg-white focus-within:border-brand-gold focus-within:ring-1 focus-within:ring-[#b58735] transition-all">
+                            <input asp-for="KimlikFoto" id="KimlikFoto" type="file" accept="image/png,image/jpeg,image/webp" class="sr-only" aria-describedby="identityFileName identityFileHelp identityFileError" />
                             <label for="KimlikFoto" class="flex min-h-12 cursor-pointer items-center gap-3 px-3 py-2.5">
                                 <span class="inline-flex shrink-0 items-center gap-2 rounded bg-brand-olive px-4 py-2 text-[11px] font-medium uppercase tracking-wider text-white transition-colors hover:bg-[#1c2001]">
                                     <i class="fas fa-upload" aria-hidden="true"></i>
@@ -101,30 +112,30 @@
                                 <span id="identityFileName" class="min-w-0 truncate text-xs text-brand-mutedtext" data-empty-text="@Localizer["NoFileSelected"]">@Localizer["NoFileSelected"]</span>
                             </label>
                         </div>
-                        <p id="identityFileHelp" class="text-brand-mutedtext text-xs mt-1">@Localizer["IdentityPhotoHelp"]</p>
+                        <p id="identityFileHelp" class="text-brand-mutedtext text-xs mt-1">@Localizer["AllowedFormats"]: PNG, JPG, JPEG, WEBP (@Localizer["MaxFileSize"]: 8MB)</p>
                         <span asp-validation-for="KimlikFoto" class="text-red-600 text-xs mt-1 block"></span>
-                        <span id="identityFileError" class="text-red-600 text-xs mt-1 hidden block font-medium">@Html.Raw(Localizer["IDPhotoRequiredError"].Value)</span>
+                        <span id="identityFileError" class="text-red-600 text-xs mt-1 hidden block font-medium"></span>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label asp-for="Sifre" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["Password"]</label>
-                        <input asp-for="Sifre" type="password" placeholder="@Localizer["MinSixChars"]" autocomplete="new-password"
-                               class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream" />
+                        <label asp-for="Sifre" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["Password"] <span class="text-red-600">*</span></label>
+                        <input asp-for="Sifre" id="Sifre" type="password" placeholder="@Localizer["MinSixChars"]" autocomplete="new-password" required
+                               class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream transition-colors" />
                         <span asp-validation-for="Sifre" class="text-red-600 text-xs mt-1 block"></span>
                     </div>
                     <div>
-                        <label asp-for="SifreTekrar" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["PasswordRepeat"]</label>
-                        <input asp-for="SifreTekrar" type="password" placeholder="@Localizer["EnterPasswordAgain"]" autocomplete="new-password"
-                               class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream" />
+                        <label asp-for="SifreTekrar" class="block text-xs font-medium text-brand-darktext tracking-wide mb-1.5 uppercase">@Localizer["PasswordRepeat"] <span class="text-red-600">*</span></label>
+                        <input asp-for="SifreTekrar" id="SifreTekrar" type="password" placeholder="@Localizer["EnterPasswordAgain"]" autocomplete="new-password" required
+                               class="w-full border border-brand-border rounded px-4 py-3 text-sm focus:ring-1 focus:ring-[#b58735] focus:border-brand-gold outline-none bg-brand-cream transition-colors" />
                         <span asp-validation-for="SifreTekrar" class="text-red-600 text-xs mt-1 block"></span>
                     </div>
                 </div>
 
                  <div class="bg-[#f8f6f2] border border-brand-border rounded-lg p-4">
                      <label class="flex items-start gap-3 cursor-pointer">
-                         <input asp-for="ToptanciMi" type="checkbox"
+                         <input asp-for="ToptanciMi" id="ToptanciMi" type="checkbox"
                                 class="mt-0.5 w-4 h-4 rounded border-brand-border text-brand-olive focus:ring-[#b58735] focus:ring-1 focus:ring-offset-0" />
                          <div>
                              <span class="text-sm font-medium text-brand-darktext">@Localizer["RegisterAsWholesale"]</span>
@@ -134,9 +145,10 @@
                      <span asp-validation-for="ToptanciMi" class="text-red-600 text-xs mt-1 block"></span>
                  </div>
 
-                <button type="submit"
-                        class="w-full bg-brand-olive text-white py-3 text-xs tracking-widest uppercase rounded hover:bg-[#1c2001] transition-colors font-medium mt-2 cursor-pointer">
-                    @Localizer["CreateMembership"]
+                <button type="submit" id="submitBtn"
+                        class="w-full bg-brand-olive text-white py-3.5 text-xs tracking-widest uppercase rounded hover:bg-[#1c2001] transition-colors font-medium mt-2 cursor-pointer shadow-sm flex items-center justify-center gap-2">
+                    <i class="fas fa-user-plus"></i>
+                    <span>@Localizer["CreateMembership"]</span>
                 </button>
             </form>
 
@@ -268,47 +280,339 @@
             }
         }
 
-        // --- ID Photo Upload Handling & Form Validation ---
+        // --- ID Photo Upload Handling & Comprehensive Client-Side Form Validation ---
+        const form = document.getElementById('kayitForm');
+        const adSoyadInput = document.getElementById('AdSoyad');
+        const kimlikNoInput = document.getElementById('KimlikNo');
+        const dogumTarihiInput = document.getElementById('DogumTarihi');
+        const telefonInput = document.getElementById('Telefon');
+        const epostaInput = document.getElementById('Eposta');
+        const adresInput = document.getElementById('Adres');
+        const sifreInput = document.getElementById('Sifre');
+        const sifreTekrarInput = document.getElementById('SifreTekrar');
         const input = document.getElementById('KimlikFoto');
         const fileName = document.getElementById('identityFileName');
         const uploadBox = document.getElementById('identityUploadBox');
         const errorMsg = document.getElementById('identityFileError');
-        const form = input ? input.closest('form') : document.getElementById('kayitForm');
+        const mevcutKimlikFotoUrlInput = document.getElementById('MevcutKimlikFotoUrl');
+        const identityRequiredStar = document.getElementById('identityRequiredStar');
+        const existingPhotoBadge = document.getElementById('existingPhotoBadge');
 
-        if (input && fileName) {
-            input.addEventListener('change', function () {
-                const selected = this.files && this.files.length ? this.files[0].name : '';
-                fileName.textContent = selected || fileName.dataset.emptyText;
-                fileName.classList.toggle('text-brand-darktext', Boolean(selected));
-                fileName.classList.toggle('text-brand-mutedtext', !selected);
+        const i18n = {
+            fullNameRequired: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Validation_FullNameRequired"].Value)),
+            nationalIdRequired: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Validation_NationalIdRequired"].Value)),
+            nationalIdLength: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Validation_NationalIdLength"].Value)),
+            dobRequired: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Validation_DateOfBirthRequired"].Value)),
+            phoneRequired: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Validation_PhoneRequired"].Value)),
+            emailRequired: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Validation_EmailRequired"].Value)),
+            emailInvalid: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Validation_EmailInvalid"].Value)),
+            regionRequired: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Validation_RegionRequired"].Value)),
+            cityRequired: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Validation_CityRequired"].Value)),
+            addressRequired: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Validation_AddressRequired"].Value)),
+            idPhotoRequired: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["IDPhotoRequiredError"].Value)),
+            passwordRequired: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Validation_PasswordRequired"].Value)),
+            passwordLength: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Validation_PasswordLength"].Value)),
+            passwordRepeatRequired: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Validation_PasswordRepeatRequired"].Value)),
+            passwordMismatch: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Validation_PasswordMismatch"].Value)),
+            fileSelectedText: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(isAr ? "تم اختيار الملف:" : "File selected:")),
+            fileTooLarge: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(isAr ? "حجم الملف يتجاوز الحد المسموح (8 ميجابايت)" : "File size cannot exceed 8MB")),
+            invalidFormat: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(isAr ? "الصيغ المدعومة فقط: PNG, JPG, JPEG, WEBP" : "Supported formats: PNG, JPG, JPEG, WEBP"))
+        };
 
-                if (selected) {
-                    if (errorMsg) {
-                        errorMsg.classList.add('hidden');
-                    }
-                    if (uploadBox) {
-                        uploadBox.classList.remove('border-red-500');
-                        uploadBox.classList.add('border-brand-border');
+        function escapeHtml(text) {
+            if (!text) return '';
+            const p = document.createElement('p');
+            p.textContent = text;
+            return p.innerHTML;
+        }
+
+        function showFieldError(element, span, message) {
+            if (span) {
+                span.textContent = message;
+                span.classList.remove('hidden');
+                span.classList.add('block');
+            }
+            if (element) {
+                element.classList.remove('border-brand-border', 'border-emerald-500', 'bg-emerald-50/20');
+                element.classList.add('border-red-500', 'bg-red-50/20');
+            }
+        }
+
+        function clearFieldError(element, span) {
+            if (span) {
+                span.textContent = '';
+                span.classList.remove('block');
+                span.classList.add('hidden');
+            }
+            if (element) {
+                element.classList.remove('border-red-500', 'bg-red-50/20');
+                element.classList.add('border-brand-border');
+            }
+        }
+
+        function getErrorSpan(fieldName) {
+            if (!form) return null;
+            return form.querySelector(`span[data-valmsg-for="${fieldName}"]`) ||
+                   form.querySelector(`span[asp-validation-for="${fieldName}"]`);
+        }
+
+        // Canlı alan doğrulama & hata temizleme dinleyicileri
+        if (adSoyadInput) {
+            const span = getErrorSpan('AdSoyad');
+            adSoyadInput.addEventListener('input', () => {
+                if (adSoyadInput.value.trim().length >= 2) clearFieldError(adSoyadInput, span);
+            });
+        }
+
+        if (kimlikNoInput) {
+            const span = getErrorSpan('KimlikNo');
+            kimlikNoInput.addEventListener('input', () => {
+                const val = kimlikNoInput.value.trim();
+                if (val.length >= 5 && val.length <= 11) clearFieldError(kimlikNoInput, span);
+            });
+        }
+
+        if (dogumTarihiInput) {
+            const span = getErrorSpan('DogumTarihi');
+            dogumTarihiInput.addEventListener('change', () => {
+                if (dogumTarihiInput.value.trim() !== '') clearFieldError(dogumTarihiInput, span);
+            });
+        }
+
+        if (telefonInput) {
+            const span = getErrorSpan('Telefon');
+            telefonInput.addEventListener('input', () => {
+                if (telefonInput.value.trim().length >= 7) clearFieldError(telefonInput, span);
+            });
+        }
+
+        if (epostaInput) {
+            const span = getErrorSpan('Eposta');
+            epostaInput.addEventListener('input', () => {
+                const val = epostaInput.value.trim();
+                const emailRegex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+                if (val.length > 0 && emailRegex.test(val)) clearFieldError(epostaInput, span);
+            });
+        }
+
+        if (bolgeSelect) {
+            const span = getErrorSpan('Bolge');
+            bolgeSelect.addEventListener('change', () => {
+                if (bolgeSelect.value.trim() !== '') clearFieldError(bolgeSelect, span);
+            });
+        }
+
+        if (sehirSelect) {
+            const span = getErrorSpan('Sehir');
+            sehirSelect.addEventListener('change', () => {
+                if (sehirSelect.value.trim() !== '') clearFieldError(sehirSelect, span);
+            });
+        }
+
+        if (adresInput) {
+            const span = getErrorSpan('Adres');
+            adresInput.addEventListener('input', () => {
+                if (adresInput.value.trim().length >= 3) clearFieldError(adresInput, span);
+            });
+        }
+
+        if (sifreInput) {
+            const span = getErrorSpan('Sifre');
+            sifreInput.addEventListener('input', () => {
+                if (sifreInput.value.length >= 8) clearFieldError(sifreInput, span);
+                if (sifreTekrarInput && sifreTekrarInput.value.length > 0) {
+                    const spanTekrar = getErrorSpan('SifreTekrar');
+                    if (sifreTekrarInput.value === sifreInput.value) {
+                        clearFieldError(sifreTekrarInput, spanTekrar);
                     }
                 }
             });
         }
 
-        const idPhotoErrorText = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["IDPhotoRequiredError"].Value));
+        if (sifreTekrarInput) {
+            const span = getErrorSpan('SifreTekrar');
+            sifreTekrarInput.addEventListener('input', () => {
+                if (sifreTekrarInput.value.length >= 8 && sifreTekrarInput.value === sifreInput.value) {
+                    clearFieldError(sifreTekrarInput, span);
+                }
+            });
+        }
+
+        // Kimlik Fotoğrafı Seçimi ve Canlı Görsel Geri Bildirim
+        function validateAndDisplayFile() {
+            if (!input || !fileName || !uploadBox) return true;
+            const file = input.files && input.files.length > 0 ? input.files[0] : null;
+
+            if (file) {
+                const ext = file.name.split('.').pop().toLowerCase();
+                const allowed = ['png', 'jpg', 'jpeg', 'webp'];
+                if (!allowed.includes(ext)) {
+                    showFieldError(uploadBox, errorMsg, i18n.invalidFormat);
+                    input.value = '';
+                    resetFileState();
+                    return false;
+                }
+
+                if (file.size > 8 * 1024 * 1024) {
+                    showFieldError(uploadBox, errorMsg, i18n.fileTooLarge);
+                    input.value = '';
+                    resetFileState();
+                    return false;
+                }
+
+                clearFieldError(uploadBox, errorMsg);
+                uploadBox.classList.remove('border-brand-border', 'border-red-500');
+                uploadBox.classList.add('border-emerald-500', 'bg-emerald-50/20');
+
+                fileName.innerHTML = `<span class="inline-flex items-center gap-1.5 text-emerald-700 font-semibold truncate"><i class="fas fa-check-circle text-emerald-600"></i> ${escapeHtml(i18n.fileSelectedText)} ${escapeHtml(file.name)} <span class="text-emerald-600 font-bold">&#10003;</span></span>`;
+                fileName.classList.remove('text-brand-mutedtext');
+
+                if (identityRequiredStar) identityRequiredStar.classList.add('hidden');
+                return true;
+            } else {
+                resetFileState();
+                return false;
+            }
+        }
+
+        function resetFileState() {
+            if (!fileName || !uploadBox) return;
+            uploadBox.classList.remove('border-emerald-500', 'bg-emerald-50/20');
+            uploadBox.classList.add('border-brand-border');
+            fileName.textContent = fileName.dataset.emptyText || '';
+            fileName.classList.add('text-brand-mutedtext');
+
+            const hasExisting = Boolean(mevcutKimlikFotoUrlInput && mevcutKimlikFotoUrlInput.value.trim() !== '') ||
+                                Boolean(existingPhotoBadge && !existingPhotoBadge.classList.contains('hidden'));
+            if (identityRequiredStar) {
+                identityRequiredStar.classList.toggle('hidden', hasExisting);
+            }
+        }
+
+        if (input) {
+            input.addEventListener('change', validateAndDisplayFile);
+        }
+
+        // Form Submit: Eksiksiz İstemci Doğrulaması (Sayfa yenilenmesini ve dosya kaybını %100 engeller)
         if (form) {
             form.addEventListener('submit', function (e) {
-                const hasFile = input && input.files && input.files.length > 0;
-                if (!hasFile) {
+                let isValid = true;
+                let firstInvalid = null;
+
+                function checkField(element, span, validCondition, message) {
+                    if (!validCondition) {
+                        isValid = false;
+                        showFieldError(element, span, message);
+                        if (!firstInvalid && element) {
+                            firstInvalid = element;
+                        }
+                        return false;
+                    } else {
+                        clearFieldError(element, span);
+                        return true;
+                    }
+                }
+
+                // 1. Ad Soyad Kontrolü
+                if (adSoyadInput) {
+                    const val = adSoyadInput.value.trim();
+                    checkField(adSoyadInput, getErrorSpan('AdSoyad'), val.length >= 2, i18n.fullNameRequired);
+                }
+
+                // 2. Kimlik Numarası Kontrolü (5 - 11 hane)
+                if (kimlikNoInput) {
+                    const val = kimlikNoInput.value.trim();
+                    const hasVal = val.length > 0;
+                    const validLen = val.length >= 5 && val.length <= 11;
+                    checkField(kimlikNoInput, getErrorSpan('KimlikNo'), hasVal && validLen, !hasVal ? i18n.nationalIdRequired : i18n.nationalIdLength);
+                }
+
+                // 3. Doğum Tarihi Kontrolü
+                if (dogumTarihiInput) {
+                    const val = dogumTarihiInput.value.trim();
+                    checkField(dogumTarihiInput, getErrorSpan('DogumTarihi'), val !== '', i18n.dobRequired);
+                }
+
+                // 4. Telefon Numarası Kontrolü
+                if (telefonInput) {
+                    const val = telefonInput.value.trim();
+                    checkField(telefonInput, getErrorSpan('Telefon'), val.length >= 7, i18n.phoneRequired);
+                }
+
+                // 5. E-posta Kontrolü
+                if (epostaInput) {
+                    const val = epostaInput.value.trim();
+                    const hasVal = val.length > 0;
+                    const emailRegex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+                    const validEmail = emailRegex.test(val);
+                    checkField(epostaInput, getErrorSpan('Eposta'), hasVal && validEmail, !hasVal ? i18n.emailRequired : i18n.emailInvalid);
+                }
+
+                // 6. Bölge Kontrolü
+                if (bolgeSelect) {
+                    const val = bolgeSelect.value.trim();
+                    checkField(bolgeSelect, getErrorSpan('Bolge'), val !== '', i18n.regionRequired);
+                }
+
+                // 7. Şehir Kontrolü
+                if (sehirSelect) {
+                    const val = sehirSelect.value.trim();
+                    checkField(sehirSelect, getErrorSpan('Sehir'), val !== '', i18n.cityRequired);
+                }
+
+                // 8. Adres Kontrolü
+                if (adresInput) {
+                    const val = adresInput.value.trim();
+                    checkField(adresInput, getErrorSpan('Adres'), val.length >= 3, i18n.addressRequired);
+                }
+
+                // 9. Kimlik Fotoğrafı Kontrolü
+                const hasNewFile = input && input.files && input.files.length > 0;
+                const hasExisting = Boolean(mevcutKimlikFotoUrlInput && mevcutKimlikFotoUrlInput.value.trim() !== '') ||
+                                    Boolean(existingPhotoBadge && !existingPhotoBadge.classList.contains('hidden'));
+
+                if (!hasNewFile && !hasExisting) {
+                    isValid = false;
+                    showFieldError(uploadBox, errorMsg, i18n.idPhotoRequired);
+                    if (!firstInvalid) {
+                        firstInvalid = uploadBox;
+                    }
+                } else if (hasNewFile) {
+                    if (!validateAndDisplayFile()) {
+                        isValid = false;
+                        if (!firstInvalid) {
+                            firstInvalid = uploadBox;
+                        }
+                    }
+                }
+
+                // 10. Şifre Kontrolü
+                if (sifreInput) {
+                    const val = sifreInput.value;
+                    const hasVal = val.length > 0;
+                    const validLen = val.length >= 8;
+                    checkField(sifreInput, getErrorSpan('Sifre'), hasVal && validLen, !hasVal ? i18n.passwordRequired : i18n.passwordLength);
+                }
+
+                // 11. Şifre Tekrar Kontrolü
+                if (sifreTekrarInput) {
+                    const val = sifreTekrarInput.value;
+                    const hasVal = val.length > 0;
+                    const matches = val === (sifreInput ? sifreInput.value : '');
+                    checkField(sifreTekrarInput, getErrorSpan('SifreTekrar'), hasVal && matches, !hasVal ? i18n.passwordRepeatRequired : i18n.passwordMismatch);
+                }
+
+                // Eğer herhangi bir alan eksik/hatalıysa formun post edilmesini KESİNLİKLE ENGELLE
+                if (!isValid) {
                     e.preventDefault();
-                    if (errorMsg) {
-                        errorMsg.textContent = idPhotoErrorText;
-                        errorMsg.classList.remove('hidden');
+                    e.stopPropagation();
+
+                    if (firstInvalid) {
+                        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        if (typeof firstInvalid.focus === 'function') {
+                            firstInvalid.focus();
+                        }
                     }
-                    if (uploadBox) {
-                        uploadBox.classList.remove('border-brand-border');
-                        uploadBox.classList.add('border-red-500');
-                    }
-                    uploadBox ? uploadBox.scrollIntoView({ behavior: 'smooth', block: 'center' }) : (input ? input.focus() : null);
                     return false;
                 }
             });
