@@ -1097,11 +1097,22 @@
     .product-benefit-card h3 { color: var(--brand-primary); font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
     .product-benefit-card p { color: #47473d; font-size: .75rem; line-height: 1.5; margin-top: .35rem; }
     .product-detail-sections { margin-top: 5rem; }
+    .variant-option-card {
+        border-color: #e5e2dc;
+        background-color: #ffffff;
+        color: #47473d;
+        box-shadow: 0 1px 3px rgba(0,0,0,.04);
+    }
+    .variant-option-card:hover:not(.is-disabled) {
+        border-color: #b58735;
+        box-shadow: 0 2px 8px rgba(181,135,53,.12);
+    }
     .variant-option-card.is-selected {
-        border-color: var(--variant-selection-color, rgb(var(--brand-primary-rgb)));
-        background-color: var(--variant-selection-color, rgb(var(--brand-primary-rgb)));
-        color: var(--variant-selection-text, #fff);
-        box-shadow: 0 5px 14px rgba(28, 28, 24, .14);
+        border-color: #6b7a2f;
+        background-color: rgba(253, 249, 238, 0.4);
+        color: #1c1c18;
+        box-shadow: 0 2px 10px rgba(107,122,47,.18);
+        font-weight: 600;
     }
     .variant-option-card.is-disabled,
     .variant-option-card.is-disabled.is-selected {
@@ -1121,6 +1132,10 @@
         border: 2px solid #fff;
         color: #fff;
         box-shadow: 0 1px 5px rgba(0, 0, 0, .35);
+    }
+    span[data-variant-color] {
+        box-shadow: 0 0 0 1px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.1);
+        border: 2px solid rgba(255,255,255,0.9) !important;
     }
     /* Canli ve Dikkat Cekici Indirim Rozeti & Sayac Stilleri */
     .product-discount-pill {
@@ -1515,6 +1530,8 @@ function changeProductImage(imageUrl, thumbnailElement, altText) {
 }
 
 const PRODUCT_BASE_PRICE = @gosterilecekFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture);
+const PRODUCT_MAIN_PRICE = @Model.EtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture);
+const PRODUCT_MAIN_OLD_PRICE = @(Model.IndirimVarMi ? Model.Fiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : "0");
 const MAIN_CAMPAIGN_END_DATE = '@(gosterilecekIndirimBitisTarihi?.ToString("yyyy-MM-ddTHH:mm:ssZ") ?? "")';
 const FRAME_PRICE_PER_METER = 250;
 
@@ -1719,8 +1736,8 @@ function updatePriceWithFrame() {
     var selectedVariant = document.querySelector('.variant-radio:checked');
     var selectedFrame = document.querySelector('.frame-radio:checked');
 
-    var basePrice = selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-price')) || 0) : PRODUCT_BASE_PRICE;
-    var oldBasePrice = selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-oldprice')) || 0) : 0;
+    var basePrice = selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-price')) || PRODUCT_MAIN_PRICE) : PRODUCT_BASE_PRICE;
+    var oldBasePrice = selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-oldprice')) || 0) : PRODUCT_MAIN_OLD_PRICE;
     var olcu = selectedVariant ? (selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '') : '';
     var cerceve = selectedFrame ? selectedFrame.value : null;
     var cerceveFarki = calcFrameFiyat(olcu, cerceve || 'Çerçevesiz');
@@ -2171,4 +2188,32 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+// Wholesale tier dropdown: auto-set quantity and update price
+var wholesaleTierSelect = document.getElementById('wholesaleTierSelect');
+if (wholesaleTierSelect) {
+    wholesaleTierSelect.addEventListener('change', function() {
+        var selected = this.options[this.selectedIndex];
+        var minQty = parseInt(selected.getAttribute('data-min')) || 0;
+        var tierPrice = parseFloat(selected.getAttribute('data-price')) || 0;
+        var quantityInput = document.getElementById('productQuantity');
+        var selectedQuantity = document.getElementById('selectedQuantity');
+        if (minQty > 0 && quantityInput) {
+            // Expand max if needed
+            var currentMax = parseInt(quantityInput.getAttribute('max')) || 99;
+            if (minQty > currentMax) {
+                quantityInput.setAttribute('max', minQty + 100);
+            }
+            quantityInput.value = minQty;
+            if (selectedQuantity) selectedQuantity.value = minQty;
+        }
+        if (tierPrice > 0) {
+            var priceDisplay = document.getElementById('priceDisplay');
+            if (priceDisplay) {
+                priceDisplay.innerHTML = window.formatMoney(tierPrice);
+            }
+        }
+        updateSelectionSummary();
+    });
+}
 </script>
