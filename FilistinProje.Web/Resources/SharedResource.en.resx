@@ -6223,4 +6223,7 @@
   <data name="StandardRetailPrice" xml:space="preserve"><value>Standard Retail Price</value></data>
   <data name="SelectWholesaleTier" xml:space="preserve"><value>Select wholesale tier</value></data>
   <data name="WholesaleTierSelectHelp" xml:space="preserve"><value>Select the desired wholesale tier to automatically apply the discounted unit price and quantity.</value></data>
+  <data name="Admin_GiftPackageSaved" xml:space="preserve"><value>Packaging options saved successfully.</value></data>
+  <data name="Admin_GiftPackageDeleted" xml:space="preserve"><value>Packaging option deleted successfully.</value></data>
+  <data name="Admin_GlobalGiftPackageOptions" xml:space="preserve"><value>Global Packaging Options</value></data>
 </root>

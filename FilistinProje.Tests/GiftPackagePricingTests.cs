@@ -83,6 +83,48 @@ public sealed class GiftPackagePricingTests
         Assert.Empty(result.Satirlar);
     }
 
+    [Fact]
+    public async Task Pricing_AcceptsGlobalPackage_ForAnyProduct()
+    {
+        await using var db = CreateContext();
+        var product = CreateProduct(100m);
+        var globalPackage = new UrunHediyePaketSecenegi
+        {
+            UrunId = null,
+            Urun = null,
+            Ad = "Genel paket",
+            AdEn = "Global package",
+            AdAr = "تغليف عام",
+            Fiyat = 20m,
+            AktifMi = true,
+            Sira = 1
+        };
+        db.AddRange(product, globalPackage);
+        await db.SaveChangesAsync();
+
+        var cartItem = new SepetItem
+        {
+            Id = 99,
+            UrunId = product.Id,
+            HediyePaketSecenegiId = globalPackage.Id,
+            HediyePaketFiyati = 0m,
+            HediyePaketi = true,
+            Fiyat = 100m,
+            Adet = 1,
+            UrunBaslik = product.Baslik
+        };
+
+        var result = await CreateService(db).HesaplaAsync([cartItem], null, "BankaHavalesi", false, null);
+
+        var line = Assert.Single(result.Satirlar);
+        Assert.False(result.GecersizHediyePaketiVar);
+        Assert.Equal(20m, line.HediyePaketBirim);
+        Assert.Equal("Genel paket", line.HediyePaketAdi);
+        Assert.Equal("Global package", line.HediyePaketAdiEn);
+        Assert.Equal("تغليف عام", line.HediyePaketAdiAr);
+        Assert.Equal(120m, line.SatirToplam);
+    }
+
     private static KanvasDbContext CreateContext()
     {
         var options = new DbContextOptionsBuilder<KanvasDbContext>()

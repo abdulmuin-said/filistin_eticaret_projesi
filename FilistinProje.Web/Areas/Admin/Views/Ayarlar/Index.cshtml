@@ -214,6 +214,7 @@
             <button type="button" class="ca-settings-tab active" data-target="genel" title="Genel Ayarlar"><i class="fas fa-store"></i> @(isAr ? "العلامة والمتجر" : "Brand & Store")</button>
             <button type="button" class="ca-settings-tab" data-target="iletisim" title="İletişim"><i class="fas fa-address-card"></i> @Localizer["Admin_Contact"]</button>
             <button type="button" class="ca-settings-tab" data-target="sosyal" title="Sosyal Medya"><i class="fas fa-share-nodes"></i> @Localizer["Admin_Social"]</button>
+            <button type="button" class="ca-settings-tab" data-target="paketleme" title="@Localizer["Admin_GiftPackageOptions"]"><i class="fas fa-gift"></i> @(isAr ? "خيارات التغليف العامة" : "Packaging Options")</button>
             <button type="button" class="ca-settings-tab" data-target="kargo" data-alias="satis" title="Kargo Ayarları"><i class="fas fa-truck-fast"></i> @(isAr ? "إعدادات الشحن" : "Shipping Settings")</button>
             <button type="button" class="ca-settings-tab" data-target="kapida-odeme" data-alias="odeme" title="Ödeme Yöntemleri"><i class="fas fa-hand-holding-dollar"></i> @(isAr ? "طرق الدفع (عند الاستلام)" : "Payment Methods (COD)")</button>
             <button type="button" class="ca-settings-tab" data-target="seo" title="SEO"><i class="fas fa-magnifying-glass-chart"></i> SEO</button>
@@ -614,7 +615,209 @@
                     </form>
                 </section>
 
-                    <section class="ca-settings-panel" id="panel-kargo">
+                <section class="ca-settings-panel" id="panel-paketleme">
+                    <form method="post" asp-area="Admin" asp-controller="Paketleme" asp-action="TopluKaydet" id="form-paketleme">
+                        @Html.AntiForgeryToken()
+                        <div class="ca-card">
+                            <div class="ca-card-body">
+                                <div class="ca-section-heading">
+                                    <i class="fas fa-gift"></i>
+                                    <div>
+                                        <h2>@(isAr ? "خيارات التغليف العامة" : "Global Gift Packaging Options")</h2>
+                                        <p>@(isAr ? "خيارات التغليف المحددة هنا ستظهر وتطبق تلقائياً على جميع منتجات المتجر دون الحاجة لإضافتها لكل منتج على حدة." : "Packaging options configured here will automatically apply to all products across the entire store.")</p>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4 p-3 rounded-3" style="background:#f8fafc; border:1px solid #e2e8f0;">
+                                    <div class="small text-muted mb-0 d-flex align-items-center gap-2">
+                                        <i class="fas fa-circle-info text-primary fa-lg"></i>
+                                        <span>
+                                            @(isAr 
+                                                ? "يمكنك إضافة خيارات التغليف وتحديد الأسماء بالعربية والإنجليزية وسعر كل خيار بالعملة المعتمدة (₪). ستظهر هذه الخيارات تلقائياً في صفحة كل منتج في المتجر وسينعكس التغليف في السلة والفاتورة."
+                                                : "Define packaging options with names in Arabic and English, along with the price per item (₪). These options will automatically appear on every product detail page and carry through to checkout and invoice.")
+                                        </span>
+                                    </div>
+                                </div>
+
+                                @{
+                                    var globalPackages = (ViewBag.HediyePaketleri as List<FilistinProje.Core.Varliklar.UrunHediyePaketSecenegi>) ?? new List<FilistinProje.Core.Varliklar.UrunHediyePaketSecenegi>();
+                                }
+
+                                <div id="globalPackageEmpty" class="alert alert-light border mb-3 @(globalPackages.Count > 0 ? "d-none" : string.Empty)">
+                                    <i class="fas fa-box-open me-2 text-muted"></i>@(isAr ? "لم تتم إضافة أي خيارات تغليف عامة بعد. انقر على زر الإضافة أدناه لإضافة خيار جديد." : "No global packaging options added yet. Click the button below to add one.")
+                                </div>
+
+                                <div id="globalPackageList" class="d-grid gap-3 mb-4">
+                                    @for (var i = 0; i < globalPackages.Count; i++)
+                                    {
+                                        var pkg = globalPackages[i];
+                                        <div class="border rounded-3 p-3 shadow-sm package-row" data-package-row data-id="@pkg.Id" style="background:#fff;">
+                                            <input type="hidden" data-package-field="Id" name="paketler[@i].Id" value="@pkg.Id" />
+                                            <div class="row g-3 align-items-end">
+                                                <div class="col-lg-4 col-md-6">
+                                                    <label class="ca-label">@(isAr ? "اسم التغليف بالعربية" : "Name in Arabic") <span class="text-danger">*</span></label>
+                                                    <input class="ca-input" maxlength="150" lang="ar" dir="rtl" data-package-field="AdAr" name="paketler[@i].AdAr" value="@pkg.AdAr" placeholder="@(isAr ? "مثال: صندوق هدايا فاخر" : "e.g. Luxury Gift Box")" required />
+                                                </div>
+                                                <div class="col-lg-3 col-md-6">
+                                                    <label class="ca-label">@(isAr ? "الاسم بالإنجليزية" : "Name in English") <span class="text-danger">*</span></label>
+                                                    <input class="ca-input" maxlength="150" lang="en" dir="ltr" data-package-field="AdEn" name="paketler[@i].AdEn" value="@pkg.AdEn" placeholder="e.g. Luxury Gift Box" required />
+                                                </div>
+                                                <div class="col-lg-2 col-md-4">
+                                                    <label class="ca-label">@(isAr ? "السعر (₪)" : "Price (₪)")</label>
+                                                    <input class="ca-input" type="number" step="0.01" min="0" data-package-field="Fiyat" name="paketler[@i].Fiyat" value="@pkg.Fiyat.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" required />
+                                                </div>
+                                                <div class="col-lg-1 col-md-3">
+                                                    <label class="ca-label">@(isAr ? "الترتيب" : "Order")</label>
+                                                    <input class="ca-input" type="number" min="0" data-package-field="Sira" name="paketler[@i].Sira" value="@pkg.Sira" />
+                                                </div>
+                                                <div class="col-lg-2 col-md-5 d-flex align-items-center justify-content-between gap-2 pt-2">
+                                                    <label class="form-check form-switch mb-0 d-flex align-items-center gap-2 cursor-pointer" title="@(isAr ? "مفعل / معطل" : "Active / Inactive")">
+                                                        <input class="form-check-input" type="checkbox" data-package-field="AktifMi" name="paketler[@i].AktifMi" value="true" @(pkg.AktifMi ? "checked" : null) />
+                                                        <input type="hidden" data-package-false name="paketler[@i].AktifMi" value="false" />
+                                                        <span class="small text-muted">@(isAr ? "مفعّل" : "Active")</span>
+                                                    </label>
+                                                    <button type="button" class="ca-btn ca-btn-outline ca-btn-sm text-danger" data-package-remove title="@(isAr ? "حذف" : "Delete")">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center pt-2 border-top">
+                                    <button type="button" id="btnAddGlobalPackage" class="ca-btn ca-btn-outline">
+                                        <i class="fas fa-plus me-1"></i> @(isAr ? "إضافة خيار تغليف" : "Add Packaging Option")
+                                    </button>
+                                    <button type="submit" class="ca-btn ca-btn-primary">
+                                        <i class="fas fa-save me-1"></i> @(isAr ? "حفظ خيارات التغليف" : "Save Packaging Options")
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <template id="globalPackageTemplate">
+                        <div class="border rounded-3 p-3 shadow-sm package-row" data-package-row data-id="0" style="background:#fff;">
+                            <input type="hidden" data-package-field="Id" value="0" />
+                            <div class="row g-3 align-items-end">
+                                <div class="col-lg-4 col-md-6">
+                                    <label class="ca-label">@(isAr ? "اسم التغليف بالعربية" : "Name in Arabic") <span class="text-danger">*</span></label>
+                                    <input class="ca-input" maxlength="150" lang="ar" dir="rtl" data-package-field="AdAr" placeholder="@(isAr ? "مثال: صندوق هدايا فاخر" : "e.g. Luxury Gift Box")" required />
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <label class="ca-label">@(isAr ? "الاسم بالإنجليزية" : "Name in English") <span class="text-danger">*</span></label>
+                                    <input class="ca-input" maxlength="150" lang="en" dir="ltr" data-package-field="AdEn" placeholder="e.g. Luxury Gift Box" required />
+                                </div>
+                                <div class="col-lg-2 col-md-4">
+                                    <label class="ca-label">@(isAr ? "السعر (₪)" : "Price (₪)")</label>
+                                    <input class="ca-input" type="number" step="0.01" min="0" data-package-field="Fiyat" value="5" required />
+                                </div>
+                                <div class="col-lg-1 col-md-3">
+                                    <label class="ca-label">@(isAr ? "الترتيب" : "Order")</label>
+                                    <input class="ca-input" type="number" min="0" data-package-field="Sira" value="1" />
+                                </div>
+                                <div class="col-lg-2 col-md-5 d-flex align-items-center justify-content-between gap-2 pt-2">
+                                    <label class="form-check form-switch mb-0 d-flex align-items-center gap-2 cursor-pointer">
+                                        <input class="form-check-input" type="checkbox" data-package-field="AktifMi" value="true" checked />
+                                        <input type="hidden" data-package-false value="false" />
+                                        <span class="small text-muted">@(isAr ? "مفعّل" : "Active")</span>
+                                    </label>
+                                    <button type="button" class="ca-btn ca-btn-outline ca-btn-sm text-danger" data-package-remove title="@(isAr ? "حذف" : "Delete")">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const list = document.getElementById('globalPackageList');
+                            const template = document.getElementById('globalPackageTemplate');
+                            const addBtn = document.getElementById('btnAddGlobalPackage');
+                            const empty = document.getElementById('globalPackageEmpty');
+                            const form = document.getElementById('form-paketleme');
+                            if (!list || !template || !addBtn) return;
+
+                            const reindex = function () {
+                                const rows = list.querySelectorAll('[data-package-row]');
+                                rows.forEach((row, index) => {
+                                    row.querySelectorAll('[data-package-field]').forEach(input => {
+                                        input.name = `paketler[${index}].${input.dataset.packageField}`;
+                                    });
+                                    const falseInput = row.querySelector('[data-package-false]');
+                                    if (falseInput) {
+                                        falseInput.name = `paketler[${index}].AktifMi`;
+                                    }
+                                });
+                                if (empty) {
+                                    empty.classList.toggle('d-none', rows.length > 0);
+                                }
+                            };
+
+                            const bindRow = function (row) {
+                                const removeBtn = row.querySelector('[data-package-remove]');
+                                removeBtn?.addEventListener('click', async function () {
+                                    const id = parseInt(row.dataset.id || '0', 10);
+                                    const confirmMsg = '@(isAr ? "هل أنت متأكد من حذف خيار التغليف هذا؟" : "Are you sure you want to delete this packaging option?")';
+                                    if (!confirm(confirmMsg)) return;
+
+                                    if (id > 0) {
+                                        const tokenEl = form.querySelector('input[name="__RequestVerificationToken"]');
+                                        const fd = new FormData();
+                                        fd.append('id', id);
+                                        if (tokenEl) fd.append('__RequestVerificationToken', tokenEl.value);
+
+                                        try {
+                                            const res = await fetch('/Admin/Paketleme/SilJson', {
+                                                method: 'POST',
+                                                body: fd
+                                            });
+                                            const data = await res.json();
+                                            if (data.success) {
+                                                row.remove();
+                                                reindex();
+                                            } else {
+                                                alert(data.message || 'Error deleting package');
+                                            }
+                                        } catch (e) {
+                                            row.remove();
+                                            reindex();
+                                        }
+                                    } else {
+                                        row.remove();
+                                        reindex();
+                                    }
+                                });
+                            };
+
+                            list.querySelectorAll('[data-package-row]').forEach(bindRow);
+
+                            addBtn.addEventListener('click', function () {
+                                const tempDiv = document.createElement('div');
+                                tempDiv.innerHTML = template.innerHTML.trim();
+                                const newRow = tempDiv.firstElementChild;
+                                if (newRow) {
+                                    const count = list.querySelectorAll('[data-package-row]').length;
+                                    const siraInput = newRow.querySelector('[data-package-field="Sira"]');
+                                    if (siraInput) siraInput.value = count + 1;
+                                    list.appendChild(newRow);
+                                    bindRow(newRow);
+                                    reindex();
+                                    const firstInput = newRow.querySelector('input[type="text"]');
+                                    firstInput?.focus();
+                                }
+                            });
+
+                            form?.addEventListener('submit', function () {
+                                reindex();
+                            });
+                        });
+                    </script>
+                </section>
+
+                <section class="ca-settings-panel" id="panel-kargo">
                         <form method="post" asp-action="Index" id="form-kargo">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="aktifSekme" value="kargo" />

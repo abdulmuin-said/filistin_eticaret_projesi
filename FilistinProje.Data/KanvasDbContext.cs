@@ -113,11 +113,13 @@ namespace FilistinProje.Data
                 entity.Property(e => e.AdEn).HasMaxLength(150);
                 entity.Property(e => e.AdAr).HasMaxLength(150);
                 entity.Property(e => e.Fiyat).HasPrecision(18, 2);
+                entity.Property(e => e.UrunId).IsRequired(false);
                 entity.HasIndex(e => new { e.UrunId, e.Sira });
                 entity.HasOne(e => e.Urun)
                     .WithMany(e => e.HediyePaketSecenekleri)
                     .HasForeignKey(e => e.UrunId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired(false);
             });
 
             modelBuilder.Entity<UrunResim>(entity =>

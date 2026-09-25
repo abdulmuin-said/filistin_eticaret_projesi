@@ -228,7 +228,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             var postedVariants = urun.UrunSecenek?.ToList() ?? new List<UrunSecenek>();
-            var postedGiftPackages = urun.HediyePaketSecenekleri?.ToList() ?? new List<UrunHediyePaketSecenegi>();
             var postedWholesaleTiers = urun.ToptanFiyatKademeleri?.ToList() ?? new List<UrunToptanFiyatKademesi>();
             var postedFeatureValues = urun.UrunOzellikleri?.ToList() ?? new List<UrunOzellikDegeri>();
             NormalizeProductInput(urun);
@@ -264,7 +263,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 await EnsureProductSkuAsync(urun);
                 await SyncVariantsAsync(urun, postedVariants);
-                await SyncGiftPackageOptionsAsync(urun, postedGiftPackages);
                 await _context.SaveChangesAsync();
                 await SyncWholesaleTiersAsync(urun, postedWholesaleTiers);
                 await SyncFeatureValuesAsync(urun, postedFeatureValues);
@@ -279,7 +277,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 LogProductSaveFailure("ekleme", urun.Id, ex);
                 ModelState.AddModelError(string.Empty, _localizer["Admin_ProductSaveFailed"]);
                 urun.UrunSecenek = postedVariants;
-                urun.HediyePaketSecenekleri = postedGiftPackages;
                 urun.ToptanFiyatKademeleri = postedWholesaleTiers;
                 urun.UrunOzellikleri = postedFeatureValues;
                 await PopulateCategorySelectListAsync(urun.KategoriId);
@@ -403,7 +400,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
 
                 await SyncVariantsAsync(urun, model.UrunSecenek);
-                await SyncGiftPackageOptionsAsync(urun, model.HediyePaketSecenekleri);
                 await _context.SaveChangesAsync();
                 await EnsureProductSkuAsync(urun);
                 await EnsureVariantSkusAsync(urun.Id);

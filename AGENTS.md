@@ -362,6 +362,27 @@ cd FilistinProje.Web && npm run watch:storefront-css
     4) Sipariş seçim özeti (`updateSelectionSummary`) otomatik tetiklenerek toptan toplam tutar dinamik hesaplandı.
     5) Standart fiyata dönüldüğünde (`value=""`) `updateProductPricing()` ile perakende fiyat ve varyant durumuna pürüzsüz geri dönülmesi sağlandı.
 
+### Faz 22 (Genel Hediye Paketleme Yönetimi & Vitrin/Sepet Entegrasyonu — 25 Eylül 2026)
+- [x] **Adım 168**: Hediye Paketleme Entity & DB Katmanı Genel (Global) Yapıya Taşındı (Video 5):
+  - `UrunHediyePaketSecenegi.cs`: `UrunId` alanı nullable (`int?`) yapıldı; `UrunId == null` olan kayıtlar tüm sitedeki ürünlerde geçerli genel hediye paketi olarak tanımlandı.
+  - `KanvasDbContext.cs`: `UrunId` ve `Urun` navigation property'si `IsRequired(false)` olarak yapılandırıldı.
+  - `Program.cs`: `EnsureMissingMarch2026SchemaAsync` içine `ALTER TABLE "UrunHediyePaketSecenekleri" ALTER COLUMN "UrunId" DROP NOT NULL;` eklendi; tabloda hiç genel paket yoksa varsayılan 3 genel paket (Standart Paket 5 ₪, Lüks Kutu 15 ₪, Özel Tasarım Paket 25 ₪) otomatik tohumlandı.
+  - `20260925191912_MakeGiftPackageUrunIdNullable.cs` EF Core migration'ı üretildi ve snapshot güncellendi.
+- [x] **Adım 169**: Admin Ürün Ekleme ve Düzenleme Ekranlarından Paketleme Kartı Temizlendi (Video 5):
+  - `Areas/Admin/Views/Urun/Duzenle.cshtml` ve `Ekle.cshtml` içerisinden `@await Html.PartialAsync("_GiftPackageOptionEditor", Model)` kaldırıldı.
+  - `Areas/Admin/Controllers/UrunController.cs`: `Ekle` ve `Duzenle` POST metotlarındaki ürün bazlı paket eşzamanlama (`SyncGiftPackageOptionsAsync`) bağımlılıkları temizlendi.
+- [x] **Adım 170**: Admin Panelinde Tek Noktadan Genel Hediye Paketleme Yönetimi (Video 5):
+  - `Areas/Admin/Views/Ayarlar/Index.cshtml` içine yeni `خيارات التغليف العامة` (Genel Hediye Paketleme Seçenekleri) sekmesi eklendi.
+  - Mağaza sahibinin paket adı (Arapça / İngilizce), fiyat (₪), sıra ve aktif/pasif anahtarıyla paket ekleyip düzenleyebileceği, satır silme ve toplu kaydetme destekli dinamik yönetim tablosu inşa edildi.
+  - `Areas/Admin/Controllers/PaketlemeController.cs` yazılarak `/Admin/Paketleme`, `KaydetJson`, `SilJson`, `TopluKaydet` endpoint'leri sağlandı; `AdminPermissionMatrix.cs` içine yetkileri eklendi.
+  - `_AdminLayout.cshtml` masaüstü Ürünler dropdown'una ve mobil menüye doğrudan `خيارات التغليف العامة` bağlantısı eklendi.
+- [x] **Adım 171**: Vitrin Ürün Detay & Sepet/Sipariş Süreçleri Genel Paket Desteği (Video 5):
+  - `Controllers/UrunController.cs` `Detay` action'ında aktif genel paketler (`UrunId == null && AktifMi && !SilindiMi`) çekilip `ViewBag.HediyePaketleri` ile aktarıldı.
+  - `Views/Urun/Detay.cshtml`: Ürünün kendine özel paketi yoksa genel paketler sitedeki istisnasız tüm ürünlerin detay sayfasında `giftPackageSelect` menüsünde otomatik listelendi.
+  - `SepetService.cs`: `SepeteEkleAsync`, `GetSepetAsync` ve misafir sepeti birleştirme (`BirlestirAsync`) metotlarında genel hediye paketlerinin seçimi, doğrulaması ve sepet satırına eklenmesi desteklendi.
+  - `OrderPricingService.cs`: Sipariş fiyat hesaplamasında genel paketler `globalGiftPackages` olarak çekilerek sepetteki satırlarla eşleştirildi ve güvenli fiyat doğrulaması sağlandı.
+  - `GiftPackagePricingTests.cs` içine `Pricing_AcceptsGlobalPackage_ForAnyProduct` birim testi eklendi; tüm 103 test başarıyla geçti.
+
 ### Hassas dosya mimarisi (B25)
 - **Storage root**: `<ContentRoot>/secure-storage/hassas/{kategori}/` (wwwroot dışında).
   - `kategori` ∈ `kimlikler` (jpg/jpeg/png/webp, max 8MB), `receteler` (jpg/jpeg/png/webp/pdf, max 12MB).

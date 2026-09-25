@@ -6,10 +6,10 @@ namespace FilistinProje.Core.Varliklar
 {
     public class UrunHediyePaketSecenegi : BaseEntity
     {
-        public int UrunId { get; set; }
+        public int? UrunId { get; set; }
 
         [ForeignKey(nameof(UrunId))]
-        public Urun Urun { get; set; } = default!;
+        public Urun? Urun { get; set; }
 
         [MaxLength(150)]
         public string Ad { get; set; } = string.Empty;

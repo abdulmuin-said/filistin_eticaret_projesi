@@ -45,6 +45,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             await HazirlaKargoFirmaSecenekleriAsync();
             ViewBag.SosyalMedyaLinkleri = await _context.SosyalMedyaLinkleri
                 .OrderBy(x => x.Sira).ThenBy(x => x.Id).ToListAsync();
+            ViewBag.HediyePaketleri = await _context.UrunHediyePaketSecenekleri
+                .Where(x => x.UrunId == null && !x.SilindiMi)
+                .OrderBy(x => x.Sira).ThenBy(x => x.Id)
+                .ToListAsync();
             ViewBag.ActiveTab = string.IsNullOrWhiteSpace(normalizedTab) ? "genel" : normalizedTab;
             return View(_siteSettingsService.GetSettings());
         }
@@ -91,6 +95,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 "iletisim" => "iletisim",
                 "social" => "sosyal",
                 "sosyal" => "sosyal",
+                "packaging" => "paketleme",
+                "paketleme" => "paketleme",
+                "hediyepaket" => "paketleme",
+                "gift" => "paketleme",
                 "satis" => "kargo",
                 "shipping" => "kargo",
                 "kargo" => "kargo",

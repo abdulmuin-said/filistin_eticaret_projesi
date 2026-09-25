@@ -107,7 +107,8 @@ namespace FilistinProje.Service
                 var hedefSecenekId = secenek?.Id;
                 var normalizedMusteriNotu = NormalizeCustomerNote(musteriNotu);
                 var hediyePaketSecenegi = hediyePaketSecenegiId.HasValue
-                    ? urun.HediyePaketSecenekleri.FirstOrDefault(x => x.Id == hediyePaketSecenegiId.Value && x.AktifMi && !x.SilindiMi)
+                    ? (urun.HediyePaketSecenekleri.FirstOrDefault(x => x.Id == hediyePaketSecenegiId.Value && x.AktifMi && !x.SilindiMi)
+                       ?? await _context.UrunHediyePaketSecenekleri.FirstOrDefaultAsync(x => x.Id == hediyePaketSecenegiId.Value && x.UrunId == null && x.AktifMi && !x.SilindiMi))
                     : null;
                 if (hediyePaketSecenegiId.HasValue && hediyePaketSecenegi == null)
                 {
@@ -306,7 +307,7 @@ namespace FilistinProje.Service
                     changed = true;
                 }
 
-                if (item.HediyePaketSecenegiId.HasValue && item.HediyePaketSecenegi is { AktifMi: true, SilindiMi: false } package && package.UrunId == item.UrunId)
+                if (item.HediyePaketSecenegiId.HasValue && item.HediyePaketSecenegi is { AktifMi: true, SilindiMi: false } package && (package.UrunId == null || package.UrunId == item.UrunId))
                 {
                     if (!item.HediyePaketi || item.HediyePaketFiyati != package.Fiyat || item.HediyePaketAdi != package.Ad || item.HediyePaketAdiEn != package.AdEn || item.HediyePaketAdiAr != package.AdAr)
                     {
@@ -539,7 +540,12 @@ namespace FilistinProje.Service
                         package = urun.HediyePaketSecenekleri.FirstOrDefault(x =>
                             x.Id == anonItem.HediyePaketSecenegiId.Value &&
                             x.AktifMi &&
-                            !x.SilindiMi);
+                            !x.SilindiMi)
+                            ?? await _context.UrunHediyePaketSecenekleri.FirstOrDefaultAsync(x =>
+                                x.Id == anonItem.HediyePaketSecenegiId.Value &&
+                                x.UrunId == null &&
+                                x.AktifMi &&
+                                !x.SilindiMi);
                         if (package == null)
                         {
                             await transaction.RollbackAsync();

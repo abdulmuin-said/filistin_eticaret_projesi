@@ -138,6 +138,12 @@ namespace FilistinProje.Web.Security
                     AdminSecurityRoles.SuperAdmin,
                     AdminSecurityRoles.Yonetici
                 },
+                ["Paketleme"] = new[]
+                {
+                    AdminSecurityRoles.LegacyAdmin,
+                    AdminSecurityRoles.SuperAdmin,
+                    AdminSecurityRoles.Yonetici
+                },
                 ["Kullanici"] = new[]
                 {
                     AdminSecurityRoles.LegacyAdmin,

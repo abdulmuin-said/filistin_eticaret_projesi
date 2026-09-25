@@ -107,6 +107,7 @@
                         <a href="/Admin/Urun/Ekle" class="ca-mobile-nav-link ca-mobile-nav-sub"><i class="fas fa-plus"></i> @Localizer["AddNewProduct"]</a>
                         <a href="/Admin/Kategori" class="ca-mobile-nav-link ca-mobile-nav-sub @(currentController == "Kategori" ? "active" : "")"><i class="fas fa-layer-group"></i> @Localizer["Categories"]</a>
                         <a href="/Admin/UrunOzellik" class="ca-mobile-nav-link ca-mobile-nav-sub @(currentController == "UrunOzellik" ? "active" : "")"><i class="fas fa-sliders"></i> @Localizer["ProductAttributes"]</a>
+                        <a href="/Admin/Ayarlar?tab=paketleme" class="ca-mobile-nav-link ca-mobile-nav-sub @(currentController == "Paketleme" ? "active" : "")"><i class="fas fa-gift"></i> @(arActive ? "خيارات التغليف العامة" : "Packaging Options")</a>
                     </div>
                 }
                 @if (canManageContent)
@@ -220,6 +221,7 @@
                             <li><a class="dropdown-item" href="/Admin/Urun/Ekle"><i class="fas fa-plus"></i> @Localizer["AddNewProduct"]</a></li>
                             <li><a class="dropdown-item" href="/Admin/Kategori"><i class="fas fa-layer-group"></i> @Localizer["Categories"]</a></li>
                             <li><a class="dropdown-item" href="/Admin/UrunOzellik"><i class="fas fa-sliders"></i> @Localizer["ProductAttributes"]</a></li>
+                            <li><a class="dropdown-item" href="/Admin/Ayarlar?tab=paketleme"><i class="fas fa-gift"></i> @(arActive ? "خيارات التغليف العامة" : "Packaging Options")</a></li>
                         </ul>
                     </div>
                 }

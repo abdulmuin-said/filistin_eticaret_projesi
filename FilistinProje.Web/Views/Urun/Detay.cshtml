@@ -714,11 +714,13 @@
                 }
 
                 @{
-                    var hediyePaketSecenekleri = Model.HediyePaketSecenekleri
+                    var ozelPaketler = (Model.HediyePaketSecenekleri ?? new List<FilistinProje.Core.Varliklar.UrunHediyePaketSecenegi>())
                         .Where(x => x.AktifMi && !x.SilindiMi)
                         .OrderBy(x => x.Sira)
                         .ThenBy(x => x.Id)
                         .ToList();
+                    var genelPaketler = (ViewBag.HediyePaketleri as List<FilistinProje.Core.Varliklar.UrunHediyePaketSecenegi>) ?? new List<FilistinProje.Core.Varliklar.UrunHediyePaketSecenegi>();
+                    var hediyePaketSecenekleri = ozelPaketler.Count > 0 ? ozelPaketler : genelPaketler;
                 }
                 @if (hediyePaketSecenekleri.Count > 0)
                 {

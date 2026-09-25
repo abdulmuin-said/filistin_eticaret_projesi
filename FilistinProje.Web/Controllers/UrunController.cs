@@ -540,7 +540,16 @@ namespace FilistinProje.Web.Controllers
             ViewBag.OrtalamaPuan = ortalamaPuan;
             ViewBag.YorumSayisi = yorumlar.Count;
 
-            // Benzer Ã¼rÃ¼nler - aynÄ± kategoriden, silinmemiÅŸ/pasif olmayan
+            var genelHediyePaketleri = await _context.UrunHediyePaketSecenekleri
+                .AsNoTracking()
+                .Where(x => x.UrunId == null && x.AktifMi && !x.SilindiMi)
+                .OrderBy(x => x.Sira)
+                .ThenBy(x => x.Id)
+                .ToListAsync();
+
+            ViewBag.HediyePaketleri = genelHediyePaketleri;
+
+            // Benzer ürünler - aynı kategoriden, silinmemiş/pasif olmayan
             var benzerUrunler = await _context.Urunler
                 .AsNoTracking()
                 .Where(x =>

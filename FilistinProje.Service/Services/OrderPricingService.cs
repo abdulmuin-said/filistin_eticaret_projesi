@@ -65,6 +65,11 @@ namespace FilistinProje.Service.Services
                 .Where(u => urunIds.Contains(u.Id) && !u.SilindiMi)
                 .ToListAsync();
 
+            var globalGiftPackages = await _context.UrunHediyePaketSecenekleri
+                .AsNoTracking()
+                .Where(x => x.UrunId == null && x.AktifMi && !x.SilindiMi)
+                .ToListAsync();
+
             var urunById = urunler.ToDictionary(u => u.Id);
             var secenekById = urunler
                 .SelectMany(u => u.UrunSecenek.Where(s => !s.SilindiMi))
@@ -157,7 +162,11 @@ namespace FilistinProje.Service.Services
                     hediyePaketSecenegi = urun.HediyePaketSecenekleri.FirstOrDefault(x =>
                         x.Id == ornek.HediyePaketSecenegiId.Value &&
                         x.AktifMi &&
-                        !x.SilindiMi);
+                        !x.SilindiMi)
+                        ?? globalGiftPackages.FirstOrDefault(x =>
+                            x.Id == ornek.HediyePaketSecenegiId.Value &&
+                            x.AktifMi &&
+                            !x.SilindiMi);
                     if (hediyePaketSecenegi == null)
                     {
                         result.GecersizHediyePaketSecenegiIds.Add(ornek.HediyePaketSecenegiId.Value);
