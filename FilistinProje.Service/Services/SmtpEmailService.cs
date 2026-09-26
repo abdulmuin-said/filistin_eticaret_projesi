@@ -72,6 +72,8 @@ namespace FilistinProje.Service.Services
 
             using var client = new SmtpClient(host, port)
             {
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(username, password),
                 EnableSsl = enableSsl,
                 Timeout = 30000
@@ -336,6 +338,8 @@ namespace FilistinProje.Service.Services
 
                 using var client = new SmtpClient(host, port)
                 {
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
                     Credentials = new NetworkCredential(username, password),
                     EnableSsl = enableSsl,
                     Timeout = 30000
