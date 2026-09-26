@@ -3,66 +3,119 @@
 @{
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = Localizer["Admin_WholesaleGroupTitle"];
-    var gruplar = Model;
+    var gruplar = Model ?? new List<ToptanciUrunGrubu>();
+    var isAr = System.Globalization.CultureInfo.CurrentUICulture.Name.StartsWith("ar");
 }
 
-<div class="container-fluid ca-fade-in">
-    <div class="ca-page-header">
+<div class="container-fluid ca-fade-in pb-5">
+    <!-- Header -->
+    <div class="ca-page-header mb-3">
         <div>
-            <h1 class="ca-page-title">@Localizer["Admin_WholesaleGroupTitle"]</h1>
+            <h1 class="ca-page-title d-flex align-items-center gap-2">
+                <i class="fas fa-layer-group text-primary"></i>
+                <span>@Localizer["Admin_WholesaleGroupTitle"]</span>
+            </h1>
             <p class="ca-page-subtitle">@Localizer["Admin_WholesaleGroupSubtitle"]</p>
         </div>
     </div>
 
+    <!-- Rehber & Açıklama Bannerı (UX İyileştirmesi) -->
+    <div class="ca-card mb-4" style="border-left: 4px solid var(--ca-primary, #10b981); background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(59, 130, 246, 0.03) 100%);">
+        <div class="ca-card-body p-3 p-md-4">
+            <div class="d-flex align-items-start gap-3">
+                <div class="rounded-circle p-2 d-flex align-items-center justify-content-center text-primary" style="background: rgba(16, 185, 129, 0.15); width: 44px; height: 44px; min-width: 44px;">
+                    <i class="fas fa-lightbulb fa-lg"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <h5 class="ca-fw-bold mb-1" style="font-size: 1.05rem;">@Localizer["Admin_WholesaleGroupExplanationTitle"]</h5>
+                    <p class="text-muted mb-2 small" style="line-height: 1.5;">@Localizer["Admin_WholesaleGroupExplanationText"]</p>
+                    <div class="d-flex flex-wrap gap-2 mt-2">
+                        <span class="badge bg-light text-dark border px-2 py-1 small d-inline-flex align-items-center gap-1">
+                            <i class="fas fa-tags text-success"></i> @Localizer["Admin_WholesaleTierHelpBadge1"]
+                        </span>
+                        <span class="badge bg-light text-dark border px-2 py-1 small d-inline-flex align-items-center gap-1">
+                            <i class="fas fa-bolt text-warning"></i> @Localizer["Admin_WholesaleTierHelpBadge2"]
+                        </span>
+                        <span class="badge bg-light text-dark border px-2 py-1 small d-inline-flex align-items-center gap-1">
+                            <i class="fas fa-bullseye text-primary"></i> @Localizer["Admin_WholesaleTierHelpBadge3"]
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row g-4">
+        <!-- SOL SÜTUN: FORM KARTLARI -->
         <div class="col-lg-5">
-            <div class="ca-card">
-                <div class="ca-card-header">
-                    <h3 class="ca-card-title d-flex align-items-center gap-2"><i class="fas fa-plus"></i><span>@Localizer["Admin_YeniUrunGrubu"]</span></h3>
+            <!-- Kart 1: Grup Ekle / Düzenle -->
+            <div class="ca-card mb-4" id="grupFormCard">
+                <div class="ca-card-header d-flex align-items-center justify-content-between">
+                    <h3 class="ca-card-title d-flex align-items-center gap-2 m-0" id="grupFormTitle">
+                        <i class="fas fa-plus text-primary"></i>
+                        <span>@Localizer["Admin_YeniUrunGrubu"]</span>
+                    </h3>
+                    <button type="button" class="btn btn-sm btn-link text-muted d-none" id="cancelEditGroupBtn" onclick="resetGrupForm()">
+                        <i class="fas fa-times me-1"></i> @Localizer["Admin_CancelEdit"]
+                    </button>
                 </div>
                 <div class="ca-card-body">
-                    <form method="post" action="/Admin/Toptanci/GrupKaydet">
+                    <form method="post" action="/Admin/Toptanci/GrupKaydet" id="grupKaydetForm">
                         @Html.AntiForgeryToken()
-                        <input type="hidden" name="Id" value="0" />
+                        <input type="hidden" name="Id" id="grupIdInput" value="0" />
                         <div class="row g-3">
                             <div class="col-12">
-                                <label class="ca-label">@Localizer["Admin_GrupAdi"]</label>
-                                <input name="Ad" class="ca-input" placeholder='@Localizer["Admin_GrupAdiPlaceholder"]' required />
+                                <label class="ca-label required">@Localizer["Admin_GrupAdi"]</label>
+                                <input name="Ad" id="grupAdInput" class="ca-input" placeholder='@Localizer["Admin_GrupAdiPlaceholder"]' required />
                             </div>
                             <div class="col-12">
                                 <label class="ca-label">@Localizer["Admin_Aciklama"]</label>
-                                <textarea name="Aciklama" class="ca-input" rows="2" placeholder='@Localizer["Admin_GrupAciklamaPlaceholder"]'></textarea>
+                                <textarea name="Aciklama" id="grupAciklamaInput" class="ca-input" rows="2" placeholder='@Localizer["Admin_GrupAciklamaPlaceholder"]'></textarea>
                             </div>
                             <div class="col-md-6">
                                 <label class="ca-label">@Localizer["Admin_Sira"]</label>
-                                <input name="Sira" class="ca-input" type="number" min="0" value="0" />
+                                <input name="Sira" id="grupSiraInput" class="ca-input" type="number" min="0" value="0" />
                             </div>
                             <div class="col-md-6">
                                 <label class="ca-label">@Localizer["Admin_Durum"]</label>
-                                <select name="AktifMi" class="ca-select">
+                                <select name="AktifMi" id="grupAktifMiSelect" class="ca-select">
                                     <option value="true">@Localizer["Admin_Aktif"]</option>
                                     <option value="false">@Localizer["Admin_Pasif"]</option>
                                 </select>
                             </div>
                         </div>
-                        <button class="ca-btn ca-btn-primary mt-3" type="submit">
-                            <i class="fas fa-save"></i> @Localizer["Admin_GrubuKaydet"]
-                        </button>
+                        <div class="d-flex align-items-center gap-2 mt-3">
+                            <button class="ca-btn ca-btn-primary" type="submit" id="grupSubmitBtn">
+                                <i class="fas fa-save"></i> <span>@Localizer["Admin_GrubuKaydet"]</span>
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
 
-            <div class="ca-card mt-4">
+            <!-- Kart 2: İskonto Oranı Ekle -->
+            <div class="ca-card" id="iskontoFormCard">
                 <div class="ca-card-header">
-                    <h3 class="ca-card-title d-flex align-items-center gap-2"><i class="fas fa-percent"></i><span>@Localizer["Admin_IskontoOraniEkle"]</span></h3>
+                    <h3 class="ca-card-title d-flex align-items-center gap-2 m-0">
+                        <i class="fas fa-percentage text-success"></i>
+                        <span>@Localizer["Admin_IskontoOraniEkle"]</span>
+                    </h3>
                 </div>
                 <div class="ca-card-body">
-                    <form method="post" action="/Admin/Toptanci/IskontoKaydet">
+                    <!-- Form İpucu Rehber Kutusu -->
+                    <div class="alert alert-info py-2 px-3 mb-3 small d-flex align-items-center gap-2">
+                        <i class="fas fa-info-circle flex-shrink-0"></i>
+                        <span>@Localizer["Admin_WholesaleDiscountFormHint"]</span>
+                    </div>
+
+                    <form method="post" action="/Admin/Toptanci/IskontoKaydet" id="iskontoKaydetForm" onsubmit="return validateIskontoForm(event)">
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="Id" value="0" />
+                        
                         <div class="row g-3">
+                            <!-- 1. Grup Seçimi -->
                             <div class="col-12">
-                                <label class="ca-label">@Localizer["Admin_UrunGrubu"]</label>
+                                <label class="ca-label required">@Localizer["Admin_UrunGrubu"]</label>
                                 <select name="ToptanciUrunGrubuId" id="mainGrupSelect" class="ca-select" required onchange="onMainGroupChange(this.value)">
                                     <option value="">-- @Localizer["Admin_GrupSecin"] --</option>
                                     @foreach (var g in gruplar.Where(g => g.AktifMi).OrderBy(g => g.Sira))
@@ -70,42 +123,81 @@
                                         <option value="@g.Id">@g.Ad</option>
                                     }
                                 </select>
+                                <div class="invalid-feedback d-none" id="grupSelectFeedback">@Localizer["Admin_SelectGroupFirstWarning"]</div>
                             </div>
+
+                            <!-- 2. Kapsam (Tüm Grup mu, Belirli Ürün mü?) -->
                             <div class="col-12">
+                                <label class="ca-label">@Localizer["DiscountScope"]</label>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-sm btn-outline-primary flex-fill active" id="scopeAllBtn" onclick="setDiscountScope('all')">
+                                        <i class="fas fa-layer-group me-1"></i> @Localizer["Admin_WholesaleScopeAllGroup"]
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary flex-fill" id="scopeProductBtn" onclick="setDiscountScope('product')">
+                                        <i class="fas fa-box me-1"></i> @Localizer["Admin_WholesaleScopeSpecificProduct"]
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Belirli Ürün & Varyant Alanları (Varsayılan gizli) -->
+                            <div class="col-12 d-none" id="productScopeContainer">
                                 <label class="ca-label">@Localizer["Admin_Urun"]</label>
                                 <select name="UrunId" id="mainUrunSelect" class="ca-select" onchange="onMainUrunChange(this.value)">
                                     <option value="">-- @Localizer["Admin_WholesaleAllProductsInGroup"] --</option>
                                 </select>
                                 <small class="text-muted d-block mt-1">@Localizer["Admin_WholesaleProductOptionalHint"]</small>
                             </div>
-                            <div class="col-12" id="mainVaryantContainer" style="display:none;">
+
+                            <div class="col-12 d-none" id="mainVaryantContainer">
                                 <label class="ca-label">@Localizer["Admin_Variant"]</label>
                                 <select name="UrunSecenekId" id="mainVaryantSelect" class="ca-select">
                                     <option value="">@Localizer["Admin_WholesaleAllVariants"]</option>
                                 </select>
                                 <small class="text-muted d-block mt-1">@Localizer["Admin_WholesaleVariantOptionalHint"]</small>
                             </div>
-                            <div class="col-md-6">
-                                <label class="ca-label">@Localizer["Admin_MinAdet"]</label>
-                                <input name="MinAdet" class="ca-input" type="number" min="1" value="10" required />
+
+                            <!-- 3. Minimum Adet + Hızlı Butonlar -->
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <label class="ca-label m-0 required">@Localizer["Admin_MinAdet"]</label>
+                                    <div class="d-flex gap-1" title='@Localizer["Admin_QuickQtyButtons"]'>
+                                        <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1" style="font-size:0.75rem;" onclick="setQuickQty(5)">5+</button>
+                                        <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1" style="font-size:0.75rem;" onclick="setQuickQty(10)">10+</button>
+                                        <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1" style="font-size:0.75rem;" onclick="setQuickQty(25)">25+</button>
+                                        <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-1" style="font-size:0.75rem;" onclick="setQuickQty(50)">50+</button>
+                                    </div>
+                                </div>
+                                <input name="MinAdet" id="mainMinAdet" class="ca-input" type="number" min="1" value="10" required />
+                                <div class="invalid-feedback d-none" id="minAdetFeedback">@Localizer["Admin_MinQuantityRequiredWarning"]</div>
                             </div>
+
+                            <!-- 4. İskonto Tipi ve Değeri -->
                             <div class="col-md-6">
                                 <label class="ca-label">@Localizer["DiscountType"]</label>
                                 <select name="IskontoTipi" class="ca-select" id="topIskontoTipi" onchange="toggleTopDiscountFields()">
-                                    <option value="Yuzde">@Localizer["DiscountTypePercentage"]</option>
-                                    <option value="Tutar">@Localizer["DiscountTypeFixed"]</option>
+                                    <option value="Yuzde">@Localizer["DiscountTypePercentage"] (%)</option>
+                                    <option value="Tutar">@Localizer["DiscountTypeFixed"] (₪)</option>
                                 </select>
                             </div>
+
                             <div class="col-md-6" id="topYuzdeField">
-                                <label class="ca-label">@Localizer["Admin_IskontoYuzdesi"]</label>
-                                <input name="IskontoYuzdesi" class="ca-input" type="number" min="0" max="100" step="0.5" value="5" />
+                                <label class="ca-label required">@Localizer["Admin_IskontoYuzdesi"] (%)</label>
+                                <div class="input-group">
+                                    <input name="IskontoYuzdesi" id="mainIskontoYuzdesi" class="ca-input" type="number" min="0" max="100" step="0.5" value="5" />
+                                    <span class="input-group-text bg-light text-muted">%</span>
+                                </div>
                             </div>
-                            <div class="col-md-6" id="topTutarField" style="display:none;">
-                                <label class="ca-label">@Localizer["DiscountAmount"] (₪)</label>
-                                <input name="IskontoTutari" class="ca-input" type="number" min="0" step="0.01" value="0" />
+
+                            <div class="col-md-6 d-none" id="topTutarField">
+                                <label class="ca-label required">@Localizer["DiscountAmount"] (₪)</label>
+                                <div class="input-group">
+                                    <input name="IskontoTutari" id="mainIskontoTutari" class="ca-input" type="number" min="0" step="0.5" value="0" />
+                                    <span class="input-group-text bg-light text-muted">₪</span>
+                                </div>
                             </div>
                         </div>
-                        <button class="ca-btn ca-btn-primary mt-3" type="submit">
+
+                        <button class="ca-btn ca-btn-primary w-100 mt-3" type="submit" id="iskontoSubmitBtn">
                             <i class="fas fa-save"></i> @Localizer["Admin_IskontoKaydet"]
                         </button>
                     </form>
@@ -113,63 +205,151 @@
             </div>
         </div>
 
+        <!-- SAĞ SÜTUN: KAYITLI GRUPLAR LİSTESİ (UX İYİLEŞTİRMESİ) -->
         <div class="col-lg-7">
             <div class="ca-card">
-                <div class="ca-card-header">
-                    <h3 class="ca-card-title"><i class="fas fa-layer-group me-2"></i>@Localizer["Admin_KayitliGruplar"] (@gruplar.Count)</h3>
+                <div class="ca-card-header d-flex align-items-center justify-content-between">
+                    <h3 class="ca-card-title m-0 d-flex align-items-center gap-2">
+                        <i class="fas fa-layer-group text-primary"></i>
+                        <span>@Localizer["Admin_KayitliGruplar"]</span>
+                        <span class="badge bg-primary-subtle text-primary rounded-pill">@gruplar.Count</span>
+                    </h3>
                 </div>
+
                 @if (!gruplar.Any())
                 {
                     <div class="ca-card-body text-center py-5">
-                        <i class="fas fa-layer-group fa-3x mb-3" style="color:var(--ca-muted);"></i>
-                        <p class="text-muted">@Localizer["Admin_GrupYok"]</p>
+                        <div class="rounded-circle bg-light d-inline-flex p-3 mb-3">
+                            <i class="fas fa-layer-group fa-3x text-muted"></i>
+                        </div>
+                        <h5 class="text-muted">@Localizer["Admin_GrupYok"]</h5>
+                        <p class="text-muted small">@Localizer["WholesaleNoGroups"]</p>
                     </div>
                 }
                 else
                 {
                     <div class="ca-table-wrapper">
-                        <table class="ca-table">
+                        <table class="ca-table align-middle">
                             <thead>
                                 <tr>
-                                    <th class="ps-4">@Localizer["Admin_GrupAdi"]</th>
-                                    <th>@Localizer["Admin_Aciklama"]</th>
-                                    <th>@Localizer["Admin_Durum"]</th>
-                                    <th>@Localizer["Admin_IskontoSayisi"]</th>
-                                    <th class="text-end pe-4">@Localizer["Admin_Islem"]</th>
+                                    <th class="ps-3" style="width: 28%;">@Localizer["Admin_GrupAdi"]</th>
+                                    <th style="width: 22%;">@Localizer["Products"]</th>
+                                    <th style="width: 32%;">@Localizer["Admin_ActiveDiscounts"]</th>
+                                    <th style="width: 8%;">@Localizer["Admin_Durum"]</th>
+                                    <th class="text-end pe-3" style="width: 10%;">@Localizer["Admin_Islem"]</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var grup in gruplar)
                                 {
-                                    <tr>
-                                        <td class="ps-4">
-                                            <div class="ca-fw-bold">@grup.Ad</div>
-                                            <div class="small text-muted">@Localizer["Admin_Sira"]: @grup.Sira · @grup.Urunler.Count @Localizer["Admin_UrunSayisiSuffix"]</div>
+                                    var aktifIskontolar = grup.IskontoOranlari?.Where(i => !i.SilindiMi && i.AktifMi).OrderBy(i => i.MinAdet).ToList() ?? new List<ToptanciIskontoOrani>();
+                                    var aktifUrunler = grup.Urunler?.Where(u => !u.SilindiMi).ToList() ?? new List<Urun>();
+
+                                    <tr id="row-grup-@grup.Id">
+                                        <!-- Grup Adı ve Açıklama -->
+                                        <td class="ps-3">
+                                            <div class="ca-fw-bold text-dark fs-6 d-flex align-items-center gap-2">
+                                                <span>@grup.Ad</span>
+                                            </div>
+                                            @if (!string.IsNullOrWhiteSpace(grup.Aciklama))
+                                            {
+                                                <div class="text-muted small text-truncate" style="max-width: 220px;" title="@grup.Aciklama">
+                                                    @grup.Aciklama
+                                                </div>
+                                            }
+                                            <div class="small text-muted mt-1">
+                                                <span class="badge bg-light text-secondary border">@Localizer["Admin_Sira"]: @grup.Sira</span>
+                                            </div>
                                         </td>
+
+                                        <!-- Ürünler -->
                                         <td>
-                                            <span class="small">@(!string.IsNullOrWhiteSpace(grup.Aciklama) ? grup.Aciklama : "-")</span>
+                                            <button type="button" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 py-1 px-2" onclick="openGrupUrunleriModal(@grup.Id, '@Html.Raw(grup.Ad.Replace("'", "\\'"))')" title='@Localizer["Admin_ManageGroupProducts"]'>
+                                                <i class="fas fa-boxes"></i>
+                                                <span id="grupUrunSayisi-@grup.Id">@aktifUrunler.Count</span>
+                                                <span class="small">@Localizer["Admin_UrunSayisiSuffix"]</span>
+                                            </button>
+                                            @if (aktifUrunler.Any())
+                                            {
+                                                <div class="small text-muted mt-1 text-truncate" style="max-width: 180px;">
+                                                    @(aktifUrunler.First().BaslikAr ?? aktifUrunler.First().BaslikEn ?? aktifUrunler.First().Baslik)
+                                                    @if (aktifUrunler.Count > 1)
+                                                    {
+                                                        <span class="text-primary">+@(aktifUrunler.Count - 1)</span>
+                                                    }
+                                                </div>
+                                            }
                                         </td>
+
+                                        <!-- Aktif İskonto Rozetleri (Doğrudan Görünürlük!) -->
                                         <td>
-                                            <span class="ca-badge @(grup.AktifMi ? "ca-badge-success" : "ca-badge-neutral")">@(grup.AktifMi ? Localizer["Admin_Aktif"] : Localizer["Admin_Pasif"])</span>
+                                            @if (!aktifIskontolar.Any())
+                                            {
+                                                <span class="text-muted small fst-italic d-inline-flex align-items-center gap-1">
+                                                    <i class="fas fa-info-circle text-muted"></i>
+                                                    @Localizer["Admin_NoDiscountsYet"]
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <div class="d-flex flex-wrap gap-1">
+                                                    @foreach (var isk in aktifIskontolar)
+                                                    {
+                                                        var isTutar = isk.IskontoTipi == "Tutar";
+                                                        var badgeClass = isTutar ? "bg-warning-subtle text-warning border-warning-subtle" : "bg-success-subtle text-success border-success-subtle";
+                                                        var discountText = isTutar ? $"₪{isk.IskontoTutari:N0} {Localizer["Admin_DiscountPercentShort"]}" : $"%{isk.IskontoYuzdesi:G29} {Localizer["Admin_DiscountPercentShort"]}";
+                                                        
+                                                        <span class="badge border @badgeClass d-inline-flex align-items-center gap-1 py-1 px-2" style="font-size:0.8rem;" title='@(isk.Urun != null ? $"{Localizer["Admin_OnlyForProductPrefix"]}: {isk.Urun.Baslik}" : Localizer["Admin_AllProductsInGroupSummary"])'>
+                                                            @if (isk.Urun != null)
+                                                            {
+                                                                <i class="fas fa-box small"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i class="fas fa-layer-group small"></i>
+                                                            }
+                                                            <strong>@isk.MinAdet+</strong>
+                                                            <span>@discountText</span>
+                                                        </span>
+                                                    }
+                                                </div>
+                                            }
                                         </td>
+
+                                        <!-- Durum -->
                                         <td>
-                                            <span class="ca-badge ca-badge-info">@(grup.IskontoOranlari?.Count(i => i.AktifMi) ?? 0) @Localizer["Admin_AktifSuffix"]</span>
+                                            <span class="ca-badge @(grup.AktifMi ? "ca-badge-success" : "ca-badge-neutral")">
+                                                @(grup.AktifMi ? Localizer["Admin_Aktif"] : Localizer["Admin_Pasif"])
+                                            </span>
                                         </td>
-                                        <td class="text-end pe-4">
+
+                                        <!-- İşlemler -->
+                                        <td class="text-end pe-3">
                                             <div class="dropdown">
                                                 <button class="ca-btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="@Localizer["Admin_Islem"]">
                                                     <i class="fas fa-ellipsis-v"></i>
                                                 </button>
-                                                <ul class="dropdown-menu dropdown-menu-end ca-dropdown-menu">
+                                                <ul class="dropdown-menu dropdown-menu-end ca-dropdown-menu shadow-sm">
                                                     <li>
-                                                        <button class="dropdown-item" type="button" data-bs-toggle="collapse" data-bs-target="#grup-@grup.Id">
-                                                            <i class="fas fa-pen me-2"></i> @Localizer["Admin_Duzenle"]
+                                                        <button class="dropdown-item" type="button" onclick="selectGroupForDiscount(@grup.Id, '@Html.Raw(grup.Ad.Replace("'", "\\'"))')">
+                                                            <i class="fas fa-percentage text-success me-2"></i> @Localizer["Admin_AddDiscountToGroup"]
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button class="dropdown-item" type="button" onclick="openGrupUrunleriModal(@grup.Id, '@Html.Raw(grup.Ad.Replace("'", "\\'"))')">
+                                                            <i class="fas fa-boxes text-primary me-2"></i> @Localizer["Admin_ManageGroupProducts"]
                                                         </button>
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item" data-bs-toggle="collapse" href="#iskontolar-@grup.Id" role="button">
-                                                            <i class="fas fa-percent me-2"></i> @Localizer["Admin_IskontoGor"]
+                                                            <i class="fas fa-list text-info me-2"></i> @Localizer["Admin_IskontoGor"]
                                                         </a>
+                                                    </li>
+                                                    <li><hr class="dropdown-divider my-1"></li>
+                                                    <li>
+                                                        <button class="dropdown-item" type="button" onclick="editGrup(@grup.Id, '@Html.Raw(grup.Ad.Replace("'", "\\'"))', '@Html.Raw((grup.Aciklama ?? "").Replace("'", "\\'"))', @grup.Sira, @(grup.AktifMi ? "true" : "false"))">
+                                                            <i class="fas fa-pen text-secondary me-2"></i> @Localizer["Admin_Duzenle"]
+                                                        </button>
                                                     </li>
                                                     <li>
                                                         <form method="post" action="/Admin/Toptanci/GrupSil/@grup.Id" class="m-0" onsubmit="return confirm('@Localizer["Admin_GrupSilConfirm"]');">
@@ -183,52 +363,53 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr class="collapse" id="grup-@grup.Id">
-                                        <td colspan="5" class="p-4" style="background:var(--ca-bg);">
-                                            <form method="post" action="/Admin/Toptanci/GrupKaydet">
-                                                @Html.AntiForgeryToken()
-                                                <input type="hidden" name="Id" value="@grup.Id" />
-                                                <div class="row g-3">
-                                                    <div class="col-md-4"><label class="ca-label">@Localizer["Admin_GrupAdi"]</label><input name="Ad" value="@grup.Ad" class="ca-input" required /></div>
-                                                    <div class="col-md-4"><label class="ca-label">@Localizer["Admin_Sira"]</label><input name="Sira" value="@grup.Sira" class="ca-input" type="number" min="0" /></div>
-                                                    <div class="col-md-4">
-                                                        <label class="ca-label">@Localizer["Admin_Durum"]</label>
-                                                        <select name="AktifMi" class="ca-select">
-                                                            <option value="true" selected="@grup.AktifMi">@Localizer["Admin_Aktif"]</option>
-                                                            <option value="false" selected="@(!grup.AktifMi)">@Localizer["Admin_Pasif"]</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-12"><label class="ca-label">@Localizer["Admin_Aciklama"]</label><textarea name="Aciklama" class="ca-input" rows="2">@grup.Aciklama</textarea></div>
-                                                    <div class="col-12 text-end"><button class="ca-btn ca-btn-primary" type="submit"><i class="fas fa-save"></i> @Localizer["Admin_Guncelle"]</button></div>
-                                                </div>
-                                            </form>
-                                        </td>
-                                    </tr>
+
+                                    <!-- Detaylı İskonto Listesi ve Hızlı İskonto Ekleme (Collapse) -->
                                     <tr class="collapse" id="iskontolar-@grup.Id">
-                                        <td colspan="5" class="p-0" style="background:transparent;">
-                                            <div class="p-3" style="background:var(--ca-bg);border-top:1px solid var(--ca-border);">
-                                                <h6 class="mb-3"><i class="fas fa-percent me-2"></i>@grup.Ad - @Localizer["Admin_IskontoOranlari"]</h6>
-                                                @if (grup.IskontoOranlari == null || !grup.IskontoOranlari.Any(i => !i.SilindiMi && i.AktifMi))
+                                        <td colspan="5" class="p-0 border-0">
+                                            <div class="p-3 my-2 rounded" style="background: rgba(243, 244, 246, 0.7); border: 1px dashed var(--ca-border, #e5e7eb);">
+                                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                                    <h6 class="m-0 ca-fw-bold d-flex align-items-center gap-2">
+                                                        <i class="fas fa-percentage text-primary"></i>
+                                                        <span>@grup.Ad - @Localizer["Admin_IskontoOranlari"]</span>
+                                                    </h6>
+                                                    <button type="button" class="btn btn-sm btn-outline-success" onclick="selectGroupForDiscount(@grup.Id, '@Html.Raw(grup.Ad.Replace("'", "\\'"))')">
+                                                        <i class="fas fa-plus me-1"></i> @Localizer["Admin_AddDiscountToGroup"]
+                                                    </button>
+                                                </div>
+
+                                                @if (!aktifIskontolar.Any())
                                                 {
                                                     <p class="text-muted small mb-2">@Localizer["Admin_IskontoYok"]</p>
                                                 }
                                                 else
                                                 {
-                                                    <div class="table-responsive">
-                                                        <table class="table table-sm mb-2">
-                                                            <thead><tr><th>@Localizer["Admin_MinAdet"]</th><th>@Localizer["Admin_Urun"]</th><th>@Localizer["DiscountType"]</th><th>@Localizer["Admin_IskontoYuzdesi"] / @Localizer["DiscountAmount"]</th><th>@Localizer["Admin_Durum"]</th><th class="text-end">@Localizer["Admin_Sil"]</th></tr></thead>
+                                                    <div class="table-responsive bg-white rounded border mb-3">
+                                                        <table class="table table-sm table-hover mb-0 align-middle">
+                                                            <thead class="table-light">
+                                                                <tr>
+                                                                    <th>@Localizer["Admin_MinAdet"]</th>
+                                                                    <th>@Localizer["Admin_Urun"]</th>
+                                                                    <th>@Localizer["DiscountType"]</th>
+                                                                    <th>@Localizer["Admin_IskontoYuzdesi"] / @Localizer["DiscountAmount"]</th>
+                                                                    <th>@Localizer["Admin_Durum"]</th>
+                                                                    <th class="text-end">@Localizer["Admin_Sil"]</th>
+                                                                </tr>
+                                                            </thead>
                                                             <tbody>
-                                                                @foreach (var iskonto in grup.IskontoOranlari.Where(i => !i.SilindiMi).OrderBy(i => i.MinAdet))
+                                                                @foreach (var iskonto in aktifIskontolar)
                                                                 {
                                                                     <tr>
-                                                                        <td>@iskonto.MinAdet</td>
+                                                                        <td>
+                                                                            <span class="badge bg-secondary-subtle text-secondary px-2 py-1">@iskonto.MinAdet+ @Localizer["Admin_ItemsOrMore"]</span>
+                                                                        </td>
                                                                         <td>
                                                                             @if (iskonto.Urun != null)
                                                                             {
                                                                                 <span class="ca-badge ca-badge-info"><i class="fas fa-box me-1"></i>@(iskonto.Urun.BaslikAr ?? iskonto.Urun.BaslikEn ?? iskonto.Urun.Baslik)</span>
                                                                                 @if (iskonto.UrunSecenek != null)
                                                                                 {
-                                                                                    <span class="ca-badge ca-badge-warning ms-1"><i class="fas fa-tags me-1"></i>@(iskonto.UrunSecenek.GetDetailedVariantBadge(System.Globalization.CultureInfo.CurrentUICulture.Name.StartsWith("ar")))</span>
+                                                                                    <span class="ca-badge ca-badge-warning ms-1"><i class="fas fa-tags me-1"></i>@(iskonto.UrunSecenek.GetDetailedVariantBadge(isAr))</span>
                                                                                 }
                                                                             }
                                                                             else
@@ -239,28 +420,34 @@
                                                                         <td>
                                                                             @if (iskonto.IskontoTipi == "Tutar")
                                                                             {
-                                                                                <span class="ca-badge ca-badge-warning">@Localizer["DiscountTypeFixed"]</span>
+                                                                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle">@Localizer["DiscountTypeFixed"]</span>
                                                                             }
                                                                             else
                                                                             {
-                                                                                <span class="ca-badge ca-badge-info">@Localizer["DiscountTypePercentage"]</span>
+                                                                                <span class="badge bg-success-subtle text-success border border-success-subtle">@Localizer["DiscountTypePercentage"]</span>
                                                                             }
                                                                         </td>
                                                                         <td>
                                                                             @if (iskonto.IskontoTipi == "Tutar")
                                                                             {
-                                                                                <span>₪@iskonto.IskontoTutari.ToString("N2")</span>
+                                                                                <strong class="text-dark">₪@iskonto.IskontoTutari.ToString("N2")</strong>
                                                                             }
                                                                             else
                                                                             {
-                                                                                <span>@iskonto.IskontoYuzdesi%</span>
+                                                                                <strong class="text-success">%@iskonto.IskontoYuzdesi</strong>
                                                                             }
                                                                         </td>
-                                                                        <td><span class="ca-badge @(iskonto.AktifMi ? "ca-badge-success" : "ca-badge-neutral")">@(iskonto.AktifMi ? Localizer["Admin_Aktif"] : Localizer["Admin_Pasif"])</span></td>
+                                                                        <td>
+                                                                            <span class="ca-badge @(iskonto.AktifMi ? "ca-badge-success" : "ca-badge-neutral")">
+                                                                                @(iskonto.AktifMi ? Localizer["Admin_Aktif"] : Localizer["Admin_Pasif"])
+                                                                            </span>
+                                                                        </td>
                                                                         <td class="text-end">
-                                                                            <form method="post" action="/Admin/Toptanci/IskontoSil/@iskonto.Id" class="m-0" onsubmit="return confirm('@Localizer["Admin_IskontoSilConfirm"]');">
+                                                                            <form method="post" action="/Admin/Toptanci/IskontoSil/@iskonto.Id" class="m-0 d-inline" onsubmit="return confirm('@Localizer["Admin_IskontoSilConfirm"]');">
                                                                                 @Html.AntiForgeryToken()
-                                                                                <button class="ca-btn-icon text-danger" type="submit"><i class="fas fa-trash"></i></button>
+                                                                                <button class="ca-btn-icon text-danger" type="submit" title='@Localizer["Admin_Sil"]'>
+                                                                                    <i class="fas fa-trash"></i>
+                                                                                </button>
                                                                             </form>
                                                                         </td>
                                                                     </tr>
@@ -269,105 +456,6 @@
                                                         </table>
                                                     </div>
                                                 }
-                                                <form method="post" action="/Admin/Toptanci/IskontoKaydet">
-                                                    @Html.AntiForgeryToken()
-                                                    <input type="hidden" name="Id" value="0" />
-                                                    <input type="hidden" name="ToptanciUrunGrubuId" value="@grup.Id" />
-                                                    <div class="row g-2">
-                                                        <div class="col-12 mb-1">
-                                                            <select name="UrunId" class="ca-select form-control-sm">
-                                                                <option value="">-- @Localizer["Admin_WholesaleAllProductsInGroup"] --</option>
-                                                                @if (ViewBag.TumUrunler != null)
-                                                                {
-                                                                    foreach (var p in (dynamic)ViewBag.TumUrunler)
-                                                                    {
-                                                                        var pGrupId = (int?)p.ToptanciUrunGrubuId;
-                                                                        var label = (string)p.Baslik;
-                                                                        if (pGrupId != null && pGrupId != grup.Id && !string.IsNullOrEmpty((string)p.GrupAdi))
-                                                                        {
-                                                                            label += $" ({Localizer["Admin_CurrentGroup"].Value}: {(string)p.GrupAdi})";
-                                                                        }
-                                                                        <option value="@p.Id">@label</option>
-                                                                    }
-                                                                }
-                                                                else
-                                                                {
-                                                                    foreach (var u in grup.Urunler.Where(u => !u.SilindiMi).OrderBy(u => u.Baslik))
-                                                                    {
-                                                                        <option value="@u.Id">@(u.BaslikAr ?? u.BaslikEn ?? u.Baslik)</option>
-                                                                    }
-                                                                }
-                                                            </select>
-                                                        </div>
-                                                        <div class="col"><input name="MinAdet" class="ca-input form-control-sm" type="number" min="1" placeholder='@Localizer["Admin_MinAdet"]' required /></div>
-                                                        <div class="col">
-                                                            <select name="IskontoTipi" class="ca-select form-control-sm" onchange="toggleInlineDiscount(this)">
-                                                                <option value="Yuzde">%</option>
-                                                                <option value="Tutar">₪</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col inline-yuzde-@grup.Id"><input name="IskontoYuzdesi" class="ca-input form-control-sm" type="number" min="0" max="100" step="0.5" placeholder='@Localizer["Admin_IskontoYuzdesi"]' /></div>
-                                                        <div class="col inline-tutar-@grup.Id" style="display:none;"><input name="IskontoTutari" class="ca-input form-control-sm" type="number" min="0" step="0.01" placeholder='@Localizer["DiscountAmount"]' /></div>
-                                                        <div class="col-auto"><button class="ca-btn ca-btn-sm ca-btn-primary" type="submit"><i class="fas fa-plus"></i> @Localizer["Admin_Ekle"]</button></div>
-                                                    </div>
-                                                </form>
-
-                                                <div class="mt-4 pt-3" style="border-top:1px dashed var(--ca-border);">
-                                                    <h6 class="mb-3 d-flex align-items-center justify-content-between">
-                                                        <span><i class="fas fa-boxes me-2"></i>@Localizer["Admin_GruptakiUrunler"] (@grup.Urunler.Count(u => !u.SilindiMi))</span>
-                                                    </h6>
-                                                    @if (!grup.Urunler.Any(u => !u.SilindiMi))
-                                                    {
-                                                        <p class="text-muted small mb-3">@Localizer["Admin_GruptaUrunYok"]</p>
-                                                    }
-                                                    else
-                                                    {
-                                                        <div class="d-flex flex-wrap gap-2 mb-3">
-                                                            @foreach (var u in grup.Urunler.Where(u => !u.SilindiMi).OrderBy(u => u.Baslik))
-                                                            {
-                                                                <span class="ca-badge ca-badge-info d-inline-flex align-items-center gap-1 p-2">
-                                                                    <i class="fas fa-box"></i>
-                                                                    <span>@(u.BaslikAr ?? u.BaslikEn ?? u.Baslik)</span>
-                                                                    <form method="post" action="/Admin/Toptanci/GruptanUrunCikar" class="d-inline m-0 p-0" onsubmit="return confirm('@Localizer["Admin_GrupSilConfirm"]');">
-                                                                        @Html.AntiForgeryToken()
-                                                                        <input type="hidden" name="urunId" value="@u.Id" />
-                                                                        <button type="submit" class="btn btn-link p-0 text-danger ms-1" style="line-height:1;" title="@Localizer["Admin_GruptanCikar"]">
-                                                                            <i class="fas fa-times-circle"></i>
-                                                                        </button>
-                                                                    </form>
-                                                                </span>
-                                                            }
-                                                        </div>
-                                                    }
-
-                                                    <form method="post" action="/Admin/Toptanci/GrubaUrunAta" class="row g-2 align-items-center">
-                                                        @Html.AntiForgeryToken()
-                                                        <input type="hidden" name="grupId" value="@grup.Id" />
-                                                        <div class="col-sm-8">
-                                                            <select name="urunId" class="ca-select form-control-sm" required>
-                                                                <option value="">-- @Localizer["Admin_GrubaUrunAta"] --</option>
-                                                                @if (ViewBag.TumUrunler != null)
-                                                                {
-                                                                    foreach (var p in (dynamic)ViewBag.TumUrunler)
-                                                                    {
-                                                                        if (p.ToptanciUrunGrubuId == grup.Id) continue;
-                                                                        var label = (string)p.Baslik;
-                                                                        if (p.ToptanciUrunGrubuId != null && !string.IsNullOrEmpty((string)p.GrupAdi))
-                                                                        {
-                                                                            label += $" ({Localizer["Admin_CurrentGroup"].Value}: {(string)p.GrupAdi})";
-                                                                        }
-                                                                        <option value="@p.Id">@label</option>
-                                                                    }
-                                                                }
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-sm-4">
-                                                            <button type="submit" class="ca-btn ca-btn-sm ca-btn-secondary w-100">
-                                                                <i class="fas fa-plus"></i> @Localizer["Admin_GrubaUrunAta"]
-                                                            </button>
-                                                        </div>
-                                                    </form>
-                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -381,13 +469,233 @@
     </div>
 </div>
 
+<!-- ========================================== -->
+<!-- MODAL: GRUP ÜRÜNLERİNİ YÖNET (HIZLI İŞLEM) -->
+<!-- ========================================== -->
+<div class="modal fade" id="grupUrunleriModal" tabindex="-1" aria-labelledby="grupUrunleriModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title d-flex align-items-center gap-2" id="grupUrunleriModalLabel">
+                    <i class="fas fa-boxes text-primary"></i>
+                    <span id="modalGrupAdi"></span>
+                    <span class="text-muted small">(@Localizer["Admin_GruptakiUrunler"])</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label='@Localizer["Close"]'></button>
+            </div>
+            <div class="modal-body p-4">
+                <!-- Ürün Ekleme Çubuğu -->
+                <div class="card bg-light border-0 p-3 mb-4">
+                    <label class="ca-label mb-2 ca-fw-bold"><i class="fas fa-plus-circle text-success me-1"></i> @Localizer["Admin_GrubaUrunAta"]</label>
+                    <div class="row g-2 align-items-center">
+                        <div class="col-sm-9">
+                            <select id="modalUrunSelect" class="ca-select">
+                                <option value="">-- @Localizer["Admin_GrubaUrunAta"] --</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="ca-btn ca-btn-primary w-100" id="modalUrunAtaBtn" onclick="assignProductToGroupModal()">
+                                <i class="fas fa-plus"></i> @Localizer["Admin_Ekle"]
+                            </button>
+                        </div>
+                    </div>
+                    <div id="modalAlertBox" class="mt-2 d-none"></div>
+                </div>
+
+                <!-- Gruptaki Mevcut Ürünler Listesi -->
+                <h6 class="ca-fw-bold mb-3 d-flex align-items-center justify-content-between">
+                    <span>@Localizer["Admin_GruptakiUrunler"]</span>
+                    <span class="badge bg-secondary-subtle text-secondary" id="modalUrunCountBadge">0 @Localizer["Admin_UrunSayisiSuffix"]</span>
+                </h6>
+
+                <div id="modalLoadingSpinner" class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">@Localizer["Admin_LoadingProducts"]</span>
+                    </div>
+                    <p class="text-muted small mt-2">@Localizer["Admin_LoadingProducts"]</p>
+                </div>
+
+                <div id="modalEmptyState" class="text-center py-4 d-none">
+                    <i class="fas fa-box-open fa-2x text-muted mb-2"></i>
+                    <p class="text-muted small">@Localizer["Admin_GruptaUrunYok"]</p>
+                </div>
+
+                <div class="table-responsive d-none" id="modalTableContainer">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 50px;"></th>
+                                <th>@Localizer["Admin_Urun"]</th>
+                                <th>@Localizer["Price"]</th>
+                                <th class="text-end">@Localizer["Admin_Islem"]</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modalUrunTableBody">
+                            <!-- Dinamik JS dolduracak -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer bg-light py-2">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Close"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
 <script>
+    var currentActiveGroupId = null;
     var allProductsCache = null;
     var allProductsPromise = null;
     var currentGroupLabel = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_CurrentGroup"].Value));
     var allProductsPlaceholder = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_WholesaleAllProductsInGroup"].Value));
     var allVariantsPlaceholder = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_WholesaleAllVariants"].Value));
+    var assignProductPlaceholder = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_GrubaUrunAta"].Value));
+
+    // --- GRUP DÜZENLEME FONKSİYONLARI ---
+    function editGrup(id, ad, aciklama, sira, aktifMi) {
+        document.getElementById('grupIdInput').value = id;
+        document.getElementById('grupAdInput').value = ad;
+        document.getElementById('grupAciklamaInput').value = aciklama || '';
+        document.getElementById('grupSiraInput').value = sira;
+        document.getElementById('grupAktifMiSelect').value = aktifMi ? 'true' : 'false';
+
+        var titleEl = document.getElementById('grupFormTitle');
+        if (titleEl) {
+            titleEl.innerHTML = '<i class="fas fa-pen text-primary"></i> <span>@Localizer["Admin_EditGroup"]: ' + escapeHtml(ad) + '</span>';
+        }
+        var cancelBtn = document.getElementById('cancelEditGroupBtn');
+        if (cancelBtn) cancelBtn.classList.remove('d-none');
+
+        document.getElementById('grupFormCard').scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('grupAdInput').focus();
+    }
+
+    function resetGrupForm() {
+        document.getElementById('grupIdInput').value = '0';
+        document.getElementById('grupAdInput').value = '';
+        document.getElementById('grupAciklamaInput').value = '';
+        document.getElementById('grupSiraInput').value = '0';
+        document.getElementById('grupAktifMiSelect').value = 'true';
+
+        var titleEl = document.getElementById('grupFormTitle');
+        if (titleEl) {
+            titleEl.innerHTML = '<i class="fas fa-plus text-primary"></i> <span>@Localizer["Admin_YeniUrunGrubu"]</span>';
+        }
+        var cancelBtn = document.getElementById('cancelEditGroupBtn');
+        if (cancelBtn) cancelBtn.classList.add('d-none');
+    }
+
+    // --- İSKONTO FORMU FONKSİYONLARI ---
+    function selectGroupForDiscount(groupId, groupName) {
+        var groupSelect = document.getElementById('mainGrupSelect');
+        if (groupSelect) {
+            groupSelect.value = groupId;
+            onMainGroupChange(groupId);
+        }
+        document.getElementById('iskontoFormCard').scrollIntoView({ behavior: 'smooth' });
+        var minAdetInput = document.getElementById('mainMinAdet');
+        if (minAdetInput) minAdetInput.focus();
+    }
+
+    function setDiscountScope(scope) {
+        var scopeAllBtn = document.getElementById('scopeAllBtn');
+        var scopeProductBtn = document.getElementById('scopeProductBtn');
+        var productContainer = document.getElementById('productScopeContainer');
+        var urunSelect = document.getElementById('mainUrunSelect');
+
+        if (scope === 'all') {
+            scopeAllBtn.classList.add('active', 'btn-outline-primary');
+            scopeAllBtn.classList.remove('btn-outline-secondary');
+            scopeProductBtn.classList.remove('active', 'btn-outline-primary');
+            scopeProductBtn.classList.add('btn-outline-secondary');
+            productContainer.classList.add('d-none');
+            if (urunSelect) urunSelect.value = '';
+            resetMainVariantSelect();
+        } else {
+            scopeProductBtn.classList.add('active', 'btn-outline-primary');
+            scopeProductBtn.classList.remove('btn-outline-secondary');
+            scopeAllBtn.classList.remove('active', 'btn-outline-primary');
+            scopeAllBtn.classList.add('btn-outline-secondary');
+            productContainer.classList.remove('d-none');
+        }
+    }
+
+    function setQuickQty(qty) {
+        var input = document.getElementById('mainMinAdet');
+        if (input) {
+            input.value = qty;
+            input.classList.remove('is-invalid');
+            var feedback = document.getElementById('minAdetFeedback');
+            if (feedback) feedback.classList.add('d-none');
+        }
+    }
+
+    function toggleTopDiscountFields() {
+        var sel = document.getElementById('topIskontoTipi');
+        var yuzde = document.getElementById('topYuzdeField');
+        var tutar = document.getElementById('topTutarField');
+        if (sel.value === 'Tutar') {
+            yuzde.classList.add('d-none');
+            tutar.classList.remove('d-none');
+        } else {
+            yuzde.classList.remove('d-none');
+            tutar.classList.add('d-none');
+        }
+    }
+
+    function validateIskontoForm(e) {
+        var groupSelect = document.getElementById('mainGrupSelect');
+        var minAdetInput = document.getElementById('mainMinAdet');
+        var iskontoTipi = document.getElementById('topIskontoTipi').value;
+        var yuzdeInput = document.getElementById('mainIskontoYuzdesi');
+        var tutarInput = document.getElementById('mainIskontoTutari');
+
+        var isValid = true;
+
+        if (!groupSelect.value) {
+            groupSelect.classList.add('is-invalid');
+            document.getElementById('grupSelectFeedback').classList.remove('d-none');
+            groupSelect.focus();
+            isValid = false;
+        } else {
+            groupSelect.classList.remove('is-invalid');
+            document.getElementById('grupSelectFeedback').classList.add('d-none');
+        }
+
+        var minAdet = parseInt(minAdetInput.value);
+        if (isNaN(minAdet) || minAdet < 1) {
+            minAdetInput.classList.add('is-invalid');
+            document.getElementById('minAdetFeedback').classList.remove('d-none');
+            if (isValid) minAdetInput.focus();
+            isValid = false;
+        } else {
+            minAdetInput.classList.remove('is-invalid');
+            document.getElementById('minAdetFeedback').classList.add('d-none');
+        }
+
+        if (iskontoTipi === 'Yuzde') {
+            var val = parseFloat(yuzdeInput.value);
+            if (isNaN(val) || val <= 0 || val > 100) {
+                alert('@Localizer["Admin_DiscountValueRequiredWarning"]');
+                yuzdeInput.focus();
+                isValid = false;
+            }
+        } else {
+            var val = parseFloat(tutarInput.value);
+            if (isNaN(val) || val <= 0) {
+                alert('@Localizer["Admin_DiscountValueRequiredWarning"]');
+                tutarInput.focus();
+                isValid = false;
+            }
+        }
+
+        if (!isValid && e) {
+            e.preventDefault();
+        }
+        return isValid;
+    }
 
     function resetMainVariantSelect() {
         var varyantContainer = document.getElementById('mainVaryantContainer');
@@ -396,7 +704,7 @@
             varyantSelect.innerHTML = '<option value="">' + allVariantsPlaceholder + '</option>';
         }
         if (varyantContainer) {
-            varyantContainer.style.display = 'none';
+            varyantContainer.classList.add('d-none');
         }
     }
 
@@ -448,6 +756,8 @@
     }
 
     function onMainGroupChange(groupId) {
+        document.getElementById('mainGrupSelect').classList.remove('is-invalid');
+        document.getElementById('grupSelectFeedback').classList.add('d-none');
         resetMainVariantSelect();
         populateMainUrunDropdown(groupId);
     }
@@ -469,11 +779,9 @@
                         opt.textContent = item.varyantBasligi || item.VaryantBasligi;
                         varyantSelect.appendChild(opt);
                     });
-                    if (varyantContainer) {
-                        varyantContainer.style.display = '';
-                    }
+                    if (varyantContainer) varyantContainer.classList.remove('d-none');
                 } else if (varyantContainer) {
-                    varyantContainer.style.display = 'none';
+                    varyantContainer.classList.add('d-none');
                 }
             })
             .catch(function(err) {
@@ -481,31 +789,198 @@
             });
     }
 
-    function toggleTopDiscountFields() {
-        var sel = document.getElementById('topIskontoTipi');
-        var yuzde = document.getElementById('topYuzdeField');
-        var tutar = document.getElementById('topTutarField');
-        if (sel.value === 'Tutar') {
-            yuzde.style.display = 'none';
-            tutar.style.display = '';
-        } else {
-            yuzde.style.display = '';
-            tutar.style.display = 'none';
-        }
+    // --- MODAL: GRUP ÜRÜNLERİ YÖNETİMİ ---
+    function openGrupUrunleriModal(groupId, groupName) {
+        currentActiveGroupId = groupId;
+        document.getElementById('modalGrupAdi').textContent = groupName;
+        document.getElementById('modalAlertBox').classList.add('d-none');
+
+        var modalEl = document.getElementById('grupUrunleriModal');
+        var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+        modal.show();
+
+        loadGroupProductsIntoModal(groupId);
+        populateModalProductDropdown(groupId);
     }
 
-    function toggleInlineDiscount(select) {
-        var form = select.closest('form');
-        var row = form.querySelector('.row');
-        var yuzdeCol = row.querySelector('[class*="inline-yuzde"]');
-        var tutarCol = row.querySelector('[class*="inline-tutar"]');
-        if (select.value === 'Tutar') {
-            if (yuzdeCol) yuzdeCol.style.display = 'none';
-            if (tutarCol) tutarCol.style.display = '';
-        } else {
-            if (yuzdeCol) yuzdeCol.style.display = '';
-            if (tutarCol) tutarCol.style.display = 'none';
-        }
+    function loadGroupProductsIntoModal(groupId) {
+        var spinner = document.getElementById('modalLoadingSpinner');
+        var emptyState = document.getElementById('modalEmptyState');
+        var tableContainer = document.getElementById('modalTableContainer');
+        var tableBody = document.getElementById('modalUrunTableBody');
+        var countBadge = document.getElementById('modalUrunCountBadge');
+
+        spinner.classList.remove('d-none');
+        emptyState.classList.add('d-none');
+        tableContainer.classList.add('d-none');
+        tableBody.innerHTML = '';
+
+        fetch('/Admin/Toptanci/GetGrupUrunleri?grupId=' + encodeURIComponent(groupId))
+            .then(function(r) { return r.json(); })
+            .then(function(items) {
+                spinner.classList.add('d-none');
+                if (!Array.isArray(items) || items.length === 0) {
+                    emptyState.classList.remove('d-none');
+                    countBadge.textContent = '0 @Localizer["Admin_UrunSayisiSuffix"]';
+                    updateRowProductCount(groupId, 0);
+                    return;
+                }
+
+                countBadge.textContent = items.length + ' @Localizer["Admin_UrunSayisiSuffix"]';
+                updateRowProductCount(groupId, items.length);
+                tableContainer.classList.remove('d-none');
+
+                items.forEach(function(item) {
+                    var tr = document.createElement('tr');
+                    tr.id = 'modal-product-row-' + item.id;
+
+                    var gorselHtml = item.gorselUrl 
+                        ? '<img src="' + escapeHtml(item.gorselUrl) + '" alt="" style="width:36px;height:36px;object-fit:cover;border-radius:4px;border:1px solid #e5e7eb;" />'
+                        : '<div class="bg-light text-muted d-flex align-items-center justify-content-center" style="width:36px;height:36px;border-radius:4px;"><i class="fas fa-box small"></i></div>';
+
+                    var fiyatHtml = '₪' + (item.fiyat != null ? Number(item.fiyat).toFixed(2) : '0.00');
+                    if (item.topFiyat != null && item.topFiyat > 0) {
+                        fiyatHtml += ' <span class="badge bg-warning-subtle text-warning small ms-1">₪' + Number(item.topFiyat).toFixed(2) + '</span>';
+                    }
+
+                    tr.innerHTML = 
+                        '<td>' + gorselHtml + '</td>' +
+                        '<td><span class="ca-fw-bold">' + escapeHtml(item.baslik) + '</span></td>' +
+                        '<td>' + fiyatHtml + '</td>' +
+                        '<td class="text-end">' +
+                            '<a href="/Admin/Urun/Duzenle/' + item.id + '" target="_blank" class="ca-btn-icon text-secondary me-2" title="@Localizer["Admin_Duzenle"]"><i class="fas fa-external-link-alt"></i></a>' +
+                            '<button type="button" class="ca-btn-icon text-danger" onclick="removeProductFromGroupModal(' + item.id + ')" title="@Localizer["Admin_GruptanCikar"]"><i class="fas fa-times-circle"></i></button>' +
+                        '</td>';
+
+                    tableBody.appendChild(tr);
+                });
+            })
+            .catch(function(err) {
+                spinner.classList.add('d-none');
+                console.error('Error loading group products:', err);
+            });
+    }
+
+    function populateModalProductDropdown(currentGroupId) {
+        var select = document.getElementById('modalUrunSelect');
+        select.innerHTML = '<option value="">-- ' + assignProductPlaceholder + ' --</option>';
+
+        fetchAllActiveProducts().then(function(items) {
+            if (!Array.isArray(items)) return;
+            items.forEach(function(item) {
+                var itemGrupId = item.toptanciUrunGrubuId != null ? item.toptanciUrunGrubuId : item.ToptanciUrunGrubuId;
+                if (itemGrupId == currentGroupId) return; // Zaten bu grupta
+
+                var opt = document.createElement('option');
+                opt.value = item.id != null ? item.id : item.Id;
+                var text = item.baslik || item.Baslik;
+                var itemGrupAdi = item.grupAdi || item.GrupAdi;
+                if (itemGrupId && itemGrupAdi) {
+                    text += ' (' + currentGroupLabel + ': ' + itemGrupAdi + ')';
+                }
+                opt.textContent = text;
+                select.appendChild(opt);
+            });
+        });
+    }
+
+    function assignProductToGroupModal() {
+        var urunSelect = document.getElementById('modalUrunSelect');
+        var urunId = urunSelect.value;
+        if (!urunId || !currentActiveGroupId) return;
+
+        var token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+        var btn = document.getElementById('modalUrunAtaBtn');
+        btn.disabled = true;
+
+        var formData = new FormData();
+        formData.append('grupId', currentActiveGroupId);
+        formData.append('urunId', urunId);
+        formData.append('__RequestVerificationToken', token || '');
+
+        fetch('/Admin/Toptanci/GrubaUrunAta', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(res) {
+            btn.disabled = false;
+            if (res.success) {
+                allProductsCache = null; // Invalidate cache
+                showModalAlert(res.message || '@Localizer["Admin_ProductAssignedSuccess"]', 'success');
+                loadGroupProductsIntoModal(currentActiveGroupId);
+                populateModalProductDropdown(currentActiveGroupId);
+                populateMainUrunDropdown(document.getElementById('mainGrupSelect')?.value);
+            } else {
+                showModalAlert(res.message || 'Error', 'danger');
+            }
+        })
+        .catch(function(err) {
+            btn.disabled = false;
+            console.error('Assign error:', err);
+            showModalAlert('Error', 'danger');
+        });
+    }
+
+    function removeProductFromGroupModal(urunId) {
+        if (!confirm('@Localizer["Admin_GrupSilConfirm"]')) return;
+
+        var token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+        var formData = new FormData();
+        formData.append('urunId', urunId);
+        formData.append('__RequestVerificationToken', token || '');
+
+        fetch('/Admin/Toptanci/GruptanUrunCikar', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(res) {
+            if (res.success) {
+                allProductsCache = null; // Invalidate cache
+                showModalAlert(res.message || '@Localizer["Admin_ProductRemovedSuccess"]', 'success');
+                loadGroupProductsIntoModal(currentActiveGroupId);
+                populateModalProductDropdown(currentActiveGroupId);
+                populateMainUrunDropdown(document.getElementById('mainGrupSelect')?.value);
+            } else {
+                showModalAlert(res.message || 'Error', 'danger');
+            }
+        })
+        .catch(function(err) {
+            console.error('Remove error:', err);
+            showModalAlert('Error', 'danger');
+        });
+    }
+
+    function showModalAlert(msg, type) {
+        var box = document.getElementById('modalAlertBox');
+        if (!box) return;
+        box.className = 'mt-2 alert alert-' + type + ' py-1 px-2 small';
+        box.textContent = msg;
+        box.classList.remove('d-none');
+        setTimeout(function() {
+            box.classList.add('d-none');
+        }, 3500);
+    }
+
+    function updateRowProductCount(groupId, newCount) {
+        var el = document.getElementById('grupUrunSayisi-' + groupId);
+        if (el) el.textContent = newCount;
+    }
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        var div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
 
     document.addEventListener('DOMContentLoaded', function() {

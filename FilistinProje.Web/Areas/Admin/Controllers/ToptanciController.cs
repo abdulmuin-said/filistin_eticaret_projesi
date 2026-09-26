@@ -427,9 +427,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> GrubaUrunAta(int grupId, int urunId)
         {
+            var isAjax = Request.Headers["X-Requested-With"] == "XMLHttpRequest" ||
+                         Request.Headers.Accept.ToString().Contains("application/json");
+
             var grup = await _db.ToptanciUrunGruplari.FirstOrDefaultAsync(g => g.Id == grupId && !g.SilindiMi);
             if (grup == null)
             {
+                if (isAjax) return Json(new { success = false, message = _localizer["Admin_WholesaleGroupNotFound"].Value });
                 TempData["Hata"] = _localizer["Admin_WholesaleGroupNotFound"].Value;
                 return RedirectToAction(nameof(UrunGruplari));
             }
@@ -437,6 +441,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             var urun = await _db.Urunler.FirstOrDefaultAsync(u => u.Id == urunId && !u.SilindiMi);
             if (urun == null)
             {
+                if (isAjax) return Json(new { success = false, message = _localizer["Admin_Sonuc_bulunamadi"].Value });
                 TempData["Hata"] = _localizer["Admin_Sonuc_bulunamadi"].Value;
                 return RedirectToAction(nameof(UrunGruplari));
             }
@@ -444,7 +449,25 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             urun.ToptanciUrunGrubuId = grupId;
             await _db.SaveChangesAsync();
 
-            TempData["Basari"] = _localizer["WholesaleGroupSaved"].Value;
+            if (isAjax)
+            {
+                var isAr = System.Globalization.CultureInfo.CurrentUICulture.Name.StartsWith("ar");
+                return Json(new
+                {
+                    success = true,
+                    message = _localizer["Admin_ProductAssignedSuccess"].Value,
+                    urunId = urun.Id,
+                    grupId = grup.Id,
+                    baslik = isAr
+                        ? (!string.IsNullOrWhiteSpace(urun.BaslikAr) ? urun.BaslikAr : urun.Baslik)
+                        : (!string.IsNullOrWhiteSpace(urun.BaslikEn) ? urun.BaslikEn : urun.Baslik),
+                    fiyat = urun.Fiyat,
+                    topFiyat = urun.TopFiyat,
+                    gorselUrl = urun.AnaGorselUrl
+                });
+            }
+
+            TempData["Basari"] = _localizer["Admin_ProductAssignedSuccess"].Value;
             return RedirectToAction(nameof(UrunGruplari));
         }
 
@@ -452,6 +475,9 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> GruptanUrunCikar(int urunId)
         {
+            var isAjax = Request.Headers["X-Requested-With"] == "XMLHttpRequest" ||
+                         Request.Headers.Accept.ToString().Contains("application/json");
+
             var urun = await _db.Urunler.FirstOrDefaultAsync(u => u.Id == urunId && !u.SilindiMi);
             if (urun != null)
             {
@@ -459,7 +485,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await _db.SaveChangesAsync();
             }
 
-            TempData["Basari"] = _localizer["WholesaleGroupSaved"].Value;
+            if (isAjax)
+            {
+                return Json(new { success = true, message = _localizer["Admin_ProductRemovedSuccess"].Value, urunId });
+            }
+
+            TempData["Basari"] = _localizer["Admin_ProductRemovedSuccess"].Value;
             return RedirectToAction(nameof(UrunGruplari));
         }
 
@@ -484,13 +515,21 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> GetGrupUrunleri(int grupId)
         {
+            var isAr = System.Globalization.CultureInfo.CurrentUICulture.Name.StartsWith("ar");
             var urunler = await _db.Urunler
                 .Where(u => u.ToptanciUrunGrubuId == grupId && !u.SilindiMi)
                 .OrderBy(u => u.Baslik)
                 .Select(u => new
                 {
                     u.Id,
-                    Baslik = !string.IsNullOrWhiteSpace(u.BaslikAr) ? u.BaslikAr : (!string.IsNullOrWhiteSpace(u.BaslikEn) ? u.BaslikEn : u.Baslik)
+                    Baslik = isAr
+                        ? (!string.IsNullOrWhiteSpace(u.BaslikAr) ? u.BaslikAr : u.Baslik)
+                        : (!string.IsNullOrWhiteSpace(u.BaslikEn) ? u.BaslikEn : u.Baslik),
+                    GorselUrl = u.AnaGorselUrl,
+                    Fiyat = u.Fiyat,
+                    TopFiyat = u.TopFiyat,
+                    StokDurumu = u.StokDurumu,
+                    AktifMi = u.AktifMi
                 })
                 .ToListAsync();
 
