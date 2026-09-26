@@ -236,11 +236,27 @@
     var yakinDetayMedyalari = ViewBag.YakinDetayMedyalari as List<FilistinProje.Core.Varliklar.UrunResim> ?? new List<FilistinProje.Core.Varliklar.UrunResim>();
     var uretimMedyalari = ViewBag.UretimMedyalari as List<FilistinProje.Core.Varliklar.UrunResim> ?? new List<FilistinProje.Core.Varliklar.UrunResim>();
     var kullanimMedyalari = ViewBag.KullanimMedyalari as List<FilistinProje.Core.Varliklar.UrunResim> ?? new List<FilistinProje.Core.Varliklar.UrunResim>();
-    var varsayilanMedya = galeriMedyalari
-        .OrderByDescending(x => x.VarsayilanMi)
-        .ThenBy(x => x.Sira)
-        .FirstOrDefault();
-    var varsayilanGaleriGorseli = (varsayilanMedya?.ResimYolu ?? Model.AnaGorselUrl);
+    var varsayilanMedya = secenekler.Count > 1
+        // Çoklu varyant: varyanta ait olmayan galeri medyasını önceliklendir (açılışta ana ürün görseli gösterilsin)
+        ? (galeriMedyalari
+            .Where(x => !x.UrunSecenekId.HasValue)
+            .OrderByDescending(x => x.VarsayilanMi)
+            .ThenBy(x => x.Sira)
+            .FirstOrDefault()
+          ?? galeriMedyalari
+            .OrderByDescending(x => x.VarsayilanMi)
+            .ThenBy(x => x.Sira)
+            .FirstOrDefault())
+        : galeriMedyalari
+            .OrderByDescending(x => x.VarsayilanMi)
+            .ThenBy(x => x.Sira)
+            .FirstOrDefault();
+    // Çoklu varyant durumunda açılış görseli: Model.AnaGorselUrl tercih edilir
+    var varsayilanGaleriGorseli = secenekler.Count > 1
+        ? (!string.IsNullOrWhiteSpace(Model.AnaGorselUrl)
+            ? Model.AnaGorselUrl
+            : (varsayilanMedya?.ResimYolu ?? string.Empty))
+        : (varsayilanMedya?.ResimYolu ?? Model.AnaGorselUrl);
     var varsayilanGaleriAltMetni = !string.IsNullOrWhiteSpace(varsayilanMedya?.AltMetin)
         ? varsayilanMedya.AltMetin
         : Model.LocalizedBaslik;
@@ -1900,18 +1916,33 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
             updatePriceWithFrame();
             updateWhatsappOrderLink();
 
+            // Sayaç senkronizasyonu: YALNIZCA seçilen varyantın kendi indirim bitiş tarihine göre
+            // MAIN_CAMPAIGN_END_DATE fallback'i KULLANILMIYOR — varyantın indirimi yoksa sayaç gizlenir
             var variantEndDate = this.getAttribute('data-enddate');
+            var variantOldPrice = parseFloat(this.getAttribute('data-oldprice')) || 0;
+            var variantPrice = parseFloat(this.getAttribute('data-price')) || 0;
             var countdownEl = document.getElementById('productDetailCountdown');
             if (countdownEl) {
-                var targetEndDate = variantEndDate || MAIN_CAMPAIGN_END_DATE;
-                if (targetEndDate && new Date(targetEndDate).getTime() > Date.now()) {
-                    countdownEl.setAttribute('data-end', targetEndDate);
+                if (variantEndDate && new Date(variantEndDate).getTime() > Date.now()) {
+                    // Bu varyantın geçerli bir indirim süresi var → sayacı bu varyanta göre güncelle
+                    countdownEl.setAttribute('data-end', variantEndDate);
+                    countdownEl.setAttribute('data-original-price', variantOldPrice > 0 ? variantOldPrice : variantPrice);
                     countdownEl.classList.remove('hidden');
                     countdownEl.classList.add('inline-flex');
+                    var counterEl = countdownEl.querySelector('.cd-counter');
+                    if (counterEl) counterEl.style.display = 'flex';
+                    var endedEl = countdownEl.querySelector('.cd-ended');
+                    if (endedEl) { endedEl.classList.add('hidden'); endedEl.style.display = 'none'; }
                     if (window.CountdownTimer && typeof window.CountdownTimer.init === 'function') {
                         window.CountdownTimer.init(countdownEl);
                     }
                 } else {
+                    // Bu varyantın indirimi yok veya süresi dolmuş → sayacı tamamen gizle
+                    if (countdownEl._cdInterval) {
+                        clearInterval(countdownEl._cdInterval);
+                        countdownEl._cdInterval = null;
+                    }
+                    countdownEl.removeAttribute('data-end');
                     countdownEl.classList.add('hidden');
                     countdownEl.classList.remove('inline-flex');
                 }
