@@ -108,7 +108,7 @@
                         <span>@Localizer["Admin_WholesaleDiscountFormHint"]</span>
                     </div>
 
-                    <form method="post" action="/Admin/Toptanci/IskontoKaydet" id="iskontoKaydetForm" onsubmit="return validateIskontoForm(event)">
+                    <form method="post" action="/Admin/Toptanci/IskontoKaydet" id="iskontoKaydetForm" novalidate onsubmit="return validateIskontoForm(event)">
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="Id" value="0" />
                         
@@ -123,7 +123,7 @@
                                         <option value="@g.Id">@g.Ad</option>
                                     }
                                 </select>
-                                <div class="invalid-feedback d-none" id="grupSelectFeedback">@Localizer["Admin_SelectGroupFirstWarning"]</div>
+                                <div class="invalid-feedback d-none" id="grupSelectFeedback" style="font-size:0.82rem;">@Localizer["Admin_SelectGroupFirstWarning"]</div>
                             </div>
 
                             <!-- 2. Kapsam (Tüm Grup mu, Belirli Ürün mü?) -->
@@ -552,6 +552,7 @@
     var allProductsPlaceholder = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_WholesaleAllProductsInGroup"].Value));
     var allVariantsPlaceholder = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_WholesaleAllVariants"].Value));
     var assignProductPlaceholder = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_GrubaUrunAta"].Value));
+    var urunSayisiSuffix = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_UrunSayisiSuffix"].Value));
 
     // --- GRUP DÜZENLEME FONKSİYONLARI ---
     function editGrup(id, ad, aciklama, sira, aktifMi) {
@@ -654,25 +655,39 @@
 
         var isValid = true;
 
+        var grupFeedback = document.getElementById('grupSelectFeedback');
         if (!groupSelect.value) {
             groupSelect.classList.add('is-invalid');
-            document.getElementById('grupSelectFeedback').classList.remove('d-none');
+            if (grupFeedback) {
+                grupFeedback.classList.remove('d-none');
+                grupFeedback.classList.add('d-block');
+            }
             groupSelect.focus();
             isValid = false;
         } else {
             groupSelect.classList.remove('is-invalid');
-            document.getElementById('grupSelectFeedback').classList.add('d-none');
+            if (grupFeedback) {
+                grupFeedback.classList.add('d-none');
+                grupFeedback.classList.remove('d-block');
+            }
         }
 
         var minAdet = parseInt(minAdetInput.value);
+        var minFeedback = document.getElementById('minAdetFeedback');
         if (isNaN(minAdet) || minAdet < 1) {
             minAdetInput.classList.add('is-invalid');
-            document.getElementById('minAdetFeedback').classList.remove('d-none');
+            if (minFeedback) {
+                minFeedback.classList.remove('d-none');
+                minFeedback.classList.add('d-block');
+            }
             if (isValid) minAdetInput.focus();
             isValid = false;
         } else {
             minAdetInput.classList.remove('is-invalid');
-            document.getElementById('minAdetFeedback').classList.add('d-none');
+            if (minFeedback) {
+                minFeedback.classList.add('d-none');
+                minFeedback.classList.remove('d-block');
+            }
         }
 
         if (iskontoTipi === 'Yuzde') {
@@ -821,12 +836,12 @@
                 spinner.classList.add('d-none');
                 if (!Array.isArray(items) || items.length === 0) {
                     emptyState.classList.remove('d-none');
-                    countBadge.textContent = '0 @Localizer["Admin_UrunSayisiSuffix"]';
+                    countBadge.textContent = '0 ' + urunSayisiSuffix;
                     updateRowProductCount(groupId, 0);
                     return;
                 }
 
-                countBadge.textContent = items.length + ' @Localizer["Admin_UrunSayisiSuffix"]';
+                countBadge.textContent = items.length + ' ' + urunSayisiSuffix;
                 updateRowProductCount(groupId, items.length);
                 tableContainer.classList.remove('d-none');
 

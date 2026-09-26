@@ -853,8 +853,25 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
 - [x] **Adım 241**: İndirim Bitiş Tarihine Saatlik Hızlı Butonlar: `Admin/Urun/Duzenle.cshtml`, `Admin/Urun/_VariantEditor.cshtml` ve `Admin/Urun/Ekle.cshtml` dosyalarında gün butonlarının (`+1d, +3d, +1w, +1m`) önüne saat butonları (`+1h, +3h, +6h, +12h` / `+1 س, +3 س, +6 س, +12 س`) eklendi; JS motoru `data-hours` desteğiyle `now.setHours(...)` formülüne kavuşturuldu.
 - [x] **Adım 242**: Admin Ürün Düzenleme Sabit Görsel Yükleme Kolaylığı (`Duzenle.cshtml`): Sağ taraftaki sabit ürün önizleme kartının hemen altına `Admin_UploadNewMainImage` butonu eklendi; admin kullanıcısı sekme değiştirmeden tek tıkla ana ürün görselini güncelleyebiliyor.
 - [x] **Adım 243**: İndirim Sayacı ve Rozeti Canlı Kırmızı Tasarım Güncellemesi & Çift İki Nokta Onarımı (`Views/Urun/Detay.cshtml`, `Views/Shared/_CountdownPartial.cshtml`):
-  - Soluk/ölü krem tonları yerine sitenin açık zemininden net şekilde ayrışan canlı yakut/alev kırmızısı gradyan (`bg-gradient-to-r from-red-600 via-rose-600 to-red-700`, `box-shadow`) uygulandı.
-  - Dil dosyasındaki iki nokta ile şablondaki iki noktanın çakışmasından kaynaklanan `ينتهي الخصم خلال::` çift iki nokta yazım hatası giderildi.
-  - Geri sayım kutucukları yarı saydam koyu (`rgba(0,0,0,0.38)`) zemin, beyaz kalın font ve açık sarı gün/saat etiketleri ile yüksek kontrastlı ve okunur hale getirildi.
-  - İndirim rozeti (`#discountBadge`) parlayan şimşek ikonu ve kırmızı gradyan hap tasarımıyla aciliyet hissi verecek şekilde güçlendirildi.
-  - Varyant değişiminde varyantın özel indirim bitiş tarihi varsa sayacın canlı güncellenmesi sağlandı.
+### Faz 37 (Video 6 — Toptan Ürün Grupları UX & İskonto Arayüz Yenilemesi — 26 Eylül 2026)
+- [x] **Adım 244 (Bilgilendirme Bannerı & Toptan İskonto Mantığı Açıklığı)**:
+  - `Admin/Toptanci/UrunGruplari.cshtml`: Sayfa başına toptan gruplarının amacını, sepette kademeli iskontoların nasıl işlediğini anlatan rehber info banner'ı eklendi.
+  - 3 adet bilgilendirme rozeti (Kademeli indirim kuralları, sepette otomatik uygulama, tüm grup veya ürüne özel hedefleme) eklendi.
+- [x] **Adım 245 (Kayıtlı Gruplar Tablosunda Doğrudan İskonto & Ürün Görünürlüğü)**:
+  - İskontolar gizli collapse arkasından çıkarılarak doğrudan grup satırında şık, renkli etiketler (chips/badges) olarak gösterildi (Örn: `10+ %5 خصم`, `25+ ₪25 خصم`).
+  - İskonto tanımlanmamış gruplarda açık ve şık gri bilgi mesajı (`لم يتم تحديد خصومات بعد`) gösterildi.
+  - Her grup için ürün sayısı butonu (`X منتج`) ve ilk ürünlerin başlık önizlemesi eklendi.
+- [x] **Adım 246 (Grup Ürünlerini Yönetme Modalı - Hızlı İşlem)**:
+  - Grup satırındaki ürün butonuna veya işlem menüsündeki "منتجات المجموعة" linkine tıklandığında açılan `#grupUrunleriModal` eklendi.
+  - AJAX ile gruptaki ürünler (resim, başlık, fiyat, toptan fiyat) anında yükleniyor; modal içinden tek tıkla ürün gruba atanabiliyor veya çıkarılabiliyor.
+  - `ToptanciController.cs`: `GrubaUrunAta`, `GruptanUrunCikar` ve `GetGrupUrunleri` action'ları AJAX ve zengin ürün verisi dönecek şekilde güncellendi.
+- [x] **Adım 247 (İskonto Ekle Formu UX & Client-side Validation)**:
+  - Formun başına açıklayıcı Info Alert eklendi.
+  - Kapsam seçimi ("تطبيق على جميع منتجات المجموعة" vs "تطبيق على منتج محدد فقط") toggle düğmeleriyle sadeleştirildi; varsayılan olarak ürün listesi gizlenerek kafa karışıklığı önlendi.
+  - Hızlı adet butonları (`5+`, `10+`, `25+`, `50+`) eklendi.
+  - İskonto tipi (% vs ₪) dinamik geçişi sağlandı.
+  - `novalidate` + JavaScript client-side validasyonu ile grup seçilmeden veya adet girilmeden kaydetme girişiminde postback olmadan anında kırmızı çerçeve ve uyarı gösterilmesi sağlandı.
+- [x] **Adım 248 (Lokalizasyon & Playwright E2E Canlı Doğrulama)**:
+  - `SharedResource.ar.resx` ve `SharedResource.en.resx` dosyalarına 26 yeni anahtar eklendi; en.resx'teki eksik Arapça başlıklar (`Admin_Islem` -> Action, `Admin_Duzenle` -> Edit) düzeltildi.
+  - Playwright MCP ile canlı sitede (`7anrps48.com`) admin girişi yapılarak AR ve EN dillerinde tüm formlar, modal açılışı, AJAX ürün listeleme, hızlı butonlar ve canlı iskonto rozetleri uçtan uca test edildi, ekran görüntüleriyle doğrulandı.
+  - `dotnet build`: 0 Hata ile başarıyla derlendi.
