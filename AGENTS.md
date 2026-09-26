@@ -875,3 +875,26 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
   - `SharedResource.ar.resx` ve `SharedResource.en.resx` dosyalarına 26 yeni anahtar eklendi; en.resx'teki eksik Arapça başlıklar (`Admin_Islem` -> Action, `Admin_Duzenle` -> Edit) düzeltildi.
   - Playwright MCP ile canlı sitede (`7anrps48.com`) admin girişi yapılarak AR ve EN dillerinde tüm formlar, modal açılışı, AJAX ürün listeleme, hızlı butonlar ve canlı iskonto rozetleri uçtan uca test edildi, ekran görüntüleriyle doğrulandı.
   - `dotnet build`: 0 Hata ile başarıyla derlendi.
+
+### Faz 38 (Video 4 — Buton Metni Encoding Bozulması & Toptancı Fiyat Kademesi İnteraktif Seçici — 26 Eylül 2026)
+- [x] **Adım 249 (Sepete Ekle Buton Metni Encoding Bozulması Düzeltmesi)**:
+  - `Views/Urun/Detay.cshtml`: Razor içinde string interpolasyonu ile JS'e aktarılan metinlerin HTML entity encode (`&#X83A;&#X64A;&#X631; &#X62A;&#X648;&#X641;&#X631;`) edilerek butona basılması sorunu tespit edildi.
+  - Razor'da `@Html.Raw(System.Text.Json.JsonSerializer.Serialize(...))` formatına geçilerek `TXT_OUT_OF_STOCK`, `TXT_ADD_TO_CART`, `TXT_STOCK_EXCEEDED` ve `TXT_UNIT_LABEL` JS sabitleri oluşturuldu.
+  - Stokta olmayan varyasyon seçildiğinde veya stok sıfır olduğunda butonun temiz Arapça `"غير متوفر"` metnini göstermesi sağlandı.
+- [x] **Adım 250 (Toptan Fiyat Kademeleri İnteraktif Seçici Dönüşümü)**:
+  - Toptan kademeleri statik bilgi tablosundan tıpkı paketleme seçeneğinde olduğu gibi interaktif `<select id="wholesaleTierSelect">` menüsüne dönüştürüldü.
+  - Kademe seçildiğinde:
+    - Adet otomatik olarak kademe minimum adedine çekilir (`#productQuantity` & `#selectedQuantity`).
+    - Birim fiyat vitrin fiyatında dinamik güncellenir (`#priceDisplay`).
+    - Kademe belirli bir varyanta bağlıysa varyant otomatik olarak seçilir ve varyant butonları güncellenir.
+    - Seçim özeti kutusu (`#selectionSummary`) otomatik açılır ve toplam tutarı kuruşu kuruşuna gösterir.
+  - "السعر الأساسي للقطعة" (Standart Perakende Fiyatı) seçildiğinde temizce perakende moduna geri döner.
+- [x] **Adım 251 (Playwright Canlı Site (7anrps48.com) Uçtan Uca Doğrulama)**:
+  - Playwright MCP ile canlı sunucudaki `https://7anrps48.com/products/test-3-powder-canister-114` ürünü test edildi.
+  - Kademe 4 (50+ adet @ 30.00 ₪) seçimi: Otomatik Varyant 155 (اسود) seçildi, adet 50 yapıldı, birim fiyat 30.00 ₪ oldu, özet kutusunda `1,500.00 ₪` başarıyla hesaplandı.
+  - Kademe 5 (150+ adet @ 28.00 ₪) seçimi: Otomatik Varyant 119 (احمر) seçildi, adet 150 yapıldı, birim fiyat 28.00 ₪ oldu, özet kutusunda `4,200.00 ₪` başarıyla hesaplandı.
+  - Perakendeye dönüş testi: 35.00 ₪ vitrin fiyatına başarıyla dönüldü.
+  - Buton encoding testi: Stoksuz varyantta butonun HTML entity içermediği ve tam olarak `"غير متوفر"` yazdığı doğrulandı.
+  - Seçim özetindeki `unitLabel` için de `TXT_UNIT_LABEL` (`للقطعة`) sanitizasyonu uygulandı.
+  - `dotnet build`: 0 Hata, 0 Uyarı ile derlendi.
+

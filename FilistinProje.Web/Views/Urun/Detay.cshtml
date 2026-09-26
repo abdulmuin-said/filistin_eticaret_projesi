@@ -1246,6 +1246,7 @@ const TXT_PRODUCT_LINK = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Loc
 const TXT_BUSINESS_DAYS = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["BusinessDaysJS"].Value));
 const TXT_PRODUCTION_IN_DAYS = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["ProductionInDaysJS"].Value));
 const TXT_LOW_STOCK = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["LowStockText"].Value));
+const TXT_UNIT_LABEL = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(isAr ? "للقطعة" : "unit"));
 const PRODUCT_STOKTA_YOK_SATIS_IZNI = @Json.Serialize(stoktaYokSatisIzni);
 const PRODUCT_WHATSAPP_NAME = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.LocalizedBaslik));
 const PRODUCT_WHATSAPP_URL = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(productUrl));
@@ -1693,9 +1694,8 @@ function updateSelectionSummary() {
 
     var summaryBirimFiyatEl = document.getElementById('summaryBirimFiyat');
     if (summaryBirimFiyatEl) {
-        var unitLabel = '@(isAr ? "للقطعة" : "unit")';
         var totalBirim = unitProductPrice + giftPrice;
-        summaryBirimFiyatEl.textContent = adet > 1 ? `(${unitLabel}: ${window.formatMoney(totalBirim)})` : '';
+        summaryBirimFiyatEl.textContent = adet > 1 ? `(${TXT_UNIT_LABEL}: ${window.formatMoney(totalBirim)})` : '';
     }
 
     // Açık Formül Dökümü: (Ürün Fiyatı + Çerçeve Farkı) * Adet + Paketleme Ücreti
