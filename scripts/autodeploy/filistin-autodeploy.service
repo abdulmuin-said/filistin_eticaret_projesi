@@ -10,4 +10,5 @@ WorkingDirectory=__REPO_DIR__
 ExecStart=/usr/bin/env bash __REPO_DIR__/scripts/autodeploy/auto-deploy.sh
 Environment=HOME=/home/__USER__
 Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+EnvironmentFile=-/etc/filistin-autodeploy.env
 TimeoutStartSec=1200

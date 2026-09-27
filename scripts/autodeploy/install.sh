@@ -23,6 +23,13 @@ sed -e "s|__REPO_DIR__|$REPO_DIR|g" \
 
 install -m 644 "$SCRIPT_DIR/filistin-autodeploy.timer" /etc/systemd/system/filistin-autodeploy.timer
 
+ENV_FILE="/etc/filistin-autodeploy.env"
+if [ ! -f "$ENV_FILE" ]; then
+  printf 'TELEGRAM_BOT_TOKEN=\nTELEGRAM_CHAT_ID=\n' > "$ENV_FILE"
+  chmod 600 "$ENV_FILE"
+  echo "Created $ENV_FILE - fill in TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID"
+fi
+
 systemctl daemon-reload
 systemctl enable --now filistin-autodeploy.timer
 

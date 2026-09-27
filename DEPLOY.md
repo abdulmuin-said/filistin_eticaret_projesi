@@ -255,6 +255,58 @@ sudo systemctl start filistin-autodeploy.service
   (sunucada elle commit yapılmamalı; tüm değişiklikler push ile gelmeli).
 - Health check: `http://127.0.0.1:80/health/ready` 200 dönene kadar max 180 sn bekler.
 
+### 7.6 Telegram bildirimleri
+
+Deploy başlangıcı, başarı, başarısızlık/rollback ve GitHub bağlantı durumu
+Telegram bot'u üzerinden telefonuna bildirilir. Token sunucuda
+`/etc/filistin-autodeploy.env` dosyasındadır (repo'da saklanmaz).
+
+#### Telegram tarafı (bir kez, telefonda)
+
+1. **@BotFather**'a git → `/newbot` → bot adı ve username belirle → **token** al.
+2. Yeni botuna **bir kez mesaj at** (örn. `/start`) — botun sana yazabilmesi için şart.
+3. chat_id'yi al:
+   ```bash
+   curl -s "https://api.telegram.org/bot<TOKEN>/getUpdates"
+   ```
+   Çıktıda `result[].message.chat.id` değerini not et.
+
+#### Sunucu tarafı
+
+```bash
+sudo nano /etc/filistin-autodeploy.env
+```
+```
+TELEGRAM_BOT_TOKEN=<token>
+TELEGRAM_CHAT_ID=<chat_id>
+```
+
+Test mesajı:
+```bash
+set -a; source /etc/filistin-autodeploy.env; set +a
+curl -s --data-urlencode "chat_id=$TELEGRAM_CHAT_ID" \
+  --data-urlencode "parse_mode=HTML" \
+  --data-urlencode "text=Test bildirimi ✅" \
+  "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage"
+```
+
+Sonra service'i yeniden yükle (unit dosyası değiştiği için):
+```bash
+sudo bash scripts/autodeploy/install.sh
+```
+
+#### Bildirim anları
+
+| Mesaj | An |
+|---|---|
+| 🚀 Deploy başladı | Yeni commit çekildi, build başladı |
+| ✅ Site ayakta | Health check 200, toplam süre ile |
+| ❌ Deploy başarısız → ↩️ rollback başarılı / 🚨 rollback başarısız | Build veya health hatası |
+| ⚠️ GitHub'a ulaşılamıyor | Fetch hatası (spam engelli, durum değişince 1 bildirim) |
+| ✅ GitHub bağlantısı normale döndü | Kopluktan sonra |
+
+Not: Token/personel gizlidir — `TELEGRAM_BOT_TOKEN` değerini asla git'e commit etme.
+
 ---
 
 ## Sağlık URL'leri
