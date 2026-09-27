@@ -1,5 +1,6 @@
 using FilistinProje.Core.Varliklar;
 using FilistinProje.Core.DTOs;
+using FilistinProje.Core.Helpers;
 using FilistinProje.Data;
 using FilistinProje.Service.Helpers;
 using FilistinProje.Service.Services;
@@ -400,6 +401,8 @@ namespace FilistinProje.Web.Controllers
                 .Include(x => x.UrunSecenek)
                 .Include(x => x.HediyePaketSecenekleri)
                 .Include(x => x.ToptanFiyatKademeleri)
+                .Include(x => x.ToptanciUrunGrubu!)
+                    .ThenInclude(x => x.IskontoOranlari)
                 .Include(x => x.UrunOzellikleri)
                     .ThenInclude(x => x.UrunOzellikTanimi)
                 .Where(x =>
@@ -408,33 +411,41 @@ namespace FilistinProje.Web.Controllers
                     (isAdmin || (x.AktifMi && x.YayindaMi && x.Kategori.AktifMi)))
                 .AsSplitQuery();
 
-            Urun? urun;
-            if (int.TryParse(id, out var urunId))
+            Urun? urun = null;
+
+            // 1. Exact slug match
+            urun = await detaySorgusu.FirstOrDefaultAsync(x => x.Slug == id);
+
+            // 2. Trailing numeric ID in slug (e.g. product-slug-123)
+            if (urun == null && id.Contains('-'))
+            {
+                var lastDashIndex = id.LastIndexOf('-');
+                if (lastDashIndex >= 0 && int.TryParse(id[(lastDashIndex + 1)..], out var extractedId))
+                {
+                    urun = await detaySorgusu.FirstOrDefaultAsync(x => x.Id == extractedId);
+                }
+            }
+
+            // 3. Direct numeric ID (e.g. 123)
+            if (urun == null && int.TryParse(id, out var urunId))
             {
                 urun = await detaySorgusu.FirstOrDefaultAsync(x => x.Id == urunId);
-            }
-            else
-            {
-                urun = await detaySorgusu.FirstOrDefaultAsync(x => x.Slug == id);
-
-                if (urun == null && int.TryParse(id.Trim('-'), out var trimmedId))
-                {
-                    urun = await detaySorgusu.FirstOrDefaultAsync(x => x.Id == trimmedId);
-                }
-
-                if (urun == null && id.Contains("-"))
-                {
-                    var parcalar = id.Split('-');
-                    if (int.TryParse(parcalar[^1], out var cikarilanId))
-                    {
-                        urun = await detaySorgusu.FirstOrDefaultAsync(x => x.Id == cikarilanId);
-                    }
-                }
             }
 
             if (urun == null)
             {
                 return NotFound();
+            }
+
+            // Canonical URL redirect check (ensures clean SEO and avoids duplicate content)
+            var baseSlug = !string.IsNullOrWhiteSpace(urun.Slug) ? urun.Slug : SlugHelper.GenerateSlug(urun.Baslik);
+            if (string.IsNullOrWhiteSpace(baseSlug)) baseSlug = "urun";
+            var canonicalSlug = $"{baseSlug}-{urun.Id}";
+
+            if (!string.Equals(id, canonicalSlug, StringComparison.OrdinalIgnoreCase) &&
+                !string.Equals(id, urun.Slug, StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectPermanent($"/products/{canonicalSlug}");
             }
 
             if (!IsLikelyCrawler(Request.Headers.UserAgent.ToString()))
@@ -520,6 +531,16 @@ namespace FilistinProje.Web.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             var isWholesale = currentUser != null && await _userManager.IsInRoleAsync(currentUser, "Wholesale");
             ViewBag.IsWholesale = isWholesale;
+
+            var isFavorited = false;
+            if (currentUser != null)
+            {
+                isFavorited = await _context.Favoriler
+                    .AsNoTracking()
+                    .AnyAsync(f => f.AppUserId == currentUser.Id && f.UrunId == urun.Id && !f.SilindiMi);
+            }
+            ViewBag.IsFavorited = isFavorited;
+
             ViewBag.Secenekler = (urun.UrunSecenek ?? new List<UrunSecenek>())
                 .Where(x => !x.SilindiMi && x.AktifMi)
                 .Where(x => siteSettings.StoktaYokSatisIzni || siteSettings.StokBiteniGriGoster || x.StokAdedi > 0 || x.OnSipariseAcikMi)
@@ -534,7 +555,7 @@ namespace FilistinProje.Web.Controllers
                 .OrderByDescending(x => x.OlusturulmaTarihi)
                 .ToListAsync();
 
-            var ortalamaPuan = yorumlar.Count == 0 ? 5 : yorumlar.Average(x => x.Puan);
+            var ortalamaPuan = yorumlar.Count == 0 ? 0.0 : yorumlar.Average(x => x.Puan);
 
             ViewBag.Yorumlar = yorumlar;
             ViewBag.OrtalamaPuan = ortalamaPuan;

@@ -18,9 +18,9 @@ namespace FilistinProje.Core.Helpers
             {
                 ["@context"] = "https://schema.org",
                 ["@type"] = "Product",
-                ["name"] = urun.Baslik,
+                ["name"] = !string.IsNullOrWhiteSpace(urun.LocalizedBaslik) ? urun.LocalizedBaslik : urun.Baslik,
                 ["image"] = imageUrl,
-                ["description"] = string.IsNullOrWhiteSpace(urun.KisaAciklama) ? urun.Aciklama : urun.KisaAciklama,
+                ["description"] = !string.IsNullOrWhiteSpace(urun.LocalizedKisaAciklama) ? urun.LocalizedKisaAciklama : (!string.IsNullOrWhiteSpace(urun.LocalizedAciklama) ? urun.LocalizedAciklama : urun.KisaAciklama),
                 ["sku"] = string.IsNullOrWhiteSpace(urun.SKU) ? urun.Id.ToString() : urun.SKU,
                 ["brand"] = new Dictionary<string, object?>
                 {
@@ -36,7 +36,7 @@ namespace FilistinProje.Core.Helpers
                     ["@type"] = "Offer",
                     ["url"] = detailUrl,
                     ["priceCurrency"] = "ILS",
-                    ["price"] = urun.EtkinFiyat.ToString("F2"),
+                    ["price"] = urun.EtkinFiyat.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture),
                     ["availability"] = urun.StoktaVarMi ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
                     ["priceValidUntil"] = DateTime.UtcNow.AddYears(1).ToString("yyyy-MM-dd")
                 };
@@ -47,7 +47,7 @@ namespace FilistinProje.Core.Helpers
                 schema["aggregateRating"] = new Dictionary<string, object?>
                 {
                     ["@type"] = "AggregateRating",
-                    ["ratingValue"] = averageRating.ToString("F1"),
+                    ["ratingValue"] = averageRating.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture),
                     ["reviewCount"] = reviewCount
                 };
             }

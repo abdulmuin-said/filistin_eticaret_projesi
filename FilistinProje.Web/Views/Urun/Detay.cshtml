@@ -8,12 +8,12 @@
     ViewData["Title"] = Model.LocalizedBaslik;
     var siteSettings = SiteSettingsService.GetSettings();
     var brandName = string.IsNullOrWhiteSpace(siteSettings.MarkaAdi) ? siteSettings.SiteAdi : siteSettings.MarkaAdi;
-    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "?" : siteSettings.ParaBirimi;
+    var currencySymbol = string.IsNullOrWhiteSpace(siteSettings.ParaBirimi) ? "₪" : siteSettings.ParaBirimi;
     var whatsappSiparisModu = Model.FiyatGizliMi || Model.WhatsappSiparisVarMi;
     var whatsappNumber = new string((siteSettings.WhatsappNumarasi ?? string.Empty).Where(char.IsDigit).ToArray());
     var isRtlDetay = System.Threading.Thread.CurrentThread.CurrentUICulture.TextInfo.IsRightToLeft;
 
-    // --- VARYANT VE FÃ„Â°YAT HESAPLAMA ---
+    // --- VARYANT VE FIYAT HESAPLAMA ---
     var secenekler = ViewBag.Secenekler as List<FilistinProje.Core.Varliklar.UrunSecenek> ?? new List<FilistinProje.Core.Varliklar.UrunSecenek>();
     var stokBiteniGriGoster = siteSettings.StokBiteniGriGoster;
     var stoktaYokSatisIzni = siteSettings.StoktaYokSatisIzni;
@@ -32,53 +32,53 @@
     decimal? gosterilecekEskiFiyat;
     DateTime? gosterilecekIndirimBitisTarihi;
 
-    // When multiple variants exist AND no default is pre-selected, show main product price
     if (varsayilanSecenek == null)
     {
-        if (Model.IndirimVarMi)
+        if (isWholesale && Model.TopFiyat.HasValue && Model.TopFiyat.Value > 0)
         {
-            gosterilecekFiyat = isWholesale && Model.TopFiyat.HasValue && Model.TopFiyat.Value > 0
-                ? Model.TopFiyat.Value
-                : Model.EtkinFiyat;
+            gosterilecekFiyat = Model.TopFiyat.Value;
+            gosterilecekEskiFiyat = Model.IndirimVarMi ? Model.Fiyat : null;
+            gosterilecekIndirimBitisTarihi = null;
+        }
+        else if (Model.IndirimVarMi)
+        {
+            gosterilecekFiyat = Model.EtkinFiyat;
             gosterilecekEskiFiyat = Model.Fiyat;
             gosterilecekIndirimBitisTarihi = Model.KampanyaBitisTarihi;
         }
         else
         {
-            gosterilecekFiyat = isWholesale && Model.TopFiyat.HasValue && Model.TopFiyat.Value > 0
-                ? Model.TopFiyat.Value
-                : Model.Fiyat;
+            gosterilecekFiyat = Model.Fiyat;
             gosterilecekEskiFiyat = null;
             gosterilecekIndirimBitisTarihi = null;
         }
     }
-    else if (varsayilanSecenek.IndirimVarMi)
-    {
-        gosterilecekFiyat = varsayilanSecenek.EtkinFiyat;
-        gosterilecekEskiFiyat = varsayilanSecenek.SatisFiyati;
-        gosterilecekIndirimBitisTarihi = varsayilanSecenek.IndirimBitisTarihi;
-    }
-    else if (Model.IndirimVarMi)
-    {
-        gosterilecekFiyat = isWholesale && Model.TopFiyat.HasValue && Model.TopFiyat.Value > 0
-            ? Model.TopFiyat.Value
-            : Model.EtkinFiyat;
-        gosterilecekEskiFiyat = Model.Fiyat;
-        gosterilecekIndirimBitisTarihi = Model.KampanyaBitisTarihi;
-    }
-    else if (varsayilanSecenek.SatisFiyati > 0)
-    {
-        gosterilecekFiyat = varsayilanSecenek.SatisFiyati;
-        gosterilecekEskiFiyat = null;
-        gosterilecekIndirimBitisTarihi = null;
-    }
     else
     {
-        gosterilecekFiyat = isWholesale && Model.TopFiyat.HasValue && Model.TopFiyat.Value > 0
-            ? Model.TopFiyat.Value
-            : Model.Fiyat;
-        gosterilecekEskiFiyat = null;
-        gosterilecekIndirimBitisTarihi = null;
+        if (isWholesale && Model.TopFiyat.HasValue && Model.TopFiyat.Value > 0)
+        {
+            gosterilecekFiyat = varsayilanSecenek.FiyatFarki != 0 ? (Model.TopFiyat.Value + varsayilanSecenek.FiyatFarki) : Model.TopFiyat.Value;
+            gosterilecekEskiFiyat = varsayilanSecenek.SatisFiyati > gosterilecekFiyat ? varsayilanSecenek.SatisFiyati : null;
+            gosterilecekIndirimBitisTarihi = null;
+        }
+        else if (varsayilanSecenek.IndirimVarMi)
+        {
+            gosterilecekFiyat = varsayilanSecenek.EtkinFiyat;
+            gosterilecekEskiFiyat = varsayilanSecenek.SatisFiyati;
+            gosterilecekIndirimBitisTarihi = varsayilanSecenek.IndirimBitisTarihi;
+        }
+        else if (varsayilanSecenek.SatisFiyati > 0)
+        {
+            gosterilecekFiyat = varsayilanSecenek.SatisFiyati;
+            gosterilecekEskiFiyat = null;
+            gosterilecekIndirimBitisTarihi = null;
+        }
+        else
+        {
+            gosterilecekFiyat = Model.EtkinFiyat;
+            gosterilecekEskiFiyat = Model.IndirimVarMi ? Model.Fiyat : null;
+            gosterilecekIndirimBitisTarihi = Model.KampanyaBitisTarihi;
+        }
     }
 
     int? gosterilecekIndirimYuzdesi = IndirimHesaplayici.YuzdeHesapla(gosterilecekEskiFiyat ?? 0, gosterilecekFiyat);
@@ -125,10 +125,6 @@
         ? Model.TahminiTeslimSuresiGun
         : siteSettings.SiparisTeslimSuresiGun;
     int iadeSuresi = siteSettings.IadeHakkiGun > 0 ? siteSettings.IadeHakkiGun : 14;
-    bool cerceveSecimiGerekli = (Model.UrunTipi ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase)
-        || (Model.Kategori?.Ad ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase)
-        || (Model.Kategori?.ParentKategori?.Ad ?? string.Empty).Contains("kanvas", StringComparison.OrdinalIgnoreCase);
-    var cerceveModelleri = new[] { "Çerçevesiz", "Siyah", "Beyaz", "Gold", "Gümüş", "Meşe", "Ceviz" };
 
     var teknikSatirlari = (Model.TeknikOzellikler ?? string.Empty)
         .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
@@ -317,7 +313,7 @@
     ViewData["OgType"] = "product";
     ViewData["OgImage"] = productImage;
     
-    <!-- SCHEMA.ORG JSON-LD: Google Shopping Rich Snippets -->
+    // SCHEMA.ORG JSON-LD: Google Shopping Rich Snippets
     var productSchema = SchemaGenerator.GenerateProductSchema(
         Model, 
         ortalamaPuan, 
@@ -326,12 +322,31 @@
         productUrl,
         brandName
     );
+
+    var breadcrumbList = new List<(string name, string url)>
+    {
+        (Localizer["HomePage"].Value, $"{baseUrl}/"),
+        (Localizer["Collection"].Value, $"{baseUrl}/products")
+    };
+    if (Model.Kategori?.ParentKategori != null)
+    {
+        breadcrumbList.Add((Model.Kategori.ParentKategori.LocalizedAd, $"{baseUrl}/products?k={Model.Kategori.ParentKategori.Id}"));
+    }
+    if (Model.Kategori != null)
+    {
+        breadcrumbList.Add((Model.Kategori.LocalizedAd, $"{baseUrl}/products?k={Model.Kategori.Id}"));
+    }
+    breadcrumbList.Add((Model.LocalizedBaslik, productUrl));
+
+    var breadcrumbSchema = SchemaGenerator.GenerateBreadcrumbSchema(breadcrumbList);
 }
 
-
-<!-- Ã¢Å“Â¨ SCHEMA.ORG JSON-LD: Google Shopping Rich Snippets Ã¢Å“Â¨ -->
+<!-- SCHEMA.ORG JSON-LD: Google Shopping Rich Snippets & Breadcrumbs -->
 <script type="application/ld+json">
 @Html.Raw(productSchema)
+</script>
+<script type="application/ld+json">
+@Html.Raw(breadcrumbSchema)
 </script>
 
 
@@ -411,15 +426,25 @@
 </div>
 
 <!-- Breadcrumb -->
-<div class="bg-brand-cream border-b border-brand-border py-3">
-    <div class="container mx-auto px-4 flex items-center gap-2 text-xs text-brand-mutedtext">
+<nav aria-label="@Localizer["Collection"]" class="bg-brand-cream border-b border-brand-border py-3">
+    <div class="container mx-auto px-4 flex flex-wrap items-center gap-2 text-xs text-brand-mutedtext">
         <a href="/" class="hover:text-brand-olive transition-colors">@Localizer["HomePage"]</a>
         <span>/</span>
         <a href="/products" class="hover:text-brand-olive transition-colors">@Localizer["Collection"]</a>
+        @if (Model.Kategori?.ParentKategori != null)
+        {
+            <span>/</span>
+            <a href="/products?k=@Model.Kategori.ParentKategori.Id" class="hover:text-brand-olive transition-colors">@Model.Kategori.ParentKategori.LocalizedAd</a>
+        }
+        @if (Model.Kategori != null)
+        {
+            <span>/</span>
+            <a href="/products?k=@Model.Kategori.Id" class="hover:text-brand-olive transition-colors">@Model.Kategori.LocalizedAd</a>
+        }
         <span>/</span>
-        <span class="text-brand-darktext font-medium">@Model.LocalizedBaslik</span>
+        <span class="text-brand-darktext font-medium truncate max-w-[240px] sm:max-w-none">@Model.LocalizedBaslik</span>
     </div>
-</div>
+</nav>
 
 <div class="container mx-auto px-4 py-6 lg:py-10">
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10 xl:gap-14">
@@ -544,18 +569,46 @@
 
         <div class="flex flex-col">
             <div class="border-b border-brand-border pb-6">
-                @if (!string.IsNullOrWhiteSpace(Model.Kategori?.LocalizedAd))
-                {
-                    <a href="/products?k=@Model.KategoriId" class="mb-3 inline-flex text-xs font-semibold uppercase tracking-[0.22em] text-brand-gold hover:text-brand-olive">@Model.Kategori.LocalizedAd</a>
-                }
+                <div class="flex items-center justify-between gap-3 mb-3">
+                    @if (!string.IsNullOrWhiteSpace(Model.Kategori?.LocalizedAd))
+                    {
+                        <a href="/products?k=@Model.KategoriId" class="inline-flex text-xs font-semibold uppercase tracking-[0.22em] text-brand-gold hover:text-brand-olive">@Model.Kategori.LocalizedAd</a>
+                    }
+                    else
+                    {
+                        <span></span>
+                    }
+
+                    <div class="flex items-center gap-2">
+                        <!-- Wishlist Toggle Button -->
+                        <button type="button" id="btnToggleFavorite" data-product-id="@Model.Id" class="inline-flex items-center gap-1.5 rounded-full border border-brand-border px-3 py-1.5 text-xs font-medium text-brand-darktext hover:border-red-400 hover:text-red-500 transition-colors @(ViewBag.IsFavorited == true ? "is-favorited text-red-500 border-red-300 bg-red-50/60" : "bg-white")" title="@(ViewBag.IsFavorited == true ? Localizer["RemoveFromFavorites"].Value : Localizer["AddToFavorites"].Value)">
+                            <i class="@(ViewBag.IsFavorited == true ? "fas fa-heart text-red-500" : "far fa-heart") text-xs favorite-icon"></i>
+                            <span class="favorite-text hidden sm:inline">@(ViewBag.IsFavorited == true ? Localizer["RemoveFromFavorites"].Value : Localizer["AddToFavorites"].Value)</span>
+                        </button>
+
+                        <!-- Social Share Cluster -->
+                        <div class="flex items-center gap-1">
+                            <a href="https://api.whatsapp.com/send?text=@encodedProductTitle%20@encodedProductUrl" target="_blank" rel="noopener noreferrer" class="flex h-7 w-7 items-center justify-center rounded-full bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white transition-colors" title="@Localizer["ShareOnWhatsApp"]">
+                                <i class="fab fa-whatsapp text-xs"></i>
+                            </a>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u=@encodedProductUrl" target="_blank" rel="noopener noreferrer" class="flex h-7 w-7 items-center justify-center rounded-full bg-[#1877F2]/10 text-[#1877F2] hover:bg-[#1877F2] hover:text-white transition-colors" title="@Localizer["ShareOnFacebook"]">
+                                <i class="fab fa-facebook-f text-[11px]"></i>
+                            </a>
+                            <button type="button" onclick="copyProductLink(this)" data-url="@productUrl" class="flex h-7 w-7 items-center justify-center rounded-full bg-brand-cream border border-brand-border text-brand-mutedtext hover:text-brand-olive hover:border-brand-olive transition-colors" title="@Localizer["ProductLink"]">
+                                <i class="fas fa-link text-[11px]"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <h1 class="font-serif text-3xl leading-tight text-brand-olive md:text-4xl lg:text-5xl">@Model.LocalizedBaslik</h1>
                 <div class="mt-4 flex items-center gap-3">
                     <div class="flex text-sm text-brand-gold" aria-label="@ortalamaPuan.ToString("0.0")">
                         @for (var yildiz = 1; yildiz <= 5; yildiz++)
                         {
-                            if (yildiz <= tamYildiz) { <i class="fas fa-star"></i> }
-                            else if (yildiz == tamYildiz + 1 && yarimYildiz) { <i class="fas fa-star-half-alt"></i> }
-                            else { <i class="far fa-star"></i> }
+                            if (yorumSayisi > 0 && yildiz <= tamYildiz) { <i class="fas fa-star"></i> }
+                            else if (yorumSayisi > 0 && yildiz == tamYildiz + 1 && yarimYildiz) { <i class="fas fa-star-half-alt"></i> }
+                            else { <i class="far fa-star text-brand-border"></i> }
                         }
                     </div>
                     <a href="#reviews" class="text-xs text-brand-mutedtext underline-offset-4 hover:text-brand-olive hover:underline">@string.Format(Localizer["ReviewCount"].Value, yorumSayisi)</a>
@@ -693,8 +746,6 @@
                 <input type="hidden" name="UrunId" value="@Model.Id" />
                 <input type="hidden" id="selectedVariantId" value="@(varsayilanSecenek?.Id.ToString() ?? "")" />
                 <input type="hidden" id="selectedQuantity" name="Adet" value="@minSiparisAdedi" />
-                <input type="hidden" id="selectedFrameModel" value="" />
-                <input type="hidden" id="selectedFrameFarki" value="0" />
 
                 @if (secenekler.Count > 1)
                 {
@@ -715,31 +766,36 @@
                                 var varyantEtiket = string.IsNullOrWhiteSpace(varyant.GetLocalizedVaryantBasligi(isAr)) ? (string.IsNullOrWhiteSpace(varyant.Olcu) ? (isAr ? "افتراضي" : "Standard") : varyant.Olcu) : varyant.GetLocalizedVaryantBasligi(isAr);
                                 if (varyantEtiket.Equals("Standart", StringComparison.OrdinalIgnoreCase) || varyantEtiket.Equals("Standard", StringComparison.OrdinalIgnoreCase)) { varyantEtiket = isAr ? "افتراضي" : "Standard"; }
                                 var varyantGorseli = !string.IsNullOrWhiteSpace(varyant.GorselUrl) ? varyant.GorselUrl : (varyantMedyaHaritasi.TryGetValue(varyant.Id, out var eslesen) ? eslesen : string.Empty);
-                                var varyantEskiFiyat = varyant.IndirimVarMi ? varyant.SatisFiyati : 0;
+                                decimal varyantEtkinFiyat;
+                                if (isWholesale)
+                                {
+                                    var kademeFiyati = varyant.ToptanFiyatKademeleri?.Where(k => k.AktifMi).OrderBy(k => k.MinAdet).FirstOrDefault()?.BirimFiyat;
+                                    if (kademeFiyati.HasValue && kademeFiyati.Value > 0)
+                                    {
+                                        varyantEtkinFiyat = kademeFiyati.Value;
+                                    }
+                                    else if (Model.TopFiyat.HasValue && Model.TopFiyat.Value > 0)
+                                    {
+                                        varyantEtkinFiyat = varyant.FiyatFarki != 0 ? (Model.TopFiyat.Value + varyant.FiyatFarki) : Model.TopFiyat.Value;
+                                    }
+                                    else
+                                    {
+                                        varyantEtkinFiyat = varyant.EtkinFiyat;
+                                    }
+                                }
+                                else
+                                {
+                                    varyantEtkinFiyat = varyant.EtkinFiyat;
+                                }
+                                var varyantEskiFiyat = varyant.IndirimVarMi ? varyant.SatisFiyati : (isWholesale && varyantEtkinFiyat < varyant.SatisFiyati ? varyant.SatisFiyati : 0);
                                 var varyantSecimRengi = FilistinProje.Core.Helpers.VaryantRenkYardimcisi.TryNormalizeHex(varyant.RenkKodu, out var guvenliVaryantRengi) ? guvenliVaryantRengi : string.Empty;
                                 <label class="variant-option-card relative cursor-pointer select-none rounded border-2 border-brand-border bg-white px-4 py-3 text-sm text-brand-mutedtext transition-all duration-150 hover:border-brand-gold @(!varyantSatinAlinabilir ? "is-disabled" : "")">
-                                    <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-price="@varyant.EtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-enddate="@(varyant.IndirimVarMi && varyant.IndirimBitisTarihi.HasValue ? varyant.IndirimBitisTarihi.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
+                                    <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-price="@varyantEtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-enddate="@(varyant.IndirimVarMi && varyant.IndirimBitisTarihi.HasValue ? varyant.IndirimBitisTarihi.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
                                     @if (!string.IsNullOrWhiteSpace(varyant.RenkKodu) || !string.IsNullOrWhiteSpace(varyant.Renk)) { <span class="me-1 inline-block h-3 w-3 rounded-full border align-middle" data-variant-color="@varyant.Id" style="background-color:@varyant.GuvenliRenkKodu;border-color:rgba(0,0,0,.35)"></span> }
                                     @varyantEtiket
                                 </label>
                             }
                         </div>
-                    </div>
-                }
-
-                @if (cerceveSecimiGerekli)
-                {
-                    <div id="frameSelectionBlock">
-                        <label class="mb-3 block text-xs font-medium uppercase tracking-widest text-brand-darktext">@Localizer["SelectFrame"]</label>
-                        <div class="flex flex-wrap gap-2">
-                            @foreach (var cerceve in cerceveModelleri)
-                            {
-                                <label class="cursor-pointer rounded border border-brand-border px-3 py-2 text-xs transition-colors hover:border-brand-gold has-[:checked]:border-brand-gold has-[:checked]:bg-brand-cream">
-                                    <input type="radio" class="frame-radio me-1 accent-brand-gold" name="CerceveModeli" value="@cerceve" />@cerceve
-                                </label>
-                            }
-                        </div>
-                        <p id="frameSelectionError" class="mt-2 hidden text-xs font-medium text-red-600">@Localizer["FrameSelectionRequired"]</p>
                     </div>
                 }
 
@@ -791,10 +847,6 @@
                         <span>@Localizer["Variant"]:</span>
                         <span id="summaryOlcu" class="font-medium text-brand-darktext">-</span>
                     </div>
-                    <div id="summaryFrameRow" class="hidden flex items-center justify-between text-brand-mutedtext">
-                        <span>@Localizer["FrameLabel"]:</span>
-                        <span id="summaryCerceve" class="font-medium text-brand-darktext">-</span>
-                    </div>
                     <div class="flex items-center justify-between text-brand-mutedtext">
                         <span>@Localizer["ProductUnitPrice"]:</span>
                         <span id="summaryProductPrice" class="font-medium text-brand-darktext">-</span>
@@ -817,9 +869,16 @@
                 </div>
 
                 <div class="product-purchase-actions flex items-end gap-3">
-                    <div><label class="mb-2 block text-xs font-medium uppercase tracking-widest text-brand-darktext">@Localizer["Quantity"]</label><div class="flex h-12 items-center border border-brand-border bg-white"><button type="button" class="flex h-full w-10 items-center justify-center hover:bg-brand-cream" onclick="decreaseQuantity()">-</button><input id="productQuantity" type="number" min="@minSiparisAdedi" max="@maxSiparisAdedi" value="@minSiparisAdedi" class="h-full w-12 border-0 bg-transparent p-0 text-center text-sm font-semibold focus:ring-0" readonly /><button type="button" class="flex h-full w-10 items-center justify-center hover:bg-brand-cream" onclick="increaseQuantity()">+</button></div></div>
-                    <button id="ajaxSepetBtn" type="button" class="flex h-12 min-w-0 flex-1 items-center justify-center gap-2 bg-brand-olive px-4 text-xs font-bold uppercase tracking-widest text-white transition-colors hover:bg-[#1c2001] disabled:cursor-wait disabled:opacity-70"><i class="fas fa-shopping-bag add-to-cart-icon"></i><span class="add-to-cart-text">@Localizer["AddToCart"]</span></button>
-                    <a href="/cart" class="flex h-12 w-12 items-center justify-center bg-brand-gold text-white transition-colors hover:bg-[#8e6a28]" aria-label="@Localizer["Cart"]"><i class="fas fa-shopping-cart"></i></a>
+                    <div>
+                        <label class="mb-2 block text-xs font-medium uppercase tracking-widest text-brand-darktext">@Localizer["Quantity"]</label>
+                        <div class="flex h-12 items-center border border-brand-border bg-white rounded-md">
+                            <button type="button" class="flex h-full w-10 items-center justify-center hover:bg-brand-cream transition-colors text-brand-darktext font-bold" onclick="decreaseQuantity()" aria-label="@Localizer["Decrease"]">-</button>
+                            <input id="productQuantity" type="number" min="@minSiparisAdedi" max="@maxSiparisAdedi" value="@minSiparisAdedi" class="h-full w-14 border-0 bg-transparent p-0 text-center text-sm font-semibold text-brand-darktext focus:ring-0 focus:outline-none" />
+                            <button type="button" class="flex h-full w-10 items-center justify-center hover:bg-brand-cream transition-colors text-brand-darktext font-bold" onclick="increaseQuantity()" aria-label="@Localizer["Increase"]">+</button>
+                        </div>
+                    </div>
+                    <button id="ajaxSepetBtn" type="button" class="flex h-12 min-w-0 flex-1 items-center justify-center gap-2 bg-brand-olive px-4 text-xs font-bold uppercase tracking-widest text-white rounded-md transition-colors hover:bg-[#1c2001] disabled:cursor-wait disabled:opacity-70"><i class="fas fa-shopping-bag add-to-cart-icon"></i><span class="add-to-cart-text">@Localizer["AddToCart"]</span></button>
+                    <a href="/cart" class="flex h-12 w-12 items-center justify-center bg-brand-gold text-white rounded-md transition-colors hover:bg-[#8e6a28]" aria-label="@Localizer["Cart"]"><i class="fas fa-shopping-cart"></i></a>
                 </div>
             </form>
             }
@@ -849,32 +908,60 @@
 
             @if (!Model.FiyatGizliMi && Model.ToptanFiyatKademeleri.Any(x => x.AktifMi && !x.SilindiMi))
             {
-                <div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 shadow-sm">
-                    <label for="wholesaleTierSelect" class="mb-2 block text-xs font-bold uppercase tracking-widest text-emerald-900 flex items-center gap-2">
-                        <i class="fas fa-boxes-stacked text-emerald-600"></i>
-                        <span>@Localizer["WholesalePrices"]</span>
-                        <span class="text-[11px] font-normal text-emerald-700">(@Localizer["WholesaleTierNotice"])</span>
-                    </label>
-                    <div class="relative">
-                        <select id="wholesaleTierSelect" class="w-full appearance-none rounded-xl border border-emerald-300 bg-white py-3 ps-4 pe-10 text-sm font-medium text-emerald-950 shadow-sm transition hover:border-emerald-500 focus:border-emerald-600 focus:outline-none cursor-pointer">
-                            <option value="" data-min="1" data-price="">@Localizer["StandardRetailPrice"] (@Localizer["SelectWholesaleTier"])</option>
-                            @foreach (var tier in Model.ToptanFiyatKademeleri.Where(x => x.AktifMi && !x.SilindiMi).OrderBy(x => x.MinAdet))
-                            {
-                                var tierVariant = Model.UrunSecenek.FirstOrDefault(x => x.Id == tier.UrunSecenekId);
-                                <option value="@tier.Id" 
-                                        data-min="@tier.MinAdet" 
-                                        data-price="@tier.BirimFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)"
-                                        data-variant-id="@(tier.UrunSecenekId ?? 0)">
-                                    @tier.MinAdet+ @Localizer["Piece"] — @tier.BirimFiyat.ToString("N2", System.Globalization.CultureInfo.InvariantCulture) @currencySymbol / @Localizer["Piece"] @(tierVariant == null ? "" : $" ({tierVariant.VaryantBasligi})")
-                                </option>
-                            }
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-3 text-emerald-700">
-                            <i class="fas fa-chevron-down text-xs"></i>
+                @if (isWholesale)
+                {
+                    <div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 shadow-sm">
+                        <label for="wholesaleTierSelect" class="mb-2 block text-xs font-bold uppercase tracking-widest text-emerald-900 flex items-center gap-2">
+                            <i class="fas fa-boxes-stacked text-emerald-600"></i>
+                            <span>@Localizer["WholesalePrices"]</span>
+                            <span class="text-[11px] font-normal text-emerald-700">(@Localizer["WholesaleTierNotice"])</span>
+                        </label>
+                        <div class="relative">
+                            <select id="wholesaleTierSelect" class="w-full appearance-none rounded-xl border border-emerald-300 bg-white py-3 ps-4 pe-10 text-sm font-medium text-emerald-950 shadow-sm transition hover:border-emerald-500 focus:border-emerald-600 focus:outline-none cursor-pointer">
+                                <option value="" data-min="1" data-price="">@Localizer["StandardRetailPrice"] (@Localizer["SelectWholesaleTier"])</option>
+                                @foreach (var tier in Model.ToptanFiyatKademeleri.Where(x => x.AktifMi && !x.SilindiMi).OrderBy(x => x.MinAdet))
+                                {
+                                    var tierVariant = Model.UrunSecenek.FirstOrDefault(x => x.Id == tier.UrunSecenekId);
+                                    <option value="@tier.Id" 
+                                            data-min="@tier.MinAdet" 
+                                            data-price="@tier.BirimFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                                            data-variant-id="@(tier.UrunSecenekId ?? 0)">
+                                        @tier.MinAdet+ @Localizer["Piece"] — @tier.BirimFiyat.ToString("N2", System.Globalization.CultureInfo.InvariantCulture) @currencySymbol / @Localizer["Piece"] @(tierVariant == null ? "" : $" ({tierVariant.VaryantBasligi})")
+                                    </option>
+                                }
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-3 text-emerald-700">
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </div>
+                        </div>
+                        <p class="mt-2 text-xs text-emerald-700">@Localizer["WholesaleTierSelectHelp"]</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="rounded-2xl border border-brand-border/70 bg-brand-cream/60 p-4">
+                        <div class="flex items-start gap-3">
+                            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-olive/10 text-brand-olive">
+                                <i class="fas fa-boxes-stacked text-base"></i>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-brand-olive">@Localizer["WholesalePrices"]</h4>
+                                <p class="mt-1 text-xs text-brand-mutedtext leading-relaxed">
+                                    @Localizer["WholesaleApplyOrLoginPrompt"]
+                                </p>
+                                <div class="mt-2 flex items-center gap-3">
+                                    <a href="/Hesap/GirisYap?returnUrl=@Uri.EscapeDataString(productUrl)" class="text-xs font-semibold text-brand-gold hover:text-brand-olive hover:underline">
+                                        @Localizer["Login"] &rarr;
+                                    </a>
+                                    <span class="text-brand-border">|</span>
+                                    <a href="/Hesap/KayitOl" class="text-xs font-semibold text-brand-gold hover:text-brand-olive hover:underline">
+                                        @Localizer["Register"] &rarr;
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <p class="mt-2 text-xs text-emerald-700">@Localizer["WholesaleTierSelectHelp"]</p>
-                </div>
+                }
             }
             @if (Model.ToptanciUrunGrubu != null && Model.ToptanciUrunGrubu.IskontoOranlari.Any(x => x.AktifMi && !x.SilindiMi))
             {
@@ -977,20 +1064,22 @@
                         <div class="my-3 text-brand-gold">
                             @for (var yildiz = 1; yildiz <= 5; yildiz++)
                             {
-                                if (yildiz <= tamYildiz) { <i class="fas fa-star"></i> }
-                                else if (yildiz == tamYildiz + 1 && yarimYildiz) { <i class="fas fa-star-half-alt"></i> }
-                                else { <i class="far fa-star"></i> }
+                                if (yorumSayisi > 0 && yildiz <= tamYildiz) { <i class="fas fa-star"></i> }
+                                else if (yorumSayisi > 0 && yildiz == tamYildiz + 1 && yarimYildiz) { <i class="fas fa-star-half-alt"></i> }
+                                else { <i class="far fa-star text-brand-border"></i> }
                             }
                         </div>
                         <p class="mb-5 text-sm text-brand-mutedtext">@string.Format(Localizer["ReviewCount"].Value, yorumSayisi)</p>
                         <button type="button" id="openCommentModalBtn" class="w-full rounded border border-brand-olive py-2.5 text-xs font-semibold uppercase tracking-widest text-brand-olive transition-colors hover:bg-brand-olive hover:text-white">@Localizer["WriteReview"]</button>
                     </div>
                     <div id="reviewsList" class="space-y-4">
-                        @foreach (var yorum in yorumlar.Take(3))
+                        @for (int i = 0; i < yorumlar.Count; i++)
                         {
+                            var yorum = yorumlar[i];
+                            var isHidden = i >= 3;
                             var adParcalari = (yorum.AdSoyad ?? string.Empty).Split(' ', StringSplitOptions.RemoveEmptyEntries);
                             var basHarfler = adParcalari.Length == 0 ? "?" : string.Concat(adParcalari.Select(x => x[0]));
-                            <article class="rounded-lg border border-brand-border bg-white p-4">
+                            <article class="review-item rounded-lg border border-brand-border bg-white p-4 transition-all @(isHidden ? "hidden extra-review" : "")">
                                 <div class="mb-3 flex items-start justify-between gap-3">
                                     <div class="flex items-center gap-3">
                                         <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-cream text-sm font-semibold text-brand-olive">@basHarfler</span>
@@ -1017,6 +1106,13 @@
                             </article>
                         }
                     </div>
+                    @if (yorumlar.Count > 3)
+                    {
+                        <button type="button" id="showAllReviewsBtn" onclick="toggleAllReviews()" class="mt-4 w-full rounded border border-brand-border bg-brand-cream/60 py-2.5 text-xs font-semibold uppercase tracking-wider text-brand-olive hover:bg-brand-cream transition-colors flex items-center justify-center gap-2" data-show-text="@string.Format(Localizer["ShowAllReviews"].Value, yorumlar.Count)" data-hide-text="@Localizer["ShowLess"].Value" data-expanded="false">
+                            <i class="fas fa-chevron-down text-xs transition-transform duration-200" id="showReviewsIcon"></i>
+                            <span id="showReviewsText">@string.Format(Localizer["ShowAllReviews"].Value, yorumlar.Count)</span>
+                        </button>
+                    }
                 }
                 else
                 {
@@ -1025,36 +1121,6 @@
             </aside>
         </div>
     </section>
-
-    @{ var urunlerleBirlikte = ViewBag.BenzerUrunler as List<FilistinProje.Core.DTOs.BenzerUrunDto> ?? new List<FilistinProje.Core.DTOs.BenzerUrunDto>(); }
-    @if (urunlerleBirlikte.Any())
-    {
-        <section class="product-together mt-16 rounded-lg border border-brand-border bg-brand-cream p-5 md:p-7" aria-labelledby="togetherTitle">
-            <div class="mb-5 flex flex-wrap items-end justify-between gap-3"><div><p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand-gold">@Localizer["Product_WhyYouWillLove"]</p><h2 id="togetherTitle" class="mt-1 font-serif text-2xl text-brand-olive">@Localizer["Product_Together"]</h2></div><a href="/products?k=@Model.KategoriId" class="text-xs font-semibold text-brand-olive underline-offset-4 hover:underline">@Localizer["Collection"]</a></div>
-            <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                @foreach (var item in urunlerleBirlikte.Take(3))
-                {
-                    var itemSlug = string.IsNullOrWhiteSpace(item.Slug) ? FilistinProje.Core.Helpers.SlugHelper.GenerateSlug(item.LocalizedBaslik) : item.Slug;
-                    <a href="/products/@itemSlug-@item.Id" class="group rounded-md bg-white p-2 transition-transform hover:-translate-y-1">
-                        <img src="@(string.IsNullOrWhiteSpace(item.AnaGorselUrl) ? "/img/products/placeholder.webp" : item.AnaGorselUrl)" alt="@item.LocalizedBaslik" class="aspect-square w-full rounded object-cover" loading="lazy" decoding="async" />
-                        <h3 class="mt-2 line-clamp-2 text-xs font-semibold text-brand-darktext">@item.LocalizedBaslik</h3>
-                        @if (!item.FiyatGizliMi)
-                        {
-                            <p class="mt-1 text-sm font-bold text-brand-olive">@item.GosterFiyat.ToString("N2", System.Globalization.CultureInfo.InvariantCulture) @currencySymbol</p>
-                        }
-                        else
-                        {
-                            <p class="mt-1 text-xs italic text-brand-mutedtext">@Localizer["PriceOnRequest"]</p>
-                        }
-                        @if (item.WhatsappSiparisModu)
-                        {
-                            <span class="mt-2 flex items-center justify-center gap-2 rounded border border-green-500 px-2 py-1.5 text-[10px] font-semibold uppercase text-green-600"><i class="fab fa-whatsapp"></i>@Localizer["Admin_WhatsappOrder"]</span>
-                        }
-                    </a>
-                }
-            </div>
-        </section>
-    }
 
 @{
     var benzerUrunler = ViewBag.BenzerUrunler as List<FilistinProje.Core.DTOs.BenzerUrunDto>;
@@ -1248,10 +1314,8 @@ const TXT_OUT_OF_STOCK = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Loc
 const TXT_ADD_TO_CART = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["AddToCart"].Value));
 const TXT_PREORDER = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["PreOrderOpen"].Value));
 const TXT_MADE_TO_ORDER = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["MadeToOrder"].Value));
-const TXT_SELECT_FRAME = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["SelectFrame"].Value));
 const TXT_GIFT_PACKAGING = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["GiftPackaging"].Value));
 const TXT_DISCOUNT = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Discount"].Value));
-const TXT_FRAME_SELECTION_REQUIRED = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["FrameSelectionRequired"].Value));
 const TXT_ERROR_OCCURRED = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["ErrorOccurred"].Value));
 const TXT_CONNECTION_ERROR = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["ConnectionError"].Value));
 const TXT_CONNECTION_ERROR_SHORT = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["ConnectionErrorShort"].Value));
@@ -1261,6 +1325,10 @@ const TXT_BUSINESS_DAYS = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Lo
 const TXT_PRODUCTION_IN_DAYS = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["ProductionInDaysJS"].Value));
 const TXT_LOW_STOCK = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["LowStockText"].Value));
 const TXT_UNIT_LABEL = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(isAr ? "للقطعة" : "unit"));
+const TXT_FAV_ADDED = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["ProductAddedToFavorites"].Value));
+const TXT_FAV_REMOVED = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["ProductRemovedFromFavorites"].Value));
+const TXT_ADD_TO_FAVORITES = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["AddToFavorites"].Value));
+const TXT_REMOVE_FROM_FAVORITES = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["RemoveFromFavorites"].Value));
 const PRODUCT_STOKTA_YOK_SATIS_IZNI = @Json.Serialize(stoktaYokSatisIzni);
 const PRODUCT_INITIAL_STOKTA_VAR = @Json.Serialize(stoktaVar);
 const MAIN_PRODUCT_CAMPAIGN_END_DATE = '@(Model.IndirimVarMi && Model.KampanyaBitisTarihi.HasValue ? Model.KampanyaBitisTarihi.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : "")';
@@ -1280,7 +1348,7 @@ function updateWhatsappOrderLink() {
     link.href = `https://wa.me/${PRODUCT_WHATSAPP_NUMBER}?text=${encodeURIComponent(messageParts.join('\n'))}`;
 }
 
-// Modal event listeners
+// Modal and Global Listeners
 document.addEventListener('DOMContentLoaded', function() {
     const desktopModal = document.getElementById('desktopLightboxModal');
     const mobileModal = document.getElementById('mobileLightbox');
@@ -1322,18 +1390,80 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const mediaContainer = document.getElementById('mainProductImageContainer');
     let touchStartX = 0;
+    let touchStartY = 0;
     if (mediaContainer) {
         mediaContainer.addEventListener('touchstart', event => {
             touchStartX = event.changedTouches?.[0]?.clientX || 0;
+            touchStartY = event.changedTouches?.[0]?.clientY || 0;
         }, { passive: true });
         mediaContainer.addEventListener('touchend', event => {
             const endX = event.changedTouches?.[0]?.clientX || 0;
-            const delta = endX - touchStartX;
-            if (Math.abs(delta) < 40) return;
+            const endY = event.changedTouches?.[0]?.clientY || 0;
+            const deltaX = endX - touchStartX;
+            const deltaY = endY - touchStartY;
+            if (Math.abs(deltaX) < 40 || Math.abs(deltaY) > Math.abs(deltaX)) return;
             const isRtl = document.documentElement.dir === 'rtl';
-            const logicalNext = delta < 0 ? !isRtl : isRtl;
+            const logicalNext = deltaX < 0 ? !isRtl : isRtl;
             navigateGallery(logicalNext ? 'next' : 'prev', event);
         }, { passive: true });
+    }
+
+    // Wishlist Button Handler
+    const favBtn = document.getElementById('btnToggleFavorite');
+    if (favBtn) {
+        favBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const prodId = this.getAttribute('data-product-id');
+            const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+            const token = tokenInput ? tokenInput.value : '';
+
+            fetch('/Favori/Toggle?urunId=' + encodeURIComponent(prodId), {
+                method: 'POST',
+                headers: {
+                    'RequestVerificationToken': token,
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    const icon = favBtn.querySelector('.favorite-icon');
+                    const text = favBtn.querySelector('.favorite-text');
+                    if (data.isAdded) {
+                        favBtn.classList.add('is-favorited', 'text-red-500', 'border-red-300', 'bg-red-50/60');
+                        favBtn.classList.remove('bg-white');
+                        favBtn.setAttribute('title', TXT_REMOVE_FROM_FAVORITES);
+                        if (icon) {
+                            icon.classList.remove('far');
+                            icon.classList.add('fas', 'text-red-500');
+                        }
+                        if (text) text.textContent = TXT_REMOVE_FROM_FAVORITES;
+                        if (window.showToast) window.showToast(TXT_FAV_ADDED, 'success');
+                    } else {
+                        favBtn.classList.remove('is-favorited', 'text-red-500', 'border-red-300', 'bg-red-50/60');
+                        favBtn.classList.add('bg-white');
+                        favBtn.setAttribute('title', TXT_ADD_TO_FAVORITES);
+                        if (icon) {
+                            icon.classList.remove('fas', 'text-red-500');
+                            icon.classList.add('far');
+                        }
+                        if (text) text.textContent = TXT_ADD_TO_FAVORITES;
+                        if (window.showToast) window.showToast(TXT_FAV_REMOVED, 'info');
+                    }
+                } else {
+                    if (window.showToast) {
+                        window.showToast(data.message || TXT_ERROR_OCCURRED, 'error');
+                    } else {
+                        alert(data.message || TXT_ERROR_OCCURRED);
+                    }
+                }
+            })
+            .catch(() => {
+                if (window.showToast) {
+                    window.showToast(TXT_CONNECTION_ERROR_SHORT, 'error');
+                }
+            });
+        });
     }
 
     const commentModal = document.getElementById('commentModal');
@@ -1433,15 +1563,23 @@ function openProductLightbox() {
 }
 
 function toggleAllReviews() {
-    var list = document.getElementById('reviewsList');
-    var btn = document.getElementById('showAllReviewsBtn');
-    if (!list || !btn) return;
-    if (list.style.maxHeight && list.style.maxHeight !== '600px') {
-        list.style.maxHeight = '600px';
-        btn.textContent = 'Tüm Yorumları Gör (' + btn.textContent.match(/\d+/)?.[0] + ')';
+    const extraReviews = document.querySelectorAll('.extra-review');
+    const btn = document.getElementById('showAllReviewsBtn');
+    const icon = document.getElementById('showReviewsIcon');
+    const textEl = document.getElementById('showReviewsText');
+    if (!btn || extraReviews.length === 0) return;
+
+    const isExpanded = btn.getAttribute('data-expanded') === 'true';
+    if (isExpanded) {
+        extraReviews.forEach(el => el.classList.add('hidden'));
+        btn.setAttribute('data-expanded', 'false');
+        if (textEl) textEl.textContent = btn.getAttribute('data-show-text');
+        if (icon) icon.classList.remove('rotate-180');
     } else {
-        list.style.maxHeight = list.scrollHeight + 'px';
-        btn.textContent = 'Gizle';
+        extraReviews.forEach(el => el.classList.remove('hidden'));
+        btn.setAttribute('data-expanded', 'true');
+        if (textEl) textEl.textContent = btn.getAttribute('data-hide-text');
+        if (icon) icon.classList.add('rotate-180');
     }
 }
 
@@ -1545,13 +1683,6 @@ function changeProductImage(imageUrl, thumbnailElement, altText) {
                 matchingRadio.dispatchEvent(new Event('change'));
                 return;
             }
-        } else {
-            // Clicked thumbnail does NOT belong to any variant (e.g. main powder compact / base product)
-            // If any variant is currently checked, reset back to main product state!
-            const anyChecked = document.querySelector('.variant-radio:checked');
-            if (anyChecked) {
-                resetToMainProductState(true);
-            }
         }
     }
 
@@ -1597,44 +1728,22 @@ function changeProductImage(imageUrl, thumbnailElement, altText) {
         thumbnailElement.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         thumbnailElement.focus({ preventScroll: true });
     }
-
 }
 
 const PRODUCT_BASE_PRICE = @gosterilecekFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture);
 const PRODUCT_MAIN_PRICE = @Model.EtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture);
 const PRODUCT_MAIN_OLD_PRICE = @(Model.IndirimVarMi ? Model.Fiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : "0");
 const MAIN_CAMPAIGN_END_DATE = '@(gosterilecekIndirimBitisTarihi?.ToString("yyyy-MM-ddTHH:mm:ssZ") ?? "")';
-const FRAME_PRICE_PER_METER = 250;
-
-function parseOlcu(olcuText) {
-    if (!olcuText) return null;
-    var match = olcuText.match(/(\d+(?:[.,]\d+)?)\s*(?:cm)?\s*[xX×]\s*(\d+(?:[.,]\d+)?)/i);
-    if (!match) return null;
-    var w = parseFloat(match[1].replace(',', '.'));
-    var h = parseFloat(match[2].replace(',', '.'));
-    if (isNaN(w) || isNaN(h)) return null;
-    return { width: w, height: h };
-}
-
-function calcFrameFiyat(olcuText, cerceve) {
-    if (!cerceve || cerceve === 'Çerçevesiz') return 0;
-    var dims = parseOlcu(olcuText);
-    if (!dims) return 0;
-    var cevreMetre = ((dims.width + dims.height) * 2) / 100;
-    return cevreMetre * FRAME_PRICE_PER_METER;
-}
 
 function updateSelectionSummary() {
     var summary = document.getElementById('selectionSummary');
     if (!summary) return;
 
     var selectedVariant = document.querySelector('.variant-radio:checked');
-    var selectedFrame = document.querySelector('.frame-radio:checked');
     var giftSelect = document.getElementById('giftPackageSelect');
     var selectedGiftOption = giftSelect && giftSelect.selectedIndex >= 0 ? giftSelect.options[giftSelect.selectedIndex] : null;
 
     var olcu = selectedVariant ? (selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '-') : '-';
-    var cerceve = selectedFrame ? selectedFrame.value : null;
 
     var wholesaleSelect = document.getElementById('wholesaleTierSelect');
     var selectedTierOption = wholesaleSelect && wholesaleSelect.value ? wholesaleSelect.options[wholesaleSelect.selectedIndex] : null;
@@ -1642,8 +1751,7 @@ function updateSelectionSummary() {
 
     var temelFiyat = tierPrice > 0 ? tierPrice : (selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-price')) || PRODUCT_MAIN_PRICE) : PRODUCT_BASE_PRICE);
     var adet = parseInt(document.getElementById('productQuantity')?.value) || 1;
-    var cerceveFarki = selectedVariant ? calcFrameFiyat(olcu, cerceve || 'Çerçevesiz') : 0;
-    var unitProductPrice = temelFiyat + cerceveFarki;
+    var unitProductPrice = temelFiyat;
     var productTotal = unitProductPrice * adet;
 
     var giftPrice = selectedGiftOption && selectedGiftOption.value ? (parseFloat(selectedGiftOption.getAttribute('data-price') || '0') || 0) : 0;
@@ -1652,11 +1760,10 @@ function updateSelectionSummary() {
 
     var hasMultipleVariants = document.querySelectorAll('.variant-radio').length > 1;
     var hasPackaging = giftPrice > 0;
-    var hasFrame = cerceveFarki > 0 || (selectedFrame && selectedFrame.value && selectedFrame.value !== 'Çerçevesiz');
     var hasMultipleQty = adet > 1;
     var hasTier = tierPrice > 0;
 
-    if (!hasPackaging && !hasFrame && !hasTier) {
+    if (!hasPackaging && !hasTier && !hasMultipleVariants && !hasMultipleQty) {
         summary.classList.add('hidden');
         return;
     }
@@ -1670,18 +1777,6 @@ function updateSelectionSummary() {
             variantRow.classList.remove('hidden');
         } else {
             variantRow.classList.add('hidden');
-        }
-    }
-
-    // Çerçeve satırı
-    var frameRow = document.getElementById('summaryFrameRow');
-    var summaryCerceveEl = document.getElementById('summaryCerceve');
-    if (frameRow && summaryCerceveEl) {
-        if (hasFrame) {
-            summaryCerceveEl.textContent = cerceve || TXT_SELECT_FRAME;
-            frameRow.classList.remove('hidden');
-        } else {
-            frameRow.classList.add('hidden');
         }
     }
 
@@ -1730,14 +1825,14 @@ function updateSelectionSummary() {
         summaryBirimFiyatEl.textContent = adet > 1 ? `(${TXT_UNIT_LABEL}: ${window.formatMoney(totalBirim)})` : '';
     }
 
-    // Açık Formül Dökümü: (Ürün Fiyatı + Çerçeve Farkı) * Adet + Paketleme Ücreti
+    // Açık Formül Dökümü
     var breakdownEl = document.getElementById('summaryBreakdown');
     if (breakdownEl) {
         var prodFormula = adet > 1 ? `(${window.formatMoney(unitProductPrice)} × ${adet})` : window.formatMoney(unitProductPrice);
         if (giftPrice > 0) {
             var giftFormula = adet > 1 ? `(${window.formatMoney(giftPrice)} × ${adet})` : window.formatMoney(giftPrice);
             breakdownEl.textContent = `${prodFormula} + ${giftFormula} = ${window.formatMoney(grandTotal)}`;
-        } else if (adet > 1 || cerceveFarki > 0) {
+        } else if (adet > 1) {
             breakdownEl.textContent = `${prodFormula} = ${window.formatMoney(grandTotal)}`;
         } else {
             breakdownEl.textContent = '';
@@ -1753,7 +1848,7 @@ if (giftSelectEl) {
         var note = document.getElementById('giftNoteText');
         if (note) note.classList.toggle('hidden', !this.value);
         updateSelectionSummary();
-        updatePriceWithFrame();
+        updatePriceDisplay();
     });
 }
 
@@ -1857,23 +1952,14 @@ function syncCountdownTimer(endDate, originalPrice) {
     }
 }
 
-function updatePriceWithFrame() {
+function updatePriceDisplay() {
     var selectedVariant = document.querySelector('.variant-radio:checked');
-    var selectedFrame = document.querySelector('.frame-radio:checked');
     var wholesaleSelect = document.getElementById('wholesaleTierSelect');
     var selectedTierOption = wholesaleSelect && wholesaleSelect.value ? wholesaleSelect.options[wholesaleSelect.selectedIndex] : null;
     var tierPrice = selectedTierOption ? parseFloat(selectedTierOption.getAttribute('data-price')) || 0 : 0;
 
-    var basePrice = tierPrice > 0 ? tierPrice : (selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-price')) || PRODUCT_MAIN_PRICE) : PRODUCT_BASE_PRICE);
-    var oldBasePrice = selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-oldprice')) || 0) : PRODUCT_MAIN_OLD_PRICE;
-    var olcu = selectedVariant ? (selectedVariant.getAttribute('data-olcu') || selectedVariant.getAttribute('data-label') || '') : '';
-    var cerceve = selectedFrame ? selectedFrame.value : null;
-    var cerceveFarki = calcFrameFiyat(olcu, cerceve || 'Çerçevesiz');
-    
-    // Hediye paketi bedeli ana liste fiyatına (#priceDisplay / #oldPriceDisplay) eklenmez!
-    var additionalPrice = cerceveFarki;
-    var newPrice = basePrice + additionalPrice;
-    var newOldPrice = oldBasePrice > 0 ? oldBasePrice + additionalPrice : 0;
+    var newPrice = tierPrice > 0 ? tierPrice : (selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-price')) || PRODUCT_MAIN_PRICE) : PRODUCT_BASE_PRICE);
+    var newOldPrice = selectedVariant ? (parseFloat(selectedVariant.getAttribute('data-oldprice')) || 0) : PRODUCT_MAIN_OLD_PRICE;
 
     var priceDisplay = document.getElementById('priceDisplay');
     if (priceDisplay) {
@@ -1885,12 +1971,11 @@ function updatePriceWithFrame() {
     var endDate = selectedVariant ? (selectedVariant.getAttribute('data-enddate') || '') : (MAIN_PRODUCT_CAMPAIGN_END_DATE || MAIN_CAMPAIGN_END_DATE);
     syncCountdownTimer(endDate, (newOldPrice > 0 ? newOldPrice : newPrice));
 
-    var frameFarkiInput = document.getElementById('selectedFrameFarki');
-    if (frameFarkiInput) {
-        frameFarkiInput.value = cerceveFarki.toFixed(2);
-    }
-
     updateSelectionSummary();
+}
+
+function updatePriceWithFrame() {
+    updatePriceDisplay();
 }
 
 function resetToMainProductState(keepCurrentThumbnail) {
@@ -1923,7 +2008,7 @@ function resetToMainProductState(keepCurrentThumbnail) {
     }
 
     // 6. Fiyat, eski fiyat, indirim rozeti ve indirim sayacını ana ürüne göre güncelle
-    updatePriceWithFrame();
+    updatePriceDisplay();
     updateWhatsappOrderLink();
 
     // 7. Ana ürün görseline geri dön (eğer tıklanan küçük resim zaten seçilmediyse)
@@ -1980,7 +2065,7 @@ function resetToMainProductState(keepCurrentThumbnail) {
 }
 
 function updateProductPricing() {
-    updatePriceWithFrame();
+    updatePriceDisplay();
     updateSelectionSummary();
 }
 
@@ -2058,7 +2143,7 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
                 }
             }
 
-            updatePriceWithFrame();
+            updatePriceDisplay();
             updateWhatsappOrderLink();
 
             // "İptal / Ana Ürüne Dön" butonunu göster
@@ -2140,42 +2225,20 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
     });
 });
 
-// Varyant kartlarına tıklama / dokunma (Toggle Deselect desteği)
+// Varyant kartlarına tıklama / dokunma
 document.querySelectorAll('.variant-option-card').forEach(function(card) {
     var radio = card.querySelector('.variant-radio');
     if (!radio) return;
 
-    card.addEventListener('pointerdown', function() {
-        card._wasChecked = radio.checked;
-    });
-
     card.addEventListener('click', function(e) {
         if (radio.disabled || radio.getAttribute('data-purchasable') === 'false') {
+            e.preventDefault();
             return;
         }
-
-        // Eğer bu varyant zaten seçili iken tıklandıysa: seçimi kaldır ve ana ürüne dön
-        if (card._wasChecked === true) {
-            e.preventDefault();
-            e.stopPropagation();
-            card._wasChecked = false;
-            resetToMainProductState(false);
-        } else {
-            card._wasChecked = false;
+        if (!radio.checked) {
+            radio.checked = true;
+            radio.dispatchEvent(new Event('change', { bubbles: true }));
         }
-    });
-});
-
-document.querySelectorAll('.frame-radio').forEach(function(radio) {
-    radio.addEventListener('change', function () {
-        var selectedFrameModel = document.getElementById('selectedFrameModel');
-        if (selectedFrameModel) selectedFrameModel.value = this.value;
-        var frameSelectionError = document.getElementById('frameSelectionError');
-        var frameSelectionBlock = document.getElementById('frameSelectionBlock');
-        if (frameSelectionError) frameSelectionError.classList.add('hidden');
-        if (frameSelectionBlock) frameSelectionBlock.classList.remove('ring-2', 'ring-red-400', 'ring-offset-2');
-
-        updatePriceWithFrame();
     });
 });
 
@@ -2213,37 +2276,16 @@ if (ajaxSepetBtn) {
         e.preventDefault();
         const form = document.getElementById('addToCartForm');
         const token = form.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
-        const frameSelectionBlock = document.getElementById('frameSelectionBlock');
-        const selectedFrame = document.querySelector('input[name="CerceveModeli"]:checked');
-
-        if (frameSelectionBlock && !selectedFrame) {
-            const frameSelectionError = document.getElementById('frameSelectionError');
-            if (frameSelectionError) frameSelectionError.classList.remove('hidden');
-            frameSelectionBlock.classList.add('ring-2', 'ring-red-400', 'ring-offset-2');
-            frameSelectionBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-            if (window.showToast) {
-                window.showToast(TXT_FRAME_SELECTION_REQUIRED, 'error');
-            } else {
-                alert(TXT_FRAME_SELECTION_REQUIRED);
-            }
-
-            return;
-        }
         
         const url = '/cart/Ekle';
         const urunId = form.querySelector('input[name="UrunId"]')?.value;
         const adet = form.querySelector('input[name="Adet"]')?.value;
         const secenekId = document.getElementById('selectedVariantId')?.value;
-        const cerceveModeli = selectedFrame?.value;
-        const cerceveFarki = document.getElementById('selectedFrameFarki')?.value;
         
         const params = new URLSearchParams();
         params.append('UrunId', urunId);
         params.append('Adet', adet || '1');
         if (secenekId) params.append('SecenekId', secenekId);
-        if (cerceveModeli) params.append('CerceveModeli', cerceveModeli);
-        if (cerceveFarki && cerceveFarki !== '0') params.append('CerceveFarki', cerceveFarki);
         
         var giftSelect = document.getElementById('giftPackageSelect');
         if (giftSelect && giftSelect.value) {
@@ -2278,15 +2320,17 @@ if (ajaxSepetBtn) {
                 }
                 btn.classList.add('bg-green-600');
 
-                // Update cart counter with bounce
+                // Update cart counter with bounce and remove hidden class
                 const cartCounter = document.getElementById('cartItemCount');
                 const cartCounterMobile = document.getElementById('cartItemCountMobile');
-                const cartCounters = [cartCounter, cartCounterMobile].filter(el => el);
+                const floatingCartBadge = document.getElementById('floatingCartBadge');
+                const cartCounters = [cartCounter, cartCounterMobile, floatingCartBadge].filter(el => el);
                 
                 cartCounters.forEach(counter => {
                     let current = parseInt(counter.innerText) || 0;
                     let added = parseInt(adet) || 1;
                     counter.innerText = current + added;
+                    counter.classList.remove('hidden');
                     counter.classList.add('scale-150', 'bounce-animation');
                     setTimeout(() => {
                         counter.classList.remove('scale-150', 'bounce-animation');
@@ -2382,16 +2426,6 @@ function copyProductLink(button) {
     window.prompt(TXT_PRODUCT_LINK, url);
 }
 
-function selectFrameOption(label, value) {
-    const radios = document.querySelectorAll('input[name="CerceveModeli"]');
-    radios.forEach(r => r.checked = false);
-    const radio = label.querySelector('input[name="CerceveModeli"]');
-    if (radio) {
-        radio.checked = true;
-        radio.dispatchEvent(new Event('change', { bubbles: true }));
-    }
-}
-
 // Masaüstü fare koordinatlarına göre pürüzsüz zoom (transform-origin)
 document.addEventListener("DOMContentLoaded", function () {
     const container = document.getElementById('mainProductImageContainer');
@@ -2455,4 +2489,10 @@ if (wholesaleSelect) {
         updateSelectionSummary();
     });
 }
+
+// BFCache (Geri tuşu ile sayfaya dönüldüğünde) durumu senkronize et
+window.addEventListener('pageshow', function (event) {
+    updatePriceDisplay();
+    updateVariantCardStyles();
+});
 </script>

@@ -927,3 +927,27 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
 - [x] **Adım 256 (Vitrin Detay Sayfası Varsayılan Varyant Bütünlüğü)**:
   - `Views/Urun/Detay.cshtml`: `varsayilanSecenek` mantığı temizlendi; yalnızca DB'de `VarsayilanMi == true` olan varyant varsa açılışta seçilir, yoksa ana ürün fiyatı (45 ₪), ana görseli ve ana sayaç gösterilir.
   - `dotnet build`: 0 Hata, 0 Uyarı ile derlendi.
+
+### Faz 41 (Ürün Detay Sayfası Kapsamlı Kod İncelemesi & Hatasızlaştırma — 27 Eylül 2026)
+- [x] **Adım 257 (Toptancı Ürün Grubu & Grup İskonto Eager-Loading Onarımı)**:
+  - `UrunController.cs` Detay action'ında eksik olan `.Include(x => x.ToptanciUrunGrubu!).ThenInclude(x => x.IskontoOranlari)` eklendi; toptancı ürün grubu iskonto tablolarının view'da eksiksiz yüklenmesi sağlandı.
+- [x] **Adım 258 (Eski Projeden Kalma Çerçeve ('Çerçeve') Kodlarının ve Fiyat Uçurumunun Kökten Temizlenmesi)**:
+  - Önceki Canvasia projesinden kalma, backend `SepetService`'de 0 ₪ hesaplanıp ön yüzde metre başına 250 ₪ ekleyen tüm çerçeve (`Çerçeve`) seçimi (`#frameSelectionBlock`, `selectedFrameModel`, `selectedFrameFarki`, `calcFrameFiyat`, `selectFrameOption`, `TXT_FRAME_SELECTION_REQUIRED` vb.) hem Razor view'dan hem JS motorundan temizlendi.
+- [x] **Adım 259 (Varyant & Toptancı Fiyat İzolasyonu ve Kademe Dropdown Güvenliği)**:
+  - Varyant seçiminde toptan satış fiyatı hesabı `isWholesale` kontrolü ve varyant kademesi/ürün toptan fiyatı ile senkronize edildi (`varyantEtkinFiyat`).
+  - Toptancı kademe dropdown'ı (`wholesaleTierSelect`) yalnızca onaylı toptancı hesaplarına gösterildi; misafir ve perakende kullanıcılara toptancı başvuru ve giriş yönlendirmesi eklendi.
+- [x] **Adım 260 (Canonical 301 URL Yönlendirmesi ve Güçlendirilmiş Slug/ID Doğrulaması)**:
+  - `UrunController.cs` Detay action'ında slug veya ID'nin hatalı gelmesi durumunda doğru SEO formatına (`/products/{slug}-{id}`) 301 Permanent Redirect eklendi.
+- [x] **Adım 261 (Schema.org JSON-LD ve Breadcrumbs İyileştirmesi)**:
+  - `SchemaGenerator.cs` ve `Detay.cshtml` içinde kültürden bağımsız (`InvariantCulture`) `"0.00"` fiyat formatlama, çok dilli ürün adı/açıklaması ve hiyerarşik `BreadcrumbList` schema'sı eklendi; 0 yorumlu ürünlerde sahte 5 yıldız derecelendirmesi kaldırıldı.
+- [x] **Adım 262 (Kullanıcı Deneyimi, Sepet ve BFCache İyileştirmeleri)**:
+  - Küçük resim galerisine tıklandığında seçili varyantın ezilerek sıfırlanması engellendi.
+  - Varyant kartına çift tıklandığında beklenmedik şekilde varyantı iptal eden toggle-deselect hatası kaldırılarak açık "المنتج الأصلي (إلغاء التحديد)" butonuna bağlandı.
+  - Adet girişi (`#productQuantity`) üzerinden `readonly` engeli kaldırılarak serbest/kontrollü giriş sağlandı.
+  - Yüzen sepet ve başlık sepeti sayaçları (`cartCounters`) güncellenirken `hidden` sınıfı kaldırılarak ilk eklemede badge'in görünmesi garanti altına alındı.
+  - Yorumlar için "Tümünü Göster / Daha Az Göster" dinamik buton (`#showAllReviewsBtn`) ve çok dilli kaynaklar eklendi.
+  - `pageshow` (BFCache) olayı dinleyicisi ile tarayıcı geri/ileri tuşlarında fiyat ve varyant durumu senkronize edildi.
+- [x] **Adım 263 (Derleme ve Test Doğrulaması)**:
+  - `dotnet build FilistinProje.sln`: 0 Hata ile başarıyla derlendi.
+  - `dotnet test FilistinProje.sln`: 103 testin 103'ü de başarıyla geçti (0 Başarısız).
+
