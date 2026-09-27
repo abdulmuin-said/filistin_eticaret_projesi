@@ -1,0 +1,13 @@
+[Unit]
+Description=Filistin e-ticaret auto deploy (git pull + docker compose build/up)
+Wants=network-online.target
+After=network-online.target docker.service containerd.service
+
+[Service]
+Type=oneshot
+User=__USER__
+WorkingDirectory=__REPO_DIR__
+ExecStart=/usr/bin/env bash __REPO_DIR__/scripts/autodeploy/auto-deploy.sh
+Environment=HOME=/home/__USER__
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+TimeoutStartSec=1200

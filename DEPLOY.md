@@ -188,6 +188,75 @@ cat backup_20260720_020234.sql | \
 
 ---
 
+## 7. Otomatik Deploy (Git Push → Otomatik Yayın)
+
+Sunucuda `filistin-autodeploy.timer` her 2 dakikada bir GitHub'ı kontrol eder.
+Yeni commit varsa otomatik olarak `git pull → docker compose build → up → health check`
+adımlarını çalıştırır. Build veya health check başarısız olursa otomatik olarak
+önceki commit'e rollback yapar.
+
+### 7.1 Kurulum (sunucuda tek seferlik)
+
+```bash
+cd ~/filistin_projesi/filistin_eticaret_projesi
+git pull origin main
+sudo bash scripts/autodeploy/install.sh
+```
+
+### 7.2 Kurulum doğrulaması
+
+```bash
+# Timer aktif mi?
+systemctl list-timers filistin-autodeploy.timer
+
+# İlk kontrolün çıktısı
+journalctl -u filistin-autodeploy.service -n 50
+
+# Git kimlik bilgileri şifresiz çalışıyor mu? (betik "FETCH FAILED" yazıyorsa sorun var)
+cd ~/filistin_projesi/filistin_eticaret_projesi
+GIT_TERMINAL_PROMPT=0 git fetch origin main && echo OK
+```
+
+Eğer `FETCH FAILED` görürsen sunucuda GitHub kimlik bilgilerini kaydet:
+
+```bash
+git config --global credential.helper store
+git fetch origin main   # kullanıcı adı + PAT (Personal Access Token) sorar, bir kez gir
+```
+
+### 7.3 Deploy izleme
+
+```bash
+# Canlı log (push sonrası deploy'u takip et)
+journalctl -u filistin-autodeploy.service -f
+
+# Son deploy sonucu
+journalctl -u filistin-autodeploy.service -n 100 --no-pager
+```
+
+### 7.4 Geçici kapatma / kaldırma
+
+```bash
+# Timer'ı durdur
+sudo systemctl disable --now filistin-autodeploy.timer
+
+# Tekrar aç
+sudo systemctl enable --now filistin-autodeploy.timer
+
+# Manuel tetikle
+sudo systemctl start filistin-autodeploy.service
+```
+
+### 7.5 Notlar
+
+- `.env` gitignore'dadır, `git pull` sunucudaki `.env` dosyasını ezmez.
+- Deploy sırasında site kısa süreliğine (build + restart, genelde 1-3 dk) kapalı olabilir.
+- Sunucuda yerel commit varsa `git pull --ff-only` başarısız olur ve deploy durur
+  (sunucada elle commit yapılmamalı; tüm değişiklikler push ile gelmeli).
+- Health check: `http://127.0.0.1:80/health/ready` 200 dönene kadar max 180 sn bekler.
+
+---
+
 ## Sağlık URL'leri
 | URL | Açıklama |
 |-----|----------|
