@@ -3062,9 +3062,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             var defaultVariant = validIncoming
                 .FirstOrDefault(x => x.VarsayilanMi && x.AktifMi)
-                ?? validIncoming.FirstOrDefault(x => x.AktifMi && x.StokAdedi > 0)
-                ?? validIncoming.FirstOrDefault(x => x.AktifMi)
-                ?? validIncoming.FirstOrDefault();
+                ?? validIncoming.FirstOrDefault(x => x.VarsayilanMi);
 
             foreach (var variant in validIncoming)
             {

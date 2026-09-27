@@ -17,18 +17,16 @@
     var secenekler = ViewBag.Secenekler as List<FilistinProje.Core.Varliklar.UrunSecenek> ?? new List<FilistinProje.Core.Varliklar.UrunSecenek>();
     var stokBiteniGriGoster = siteSettings.StokBiteniGriGoster;
     var stoktaYokSatisIzni = siteSettings.StoktaYokSatisIzni;
-    var varsayilanSecenek = secenekler.Count <= 1
-        ? secenekler
+    var varsayilanSecenek = secenekler
+        .Where(x => x.VarsayilanMi)
+        .OrderBy(x => x.Sira)
+        .ThenBy(x => x.SatisFiyati)
+        .FirstOrDefault(x => stoktaYokSatisIzni || x.SatinAlinabilirMi)
+        ?? secenekler
             .Where(x => x.VarsayilanMi)
             .OrderBy(x => x.Sira)
             .ThenBy(x => x.SatisFiyati)
-            .FirstOrDefault(x => stoktaYokSatisIzni || x.SatinAlinabilirMi)
-            ?? secenekler
-                .Where(x => x.VarsayilanMi)
-                .OrderBy(x => x.Sira)
-                .ThenBy(x => x.SatisFiyati)
-                .FirstOrDefault()
-        : null; // Multiple variants: don't auto-select, show main product price first
+            .FirstOrDefault();
     var isWholesale = ViewBag.IsWholesale is bool ws && ws;
     decimal gosterilecekFiyat;
     decimal? gosterilecekEskiFiyat;
@@ -655,11 +653,11 @@
                                 <label class="variant-option-card relative cursor-pointer select-none rounded border-2 border-brand-border bg-white px-4 py-3 text-sm text-brand-mutedtext transition-all duration-150 hover:border-brand-gold @(!varyantSatinAlinabilir ? "is-disabled" : "")">
                                     @if (Model.FiyatGizliMi)
                                     {
-                                        <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(secenekler.Count <= 1 && varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
+                                        <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
                                     }
                                     else
                                     {
-                                        <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(secenekler.Count <= 1 && varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-price="@varyant.EtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-enddate="@(varyant.IndirimVarMi && varyant.IndirimBitisTarihi.HasValue ? varyant.IndirimBitisTarihi.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
+                                        <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-price="@varyant.EtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-enddate="@(varyant.IndirimVarMi && varyant.IndirimBitisTarihi.HasValue ? varyant.IndirimBitisTarihi.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
                                     }
                                     @if (!string.IsNullOrWhiteSpace(varyant.RenkKodu) || !string.IsNullOrWhiteSpace(varyant.Renk)) { <span class="me-1 inline-block h-3 w-3 rounded-full border align-middle" data-variant-color="@varyant.Id" style="background-color:@varyant.GuvenliRenkKodu;border-color:rgba(0,0,0,.35)"></span> }
                                     @varyantEtiket
@@ -693,7 +691,7 @@
             <form id="addToCartForm" class="space-y-6 pt-6">
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="UrunId" value="@Model.Id" />
-                <input type="hidden" id="selectedVariantId" value="@(secenekler.Count <= 1 ? varsayilanSecenek?.Id.ToString() : "")" />
+                <input type="hidden" id="selectedVariantId" value="@(varsayilanSecenek?.Id.ToString() ?? "")" />
                 <input type="hidden" id="selectedQuantity" name="Adet" value="@minSiparisAdedi" />
                 <input type="hidden" id="selectedFrameModel" value="" />
                 <input type="hidden" id="selectedFrameFarki" value="0" />
@@ -720,7 +718,7 @@
                                 var varyantEskiFiyat = varyant.IndirimVarMi ? varyant.SatisFiyati : 0;
                                 var varyantSecimRengi = FilistinProje.Core.Helpers.VaryantRenkYardimcisi.TryNormalizeHex(varyant.RenkKodu, out var guvenliVaryantRengi) ? guvenliVaryantRengi : string.Empty;
                                 <label class="variant-option-card relative cursor-pointer select-none rounded border-2 border-brand-border bg-white px-4 py-3 text-sm text-brand-mutedtext transition-all duration-150 hover:border-brand-gold @(!varyantSatinAlinabilir ? "is-disabled" : "")">
-                                    <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(secenekler.Count <= 1 && varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-price="@varyant.EtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-enddate="@(varyant.IndirimVarMi && varyant.IndirimBitisTarihi.HasValue ? varyant.IndirimBitisTarihi.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
+                                    <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-price="@varyant.EtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-enddate="@(varyant.IndirimVarMi && varyant.IndirimBitisTarihi.HasValue ? varyant.IndirimBitisTarihi.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
                                     @if (!string.IsNullOrWhiteSpace(varyant.RenkKodu) || !string.IsNullOrWhiteSpace(varyant.Renk)) { <span class="me-1 inline-block h-3 w-3 rounded-full border align-middle" data-variant-color="@varyant.Id" style="background-color:@varyant.GuvenliRenkKodu;border-color:rgba(0,0,0,.35)"></span> }
                                     @varyantEtiket
                                 </label>

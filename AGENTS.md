@@ -907,6 +907,23 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
   - Kademe 5 (150+ adet @ 28.00 ₪) seçimi: Otomatik Varyant 119 (احمر) seçildi, adet 150 yapıldı, birim fiyat 28.00 ₪ oldu, özet kutusunda `4,200.00 ₪` başarıyla hesaplandı.
   - Perakendeye dönüş testi: 35.00 ₪ vitrin fiyatına başarıyla dönüldü.
   - Buton encoding testi: Stoksuz varyantta butonun HTML entity içermediği ve tam olarak `"غير متوفر"` yazdığı doğrulandı.
-  - Seçim özetindeki `unitLabel` için de `TXT_UNIT_LABEL` (`للقطعة`) sanitizasyonu uygulandı.
-  - `dotnet build`: 0 Hata, 0 Uyarı ile derlendi.
+### Faz 39 (Video 8 — Vitrin Varyant Seçimi, Geri Sayım Senkronizasyonu & Ana Ürüne Dönüş — 27 Eylül 2026)
+- [x] **Adım 252 (Vitrin Detay Sayfası İki Yönlü Varyant/Ana Ürün Yönetimi)**:
+  - `Views/Urun/Detay.cshtml`: Varyant butonlarına tekrar tıklandığında seçimi kaldıran çift yönlü `toggle` mantığı eklendi.
+  - Açık ve şık bir "المنتج الأصلي (إلغاء التحديد)" sıfırlama butonu (`.clear-variant-selection-btn`) eklendi; tıklandığında seçimi kaldırır, ana ürün fiyatını, galeri görselini ve kampanya sayacını eski haline getirir.
+  - Galeri küçük resimlerinde ana ürün görseline tıklandığında varyant seçiminin otomatik sıfırlanması sağlandı.
+  - `syncCountdownTimer(endDate, originalPrice)` fonksiyonu ile varyantlar arası kampanya sayacı sızıntısı giderildi; ana ürünün kampanya süresi korunarak varyantlar arasında doğru gösterim sağlandı.
+- [x] **Adım 253 (Playwright Canlı Site Uçtan Uca Doğrulama)**:
+  - `https://7anrps48.com/products/test-3-powder-canister-114` üzerinde varyant seçimi, sayaç güncellemesi, sıfırlama butonu ve ana görsel tıklaması 5/5 senaryoyla doğrulandı.
 
+### Faz 40 (Video 9 — Yönetim Paneli Varyant 'Varsayılan' Toggle Kilitlenmesi & Fiyat İzolasyonu — 27 Eylül 2026)
+- [x] **Adım 254 (Backend SyncVariantsAsync Zorunlu Varsayılan Fallback Kaldırıldı)**:
+  - `Areas/Admin/Controllers/UrunController.cs`: `SyncVariantsAsync` içinde `validIncoming.FirstOrDefault(x => x.VarsayilanMi && x.AktifMi) ?? validIncoming.FirstOrDefault(x => x.AktifMi && x.StokAdedi > 0) ?? ...` zincirindeki zorlamalı fallback'ler kaldırıldı.
+  - Yalnızca mağaza yöneticisinin açıkça `VarsayilanMi = true` olarak işaretlediği varyant varsayılan kabul edildi (`x.VarsayilanMi`). Yönetici tüm varyantların varsayılan switch'ini kapattığında `defaultVariant` null kalır ve tüm varyantlar DB'de `VarsayilanMi = false` olarak saklanır.
+  - Böylece varyantları "ملحقات إضافية" (isteğe bağlı aksesuar/eklentiler) olan ürünlerde hiçbir varyantın zorunlu olarak varsayılan seçilmemesi sağlandı.
+- [x] **Adım 255 (Admin UI Varyant Editörü DOM Ezme İptali)**:
+  - `Areas/Admin/Views/Urun/_VariantEditor.cshtml`: `syncDefaultCheckbox` içindeki `mainIndirimliFiyat`, `mainMaliyet`, `mainSku`, `mainStokDurumu` DOM alanlarını sessizce ezen kod temizlendi.
+  - Switch sadece varyantlar arasında karşılıklı dışlama (mutual exclusivity) sağlar; kapatıldığında kapalı kalır ve ana ürünün "السعر والعمليات" sekmesindeki bağımsız fiyatını kesinlikle bozmaz.
+- [x] **Adım 256 (Vitrin Detay Sayfası Varsayılan Varyant Bütünlüğü)**:
+  - `Views/Urun/Detay.cshtml`: `varsayilanSecenek` mantığı temizlendi; yalnızca DB'de `VarsayilanMi == true` olan varyant varsa açılışta seçilir, yoksa ana ürün fiyatı (45 ₪), ana görseli ve ana sayaç gösterilir.
+  - `dotnet build`: 0 Hata, 0 Uyarı ile derlendi.
