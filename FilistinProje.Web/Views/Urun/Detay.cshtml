@@ -1734,7 +1734,6 @@ const PRODUCT_BASE_PRICE = @Model.EtkinFiyat.ToString(System.Globalization.Cultu
 const PRODUCT_MAIN_PRICE = @Model.EtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture);
 const PRODUCT_MAIN_OLD_PRICE = @(Model.IndirimVarMi ? Model.Fiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : "0");
 const MAIN_CAMPAIGN_END_DATE = '@(Model.KampanyaBitisTarihi?.ToString("yyyy-MM-ddTHH:mm:ssZ") ?? "")';
-const MAIN_PRODUCT_CAMPAIGN_END_DATE = '@(Model.KampanyaBitisTarihi?.ToString("yyyy-MM-ddTHH:mm:ssZ") ?? "")';
 
 function updateSelectionSummary() {
     var summary = document.getElementById('selectionSummary');
