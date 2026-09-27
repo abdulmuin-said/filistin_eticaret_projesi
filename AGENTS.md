@@ -1011,10 +1011,15 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
   - `Views/Urun/Detay.cshtml`: `PRODUCT_BASE_PRICE`, `PRODUCT_MAIN_PRICE` ve `PRODUCT_MAIN_OLD_PRICE` sabitleri artık varyant fiyatı ile ezilmeyip daima ana ürünün kendi taban fiyatı (`@Model.EtkinFiyat`, `@Model.Fiyat`) ile başlatılıyor.
   - `MAIN_PRODUCT_CAMPAIGN_END_DATE` tekil tanımı ve sayfa başına güvenli `window.formatMoney` fallback tanımı eklendi (layout footer yüklenmeden önce oluşabilecek TypeError yarış durumları engellendi).
   - `initProductDetailState()`: `DOMContentLoaded` ve BFCache (`pageshow`) güvencesiyle, hiçbir varyant varsayılan değilse açılışta ana ürünün fiyatı gösteriliyor, "المنتج الأصلي (إلغاء التحديد)" butonu gizleniyor; varyant seçildiğinde açılıyor, tıklandığında ana ürüne sıfırlanıyor.
-- [x] **Adım 268 (Playwright Canlı Test Doğrulaması)**:
-  - Canlı sitede (`7anrps48.com`) admin girişi yapıldı, `Admin/Urun/Duzenle/114#varyasyon` test edildi.
-  - Video 12 doğrulandı: `SatisFiyati` alanının `readonly` olmadığı (`satisReadonly: false`), doğrudan 120 ₪ yazıldığında farkın anında 40 ₪ olduğu, farka 30 ₪ yazıldığında satış fiyatının anında 110 ₪ olduğu canlı tarayıcıda kanıtlandı.
-  - Video 13 doğrulandı: Kademeli toptan fiyat modellerinde silinen varyant kademelerinin otomatik temizlendiği ve model binding doğrulaması sağlandı.
+- [x] **Adım 268 (Playwright Canlı Test Doğrulaması — Video 11, 12, 13)**:
+  - Canlı sitede (`7anrps48.com`) `https://7anrps48.com/products/test-3-powder-canister-114` vitrin sayfası test edildi:
+    - Tarayıcı konsolunda **0 JavaScript Hatası** (`Errors: 0`) doğrulandı.
+    - Video 11 doğrulandı: Sayfa açılışında ana ürünün kendi fiyatı (`80.00 ₪`) görüntülendi, varyant fiyatıyla ezilmedi. "المنتج الأصلي (إلغاء التحديد)" butonu başlangıçta gizli.
+    - Kırmızı varyant ("أحمر") seçildiğinde fiyat anında `100.00 ₪` oldu ve sıfırlama butonu belirdi.
+    - "المنتج الأصلي (إلغاء التحديد)" butonuna tıklandığında varyant seçimi temizlendi ve fiyat kusursuz şekilde tekrar ana ürün fiyatına (`80.00 ₪`) geri döndü.
+  - Canlı sitede admin girişi yapıldı, `Admin/Urun/Duzenle/114#varyasyon` test edildi:
+    - Video 12 doğrulandı: `SatisFiyati` alanının `readonly` olmadığı (`satisReadonly: false`), doğrudan 120 ₪ yazıldığında farkın anında 40 ₪ olduğu, farka 30 ₪ yazıldığında satış fiyatının anında 110 ₪ olduğu, geri alındığında 100 ₪ / 20 ₪ olarak korunduğu kanıtlandı.
+    - Video 13 doğrulandı: Kademeli toptan fiyat modellerinde silinen varyant kademelerinin otomatik temizlendiği ve kaydetme işlemlerinin hatasız çalıştığı doğrulandı.
 - [x] **Adım 269 (Derleme Doğrulaması)**:
   - `dotnet build FilistinProje.sln`: 0 Hata ile başarıyla derlendi.
 
