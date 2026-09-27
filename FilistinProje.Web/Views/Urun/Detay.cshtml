@@ -1336,6 +1336,14 @@ const PRODUCT_WHATSAPP_NAME = @Html.Raw(System.Text.Json.JsonSerializer.Serializ
 const PRODUCT_WHATSAPP_URL = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(productUrl));
 const PRODUCT_WHATSAPP_NUMBER = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(whatsappNumber));
 
+if (typeof window.formatMoney !== 'function') {
+    window.formatMoney = function(amount, includeCurrency = true) {
+        if (amount === null || amount === undefined || isNaN(amount)) return '0.00 @currencySymbol';
+        var formatted = Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return includeCurrency ? (formatted + ' @currencySymbol') : formatted;
+    };
+}
+
 function updateWhatsappOrderLink() {
     const link = document.getElementById('whatsappOrderLink');
     if (!link) return;
@@ -2505,7 +2513,11 @@ function initProductDetailState() {
         }
     });
 }
-initProductDetailState();
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProductDetailState);
+} else {
+    initProductDetailState();
+}
 window.addEventListener('pageshow', function (event) {
     initProductDetailState();
 });
