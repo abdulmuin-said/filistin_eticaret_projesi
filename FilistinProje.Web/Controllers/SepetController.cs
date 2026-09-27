@@ -247,7 +247,8 @@ namespace FilistinProje.Web.Controllers
         public async Task<IActionResult> Ekle(int UrunId, int? SecenekId, int Adet = 1, string? CerceveModeli = null, string? MusteriNotu = null, decimal? CerceveFarki = null, int? HediyePaketSecenegiId = null)
         {
             if (Adet < 1) Adet = 1;
-            if (Adet > 100) Adet = 100;
+            const int maxQuantityLimit = 10000;
+            if (Adet > maxQuantityLimit) Adet = maxQuantityLimit;
 
             var userId = User.Identity?.IsAuthenticated == true ? _userManager.GetUserId(User) : null;
 
@@ -269,7 +270,7 @@ namespace FilistinProje.Web.Controllers
             }
         }
 
-        // Adet gÃ¼ncelleme - database'de SepetItem ID ile Ã§alÄ±ÅŸÄ±yor
+        // Adet güncelleme - database'de SepetItem ID ile çalışıyor
         [HttpPost("update-qty")] [ValidateAntiForgeryToken] public async Task<IActionResult> AdetGuncelle(int sepetItemId, int yeniAdet)
         {
             var userId = User.Identity?.IsAuthenticated == true ? _userManager.GetUserId(User) : null;
@@ -279,7 +280,8 @@ namespace FilistinProje.Web.Controllers
                 return RedirectToAction("Index");
 
             if (yeniAdet < 1) yeniAdet = 1;
-            if (yeniAdet > 100) yeniAdet = 100;
+            const int maxQuantityLimit = 10000;
+            if (yeniAdet > maxQuantityLimit) yeniAdet = maxQuantityLimit;
             var success = await _sepetService.AdediGuncelleAsync(sepetItemId, yeniAdet);
             if (!success)
             {

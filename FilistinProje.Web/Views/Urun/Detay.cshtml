@@ -680,6 +680,14 @@
                 <span id="lowStockText">@string.Format(Localizer["LowStockText"].Value, varsayilanStok)</span>
             </div>
 
+            @if (Model.Kategori?.ReceteGerekliMi == true)
+            {
+                <div class="rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3 text-xs font-semibold text-sky-800 flex items-center gap-2.5 shadow-sm" role="alert">
+                    <i class="fas fa-file-prescription text-base text-sky-600 shrink-0"></i>
+                    <span>@(isAr ? "يتطلب هذا المنتج وصفة طبية صالحة لإتمام عملية الشراء." : "This product requires a valid medical prescription to complete the purchase.")</span>
+                </div>
+            }
+
             @if (whatsappSiparisModu)
             {
                 @if (secenekler.Count > 1)
@@ -689,9 +697,9 @@
                             <div id="variantSummaryText" class="text-xs font-medium uppercase tracking-widest text-brand-darktext @(string.IsNullOrWhiteSpace(seciliVaryantMetni) ? "hidden" : "")"><i class="fas fa-layer-group me-1.5"></i><span>@seciliVaryantMetni</span></div>
                             <button type="button" 
                                     class="clear-variant-selection-btn text-xs font-semibold text-brand-gold hover:text-brand-dark hover:underline cursor-pointer hidden items-center gap-1 transition-colors"
-                                    onclick="resetToMainProductState(false)">
+                                    onclick="resetToDefaultVariant(false)">
                                 <i class="fas fa-undo-alt text-[10px]"></i>
-                                <span>@(isAr ? "المنتج الأصلي (إلغاء التحديد)" : "Original product (Clear)")</span>
+                                <span>@(isAr ? "إعادة تعيين للافتراضي" : "Reset to default")</span>
                             </button>
                         </div>
                         <div class="flex flex-wrap gap-2">
@@ -706,11 +714,11 @@
                                 <label class="variant-option-card relative cursor-pointer select-none rounded border-2 border-brand-border bg-white px-4 py-3 text-sm text-brand-mutedtext transition-all duration-150 hover:border-brand-gold @(!varyantSatinAlinabilir ? "is-disabled" : "")">
                                     @if (Model.FiyatGizliMi)
                                     {
-                                        <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
+                                        <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-default="@(varyant.Id == varsayilanSecenek?.Id ? "true" : "false")" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
                                     }
                                     else
                                     {
-                                        <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-price="@varyant.EtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-enddate="@(varyant.IndirimVarMi && varyant.IndirimBitisTarihi.HasValue ? varyant.IndirimBitisTarihi.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
+                                        <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-default="@(varyant.Id == varsayilanSecenek?.Id ? "true" : "false")" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-price="@varyant.EtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-enddate="@(varyant.IndirimVarMi && varyant.IndirimBitisTarihi.HasValue ? varyant.IndirimBitisTarihi.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
                                     }
                                     @if (!string.IsNullOrWhiteSpace(varyant.RenkKodu) || !string.IsNullOrWhiteSpace(varyant.Renk)) { <span class="me-1 inline-block h-3 w-3 rounded-full border align-middle" data-variant-color="@varyant.Id" style="background-color:@varyant.GuvenliRenkKodu;border-color:rgba(0,0,0,.35)"></span> }
                                     @varyantEtiket
@@ -754,9 +762,9 @@
                             <div id="variantSummaryText" class="text-xs font-medium uppercase tracking-widest text-brand-darktext @(string.IsNullOrWhiteSpace(seciliVaryantMetni) ? "hidden" : "")"><i class="fas fa-layer-group me-1.5"></i><span>@seciliVaryantMetni</span></div>
                             <button type="button" 
                                     class="clear-variant-selection-btn text-xs font-semibold text-brand-gold hover:text-brand-dark hover:underline cursor-pointer hidden items-center gap-1 transition-colors"
-                                    onclick="resetToMainProductState(false)">
+                                    onclick="resetToDefaultVariant(false)">
                                 <i class="fas fa-undo-alt text-[10px]"></i>
-                                <span>@(isAr ? "المنتج الأصلي (إلغاء التحديد)" : "Original product (Clear)")</span>
+                                <span>@(isAr ? "إعادة تعيين للافتراضي" : "Reset to default")</span>
                             </button>
                         </div>
                         <div class="flex flex-wrap gap-2">
@@ -790,7 +798,7 @@
                                 var varyantEskiFiyat = varyant.IndirimVarMi ? varyant.SatisFiyati : (isWholesale && varyantEtkinFiyat < varyant.SatisFiyati ? varyant.SatisFiyati : 0);
                                 var varyantSecimRengi = FilistinProje.Core.Helpers.VaryantRenkYardimcisi.TryNormalizeHex(varyant.RenkKodu, out var guvenliVaryantRengi) ? guvenliVaryantRengi : string.Empty;
                                 <label class="variant-option-card relative cursor-pointer select-none rounded border-2 border-brand-border bg-white px-4 py-3 text-sm text-brand-mutedtext transition-all duration-150 hover:border-brand-gold @(!varyantSatinAlinabilir ? "is-disabled" : "")">
-                                    <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-price="@varyantEtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-enddate="@(varyant.IndirimVarMi && varyant.IndirimBitisTarihi.HasValue ? varyant.IndirimBitisTarihi.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
+                                    <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-default="@(varyant.Id == varsayilanSecenek?.Id ? "true" : "false")" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-price="@varyantEtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-enddate="@(varyant.IndirimVarMi && varyant.IndirimBitisTarihi.HasValue ? varyant.IndirimBitisTarihi.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
                                     @if (!string.IsNullOrWhiteSpace(varyant.RenkKodu) || !string.IsNullOrWhiteSpace(varyant.Renk)) { <span class="me-1 inline-block h-3 w-3 rounded-full border align-middle" data-variant-color="@varyant.Id" style="background-color:@varyant.GuvenliRenkKodu;border-color:rgba(0,0,0,.35)"></span> }
                                     @varyantEtiket
                                 </label>
@@ -872,9 +880,9 @@
                     <div>
                         <label class="mb-2 block text-xs font-medium uppercase tracking-widest text-brand-darktext">@Localizer["Quantity"]</label>
                         <div class="flex h-12 items-center border border-brand-border bg-white rounded-md">
-                            <button type="button" class="flex h-full w-10 items-center justify-center hover:bg-brand-cream transition-colors text-brand-darktext font-bold" onclick="decreaseQuantity()" aria-label="@Localizer["Decrease"]">-</button>
-                            <input id="productQuantity" type="number" min="@minSiparisAdedi" max="@maxSiparisAdedi" value="@minSiparisAdedi" class="h-full w-14 border-0 bg-transparent p-0 text-center text-sm font-semibold text-brand-darktext focus:ring-0 focus:outline-none" />
-                            <button type="button" class="flex h-full w-10 items-center justify-center hover:bg-brand-cream transition-colors text-brand-darktext font-bold" onclick="increaseQuantity()" aria-label="@Localizer["Increase"]">+</button>
+                            <button id="qtyDecreaseBtn" type="button" class="flex h-full w-10 items-center justify-center hover:bg-brand-cream transition-colors text-brand-darktext font-bold disabled:opacity-40 disabled:cursor-not-allowed" onclick="decreaseQuantity()" aria-label="@Localizer["Decrease"]">-</button>
+                            <input id="productQuantity" type="number" min="@minSiparisAdedi" max="@maxSiparisAdedi" value="@minSiparisAdedi" class="h-full w-14 border-0 bg-transparent p-0 text-center text-sm font-semibold text-brand-darktext focus:ring-0 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed" />
+                            <button id="qtyIncreaseBtn" type="button" class="flex h-full w-10 items-center justify-center hover:bg-brand-cream transition-colors text-brand-darktext font-bold disabled:opacity-40 disabled:cursor-not-allowed" onclick="increaseQuantity()" aria-label="@Localizer["Increase"]">+</button>
                         </div>
                     </div>
                     <button id="ajaxSepetBtn" type="button" class="flex h-12 min-w-0 flex-1 items-center justify-center gap-2 bg-brand-olive px-4 text-xs font-bold uppercase tracking-widest text-white rounded-md transition-colors hover:bg-[#1c2001] disabled:cursor-wait disabled:opacity-70"><i class="fas fa-shopping-bag add-to-cart-icon"></i><span class="add-to-cart-text">@Localizer["AddToCart"]</span></button>
@@ -1338,9 +1346,9 @@ const PRODUCT_WHATSAPP_NUMBER = @Html.Raw(System.Text.Json.JsonSerializer.Serial
 
 if (typeof window.formatMoney !== 'function') {
     window.formatMoney = function(amount, includeCurrency = true) {
-        if (amount === null || amount === undefined || isNaN(amount)) return '0.00 @currencySymbol';
+        if (amount === null || amount === undefined || isNaN(amount)) return '<bdi dir="ltr">0.00 @currencySymbol</bdi>';
         var formatted = Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        return includeCurrency ? (formatted + ' @currencySymbol') : formatted;
+        return includeCurrency ? ('<bdi dir="ltr">' + formatted + ' @currencySymbol</bdi>') : ('<bdi dir="ltr">' + formatted + '</bdi>');
     };
 }
 
@@ -1854,7 +1862,12 @@ var giftSelectEl = document.getElementById('giftPackageSelect');
 if (giftSelectEl) {
     giftSelectEl.addEventListener('change', function () {
         var note = document.getElementById('giftNoteText');
-        if (note) note.classList.toggle('hidden', !this.value);
+        if (note) {
+            note.classList.toggle('hidden', !this.value);
+            if (!this.value) {
+                note.value = '';
+            }
+        }
         updateSelectionSummary();
         updatePriceDisplay();
     });
@@ -1986,90 +1999,89 @@ function updatePriceWithFrame() {
     updatePriceDisplay();
 }
 
-function resetToMainProductState(keepCurrentThumbnail) {
-    // 1. Tüm varyant seçimlerini kaldır
-    document.querySelectorAll('.variant-radio').forEach(function(r) {
-        r.checked = false;
-    });
+function resetToDefaultVariant(keepCurrentThumbnail) {
+    // 1. Varsayılan varyantı bul: data-default="true" olan veya ilk satın alınabilir varyant
+    var defaultRadio = document.querySelector('.variant-radio[data-default="true"]') 
+        || document.querySelector('.variant-radio[data-purchasable="true"]') 
+        || document.querySelector('.variant-radio');
 
-    // 2. Seçili varyant ID gizli alanını boşalt
-    var selectedVariantId = document.getElementById('selectedVariantId');
-    if (selectedVariantId) selectedVariantId.value = '';
+    if (defaultRadio) {
+        if (!defaultRadio.checked) {
+            defaultRadio.checked = true;
+            defaultRadio.dispatchEvent(new Event('change', { bubbles: true }));
+        } else {
+            defaultRadio.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    } else {
+        // Varyantsız tek ürün durumu
+        var selectedVariantId = document.getElementById('selectedVariantId');
+        if (selectedVariantId) selectedVariantId.value = '';
 
-    // 3. Varyant kart stillerini sıfırla (.is-selected ve onay ikonlarını kaldır)
-    updateVariantCardStyles();
+        updateVariantCardStyles();
 
-    // 4. "İptal / Ana Ürün" butonlarını gizle
-    document.querySelectorAll('.clear-variant-selection-btn').forEach(function(btn) {
-        btn.classList.add('hidden');
-        btn.classList.remove('inline-flex');
-    });
+        document.querySelectorAll('.clear-variant-selection-btn').forEach(function(btn) {
+            btn.classList.add('hidden');
+            btn.classList.remove('inline-flex');
+        });
 
-    // 5. Toptancı varyant kademesi varsa sıfırla
-    var wholesaleSelect = document.getElementById('wholesaleTierSelect');
-    if (wholesaleSelect && wholesaleSelect.value) {
-        var selectedOption = wholesaleSelect.options[wholesaleSelect.selectedIndex];
-        var tierVariantId = parseInt(selectedOption?.getAttribute('data-variant-id')) || 0;
-        if (tierVariantId > 0) {
+        var wholesaleSelect = document.getElementById('wholesaleTierSelect');
+        if (wholesaleSelect && wholesaleSelect.value) {
             wholesaleSelect.value = '';
         }
-    }
 
-    // 6. Fiyat, eski fiyat, indirim rozeti ve indirim sayacını ana ürüne göre güncelle
-    updatePriceDisplay();
-    updateWhatsappOrderLink();
+        updatePriceDisplay();
+        updateWhatsappOrderLink();
 
-    // 7. Ana ürün görseline geri dön (eğer tıklanan küçük resim zaten seçilmediyse)
-    if (!keepCurrentThumbnail) {
-        var targetImg = MAIN_PRODUCT_IMAGE || DEFAULT_PRODUCT_IMAGE;
-        if (targetImg) {
-            changeProductImage(targetImg, null, '');
+        if (!keepCurrentThumbnail) {
+            var targetImg = MAIN_PRODUCT_IMAGE || DEFAULT_PRODUCT_IMAGE;
+            if (targetImg) {
+                changeProductImage(targetImg, null, '');
+            }
+        }
+
+        var variantSummary = document.getElementById('variantSummaryText');
+        if (variantSummary) {
+            variantSummary.innerHTML = '';
+            variantSummary.classList.add('hidden');
+        }
+
+        var lowStockWarning = document.getElementById('lowStockWarning');
+        if (lowStockWarning) lowStockWarning.classList.add('hidden');
+
+        var stockStatusText = document.getElementById('stockStatusText');
+        if (stockStatusText) {
+            if (PRODUCT_INITIAL_STOKTA_VAR || PRODUCT_STOKTA_YOK_SATIS_IZNI) {
+                stockStatusText.innerHTML = '<i class="fas fa-check-circle text-green-600"></i> ' + TXT_MADE_TO_ORDER;
+            } else {
+                stockStatusText.innerHTML = '<i class="fas fa-times-circle text-red-600"></i> ' + TXT_OUT_OF_STOCK;
+            }
+        }
+
+        var quantityInput = document.getElementById('productQuantity');
+        if (quantityInput) {
+            quantityInput.max = 99;
+            var minQuantity = parseInt(quantityInput.getAttribute('min')) || 1;
+            quantityInput.value = minQuantity;
+            var selectedQuantity = document.getElementById('selectedQuantity');
+            if (selectedQuantity) selectedQuantity.value = minQuantity;
+        }
+
+        var ajaxBtn = document.getElementById('ajaxSepetBtn');
+        if (ajaxBtn) {
+            var canBuy = PRODUCT_INITIAL_STOKTA_VAR || PRODUCT_STOKTA_YOK_SATIS_IZNI;
+            ajaxBtn.disabled = !canBuy;
+            ajaxBtn.classList.toggle('opacity-50', !canBuy);
+            ajaxBtn.classList.toggle('cursor-not-allowed', !canBuy);
+            var btnText = ajaxBtn.querySelector('.add-to-cart-text');
+            if (btnText) {
+                btnText.textContent = canBuy ? TXT_ADD_TO_CART : TXT_OUT_OF_STOCK;
+            }
         }
     }
+}
 
-    // 8. Varyant özet metnini gizle
-    var variantSummary = document.getElementById('variantSummaryText');
-    if (variantSummary) {
-        variantSummary.innerHTML = '';
-        variantSummary.classList.add('hidden');
-    }
-
-    // 9. Düşük stok uyarısını gizle
-    var lowStockWarning = document.getElementById('lowStockWarning');
-    if (lowStockWarning) lowStockWarning.classList.add('hidden');
-
-    // 10. Stok durum metnini ana ürüne göre ayarla
-    var stockStatusText = document.getElementById('stockStatusText');
-    if (stockStatusText) {
-        if (PRODUCT_INITIAL_STOKTA_VAR || PRODUCT_STOKTA_YOK_SATIS_IZNI) {
-            stockStatusText.innerHTML = '<i class="fas fa-check-circle text-green-600"></i> ' + TXT_MADE_TO_ORDER;
-        } else {
-            stockStatusText.innerHTML = '<i class="fas fa-times-circle text-red-600"></i> ' + TXT_OUT_OF_STOCK;
-        }
-    }
-
-    // 11. Adet kutusu sınırlarını sıfırla
-    var quantityInput = document.getElementById('productQuantity');
-    if (quantityInput) {
-        quantityInput.max = 99;
-        var minQuantity = parseInt(quantityInput.getAttribute('min')) || 1;
-        quantityInput.value = minQuantity;
-        var selectedQuantity = document.getElementById('selectedQuantity');
-        if (selectedQuantity) selectedQuantity.value = minQuantity;
-    }
-
-    // 12. Sepete ekle butonunu aktif et
-    var ajaxBtn = document.getElementById('ajaxSepetBtn');
-    if (ajaxBtn) {
-        var canBuy = PRODUCT_INITIAL_STOKTA_VAR || PRODUCT_STOKTA_YOK_SATIS_IZNI;
-        ajaxBtn.disabled = !canBuy;
-        ajaxBtn.classList.toggle('opacity-50', !canBuy);
-        ajaxBtn.classList.toggle('cursor-not-allowed', !canBuy);
-        var btnText = ajaxBtn.querySelector('.add-to-cart-text');
-        if (btnText) {
-            btnText.textContent = canBuy ? TXT_ADD_TO_CART : TXT_OUT_OF_STOCK;
-        }
-    }
+function resetToMainProductState(keepCurrentThumbnail) {
+    resetToDefaultVariant(keepCurrentThumbnail);
 }
 
 function updateProductPricing() {
@@ -2142,6 +2154,21 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
 
             updateVariantCardStyles();
 
+            // URL senkronizasyonu (?v={id})
+            if (window.history && window.history.replaceState) {
+                try {
+                    var currentUrl = new URL(window.location.href);
+                    if (this.value) {
+                        currentUrl.searchParams.set('v', this.value);
+                    } else {
+                        currentUrl.searchParams.delete('v');
+                    }
+                    window.history.replaceState({ variantId: this.value }, '', currentUrl.toString());
+                } catch (e) {
+                    console.warn('URL sync failed:', e);
+                }
+            }
+
             var wholesaleSelect = document.getElementById('wholesaleTierSelect');
             if (wholesaleSelect && wholesaleSelect.value) {
                 var selectedOption = wholesaleSelect.options[wholesaleSelect.selectedIndex];
@@ -2154,10 +2181,16 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
             updatePriceDisplay();
             updateWhatsappOrderLink();
 
-            // "İptal / Ana Ürüne Dön" butonunu göster
+            // Varsayılan varyanttan farklı ise "Varsayılana Dön" butonunu göster
+            var isDefault = this.getAttribute('data-default') === 'true';
             document.querySelectorAll('.clear-variant-selection-btn').forEach(function(btn) {
-                btn.classList.remove('hidden');
-                btn.classList.add('inline-flex');
+                if (isDefault) {
+                    btn.classList.add('hidden');
+                    btn.classList.remove('inline-flex');
+                } else {
+                    btn.classList.remove('hidden');
+                    btn.classList.add('inline-flex');
+                }
             });
 
             var targetImg = (imageUrl && imageUrl.trim() !== '') ? imageUrl : (MAIN_PRODUCT_IMAGE || DEFAULT_PRODUCT_IMAGE);
@@ -2205,16 +2238,21 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
                 productionCardText.innerText = TXT_BUSINESS_DAYS.replace('{0}', productionDays);
             }
             
+            var isPurchasable = this.getAttribute('data-purchasable') !== 'false';
             var quantityInput = document.getElementById('productQuantity');
+            var qtyDecBtn = document.getElementById('qtyDecreaseBtn');
+            var qtyIncBtn = document.getElementById('qtyIncreaseBtn');
             if (quantityInput) {
+                quantityInput.disabled = !isPurchasable;
                 quantityInput.max = stock > 0 ? stock : (isPreorder ? 99 : 1);
                 var minQuantity = parseInt(quantityInput.getAttribute('min')) || 1;
                 quantityInput.value = minQuantity;
                 var selectedQuantity = document.getElementById('selectedQuantity');
                 if (selectedQuantity) selectedQuantity.value = minQuantity;
             }
+            if (qtyDecBtn) qtyDecBtn.disabled = !isPurchasable;
+            if (qtyIncBtn) qtyIncBtn.disabled = !isPurchasable;
 
-            var isPurchasable = this.getAttribute('data-purchasable') !== 'false';
             var ajaxBtn = document.getElementById('ajaxSepetBtn');
             if (ajaxBtn) {
                 if (!isPurchasable) {
@@ -2252,8 +2290,8 @@ document.querySelectorAll('.variant-option-card').forEach(function(card) {
 
 function increaseQuantity() {
     const input = document.getElementById('productQuantity');
+    if (!input || input.disabled) return;
     const selectedInput = document.getElementById('selectedQuantity');
-    if (!input) return;
     
     let max = parseInt(input.getAttribute('max')) || 99;
     let val = parseInt(input.value) || 1;
@@ -2266,8 +2304,8 @@ function increaseQuantity() {
 
 function decreaseQuantity() {
     const input = document.getElementById('productQuantity');
+    if (!input || input.disabled) return;
     const selectedInput = document.getElementById('selectedQuantity');
-    if (!input) return;
     
     let min = parseInt(input.getAttribute('min')) || 1;
     let val = parseInt(input.value) || 1;
@@ -2500,11 +2538,23 @@ if (wholesaleSelect) {
 
 // Sayfa ilk yüklendiğinde ve BFCache (Geri/İleri) durumunda senkronize et
 function initProductDetailState() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var variantParam = urlParams.get('v');
+    if (variantParam) {
+        var matchingRadio = document.querySelector('.variant-radio[value="' + variantParam + '"]');
+        if (matchingRadio && !matchingRadio.checked && !matchingRadio.disabled) {
+            matchingRadio.checked = true;
+            matchingRadio.dispatchEvent(new Event('change', { bubbles: true }));
+            return;
+        }
+    }
+
     updatePriceDisplay();
     updateVariantCardStyles();
-    var hasSelectedVariant = document.querySelector('.variant-radio:checked');
+    var selectedRadio = document.querySelector('.variant-radio:checked');
+    var isDefault = selectedRadio ? selectedRadio.getAttribute('data-default') === 'true' : true;
     document.querySelectorAll('.clear-variant-selection-btn').forEach(function(btn) {
-        if (hasSelectedVariant) {
+        if (selectedRadio && !isDefault) {
             btn.classList.remove('hidden');
             btn.classList.add('inline-flex');
         } else {
@@ -2512,6 +2562,23 @@ function initProductDetailState() {
             btn.classList.remove('inline-flex');
         }
     });
+
+    if (selectedRadio) {
+        var isPurchasable = selectedRadio.getAttribute('data-purchasable') !== 'false';
+        var quantityInput = document.getElementById('productQuantity');
+        var qtyDecBtn = document.getElementById('qtyDecreaseBtn');
+        var qtyIncBtn = document.getElementById('qtyIncreaseBtn');
+        if (quantityInput) quantityInput.disabled = !isPurchasable;
+        if (qtyDecBtn) qtyDecBtn.disabled = !isPurchasable;
+        if (qtyIncBtn) qtyIncBtn.disabled = !isPurchasable;
+        var ajaxBtn = document.getElementById('ajaxSepetBtn');
+        if (ajaxBtn && !isPurchasable) {
+            ajaxBtn.disabled = true;
+            ajaxBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            var btnText = ajaxBtn.querySelector('.add-to-cart-text');
+            if (btnText) btnText.textContent = TXT_OUT_OF_STOCK;
+        }
+    }
 }
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initProductDetailState);
@@ -2520,5 +2587,22 @@ if (document.readyState === 'loading') {
 }
 window.addEventListener('pageshow', function (event) {
     initProductDetailState();
+});
+window.addEventListener('popstate', function (event) {
+    var urlParams = new URLSearchParams(window.location.search);
+    var variantParam = urlParams.get('v');
+    if (variantParam) {
+        var matchingRadio = document.querySelector('.variant-radio[value="' + variantParam + '"]');
+        if (matchingRadio && !matchingRadio.checked) {
+            matchingRadio.checked = true;
+            matchingRadio.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    } else {
+        var defaultRadio = document.querySelector('.variant-radio[data-default="true"]');
+        if (defaultRadio && !defaultRadio.checked) {
+            defaultRadio.checked = true;
+            defaultRadio.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    }
 });
 </script>

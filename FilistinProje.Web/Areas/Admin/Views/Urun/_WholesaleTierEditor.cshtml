@@ -77,9 +77,55 @@
         });
         reindex();
     };
+
+    const updateVariantDropdowns = (variantList) => {
+        const variants = variantList || (typeof window.getAvailableVariants === 'function' ? window.getAvailableVariants() : []);
+        list.querySelectorAll('select[data-tier-field="UrunSecenekId"]').forEach(select => {
+            const currentVal = select.value;
+            const firstOptText = select.options.length > 0 ? select.options[0].textContent : '@Localizer["Admin_AllProduct"]';
+            select.innerHTML = `<option value="">${firstOptText}</option>`;
+            variants.forEach(v => {
+                if (v.id && v.id !== '0') {
+                    const opt = document.createElement('option');
+                    opt.value = v.id;
+                    opt.textContent = v.title;
+                    if (opt.value === currentVal) opt.selected = true;
+                    select.appendChild(opt);
+                }
+            });
+        });
+    };
+
+    document.addEventListener('variantListChanged', (e) => {
+        updateVariantDropdowns(e.detail);
+    });
+
     list.querySelectorAll('[data-wholesale-tier]').forEach(bind);
-    add.addEventListener('click', () => { list.insertAdjacentHTML('beforeend', template.innerHTML); const row = list.lastElementChild; if (row) bind(row); reindex(); });
+    add.addEventListener('click', () => { 
+        list.insertAdjacentHTML('beforeend', template.innerHTML); 
+        const row = list.lastElementChild; 
+        if (row) {
+            bind(row);
+            if (typeof window.getAvailableVariants === 'function') {
+                const variants = window.getAvailableVariants();
+                const select = row.querySelector('select[data-tier-field="UrunSecenekId"]');
+                if (select) {
+                    const firstOptText = select.options.length > 0 ? select.options[0].textContent : '@Localizer["Admin_AllProduct"]';
+                    select.innerHTML = `<option value="">${firstOptText}</option>`;
+                    variants.forEach(v => {
+                        if (v.id && v.id !== '0') {
+                            const opt = document.createElement('option');
+                            opt.value = v.id;
+                            opt.textContent = v.title;
+                            select.appendChild(opt);
+                        }
+                    });
+                }
+            }
+        }
+        reindex(); 
+    });
     reindex();
-    window.caWholesaleTierEditor = { removeVariant, refresh: reindex };
+    window.caWholesaleTierEditor = { removeVariant, refresh: reindex, updateVariantDropdowns };
 })();
 </script>

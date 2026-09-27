@@ -1364,6 +1364,24 @@
                 alert(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Product_DiscountEndDateRequired"].Value)));
                 return false;
             }
+
+            // Gizli sekmelerdeki HTML5 geçersiz elemanları tespit edip ilgili sekmeyi otomatik aç
+            if (!this.checkValidity()) {
+                const firstInvalid = this.querySelector(':invalid');
+                if (firstInvalid) {
+                    const parentPanel = firstInvalid.closest('[data-product-panel]');
+                    if (parentPanel) {
+                        const panelName = parentPanel.dataset.productPanel;
+                        const tabBtn = document.querySelector(`[data-product-tab="${panelName}"]`);
+                        if (tabBtn) {
+                            tabBtn.click();
+                            setTimeout(() => {
+                                try { firstInvalid.focus(); } catch (err) {}
+                            }, 50);
+                        }
+                    }
+                }
+            }
         });
 
         // --- No Exchange Policy Toggle & Dynamic Color Picker ---

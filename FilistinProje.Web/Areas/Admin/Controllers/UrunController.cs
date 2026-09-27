@@ -349,10 +349,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             model.KampanyaBitisTarihi = BusinessTimeZoneService.ConvertStoreLocalToUtc(model.KampanyaBitisTarihi);
-            foreach (var variant in model.UrunSecenek ?? Enumerable.Empty<UrunSecenek>())
-            {
-                variant.IndirimBitisTarihi = BusinessTimeZoneService.ConvertStoreLocalToUtc(variant.IndirimBitisTarihi);
-            }
 
             NormalizeOptionalProductFieldsForValidation(model);
             RemoveOptionalProductModelStateErrors();
@@ -360,6 +356,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             if (!await ValidateProductAsync(model, anaResimDosyasi, id, galeriDosyalari))
             {
                 AddVisibleModelStateErrorsToSummary();
+                // Form tekrar doldurulduğunda tarihler UTC kalmasın, mağaza yerel saatine geri çevrilsin
+                model.KampanyaBitisTarihi = BusinessTimeZoneService.ConvertUtcToStoreLocal(model.KampanyaBitisTarihi);
+                foreach (var variant in model.UrunSecenek ?? Enumerable.Empty<UrunSecenek>())
+                {
+                    variant.IndirimBitisTarihi = BusinessTimeZoneService.ConvertUtcToStoreLocal(variant.IndirimBitisTarihi);
+                }
+
                 await PopulateCategorySelectListAsync(model.KategoriId);
                 await PopulateProductMetadataAsync(model.UrunTipi);
                 ViewBag.ToptanciUrunGruplari = await _context.ToptanciUrunGruplari
@@ -429,6 +432,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     .ThenBy(g => g.Ad)
                     .Select(g => new SelectListItem { Value = g.Id.ToString(), Text = g.Ad })
                     .ToListAsync();
+                model.KampanyaBitisTarihi = BusinessTimeZoneService.ConvertUtcToStoreLocal(model.KampanyaBitisTarihi);
+                foreach (var variant in model.UrunSecenek ?? Enumerable.Empty<UrunSecenek>())
+                {
+                    variant.IndirimBitisTarihi = BusinessTimeZoneService.ConvertUtcToStoreLocal(variant.IndirimBitisTarihi);
+                }
+
                 model.UrunResimleri = urun.UrunResimleri;
                 model.GoruntulenmeSayisi = urun.GoruntulenmeSayisi;
                 model.SatisSayisi = urun.SatisSayisi;
@@ -3094,7 +3103,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             return Task.CompletedTask;
         }
 
-        private Task SyncVariantsAsync(Urun urun, ICollection<UrunSecenek>? incomingVariants)
+        private async Task SyncVariantsAsync(Urun urun, ICollection<UrunSecenek>? incomingVariants)
         {
             incomingVariants ??= new List<UrunSecenek>();
             var validIncoming = incomingVariants
@@ -3127,7 +3136,31 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
             if (toRemove.Count > 0)
             {
-                _context.UrunSecenekleri.RemoveRange(toRemove);
+                var removeIds = toRemove.Select(x => x.Id).ToList();
+                var usedInOrders = await _context.SiparisDetaylari
+                    .Where(x => x.UrunSecenekId.HasValue && removeIds.Contains(x.UrunSecenekId.Value))
+                    .Select(x => x.UrunSecenekId!.Value)
+                    .ToListAsync();
+                var usedInCart = await _context.SepetItems
+                    .Where(x => x.UrunSecenekId.HasValue && removeIds.Contains(x.UrunSecenekId.Value))
+                    .Select(x => x.UrunSecenekId!.Value)
+                    .ToListAsync();
+                var referencedIds = usedInOrders.Concat(usedInCart).ToHashSet();
+
+                foreach (var variant in toRemove)
+                {
+                    if (referencedIds.Contains(variant.Id))
+                    {
+                        // Sipariş/fatura veya sepet bütünlüğünü korumak için soft-delete yap
+                        variant.SilindiMi = true;
+                        variant.AktifMi = false;
+                    }
+                    else
+                    {
+                        _context.UrunSecenekleri.Remove(variant);
+                        urun.UrunSecenek.Remove(variant);
+                    }
+                }
             }
 
             foreach (var incoming in validIncoming)
@@ -3154,8 +3187,6 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
                 ApplyVariantFields(existing, incoming);
             }
-
-            return Task.CompletedTask;
         }
 
         private Task SyncGiftPackageOptionsAsync(Urun urun, ICollection<UrunHediyePaketSecenegi>? incomingOptions)

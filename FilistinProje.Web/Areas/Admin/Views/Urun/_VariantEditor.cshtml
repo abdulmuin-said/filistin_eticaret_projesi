@@ -632,10 +632,19 @@
                 const farkInput = selector(card, 'FiyatFarki');
                 const diff = parsePrice(farkInput?.value);
                 const satisInput = selector(card, 'SatisFiyati');
-                if (satisInput) {
+                const rawDiff = farkInput?.value?.trim();
+                const currentSatis = parsePrice(satisInput?.value);
+
+                // Eğer fiyat farkı açıkça girilmişse veya satış fiyatı 0 ise hesapla
+                if (rawDiff !== '' && rawDiff !== undefined && rawDiff !== null) {
                     const resolved = (basePrice + diff > 0) ? (basePrice + diff) : (basePrice > 0 ? basePrice : 0);
-                    satisInput.value = formatPrice(resolved);
-                    satisInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    if (satisInput) {
+                        satisInput.value = formatPrice(resolved);
+                        satisInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    }
+                } else if (currentSatis > 0 && farkInput) {
+                    // Sabit satış fiyatı korunur, fark arka planda güncellenir
+                    farkInput.value = formatPrice(currentSatis - basePrice);
                 }
             } finally {
                 isSyncingVariantPrice = false;
@@ -690,26 +699,13 @@
             return canvasOptionCategoryIds.has(categoryId);
         }
 
-        function clearCanvasFields(card) {
-            canvasFields.forEach((field) => {
-                const input = selector(card, field);
-                if (!input) {
-                    return;
-                }
-
-                input.value = field === 'ParcaSayisi' ? '1' : '';
-            });
-        }
-
         function applyCategoryScope() {
             const enabled = supportsCanvasOptions();
             list.querySelectorAll('[data-canvas-option]').forEach((el) => {
                 el.classList.toggle('ca-canvas-option-hidden', !enabled);
             });
-
-            if (!enabled) {
-                list.querySelectorAll('[data-variant-card]').forEach(clearCanvasFields);
-            }
+            // Not: Yanlışlıkla kategori seçildiğinde veri kaybını önlemek için input değerleri silinmez,
+            // sadece arayüzde gizlenir. Sunucu tarafı kaydetme anında güvenle temizler.
         }
 
         function toggleEmptyState() {
@@ -807,6 +803,24 @@
             });
 
             toggleEmptyState();
+            dispatchVariantListChanged();
+        }
+
+        function getAvailableVariants() {
+            const res = [];
+            list.querySelectorAll('[data-variant-card]').forEach((card, index) => {
+                const idVal = selector(card, 'Id')?.value || '0';
+                const titleVal = card.querySelector('[data-variant-title]')?.textContent?.trim() || `${index + 1}`;
+                res.push({ id: idVal, index: index, title: titleVal });
+            });
+            return res;
+        }
+
+        window.getAvailableVariants = getAvailableVariants;
+
+        function dispatchVariantListChanged() {
+            const variants = getAvailableVariants();
+            document.dispatchEvent(new CustomEvent('variantListChanged', { detail: variants }));
         }
 
         function bindCard(card) {
