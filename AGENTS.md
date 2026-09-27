@@ -950,4 +950,16 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
 - [x] **Adım 263 (Derleme ve Test Doğrulaması)**:
   - `dotnet build FilistinProje.sln`: 0 Hata ile başarıyla derlendi.
   - `dotnet test FilistinProje.sln`: 103 testin 103'ü de başarıyla geçti (0 Başarısız).
+- [x] **Adım 264 (Playwright Canlı Site (7anrps48.com) Uçtan Uca Doğrulama)**:
+  - `https://7anrps48.com/products/test-3-powder-canister-114` canlı sayfada test edildi.
+  - Çerçeve bloklarının ve radio elemanlarının DOM'da tamamen sıfırlandığı (`hasFrameBlock: false`, `frameRadiosCount: 0`) doğrulandı.
+  - Ana ürün fiyatının (80.00 ₪) ve structured data Schema.org (Product + 4 seviyeli BreadcrumbList) hiyerarşisinin hatasız çalıştığı doğrulandı.
+  - Varyant 119 ("أحمر" @ 100.00 ₪) tıklandığında fiyatın anında 100.00 ₪ olduğu ve sıfırlama butonunun belirdiği doğrulandı.
+  - Seçili varyanta tekrar tıklandığında seçimin bozulmadığı (`isStillSelected: true`, toggle-deselect hatası çözüldü) doğrulandı.
+  - Galeri küçük resimlerine tıklandığında seçili varyantın korunmaya devam ettiği doğrulandı.
+  - "المنتج الأصلي (إلغاء التحديد)" butonuna tıklandığında ana ürüne (80.00 ₪) ve temiz duruma sıfırlandığı doğrulandı.
+  - Adet kutusunun serbestçe düzenlenebildiği (`readonly` kaldırıldı, + / - butonları ve doğrudan giriş çalışıyor) doğrulandı.
+  - Varyant 155 seçilip sepete eklendiğinde AJAX isteğinin hatasız 200 döndüğü, sepet sayacının 56'dan 57'ye arttığı ve `hidden` sınıfının silindiği doğrulandı.
+  - Yanlış slug (`/products/wrong-slug-114`) çağrıldığında kanonik URL'e (`/products/test-3-powder-canister-114`) 301 Permanent Redirect yapıldığı doğrulandı.
+  - Tarayıcı konsolunda 0 JavaScript hatası olduğu (`Errors: 0`) doğrulandı.
 
