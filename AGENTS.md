@@ -383,6 +383,18 @@ cd FilistinProje.Web && npm run watch:storefront-css
   - `OrderPricingService.cs`: Sipariş fiyat hesaplamasında genel paketler `globalGiftPackages` olarak çekilerek sepetteki satırlarla eşleştirildi ve güvenli fiyat doğrulaması sağlandı.
   - `GiftPackagePricingTests.cs` içine `Pricing_AcceptsGlobalPackage_ForAnyProduct` birim testi eklendi; tüm 103 test başarıyla geçti.
 
+### Faz 23 (Ürün Detay Varyant İptali, Ana Ürüne Dönüş ve İndirim Sayacı Senkronizasyonu — 27 Eylül 2026)
+- [x] **Adım 172**: Ana Ürüne (المنتج الأصلي) Geri Dönüş & Varyant İptal Desteği (`Views/Urun/Detay.cshtml` - Video 8):
+  - Galeride varyanta ait olmayan ana ürün küçük görseline (thumbnail) tıklandığında seçili varyant otomatik olarak iptal edilir ve ana ürünün temel fiyatına (`PRODUCT_BASE_PRICE`), eski fiyatına (`PRODUCT_MAIN_OLD_PRICE`) ve indirim sayacına dönmesi sağlandı.
+  - Seçili varyant kartına tekrar dokunulduğunda/tıklandığında varyantın aç/kapa mantığıyla (toggle deselect) iptal edilmesi için `pointerdown` + `click` olay dinleyicisi eklendi.
+  - Varyant seçeneklerinin hemen üstüne belirgin bir `المنتج الأصلي (إلغاء التحديد)` (Original product / Clear) bağlantısı (`.clear-variant-selection-btn`) yerleştirildi.
+- [x] **Adım 173**: İndirim Sayacı Senkronizasyonu ve Sızıntı Önleme (`Views/Urun/Detay.cshtml` - Video 8):
+  - `Detay.cshtml` içinde çakışan iki ayrı sayaç güncelleme kodu temizlenerek `syncCountdownTimer(endDate, originalPrice)` yardımcı fonksiyonuna bağlandı.
+  - İndirimsiz bir varyanta (örn. Siyah) geçildiğinde sayaç kesin olarak durdurulur (`clearInterval`), `hidden` sınıfı eklenir ve `data-end` temizlenir; önceki varyantın sayacının ekranda asılı kalması engellendi.
+  - Hiçbir varyant seçili değilken veya ana ürüne dönüldüğünde ana ürünün varsa kendi kampanya sayacı (`MAIN_PRODUCT_CAMPAIGN_END_DATE` / `MAIN_CAMPAIGN_END_DATE`) pürüzsüz devreye alınır.
+- [x] **Adım 174**: Mobil/iPad Dokunmatik Seçim İyileştirmesi (`Views/Urun/Detay.cshtml`):
+  - Varyant kartlarına `select-none` eklenerek hızlı dokunmalarda metin seçilmesi ve Safari tıklama gecikmeleri önlendi.
+
 ### Hassas dosya mimarisi (B25)
 - **Storage root**: `<ContentRoot>/secure-storage/hassas/{kategori}/` (wwwroot dışında).
   - `kategori` ∈ `kimlikler` (jpg/jpeg/png/webp, max 8MB), `receteler` (jpg/jpeg/png/webp/pdf, max 12MB).

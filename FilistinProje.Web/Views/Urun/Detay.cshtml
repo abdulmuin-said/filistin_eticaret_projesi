@@ -634,7 +634,15 @@
                 @if (secenekler.Count > 1)
                 {
                     <div class="pt-6">
-                        <div id="variantSummaryText" class="mb-3 text-xs font-medium uppercase tracking-widest text-brand-darktext @(string.IsNullOrWhiteSpace(seciliVaryantMetni) ? "hidden" : "")"><i class="fas fa-layer-group me-1.5"></i>@seciliVaryantMetni</div>
+                        <div class="mb-3 flex items-center justify-between gap-2">
+                            <div id="variantSummaryText" class="text-xs font-medium uppercase tracking-widest text-brand-darktext @(string.IsNullOrWhiteSpace(seciliVaryantMetni) ? "hidden" : "")"><i class="fas fa-layer-group me-1.5"></i><span>@seciliVaryantMetni</span></div>
+                            <button type="button" 
+                                    class="clear-variant-selection-btn text-xs font-semibold text-brand-gold hover:text-brand-dark hover:underline cursor-pointer hidden items-center gap-1 transition-colors"
+                                    onclick="resetToMainProductState(false)">
+                                <i class="fas fa-undo-alt text-[10px]"></i>
+                                <span>@(isAr ? "المنتج الأصلي (إلغاء التحديد)" : "Original product (Clear)")</span>
+                            </button>
+                        </div>
                         <div class="flex flex-wrap gap-2">
                             @foreach (var varyant in secenekler)
                             {
@@ -644,7 +652,7 @@
                                 var varyantGorseli = !string.IsNullOrWhiteSpace(varyant.GorselUrl) ? varyant.GorselUrl : (varyantMedyaHaritasi.TryGetValue(varyant.Id, out var eslesen) ? eslesen : string.Empty);
                                 var varyantEskiFiyat = varyant.IndirimVarMi ? varyant.SatisFiyati : 0;
                                 var varyantSecimRengi = FilistinProje.Core.Helpers.VaryantRenkYardimcisi.TryNormalizeHex(varyant.RenkKodu, out var guvenliVaryantRengi) ? guvenliVaryantRengi : string.Empty;
-                                <label class="variant-option-card relative cursor-pointer rounded border-2 border-brand-border bg-white px-4 py-3 text-sm text-brand-mutedtext transition-all duration-150 hover:border-brand-gold @(!varyantSatinAlinabilir ? "is-disabled" : "")">
+                                <label class="variant-option-card relative cursor-pointer select-none rounded border-2 border-brand-border bg-white px-4 py-3 text-sm text-brand-mutedtext transition-all duration-150 hover:border-brand-gold @(!varyantSatinAlinabilir ? "is-disabled" : "")">
                                     @if (Model.FiyatGizliMi)
                                     {
                                         <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(secenekler.Count <= 1 && varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
@@ -693,7 +701,15 @@
                 @if (secenekler.Count > 1)
                 {
                     <div>
-                        <div id="variantSummaryText" class="mb-3 text-xs font-medium uppercase tracking-widest text-brand-darktext @(string.IsNullOrWhiteSpace(seciliVaryantMetni) ? "hidden" : "")"><i class="fas fa-layer-group me-1.5"></i>@seciliVaryantMetni</div>
+                        <div class="mb-3 flex items-center justify-between gap-2">
+                            <div id="variantSummaryText" class="text-xs font-medium uppercase tracking-widest text-brand-darktext @(string.IsNullOrWhiteSpace(seciliVaryantMetni) ? "hidden" : "")"><i class="fas fa-layer-group me-1.5"></i><span>@seciliVaryantMetni</span></div>
+                            <button type="button" 
+                                    class="clear-variant-selection-btn text-xs font-semibold text-brand-gold hover:text-brand-dark hover:underline cursor-pointer hidden items-center gap-1 transition-colors"
+                                    onclick="resetToMainProductState(false)">
+                                <i class="fas fa-undo-alt text-[10px]"></i>
+                                <span>@(isAr ? "المنتج الأصلي (إلغاء التحديد)" : "Original product (Clear)")</span>
+                            </button>
+                        </div>
                         <div class="flex flex-wrap gap-2">
                             @foreach (var varyant in secenekler)
                             {
@@ -703,7 +719,7 @@
                                 var varyantGorseli = !string.IsNullOrWhiteSpace(varyant.GorselUrl) ? varyant.GorselUrl : (varyantMedyaHaritasi.TryGetValue(varyant.Id, out var eslesen) ? eslesen : string.Empty);
                                 var varyantEskiFiyat = varyant.IndirimVarMi ? varyant.SatisFiyati : 0;
                                 var varyantSecimRengi = FilistinProje.Core.Helpers.VaryantRenkYardimcisi.TryNormalizeHex(varyant.RenkKodu, out var guvenliVaryantRengi) ? guvenliVaryantRengi : string.Empty;
-                                <label class="variant-option-card relative cursor-pointer rounded border-2 border-brand-border bg-white px-4 py-3 text-sm text-brand-mutedtext transition-all duration-150 hover:border-brand-gold @(!varyantSatinAlinabilir ? "is-disabled" : "")">
+                                <label class="variant-option-card relative cursor-pointer select-none rounded border-2 border-brand-border bg-white px-4 py-3 text-sm text-brand-mutedtext transition-all duration-150 hover:border-brand-gold @(!varyantSatinAlinabilir ? "is-disabled" : "")">
                                     <input type="radio" class="variant-radio absolute h-0 w-0 opacity-0" name="productVariant" value="@varyant.Id" checked="@(secenekler.Count <= 1 && varyant.Id == varsayilanSecenek?.Id ? "checked" : null)" data-purchasable="@(varyantSatinAlinabilir.ToString().ToLowerInvariant())" data-color="@varyantSecimRengi" data-price="@varyant.EtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture)" data-oldprice="@(varyantEskiFiyat > 0 ? varyantEskiFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty)" data-enddate="@(varyant.IndirimVarMi && varyant.IndirimBitisTarihi.HasValue ? varyant.IndirimBitisTarihi.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : string.Empty)" data-stock="@varyant.StokAdedi" data-preorder="@varyant.OnSipariseAcikMi.ToString().ToLowerInvariant()" data-production="@varyant.UretimSuresiGun" data-image="@varyantGorseli" data-label="@varyantEtiket" data-olcu="@varyantEtiket" />
                                     @if (!string.IsNullOrWhiteSpace(varyant.RenkKodu) || !string.IsNullOrWhiteSpace(varyant.Renk)) { <span class="me-1 inline-block h-3 w-3 rounded-full border align-middle" data-variant-color="@varyant.Id" style="background-color:@varyant.GuvenliRenkKodu;border-color:rgba(0,0,0,.35)"></span> }
                                     @varyantEtiket
@@ -1248,6 +1264,8 @@ const TXT_PRODUCTION_IN_DAYS = @Html.Raw(System.Text.Json.JsonSerializer.Seriali
 const TXT_LOW_STOCK = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["LowStockText"].Value));
 const TXT_UNIT_LABEL = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(isAr ? "للقطعة" : "unit"));
 const PRODUCT_STOKTA_YOK_SATIS_IZNI = @Json.Serialize(stoktaYokSatisIzni);
+const PRODUCT_INITIAL_STOKTA_VAR = @Json.Serialize(stoktaVar);
+const MAIN_PRODUCT_CAMPAIGN_END_DATE = '@(Model.IndirimVarMi && Model.KampanyaBitisTarihi.HasValue ? Model.KampanyaBitisTarihi.Value.ToString("yyyy-MM-ddTHH:mm:ssZ") : "")';
 const PRODUCT_WHATSAPP_NAME = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.LocalizedBaslik));
 const PRODUCT_WHATSAPP_URL = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(productUrl));
 const PRODUCT_WHATSAPP_NUMBER = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(whatsappNumber));
@@ -1511,21 +1529,37 @@ function updateDesktopTransform() {
 const MAIN_PRODUCT_IMAGE = '@Url.Content(Model.AnaGorselUrl)';
 const DEFAULT_PRODUCT_IMAGE = '@Url.Content(varsayilanGaleriGorseli)';
 
+function isSameImagePath(path1, path2) {
+    if (!path1 || !path2) return false;
+    var p1 = path1.trim().toLowerCase().replace(/^\/+/, '').split('?')[0];
+    var p2 = path2.trim().toLowerCase().replace(/^\/+/, '').split('?')[0];
+    return p1 === p2;
+}
+
 function changeProductImage(imageUrl, thumbnailElement, altText) {
     // If thumbnail was clicked, check if it belongs to a variant and auto-select that variant
     if (thumbnailElement && imageUrl) {
         const matchingRadio = Array.from(document.querySelectorAll('.variant-radio'))
-            .find(r => r.getAttribute('data-image') === imageUrl);
-        if (matchingRadio && !matchingRadio.checked && !matchingRadio.disabled) {
-            matchingRadio.checked = true;
-            matchingRadio.dispatchEvent(new Event('change'));
-            return;
+            .find(r => isSameImagePath(r.getAttribute('data-image'), imageUrl));
+        if (matchingRadio) {
+            if (!matchingRadio.checked && !matchingRadio.disabled) {
+                matchingRadio.checked = true;
+                matchingRadio.dispatchEvent(new Event('change'));
+                return;
+            }
+        } else {
+            // Clicked thumbnail does NOT belong to any variant (e.g. main powder compact / base product)
+            // If any variant is currently checked, reset back to main product state!
+            const anyChecked = document.querySelector('.variant-radio:checked');
+            if (anyChecked) {
+                resetToMainProductState(true);
+            }
         }
     }
 
     if (!thumbnailElement && imageUrl) {
         thumbnailElement = Array.from(document.querySelectorAll('.thumbnail-item'))
-            .find(item => item.getAttribute('data-image') === imageUrl) || null;
+            .find(item => isSameImagePath(item.getAttribute('data-image'), imageUrl)) || null;
     }
 
     const mainImage = document.getElementById('mainProductImage');
@@ -1776,6 +1810,55 @@ function updateDiscountDisplays(oldPrice, effectivePrice) {
     imageDiscountBadge.textContent = '-' + discount + '%';
 }
 
+function syncCountdownTimer(endDate, originalPrice) {
+    var countdownEl = document.getElementById('productDetailCountdown');
+    if (!countdownEl) return;
+
+    var isFutureDate = false;
+    if (endDate && typeof endDate === 'string' && endDate.trim() !== '') {
+        var dateStr = endDate.trim();
+        var parseTarget = (dateStr.endsWith('Z') || dateStr.includes('+')) ? dateStr : dateStr + 'Z';
+        var d = new Date(parseTarget);
+        if (isNaN(d.getTime())) {
+            d = new Date(dateStr);
+        }
+        if (!isNaN(d.getTime()) && d.getTime() > Date.now()) {
+            isFutureDate = true;
+        }
+    }
+
+    if (isFutureDate) {
+        if (countdownEl._cdInterval) {
+            clearInterval(countdownEl._cdInterval);
+            countdownEl._cdInterval = null;
+        }
+        countdownEl.setAttribute('data-end', endDate);
+        countdownEl.setAttribute('data-original-price', (originalPrice > 0 ? originalPrice : PRODUCT_BASE_PRICE));
+        countdownEl.classList.remove('hidden');
+        countdownEl.classList.add('inline-flex');
+
+        var counterEl = countdownEl.querySelector('.cd-counter');
+        if (counterEl) counterEl.style.display = 'flex';
+        var endedEl = countdownEl.querySelector('.cd-ended');
+        if (endedEl) {
+            endedEl.classList.add('hidden');
+            endedEl.style.display = 'none';
+        }
+
+        if (window.CountdownTimer && typeof window.CountdownTimer.init === 'function') {
+            window.CountdownTimer.init(countdownEl);
+        }
+    } else {
+        if (countdownEl._cdInterval) {
+            clearInterval(countdownEl._cdInterval);
+            countdownEl._cdInterval = null;
+        }
+        countdownEl.removeAttribute('data-end');
+        countdownEl.classList.add('hidden');
+        countdownEl.classList.remove('inline-flex');
+    }
+}
+
 function updatePriceWithFrame() {
     var selectedVariant = document.querySelector('.variant-radio:checked');
     var selectedFrame = document.querySelector('.frame-radio:checked');
@@ -1800,31 +1883,9 @@ function updatePriceWithFrame() {
     }
     updateDiscountDisplays(newOldPrice, newPrice);
 
-    var countdownEl = document.getElementById('productDetailCountdown');
-    if (countdownEl) {
-        var endDate = selectedVariant ? (selectedVariant.getAttribute('data-enddate') || '') : '';
-        if (endDate) {
-            countdownEl.setAttribute('data-end', endDate);
-            countdownEl.setAttribute('data-original-price', (newOldPrice > 0 ? newOldPrice : newPrice));
-            countdownEl.classList.remove('hidden');
-            countdownEl.classList.add('inline-flex');
-            var counterEl = countdownEl.querySelector('.cd-counter');
-            if (counterEl) counterEl.style.display = 'flex';
-            var endedEl = countdownEl.querySelector('.cd-ended');
-            if (endedEl) { endedEl.classList.add('hidden'); endedEl.style.display = 'none'; }
-            if (window.CountdownTimer && window.CountdownTimer.init) {
-                window.CountdownTimer.init(countdownEl);
-            }
-        } else {
-            if (countdownEl._cdInterval) {
-                clearInterval(countdownEl._cdInterval);
-                countdownEl._cdInterval = null;
-            }
-            countdownEl.classList.add('hidden');
-            countdownEl.classList.remove('inline-flex');
-            countdownEl.removeAttribute('data-end');
-        }
-    }
+    // Geri sayım sayacı senkronizasyonu
+    var endDate = selectedVariant ? (selectedVariant.getAttribute('data-enddate') || '') : (MAIN_PRODUCT_CAMPAIGN_END_DATE || MAIN_CAMPAIGN_END_DATE);
+    syncCountdownTimer(endDate, (newOldPrice > 0 ? newOldPrice : newPrice));
 
     var frameFarkiInput = document.getElementById('selectedFrameFarki');
     if (frameFarkiInput) {
@@ -1832,6 +1893,92 @@ function updatePriceWithFrame() {
     }
 
     updateSelectionSummary();
+}
+
+function resetToMainProductState(keepCurrentThumbnail) {
+    // 1. Tüm varyant seçimlerini kaldır
+    document.querySelectorAll('.variant-radio').forEach(function(r) {
+        r.checked = false;
+    });
+
+    // 2. Seçili varyant ID gizli alanını boşalt
+    var selectedVariantId = document.getElementById('selectedVariantId');
+    if (selectedVariantId) selectedVariantId.value = '';
+
+    // 3. Varyant kart stillerini sıfırla (.is-selected ve onay ikonlarını kaldır)
+    updateVariantCardStyles();
+
+    // 4. "İptal / Ana Ürün" butonlarını gizle
+    document.querySelectorAll('.clear-variant-selection-btn').forEach(function(btn) {
+        btn.classList.add('hidden');
+        btn.classList.remove('inline-flex');
+    });
+
+    // 5. Toptancı varyant kademesi varsa sıfırla
+    var wholesaleSelect = document.getElementById('wholesaleTierSelect');
+    if (wholesaleSelect && wholesaleSelect.value) {
+        var selectedOption = wholesaleSelect.options[wholesaleSelect.selectedIndex];
+        var tierVariantId = parseInt(selectedOption?.getAttribute('data-variant-id')) || 0;
+        if (tierVariantId > 0) {
+            wholesaleSelect.value = '';
+        }
+    }
+
+    // 6. Fiyat, eski fiyat, indirim rozeti ve indirim sayacını ana ürüne göre güncelle
+    updatePriceWithFrame();
+    updateWhatsappOrderLink();
+
+    // 7. Ana ürün görseline geri dön (eğer tıklanan küçük resim zaten seçilmediyse)
+    if (!keepCurrentThumbnail) {
+        var targetImg = MAIN_PRODUCT_IMAGE || DEFAULT_PRODUCT_IMAGE;
+        if (targetImg) {
+            changeProductImage(targetImg, null, '');
+        }
+    }
+
+    // 8. Varyant özet metnini gizle
+    var variantSummary = document.getElementById('variantSummaryText');
+    if (variantSummary) {
+        variantSummary.innerHTML = '';
+        variantSummary.classList.add('hidden');
+    }
+
+    // 9. Düşük stok uyarısını gizle
+    var lowStockWarning = document.getElementById('lowStockWarning');
+    if (lowStockWarning) lowStockWarning.classList.add('hidden');
+
+    // 10. Stok durum metnini ana ürüne göre ayarla
+    var stockStatusText = document.getElementById('stockStatusText');
+    if (stockStatusText) {
+        if (PRODUCT_INITIAL_STOKTA_VAR || PRODUCT_STOKTA_YOK_SATIS_IZNI) {
+            stockStatusText.innerHTML = '<i class="fas fa-check-circle text-green-600"></i> ' + TXT_MADE_TO_ORDER;
+        } else {
+            stockStatusText.innerHTML = '<i class="fas fa-times-circle text-red-600"></i> ' + TXT_OUT_OF_STOCK;
+        }
+    }
+
+    // 11. Adet kutusu sınırlarını sıfırla
+    var quantityInput = document.getElementById('productQuantity');
+    if (quantityInput) {
+        quantityInput.max = 99;
+        var minQuantity = parseInt(quantityInput.getAttribute('min')) || 1;
+        quantityInput.value = minQuantity;
+        var selectedQuantity = document.getElementById('selectedQuantity');
+        if (selectedQuantity) selectedQuantity.value = minQuantity;
+    }
+
+    // 12. Sepete ekle butonunu aktif et
+    var ajaxBtn = document.getElementById('ajaxSepetBtn');
+    if (ajaxBtn) {
+        var canBuy = PRODUCT_INITIAL_STOKTA_VAR || PRODUCT_STOKTA_YOK_SATIS_IZNI;
+        ajaxBtn.disabled = !canBuy;
+        ajaxBtn.classList.toggle('opacity-50', !canBuy);
+        ajaxBtn.classList.toggle('cursor-not-allowed', !canBuy);
+        var btnText = ajaxBtn.querySelector('.add-to-cart-text');
+        if (btnText) {
+            btnText.textContent = canBuy ? TXT_ADD_TO_CART : TXT_OUT_OF_STOCK;
+        }
+    }
 }
 
 function updateProductPricing() {
@@ -1916,37 +2063,11 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
             updatePriceWithFrame();
             updateWhatsappOrderLink();
 
-            // Sayaç senkronizasyonu: YALNIZCA seçilen varyantın kendi indirim bitiş tarihine göre
-            // MAIN_CAMPAIGN_END_DATE fallback'i KULLANILMIYOR — varyantın indirimi yoksa sayaç gizlenir
-            var variantEndDate = this.getAttribute('data-enddate');
-            var variantOldPrice = parseFloat(this.getAttribute('data-oldprice')) || 0;
-            var variantPrice = parseFloat(this.getAttribute('data-price')) || 0;
-            var countdownEl = document.getElementById('productDetailCountdown');
-            if (countdownEl) {
-                if (variantEndDate && new Date(variantEndDate).getTime() > Date.now()) {
-                    // Bu varyantın geçerli bir indirim süresi var → sayacı bu varyanta göre güncelle
-                    countdownEl.setAttribute('data-end', variantEndDate);
-                    countdownEl.setAttribute('data-original-price', variantOldPrice > 0 ? variantOldPrice : variantPrice);
-                    countdownEl.classList.remove('hidden');
-                    countdownEl.classList.add('inline-flex');
-                    var counterEl = countdownEl.querySelector('.cd-counter');
-                    if (counterEl) counterEl.style.display = 'flex';
-                    var endedEl = countdownEl.querySelector('.cd-ended');
-                    if (endedEl) { endedEl.classList.add('hidden'); endedEl.style.display = 'none'; }
-                    if (window.CountdownTimer && typeof window.CountdownTimer.init === 'function') {
-                        window.CountdownTimer.init(countdownEl);
-                    }
-                } else {
-                    // Bu varyantın indirimi yok veya süresi dolmuş → sayacı tamamen gizle
-                    if (countdownEl._cdInterval) {
-                        clearInterval(countdownEl._cdInterval);
-                        countdownEl._cdInterval = null;
-                    }
-                    countdownEl.removeAttribute('data-end');
-                    countdownEl.classList.add('hidden');
-                    countdownEl.classList.remove('inline-flex');
-                }
-            }
+            // "İptal / Ana Ürüne Dön" butonunu göster
+            document.querySelectorAll('.clear-variant-selection-btn').forEach(function(btn) {
+                btn.classList.remove('hidden');
+                btn.classList.add('inline-flex');
+            });
 
             var targetImg = (imageUrl && imageUrl.trim() !== '') ? imageUrl : (MAIN_PRODUCT_IMAGE || DEFAULT_PRODUCT_IMAGE);
             if (targetImg) {
@@ -2017,6 +2138,32 @@ document.querySelectorAll('.variant-radio').forEach(function(radio) {
                     if (btnText) btnText.textContent = TXT_ADD_TO_CART;
                 }
             }
+        }
+    });
+});
+
+// Varyant kartlarına tıklama / dokunma (Toggle Deselect desteği)
+document.querySelectorAll('.variant-option-card').forEach(function(card) {
+    var radio = card.querySelector('.variant-radio');
+    if (!radio) return;
+
+    card.addEventListener('pointerdown', function() {
+        card._wasChecked = radio.checked;
+    });
+
+    card.addEventListener('click', function(e) {
+        if (radio.disabled || radio.getAttribute('data-purchasable') === 'false') {
+            return;
+        }
+
+        // Eğer bu varyant zaten seçili iken tıklandıysa: seçimi kaldır ve ana ürüne dön
+        if (card._wasChecked === true) {
+            e.preventDefault();
+            e.stopPropagation();
+            card._wasChecked = false;
+            resetToMainProductState(false);
+        } else {
+            card._wasChecked = false;
         }
     });
 });
