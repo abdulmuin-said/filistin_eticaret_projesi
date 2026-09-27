@@ -458,7 +458,7 @@
         </div>
     </div>
 
-    <form asp-action="Duzenle" method="post" enctype="multipart/form-data" id="productEditForm">
+    <form asp-action="Duzenle" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data" id="productEditForm">
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="OlusturulmaTarihi" />

@@ -1730,10 +1730,11 @@ function changeProductImage(imageUrl, thumbnailElement, altText) {
     }
 }
 
-const PRODUCT_BASE_PRICE = @gosterilecekFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture);
+const PRODUCT_BASE_PRICE = @Model.EtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture);
 const PRODUCT_MAIN_PRICE = @Model.EtkinFiyat.ToString(System.Globalization.CultureInfo.InvariantCulture);
 const PRODUCT_MAIN_OLD_PRICE = @(Model.IndirimVarMi ? Model.Fiyat.ToString(System.Globalization.CultureInfo.InvariantCulture) : "0");
-const MAIN_CAMPAIGN_END_DATE = '@(gosterilecekIndirimBitisTarihi?.ToString("yyyy-MM-ddTHH:mm:ssZ") ?? "")';
+const MAIN_CAMPAIGN_END_DATE = '@(Model.KampanyaBitisTarihi?.ToString("yyyy-MM-ddTHH:mm:ssZ") ?? "")';
+const MAIN_PRODUCT_CAMPAIGN_END_DATE = '@(Model.KampanyaBitisTarihi?.ToString("yyyy-MM-ddTHH:mm:ssZ") ?? "")';
 
 function updateSelectionSummary() {
     var summary = document.getElementById('selectionSummary');
@@ -2490,9 +2491,23 @@ if (wholesaleSelect) {
     });
 }
 
-// BFCache (Geri tuşu ile sayfaya dönüldüğünde) durumu senkronize et
-window.addEventListener('pageshow', function (event) {
+// Sayfa ilk yüklendiğinde ve BFCache (Geri/İleri) durumunda senkronize et
+function initProductDetailState() {
     updatePriceDisplay();
     updateVariantCardStyles();
+    var hasSelectedVariant = document.querySelector('.variant-radio:checked');
+    document.querySelectorAll('.clear-variant-selection-btn').forEach(function(btn) {
+        if (hasSelectedVariant) {
+            btn.classList.remove('hidden');
+            btn.classList.add('inline-flex');
+        } else {
+            btn.classList.add('hidden');
+            btn.classList.remove('inline-flex');
+        }
+    });
+}
+initProductDetailState();
+window.addEventListener('pageshow', function (event) {
+    initProductDetailState();
 });
 </script>

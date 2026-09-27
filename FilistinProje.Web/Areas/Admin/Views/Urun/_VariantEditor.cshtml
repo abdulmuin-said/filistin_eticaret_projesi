@@ -135,12 +135,12 @@
                         </div>
 
                         <div class="col-lg-2 col-md-6">
-                            <label class="ca-label" data-label-for="FiyatFarki">@Localizer["Admin_PriceDifference"] (₪)</label>
-                            <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="FiyatFarki" name="UrunSecenek[@i].FiyatFarki" value="@variant.FiyatFarki.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" placeholder="0" />
+                            <label class="ca-label" data-label-for="SatisFiyati">@(isAr ? "سعر البيع (₪)" : "Sale Price (₪)")</label>
+                            <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="SatisFiyati" name="UrunSecenek[@i].SatisFiyati" value="@variant.SatisFiyati.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" placeholder="0" />
                         </div>
                         <div class="col-lg-2 col-md-6">
-                            <label class="ca-label" data-label-for="SatisFiyati">@Localizer["Admin_EffectivePrice"] (@Localizer["Admin_Preview"]) (₪)</label>
-                            <input class="ca-input" type="text" inputmode="decimal" data-decimal readonly data-variant-field="SatisFiyati" name="UrunSecenek[@i].SatisFiyati" value="@variant.SatisFiyati.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" style="background-color: #f1f5f9; cursor: not-allowed;" title="@Localizer["Admin_EffectivePrice"]" />
+                            <label class="ca-label" data-label-for="FiyatFarki">@Localizer["Admin_PriceDifference"] (+/- ₪)</label>
+                            <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="FiyatFarki" name="UrunSecenek[@i].FiyatFarki" value="@variant.FiyatFarki.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)" placeholder="0" />
                         </div>
                         <div class="col-lg-2 col-md-6">
                             <label class="ca-label" data-label-for="IndirimTuru">@Localizer["DiscountType"]</label>
@@ -369,12 +369,12 @@
                     </div>
 
                     <div class="col-lg-2 col-md-6">
-                        <label class="ca-label" data-label-for="FiyatFarki">@Localizer["Admin_PriceDifference"] (₪)</label>
-                        <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="FiyatFarki" name="UrunSecenek[__index__].FiyatFarki" value="0" placeholder="0" />
+                        <label class="ca-label" data-label-for="SatisFiyati">@(isAr ? "سعر البيع (₪)" : "Sale Price (₪)")</label>
+                        <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="SatisFiyati" name="UrunSecenek[__index__].SatisFiyati" value="0" placeholder="0" />
                     </div>
                     <div class="col-lg-2 col-md-6">
-                        <label class="ca-label" data-label-for="SatisFiyati">@Localizer["Admin_EffectivePrice"] (@Localizer["Admin_Preview"]) (₪)</label>
-                        <input class="ca-input" type="text" inputmode="decimal" data-decimal readonly data-variant-field="SatisFiyati" name="UrunSecenek[__index__].SatisFiyati" value="0" style="background-color: #f1f5f9; cursor: not-allowed;" title="@Localizer["Admin_EffectivePrice"]" />
+                        <label class="ca-label" data-label-for="FiyatFarki">@Localizer["Admin_PriceDifference"] (+/- ₪)</label>
+                        <input class="ca-input" type="text" inputmode="decimal" data-decimal data-variant-field="FiyatFarki" name="UrunSecenek[__index__].FiyatFarki" value="0" placeholder="0" />
                     </div>
                     <div class="col-lg-2 col-md-6">
                         <label class="ca-label" data-label-for="IndirimTuru">@Localizer["DiscountType"]</label>
@@ -622,21 +622,60 @@
             return parsePrice(mainFiyatInput?.value);
         }
 
-        function updateCardEffectivePrice(card) {
+        let isSyncingVariantPrice = false;
+
+        function updateCardPriceFromDiff(card) {
+            if (isSyncingVariantPrice) return;
+            isSyncingVariantPrice = true;
+            try {
+                const basePrice = getMainBasePrice();
+                const farkInput = selector(card, 'FiyatFarki');
+                const diff = parsePrice(farkInput?.value);
+                const satisInput = selector(card, 'SatisFiyati');
+                if (satisInput) {
+                    const resolved = (basePrice + diff > 0) ? (basePrice + diff) : (basePrice > 0 ? basePrice : 0);
+                    satisInput.value = formatPrice(resolved);
+                    satisInput.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+            } finally {
+                isSyncingVariantPrice = false;
+            }
+        }
+
+        function updateCardDiffFromSale(card) {
+            if (isSyncingVariantPrice) return;
+            isSyncingVariantPrice = true;
+            try {
+                const basePrice = getMainBasePrice();
+                const farkInput = selector(card, 'FiyatFarki');
+                const satisInput = selector(card, 'SatisFiyati');
+                const satis = parsePrice(satisInput?.value);
+                if (farkInput) {
+                    const diff = satis - basePrice;
+                    farkInput.value = formatPrice(diff);
+                }
+            } finally {
+                isSyncingVariantPrice = false;
+            }
+        }
+
+        function initCardPrice(card) {
             const basePrice = getMainBasePrice();
             const farkInput = selector(card, 'FiyatFarki');
-            const diff = parsePrice(farkInput?.value);
             const satisInput = selector(card, 'SatisFiyati');
-            if (satisInput) {
-                const resolved = (basePrice + diff > 0) ? (basePrice + diff) : basePrice;
-                satisInput.value = formatPrice(resolved);
-                satisInput.dispatchEvent(new Event('input', { bubbles: true }));
+            const satis = parsePrice(satisInput?.value);
+            const diff = parsePrice(farkInput?.value);
+
+            if (satis > 0 && diff === 0 && basePrice > 0 && satis !== basePrice) {
+                if (farkInput) farkInput.value = formatPrice(satis - basePrice);
+            } else if (satis === 0 && (diff !== 0 || basePrice > 0)) {
+                updateCardPriceFromDiff(card);
             }
         }
 
         function updateAllVariantEffectivePrices() {
             list.querySelectorAll('[data-variant-card]').forEach(card => {
-                updateCardEffectivePrice(card);
+                updateCardPriceFromDiff(card);
             });
         }
 
@@ -956,14 +995,14 @@
             const amountInput = selector(card, 'IndirimTutari');
             const discountedInput = selector(card, 'IndirimliFiyat');
 
-            // Variant Price Difference & Effective Price
+            // Variant Price Difference & Effective Price (Bi-directional sync)
             const farkInput = selector(card, 'FiyatFarki');
             if (farkInput) {
                 farkInput.addEventListener('input', function () {
-                    updateCardEffectivePrice(card);
+                    updateCardPriceFromDiff(card);
                 });
                 farkInput.addEventListener('change', function () {
-                    updateCardEffectivePrice(card);
+                    updateCardPriceFromDiff(card);
                 });
             }
 
@@ -1017,6 +1056,7 @@
             discountedInput?.addEventListener('input', calcFromDiscounted);
 
             satisInput?.addEventListener('input', function () {
+                updateCardDiffFromSale(card);
                 const mode = discountTypeSelect?.value;
                 if (mode === 'Percentage') {
                     calcFromPercent();
@@ -1025,6 +1065,10 @@
                 } else {
                     calcFromDiscounted();
                 }
+            });
+
+            satisInput?.addEventListener('change', function () {
+                updateCardDiffFromSale(card);
             });
 
             discountTypeSelect?.addEventListener('change', function () {
@@ -1083,7 +1127,7 @@
                 });
             });
 
-            updateCardEffectivePrice(card);
+            initCardPrice(card);
         }
 
         function duplicateCard(sourceCard) {

@@ -419,6 +419,15 @@ cd FilistinProje.Web && npm run watch:storefront-css
   - Admin kullanıcısının yanlışlıkla sayfadan ayrılması durumunda tarayıcı uyarı penceresi tetiklenerek veri kaybı tamamen engellendi. Form submit anında koruma güvenli şekilde serbest bırakıldı.
 - [x] **Adım 183**: Canlı Özet Paneli (Aside) Canlı Senkronizasyonu (`Duzenle.cshtml`):
   - Ürün adı yazıldıkça veya fiyat/indirim değiştirildikçe sağ taraftaki sabit özet kartında başlık ve etkin fiyat (`X.XX ₪`) anlık olarak senkronize edildi.
+- [x] **Adım 184**: Playwright Canlı Site (`https://7anrps48.com/Admin/Urun/Duzenle/112`) Uçtan Uca E2E Doğrulama:
+  - Canlı sunucuda Ürün #112 üzerinde 7 ayrı senaryo Playwright MCP ile test edildi:
+    1. Canlı Başlık Senkronizasyonu: Başlık değiştirildiğinde aside başlığının anlık güncellendiği doğrulandı (`success: true`).
+    2. Canlı Fiyat Senkronizasyonu: Taban fiyat 200 ₪, indirimli fiyat 175 ₪ girildiğinde aside etkin fiyatının `175.00 ₪` olarak senkronize olduğu kanıtlandı (`success: true`).
+    3. URL Hash Desteği: Sekmeler arası geçişlerde `#fiyat`, `#icerik`, `#varyasyon`, `#medya` hash güncellemeleri doğrulandı.
+    4. Çoklu Dil Desteği: `#icerik` sekmesindeki `KisaAciklamaEn`, `AciklamaEn`, `SeoTitleEn`, `SeoDescriptionEn` (ltr) alanları eksiksiz doğrulandı.
+    5. Varyant Klonlama (Duplicate): Tek tıkla varyant kopyalama test edildi; kart sayısı 4'ten 5'e çıktı, renk kodu ve alanlar kopyalandı, ID sıfırlandı; ardından kart silme ile 4'e dönüldü (`success: true`).
+    6. İndirim Bitiş Tarihi Doğrulaması & Hatalı Sekmeye Yönlendirme: İndirimli fiyat varken tarih boş bırakıldığında form submit'i engellendi (`wasPrevented: true`), otomatik olarak `#fiyat` sekmesine geçilip tarih kutusu kırmızı `.is-invalid` yapıldı ve Arapça hata mesajı verildi.
+    7. AJAX Medya Silme Endpoint'i: `/Admin/Urun/ResimSilAjax` endpoint'inin 200 OK ve JSON döndürdüğü, `beforeunload` veri koruma bayrağının aktifleştiği doğrulandı. Ekran görüntüleri kaydedildi.
 
 ### Hassas dosya mimarisi (B25)
 - **Storage root**: `<ContentRoot>/secure-storage/hassas/{kategori}/` (wwwroot dışında).
@@ -987,4 +996,21 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
   - Varyant 155 seçilip sepete eklendiğinde AJAX isteğinin hatasız 200 döndüğü, sepet sayacının 56'dan 57'ye arttığı ve `hidden` sınıfının silindiği doğrulandı.
   - Yanlış slug (`/products/wrong-slug-114`) çağrıldığında kanonik URL'e (`/products/test-3-powder-canister-114`) 301 Permanent Redirect yapıldığı doğrulandı.
   - Tarayıcı konsolunda 0 JavaScript hatası olduğu (`Errors: 0`) doğrulandı.
+
+### Faz 42 (Müşteri Videoları 11, 12, 13 — Vitrin Fiyat İzolasyonu, Bağımsız Varyant Satış Fiyatı & Silinen Varyant Toptan Kademe Temizliği — 27 Eylül 2026)
+- [x] **Adım 265 (Video 13 — Silinen Varyantlara Ait Toptan Fiyat Kademelerinin Çakışma Önleyici Temizliği & Validation Fix)**:
+  - `UrunController.cs` (`ValidateWholesaleTiersAsync`): Önceden silinen bir varyanta bağlı toptan kademeler `UrunSecenekId = null` yapılarak ürün seviyesine çekiliyordu; bu durum iki farklı varyantın aynı minimum adetli kademeleri olduğunda duplicate scope çakışmasına girip `"لا يمكن تكرار نفس الحد الأدنى للكمية ضمن المنتج أو المتغير نفسه"` ve `"تعذر حفظ المنتج"` hatasına yol açıyordu. Silinen varyanta ait kademeler artık `tiers.RemoveAll(t => t.UrunSecenekId.HasValue && !postedVariantIds.Contains(t.UrunSecenekId.Value))` ile kalıcı ve temiz şekilde otomatik siliniyor.
+  - `UrunController.cs` (`RemoveOptionalProductModelStateErrors`): `ToptanFiyatKademeleri[x].Urun` ve `UrunSecenek` navigasyon property'leri opsiyonel hata filtreleme listesine eklenerek sunucu tarafı sessiz validation blokajı giderildi.
+  - `Duzenle.cshtml`: Form etiketine `asp-route-id="@Model.Id"` eklendi.
+- [x] **Adım 266 (Video 12 — Admin Varyant Satış Fiyatı Bağımsız Girişi & Çift Yönlü Canlı Senkronizasyon)**:
+  - `_VariantEditor.cshtml`: Varyant düzenleme kartında ve template şablonunda `SatisFiyati` alanından `readonly` kısıtlaması ve gri stil kaldırıldı. Alan başlığı `"سعر البيع (₪)"` yapıldı.
+  - `updateCardPriceFromDiff` & `updateCardDiffFromSale`: Yöneticinin doğrudan girdiği satış fiyatı ile fiyat farkı çift yönlü (`isSyncingVariantPrice` bayrağı ile sonsuz döngü korumalı) senkronize edildi. Yönetici ister satış fiyatı (ör. 100 ₪) girsin, ister fark (ör. +20 ₪) girsin, iki alan anında birbirini güncelliyor ve indirim hesaplayıcılarını tetikliyor.
+  - `initCardPrice`: Sayfa açılışında yöneticinin kaydettiği doğrudan satış fiyatının ana fiyatla ezilmesi engellendi (`satis > 0 && diff === 0` durumunda satış fiyatı korunup fark hesaplanıyor).
+  - `UrunController.cs` (`ResolveVariantSalePrice`): Yöneticinin varyanta doğrudan girdiği `SatisFiyati > 0` önceliklendirildi ve `variant.FiyatFarki = variant.SatisFiyati - urun.Fiyat` olarak senkronize edildi.
+- [x] **Adım 267 (Video 11 — Vitrin Detay Sayfası Fiyat Ezilme Koruması & Sayfa Başlangıç/Sıfırlama Durumu)**:
+  - `Views/Urun/Detay.cshtml`: `PRODUCT_BASE_PRICE`, `PRODUCT_MAIN_PRICE` ve `PRODUCT_MAIN_OLD_PRICE` sabitleri artık varyant fiyatı ile ezilmeyip daima ana ürünün kendi taban fiyatı (`@Model.EtkinFiyat`, `@Model.Fiyat`) ile başlatılıyor.
+  - `MAIN_PRODUCT_CAMPAIGN_END_DATE` tanımlandı; varyant iptal edildiğinde veya sıfırlandığında ana ürünün kampanya süresi kusursuz şekilde geri getiriliyor.
+  - `initProductDetailState()`: Sayfa ilk açıldığında ve BFCache (geri/ileri) durumunda, hiçbir varyant varsayılan değilse açılışta ana ürünün fiyatı gösteriliyor, "المنتج الأصلي (إلغاء التحديد)" butonu gizleniyor; varyant seçildiğinde açılıyor, tıklandığında ana ürüne sıfırlanıyor.
+- [x] **Adım 268 (Derleme Doğrulaması)**:
+  - `dotnet build FilistinProje.sln`: 0 Hata ile başarıyla derlendi.
 

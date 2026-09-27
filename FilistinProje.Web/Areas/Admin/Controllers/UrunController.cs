@@ -2530,12 +2530,20 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 nameof(UrunOzellikDegeri.UrunOzellikTanimi)
             };
 
+            var optionalTierFields = new[]
+            {
+                nameof(UrunToptanFiyatKademesi.Urun),
+                nameof(UrunToptanFiyatKademesi.UrunSecenek)
+            };
+
             foreach (var key in ModelState.Keys.ToList())
             {
                 if ((key.StartsWith("UrunSecenek[", StringComparison.Ordinal) &&
                      optionalVariantFields.Any(field => key.EndsWith("." + field, StringComparison.Ordinal))) ||
                     (key.StartsWith("HediyePaketSecenekleri[", StringComparison.Ordinal) &&
                      optionalGiftPackageFields.Any(field => key.EndsWith("." + field, StringComparison.Ordinal))) ||
+                    (key.StartsWith("ToptanFiyatKademeleri[", StringComparison.Ordinal) &&
+                     optionalTierFields.Any(field => key.EndsWith("." + field, StringComparison.Ordinal))) ||
                     (key.StartsWith("UrunOzellikleri[", StringComparison.Ordinal) &&
                      optionalFeatureFields.Any(field => key.EndsWith("." + field, StringComparison.Ordinal))))
                 {
@@ -3268,15 +3276,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                     .ToHashSet();
             }
 
-            // Auto-fix: If a tier references a variant that is being removed,
-            // null out the variant reference so the tier becomes product-level.
-            foreach (var tier in tiers)
-            {
-                if (tier.UrunSecenekId.HasValue && !postedVariantIds.Contains(tier.UrunSecenekId.Value))
-                {
-                    tier.UrunSecenekId = null;
-                }
-            }
+            // Auto-clean: If a tier references a variant that no longer exists in posted variants,
+            // remove that tier completely instead of nulling it out and causing duplicate scope collision!
+            tiers.RemoveAll(t => t.UrunSecenekId.HasValue && !postedVariantIds.Contains(t.UrunSecenekId.Value));
+            urun.ToptanFiyatKademeleri = tiers;
 
             var duplicateScopes = tiers
                 .GroupBy(x => (x.UrunSecenekId, x.MinAdet))
@@ -3618,6 +3621,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
         private static decimal ResolveVariantSalePrice(Urun urun, UrunSecenek variant)
         {
+            if (variant.SatisFiyati > 0)
+            {
+                variant.FiyatFarki = variant.SatisFiyati - urun.Fiyat;
+                return variant.SatisFiyati;
+            }
             var resolvedPrice = urun.Fiyat + variant.FiyatFarki;
             return resolvedPrice > 0 ? resolvedPrice : urun.Fiyat;
         }
