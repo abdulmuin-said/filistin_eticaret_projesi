@@ -1009,8 +1009,12 @@ Dual migration sistemi (EF + EnsureMissingMarch2026SchemaAsync) korunur. Yeni en
   - `UrunController.cs` (`ResolveVariantSalePrice`): Yöneticinin varyanta doğrudan girdiği `SatisFiyati > 0` önceliklendirildi ve `variant.FiyatFarki = variant.SatisFiyati - urun.Fiyat` olarak senkronize edildi.
 - [x] **Adım 267 (Video 11 — Vitrin Detay Sayfası Fiyat Ezilme Koruması & Sayfa Başlangıç/Sıfırlama Durumu)**:
   - `Views/Urun/Detay.cshtml`: `PRODUCT_BASE_PRICE`, `PRODUCT_MAIN_PRICE` ve `PRODUCT_MAIN_OLD_PRICE` sabitleri artık varyant fiyatı ile ezilmeyip daima ana ürünün kendi taban fiyatı (`@Model.EtkinFiyat`, `@Model.Fiyat`) ile başlatılıyor.
-  - `MAIN_PRODUCT_CAMPAIGN_END_DATE` tanımlandı; varyant iptal edildiğinde veya sıfırlandığında ana ürünün kampanya süresi kusursuz şekilde geri getiriliyor.
-  - `initProductDetailState()`: Sayfa ilk açıldığında ve BFCache (geri/ileri) durumunda, hiçbir varyant varsayılan değilse açılışta ana ürünün fiyatı gösteriliyor, "المنتج الأصلي (إلغاء التحديد)" butonu gizleniyor; varyant seçildiğinde açılıyor, tıklandığında ana ürüne sıfırlanıyor.
-- [x] **Adım 268 (Derleme Doğrulaması)**:
+  - `MAIN_PRODUCT_CAMPAIGN_END_DATE` tekil tanımı ve sayfa başına güvenli `window.formatMoney` fallback tanımı eklendi (layout footer yüklenmeden önce oluşabilecek TypeError yarış durumları engellendi).
+  - `initProductDetailState()`: `DOMContentLoaded` ve BFCache (`pageshow`) güvencesiyle, hiçbir varyant varsayılan değilse açılışta ana ürünün fiyatı gösteriliyor, "المنتج الأصلي (إلغاء التحديد)" butonu gizleniyor; varyant seçildiğinde açılıyor, tıklandığında ana ürüne sıfırlanıyor.
+- [x] **Adım 268 (Playwright Canlı Test Doğrulaması)**:
+  - Canlı sitede (`7anrps48.com`) admin girişi yapıldı, `Admin/Urun/Duzenle/114#varyasyon` test edildi.
+  - Video 12 doğrulandı: `SatisFiyati` alanının `readonly` olmadığı (`satisReadonly: false`), doğrudan 120 ₪ yazıldığında farkın anında 40 ₪ olduğu, farka 30 ₪ yazıldığında satış fiyatının anında 110 ₪ olduğu canlı tarayıcıda kanıtlandı.
+  - Video 13 doğrulandı: Kademeli toptan fiyat modellerinde silinen varyant kademelerinin otomatik temizlendiği ve model binding doğrulaması sağlandı.
+- [x] **Adım 269 (Derleme Doğrulaması)**:
   - `dotnet build FilistinProje.sln`: 0 Hata ile başarıyla derlendi.
 
