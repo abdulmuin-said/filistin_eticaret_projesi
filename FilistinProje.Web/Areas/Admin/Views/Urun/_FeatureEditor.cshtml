@@ -36,7 +36,6 @@
     };
 
     var definitionPayload = definitions
-        .Where(x => x.UrunTipi == UrunOzellikCatalog.Genel)
         .Select(x => new
     {
         id = x.Id,

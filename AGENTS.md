@@ -395,6 +395,31 @@ cd FilistinProje.Web && npm run watch:storefront-css
 - [x] **Adım 174**: Mobil/iPad Dokunmatik Seçim İyileştirmesi (`Views/Urun/Detay.cshtml`):
   - Varyant kartlarına `select-none` eklenerek hızlı dokunmalarda metin seçilmesi ve Safari tıklama gecikmeleri önlendi.
 
+### Faz 24 (Admin Ürün Düzenleme & Yönetim Sistemi Kapsamlı Optimizasyon ve Güçlendirme — 27 Eylül 2026)
+- [x] **Adım 175**: Çoklu Dil Desteği Zinciri Tamamlandı (`Duzenle.cshtml` & `UrunController.cs`):
+  - "Temel Bilgiler" paneline İngilizce başlık (`BaslikEn`), "İçerik" paneline ise `KisaAciklamaEn`, `AciklamaEn`, `SeoTitleEn`, `SeoDescriptionEn` girişleri yerleştirildi.
+  - `UrunController.cs` içindeki `NormalizeProductInput` ve `ApplyProductFields` metotlarına tüm çift dilli alanlar (En/Ar) eklenerek veritabanına eksiksiz aktarılması sağlandı.
+  - "Temel Bilgiler" sekmesine toptancı ürün grubu atama dropdown'ı (`ToptanciUrunGrubuId`) eklendi.
+- [x] **Adım 176**: Varyant İndirim Tarihi Zaman Dilimi (UTC) Eşitlemesi (`UrunController.cs`):
+  - Ana ürün indiriminde uygulanan mağaza yerel saatinden UTC'ye dönüştürme (`ConvertStoreLocalToUtc`) işlemi varyant indirim bitiş tarihlerine de uygulandı; varyant indirimlerinin vitrinde 3 saat farkla erken veya geç bitme hatası giderildi.
+- [x] **Adım 177**: Tehlikeli Galeri Silme Linki Güvenli AJAX POST Mimarisine Taşındı (`Duzenle.cshtml` & `UrunController.cs`):
+  - Eski `<a href="/Admin/Urun/ResimSil/{id}">` senkron bağlantısı kaldırıldı; admin kullanıcısı formda 15 dakika veri girdikten sonra resim sildiğinde sayfa reload olup tüm form girdilerinin silinmesi faciası tamamen önlendi.
+  - `UrunController.cs` içine antiforgery destekli `ResimSilAjax` POST endpoint'i eklendi; `Duzenle.cshtml`'deki `data-delete-media-id` butonlarıyla sayfa yenilenmeden asenkron silme, DOM kartı animasyonlu kaldırma ve aside sayaç senkronizasyonu sağlandı.
+- [x] **Adım 178**: Uluslararası Sayı & Fiyat Ayrıştırma Motoru (`TryParsePrice`):
+  - Sayı ayrıştırma mekanizması hem nokta (.), hem virgül (,), hem de InvariantCulture destekleyecek şekilde baştan yazıldı; farklı dil/klavye formatlarında girilen fiyatların `0` olarak kaydedilmesi engellendi.
+- [x] **Adım 179**: Hardcoded Türkçe Validasyon Mesajları Çok Dilli Yapıya Taşındı:
+  - `UrunController.cs`'deki Türkçe varyant hata mesajları `_localizer` anahtarlarına bağlandı.
+  - `SharedResource.en.resx` ve `SharedResource.ar.resx` dosyalarına `Admin_Product_VariantNegativeCost`, `NegativeStock`, `NegativeDesi`, `InvalidHex`, `MediaNotFound`, `MediaDeleteConfirm`, `DuplicateVariant`, `DuplicateVariantSuccess`, `UnsavedChangesWarning` anahtarları eklendi.
+- [x] **Adım 180**: Tek Tıkla Varyant Klonlama / Çoğaltma Sistemi (`_VariantEditor.cshtml`):
+  - Varyant kartlarına "Klonla (Duplicate)" butonu eklendi; aynı fiyata ve görsele sahip farklı boyut/renk varyantları saniyeler içinde tek tıkla kopyalanabilir hale getirildi.
+- [x] **Adım 181**: Akıllı Hata Sekmesi Yönlendirmesi & Doğrulama Rozetleri (`Duzenle.cshtml`):
+  - URL Hash (`#temel`, `#fiyat`, `#icerik`, `#ozellik`, `#varyasyon`, `#medya`) desteği sağlandı.
+  - Form submit edildiğinde veya sunucudan hata döndüğünde hangi sekmede hata varsa o sekme butonuna kırmızı uyarı rozeti (`!`) eklendi, ilk hatalı sekmeye otomatik geçilip hatalı alana odaklanılması (`scrollIntoView` + `focus`) sağlandı.
+- [x] **Adım 182**: Kaydedilmemiş Değişiklik Koruması (`beforeunload` & `markProductFormDirty`):
+  - Admin kullanıcısının yanlışlıkla sayfadan ayrılması durumunda tarayıcı uyarı penceresi tetiklenerek veri kaybı tamamen engellendi. Form submit anında koruma güvenli şekilde serbest bırakıldı.
+- [x] **Adım 183**: Canlı Özet Paneli (Aside) Canlı Senkronizasyonu (`Duzenle.cshtml`):
+  - Ürün adı yazıldıkça veya fiyat/indirim değiştirildikçe sağ taraftaki sabit özet kartında başlık ve etkin fiyat (`X.XX ₪`) anlık olarak senkronize edildi.
+
 ### Hassas dosya mimarisi (B25)
 - **Storage root**: `<ContentRoot>/secure-storage/hassas/{kategori}/` (wwwroot dışında).
   - `kategori` ∈ `kimlikler` (jpg/jpeg/png/webp, max 8MB), `receteler` (jpg/jpeg/png/webp/pdf, max 12MB).

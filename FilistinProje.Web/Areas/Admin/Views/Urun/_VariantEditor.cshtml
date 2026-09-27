@@ -55,9 +55,14 @@
                             <div class="ca-variant-title" data-variant-title>@(string.IsNullOrWhiteSpace(temizVaryantBasligi) ? string.Format(Localizer["Admin_Variation"].Value + " {0}", i + 1) : temizVaryantBasligi)</div>
                             <div class="ca-variant-subtitle" data-variant-subtitle>@(string.IsNullOrWhiteSpace(temizVaryantOzeti) ? Localizer["Admin_VariationSubtitleDefault"].Value : temizVaryantOzeti)</div>
                         </div>
-                        <button type="button" class="ca-btn ca-btn-outline ca-btn-sm" data-variant-remove>
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <div class="d-flex align-items-center gap-1.5">
+                            <button type="button" class="ca-btn ca-btn-outline ca-btn-sm" data-variant-duplicate title="@Localizer["Admin_Product_DuplicateVariant"]">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button type="button" class="ca-btn ca-btn-outline ca-btn-sm text-danger" data-variant-remove title="@Localizer["Admin_Sil"]">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <input type="hidden" data-variant-field="Id" name="UrunSecenek[@i].Id" value="@variant.Id" />
@@ -287,9 +292,14 @@
                         <div class="ca-variant-title" data-variant-title>@Localizer["Admin_NewVariation"]</div>
                         <div class="ca-variant-subtitle" data-variant-subtitle >@Localizer["Admin_VariationSubtitleDefault"]</div>
                     </div>
-                    <button type="button" class="ca-btn ca-btn-outline ca-btn-sm" data-variant-remove>
-                        <i class="fas fa-trash"></i>
-                    </button>
+                    <div class="d-flex align-items-center gap-1.5">
+                        <button type="button" class="ca-btn ca-btn-outline ca-btn-sm" data-variant-duplicate title="@Localizer["Admin_Product_DuplicateVariant"]">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button type="button" class="ca-btn ca-btn-outline ca-btn-sm text-danger" data-variant-remove title="@Localizer["Admin_Sil"]">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <input type="hidden" data-variant-field="Id" name="UrunSecenek[__index__].Id" value="0" />
@@ -766,6 +776,13 @@
                 input.addEventListener('change', () => reindex());
             });
 
+            const duplicateButton = card.querySelector('[data-variant-duplicate]');
+            if (duplicateButton) {
+                duplicateButton.addEventListener('click', () => {
+                    duplicateCard(card);
+                });
+            }
+
             const removeButton = card.querySelector('[data-variant-remove]');
             if (removeButton) {
                 removeButton.addEventListener('click', () => {
@@ -775,6 +792,7 @@
                     }
                     card.remove();
                     reindex();
+                    if (window.markProductFormDirty) window.markProductFormDirty();
                 });
             }
 
@@ -1068,6 +1086,52 @@
             updateCardEffectivePrice(card);
         }
 
+        function duplicateCard(sourceCard) {
+            const fragment = template.content.cloneNode(true);
+            const newCard = fragment.querySelector('[data-variant-card]');
+            if (!newCard) return;
+
+            sourceCard.querySelectorAll('[data-variant-field]').forEach((sourceInput) => {
+                const field = sourceInput.getAttribute('data-variant-field');
+                if (field === 'Id') return;
+
+                const targetInput = newCard.querySelector(`[data-variant-field="${field}"]`);
+                if (!targetInput) return;
+
+                if (sourceInput.type === 'checkbox') {
+                    targetInput.checked = field === 'VarsayilanMi' ? false : sourceInput.checked;
+                } else if (field === 'VaryantSku') {
+                    targetInput.value = '';
+                } else {
+                    targetInput.value = sourceInput.value;
+                }
+            });
+
+            const sourceColor = sourceCard.querySelector('[data-variant-color-picker]');
+            const targetColor = newCard.querySelector('[data-variant-color-picker]');
+            if (sourceColor && targetColor) targetColor.value = sourceColor.value;
+
+            const sourceImg = sourceCard.querySelector('[data-variant-img-preview]');
+            const targetImg = newCard.querySelector('[data-variant-img-preview]');
+            const targetPlaceholder = newCard.querySelector('[data-variant-img-placeholder]');
+            const targetRemove = newCard.querySelector('[data-variant-img-remove]');
+            if (sourceImg && sourceImg.src && sourceImg.style.display !== 'none') {
+                if (targetImg) {
+                    targetImg.src = sourceImg.src;
+                    targetImg.style.display = 'block';
+                }
+                if (targetPlaceholder) targetPlaceholder.classList.add('d-none');
+                if (targetRemove) targetRemove.classList.remove('d-none');
+            }
+
+            list.appendChild(fragment);
+            bindCard(newCard);
+            reindex();
+            if (window.markProductFormDirty) window.markProductFormDirty();
+
+            newCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
         function addCard() {
             const fragment = template.content.cloneNode(true);
             const card = fragment.querySelector('[data-variant-card]');
@@ -1076,6 +1140,7 @@
                 bindCard(card);
             }
             reindex();
+            if (window.markProductFormDirty) window.markProductFormDirty();
         }
 
         list.querySelectorAll('[data-variant-card]').forEach(bindCard);
@@ -1097,19 +1162,27 @@
                     }
                 });
 
-                let hasInvalidVariantDate = false;
+                let firstInvalidDateCard = null;
+                let firstInvalidDateInput = null;
                 list.querySelectorAll('[data-variant-card]').forEach((c) => {
                     const dInput = selector(c, 'IndirimliFiyat');
                     const dtInput = selector(c, 'IndirimBitisTarihi');
                     const discP = parsePrice(dInput?.value);
                     if (discP > 0 && (!dtInput || !dtInput.value.trim())) {
-                        hasInvalidVariantDate = true;
+                        if (!firstInvalidDateInput) {
+                            firstInvalidDateCard = c;
+                            firstInvalidDateInput = dtInput;
+                        }
                         dtInput?.classList.add('is-invalid');
                     }
                 });
 
-                if (hasInvalidVariantDate) {
+                if (firstInvalidDateInput) {
                     e.preventDefault();
+                    const tabBtn = document.querySelector('[data-product-tab="varyasyon"]');
+                    if (tabBtn) tabBtn.click();
+                    firstInvalidDateInput.focus();
+                    firstInvalidDateCard?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     alert(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Localizer["Admin_Product_DiscountEndDateRequired"].Value)));
                     return false;
                 }

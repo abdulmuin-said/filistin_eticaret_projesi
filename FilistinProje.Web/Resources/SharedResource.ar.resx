@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -6181,5 +6181,41 @@
   </data>
   <data name="WholesaleAccountRequired" xml:space="preserve">
     <value>يتطلب حساب تاجر جملة</value>
+  </data>
+  <data name="Admin_Product_VariantNegativeCost" xml:space="preserve">
+    <value>المتغير {0}: لا يمكن أن تكون التكلفة سالبة.</value>
+  </data>
+  <data name="Admin_Product_VariantNegativeStock" xml:space="preserve">
+    <value>المتغير {0}: لا يمكن أن تكون كمية المخزون سالبة.</value>
+  </data>
+  <data name="Admin_Product_VariantNegativeDesi" xml:space="preserve">
+    <value>المتغير {0}: لا يمكن أن يكون الوزن الحجمي سالباً.</value>
+  </data>
+  <data name="Admin_Product_VariantInvalidHex" xml:space="preserve">
+    <value>المتغير {0}: يجب أن يكون كود اللون بتنسيق #RGB أو #RRGGBB.</value>
+  </data>
+  <data name="Admin_Product_MediaNotFound" xml:space="preserve">
+    <value>لم يتم العثور على الملف المطلوب.</value>
+  </data>
+  <data name="Admin_Product_MediaDeleteConfirm" xml:space="preserve">
+    <value>هل أنت متأكد من حذف هذه الصورة؟ لن تتأثر التغييرات غير المحفوظة في النموذج.</value>
+  </data>
+  <data name="Admin_Product_DuplicateVariant" xml:space="preserve">
+    <value>نسخ هذا المتغير</value>
+  </data>
+  <data name="Admin_Product_DuplicateVariantSuccess" xml:space="preserve">
+    <value>تم نسخ المتغير بنجاح</value>
+  </data>
+  <data name="Admin_Product_UnsavedChangesWarning" xml:space="preserve">
+    <value>لديك تغييرات غير محفوظة! هل تريد بالتأكيد مغادرة هذه الصفحة؟</value>
+  </data>
+  <data name="Admin_Product_WholesaleGroup" xml:space="preserve">
+    <value>مجموعة أسعار الجملة</value>
+  </data>
+  <data name="Admin_Product_WholesaleGroupSelect" xml:space="preserve">
+    <value>— بدون مجموعة جملة (افتراضي) —</value>
+  </data>
+  <data name="Admin_Product_WholesaleGroupHelp" xml:space="preserve">
+    <value>إذا تم تحديد مجموعة، سيتم تطبيق نسب الخصم المحددة لهذه المجموعة على هذا المنتج لعملاء الجملة المعتمدين.</value>
   </data>
 </root>

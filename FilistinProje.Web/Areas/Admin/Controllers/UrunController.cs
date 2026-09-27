@@ -349,6 +349,10 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
 
             model.KampanyaBitisTarihi = BusinessTimeZoneService.ConvertStoreLocalToUtc(model.KampanyaBitisTarihi);
+            foreach (var variant in model.UrunSecenek ?? Enumerable.Empty<UrunSecenek>())
+            {
+                variant.IndirimBitisTarihi = BusinessTimeZoneService.ConvertStoreLocalToUtc(variant.IndirimBitisTarihi);
+            }
 
             NormalizeOptionalProductFieldsForValidation(model);
             RemoveOptionalProductModelStateErrors();
@@ -404,13 +408,14 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 await EnsureProductSkuAsync(urun);
                 await EnsureVariantSkusAsync(urun.Id);
                 await SyncFeatureValuesAsync(urun, model.UrunOzellikleri);
+                await SyncGiftPackageOptionsAsync(urun, model.HediyePaketSecenekleri);
                 await SaveGalleryImagesAsync(urun, galeriDosyalari);
                 await EnsureDefaultProductMediaAsync(urun);
                 await _context.SaveChangesAsync();
                 await SyncProductPricesWithVariantsAsync(urun, model);
                 await transaction.CommitAsync();
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 await transaction.RollbackAsync();
                 LogProductSaveFailure("guncelleme", id, ex);
@@ -821,6 +826,28 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResimSilAjax(int id)
+        {
+            var resim = await _context.UrunResimleri
+                .Include(x => x.Urun)
+                    .ThenInclude(x => x.UrunResimleri)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (resim == null)
+            {
+                return Json(new { success = false, message = _localizer["Admin_Product_MediaNotFound"].Value });
+            }
+
+            var urun = resim.Urun;
+            _context.UrunResimleri.Remove(resim);
+            urun.UrunResimleri.Remove(resim);
+            await EnsureDefaultProductMediaAsync(urun);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, message = _localizer["Admin_Product_MediaDeleted"].Value });
+        }
+
         public async Task<IActionResult> ResimSil(int id)
         {
             var resim = await _context.UrunResimleri
@@ -829,11 +856,13 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 .FirstOrDefaultAsync(x => x.Id == id);
             if (resim != null)
             {
+                var urunId = resim.UrunId;
                 _context.UrunResimleri.Remove(resim);
                 resim.Urun.UrunResimleri.Remove(resim);
                 await EnsureDefaultProductMediaAsync(resim.Urun);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Duzenle), new { area = "Admin", id = resim.UrunId });
+                TempData["Mesaj"] = _localizer["Admin_Product_MediaDeleted"].Value;
+                return RedirectToAction(nameof(Duzenle), new { area = "Admin", id = urunId });
             }
 
             return RedirectToAction(nameof(Index), new { area = "Admin" });
@@ -2695,6 +2724,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         private void NormalizeProductInput(Urun urun)
         {
             urun.Baslik = urun.Baslik?.Trim() ?? string.Empty;
+            urun.BaslikEn = urun.BaslikEn?.Trim() ?? string.Empty;
+            urun.BaslikAr = urun.BaslikAr?.Trim() ?? string.Empty;
             urun.KisaAd = string.IsNullOrWhiteSpace(urun.KisaAd) ? urun.Baslik : urun.KisaAd.Trim();
             urun.SKU = urun.SKU?.Trim() ?? string.Empty;
             urun.Barkod = urun.Barkod?.Trim() ?? string.Empty;
@@ -2702,7 +2733,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             urun.UrunTipi = UrunOzellikCatalog.NormalizeProductType(urun.UrunTipi);
             urun.Etiketler = urun.Etiketler?.Trim() ?? string.Empty;
             urun.KisaAciklama = urun.KisaAciklama?.Trim() ?? string.Empty;
+            urun.KisaAciklamaEn = urun.KisaAciklamaEn?.Trim() ?? string.Empty;
+            urun.KisaAciklamaAr = urun.KisaAciklamaAr?.Trim() ?? string.Empty;
             urun.Aciklama = urun.Aciklama?.Trim() ?? string.Empty;
+            urun.AciklamaEn = urun.AciklamaEn?.Trim() ?? string.Empty;
+            urun.AciklamaAr = urun.AciklamaAr?.Trim() ?? string.Empty;
             urun.TeknikOzellikler = urun.TeknikOzellikler?.Trim() ?? string.Empty;
             urun.MalzemeBilgisi = urun.MalzemeBilgisi?.Trim() ?? string.Empty;
             urun.BakimTalimati = urun.BakimTalimati?.Trim() ?? string.Empty;
@@ -2715,7 +2750,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 ? null
                 : urun.IndirimliFiyat;
             urun.SeoTitle = urun.SeoTitle?.Trim() ?? string.Empty;
+            urun.SeoTitleEn = urun.SeoTitleEn?.Trim() ?? string.Empty;
+            urun.SeoTitleAr = urun.SeoTitleAr?.Trim() ?? string.Empty;
             urun.SeoDescription = urun.SeoDescription?.Trim() ?? string.Empty;
+            urun.SeoDescriptionEn = urun.SeoDescriptionEn?.Trim() ?? string.Empty;
+            urun.SeoDescriptionAr = urun.SeoDescriptionAr?.Trim() ?? string.Empty;
             urun.SeoKeywords = urun.SeoKeywords?.Trim() ?? string.Empty;
             urun.OneCikanEtiketRengi = NormalizeBadgeColor(urun.OneCikanEtiketRengi, "#D6AB5B");
             urun.YeniUrunEtiketRengi = NormalizeBadgeColor(urun.YeniUrunEtiketRengi, "#B33A3A");
@@ -3469,12 +3508,12 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
                 if (variant.MaliyetFiyati < 0)
                 {
-                    ModelState.AddModelError($"{prefix}.MaliyetFiyati", $"Varyasyon {row}: maliyet negatif olamaz.");
+                    ModelState.AddModelError($"{prefix}.MaliyetFiyati", string.Format(_localizer["Admin_Product_VariantNegativeCost"].Value, row));
                 }
 
                 if (variant.StokAdedi < 0)
                 {
-                    ModelState.AddModelError($"{prefix}.StokAdedi", $"Varyasyon {row}: stok adedi negatif olamaz.");
+                    ModelState.AddModelError($"{prefix}.StokAdedi", string.Format(_localizer["Admin_Product_VariantNegativeStock"].Value, row));
                 }
 
                 if (variant.ParcaSayisi < 1)
@@ -3489,7 +3528,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
 
                 if (variant.Desi < 0)
                 {
-                    ModelState.AddModelError($"{prefix}.Desi", $"Varyasyon {row}: desi negatif olamaz.");
+                    ModelState.AddModelError($"{prefix}.Desi", string.Format(_localizer["Admin_Product_VariantNegativeDesi"].Value, row));
                 }
 
                 if (!string.IsNullOrWhiteSpace(variant.RenkKodu) &&
@@ -3497,7 +3536,7 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 {
                     ModelState.AddModelError(
                         $"{prefix}.RenkKodu",
-                        $"Varyasyon {row}: renk kodu #RGB veya #RRGGBB biçiminde olmalıdır.");
+                        string.Format(_localizer["Admin_Product_VariantInvalidHex"].Value, row));
                 }
 
                 if (variant.Id > 0 && currentProductId.HasValue && !ownedVariantIds.Contains(variant.Id))
@@ -3618,6 +3657,8 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
         private static void ApplyProductFields(Urun source, Urun target)
         {
             target.Baslik = source.Baslik;
+            target.BaslikEn = source.BaslikEn;
+            target.BaslikAr = source.BaslikAr;
             target.KisaAd = source.KisaAd;
             target.SKU = source.SKU;
             target.Barkod = source.Barkod;
@@ -3625,7 +3666,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             target.UrunTipi = source.UrunTipi;
             target.Etiketler = source.Etiketler;
             target.KisaAciklama = source.KisaAciklama;
+            target.KisaAciklamaEn = source.KisaAciklamaEn;
+            target.KisaAciklamaAr = source.KisaAciklamaAr;
             target.Aciklama = source.Aciklama;
+            target.AciklamaEn = source.AciklamaEn;
+            target.AciklamaAr = source.AciklamaAr;
             target.TeknikOzellikler = source.TeknikOzellikler;
             target.MalzemeBilgisi = source.MalzemeBilgisi;
             target.BakimTalimati = source.BakimTalimati;
@@ -3659,7 +3704,11 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
             target.KategoriId = source.KategoriId;
             target.ToptanciUrunGrubuId = source.ToptanciUrunGrubuId;
             target.SeoTitle = source.SeoTitle;
+            target.SeoTitleEn = source.SeoTitleEn;
+            target.SeoTitleAr = source.SeoTitleAr;
             target.SeoDescription = source.SeoDescription;
+            target.SeoDescriptionEn = source.SeoDescriptionEn;
+            target.SeoDescriptionAr = source.SeoDescriptionAr;
             target.SeoKeywords = source.SeoKeywords;
         }
 
@@ -3705,8 +3754,20 @@ namespace FilistinProje.Web.Areas.Admin.Controllers
                 return 0;
             }
 
-            var normalized = rawValue.Replace(".", ",");
-            return decimal.TryParse(normalized, out var price) ? price : 0;
+            var clean = rawValue.Trim().Replace(" ", "");
+            if (clean.Contains(',') && clean.Contains('.'))
+            {
+                if (clean.LastIndexOf('.') > clean.LastIndexOf(','))
+                    clean = clean.Replace(",", "");
+                else
+                    clean = clean.Replace(".", "").Replace(',', '.');
+            }
+            else if (clean.Contains(','))
+            {
+                clean = clean.Replace(',', '.');
+            }
+
+            return decimal.TryParse(clean, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var price) ? price : 0;
         }
     }
 }
