@@ -1085,7 +1085,7 @@
     (function () {
         let isDirty = false;
         let isSubmitting = false;
-        const form = document.querySelector('form.ca-editor-layout') || document.querySelector('form');
+        const form = document.getElementById('productEditForm') || document.querySelector('form.ca-editor-layout') || document.querySelector('form');
 
         if (!form) return;
 
@@ -1350,7 +1350,7 @@
             });
         });
 
-        const productForm = document.querySelector('form.ca-editor-layout') || document.querySelector('form');
+        const productForm = document.getElementById('productEditForm') || document.querySelector('form.ca-editor-layout') || document.querySelector('form');
         productForm?.addEventListener('submit', function (e) {
             const discP = parseNum(discountedInput.value);
             if (discP > 0 && (!dateInput || !dateInput.value.trim())) {
